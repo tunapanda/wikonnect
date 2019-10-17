@@ -1,0 +1,46 @@
+{
+  "name": "swag-server",
+  "version": "0.1.0",
+  "main": "index.js",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "start": "node index.js",
+    "start:cy": "node index.js --cypress",
+    "db:init": "knex migrate:latest",
+    "db:reset": "knex migrate:rollback && knex migrate:latest",
+    "db:seed": "knex seed:run",
+    "test": "mocha test",
+    "lint:js": "eslint ."
+  },
+  "dependencies": {
+    "async-busboy": "^0.7.0",
+    "bcrypt": "https://github.com/kelektiv/node.bcrypt.js.git#master",
+    "busboy": "^0.3.1",
+    "jsonwebtoken": "^8.5.1",
+    "knex": "^0.19.5",
+    "koa": "^2.10.0",
+    "koa-bodyparser": "^4.2.1",
+    "koa-jwt": "^3.6.0",
+    "koa-qs": "^2.0.0",
+    "koa-router": "^7.4.0",
+    "koa-static": "^5.0.0",
+    "lodash": "^4.17.15",
+    "moment": "^2.24.0",
+    "nodemailer": "^6.3.0",
+    "nodemailer-mailgun-transport": "^1.4.0",
+    "objection": "1.6.11",
+    "pg": "^7.12.1",
+    "sharp": "^0.23.1",
+    "validate.js": "^0.13.1"
+  },
+  "devDependencies": {
+    "ajv": "^6.10.2",
+    "chai": "^4.1.2",
+    "chai-http": "^4.0.0",
+    "chai-json-schema-ajv": "^5.0.0",
+    "eslint": "^6.4.0",
+    "mocha": "^5.1.1",
+    "nyc": "^14.1.1"
+  }
+}
