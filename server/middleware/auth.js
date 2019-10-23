@@ -3,6 +3,7 @@ async function requireAuth(ctx, next) {
   await next();
 }
 
+
 module.exports = {
   requireAuth
 };
