@@ -2,7 +2,7 @@ const Router = require('koa-router');
 const User = require('../models/user');
 const validateAuthRoutes = require('../middleware/validateAuthRoutes')
 const bcrypt = require('bcrypt');
-const authenticate = require('../middleware/authenticate');
+const getUserByUsername = require('../middleware/authenticate');
 const jsonwebtoken = require('jsonwebtoken');
 const jwt = require('../middleware/jwt');
 
@@ -16,7 +16,7 @@ const router = new Router({
  * curl -X POST -d 'user[email]=kenya@tunapanda.org&user[username]=mountkenya&user[hash]=mountkenya' http://localhost:3000/api/v1/auth/register
  * curl -X POST -d '{ "user": { "username": "okemwa", "hash": "okemwaokewamaokemwa", "email":"moses@okemwa.org" } }' http://localhost:3000/api/v1/auth/register
  */
-router.post('/register', validateAuthRoutes.validateNewUser, authenticate.getUserByUsername, async ctx => {
+router.post('/register', validateAuthRoutes.validateNewUser, getUserByUsername, async ctx => {
     ctx.request.body.user.username = ctx.request.body.user.username.toLowerCase();
     ctx.request.body.user.hash = await bcrypt.hash(ctx.request.body.user.hash, 5);
     let newUser = ctx.request.body.user;
@@ -32,11 +32,11 @@ router.post('/register', validateAuthRoutes.validateNewUser, authenticate.getUse
  */
 
 router.post('/login', validateAuthRoutes.validateUserLogin, async ctx => {
-    let user = await User.query().where("username", ctx.request.body.user.username);
+    const user = await User.query().where("username", ctx.request.body.user.username);
 
-    const hashPassword = user[0].hash;
-    const userInfoWithoutPassword = delete user[0].hash;
-    if (await bcrypt.compare(ctx.request.body.user.hash, hashPassword)) {
+    let { hash, ...userInfoWithoutPassword } = user[0];
+
+    if (await bcrypt.compare(ctx.request.body.user.hash, hash)) {
         ctx.body = {
             token: jsonwebtoken.sign({
                 data: userInfoWithoutPassword,
