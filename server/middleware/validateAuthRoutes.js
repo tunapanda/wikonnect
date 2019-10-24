@@ -29,7 +29,7 @@ async function validateNewUser(ctx, next) {
                 presence: true,
                 format: '[a-zA-Z0-9_-]*'
             },
-            password: {
+            hash: {
                 presence: true,
                 length: {
                     minimum: 8,
@@ -43,4 +43,27 @@ async function validateNewUser(ctx, next) {
     await next();
 }
 
-module.exports = validateNewUser;
+async function validateUserLogin(ctx, next) {
+    try {
+        await validate.async(ctx.request.body.user, {
+            username: {
+                presence: true,
+                format: '[a-zA-Z0-9_-]*'
+            },
+            hash: {
+                presence: true,
+                length: {
+                    minimum: 8,
+                    maximum: 50
+                }
+            }
+        })
+    } catch (error) {
+        return ctx.throw(400, { error });
+    }
+    await next();
+}
+module.exports = {
+    validateNewUser,
+    validateUserLogin
+};
