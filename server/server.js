@@ -6,6 +6,7 @@ const logger = require('./middleware/logger');
 const jwt = require('./middleware/jwt');
 const path = require('path');
 const koaQs = require('koa-qs');
+const authenticate = require('./middleware/authenticate');
 
 const app = new Koa();
 
@@ -38,12 +39,13 @@ app.use(async function(ctx, next) {
   });
 });
 
-// app.use(jwt.authenticate);
-
 app.use(require('koa-static')(path.resolve(__dirname, './public')));
 
 router.use(require('./routes/auth'));
-router.use(require('./routes/users'),jwt.authenticate);
+
+router.get('/hello', jwt.authenticate, async ctx => {
+  ctx.body = { user: 'You have acess to view this route' };
+});
 
 app.use(router.routes());
 
