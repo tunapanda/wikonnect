@@ -1,0 +1,16 @@
+<svg id="Group_122" data-name="Group 122" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: none;
+        stroke: #969899;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        stroke-miterlimit: 10;
+      }
+    </style>
+  </defs>
+  <path id="Path_95" data-name="Path 95" class="cls-1" d="M.5,6.5v-5a.945.945,0,0,1,1-1h10"/>
+  <path id="Path_96" data-name="Path 96" class="cls-1" d="M8.5,2.5h3v3"/>
+  <path id="Path_97" data-name="Path 97" class="cls-1" d="M11.5,2.5l-5,5-2-2-4,4v1a.945.945,0,0,0,1,1h9a.945.945,0,0,0,1-1v-3"/>
+</svg>

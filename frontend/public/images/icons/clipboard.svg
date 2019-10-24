@@ -1,0 +1,25 @@
+<svg id="Group_123" data-name="Group 123" xmlns="http://www.w3.org/2000/svg" width="12" height="17" viewBox="0 0 12 17">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: rgba(0,0,0,0);
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+
+      .cls-1, .cls-2 {
+        stroke: #969899;
+        stroke-miterlimit: 10;
+      }
+
+      .cls-2 {
+        fill: #fff;
+      }
+    </style>
+  </defs>
+  <path id="Path_98" data-name="Path 98" class="cls-1" d="M7.5,2.5h3a.945.945,0,0,1,1,1v12a.945.945,0,0,1-1,1h-9a.945.945,0,0,1-1-1V3.5a.945.945,0,0,1,1-1h3"/>
+  <path id="Path_99" data-name="Path 99" class="cls-2" d="M9.5,4.5h-7v-1a.945.945,0,0,1,1-1h1V2A1.538,1.538,0,0,1,6,.5H6A1.538,1.538,0,0,1,7.5,2v.5h1a.945.945,0,0,1,1,1Z"/>
+  <circle id="Ellipse_31" data-name="Ellipse 31" cx="0.5" cy="0.5" r="0.5" transform="translate(5.5 1.5)"/>
+  <path id="Path_100" data-name="Path 100" class="cls-1" d="M4.5,7.5l1,1,2-2"/>
+  <path id="Path_101" data-name="Path 101" class="cls-1" d="M4.5,11.5l1,1,2-2"/>
+</svg>

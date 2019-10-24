@@ -1,0 +1,27 @@
+@import "variables";
+
+.btn-primary {
+    background: $dark-blue;
+    border-radius: 5px;
+    font-family: $font-family-form;
+    font-weight: bold;
+    font-size: 1rem;
+    border: none;
+    color: white;
+    width: 33%;
+    outline:none;
+      }
+
+.btn-round {
+    background: $dark-blue;
+    outline: none;
+    border: none;
+    color: white;
+    font-family: $font-family-form;
+    height: 28px;
+    width: 72px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    border-radius: 40px;
+    font-size: 12px;
+}
