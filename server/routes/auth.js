@@ -34,14 +34,14 @@ router.post('/register', validateAuthRoutes.validateNewUser, getUserByUsername, 
 router.post('/login', validateAuthRoutes.validateUserLogin, async ctx => {
     const user = await User.query().where("username", ctx.request.body.user.username);
 
-    let { hash:hashPassword, ...userInfoWithoutPassword } = user[0];
+    let { hash: hashPassword, ...userInfoWithoutPassword } = user[0];
 
     if (await bcrypt.compare(ctx.request.body.user.hash, hashPassword)) {
         ctx.body = {
             token: jsonwebtoken.sign({
                 data: userInfoWithoutPassword,
                 //exp in seconds
-                exp: Math.floor(Date.now() / 1000) - (60 * 60) // 60 seconds * 60 minutes = 1 hour
+                exp: Math.floor(Date.now() / 1000 + 604800) // 60 seconds * 60 minutes * 24 hours * 7 days = 1 week
             }, jwt.secret)
         }
     } else {
