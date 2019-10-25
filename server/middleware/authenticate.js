@@ -1,7 +1,11 @@
 const jwt = require('koa-jwt');
 const User = require('../models/user');
 
-
+/**
+ * get user by username provided in ctx
+ * @param {*} ctx 
+ * @param {*} next 
+ */
 async function getUserByUsername(ctx, next) {
   // const user = User.query().where("username", ctx.request.body.user.username.toLowerCase());
   const user = await User.query().findOne({username: ctx.request.body.user.username.toLowerCase()});
@@ -16,5 +20,4 @@ async function getUserByUsername(ctx, next) {
   }
 }
 
-module.exports =
-  getUserByUsername
+module.exports = getUserByUsername

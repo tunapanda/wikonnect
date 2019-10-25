@@ -16,6 +16,7 @@
     "lint:js": "eslint ."
   },
   "dependencies": {
+    "@elastic/elasticsearch": "^7.4.0",
     "async-busboy": "^0.7.0",
     "bcrypt": "^3.0.6",
     "busboy": "^0.3.1",
