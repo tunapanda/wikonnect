@@ -9,7 +9,7 @@
             "type": "node",
             "request": "launch",
             "name": "API",
-            "program": "${workspaceFolder}/swag/server/index.js",
+            "program": "${workspaceFolder}/server/index.js",
             "runtimeVersion": "8.15.0"
         },
 
@@ -22,13 +22,13 @@
         "--remote-debugging-port=9222"
       ],
       "url": "http://localhost:4200/",
-      "webRoot": "${workspaceFolder}/swag/frontend/",
+      "webRoot": "${workspaceFolder}/frontend/",
       "sourceMapPathOverrides": {
-        "swag/*": "${workspaceFolder}/swag/frontend/app/*",
+        "wikonnect/*": "${workspaceFolder}/frontend/app/*",
       },
       "smartStep": true,
       "showAsyncStacks": true,
-      "trace": true
+      "trace": "verbose"
     }
     ]
 }   

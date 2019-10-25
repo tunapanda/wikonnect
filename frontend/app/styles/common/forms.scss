@@ -1,5 +1,44 @@
 @import "variables";
 
+.form-primary-fields {
+    border-bottom:  #9A9FA2;
+    margin-bottom: 2rem;
+  }
+
+  .invalid-feedback {
+    font-size: 0.7rem;
+    color: red;
+}
+  
+  label {
+    color: $primary;
+    font-weight: 600;
+  }
+  
+  textarea {
+    min-height: 8rem;
+    ::after {
+      color: red;
+    }
+  }
+  
+  .form-control {
+    font-size: 0.85rem;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    width: 100%;
+    outline: none;
+    border: none;
+    border-bottom: 0.1rem solid grey;
+  
+    &:focus {
+      border-color: $light-blue;
+      border-width: 0.15rem;
+      box-shadow: none;
+    }
+
+  }
+
 .signup-form {
     display: grid;
     grid-template-columns: 15% auto 15%;
@@ -47,10 +86,6 @@
 
     width: 100%;
 
-    .invalid-feedback {
-        font-size: 0.7rem;
-        color: red;
-    }
 }
 
 
@@ -85,48 +120,78 @@
 
 }
 
-.form-primary-fields {
-    border-bottom:  #9A9FA2;
-    margin-bottom: 2rem;
-  }
-  
-  label {
+.login-form {
+    display: grid;
+    grid-template-columns: 20% auto 20%;
+    grid-template-rows: 20% 70% 10%;
+    align-items: center;
+    justify-items: center;
+    padding-top: 2rem;
+    grid-row-gap: 1rem;
     color: $primary;
-    font-weight: 600;
-  }
-  
-  textarea {
-    min-height: 8rem;
-    ::after {
-      color: red;
-    }
-  }
-  
-  .form-control {
-    font-size: 0.85rem;
-    padding-top: 0.5rem;
-    padding-bottom: 0.5rem;
+}
+
+.login-form-title {
+    font-size: 1rem;
+    grid-row-start: 1;
+    grid-row-end: 2;
+    grid-column-start: 2;
+    grid-column-end: 3;
+    text-align: center;
+    font-weight: bold;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+}
+
+.login-form-fields {
+    box-sizing:border-box;
+    padding-top: 1.5rem;
+    border-radius: 0.5rem;
+
+    grid-row-start: 2;
+    grid-row-end: 3;
+    grid-column-start: 2;
+    grid-column-end: 3;
+
+    display: grid;
+    grid-template-rows: 50% 50%;
+    grid-row-gap: 1.5rem;
+    background-color: white;
+    justify-items: stretch;
+    font-size: 0.7rem;
+    padding-left: 2rem;
+    padding-right: 2rem;
+    padding-bottom: 2rem;
+
     width: 100%;
-    outline: none;
-    border: none;
-    border-bottom: 0.1rem solid grey;
-  
-    &:focus {
-      border-color: $light-blue;
-      border-width: 0.15rem;
-      box-shadow: none;
+
+    .login-username {
+        grid-row-start: 1;
+        grid-row-end: 2;
+    
+    }
+    
+    .login-password {
+        grid-row-start: 2;
+        grid-row-end: 3;
     }
 
-    &.is-invalid {
-        border-color: red;
-        border-width: 0.15rem;
-    }
-  }
+}
+
+.login-submit {
+    grid-row-start: 3;
+    grid-row-end: 4;
+    grid-column-start: 2;
+    grid-column-end: 3;
+    width: 100%;
+}
+
+
   
-  .form-text {
-    color: #afafaf;
-    font-size: 0.9rem;
-  }
+//   .form-text {
+//     color: #afafaf;
+//     font-size: 0.9rem;
+//   }
 
 // slightly narrower for forms
 // .form-container {

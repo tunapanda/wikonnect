@@ -1,0 +1,11 @@
+<BsForm @class="login-form" @formLayout="horizontal" @model={{changeset user LoginValidations}} @onSubmit={{action "login" user}} as |form|>
+  <div class="login-form-title">Log In</div>
+  <div class="login-form-fields">
+    <form.element class="login-username" @controlType="text" @label="Username" @placeholder="Username" @property="username" @autocomplete="username" />
+
+    <form.element class="login-password" @controlType="password" @label="Password" @placeholder="Enter Password" @property="password" @autocomplete="new-password" />
+
+  </div>
+
+  <BsButton class="login-submit" @type="primary" @defaultText="Login" @buttonType="submit" />
+</BsForm>
