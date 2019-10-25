@@ -19,8 +19,8 @@ export default class AuthenticationSignupComponent extends Component {
     }
 
     @action
-    submit() {
-        this.user.save()
+    submit(model) {
+        model.save()
     }
 
 }
