@@ -34,9 +34,9 @@ router.post('/register', validateAuthRoutes.validateNewUser, getUserByUsername, 
 router.post('/login', validateAuthRoutes.validateUserLogin, async ctx => {
     const user = await User.query().where("username", ctx.request.body.user.username);
 
-    let { hash, ...userInfoWithoutPassword } = user[0];
+    let { hash:hashPassword, ...userInfoWithoutPassword } = user[0];
 
-    if (await bcrypt.compare(ctx.request.body.user.hash, hash)) {
+    if (await bcrypt.compare(ctx.request.body.user.hash, hashPassword)) {
         ctx.body = {
             token: jsonwebtoken.sign({
                 data: userInfoWithoutPassword,
