@@ -6,18 +6,19 @@ const User = require('../models/user');
  * @param {*} ctx 
  * @param {*} next 
  */
+
+//Checks to ensure that username is unique
 async function getUserByUsername(ctx, next) {
-  // const user = User.query().where("username", ctx.request.body.user.username.toLowerCase());
-  const user = await User.query().findOne({username: ctx.request.body.user.username.toLowerCase()});
-  if (!user) {
-    await next();
-  } else {
-    ctx.status = 406;
-    ctx.body = {
-      error: "User exists",
+    const user = await User.query().findOne({ username: ctx.request.body.user.username.toLowerCase() });
+    if (!user) {
+        await next();
+    } else {
+        ctx.status = 406;
+        ctx.body = {
+            error: "User exists",
+        }
+        return ctx;
     }
-    return ctx;
-  }
 }
 
 module.exports = getUserByUsername
