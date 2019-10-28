@@ -1,4 +1,4 @@
-<BsForm @class="signup-form" @formLayout="horizontal" @model={{changeset user UserValidation}} @onSubmit={{action "submit" model}} as |form|>
+<BsForm @class="signup-form" @formLayout="horizontal" @model={{newUser}} @onSubmit={{action "submit"}} as |form|>
   <div class="signup-form-title">Register</div>
   <div class="signup-form-fields">
     <form.element class="signup-username" @controlType="text" @label="Username" @placeholder="Username" @property="username" @autocomplete="username" />
