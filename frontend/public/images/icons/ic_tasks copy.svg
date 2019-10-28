@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="20.891" height="20.891" viewBox="0 0 20.891 20.891">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: rgba(255,255,255,0);
+      }
+
+      .cls-2, .cls-3 {
+        fill: none;
+        stroke: #a1b0b7;
+      }
+
+      .cls-2 {
+        stroke-linecap: round;
+      }
+
+      .cls-3 {
+        stroke-miterlimit: 10;
+      }
+    </style>
+  </defs>
+  <g id="icon" transform="translate(3770.924 -4311.788)">
+    <rect id="Rectangle_274" data-name="Rectangle 274" class="cls-1" width="20" height="20" transform="translate(-3770.871 4311.96)"/>
+    <path id="Path_379" data-name="Path 379" class="cls-2" d="M7,0A7,7,0,1,1,0,7,7.108,7.108,0,0,1,4.319.532" transform="matrix(0.574, 0.819, -0.819, 0.574, -3758.76, 4312.484)"/>
+    <path id="Path_246" data-name="Path 246" class="cls-3" d="M-3763.478,4322.123l2.347,2.348,7.6-7.936"/>
+  </g>
+</svg>

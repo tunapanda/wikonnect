@@ -1,0 +1,34 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "API",
+            "program": "${workspaceFolder}/server/index.js",
+            "runtimeVersion": "8.15.0"
+        },
+
+	{
+      "type": "chrome",
+      "request": "launch",
+      "name": "Ember",
+    //   "port": 9222,
+      "runtimeArgs": [
+        "--remote-debugging-port=9222"
+      ],
+      "url": "http://localhost:4200/",
+      "webRoot": "${workspaceFolder}/frontend/",
+      "sourceMapPathOverrides": {
+        "wikonnect/*": "${workspaceFolder}/frontend/app/*",
+      },
+      "smartStep": true,
+      "showAsyncStacks": true,
+      "trace": "verbose"
+    }
+    ]
+}   

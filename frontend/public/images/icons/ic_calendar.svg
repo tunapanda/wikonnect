@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="20" height="20" viewBox="0 0 20 20">
+  <defs>
+    <clipPath id="clip-path">
+      <rect width="20" height="20" fill="none"/>
+    </clipPath>
+  </defs>
+  <g id="ic_calendar" clip-path="url(#clip-path)">
+    <rect id="Rectangle_274" data-name="Rectangle 274" width="20" height="20" fill="rgba(255,255,255,0)"/>
+    <g id="Group_418" data-name="Group 418" transform="translate(3 3)">
+      <path id="Path_129" data-name="Path 129" d="M7.442,14.5H2.583A2.1,2.1,0,0,1,.5,12.373V3.627A2.1,2.1,0,0,1,2.583,1.5h9.835A2.1,2.1,0,0,1,14.5,3.627v8.745A2.1,2.1,0,0,1,12.417,14.5Z" transform="translate(-0.5 -0.5)" fill="none" stroke="#a1b0b7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="1"/>
+      <line id="Line_61" data-name="Line 61" y2="2" transform="translate(3.5)" fill="none" stroke="#a1b0b7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="1"/>
+      <line id="Line_63" data-name="Line 63" y2="2" transform="translate(10.5)" fill="none" stroke="#a1b0b7" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="1"/>
+      <line id="Line_91" data-name="Line 91" x2="13" transform="translate(0.5 4.5)" fill="none" stroke="#a1b0b7" stroke-width="1"/>
+      <path id="Path_252" data-name="Path 252" d="M4.173,8.308,5.864,10.6,10.106,6.76" fill="none" stroke="#a1b0b7" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+    </g>
+  </g>
+</svg>
