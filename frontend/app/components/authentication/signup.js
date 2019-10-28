@@ -13,14 +13,9 @@ export default class AuthenticationSignupComponent extends Component {
     @inject
     store;
 
-    @computed
-    get user() {
-        return this.store.createRecord('user')
-    }
-
     @action
-    submit(model) {
-        model.save()
+    submit(newUser) {
+        this.sendAction('registerUser', newUser)
     }
 
 }
