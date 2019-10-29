@@ -28,7 +28,7 @@
       },
       "smartStep": true,
       "showAsyncStacks": true,
-      "trace": "verbose"
+      "trace": true,
     }
     ]
 }   

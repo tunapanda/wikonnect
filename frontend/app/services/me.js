@@ -19,7 +19,7 @@ export default class MeService extends Service {
         if (session && session.token) {
             tokenData = authenticator.getTokenData(session.token);
             try {
-                const user = await this.store.findRecord('user', tokenData.id);
+                const user = await this.store.findRecord('user', tokenData.data.id);
                 this.set('user', user);
             } catch (e) {
                 return this.session.invalidate();

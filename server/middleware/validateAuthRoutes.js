@@ -29,7 +29,7 @@ async function validateNewUser(ctx, next) {
                 presence: true,
                 format: '[a-zA-Z0-9_-]*'
             },
-            hash: {
+            password: {
                 presence: true,
                 length: {
                     minimum: 8,
@@ -45,12 +45,12 @@ async function validateNewUser(ctx, next) {
 
 async function validateUserLogin(ctx, next) {
     try {
-        await validate.async(ctx.request.body.user, {
+        await validate.async(ctx.request.body, {
             username: {
                 presence: true,
                 format: '[a-zA-Z0-9_-]*'
             },
-            hash: {
+            password: {
                 presence: true,
                 length: {
                     minimum: 8,
