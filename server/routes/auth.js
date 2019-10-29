@@ -2,7 +2,6 @@ const Router = require('koa-router');
 const User = require('../models/user');
 const validateAuthRoutes = require('../middleware/validateAuthRoutes')
 const bcrypt = require('bcrypt');
-const getUserByUsername = require('../middleware/authenticate');
 const jsonwebtoken = require('jsonwebtoken');
 const jwt = require('../middleware/jwt');
 
@@ -10,33 +9,17 @@ const router = new Router({
     prefix: '/auth'
 });
 
+router.post('/', validateAuthRoutes.validateUserLogin, async ctx => {
+    let user = await User.query().where("username", ctx.request.body.username);
 
-/**
- * You can register with:
- * curl -X POST -d 'user[email]=kenya@tunapanda.org&user[username]=mountkenya&user[hash]=mountkenya' http://localhost:3000/api/v1/auth/register
- * curl -X POST -d '{ "user": { "username": "okemwa", "hash": "okemwaokewamaokemwa", "email":"moses@okemwa.org" } }' http://localhost:3000/api/v1/auth/register
- */
-router.post('/register', validateAuthRoutes.validateNewUser, getUserByUsername, async ctx => {
-    ctx.request.body.user.username = ctx.request.body.user.username.toLowerCase();
-    ctx.request.body.user.hash = await bcrypt.hash(ctx.request.body.user.hash, 5);
-    let newUser = ctx.request.body.user;
-    const user = await User.query().insertAndFetch(newUser);
-    ctx.status = 200;
-    ctx.body = { user };
-});
-
-/**
- * You can login with:
- * curl -X POST -d 'user[username]=mountkenya&user[hash]=mountkenya' http://localhost:3000/api/v1/auth/login
- * curl -X POST -d '{ "user": { "username": "okemwa", "hash": "okemwaokewamaokemwa" } }' http://localhost:3000/api/v1/auth/login
- */
-
-router.post('/login', validateAuthRoutes.validateUserLogin, async ctx => {
-    const user = await User.query().where("username", ctx.request.body.user.username);
+    ctx.assert(user.length, 401, "no user", { errors: { username: ['Username does not exist.'] } });
 
     let { hash: hashPassword, ...userInfoWithoutPassword } = user[0];
 
-    if (await bcrypt.compare(ctx.request.body.user.hash, hashPassword)) {
+    user = user[0]
+
+    if (await bcrypt.compare(ctx.request.body.password, hashPassword)) {
+        // eslint-disable-next-line require-atomic-updates
         ctx.body = {
             token: jsonwebtoken.sign({
                 data: userInfoWithoutPassword,

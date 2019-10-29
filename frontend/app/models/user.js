@@ -7,9 +7,9 @@ export default class UserModel extends Model {
     username
 
     @attr()
-    password
+    email
 
     @attr()
-    email
+    password
 
 }

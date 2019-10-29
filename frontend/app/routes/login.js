@@ -5,4 +5,8 @@ export default class LoginRoute extends Route {
     @inject
     me;
 
+    model() {
+        return this.store.createRecord('user')
+    }
+
 }
