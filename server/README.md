@@ -1,44 +1,53 @@
 
-## Table of Contents
+# Table of Contents
 
 * [The Learning Platform](#the-learning-platform)
 * [Contributing](#contributing)
 * [License](#license)
 * [API Overview](#api-overview)
 
-### The learning platform
-### Contributing
+## The learning platform
+
+[learning platform description goes here]
+
+## Contributing
 
 [Please follow this teps to contribute](https://github.com/tunapanda/swag/blob/master/CONTRIBUTING.md)
 
 
-### API Overview
-#### AUTH Endpoints
+## API Overview
+### User APIs
 
-**Register User Endpoint**
+#### POST `/users`
 
-    POST /api/v1/auth/resister
+You can do a POST to `/api/v1/auth/resister` to create a new user.
 
-**Requred Parameters**
+The body must have:
 
-    user:
-        email - type:string
-        username - type:string
-        password - type:string
+* `username`: The username
+* `hash`: The password
 
-**Login User Endpoint**
+It returns the following:
 
-    POST /api/v1/auth/login
-
-**Requred Parameters**
-
-    user:
-        username - type:string
-        password - type:string
-
-This returns a signed `token` reponse object used to access protected routes
 ```json
 {
-    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7ImlkIjoxLCJlbWFpbCI6Im9rZW13YUB0dW5hcGFuZGEub3JnIiwidXNlcm5hbWUiOiJva2Vtd2EiLCJsYXN0U2VlbiI6bnVsbCwibGFzdElwIjpudWxsLCJjcmVhdGVkQXQiOm51bGwsInVwZGF0ZWRBdCI6bnVsbH0sImV4cCI6MTU3MTk1MTQ0MCwiaWF0IjoxNTcxOTU1MDQwfQ.Ew-WKBZGnbDcfUSAyamp3DsUbjcIm48_4PqYHKsiseM"
+  "token": {jwt}
+}
+```
+
+#### POST `/api/v1/auth/login`
+
+You can do a POST to `/api/v1/auth/login` to log a user in.
+
+The body must have:
+
+* `username`: The username
+* `hash`: The password
+
+It returns the following:
+
+```json
+{
+  "token": {jwt}
 }
 ```
