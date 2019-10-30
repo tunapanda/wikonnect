@@ -9,9 +9,11 @@
   <a class="header-hamburger">
     {{svg-jar "menu-bars" class="icon" width="40" height="18"}}
   </a>
-  <a class="branding">
-    {{svg-jar "wikonnect-primary" width="175"}}
-  </a>
+  {{#link-to "index"  class="branding"}}
+  {{svg-jar "wikonnect-primary" width="175"}}
+  {{/link-to}}
+
+
   <a class="search-bar">
     {{svg-jar "search" width="40" height="18"}}
   </a>
