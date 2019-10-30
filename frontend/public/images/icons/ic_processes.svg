@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="20" height="20" viewBox="0 0 20 20">
+  <defs>
+    <clipPath id="clip-path">
+      <rect width="20" height="20" fill="none"/>
+    </clipPath>
+  </defs>
+  <g id="ic_processes" clip-path="url(#clip-path)">
+    <rect id="Rectangle_274" data-name="Rectangle 274" width="20" height="20" fill="rgba(255,255,255,0)"/>
+    <g id="Group_415" data-name="Group 415" transform="translate(1.7 1.618)">
+      <path id="Path_225" data-name="Path 225" d="M-11.8,28.857A7.265,7.265,0,0,1-4.88,33.91" transform="translate(20.3 -27.618)" fill="none" stroke="#a1b0b7" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      <path id="Path_226" data-name="Path 226" d="M-10.561,30.449-11.8,28.857l1.592-1.239" transform="translate(20.3 -27.618)" fill="none" stroke="#a1b0b7" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      <path id="Path_227" data-name="Path 227" d="M-19.061,36.118A7.265,7.265,0,0,1-14.008,29.2" transform="translate(20.3 -27.618)" fill="none" stroke="#a1b0b7" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      <path id="Path_228" data-name="Path 228" d="M-17.469,34.88l-1.592,1.239L-20.3,34.526" transform="translate(20.3 -27.618)" fill="none" stroke="#a1b0b7" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      <path id="Path_229" data-name="Path 229" d="M-11.8,43.38a7.266,7.266,0,0,1-6.92-5.054" transform="translate(20.3 -27.618)" fill="none" stroke="#a1b0b7" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      <path id="Path_230" data-name="Path 230" d="M-13.038,41.788-11.8,43.38l-1.592,1.239" transform="translate(20.3 -27.618)" fill="none" stroke="#a1b0b7" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      <path id="Path_231" data-name="Path 231" d="M-4.538,36.118a7.264,7.264,0,0,1-5.054,6.92" transform="translate(20.3 -27.618)" fill="none" stroke="#a1b0b7" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      <path id="Path_232" data-name="Path 232" d="M-6.13,37.357l1.592-1.239L-3.3,37.71" transform="translate(20.3 -27.618)" fill="none" stroke="#a1b0b7" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+    </g>
+  </g>
+</svg>

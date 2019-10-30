@@ -7,19 +7,23 @@
   "scripts": {
     "start": "node index.js",
     "start:cy": "node index.js --cypress",
+    "start:dev": "nodemon --watch src index.js",
     "db:init": "knex migrate:latest",
     "db:reset": "knex migrate:rollback && knex migrate:latest",
     "db:seed": "knex seed:run",
+    "db:migrate": "knex migrate:make swag",
     "test": "mocha test",
     "lint:js": "eslint ."
   },
   "dependencies": {
+    "@elastic/elasticsearch": "^7.4.0",
     "async-busboy": "^0.7.0",
-    "bcrypt": "https://github.com/kelektiv/node.bcrypt.js.git#master",
+    "bcrypt": "^3.0.6",
     "busboy": "^0.3.1",
     "jsonwebtoken": "^8.5.1",
     "knex": "^0.19.5",
     "koa": "^2.10.0",
+    "koa-body": "^4.1.1",
     "koa-bodyparser": "^4.2.1",
     "koa-jwt": "^3.6.0",
     "koa-qs": "^2.0.0",
@@ -29,6 +33,7 @@
     "moment": "^2.24.0",
     "nodemailer": "^6.3.0",
     "nodemailer-mailgun-transport": "^1.4.0",
+    "nodemon": "^1.19.4",
     "objection": "1.6.11",
     "pg": "^7.12.1",
     "sharp": "^0.23.1",
@@ -36,11 +41,11 @@
   },
   "devDependencies": {
     "ajv": "^6.10.2",
-    "chai": "^4.1.2",
-    "chai-http": "^4.0.0",
+    "chai": "3.5.0",
+    "chai-http": "2.0.1",
     "chai-json-schema-ajv": "^5.0.0",
     "eslint": "^6.4.0",
-    "mocha": "^5.1.1",
+    "mocha": "2.4.5",
     "nyc": "^14.1.1"
   }
 }
