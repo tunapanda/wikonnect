@@ -1,38 +1,41 @@
-body, html {
+body,
+html {
     font-family: 'Inter', sans-serif;
 }
 
 
-body{
+body {
     background-color: #f8f9fa;
     margin: 0 auto;
-  }
 
-  .authentication-header {
-      background-color: rgba(44, 65, 177, 0.26);
-      display: grid;
-      grid-template-columns: 50% 20% 20% 10%;
-      align-items: center;
-      justify-items: center;
+}
 
-      .authentication-header-login {
+.authentication-header {
+    background-color: rgba(44, 65, 177, 0.26);
+    display: grid;
+    grid-template-columns: 50% 20% 20% 10%;
+    align-items: center;
+    justify-items: center;
+
+    .authentication-header-login {
         grid-column-start: 2;
         color: $dark-blue;
         font-size: 12px;
         text-decoration: none;
-      }
+    }
 
 
-  }
+}
 
 .main-header {
     background-color: white;
+    margin: 1em;
     min-height: 60px;
     display: grid;
     grid-template-columns: 10% auto 10%;
     justify-items: center;
     align-items: center;
-    
+
     .header-hamburger {
         grid-column-start: 1;
     }
