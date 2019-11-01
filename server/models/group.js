@@ -1,0 +1,36 @@
+const Model = require('./_model');
+const knex = require('../db/db');
+
+class Group extends Model {
+  static get tableName() {
+    return 'groups';
+  }
+
+  static get relationMappings() {
+    return {
+      members: {
+        relation: Model.ManyToManyRelation,
+        modelClass: __dirname + '/users',
+        join: {
+          from: 'groups.id',
+          through: {
+            from: 'group_members.groupId',
+            to: 'group_members.userId'
+          },
+          to: 'users.id'
+        }
+      },
+      permissions: {
+        relation: Model.HasManyRelation,
+        modelClass: __dirname + '/group_permission',
+        join: {
+          from: 'group.id',
+          to: 'group_permissions.groupId'
+        }
+      }
+    };
+  }
+}
+
+Group.knex(knex);
+module.exports = Group;
