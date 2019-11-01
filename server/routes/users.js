@@ -36,29 +36,34 @@ router.get('/:id', async ctx => {
 
     let user = await User.query().findById(ctx.params.id)
 
+    if (user) {
+        let { hash, ...userInfoWithoutPassword } = user;
+        ctx.status = 200;
+
+        ctx.body = { user: userInfoWithoutPassword };
+    }
+
     ctx.assert(user, 404, 'No User With that Id');
-
-    ctx.status = 200;
-
-    ctx.body = { user };
-
 
 })
 
 router.get('/', async ctx => {
 
-    let user = await User.query()
+    let user = User.query()
 
     if (ctx.query.username) {
         user.where('username', ctx.query.username)
+
         ctx.assert(user, 404, 'No User With that username');
     }
 
     ctx.status = 200;
 
+    user = await user;
+    console.log(user);
+
+    
     ctx.body = { user };
-
-
 })
 
 module.exports = router.routes();
