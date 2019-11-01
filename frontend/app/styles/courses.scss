@@ -1,0 +1,49 @@
+#courses {
+    @include pages-main;
+
+    h2 {
+        font-size: 18px;
+        color: $primary;
+    }
+
+    h3 {
+        font-size: 24px;
+        color: $dark-blue;
+    }
+
+    p {
+        font-size: 13px;
+
+    }
+
+}
+
+.course-item {
+    border-color: $primary;
+    border-width: 1px;
+    border-style: solid;
+    padding: 1em;
+    margin-top: 1em;
+
+
+
+    .course-description {
+        color: $light-grey;
+        font-size: 12px;
+    }
+
+    span {
+        display: flex;
+        flex-shrink: 2;
+        justify-content: space-between;
+
+        .points {
+            font-size: 12px;
+        }
+
+        h4 {
+            font-size: 14px;
+            color: $primary;
+        }
+    }
+}

@@ -2,8 +2,8 @@
     "version": 3,
     "mappings": "",
     "sources": [
-        "landing.scss"
+        "courses.scss"
     ],
     "names": [],
-    "file": "landing.css"
+    "file": "courses.css"
 }

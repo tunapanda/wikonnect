@@ -1,88 +1,92 @@
-@import url('https://fonts.googleapis.com/css?family=Karla&display=swap');
-$karla: 'Karla', sans-serif;   
 
-#landing{
-    padding: 1em;
-    font-family: $karla;
-    color: #535D64;
+
+#landing {
+    @include pages-main;
+
 
 }
-.welcome{
+
+.welcome {
     font-family: $karla;
     width: 90%;
     color: #535D64;
     margin-bottom: 30px;
 
-    span{
+    span {
         color: $primary;
         font-weight: bold;
     }
 }
-.def, .get-started{
-    
+
+.def,
+.get-started {
+
     color: white;
     position: relative;
     text-align: left;
     color: white;
     font-family: $karla;
 
-    p{
-            position: absolute;
-            bottom: 8px;
-            padding-left: 1em;
-            margin-left: 0.5em;
-            right: 16px;
-          
+    p {
+        position: absolute;
+        bottom: 8px;
+        padding-left: 1em;
+        margin-left: 0.5em;
+        right: 16px;
+
     }
-    
+
 }
-#features{
+
+#features {
     min-height: 100%;
     display: flex;
     flex-wrap: wrap;
     flex-direction: row;
-     text-align: center;
+    text-align: center;
     align-content: center;
     justify-content: space-evenly;
 
-    div{
+    div {
         margin-top: 20px;
-        display: flex; 
+        display: flex;
         align-content: center;
-        flex-basis: calc(50% - 40px);  
+        flex-basis: calc(50% - 40px);
         justify-content: center;
         flex-direction: column;
     }
-    a{
+
+    a {
         padding: 3px 3px;
         font-size: 12px;
-        color:$primary; 
-        background-color:#e8eaf6 ;
+        color: $primary;
+        background-color: #e8eaf6;
 
-        span{
+        span {
             margin-left: 4px;
         }
     }
 }
+
 .circle {
     height: 50px;
     width: 50px;
-    background-color:$primary;
+    background-color: $primary;
     border-radius: 50%;
     display: inline-block;
     margin: auto;
     padding-bottom: 7px;
-  }
-
-h6{
-        font-size: 14px;
-        color: $primary;
-        padding-top: 1.5em;
 }
 
-    .footer{
-        display: flex;
-        justify-content: space-between;
-        font-size: 10px;
-       
-      }
+h6 {
+    font-size: 14px;
+    color: $primary;
+    padding-top: 1.5em;
+}
+
+.footer {
+    display: flex;
+    justify-content: space-between;
+    font-size: 10px;
+
+}
