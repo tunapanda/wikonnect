@@ -4,7 +4,7 @@
  * @param {*} next 
  */
 async function requireAuth(ctx, next) {
-    ctx.assert(ctx.state.user, 401, 'stuuuuuuuUnauthorized');
+    ctx.assert(ctx.state.user, 401, 'Unauthorized');
     await next();
 }
 
