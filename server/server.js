@@ -21,7 +21,7 @@ app.use(logger);
 
 app.use(bodyParser());
 
-app.use(jwt.authenticate)
+app.use(jwt.authenticate);
 
 app.use(async function (ctx, next) {
     return next().catch((err) => {
@@ -46,7 +46,9 @@ router.use(require('./routes/auth'));
 
 router.use(require('./routes/users'));
 
-router.get('/hello', jwt.authenticate, async ctx => {
+router.use(require('./routes/paths'));
+
+router.get('/hello', async ctx => {
     ctx.body = { user: 'You have acess to view this route' };
 });
 

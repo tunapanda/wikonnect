@@ -28,7 +28,7 @@
 
 **Login User Endpoint**
 
-    POST /api/v1/auth/login
+    POST /api/v1/users/
 
 **Requred Parameters**
 
@@ -36,9 +36,37 @@
         username - type:string
         password - type:string
 
-This returns a signed `token` reponse object used to access protected routes
+
+#### LEARNING PATH Endpoints
+**GET ALL Learning Paths**
+
+    GET /api/v1/paths/
+
+**GET SINGLE Learning Paths**
+    
+    GET /api/v1/paths/{id}
+
+**PUT[update] SINGLE Learning Paths**
+
+    GET /api/v1/paths/{id}
+
+**DELETE Learning Paths**
+
+    GET /api/v1/paths/{id}
+
+
+__Sample JSON__
+
 ```json
 {
-    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7ImlkIjoxLCJlbWFpbCI6Im9rZW13YUB0dW5hcGFuZGEub3JnIiwidXNlcm5hbWUiOiJva2Vtd2EiLCJsYXN0U2VlbiI6bnVsbCwibGFzdElwIjpudWxsLCJjcmVhdGVkQXQiOm51bGwsInVwZGF0ZWRBdCI6bnVsbH0sImV4cCI6MTU3MTk1MTQ0MCwiaWF0IjoxNTcxOTU1MDQwfQ.Ew-WKBZGnbDcfUSAyamp3DsUbjcIm48_4PqYHKsiseM"
+    "id": "learning_path1",
+    "name": "A Learning Path",
+    "slug": "a-learning-path",
+    "description": "For the organisation of courses.",
+    "status": "published",
+    "creatorId": "user1",
+    "metadata": null,
+    "createdAt": "2017-12-20T16:17:10.000Z",
+    "updatedAt": "2017-12-20T16:17:10.000Z"
 }
 ```
