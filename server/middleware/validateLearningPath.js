@@ -1,4 +1,4 @@
-const validate = require('validate.js')
+const validate = require('validate.js');
 
 async function validateNewLearningPath(ctx, next) {
     try {

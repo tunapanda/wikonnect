@@ -1,7 +1,5 @@
-// process.env.NODE_ENV = 'test';
-
 const chai = require('chai');
-var expect = chai.expect;
+const expect = chai.expect;
 const should = chai.should();
 const chaiHttp = require('chai-http');
 const server = require('../index');
@@ -23,13 +21,13 @@ describe('Auth routes tests: /api/v1/auth/', () => {
         chai
             .request(server)
             .post('/api/v1/auth/register')
-            .send({ "user": { "username": "urlencoded", "hash": "urlencodedurlencoded", "email": "mussai@gmail.com" } })
+            .send({ 'user': { 'username': 'urlencoded', 'hash': 'urlencodedurlencoded', 'email': 'mussai@gmail.com' } })
             .set('Accept', 'application/json')
             .end((err, res) => {
                 res.should.have.status(200);
-                res.body.user.should.have.property("id");
-                res.body.user.should.have.property("username");
-                res.body.user.should.have.property("email");
+                res.body.user.should.have.property('id');
+                res.body.user.should.have.property('username');
+                res.body.user.should.have.property('email');
                 done();
             });
     });
@@ -38,7 +36,7 @@ describe('Auth routes tests: /api/v1/auth/', () => {
         chai
             .request(server)
             .post('/api/v1/auth/register')
-            .send({ "user": { "username": "urlencoded", "hash": "urlencodedurlencoded", "name": "mussai@gmail.com" } })
+            .send({ 'user': { 'username': 'urlencoded', 'hash': 'urlencodedurlencoded', 'name': 'mussai@gmail.com' } })
             .set('Accept', 'application/json')
             .end((err, res) => {
                 res.should.have.status(400);
@@ -50,7 +48,7 @@ describe('Auth routes tests: /api/v1/auth/', () => {
         chai
             .request(server)
             .post('/api/v1/auth/register')
-            .send({ "user": { "username": "urlencoded", "hash": "urlencodedurlencoded", "email": "mussai@gmail.com" } })
+            .send({ 'user': { 'username': 'urlencoded', 'hash': 'urlencodedurlencoded', 'email': 'mussai@gmail.com' } })
             .set('Accept', 'application/json')
             .end((err, res) => {
                 res.should.have.status(406);
@@ -61,10 +59,10 @@ describe('Auth routes tests: /api/v1/auth/', () => {
         chai
             .request(server)
             .post('/api/v1/auth/login')
-            .send({ "user": { "username": "urlencoded", "hash": "urlencodedurlencoded" } })
+            .send({ 'user': { 'username': 'urlencoded', 'hash': 'urlencodedurlencoded' } })
             .end((err, res) => {
                 res.should.have.status(200);
-                res.body.should.have.property("token");
+                res.body.should.have.property('token');
                 token = res.body.token;
                 done();
             });
@@ -73,7 +71,7 @@ describe('Auth routes tests: /api/v1/auth/', () => {
         chai
             .request(server)
             .post('/api/v1/auth/login')
-            .send({ "user": { "username": "urlencoded", "hash": "urlencodedurl" } })
+            .send({ 'user': { 'username': 'urlencoded', 'hash': 'urlencodedurl' } })
             .set('Accept', 'application/json')
             .end((err, res) => {
                 res.should.have.status(401);
@@ -97,7 +95,7 @@ describe('Auth routes tests: /api/v1/auth/', () => {
             .set('Authorization', 'Bearer ' + token)
             .end((err, res) => {
                 res.should.have.status(200);
-                // res.should.have.property("user");
+                // res.should.have.property('user');
                 done();
             })
     });
