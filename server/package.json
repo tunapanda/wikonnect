@@ -47,5 +47,8 @@
     "eslint": "^6.4.0",
     "mocha": "2.4.5",
     "nyc": "^14.1.1"
+  },
+  "standard": {
+    "env": [ "mocha" ]
   }
 }

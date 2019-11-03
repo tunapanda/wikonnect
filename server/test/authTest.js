@@ -22,7 +22,7 @@ describe('Auth routes tests: /api/v1/auth/', () => {
     it('should allow POST requests to the "/api/v1/auth/register" route', done => {
         chai
             .request(server)
-            .post('/api/v1/auth/register')
+            .post('/api/v1/users')
             .send({ "user": { "username": "urlencoded", "hash": "urlencodedurlencoded", "email": "mussai@gmail.com" } })
             .set('Accept', 'application/json')
             .end((err, res) => {
@@ -37,7 +37,7 @@ describe('Auth routes tests: /api/v1/auth/', () => {
     it('should return 400 for bad POST requests to the "/api/v1/auth/register" route', done => {
         chai
             .request(server)
-            .post('/api/v1/auth/register')
+            .post('/api/v1/users')
             .send({ "user": { "username": "urlencoded", "hash": "urlencodedurlencoded", "name": "mussai@gmail.com" } })
             .set('Accept', 'application/json')
             .end((err, res) => {
@@ -49,7 +49,7 @@ describe('Auth routes tests: /api/v1/auth/', () => {
     it('should return 406 for trying to register an existing user with the "/api/v1/auth/register" route', done => {
         chai
             .request(server)
-            .post('/api/v1/auth/register')
+            .post('/api/v1/users')
             .send({ "user": { "username": "urlencoded", "hash": "urlencodedurlencoded", "email": "mussai@gmail.com" } })
             .set('Accept', 'application/json')
             .end((err, res) => {
@@ -72,7 +72,7 @@ describe('Auth routes tests: /api/v1/auth/', () => {
     it('should return 401 for bad POST requests to the "/api/v1/auth/login" route', done => {
         chai
             .request(server)
-            .post('/api/v1/auth/login')
+            .post('/api/v1/auth/')
             .send({ "user": { "username": "urlencoded", "hash": "urlencodedurl" } })
             .set('Accept', 'application/json')
             .end((err, res) => {
