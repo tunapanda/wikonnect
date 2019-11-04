@@ -1,49 +1,83 @@
 #courses {
     @include pages-main;
 
-    h2 {
-        font-size: 18px;
-        color: $primary;
-    }
+}
 
-    h3 {
-        font-size: 24px;
-        color: $dark-blue;
-    }
 
-    p {
-        font-size: 13px;
 
-    }
+.breadcrums {
+    font-size: 10px;
 
 }
 
-.course-item {
-    border-color: $primary;
-    border-width: 1px;
-    border-style: solid;
+.call-to-action {
+    background-color: $primary;
+    color: white;
     padding: 1em;
-    margin-top: 1em;
+    text-align: center;
+}
 
+.modules {
+    margin-top: 2em;
 
+    h2 {
+        color: $primary-dark;
+        font-size: 16px;
 
-    .course-description {
-        color: $light-grey;
-        font-size: 12px;
     }
 
-    span {
+    p {
+        font-size: 10px;
+    }
+
+    .module-item {
         display: flex;
-        flex-shrink: 2;
-        justify-content: space-between;
+        flex-direction: row;
+        align-items: flex-start;
+        justify-content: flex-start;
+        padding-top: 1em;
+        border-style: solid;
+        border-width: 1px;
+        padding-left: 1em;
+        border-color: #E6E6E6;
+        margin-bottom: 1em;
+        border-right-style: none;
+        border-left-width: 5px;
 
-        .points {
-            font-size: 12px;
-        }
+    }
 
-        h4 {
+    .module-description {
+        font-size: 12px;
+        color: #989898;
+
+    }
+
+    .header {
+
+        p {
             font-size: 14px;
-            color: $primary;
+            padding-left: 1em;
+            color: #1C4255;
         }
     }
+
+    .red {
+        margin-top: 1em;
+
+        border-left-color: #FD7F7F;
+        background-color: #F8F8F8;
+    }
+
+    .green {
+        border-left-color: #53EBB7;
+    }
+
+    .small-circle {
+        background: $primary-dark;
+        width: 100%;
+        width: 15px;
+        height: 15px;
+        border-radius: 50%;
+    }
+
 }

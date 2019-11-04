@@ -3,7 +3,7 @@ $karla: 'Karla',
 sans-serif;
 $primary-blue: #2C41B1;
 $light-blue: #24BDD1;
-
+$primary-dark : #1C4255;
 $font-family-form: 'Inter',
 sans-serif;
 
@@ -13,7 +13,11 @@ $dark-blue: #240862;
 $light-grey : #535D64;
 
 @mixin pages-main {
-    padding: 1em;
     font-family: $karla;
     color: $light-grey
+}
+
+.padded {
+    padding-left: 1em;
+    padding-right: 1em;
 }

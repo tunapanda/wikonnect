@@ -20,5 +20,7 @@ Router.map(function () {
     this.route('settings');
   });
   this.route('search');
+  this.route('index', { path: "/" });
+  this.route('home');
   this.route('about');
 });
