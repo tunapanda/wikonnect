@@ -1,6 +1,6 @@
 const Router = require('koa-router');
 const Course = require('../models/course');
-const validateNewLearningPath = require('../middleware/validateLearningPath');
+const validateCourse = require('../middleware/validation/validateCourse');
 
 
 const router = new Router({
@@ -12,7 +12,7 @@ router.get('/', async ctx => {
   ctx.status = 200;
   ctx.body = { course };
 });
-router.post('/', async ctx => {
+router.post('/', validateCourse, async ctx => {
   let newCourse = ctx.request.body;
 
   const course = await Course.query().insertAndFetch(newCourse);
@@ -28,7 +28,7 @@ router.put('/:id', async ctx => {
   const course = await Course.query().patchAndFetchById(ctx.params.id, ctx.request.body);
 
   if (!course) {
-    ctx.throw(400, 'That learning path does not exist');
+    ctx.throw(400, 'That course does not exist');
   }
 
   ctx.status = 201;
@@ -37,8 +37,9 @@ router.put('/:id', async ctx => {
 router.delete('/:id', async ctx => {
   const course = await Course.query().findById(ctx.params.id);
   await Course.query().delete().where({ id: ctx.params.id });
+
+  ctx.assert(course, 401, 'No ID was found');
   ctx.status = 200;
-  ctx.assert(course, 401, 'No ID was provided');
   ctx.body = { course };
 });
 

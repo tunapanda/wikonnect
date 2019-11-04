@@ -1,6 +1,6 @@
 const Router = require('koa-router');
 const LearningPath = require('../models/learning_path');
-const validateNewLearningPath = require('../middleware/validateLearningPath');
+const validateNewLearningPath = require('../middleware/validation/validateLearningPath');
 
 
 const router = new Router({
@@ -37,8 +37,9 @@ router.put('/:id', async ctx => {
 router.delete('/:id', async ctx => {
   const learningpath = await LearningPath.query().findById(ctx.params.id);
   await LearningPath.query().delete().where({ id: ctx.params.id });
+  
+  ctx.assert(learningpath, 401, 'No ID was found');
   ctx.status = 200;
-  ctx.assert(learningpath, 401, 'No ID was provided');
   ctx.body = { learningpath };
 });
 
