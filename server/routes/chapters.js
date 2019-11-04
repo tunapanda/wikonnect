@@ -1,6 +1,6 @@
 const Router = require('koa-router');
 const Chapter = require('../models/chapter');
-const validateChapter = require('../middleware/validation/validateChapter')
+const validateChapter = require('../middleware/validation/validateChapter');
 
 const router = new Router({
   prefix: '/chapter'
