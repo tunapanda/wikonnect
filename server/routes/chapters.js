@@ -6,11 +6,22 @@ const router = new Router({
   prefix: '/chapter'
 });
 
+router.get('/:id', async ctx => {
+  const chapter = await Chapter.query().where('id', ctx.params.id).eager('lessons');
+  
+  ctx.assert(chapter, 404, 'no lesson by that ID');
+
+  ctx.status =  200;
+  ctx.body = { chapter };
+});
+
 router.get('/', async ctx => {
   const chapter = await Chapter.query();
   ctx.status = 200;
   ctx.body = { chapter };
 });
+
+
 router.post('/',validateChapter,  async ctx => {
   let newChapter = ctx.request.body;
 

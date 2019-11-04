@@ -7,11 +7,22 @@ const router = new Router({
   prefix: '/course'
 });
 
+
+router.get('/:id', async ctx => {
+  const course = await Course.query().where('id', ctx.params.id).eager('modules');
+  
+  ctx.assert(course, 404, 'no lesson by that ID');
+
+  ctx.status =  200;
+  ctx.body = { course };
+});
+
 router.get('/', async ctx => {
   const course = await Course.query();
   ctx.status = 200;
   ctx.body = { course };
 });
+
 router.post('/', validateCourse, async ctx => {
   let newCourse = ctx.request.body;
 

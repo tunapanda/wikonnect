@@ -1,10 +1,19 @@
 const Router = require('koa-router');
 const Lesson = require('../models/lesson');
-const validateLesson = require('../middleware/validateLearningPath');
+// const validateLesson = require('../middleware/validation/validateLessons');
 
 
 const router = new Router({
   prefix: '/lesson'
+});
+
+router.get('/:id', async ctx => {
+  const lesson = await Lesson.query().where('id', ctx.params.id).eager('chapters');
+  
+  ctx.assert(lesson, 404, 'no lesson by that ID');
+
+  ctx.status =  200;
+  ctx.body = { lesson };
 });
 
 router.get('/', async ctx => {
@@ -12,7 +21,8 @@ router.get('/', async ctx => {
   ctx.status = 200;
   ctx.body = { lesson };
 });
-router.post('/', validateLesson, async ctx => {
+
+router.post('/', async ctx => {
   let newLesson = ctx.request.body;
 
   const lesson = await Lesson.query().insertAndFetch(newLesson);

@@ -7,6 +7,16 @@ const router = new Router({
   prefix: '/module'
 });
 
+
+router.get('/:id', async ctx => {
+  const module = await Module.query().where('id', ctx.params.id).eager('lessons');
+  
+  ctx.assert(module, 404, 'no lesson by that ID');
+
+  ctx.status =  200;
+  ctx.body = { module };
+});
+
 router.get('/', async ctx => {
   const modules = await Module.query();
   ctx.status = 200;

@@ -48,6 +48,15 @@ router.use(require('./routes/users'));
 
 router.use(require('./routes/paths'));
 
+router.use(require('./routes/modules'));
+
+router.use(require('./routes/courses'));
+
+router.use(require('./routes/lessons'));
+
+router.use(require('./routes/chapters'));
+
+
 router.get('/hello', async ctx => {
   ctx.body = { user: 'You have acess to view this route' };
 });
