@@ -16,6 +16,10 @@ module.exports = {
     browser: true
   },
   rules: {
+    'no-console': 0,
+    'no-var': 1,
+    'indent': ["error", 2],
+    'semi': ["error", "always"]
   },
   overrides: [
     // node files

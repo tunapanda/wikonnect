@@ -1,21 +1,74 @@
-{{#unless me.user.id}}
-<div class="authentication-header">
-  {{#link-to "login" class="authentication-header-login"}}Login{{/link-to}}
-  {{#link-to "signup" class="authentication-header-signup btn-round"}}Sign up{{/link-to}}
-  {{!-- <BsButton class="authentication-header-signup" @type="round" @defaultText="Sign Up" /> --}}
-</div>
-{{/unless}}
-<div class="main-header">
-  <a class="header-hamburger">
-    {{svg-jar "menu-bars" class="icon" width="40" height="18"}}
-  </a>
-  {{#link-to "index"  class="branding"}}
-  {{svg-jar "wikonnect-primary" width="175"}}
-  {{/link-to}}
+{
+    {
+    #unless me.user.id
+  }
+}
+
+<div class="authentication-header"> {
+    {
+    #link-to "login"class="authentication-header-login"
+  }
+}
+
+Login {
+    {
+    /link-to
+  }
+}
+
+  {
+    {
+    #link-to "signup"class="authentication-header-signup btn-round"
+  }
+}
+
+Sign up {
+    {
+    /link-to
+  }
+}
+
+  {
+    {
+     !-- <BsButton class="authentication-header-signup"@type="round"@defaultText="Sign Up"/>--
+  }
+}
+
+</div> {
+    {
+    /unless
+  }
+}
+
+<div class="main-header"><a class="header-hamburger"> {
+    {
+    svg-jar "menu-bars"class="icon"width="40"height="18"
+  }
+}
+
+</a> {
+    {
+    #link-to "index"class="branding"
+  }
+}
+
+  {
+    {
+    svg-jar "wikonnect-primary"width="175"
+  }
+}
+
+  {
+    {
+    /link-to
+  }
+}
 
 
-  <a class="search-bar">
-    {{svg-jar "search" width="40" height="18"}}
-  </a>
+<a class="search-bar"> {
+    {
+    svg-jar "search"width="40"height="18"
+  }
+}
 
-</div>
+</a></div>
