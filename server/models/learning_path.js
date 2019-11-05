@@ -17,7 +17,7 @@ class LearningPath extends Model {
             from: 'learning_path_courses.learning_path_id',
             to: 'learning_path_courses.course_id'
           },
-          to: 'course.id'
+          to: 'courses.id'
         }
       }
     };
