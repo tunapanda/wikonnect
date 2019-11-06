@@ -1,4 +1,9 @@
 @import url("https://fonts.googleapis.com/css?family=Karla&display=swap");
+.padded {
+  padding-left: 1em;
+  padding-right: 1em;
+}
+
 .btn-primary {
   background: #240862;
   border-radius: 5px;

@@ -1,4 +1,9 @@
 @import url("https://fonts.googleapis.com/css?family=Karla&display=swap");
+.padded {
+  padding-left: 1em;
+  padding-right: 1em;
+}
+
 .form-primary-fields {
   border-bottom: #9A9FA2;
   margin-bottom: 2rem;

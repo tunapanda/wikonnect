@@ -1,15 +1,28 @@
-<div class="module-item {{if @complete "green" "red"}}">
-  <div class="circle-parent">
-    <div class="small-circle"></div>
+<div class="module-item {{if @available "green" "red"}}">
+  <details>
+    <summary>
+      <div class="module-flex">
+        <div class="circle-parent">
+          <div class="small-circle"></div>
 
-  </div>
-  <div class="module-description">
+        </div>
 
-    <h3>{{@title}}</h3>
-    <div>{{@description}}</div>
+        <div class="module-description">
+
+          <h3>{{@title}}</h3>
+          <div>{{@description}}</div>
 
 
-  </div>
+        </div>
 
+      </div>
+    </summary>
+
+    <ul class="submodules">
+      <li><span>Chapter 1 : </span> Test Sub Modlue</li>
+      <li>Test Sub Modlue</li>
+      <li>Test Sub Modlue</li>
+    </ul>
+  </details>
 
 </div>
