@@ -1,6 +1,6 @@
 const Router = require('koa-router');
 const Course = require('../models/course');
-const validateCourse = require('../middleware/validation/validateCourse');
+const validatePostData = require('../middleware/validation/validatePostData');
 
 
 const router = new Router({
@@ -23,7 +23,7 @@ router.get('/', async ctx => {
   ctx.body = { course };
 });
 
-router.post('/', validateCourse, async ctx => {
+router.post('/', validatePostData, async ctx => {
   let newCourse = ctx.request.body;
 
   const course = await Course.query().insertAndFetch(newCourse);

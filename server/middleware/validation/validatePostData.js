@@ -1,6 +1,7 @@
+
 const validate = require('validate.js');
 
-async function validateCourse(ctx, next){
+async function validatePostData(ctx, next){
   try {
     await validate.async(ctx.request.body,{
       name: {
@@ -23,10 +24,10 @@ async function validateCourse(ctx, next){
         }
       }
     });
-  } catch (error) {
-    return ctx.throw(400, { error });
+  } catch (errors) {
+    return ctx.throw(400, { errors });
   }
   await next();
 }
 
-module.exports = validateCourse;
+module.exports = validatePostData;

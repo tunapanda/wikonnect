@@ -1,6 +1,6 @@
 const Router = require('koa-router');
 const LearningPath = require('../models/learning_path');
-const validateNewLearningPath = require('../middleware/validation/validateLearningPath');
+const validatePostData = require('../middleware/validation/validatePostData');
 
 
 const router = new Router({
@@ -8,11 +8,21 @@ const router = new Router({
 });
 
 router.get('/', async ctx => {
-  const learningpath = await LearningPath.query();
+  const learningpath = await LearningPath.query().eager('courses');
   ctx.status = 200;
   ctx.body = { learningpath };
 });
-router.post('/', validateNewLearningPath, async ctx => {
+
+router.get('/:id', async ctx => {
+  const learningpath = await LearningPath.query().where('id', ctx.params.id).eager('courses');
+
+  ctx.assert(learningpath, 404, 'Record does not exist');
+
+  ctx.status = 200;
+  ctx.body = { learningpath };
+});
+
+router.post('/', validatePostData, async ctx => {
   let newLearningPath = ctx.request.body;
 
   const learningpath = await LearningPath.query().insertAndFetch(newLearningPath);
@@ -25,11 +35,12 @@ router.post('/', validateNewLearningPath, async ctx => {
 
 });
 router.put('/:id', async ctx => {
-  const learningpath = await LearningPath.query().patchAndFetchById(ctx.params.id, ctx.request.body);
-
-  if (!learningpath) {
+  const learningpath_record = await LearningPath.query().findById(ctx.params.id);
+  if (!learningpath_record) {
     ctx.throw(400, 'That learning path does not exist');
   }
+  const learningpath = await LearningPath.query().patchAndFetchById(ctx.params.id, ctx.request.body);
+
 
   ctx.status = 201;
   ctx.body = { learningpath };

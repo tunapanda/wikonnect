@@ -1,13 +1,13 @@
 const Router = require('koa-router');
 const Chapter = require('../models/chapter');
-const validateChapter = require('../middleware/validation/validateChapter');
+const validatePostData = require('../middleware/validation/validatePostData');
 
 const router = new Router({
   prefix: '/chapter'
 });
 
 router.get('/:id', async ctx => {
-  const chapter = await Chapter.query().where('id', ctx.params.id).eager('lessons');
+  const chapter = await Chapter.query().where('id', ctx.params.id).eager('lesson');
   
   ctx.assert(chapter, 404, 'no lesson by that ID');
 
@@ -22,7 +22,7 @@ router.get('/', async ctx => {
 });
 
 
-router.post('/',validateChapter,  async ctx => {
+router.post('/', validatePostData,  async ctx => {
   let newChapter = ctx.request.body;
 
   const chapter = await Chapter.query().insertAndFetch(newChapter);
