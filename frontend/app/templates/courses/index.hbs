@@ -8,53 +8,22 @@
 
     <img class="padded" src="https://placekitten.com/300/147" width="100%" alt="">
 
-    <div class="padded">
+    <div class="padded details">
         <h3>Navigating the internet... Browsers and websites</h3>
         <p>This track contains swagpaths on business management and administration, entrepreneurship, business
             communication, finance.</p>
     </div>
-
-    <div class="call-to-action">
-        <div>
-            <h4></h4>
-            <p>Sign up/ sign in to view or save your progress</p>
-        </div>
-        <button>SIGN UP</button>
-        <div>
-            Already signed up? Log in
-        </div>
-    </div>
+    {{component "call-to-action-signup"}}
 
 
     <div class="padded modules">
         <h2>Modules</h2>
         <p>Click on a subtopics to reveal chapters</p>
 
-        <div class="module-item red">
-            <div class="small-circle"></div>
-            <div>
 
-                <h3>Browsers</h3>
-                <div class="module-description">Overview Dodit aut fugit, sed quia consequuntur magni dolores eos</div>
+        <ModuleItem @title="Test" @description="the quick brown fox" @complete={{true}} />
 
-
-            </div>
-
-
-        </div>
-
-        <div class="module-item green">
-            <div class="small-circle"></div>
-            <div class="module-description">
-
-                <h3>Browsers</h3>
-                <div>Overview Dodit aut fugit, sed quia consequuntur magni dolores eos</div>
-
-
-            </div>
-
-
-        </div>
+        <ModuleItem @title="Test" @description="the quick brown fox" @complete={{false}} />
 
 
         <Footer />
