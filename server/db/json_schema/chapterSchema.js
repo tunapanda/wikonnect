@@ -1,7 +1,6 @@
 const chapterSchema = {
   'type': 'object',
   'properties': {
-    'id': { 'type': 'string' },
     'name': { 'type': 'string' },
     'slug': { 'type': 'string' },
     'description': { 'type': 'string' },
