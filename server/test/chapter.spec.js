@@ -1,21 +1,25 @@
 process.env.NODE_ENV = 'test';
 
 const chai = require('chai');
+const assert = chai.assert;
 const chaiHttp = require('chai-http');
+const chaiJSON = require('chai-json-schema');
 const server = require('../index');
-
+const chapterSchema = require('../db/json_schema/chapterSchema');
 
 chai.should();
 chai.use(chaiHttp);
+chai.use(chaiJSON);
 
-const route = '/api/v1/paths';
-const itemID = '/learning_path10';
+const route = '/api/v1/chapter/';
+const itemID = 'chapter19';
 const data = {
-  'id': 'learning_path10',
-  'name': 'Testing Learning Path',
-  'slug': 'testing-learning-path',
-  'description': 'Testing organisation of the courses.',
+  'id': itemID,
+  'name': 'Testing chapter Path',
+  'slug': 'testing-chapter-path',
+  'description': 'Testing chapter route',
   'status': 'published',
+  'lesson_id': 'lesson1',
   'creator_id': 'user3'
 };
 
@@ -24,14 +28,15 @@ const putData = {
 };
 
 const invalidData = {
-  'id': 'learning_path10',
+  'id': itemID,
   'name': 'Testing Learning Path',
   'slug': 'testing-learning-path',
-  'description': 'Testing organisation of the courses.',
+  'description': 'Testing chapter route',
   'status': 'draft'
 };
 
-describe('routes: paths', () => {
+
+describe('routes: chapter', () => {
   // Failing tests
   it('Should throw an ERROR on POST with invalid data', done => {
     chai
@@ -45,6 +50,7 @@ describe('routes: paths', () => {
         res.body.should.be.a('object');
         res.body.should.have.property('errors');
         res.body.errors.should.have.property('creator_id');
+        res.body.errors.should.have.property('lesson_id');
         done();
       });
   });
@@ -57,12 +63,12 @@ describe('routes: paths', () => {
       .end((err, res) => {
         res.status.should.eql(400);
         res.should.be.json;
-        res.body.message.should.eql('That learning path does not exist');
+        res.body.message.should.eql('No chapter with that ID');
         done();
       });
   });
   // Passing tests
-  it('Should CREATE a learning-path record on POST with valid data and return a JSON object', done => {
+  it('Should CREATE a chapter record on POST with valid data and return a JSON object', done => {
     chai
       .request(server)
       .post(route)
@@ -71,39 +77,40 @@ describe('routes: paths', () => {
       .end((err, res) => {
         res.status.should.eql(201);
         res.should.be.json;
-        res.body.should.have.property('learningpath');
+        res.body.should.have.property('chapter');
+        assert.jsonSchema(res.body.chapter, chapterSchema);
         done();
       });
   });
-  it('Should list ALL learning-paths on GET', done => {
+  it('Should list ALL chapter on GET', done => {
     chai
       .request(server)
       .get(route)
       .end((err, res) => {
         res.should.have.status(200);
         res.should.be.json;
-        res.body.learningpath[0].should.have.property('id');
-        res.body.learningpath[0].should.have.property('name');
-        res.body.learningpath[0].should.have.property('slug');
-        res.body.learningpath[0].should.have.property('creatorId');
+        res.body.chapter[0].should.have.property('id');
+        res.body.chapter[0].should.have.property('name');
+        res.body.chapter[0].should.have.property('slug');
+        res.body.chapter[0].should.have.property('creatorId');
         done();
       });
   });
-  it('Should list ONE learning-paths item on GET', done => {
+  it('Should list ONE chapter item on GET', done => {
     chai
       .request(server)
       .get(route + itemID)
       .end((err, res) => {
         res.should.have.status(200);
         res.should.be.json;
-        res.body.learningpath[0].should.have.property('id');
-        res.body.learningpath[0].should.have.property('name');
-        res.body.learningpath[0].should.have.property('slug');
-        res.body.learningpath[0].should.have.property('creatorId');
+        res.body.chapter[0].should.have.property('id');
+        res.body.chapter[0].should.have.property('name');
+        res.body.chapter[0].should.have.property('slug');
+        res.body.chapter[0].should.have.property('creatorId');
         done();
       });
   });
-  it('Should UPDATE a learning-path record on PUT', done => {
+  it('Should UPDATE a chapter record on PUT', done => {
     chai
       .request(server)
       .put(route + itemID)
@@ -112,11 +119,11 @@ describe('routes: paths', () => {
       .end((err, res) => {
         res.status.should.eql(201);
         res.should.be.json;
-        res.body.learningpath.name.should.eql('PUT update works');
+        res.body.chapter.name.should.eql('PUT update works');
         done();
       });
   });
-  it('Should DELETE a learning-path record on DELETE /:id return deleted JSON object', done => {
+  it('Should DELETE a chapter record on DELETE /:id return deleted JSON object', done => {
     chai
       .request(server)
       .delete(route + itemID)
@@ -124,7 +131,7 @@ describe('routes: paths', () => {
       .end((err, res) => {
         res.status.should.eql(200);
         res.should.be.json;
-        res.body.should.have.property('learningpath');
+        res.body.should.have.property('chapter');
         done();
       });
   });

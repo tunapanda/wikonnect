@@ -47,9 +47,11 @@ router.put('/:id', async ctx => {
 });
 router.delete('/:id', async ctx => {
   const learningpath = await LearningPath.query().findById(ctx.params.id);
+  if (!learningpath) {
+    ctx.assert(learningpath, 401, 'No ID was found');
+  }
   await LearningPath.query().delete().where({ id: ctx.params.id });
   
-  ctx.assert(learningpath, 401, 'No ID was found');
   ctx.status = 200;
   ctx.body = { learningpath };
 });
