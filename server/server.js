@@ -56,6 +56,10 @@ router.use(require('./routes/lessons'));
 
 router.use(require('./routes/chapters'));
 
+router.use(require('./routes/activity'));
+
+router.use(require('./routes/achievements'));
+
 
 router.get('/hello', async ctx => {
   ctx.body = { user: 'You have acess to view this route' };
