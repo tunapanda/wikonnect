@@ -39,12 +39,6 @@ describe('authentication routes', () => {
       .then(() => { return knex.migrate.latest(); })
       .then(() => { return knex.seed.run(); });
   });
-
-  after(() => {
-    server.close();
-    console.log('Server has been closed.');
-    // return knex.migrate.rollback();
-  });
   describe('Auth routes tests: /api/v1/users/', () => {
 
     it('Should create user on POST requests', done => {
