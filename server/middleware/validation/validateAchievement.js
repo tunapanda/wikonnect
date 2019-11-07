@@ -1,7 +1,7 @@
 
 const validate = require('validate.js');
 
-async function validateAcheivement(ctx, next) {
+async function validateAchievement(ctx, next) {
   try {
     await validate.async(ctx.request.body, {
       name: {
@@ -23,4 +23,4 @@ async function validateAcheivement(ctx, next) {
   await next();
 }
 
-module.exports = validateAcheivement;
+module.exports = validateAchievement;

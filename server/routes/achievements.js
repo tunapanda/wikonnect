@@ -1,6 +1,6 @@
 const Router = require('koa-router');
 const Achievement = require('../models/achievement');
-const validateAcheivement = require('../middleware/validation/validateAcheivement');
+const validateAchievement = require('../middleware/validation/validateAchievement');
 
 const router = new Router({
   prefix: '/achievement'
@@ -23,7 +23,7 @@ router.get('/:id', async ctx => {
 });
 
 
-router.post('/', validateAcheivement, async ctx => {
+router.post('/', validateAchievement, async ctx => {
   let newAcheivement = ctx.request.body;
 
   const achievement = await Achievement.query().insertAndFetch(newAcheivement);
