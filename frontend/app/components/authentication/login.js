@@ -12,7 +12,7 @@ export default class AuthenticationLoginComponent extends Component {
 
     @action
     submit(model) {
-      this.sendAction("logIn", model);
+      this.logIn(model);
     }
 
 }

@@ -15,7 +15,7 @@ export default class AuthenticationSignupComponent extends Component {
 
     @action
     submit(newUser) {
-      this.sendAction('registerUser', newUser);
+      this.registerUser(newUser);
     }
 
 }
