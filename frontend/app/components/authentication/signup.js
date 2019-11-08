@@ -1,7 +1,7 @@
 // import Component from '@glimmer/component'; @jake
 import Component from '@ember/component';
 import { inject } from '@ember/service';
-import { action, computed } from '@ember/object';
+import { action } from '@ember/object';
 import UserValidation from '../../validations/user';
 
 export default class AuthenticationSignupComponent extends Component {
@@ -15,7 +15,7 @@ export default class AuthenticationSignupComponent extends Component {
 
     @action
     submit(newUser) {
-        this.sendAction('registerUser', newUser)
+      this.sendAction('registerUser', newUser);
     }
 
 }

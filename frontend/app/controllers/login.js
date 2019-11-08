@@ -14,14 +14,14 @@ export default class LoginController extends Controller {
 
     @action
     login(model) {
-        this.me.authenticate(model.get('username'), model.get('password')).then(() => {
-            this.transitionToRoute('/');
-        }).catch(err => {
-            if (err.json && err.json.errors) {
-                Object.keys(err.json.errors).forEach(field => {
-                    model.addError(field, err.json.errors[field]);
-                })
-            }
-        });
+      this.me.authenticate(model.get('username'), model.get('password')).then(() => {
+        this.transitionToRoute('/');
+      }).catch(err => {
+        if (err.json && err.json.errors) {
+          Object.keys(err.json.errors).forEach(field => {
+            model.addError(field, err.json.errors[field]);
+          });
+        }
+      });
     }
 }

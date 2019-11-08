@@ -1,7 +1,7 @@
 'use strict';
 
 module.exports = {
-    extends: 'recommended',
-    rules: {
-    }
+  extends: 'recommended',
+  rules: {
+  }
 };
