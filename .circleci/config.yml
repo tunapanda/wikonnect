@@ -4,14 +4,14 @@ with_db: &with_db
     - image: circleci/node:10-browsers
       environment:
         JOBS: 2
-        PG_USER: root
+        PG_USER: swag
         PG_NAME: swag_test
         PG_HOST: localhost
         PG_PORT: 5432
         NODE_ENV: ci
     - image: circleci/postgres:10.10
       environment:
-        POSTGRES_USER: root
+        POSTGRES_USER: swag
         POSTGRES_DB: swag_test
   working_directory: ~/ember-circleci
 without_db: &without_db
