@@ -15,6 +15,7 @@
     "lint:hbs": "ember-template-lint .",
     "lint:js": "eslint .",
     "start": "ember serve --proxy http://localhost:4200",
+    "ci:start": "ember serve --path dist http://localhost:4200",
     "test": "ember test"
   },
   "devDependencies": {
@@ -22,6 +23,7 @@
     "@ember/optional-features": "^1.0.0",
     "@glimmer/component": "^0.13.0",
     "babel-eslint": "^10.0.2",
+    "bootstrap": "^4.3.1",
     "broccoli-asset-rev": "^3.0.0",
     "ember-auto-import": "^1.2.20",
     "ember-cli": "3.13.1",

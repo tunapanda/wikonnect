@@ -1,20 +1,20 @@
 module.exports = {
   test: {
     host: 'localhost',
-    database: 'kummit_test',
-    user: 'kummit',
+    database: 'swag_test',
+    user: 'swag',
     password: 'password'
   },
   development: {
     host: 'localhost',
-    database: 'kummit_dev',
-    user: 'kummit',
-    password: 'password'
+    database: 'swag_dev',
+    user: 'swag',
+    password: 'password',
   },
   production: {
     host: 'localhost',
-    database: 'kummit',
-    user: 'kummit',
+    database: 'swag',
+    user: 'swag',
     password: 'password'
   }
 };

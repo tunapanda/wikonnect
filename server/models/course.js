@@ -1,9 +1,15 @@
 const Model = require('./_model');
 const knex = require('../db/db');
+const modelSchema = require('../db/json_schema/modelSchema');
+
 
 class Course extends Model {
   static get tableName() {
     return 'courses';
+  }
+
+  static get jsonSchema(){
+    return modelSchema;
   }
 
   static get relationMappings() {
