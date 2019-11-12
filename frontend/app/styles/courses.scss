@@ -3,6 +3,25 @@
 
 }
 
+.breadcrums {
+    font-size: 10dp;
+}
+
+.holdup {
+    background-color: #DCFBF0;
+    font-size: 12px;
+    padding: 1em;
+    display: flex;
+    flex-direction: row;
+
+    span {
+        font-size: 25px;
+        color: red;
+        padding-right: 17px;
+    }
+
+}
+
 .submodules {
     // list-style: none;
     margin: 0px;
