@@ -1,4 +1,4 @@
-version: 2
+version: 2.1
 with_db: &with_db
   docker:
     - image: circleci/node:10-browsers
@@ -35,7 +35,7 @@ jobs:
       - restore_cache:
           name: Restore Yarn Package Cache
           keys:
-            - yarn-packages-{{ checksum "yarn.lock" }}
+            - yarn-packages-2-{{ checksum "yarn.lock" }}
       - run:
           name: Install Project dependencies
           command: yarn  --frozen-lockfile
@@ -47,7 +47,7 @@ jobs:
           command: yarn  --frozen-lockfile --cwd ./frontend
       - save_cache:
           name: Save Yarn Package Cache
-          key: yarn-packages-{{ checksum "yarn.lock" }}
+          key: yarn-packages-2-{{ checksum "yarn.lock" }}
           paths:
             - ~/.cache/yarn
             - ~/.cache/Cypress
