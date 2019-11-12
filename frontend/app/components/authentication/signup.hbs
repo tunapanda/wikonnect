@@ -1,4 +1,4 @@
-<BsForm @class="signup-form" @formLayout="horizontal" @model={{newUser}} as |form|>
+<BsForm @class="signup-form" @formLayout="horizontal" @model={{newUser}} @onSubmit={{action "createUser"}} as |form|>
   <div class="signup-form-title">Register</div>
   <div class="signup-form-fields">
     <form.element class="signup-username" @controlType="text" @label="Username" @placeholder="Username" @property="username" @autocomplete="username" />
@@ -10,5 +10,5 @@
     <form.element class="signup-confirm-password" @controlType="password" @label="Repeat password" @placeholder="Repeat Password" @property="passwordConfirmation" />
   </div>
 
-  <BsButton class="signup-submit" @type="primary" @defaultText="Sign Up" @onClick={{action "submit" newUser}} @buttonType="submit" />
+  <BsButton class="signup-submit" @type="primary" @defaultText="Sign Up" @buttonType="submit" />
 </BsForm>

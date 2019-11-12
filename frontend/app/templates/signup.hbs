@@ -1,1 +1,1 @@
-<Authentication::Signup @registerUser="registerUser" @newUser={{changeset model UserValidation}} />
+<Authentication::Signup @newUser={{changeset model UserValidation}} @success={{action "signupSuccess"}} />
