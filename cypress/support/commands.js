@@ -1,25 +1,28 @@
-// ***********************************************
-// This example commands.js shows you how to
-// create various custom commands and overwrite
-// existing commands.
-//
-// For more comprehensive examples of custom
-// commands please read more here:
-// https://on.cypress.io/custom-commands
-// ***********************************************
-//
-//
-// -- This is a parent command --
-// Cypress.Commands.add("login", (email, password) => { ... })
-//
-//
-// -- This is a child command --
-// Cypress.Commands.add("drag", { prevSubject: 'element'}, (subject, options) => { ... })
-//
-//
-// -- This is a dual command --
-// Cypress.Commands.add("dismiss", { prevSubject: 'optional'}, (subject, options) => { ... })
-//
-//
-// -- This is will overwrite an existing command --
-// Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
+Cypress.Commands.add('login', function () {
+  cy.fixture('user').then(user => {
+    cy.request({
+      method: 'POST',
+      url: '/api/v1/auth',
+      body: {
+        username: user.username,
+        password: user.password
+      }
+    })
+      .its('body')
+      .then(res => {
+        this.token = res.token;
+        window.localStorage.setItem('ember_simple_auth-session', JSON.stringify({
+          "authenticated": {
+            "authenticator": "authenticator:jwt",
+            "token": res.token,
+            "exp": Math.floor(new Date().getTime() / 1000) + 1000 * 60 * 60,
+            "tokenData": {
+              "id": user.id,
+              "iat": Math.floor(new Date().getTime() / 1000),
+              "exp": Math.floor(new Date().getTime() / 1000) + 1000 * 60 * 60
+            }
+          }
+        }));
+      });
+  });
+});

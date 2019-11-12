@@ -14,8 +14,8 @@
     "build": "ember build",
     "lint:hbs": "ember-template-lint .",
     "lint:js": "eslint .",
-    "start": "ember serve --proxy http://localhost:4200",
-    "ci:start": "ember serve --path dist http://localhost:4200",
+    "start": "ember serve --proxy http://localhost:3000",
+    "ci:start": "ember serve --path dist --proxy http://localhost:3000",
     "test": "ember test"
   },
   "devDependencies": {
@@ -48,12 +48,7 @@
     "eslint-plugin-node": "^10.0.0",
     "glimmer": "^1.1.5",
     "loader.js": "^4.7.0",
-    "qunit-dom": "^0.9.0"
-  },
-  "engines": {
-    "node": "8.* || >= 10.*"
-  },
-  "dependencies": {
+    "qunit-dom": "^0.9.0",
     "ember-bootstrap": "^3.0.1",
     "ember-bootstrap-changeset-validations": "^2.0.0",
     "ember-changeset": "^2.1.2",
@@ -63,5 +58,8 @@
     "ember-simple-auth-token": "^4.0.7",
     "rsvp": "^4.8.5",
     "sass": "^1.23.0"
+  },
+  "engines": {
+    "node": "8.* || >= 10.*"
   }
 }

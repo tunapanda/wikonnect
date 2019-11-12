@@ -1,23 +1,50 @@
 {
-    // Use IntelliSense to learn about possible attributes.
-    // Hover to view descriptions of existing attributes.
-    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
-    "version": "0.2.0",
-    "configurations": [
-
-        {
-            "type": "node",
-            "request": "launch",
-            "name": "API",
-            "program": "${workspaceFolder}/server/index.js",
-            "runtimeVersion": "8.15.0"
-        },
-
-	{
+  // Use IntelliSense to learn about possible attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "API",
+      "program": "${workspaceFolder}/server/index.js",
+      "runtimeVersion": "8.15.0"
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "nodemon",
+      "runtimeExecutable": "nodemon",
+      "program": "${workspaceFolder}/server/index.js",
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen",
+      "restart": true,
+      "args": [
+        "-w",
+        "${workspaceFolder}/server"
+      ]
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "nodemon test",
+      "runtimeExecutable": "nodemon",
+      "program": "${workspaceFolder}/server/index.js",
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen",
+      "restart": true,
+      "args": [
+        "-w",
+        "${workspaceFolder}/server",
+        "--cypress"
+      ]
+    },
+    {
       "type": "chrome",
       "request": "launch",
       "name": "Ember",
-    //   "port": 9222,
+      //   "port": 9222,
       "runtimeArgs": [
         "--remote-debugging-port=9222"
       ],
@@ -30,5 +57,5 @@
       "showAsyncStacks": true,
       "trace": true,
     }
-    ]
-}   
+  ]
+}

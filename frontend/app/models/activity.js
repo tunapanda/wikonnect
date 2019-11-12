@@ -1,5 +1,5 @@
 import DS from 'ember-data';
-const { Model } = DS;
+const { Model, attr, belongsTo } = DS;
 
 export default class ActivityModel extends Model {
   @attr() status;

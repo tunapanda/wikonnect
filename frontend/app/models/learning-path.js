@@ -1,5 +1,5 @@
 import DS from 'ember-data';
-const { Model, attr, belongsTo } = DS;
+const { Model, attr, belongsTo, hasMany } = DS;
 
 export default class LearningPathModel extends Model {
   @attr() name;
