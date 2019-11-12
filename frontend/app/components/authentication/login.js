@@ -1,6 +1,6 @@
 import Component from '@ember/component';
 import { inject } from '@ember/service';
-import { action, computed } from '@ember/object';
+import { action } from '@ember/object';
 
 export default class AuthenticationLoginComponent extends Component {
 
@@ -12,7 +12,7 @@ export default class AuthenticationLoginComponent extends Component {
 
     @action
     submit(model) {
-        this.sendAction("logIn", model)
+      this.logIn(model);
     }
 
 }

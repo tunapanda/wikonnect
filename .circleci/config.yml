@@ -52,8 +52,8 @@ jobs:
             - ~/.cache/yarn
             - ~/.cache/Cypress
             - node_modules
-            - app/node_modules
-            - api/node_modules
+            - frontend/node_modules
+            - server/node_modules
       - persist_to_workspace:
           root: ~/
           paths:
@@ -67,12 +67,12 @@ jobs:
           at: ~/
       - run:
           name: Build Ember
-          command: cd app && $(yarn bin)/ember build; cd ../
+          command: cd frontend && $(yarn bin)/ember build; cd ../
       - persist_to_workspace:
           root: ~/
           paths:
             - ember-circleci/frontend/dist
-  lint_api:
+  lint_server:
     <<: *without_db
     steps:
       - attach_workspace:
@@ -80,18 +80,18 @@ jobs:
       - run:
           name: Lint API
           command: yarn --cwd ./server lint:js
-  test_api:
+  test_server:
     <<: *with_db
     steps:
       - attach_workspace:
           at: ~/
       - run:
           name: migrate db
-          command: cd api && $(yarn bin)/knex migrate:latest; cd ../
+          command: cd server && $(yarn bin)/knex migrate:latest; cd ../
       - run:
           name: Test API
           command: yarn --cwd ./server test
-  lint_app_js:
+  lint_frontend_js:
     <<: *without_db
     steps:
       - attach_workspace:
@@ -99,7 +99,7 @@ jobs:
       - run:
           name: Lint Ember JS
           command: yarn --cwd ./frontend lint:js
-  lint_app_hbs:
+  lint_frontend_hbs:
     <<: *without_db
     steps:
       - attach_workspace:
@@ -114,10 +114,10 @@ jobs:
           at: ~/
       - run:
           name: migrate db
-          command: cd api && $(yarn bin)/knex migrate:latest; cd ../
+          command: cd server && $(yarn bin)/knex migrate:latest; cd ../
       - run:
           name: Start API
-          command: node api/index.js
+          command: node server/index.js
           background: true
       - run:
           name: Start Ember
@@ -134,16 +134,16 @@ workflows:
       - build:
           requires:
             - install_dependencies
-      - lint_api:
+      - lint_server:
           requires:
             - install_dependencies
-      - test_api:
+      - test_server:
           requires:
             - build
-      - lint_app_hbs:
+      - lint_frontend_hbs:
           requires:
             - install_dependencies
-      - lint_app_js:
+      - lint_frontend_js:
           requires:
             - install_dependencies
       - integration_test:

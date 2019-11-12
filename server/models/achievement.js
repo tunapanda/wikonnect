@@ -1,9 +1,9 @@
 const Model = require('./_model');
 const knex = require('../db/db');
 
-class Acheivement extends Model {
+class Achievement extends Model {
   static get tableName() {
-    return 'acheivements';
+    return 'achievements';
   }
 
   static get relationMappings() {
@@ -11,5 +11,5 @@ class Acheivement extends Model {
   }
 }
 
-Acheivement.knex(knex);
-module.exports = Acheivement;
+Achievement.knex(knex);
+module.exports = Achievement;
