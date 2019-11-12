@@ -1,5 +1,6 @@
 import DS from 'ember-data';
-const { Model, belongsTo, attr } = DS;
+
+const { Model, attr, belongsTo } = DS;
 
 export default class AchievementModel extends Model {
   @attr() name;
