@@ -57,7 +57,7 @@
     "ember-simple-auth": "^1.9.2",
     "ember-simple-auth-token": "^4.0.7",
     "rsvp": "^4.8.5",
-    "sass": "^1.23.0"
+    "sass": "^1.23.3"
   },
   "engines": {
     "node": "8.* || >= 10.*"
