@@ -4370,7 +4370,7 @@ ember-auto-import@^1.2.20, ember-auto-import@^1.4.1:
     walk-sync "^0.3.3"
     webpack "~4.28"
 
-ember-bootstrap-changeset-validations@^2.0.0:
+ember-bootstrap-changeset-validations@~2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/ember-bootstrap-changeset-validations/-/ember-bootstrap-changeset-validations-2.0.0.tgz#be335f8c74b02bf5b3c19ad20e7da25094c7d5d3"
   integrity sha512-0JhKqns8P+CySkZCma3Q2cZFVc27Ok+GYUxhwa0zoAuI9OJtoYHxyNagqYaDI0GyeGgUTNJIDSuaYXNfDAiHCw==
@@ -4419,10 +4419,29 @@ ember-changeset-validations@^2.1.0:
     ember-get-config "^0.2.4"
     ember-validators "^2.0.0"
 
-ember-changeset@^2.1.2, ember-changeset@^2.2.1:
+ember-changeset-validations@~2.1.0:
+  version "2.1.1"
+  resolved "https://registry.yarnpkg.com/ember-changeset-validations/-/ember-changeset-validations-2.1.1.tgz#8690210364c734ed44ed58746eed0a7e22fad565"
+  integrity sha512-3Jtl67cmK6s4r5H5upZU+xbFy7DOrgdRCI0Worpakbcumm0xTRkYvWSrPq85+7xT3Q+PJCpow7PhFu/sodV2hA==
+  dependencies:
+    ember-changeset "^2.1.3"
+    ember-cli-babel "^7.1.2"
+    ember-cli-htmlbars "^3.0.0"
+    ember-get-config "^0.2.4"
+    ember-validators "^2.0.0"
+
+ember-changeset@^2.1.3, ember-changeset@^2.2.1:
   version "2.2.2"
   resolved "https://registry.yarnpkg.com/ember-changeset/-/ember-changeset-2.2.2.tgz#6bf4593dc2d38fe4cd7e6a8a1d27b08cc37318db"
   integrity sha512-Fwsl8HtoLCox+92bHWVDOeJSaGfDJwVHU7dh3kv/RnwqlOH2Xs3AzZl546wGUc+Iq8PW2G+NidOAOdQ7RRQUVQ==
+  dependencies:
+    ember-cli-babel "^7.1.2"
+    ember-deep-set "^0.2.0"
+
+ember-changeset@~2.1.2:
+  version "2.1.3"
+  resolved "https://registry.yarnpkg.com/ember-changeset/-/ember-changeset-2.1.3.tgz#4e12fb7390b863d208826d8a64682ce41c51d3d1"
+  integrity sha512-gJ3V7wlvhzY0JkZMWwAZcRy1UvRZYnb6aO/nfPkaAferwJ2OiYyLqLCrZsN51CqovwDCdodYEvI+MGDGnxnCSQ==
   dependencies:
     ember-cli-babel "^7.1.2"
     ember-deep-set "^0.2.0"
@@ -9446,7 +9465,7 @@ sane@^4.0.0, sane@^4.1.0:
     minimist "^1.1.1"
     walker "~1.0.5"
 
-sass@^1.23.3:
+sass@^1.23.0:
   version "1.23.3"
   resolved "https://registry.yarnpkg.com/sass/-/sass-1.23.3.tgz#f07503b9e8d2bcf06ef69e8beea5d085589b1620"
   integrity sha512-1DKRZxJMOh4Bme16AbWTyYeJAjTlrvw2+fWshHHaepeJfGq2soFZTnt0YhWit+bohtDu4LdyPoEj6VFD4APHog==
