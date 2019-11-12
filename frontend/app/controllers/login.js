@@ -4,7 +4,7 @@ import { action } from '@ember/object';
 
 export default class LoginController extends Controller {
   @action
-  login(model) {
+  login() {
     this.transitionToRoute('/');
   }
 }
