@@ -1,4 +1,4 @@
-<BsForm @class="login-form" @formLayout="horizontal" @model={{user}} as |form|>
+<BsForm @class="login-form" @formLayout="horizontal" @model={{changeset user LoginValidations}} @onSubmit={{action "login"}} as |form|>
   <div class="login-form-title">Log In</div>
   <div class="login-form-fields">
     <form.element class="login-username" @controlType="text" @label="Username" @placeholder="Username" @property="username" @autocomplete="username" />
@@ -7,5 +7,5 @@
 
   </div>
 
-  <BsButton class="login-submit" @type="primary" @defaultText="Login" @onClick={{action "submit" user}} @buttonType="submit" />
+  <BsButton class="login-submit" @type="primary" @defaultText="Login" @buttonType="submit" />
 </BsForm>

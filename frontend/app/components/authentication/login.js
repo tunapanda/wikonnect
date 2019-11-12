@@ -1,19 +1,35 @@
-import Component from '@ember/component';
+import { action, computed } from '@ember/object';
 import { inject } from '@ember/service';
-import { action } from '@ember/object';
+import Component from '@ember/component';
+import LoginValidations from '../../validations/login';
+import { tagName } from '@ember-decorators/component';
 
-export default class AuthenticationLoginComponent extends Component {
+export default
+@tagName('')
+class LoginComponent extends Component {
+  @inject
+  me;
 
-    @inject
-    me;
+  @inject
+  store;
 
-    @inject
-    store;
+  @computed()
+  get user() {
+    return this.store.createRecord('user');
+  }
 
-    @action
-    submit(model) {
-      this.logIn(model);
-    }
+  LoginValidations = LoginValidations;
 
+  @action
+  login(model) {
+    this.me.authenticate(model.get('username'), model.get('password')).then(() => {
+      this.authenticationSuccessful();
+    }).catch(err => {
+      if (err.json && err.json.errors) {
+        Object.keys(err.json.errors).forEach(field => {
+          model.addError(field, err.json.errors[field]);
+        });
+      }
+    });
+  }
 }
-
