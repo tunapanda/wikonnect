@@ -1,15 +1,15 @@
 const Router = require('koa-router');
 const Course = require('../models/course');
 const validatePostData = require('../middleware/validation/validatePostData');
-
+const queryStringSearch = require('../middleware/queryStringSearch');
 
 const router = new Router({
   prefix: '/course'
 });
 
 
-router.get('/:id', async ctx => {
-  const course = await Course.query().where('id', ctx.params.id).eager('modules');
+router.get('/:id', queryStringSearch, async ctx => {
+  const course = await Course.query().where(ctx.query.key, ctx.query.value).eager('modules');
   
   ctx.assert(course, 404, 'no lesson by that ID');
 

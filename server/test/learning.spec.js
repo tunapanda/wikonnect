@@ -6,8 +6,8 @@ const server = require('../index');
 chai.should();
 chai.use(chaiHttp);
 
-const route = '/api/v1/paths';
-const itemID = '/learning_path10';
+const route = '/api/v1/paths/';
+const itemID = 'learning_path10';
 const data = {
   'id': 'learning_path10',
   'name': 'Testing Learning Path',
@@ -87,10 +87,24 @@ describe('routes: paths', () => {
         done();
       });
   });
-  it('Should list ONE learning-paths item on GET', done => {
+  it('Should list ONE learning-paths item on GET using PARAMS', done => {
     chai
       .request(server)
       .get(route + itemID)
+      .end((err, res) => {
+        res.should.have.status(200);
+        res.should.be.json;
+        res.body.learningpath[0].should.have.property('id');
+        res.body.learningpath[0].should.have.property('name');
+        res.body.learningpath[0].should.have.property('slug');
+        res.body.learningpath[0].should.have.property('creatorId');
+        done();
+      });
+  });
+  it('Should list ONE learning-paths item on GET using QUERY', done => {
+    chai
+      .request(server)
+      .get(route + itemID + '?slug=a-learning-path')
       .end((err, res) => {
         res.should.have.status(200);
         res.should.be.json;
