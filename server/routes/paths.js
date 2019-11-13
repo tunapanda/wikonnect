@@ -16,7 +16,7 @@ router.get('/', async ctx => {
 
 router.get('/:id', queryStringSearch, async ctx => {
 
-  const learningpath = await LearningPath.query().where(ctx.query.key, ctx.query.value).eager('courses');
+  const learningpath = await LearningPath.query().where(ctx.query.key, ctx.query.value).orderBy(ctx.query.sort).eager('courses');
 
 
   ctx.assert(learningpath, 404, 'Record does not exist');
