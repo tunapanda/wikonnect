@@ -1,6 +1,8 @@
 const Router = require('koa-router');
 const Activity = require('../models/activity');
 const validateActivity = require('../middleware/validation/validateActivity');
+const queryStringSearch = require('../middleware/queryStringSearch');
+
 
 const router = new Router({
   prefix: '/activity'
@@ -8,8 +10,8 @@ const router = new Router({
 
 
 
-router.get('/:id', async ctx => {
-  const activity = await Activity.query().where('id', ctx.params.id);
+router.get('/:id', queryStringSearch, async ctx => {
+  const activity = await Activity.query().where(ctx.query.key, ctx.query.value);
 
   ctx.assert(activity, 404, 'no activity by that ID');
 

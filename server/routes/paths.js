@@ -1,6 +1,7 @@
 const Router = require('koa-router');
 const LearningPath = require('../models/learning_path');
 const validatePostData = require('../middleware/validation/validatePostData');
+const queryStringSearch = require('../middleware/queryStringSearch');
 
 
 const router = new Router({
@@ -13,8 +14,10 @@ router.get('/', async ctx => {
   ctx.body = { learningpath };
 });
 
-router.get('/:id', async ctx => {
-  const learningpath = await LearningPath.query().where('id', ctx.params.id).eager('courses');
+router.get('/:id', queryStringSearch, async ctx => {
+
+  const learningpath = await LearningPath.query().where(ctx.query.key, ctx.query.value).eager('courses');
+
 
   ctx.assert(learningpath, 404, 'Record does not exist');
 
@@ -51,7 +54,7 @@ router.delete('/:id', async ctx => {
     ctx.assert(learningpath, 401, 'No ID was found');
   }
   await LearningPath.query().delete().where({ id: ctx.params.id });
-  
+
   ctx.status = 200;
   ctx.body = { learningpath };
 });

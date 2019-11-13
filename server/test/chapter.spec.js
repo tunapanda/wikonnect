@@ -27,8 +27,8 @@ const putData = {
 
 const invalidData = {
   'id': itemID,
-  'name': 'Testing Learning Path',
-  'slug': 'testing-learning-path',
+  'name': 'Testing Chapter Route',
+  'slug': 'testing-chapter-route',
   'description': 'Testing chapter route',
   'status': 'draft'
 };
@@ -98,6 +98,21 @@ describe('routes: chapter', () => {
     chai
       .request(server)
       .get(route + itemID)
+      .end((err, res) => {
+        res.should.have.status(200);
+        res.should.be.json;
+        res.body.chapter[0].should.have.property('id');
+        res.body.chapter[0].should.have.property('name');
+        res.body.chapter[0].should.have.property('slug');
+        res.body.chapter[0].should.have.property('creatorId');
+        done();
+      });
+  });
+
+  it('Should list ONE chapter item on GET', done => {
+    chai
+      .request(server)
+      .get(route + itemID + '?slug=testing-chapter-path')
       .end((err, res) => {
         res.should.have.status(200);
         res.should.be.json;

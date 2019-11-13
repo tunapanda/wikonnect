@@ -5,12 +5,12 @@ const server = require('../index');
 chai.should();
 chai.use(chaiHttp);
 
-const route = '/api/v1/course';
-const itemID = '/course10';
+const route = '/api/v1/course/';
+const itemID = 'course10';
 const data = {
   'id': 'course10',
   'name': 'Testing Course Path',
-  'slug': 'source-learning-path',
+  'slug': 'source-course-route',
   'description': 'Colection of modules.',
   'status': 'published',
   'creator_id': 'user3'
@@ -58,7 +58,7 @@ describe('routes: course', () => {
       });
   });
   // Passing tests
-  it('Should CREATE a learning-path record on POST with valid data and return a JSON object', done => {
+  it('Should CREATE a course-route record on POST with valid data and return a JSON object', done => {
     chai
       .request(server)
       .post(route)
@@ -71,7 +71,7 @@ describe('routes: course', () => {
         done();
       });
   });
-  it('Should list ALL learning-paths on GET', done => {
+  it('Should list ALL course-route on GET', done => {
     chai
       .request(server)
       .get(route)
@@ -85,7 +85,7 @@ describe('routes: course', () => {
         done();
       });
   });
-  it('Should list ONE learning-paths item on GET', done => {
+  it('Should list ONE course item on GET', done => {
     chai
       .request(server)
       .get(route + itemID)
@@ -99,7 +99,22 @@ describe('routes: course', () => {
         done();
       });
   });
-  it('Should UPDATE a learning-path record on PUT', done => {
+  it('Should list ONE course-route item on GET', done => {
+    chai
+      .request(server)
+      .get(route + itemID + '?slug=source-course-route')
+      .end((err, res) => {
+        res.should.have.status(200);
+        res.should.be.json;
+        res.body.course[0].should.have.property('id');
+        res.body.course[0].should.have.property('name');
+        res.body.course[0].should.have.property('slug');
+        res.body.course[0].should.have.property('creatorId');
+        done();
+      });
+  });
+
+  it('Should UPDATE a course-route record on PUT', done => {
     chai
       .request(server)
       .put(route + itemID)
@@ -112,7 +127,7 @@ describe('routes: course', () => {
         done();
       });
   });
-  it('Should DELETE a learning-path record on DELETE /:id return deleted JSON object', done => {
+  it('Should DELETE a course-route record on DELETE /:id return deleted JSON object', done => {
     chai
       .request(server)
       .delete(route + itemID)
