@@ -7,5 +7,6 @@ export default class ModuleModel extends Model {
     @attr() description;
     @attr() status;
     @belongsTo('user') creator;
+    @belongsTo('course') course;
     @hasMany('lesson') lessons;
 }

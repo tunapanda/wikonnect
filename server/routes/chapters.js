@@ -3,7 +3,7 @@ const Chapter = require('../models/chapter');
 const validateChapter = require('../middleware/validation/validateChapter');
 
 const router = new Router({
-  prefix: '/chapter'
+  prefix: '/chapters'
 });
 
 
@@ -23,7 +23,7 @@ router.get('/:id', async ctx => {
   ctx.body = { chapter };
 });
 
-router.post('/', validateChapter,  async ctx => {
+router.post('/', validateChapter, async ctx => {
   let newChapter = ctx.request.body;
 
   const chapter = await Chapter.query().insertAndFetch(newChapter);
@@ -53,7 +53,7 @@ router.delete('/:id', async ctx => {
     ctx.assert(chapter, 401, 'No ID was found');
   }
   await Chapter.query().delete().where({ id: ctx.params.id });
-  
+
   ctx.status = 200;
   ctx.body = { chapter };
 });

@@ -4,16 +4,23 @@ const validatePostData = require('../middleware/validation/validatePostData');
 
 
 const router = new Router({
-  prefix: '/course'
+  prefix: '/courses'
 });
 
 
 router.get('/:id', async ctx => {
-  const course = await Course.query().where('id', ctx.params.id).eager('modules');
-  
+  const course = await Course.query().findById(ctx.params.id).eager('modules');
+
   ctx.assert(course, 404, 'no lesson by that ID');
 
-  ctx.status =  200;
+
+  if (course.modules) {
+    course.modules.forEach(mod => {
+      mod.type = 'module';
+    });
+  }
+
+  ctx.status = 200;
   ctx.body = { course };
 });
 

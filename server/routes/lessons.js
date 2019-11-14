@@ -4,15 +4,15 @@ const validatePostData = require('../middleware/validation/validatePostData');
 
 
 const router = new Router({
-  prefix: '/lesson'
+  prefix: '/lessons'
 });
 
 router.get('/:id', async ctx => {
   const lesson = await Lesson.query().where('id', ctx.params.id).eager('chapters');
-  
+
   ctx.assert(lesson, 404, 'no lesson by that ID');
 
-  ctx.status =  200;
+  ctx.status = 200;
   ctx.body = { lesson };
 });
 

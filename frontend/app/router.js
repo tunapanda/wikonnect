@@ -10,10 +10,14 @@ Router.map(function () {
     this.route('signup');
     this.route('login');
     this.route('home');
-    this.route('courses', { path: '/course/:id' }, function () {
-        this.route('modules', { path: '/module/:id' }, function () {
-            this.route('lessons', { path: '/lesson/:id' }, function () {
-                this.route('chapters', { path: '/chapter/:id' });
+    this.route('courses', function () {
+        this.route('course', { path: '/:course_id' }, function () {
+            this.route('modules', function () {
+                this.route('module', { path: 'module/:module_id' }, function () {
+                    this.route('modules/lessons/lesson', { path: '/lesson/:lesson_id' }, function () {
+                        this.route('chapters', { path: '/chapter/:id' });
+                    });
+                });
             });
         });
     });

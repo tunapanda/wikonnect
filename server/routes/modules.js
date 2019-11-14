@@ -4,16 +4,22 @@ const validatePostData = require('../middleware/validation/validatePostData');
 
 
 const router = new Router({
-  prefix: '/module'
+  prefix: '/modules'
 });
 
 
 router.get('/:id', async ctx => {
-  const module = await Module.query().where('id', ctx.params.id).eager('lessons');
-  
-  ctx.assert(module, 404, 'no lesson by that ID');
+  const module = await Module.query().findById(ctx.params.id).eager('lessons');
 
-  ctx.status =  200;
+  ctx.assert(module, 404, 'no module by that ID');
+
+  if (module.lessons) {
+    module.lessons.forEach(lesson => {
+      lesson.type = 'lesson';
+    });
+  }
+
+  ctx.status = 200;
   ctx.body = { module };
 });
 
@@ -47,8 +53,8 @@ router.put('/:id', async ctx => {
 router.delete('/:id', async ctx => {
   const modules = await Module.query().findById(ctx.params.id);
   await Module.query().delete().where({ id: ctx.params.id });
-  
-  ctx.throw(modules, 401, 'No ID was provided');  
+
+  ctx.throw(modules, 401, 'No ID was provided');
   ctx.status = 200;
   ctx.body = { modules };
 });
