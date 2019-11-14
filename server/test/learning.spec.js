@@ -2,7 +2,7 @@ const chai = require('chai');
 const chaiHttp = require('chai-http');
 const server = require('../index');
 
-
+const assert = chai.assert;
 chai.should();
 chai.use(chaiHttp);
 
@@ -28,6 +28,10 @@ const invalidData = {
   'description': 'Testing organisation of the courses.',
   'status': 'draft'
 };
+
+/**
+ * 
+ */
 
 describe('routes: paths', () => {
   // Failing tests
@@ -59,6 +63,17 @@ describe('routes: paths', () => {
         done();
       });
   });
+  it('Should throw an ERROR on GET req using invalid query', done => {
+    chai
+      .request(server)
+      .get(route + itemID + '?slug=a-learning')
+      .end((err, res) => {
+        res.should.have.status(200);
+        assert.equal(res.body.learningpath.length, 0);
+        done();
+      });
+  });
+
   // Passing tests
   it('Should CREATE a learning-path record on POST with valid data and return a JSON object', done => {
     chai
