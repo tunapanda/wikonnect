@@ -15,7 +15,7 @@ router.get('/', async ctx => {
 });
 
 router.get('/:id', queryStringSearch, async ctx => {
-  const achievement = await Achievement.query().where(ctx.query.key, ctx.query.value);
+  const achievement = await Achievement.query().where(ctx.query);
 
   ctx.assert(achievement, 404, 'no achievement by that ID');
 

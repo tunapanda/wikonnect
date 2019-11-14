@@ -16,14 +16,14 @@ router.get('/', async ctx => {
 
 router.get('/:id', queryStringSearch, async ctx => {
 
-  const learningpath = await LearningPath.query().where(ctx.query.key, ctx.query.value).orderBy(ctx.query.sort).eager('courses');
-
+  const learningpath = await LearningPath.query().where(ctx.query).eager('courses');
 
   ctx.assert(learningpath, 404, 'Record does not exist');
 
   ctx.status = 200;
-  ctx.body = { learningpath };
+  ctx.body = learningpath;
 });
+
 
 router.post('/', validatePostData, async ctx => {
   let newLearningPath = ctx.request.body;
