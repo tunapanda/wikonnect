@@ -9,7 +9,8 @@ const router = new Router({
 });
 
 router.get('/:id', queryStringSearch, async ctx => {
-  const lesson = await Lesson.query().where(ctx.query.key, ctx.query.value).eager('chapters');
+  const lesson = await Lesson.query().where(ctx.query).eager('chapters');
+
   ctx.assert(lesson, 404, 'no lesson by that ID');
 
   ctx.status = 200;

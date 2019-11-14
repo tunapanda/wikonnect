@@ -16,7 +16,7 @@ router.get('/', async ctx => {
 });
 
 router.get('/:id', queryStringSearch, async ctx => {
-  const chapter = await Chapter.query().where(ctx.query.key, ctx.query.value).eager('lesson');
+  const chapter = await Chapter.query().where(ctx.query).eager('lesson');
 
   ctx.assert(chapter, 404, 'no lesson by that ID');
 

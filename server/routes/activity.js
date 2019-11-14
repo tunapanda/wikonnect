@@ -11,7 +11,7 @@ const router = new Router({
 
 
 router.get('/:id', queryStringSearch, async ctx => {
-  const activity = await Activity.query().where(ctx.query.key, ctx.query.value);
+  const activity = await Activity.query().where(ctx.query);
 
   ctx.assert(activity, 404, 'no activity by that ID');
 
