@@ -10,18 +10,14 @@ Router.map(function () {
     this.route('signup');
     this.route('login');
     this.route('home');
-    this.route('courses', function () {
-        this.route('course', { path: '/:course_id' }, function () {
-            this.route('modules', function () {
-                this.route('module', { path: 'module/:module_id' }, function () {
-                    this.route('modules/lessons/lesson', { path: '/lesson/:lesson_id' }, function () {
-                        this.route('chapters', { path: '/chapter/:id' });
-                    });
-                });
+    this.route('course', { path: 'course/:course_id' }, function () {
+        this.route('module', { path: 'module/:module_id' }, function () {
+            this.route('lesson', { path: '/lesson/:lesson_id' }, function () {
+                this.route('chapters', { path: '/chapter/:chapter_id' });
             });
         });
     });
-    this.route('profile', { path: '/profile/:id' }, function () {
+    this.route('profile', { path: '/profile/:profile_id' }, function () {
         this.route('settings');
     });
     this.route('search');
