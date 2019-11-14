@@ -18,10 +18,13 @@ router.get('/:id', queryStringSearch, async ctx => {
 
   const learningpath = await LearningPath.query().where(ctx.query).eager('courses');
 
-  ctx.assert(learningpath, 404, 'Record does not exist');
+  if (learningpath.length === 0) {
+    ctx.status = 404;
+    ctx.body = { learningpath: 'Record does not exist' };
+  }
 
   ctx.status = 200;
-  ctx.body = learningpath;
+  ctx.body = { learningpath };
 });
 
 
