@@ -18,6 +18,14 @@ class Lesson extends Model {
       }
     };
   }
+
+  static get modifiers() {
+    return {
+      selectNameAndId: (builder) => {
+        builder.select('id', 'name');
+      }
+    };
+  }
 }
 
 Lesson.knex(knex);

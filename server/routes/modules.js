@@ -9,34 +9,41 @@ const router = new Router({
 });
 
 
-router.get('/:id', queryStringSearch, async ctx => {
-  const module = await Module.query().where(ctx.query).eager('lessons');
-
-  ctx.assert(module, 404, 'no lesson by that ID');
-
-  ctx.assert(module, 404, 'no module by that ID');
-
-  if (module.lessons) {
-    module.lessons.forEach(lesson => {
+router.get('/:id', async ctx => {
+  const modules = await Module.query().findById(ctx.params.id).eager('lessons(selectNameAndId)');
+  if (modules.lessons) {
+    modules.lessons.forEach(lesson => {
       lesson.type = 'lesson';
     });
   }
 
-  ctx.status = 200;
-  ctx.body = { module };
-});
+  ctx.assert(module, 404, 'no modlue by that ID');
 
-router.get('/', async ctx => {
-  const modules = await Module.query();
   ctx.status = 200;
   ctx.body = { modules };
 });
+
+router.get('/', queryStringSearch, async ctx => {
+  const modules = await Module.query().where(ctx.query).eager('lessons(selectNameAndId)');
+
+  if (modules) {
+    modules.forEach(mod => {
+      mod.lessons.forEach(lesson => {
+        lesson.type = 'lesson';
+      });
+    });
+  }
+
+  ctx.status = 200;
+  ctx.body = { modules };
+});
+
 router.post('/', validatePostData, async ctx => {
   let newModule = ctx.request.body;
 
   const modules = await Module.query().insertAndFetch(newModule);
 
-  ctx.assert(module, 401, 'Something went wrong');
+  ctx.assert(modules, 401, 'Something went wrong');
 
   ctx.status = 201;
 
