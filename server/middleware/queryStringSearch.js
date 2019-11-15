@@ -5,11 +5,6 @@ async function queryStringSearch(ctx, next) {
   delete ctx.query.updated_at;
   delete ctx.query.metadata;
 
-  // delete ctx.query.name;
-  delete ctx.query.creator_id;
-  console.log(ctx.query);
-  console.log('--=====-----=--=--------');
-
   function isEmpty(obj) {
     return Object.keys(obj).length === 0;
   }
