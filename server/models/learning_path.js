@@ -27,6 +27,14 @@ class LearningPath extends Model {
       }
     };
   }
+
+  static get modifiers() {
+    return {
+      selectNameAndId: (builder) => {
+        builder.select('id', 'name');
+      }
+    };
+  }
 }
 
 LearningPath.knex(knex);
