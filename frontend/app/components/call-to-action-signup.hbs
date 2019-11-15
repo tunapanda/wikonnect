@@ -3,9 +3,11 @@
     <h4></h4>
     <p>Sign up/ sign in to view or save your progress</p>
   </div>
-  <button>SIGN UP</button>
+  {{#link-to "signup"}}
+    <button>SIGN UP</button>
+  {{/link-to}}
   <br>
   <p class="padded">
-    Already signed up? Log in
+    Already signed up? {{#link-to "login" class="underlined-link"}}Log in{{/link-to}}
   </p>
 </div>
