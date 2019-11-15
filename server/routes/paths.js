@@ -8,21 +8,16 @@ const router = new Router({
   prefix: '/paths'
 });
 
-router.get('/', async ctx => {
-  const learningpath = await LearningPath.query().eager('courses');
+router.get('/', queryStringSearch, async ctx => {
+  const learningpath = await LearningPath.query().where(ctx.query).eager('courses');
+  console.log(learningpath);
+
   ctx.status = 200;
   ctx.body = { learningpath };
 });
 
-router.get('/:id', queryStringSearch, async ctx => {
-
-  const learningpath = await LearningPath.query().where(ctx.query).eager('courses');
-
-  if (learningpath.length === 0) {
-    ctx.status = 404;
-    ctx.body = { learningpath: 'Record does not exist' };
-  }
-
+router.get('/:id', async ctx => {
+  const learningpath = await LearningPath.query().findById(ctx.params.id).eager('courses');
   ctx.status = 200;
   ctx.body = { learningpath };
 });

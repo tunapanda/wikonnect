@@ -66,7 +66,7 @@ describe('routes: paths', () => {
   it('Should throw an ERROR on GET req using invalid query', done => {
     chai
       .request(server)
-      .get(route + itemID + '?slug=a-learning')
+      .get(route + '?slug=a-learning')
       .end((err, res) => {
         res.should.have.status(200);
         assert.equal(res.body.learningpath.length, 0);
