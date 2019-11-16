@@ -30,7 +30,7 @@ const invalidData = {
 };
 
 /**
- * 
+ *
  */
 
 describe('routes: paths', () => {
