@@ -8,16 +8,16 @@ const router = new Router({
   prefix: '/lessons'
 });
 
-router.get('/:id', queryStringSearch, async ctx => {
-  const lesson = await Lesson.query().where(ctx.query).eager('chapters');
+router.get('/:id', async ctx => {
+  const lesson = await Lesson.query().findById(ctx.params.id);
   ctx.assert(lesson, 404, 'no lesson by that ID');
 
   ctx.status = 200;
   ctx.body = { lesson };
 });
 
-router.get('/', async ctx => {
-  const lesson = await Lesson.query();
+router.get('/', queryStringSearch, async ctx => {
+  const lesson = await Lesson.query().where(ctx.query).eager('chapters');
   ctx.status = 200;
   ctx.body = { lesson };
 });

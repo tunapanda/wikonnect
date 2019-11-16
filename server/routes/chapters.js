@@ -9,14 +9,14 @@ const router = new Router({
 
 
 
-router.get('/', async ctx => {
-  const chapter = await Chapter.query();
+router.get('/', queryStringSearch, async ctx => {
+  const chapter = await Chapter.query().where(ctx.query).eager('lesson');
   ctx.status = 200;
   ctx.body = { chapter };
 });
 
-router.get('/:id', queryStringSearch, async ctx => {
-  const chapter = await Chapter.query().where(ctx.query).eager('lesson');
+router.get('/:id', async ctx => {
+  const chapter = await Chapter.query().findById(ctx.params.id);
 
   ctx.assert(chapter, 404, 'no lesson by that ID');
 

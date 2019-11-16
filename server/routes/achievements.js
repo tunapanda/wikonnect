@@ -8,14 +8,14 @@ const router = new Router({
 });
 
 
-router.get('/', async ctx => {
-  const achievement = await Achievement.query();
+router.get('/', queryStringSearch, async ctx => {
+  const achievement = await Achievement.query().where(ctx.query);
   ctx.status = 200;
   ctx.body = { achievement };
 });
 
-router.get('/:id', queryStringSearch, async ctx => {
-  const achievement = await Achievement.query().where(ctx.query);
+router.get('/:id', async ctx => {
+  const achievement = await Achievement.query().findById(ctx.params);
 
   ctx.assert(achievement, 404, 'no achievement by that ID');
 

@@ -9,9 +9,8 @@ const router = new Router({
 });
 
 
-
-router.get('/:id', queryStringSearch, async ctx => {
-  const activity = await Activity.query().where(ctx.query);
+router.get('/:id', async ctx => {
+  const activity = await Activity.query().findById(ctx.params.id);
 
   ctx.assert(activity, 404, 'no activity by that ID');
 
@@ -19,8 +18,8 @@ router.get('/:id', queryStringSearch, async ctx => {
   ctx.body = { activity };
 });
 
-router.get('/', async ctx => {
-  const activity = await Activity.query();
+router.get('/', queryStringSearch, async ctx => {
+  const activity = await Activity.query().where(ctx.query);
   ctx.status = 200;
   ctx.body = { activity };
 });

@@ -8,8 +8,8 @@ const router = new Router({
 });
 
 
-router.get('/:id', queryStringSearch, async ctx => {
-  const course = await Course.query().where(ctx.query).eager('modules');
+router.get('/:id', async ctx => {
+  const course = await Course.query().findById(ctx.params.id);
   ctx.assert(course, 404, 'no lesson by that ID');
 
 
@@ -23,8 +23,8 @@ router.get('/:id', queryStringSearch, async ctx => {
   ctx.body = { course };
 });
 
-router.get('/', async ctx => {
-  const course = await Course.query();
+router.get('/', queryStringSearch, async ctx => {
+  const course = await Course.query().where(ctx.query).eager('modules');
   ctx.status = 200;
   ctx.body = { course };
 });
