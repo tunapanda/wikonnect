@@ -3,7 +3,6 @@ const User = require('../models/user');
 const validateAuthRoutes = require('../middleware/validation/validateAuthRoutes');
 const bcrypt = require('bcrypt');
 const getUserByUsername = require('../middleware/authenticate');
-const queryStringSearch = require('../middleware/queryStringSearch');
 
 
 const router = new Router({
@@ -34,9 +33,9 @@ router.post('/', validateAuthRoutes.validateNewUser, getUserByUsername, createPa
   ctx.body = { user };
 });
 
-router.get('/:id', queryStringSearch, async ctx => {
+router.get('/:id', async ctx => {
 
-  let user = await User.query().findById(ctx.query);
+  let user = await User.query().findById(ctx.params.id);
 
   ctx.assert(user, 404, 'No User With that Id');
 
