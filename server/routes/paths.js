@@ -10,8 +10,6 @@ const router = new Router({
 
 router.get('/', queryStringSearch, async ctx => {
   const learningpath = await LearningPath.query().where(ctx.query).eager('courses');
-  console.log(learningpath);
-
   ctx.status = 200;
   ctx.body = { learningpath };
 });

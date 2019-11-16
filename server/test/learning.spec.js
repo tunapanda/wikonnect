@@ -1,8 +1,9 @@
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 const server = require('../index');
-
 const assert = chai.assert;
+
+
 chai.should();
 chai.use(chaiHttp);
 
@@ -12,7 +13,7 @@ const data = {
   'id': 'learning_path10',
   'name': 'Testing Learning Path',
   'slug': 'testing-learning-path',
-  'description': 'Testing organisation of the courses.',
+  'description': 'Testing organization of the courses.',
   'status': 'published',
   'creator_id': 'user3'
 };
@@ -25,7 +26,7 @@ const invalidData = {
   'id': 'learning_path10',
   'name': 'Testing Learning Path',
   'slug': 'testing-learning-path',
-  'description': 'Testing organisation of the courses.',
+  'description': 'Testing organization of the courses.',
   'status': 'draft'
 };
 
@@ -73,7 +74,6 @@ describe('routes: paths', () => {
         done();
       });
   });
-
   // Passing tests
   it('Should CREATE a learning-path record on POST with valid data and return a JSON object', done => {
     chai
@@ -102,10 +102,10 @@ describe('routes: paths', () => {
         done();
       });
   });
-  it('Should list ONE learning-paths item on GET using PARAMS', done => {
+  it('Should list ONE learning-paths item on GET using QUERY', done => {
     chai
       .request(server)
-      .get(route + itemID)
+      .get(route + '?slug=a-learning-path')
       .end((err, res) => {
         res.should.have.status(200);
         res.should.be.json;
@@ -116,17 +116,17 @@ describe('routes: paths', () => {
         done();
       });
   });
-  it('Should list ONE learning-paths item on GET using QUERY', done => {
+  it('Should list ONE learning-paths item on GET using PARAMS', done => {
     chai
       .request(server)
-      .get(route + itemID + '?slug=a-learning-path')
+      .get(route + itemID)
       .end((err, res) => {
         res.should.have.status(200);
         res.should.be.json;
-        res.body.learningpath[0].should.have.property('id');
-        res.body.learningpath[0].should.have.property('name');
-        res.body.learningpath[0].should.have.property('slug');
-        res.body.learningpath[0].should.have.property('creatorId');
+        res.body.learningpath.should.have.property('id');
+        res.body.learningpath.should.have.property('name');
+        res.body.learningpath.should.have.property('slug');
+        res.body.learningpath.should.have.property('creatorId');
         done();
       });
   });

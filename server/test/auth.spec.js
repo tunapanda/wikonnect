@@ -7,6 +7,8 @@ const knex = require('../db/db');
 chai.should();
 chai.use(chaiHttp);
 
+const usersRoute = '/api/v1/users/';
+const authRoute = '/api/v1/auth/';
 const userId = 'user99';
 const registerUser = {
   'user': {
@@ -42,7 +44,7 @@ describe('authentication routes', () => {
     it('Should create user on POST requests', done => {
       chai
         .request(server)
-        .post('/api/v1/users/')
+        .post(usersRoute)
         .set('Content-Type', 'application/json')
         .send(registerUser)
         .end((err, res) => {
@@ -53,10 +55,10 @@ describe('authentication routes', () => {
           done();
         });
     });
-    it('Should get ALL userers on GET requests', done => {
+    it('Should get ALL users on GET requests', done => {
       chai
         .request(server)
-        .get('/api/v1/users/')
+        .get(usersRoute)
         .set('Content-Type', 'application/json')
         .send(registerUser)
         .end((err, res) => {
@@ -71,7 +73,7 @@ describe('authentication routes', () => {
     it('Should throw an ERROR for POST requests with bad/malformed data', done => {
       chai
         .request(server)
-        .post('/api/v1/users/')
+        .post(usersRoute)
         .send(badUserData)
         .set('Content-Type', 'application/json')
         .end((err, res) => {
@@ -86,7 +88,7 @@ describe('authentication routes', () => {
     it('Should throw an ERROR on POST data if user already exists', done => {
       chai
         .request(server)
-        .post('/api/v1/users/')
+        .post(usersRoute)
         .send(registerUser)
         .set('Accept', 'application/json')
         .end((err, res) => {
@@ -102,7 +104,7 @@ describe('authentication routes', () => {
     it('Should login a valid user on POST and return token', done => {
       chai
         .request(server)
-        .post('/api/v1/auth/')
+        .post(authRoute)
         .set('Content-Type', 'application/json')
         .send(loginUserData)
         .end((err, res) => {
@@ -114,7 +116,7 @@ describe('authentication routes', () => {
     it('Should throw an ERROR on POST with invalid user data', done => {
       chai
         .request(server)
-        .post('/api/v1/auth/')
+        .post(authRoute)
         .set('Content-Type', 'application/json')
         .send({ 'username': 'urlencoded', 'hash': 'urlencodedurl' })
         .end((err, res) => {

@@ -5,11 +5,12 @@ const chaiJSON = require('chai-json-schema');
 const server = require('../index');
 const chapterSchema = require('../db/json_schema/chapterSchema');
 
+
 chai.should();
 chai.use(chaiHttp);
 chai.use(chaiJSON);
 
-const route = '/api/v1/chapter/';
+const route = '/api/v1/chapters/';
 const itemID = 'chapter19';
 const data = {
   'id': itemID,
@@ -65,6 +66,16 @@ describe('routes: chapter', () => {
         done();
       });
   });
+  it('Should throw an ERROR on GET req using invalid query', done => {
+    chai
+      .request(server)
+      .get(route + '?slug=a-learning')
+      .end((err, res) => {
+        res.should.have.status(200);
+        assert.equal(res.body.learningpath.length, 0);
+        done();
+      });
+  });
   // Passing tests
   it('Should CREATE a chapter record on POST with valid data and return a JSON object', done => {
     chai
@@ -101,10 +112,10 @@ describe('routes: chapter', () => {
       .end((err, res) => {
         res.should.have.status(200);
         res.should.be.json;
-        res.body.chapter[0].should.have.property('id');
-        res.body.chapter[0].should.have.property('name');
-        res.body.chapter[0].should.have.property('slug');
-        res.body.chapter[0].should.have.property('creatorId');
+        res.body.chapter.should.have.property('id');
+        res.body.chapter.should.have.property('name');
+        res.body.chapter.should.have.property('slug');
+        res.body.chapter.should.have.property('creatorId');
         done();
       });
   });
@@ -112,7 +123,7 @@ describe('routes: chapter', () => {
   it('Should list ONE chapter item on GET', done => {
     chai
       .request(server)
-      .get(route + itemID + '?slug=testing-chapter-path')
+      .get(route + '?slug=testing-chapter-path')
       .end((err, res) => {
         res.should.have.status(200);
         res.should.be.json;

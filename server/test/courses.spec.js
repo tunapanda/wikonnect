@@ -1,11 +1,13 @@
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 const server = require('../index');
+const assert = chai.assert;
+
 
 chai.should();
 chai.use(chaiHttp);
 
-const route = '/api/v1/course/';
+const route = '/api/v1/courses/';
 const itemID = 'course10';
 const data = {
   'id': 'course10',
@@ -57,6 +59,16 @@ describe('routes: course', () => {
         done();
       });
   });
+  it('Should throw an ERROR on GET req using invalid query', done => {
+    chai
+      .request(server)
+      .get(route + '?slug=a-learning')
+      .end((err, res) => {
+        res.should.have.status(200);
+        assert.equal(res.body.learningpath.length, 0);
+        done();
+      });
+  });
   // Passing tests
   it('Should CREATE a course-route record on POST with valid data and return a JSON object', done => {
     chai
@@ -92,10 +104,10 @@ describe('routes: course', () => {
       .end((err, res) => {
         res.should.have.status(200);
         res.should.be.json;
-        res.body.course[0].should.have.property('id');
-        res.body.course[0].should.have.property('name');
-        res.body.course[0].should.have.property('slug');
-        res.body.course[0].should.have.property('creatorId');
+        res.body.course.should.have.property('id');
+        res.body.course.should.have.property('name');
+        res.body.course.should.have.property('slug');
+        res.body.course.should.have.property('creatorId');
         done();
       });
   });
@@ -106,10 +118,10 @@ describe('routes: course', () => {
       .end((err, res) => {
         res.should.have.status(200);
         res.should.be.json;
-        res.body.course[0].should.have.property('id');
-        res.body.course[0].should.have.property('name');
-        res.body.course[0].should.have.property('slug');
-        res.body.course[0].should.have.property('creatorId');
+        res.body.course.should.have.property('id');
+        res.body.course.should.have.property('name');
+        res.body.course.should.have.property('slug');
+        res.body.course.should.have.property('creatorId');
         done();
       });
   });
