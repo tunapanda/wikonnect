@@ -8,16 +8,26 @@ const router = new Router({
   prefix: '/modules'
 });
 
+async function testModulesStuff(modules) {
+  if (modules.length == undefined) {
+    modules.lessons.forEach(lesson => {
+      return lesson.type = 'lesson';
+    });
+  } else {
+    modules.forEach(mod => {
+      mod.lessons.forEach(lesson => {
+        return lesson.type = 'lesson';
+      });
+    });
+  }
+}
+
 
 router.get('/:id', async ctx => {
   const modules = await Module.query().findById(ctx.params.id).eager('lessons(selectNameAndId)');
-  if (modules.lessons) {
-    modules.lessons.forEach(lesson => {
-      lesson.type = 'lesson';
-    });
-  }
 
-  ctx.assert(module, 404, 'no modlue by that ID');
+  testModulesStuff(modules);
+  ctx.assert(module, 404, 'no module by that ID');
 
   ctx.status = 200;
   ctx.body = { modules };
@@ -26,14 +36,7 @@ router.get('/:id', async ctx => {
 router.get('/', queryStringSearch, async ctx => {
   const modules = await Module.query().where(ctx.query).eager('lessons(selectNameAndId)');
 
-  if (modules) {
-    modules.forEach(mod => {
-      mod.lessons.forEach(lesson => {
-        lesson.type = 'lesson';
-      });
-    });
-  }
-
+  testModulesStuff(modules);
   ctx.status = 200;
   ctx.body = { modules };
 });

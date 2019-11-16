@@ -8,14 +8,46 @@ const router = new Router({
   prefix: '/paths'
 });
 
+async function testModulesStuff(parent, child) {
+  if (parent.length == undefined) {
+    parent.courses.forEach(lesson => {
+      return lesson.type = child;
+    });
+  } else {
+    parent.forEach(mod => {
+      mod.courses.forEach(lesson => {
+        return lesson.type = child;
+      });
+    });
+  }
+}
+
 router.get('/', queryStringSearch, async ctx => {
-  const learningpath = await LearningPath.query().where(ctx.query).eager('courses');
+  const learningpath = await LearningPath.query().where(ctx.query).eager('courses(selectNameAndId)');
+
+  // if (learningpath) {
+  //   learningpath.forEach(learn => {
+  //     learn.courses.forEach(course => {
+  //       course.type = 'lesson';
+  //     });
+  //   });
+  // }
+  testModulesStuff(learningpath, 'courses');
+
   ctx.status = 200;
   ctx.body = { learningpath };
 });
 
 router.get('/:id', async ctx => {
-  const learningpath = await LearningPath.query().findById(ctx.params.id).eager('courses');
+  const learningpath = await LearningPath.query().findById(ctx.params.id).eager('courses(selectNameAndId)');
+
+  // if (learningpath.courses) {
+  //   learningpath.courses.forEach(course => {
+  //     course.type = 'lesson';
+  //   });
+  // }
+  testModulesStuff(learningpath, 'courses');
+
   ctx.status = 200;
   ctx.body = { learningpath };
 });

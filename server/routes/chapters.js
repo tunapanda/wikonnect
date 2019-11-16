@@ -10,16 +10,17 @@ const router = new Router({
 
 
 router.get('/', queryStringSearch, async ctx => {
-  const chapter = await Chapter.query().where(ctx.query).eager('lesson');
+  const chapter = await Chapter.query().where(ctx.query).eager('lesson(selectNameAndId)');
   ctx.status = 200;
   ctx.body = { chapter };
 });
 
 router.get('/:id', async ctx => {
-  const chapter = await Chapter.query().findById(ctx.params.id);
+  const chapter = await Chapter.query().findById(ctx.params.id).eager('lesson(selectNameAndId)');
 
-  ctx.assert(chapter, 404, 'no lesson by that ID');
-
+  if (!chapter) {
+    ctx.assert(chapter, 404, 'no lesson by that ID');
+  }
   ctx.status = 200;
   ctx.body = { chapter };
 });
@@ -28,9 +29,9 @@ router.post('/', validateChapter, async ctx => {
   let newChapter = ctx.request.body;
 
   const chapter = await Chapter.query().insertAndFetch(newChapter);
-
-  ctx.assert(module, 401, 'Something went wrong');
-
+  if (!chapter) {
+    ctx.assert(module, 401, 'Something went wrong');
+  }
   ctx.status = 201;
 
   ctx.body = { chapter };

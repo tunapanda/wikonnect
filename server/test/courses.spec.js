@@ -65,7 +65,7 @@ describe('routes: course', () => {
       .get(route + '?slug=a-learning')
       .end((err, res) => {
         res.should.have.status(200);
-        assert.equal(res.body.learningpath.length, 0);
+        assert.equal(res.body.course.length, 0);
         done();
       });
   });

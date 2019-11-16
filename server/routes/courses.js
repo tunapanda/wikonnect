@@ -9,13 +9,13 @@ const router = new Router({
 
 
 router.get('/:id', async ctx => {
-  const course = await Course.query().findById(ctx.params.id);
+  const course = await Course.query().findById(ctx.params.id).eager('modules(selectNameAndId)');
   ctx.assert(course, 404, 'no lesson by that ID');
 
 
   if (course.modules) {
     course.modules.forEach(mod => {
-      mod.type = 'module';
+      mod.type = 'modules';
     });
   }
 
@@ -24,7 +24,7 @@ router.get('/:id', async ctx => {
 });
 
 router.get('/', queryStringSearch, async ctx => {
-  const course = await Course.query().where(ctx.query).eager('modules');
+  const course = await Course.query().where(ctx.query).eager('modules(selectNameAndId)');
   ctx.status = 200;
   ctx.body = { course };
 });

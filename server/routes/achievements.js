@@ -25,9 +25,9 @@ router.get('/:id', async ctx => {
 
 
 router.post('/', validateAchievement, async ctx => {
-  let newAcheivement = ctx.request.body;
+  let newAchievement = ctx.request.body;
 
-  const achievement = await Achievement.query().insertAndFetch(newAcheivement);
+  const achievement = await Achievement.query().insertAndFetch(newAchievement);
 
   ctx.assert(achievement, 401, 'Something went wrong');
 

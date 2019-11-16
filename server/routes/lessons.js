@@ -9,7 +9,7 @@ const router = new Router({
 });
 
 router.get('/:id', async ctx => {
-  const lesson = await Lesson.query().findById(ctx.params.id);
+  const lesson = await Lesson.query().findById(ctx.params.id).eager('chapters(selectNameAndId)');
   ctx.assert(lesson, 404, 'no lesson by that ID');
 
   ctx.status = 200;
@@ -17,7 +17,7 @@ router.get('/:id', async ctx => {
 });
 
 router.get('/', queryStringSearch, async ctx => {
-  const lesson = await Lesson.query().where(ctx.query).eager('chapters');
+  const lesson = await Lesson.query().where(ctx.query).eager('chapters(selectNameAndId)');
   ctx.status = 200;
   ctx.body = { lesson };
 });
