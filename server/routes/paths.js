@@ -8,31 +8,29 @@ const router = new Router({
   prefix: '/paths'
 });
 
-async function testModulesStuff(parent, child) {
-  if (parent.length == undefined) {
-    parent.courses.forEach(lesson => {
-      return lesson.type = child;
-    });
-  } else {
-    parent.forEach(mod => {
-      mod.courses.forEach(lesson => {
-        return lesson.type = child;
+async function returnType(parent) {
+  try {
+
+    if (parent.length == undefined) {
+      parent.courses.forEach(lesson => {
+        return lesson.type = 'courses';
       });
-    });
+    } else {
+      parent.forEach(mod => {
+        mod.courses.forEach(lesson => {
+          return lesson.type = 'courses';
+        });
+      });
+    }
+  } catch (error) {
+    null;
   }
 }
 
 router.get('/', queryStringSearch, async ctx => {
   const learningpath = await LearningPath.query().where(ctx.query).eager('courses(selectNameAndId)');
 
-  // if (learningpath) {
-  //   learningpath.forEach(learn => {
-  //     learn.courses.forEach(course => {
-  //       course.type = 'lesson';
-  //     });
-  //   });
-  // }
-  testModulesStuff(learningpath, 'courses');
+  returnType(learningpath);
 
   ctx.status = 200;
   ctx.body = { learningpath };
@@ -41,12 +39,11 @@ router.get('/', queryStringSearch, async ctx => {
 router.get('/:id', async ctx => {
   const learningpath = await LearningPath.query().findById(ctx.params.id).eager('courses(selectNameAndId)');
 
-  // if (learningpath.courses) {
-  //   learningpath.courses.forEach(course => {
-  //     course.type = 'lesson';
-  //   });
-  // }
-  testModulesStuff(learningpath, 'courses');
+  if (!learningpath) {
+    ctx.assert(module, 404, 'No matching record found');
+  }
+
+  returnType(learningpath);
 
   ctx.status = 200;
   ctx.body = { learningpath };

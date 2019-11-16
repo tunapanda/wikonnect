@@ -94,6 +94,8 @@ describe('routes: course', () => {
         res.body.course[0].should.have.property('name');
         res.body.course[0].should.have.property('slug');
         res.body.course[0].should.have.property('creatorId');
+        res.body.course[0].modules[0].should.have.property('id');
+
         done();
       });
   });

@@ -8,16 +8,36 @@ const router = new Router({
   prefix: '/lessons'
 });
 
+async function returnType(parent) {
+  if (parent.length == undefined) {
+    parent.chapters.forEach(lesson => {
+      return lesson.type = 'chapters';
+    });
+  } else {
+    parent.forEach(mod => {
+      mod.chapters.forEach(lesson => {
+        return lesson.type = 'chapters';
+      });
+    });
+  }
+}
+
 router.get('/:id', async ctx => {
   const lesson = await Lesson.query().findById(ctx.params.id).eager('chapters(selectNameAndId)');
-  ctx.assert(lesson, 404, 'no lesson by that ID');
 
+  if (!lesson) {
+    ctx.assert(lesson, 404, 'no lesson by that ID');
+  }
+  returnType(lesson);
   ctx.status = 200;
   ctx.body = { lesson };
 });
 
 router.get('/', queryStringSearch, async ctx => {
   const lesson = await Lesson.query().where(ctx.query).eager('chapters(selectNameAndId)');
+
+  returnType(lesson);
+
   ctx.status = 200;
   ctx.body = { lesson };
 });

@@ -8,15 +8,15 @@ const router = new Router({
   prefix: '/modules'
 });
 
-async function testModulesStuff(modules) {
-  if (modules.length == undefined) {
-    modules.lessons.forEach(lesson => {
-      return lesson.type = 'lesson';
+async function returnType(parent) {
+  if (parent.length == undefined) {
+    parent.lessons.forEach(lesson => {
+      return lesson.type = 'lessons';
     });
   } else {
-    modules.forEach(mod => {
+    parent.forEach(mod => {
       mod.lessons.forEach(lesson => {
-        return lesson.type = 'lesson';
+        return lesson.type = 'lessons';
       });
     });
   }
@@ -26,8 +26,10 @@ async function testModulesStuff(modules) {
 router.get('/:id', async ctx => {
   const modules = await Module.query().findById(ctx.params.id).eager('lessons(selectNameAndId)');
 
-  testModulesStuff(modules);
-  ctx.assert(module, 404, 'no module by that ID');
+  if (!modules) {
+    ctx.assert(module, 404, 'No matching record found');
+  }
+  returnType(modules);
 
   ctx.status = 200;
   ctx.body = { modules };
@@ -36,7 +38,7 @@ router.get('/:id', async ctx => {
 router.get('/', queryStringSearch, async ctx => {
   const modules = await Module.query().where(ctx.query).eager('lessons(selectNameAndId)');
 
-  testModulesStuff(modules);
+  returnType(modules);
   ctx.status = 200;
   ctx.body = { modules };
 });
@@ -46,8 +48,9 @@ router.post('/', validatePostData, async ctx => {
 
   const modules = await Module.query().insertAndFetch(newModule);
 
-  ctx.assert(modules, 401, 'Something went wrong');
-
+  if (!newModule) {
+    ctx.assert(modules, 401, 'Something went wrong');
+  }
   ctx.status = 201;
 
   ctx.body = { modules };

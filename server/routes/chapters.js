@@ -8,9 +8,28 @@ const router = new Router({
 });
 
 
+async function returnType(parent) {
+  try {
+    if (parent.length == undefined) {
+      parent.lesson.forEach(lesson => {
+        return lesson.type = 'lessons';
+      });
+    } else {
+      parent.forEach(mod => {
+        mod.lesson.forEach(lesson => {
+          return lesson.type = 'lessons';
+        });
+      });
+    }
+  } catch (error) {
+    null;
+  }
+}
 
 router.get('/', queryStringSearch, async ctx => {
   const chapter = await Chapter.query().where(ctx.query).eager('lesson(selectNameAndId)');
+
+  returnType(chapter);
   ctx.status = 200;
   ctx.body = { chapter };
 });
@@ -21,6 +40,9 @@ router.get('/:id', async ctx => {
   if (!chapter) {
     ctx.assert(chapter, 404, 'no lesson by that ID');
   }
+
+  returnType(chapter);
+
   ctx.status = 200;
   ctx.body = { chapter };
 });

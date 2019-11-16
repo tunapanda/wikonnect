@@ -99,6 +99,9 @@ describe('routes: paths', () => {
         res.body.learningpath[0].should.have.property('name');
         res.body.learningpath[0].should.have.property('slug');
         res.body.learningpath[0].should.have.property('creatorId');
+        res.body.learningpath[0].should.have.property('courses');
+        res.body.learningpath[0].courses[0].should.have.property('id');
+
         done();
       });
   });

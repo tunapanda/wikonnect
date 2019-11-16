@@ -7,7 +7,7 @@ class LearningPath extends Model {
     return 'learning_paths';
   }
 
-  static get jsonSchema(){
+  static get jsonSchema() {
     return modelSchema;
   }
 
