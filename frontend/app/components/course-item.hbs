@@ -1,11 +1,11 @@
 <div class="course-item">
-    <span>
-        {{#link-to "home"}}
-        <h4>{{@title}}</h4>
-        {{/link-to}}
+  <span>
+    {{#link-to "course"  @id }}
+      <h4>{{@title}}</h4>
+    {{/link-to}}
 
 
-        <div class="points">{{@points}} Points</div>
-    </span>
-    <div class="course-description">{{@description}}</div>
+    <div class="points">{{@points}} Points</div>
+  </span>
+  <div class="course-description">{{@description}}</div>
 </div>
