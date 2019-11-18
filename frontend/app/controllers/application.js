@@ -13,8 +13,8 @@ export default class ApplicationController extends Controller {
   @action
   logout() {
     this.me.logout();
-    document.location.reload()
-    this.transitionToRoute('home')
+    document.location.reload();
+    this.transitionToRoute('home');
   }
 
 

@@ -6,7 +6,9 @@ export default class LoginRoute extends Route {
   me;
 
   beforeModel() {
-    if (this.me.user) { this.transitionTo('home') }
+    if (this.me.user) {
+      this.transitionTo('home');
+    }
   }
 
   model() {
