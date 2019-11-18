@@ -3,6 +3,6 @@ import { inject } from '@ember/service';
 
 export default class MainHeaderComponent extends Component {
 
-    @inject
-    me;
+  @inject
+  me;
 }
