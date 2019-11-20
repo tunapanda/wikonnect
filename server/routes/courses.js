@@ -33,12 +33,17 @@ router.get('/:id', async ctx => {
 });
 
 router.get('/', queryStringSearch, async ctx => {
-  const course = await Course.query().where(ctx.query).eager('modules(selectNameAndId)');
+  try{
+    const course = await Course.query().where(ctx.query).eager('modules(selectNameAndId)');
 
-  returnType(course);
+    returnType(course);
 
-  ctx.status = 200;
-  ctx.body = { course };
+    ctx.status = 200;
+    ctx.body = { course };
+  } catch (error) {
+    ctx.status = 400;
+    ctx.body = { message: 'The query key does not exist' };
+  }
 });
 
 router.post('/', validatePostData, async ctx => {

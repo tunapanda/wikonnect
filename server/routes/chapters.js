@@ -27,11 +27,15 @@ async function returnType(parent) {
 }
 
 router.get('/', queryStringSearch, async ctx => {
-  const chapter = await Chapter.query().where(ctx.query).eager('lesson(selectNameAndId)');
-
-  returnType(chapter);
-  ctx.status = 200;
-  ctx.body = { chapter };
+  try {
+    const chapter = await Chapter.query().where(ctx.query).eager('lesson(selectNameAndId)');
+    returnType(chapter);
+    ctx.status = 200;
+    ctx.body = { chapter };
+  } catch (error) {
+    ctx.status = 400;
+    ctx.body = { message: 'The query key does not exist' };
+  }
 });
 
 router.get('/:id', async ctx => {
