@@ -30,7 +30,7 @@ const invalidData = {
   'status': 'published',
 };
 
-describe('routes: course', () => {
+describe('COURSES ROUTES', () => {
   // Failing tests
   it('Should throw an ERROR on POST with invalid data', done => {
     chai

@@ -28,12 +28,17 @@ async function returnType(parent) {
 }
 
 router.get('/', queryStringSearch, async ctx => {
-  const learningpath = await LearningPath.query().where(ctx.query).eager('courses(selectNameAndId)');
+  try {
+    const learningpath = await LearningPath.query().where(ctx.query).eager('courses(selectNameAndId)');
 
-  returnType(learningpath);
+    returnType(learningpath);
 
-  ctx.status = 200;
-  ctx.body = { learningpath };
+    ctx.status = 200;
+    ctx.body = { learningpath };
+  } catch (error) {
+    ctx.status = 400;
+    ctx.body = { message: 'The query key does not exist' };
+  }
 });
 
 router.get('/:id', async ctx => {
@@ -69,6 +74,7 @@ router.put('/:id', async ctx => {
   }
   const learningpath = await LearningPath.query().patchAndFetchById(ctx.params.id, ctx.request.body);
 
+  ctx.assert(learningpath, 400, 'That learning path does not exist');
 
   ctx.status = 201;
   ctx.body = { learningpath };

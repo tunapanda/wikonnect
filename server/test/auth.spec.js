@@ -33,7 +33,7 @@ const badUserData = {
   }
 };
 
-describe('authentication routes', () => {
+describe('AUTHENTICATION ROUTES', () => {
   before(() => {
     return knex.migrate.rollback()
       .then(() => { return knex.migrate.latest(); })
@@ -99,7 +99,7 @@ describe('authentication routes', () => {
     });
   });
 
-  describe('Auth routes tests: /api/v1/auth/', () => {
+  describe('USER AUTH ROUTES', () => {
 
     it('Should login a valid user on POST and return token', done => {
       chai
