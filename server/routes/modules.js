@@ -3,6 +3,9 @@ const Module = require('../models/module');
 const validatePostData = require('../middleware/validation/validatePostData');
 const queryStringSearch = require('../middleware/queryStringSearch');
 
+const config = require('../knexfile.js')['test'];
+const knex = require('knex')(config);
+
 
 const router = new Router({
   prefix: '/modules'
@@ -44,13 +47,21 @@ router.get('/', queryStringSearch, async ctx => {
 });
 
 router.post('/', validatePostData, async ctx => {
-  let newModule = ctx.request.body;
 
-  const modules = await Module.query().insertAndFetch(newModule);
+  let { module_id, course_id, ...newModule } = ctx.request.body;
 
   if (!newModule) {
     ctx.assert(modules, 401, 'Something went wrong');
   }
+
+  const modules = await Module.query().insertAndFetch(newModule);
+  await knex('course_modules').insert([
+    {
+      module_id: module_id,
+      course_id: course_id
+    }]);
+
+
   ctx.status = 201;
 
   ctx.body = { modules };

@@ -4,7 +4,7 @@ const validateAchievement = require('../middleware/validation/validateAchievemen
 const queryStringSearch = require('../middleware/queryStringSearch');
 
 const router = new Router({
-  prefix: '/achievement'
+  prefix: '/achievements'
 });
 
 
