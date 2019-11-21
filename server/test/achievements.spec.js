@@ -9,15 +9,14 @@ const knex = require('knex')(config);
 chai.should();
 chai.use(chaiHttp);
 
-const achievementRoute = '/api/v1/lessons/';
-const achievementID = 'basics3';
+const achievementRoute = '/api/v1/achievements/';
+const achievementID = 'achievements1';
 const achievementData = {
-  'id': 'lesson11',
-  'name': 'Testing Lessons Path',
-  'slug': 'testing-lesson-path',
-  'description': 'Testing organization of the courses.',
-  'status': 'published',
-  'creator_id': 'user1'
+  'id': 'achievements8',
+  'name': 'achievements testing record',
+  'slug': 'achievements-one',
+  'description': 'achievements one, achievements, achievements one',
+  'activity_id': 'activity1',
 };
 
 const putData = {
@@ -69,17 +68,17 @@ describe('ACHIEVEMENT ROUTE', () => {
       .end((err, res) => {
         res.status.should.eql(400);
         res.should.be.json;
-        res.body.message.should.eql('That activity path does not exist');
+        res.body.message.should.eql('That achievement does not exist');
         done();
       });
   });
   it('Should throw an ERROR on GET req using valid key and invalid query', done => {
     chai
       .request(server)
-      .get(achievementRoute + '?chapter_id=chapt')
+      .get(achievementRoute + '?activity_id=chapt')
       .end((err, res) => {
         res.should.have.status(200);
-        assert.equal(res.body.activity.length, 0);
+        assert.equal(res.body.achievement.length, 0);
         done();
       });
   });
@@ -94,7 +93,7 @@ describe('ACHIEVEMENT ROUTE', () => {
       });
   });
   // Passing tests
-  it('Should CREATE an activity record on POST with valid achievementData and return a JSON object', done => {
+  it('Should CREATE an achievement record on POST with valid achievementData and return a JSON object', done => {
     chai
       .request(server)
       .post(achievementRoute)
@@ -106,59 +105,59 @@ describe('ACHIEVEMENT ROUTE', () => {
         done();
       });
   });
-  it('Should list ALL activity records on GET', done => {
+  it('Should list ALL achievement records on GET', done => {
     chai
       .request(server)
       .get(achievementRoute)
       .end((err, res) => {
         res.should.have.status(200);
         res.should.be.json;
-        res.body.activity[0].should.have.property('id');
-        res.body.activity[0].should.have.property('status');
-        res.body.activity[0].should.have.property('progress');
+        res.body.achievement[0].should.have.property('id');
+        res.body.achievement[0].should.have.property('activityId');
+        res.body.achievement[0].should.have.property('description');
         done();
       });
   });
-  it('Should list ONE activity records item on GET using QUERY', done => {
+  it('Should list ONE achievement records item on GET using QUERY', done => {
     chai
       .request(server)
-      .get(achievementRoute + '?chapter_id=chapter1')
+      .get(achievementRoute + '?activity_id=activity1')
       .end((err, res) => {
         res.should.have.status(200);
         res.should.be.json;
-        res.body.activity[0].should.have.property('id');
-        res.body.activity[0].should.have.property('userId');
-        res.body.activity[0].should.have.property('chapterId');
+        res.body.achievement[0].should.have.property('id');
+        res.body.achievement[0].should.have.property('activityId');
+        res.body.achievement[0].should.have.property('description');
         done();
       });
   });
-  it('Should list ONE activity records item on GET using PARAMS', done => {
+  it('Should list ONE achievement records item on GET using PARAMS', done => {
     chai
       .request(server)
       .get(achievementRoute + achievementID)
       .end((err, res) => {
         res.should.have.status(200);
         res.should.be.json;
-        res.body.activity.should.have.property('id');
-        res.body.activity.should.have.property('userId');
-        res.body.activity.should.have.property('chapterId');
+        res.body.achievement.should.have.property('id');
+        res.body.achievement.should.have.property('activityId');
+        res.body.achievement.should.have.property('description');
         done();
       });
   });
-  it('Should UPDATE a activity records record on PUT', done => {
+  it('Should UPDATE a achievement records record on PUT', done => {
     chai
       .request(server)
       .put(achievementRoute + achievementID)
       .set('Content-Type', 'application/json')
-      .send({ 'user_id': 'user3' })
+      .send(putData)
       .end((err, res) => {
         res.status.should.eql(201);
         res.should.be.json;
-        res.body.activity.user_id.should.eql('user3');
+        res.body.achievement.activityId.should.eql('activity1');
         done();
       });
   });
-  it('Should DELETE a activity record on DELETE /:id return deleted JSON object', done => {
+  it('Should DELETE a achievement record on DELETE /:id return deleted JSON object', done => {
     chai
       .request(server)
       .delete(achievementRoute + achievementID)
@@ -166,7 +165,7 @@ describe('ACHIEVEMENT ROUTE', () => {
       .end((err, res) => {
         res.status.should.eql(200);
         res.should.be.json;
-        res.body.should.have.property('activity');
+        res.body.should.have.property('achievement');
         done();
       });
   });
