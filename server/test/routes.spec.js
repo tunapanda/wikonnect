@@ -2,9 +2,6 @@ const chai = require('chai');
 const chaiHttp = require('chai-http');
 const server = require('../index');
 const assert = chai.assert;
-const config = require('../knexfile.js')['test'];
-const knex = require('knex')(config);
-
 
 chai.should();
 chai.use(chaiHttp);
