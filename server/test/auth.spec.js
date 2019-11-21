@@ -34,10 +34,10 @@ const badUserData = {
 };
 
 describe('AUTHENTICATION ROUTES', () => {
-  before(() => {
-    return knex.migrate.rollback()
-      .then(() => { return knex.migrate.latest(); })
-      .then(() => { return knex.seed.run(); });
+  before(async () => {
+    await knex.migrate.rollback();
+    await knex.migrate.latest();
+    return knex.seed.run();
   });
   describe('Auth routes tests: /api/v1/users/', () => {
 
