@@ -33,8 +33,6 @@ router.post('/', validateAchievement, async ctx => {
   let newAchievement = ctx.request.body;
 
   const achievement_record = await Achievement.query().where('id', newAchievement.id);
-  console.log(achievement_record.length);
-
 
   if (achievement_record.length > 0) {
     ctx.throw(401, 'record already exists');
@@ -62,7 +60,7 @@ router.put('/:id', async ctx => {
 });
 router.delete('/:id', async ctx => {
   const achievement = await Achievement.query().findById(ctx.params.id);
-  
+
   if (!achievement) {
     ctx.assert(achievement, 401, 'No ID was found');
   }
