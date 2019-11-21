@@ -2,8 +2,6 @@ const chai = require('chai');
 const chaiHttp = require('chai-http');
 const server = require('../index');
 const assert = chai.assert;
-const config = require('../knexfile.js')['test'];
-const knex = require('knex')(config);
 
 
 chai.should();
@@ -30,15 +28,6 @@ const invalidData = {
   'description': 'Testing organization of the courses.',
   'status': 'draft'
 };
-
-
-describe('DATABASE SETUP', () => {
-  before(() => {
-    return knex.migrate.rollback()
-      .then(() => { return knex.migrate.latest(); })
-      .then(() => { return knex.seed.run(); });
-  });
-});
 
 /**
  * ACHIEVEMENT ROUTES TESTS
@@ -144,7 +133,7 @@ describe('ACHIEVEMENT ROUTE', () => {
         done();
       });
   });
-  it('Should UPDATE a achievement records record on PUT', done => {
+  it('Should UPDATE an achievement records record on PUT', done => {
     chai
       .request(server)
       .put(achievementRoute + achievementID)
@@ -153,7 +142,7 @@ describe('ACHIEVEMENT ROUTE', () => {
       .end((err, res) => {
         res.status.should.eql(201);
         res.should.be.json;
-        res.body.achievement.activityId.should.eql('activity1');
+        res.body.achievement.name.should.eql('PUT update works');
         done();
       });
   });

@@ -62,6 +62,7 @@ router.put('/:id', async ctx => {
 });
 router.delete('/:id', async ctx => {
   const achievement = await Achievement.query().findById(ctx.params.id);
+  
   if (!achievement) {
     ctx.assert(achievement, 401, 'No ID was found');
   }
@@ -72,5 +73,6 @@ router.delete('/:id', async ctx => {
   ctx.status = 200;
   ctx.body = { achievement };
 });
+
 
 module.exports = router.routes();

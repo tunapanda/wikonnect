@@ -34,11 +34,6 @@ const badUserData = {
 };
 
 describe('AUTHENTICATION ROUTES', () => {
-  before(() => {
-    return knex.migrate.rollback()
-      .then(() => { return knex.migrate.latest(); })
-      .then(() => { return knex.seed.run(); });
-  });
   describe('Auth routes tests: /api/v1/users/', () => {
 
     it('Should create user on POST requests', done => {
