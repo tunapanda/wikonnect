@@ -60,6 +60,7 @@ router.use(require('./routes/activity'));
 
 router.use(require('./routes/achievements'));
 
+router.use(require('./routes/search'));
 
 router.get('/hello', async ctx => {
   ctx.body = { user: 'You have acess to view this route' };

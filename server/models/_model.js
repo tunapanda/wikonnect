@@ -1,6 +1,7 @@
 const { Model } = require('objection');
 const knex = require('../db/db');
 const _ = require('lodash');
+const SearchQueryBuilder = require('../utils/querybuilder');
 
 class Base extends Model {
 
@@ -42,6 +43,10 @@ class Base extends Model {
 
   toJSON(opts) {
     return super.toJSON(opts);
+  }
+
+  static get QueryBuilder() {
+    return SearchQueryBuilder;
   }
 }
 
