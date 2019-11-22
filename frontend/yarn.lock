@@ -4408,7 +4408,7 @@ ember-bootstrap@^3.0.1:
     rsvp "^4.0.1"
     silent-error "^1.0.1"
 
-ember-changeset-validations@^2.1.0:
+ember-changeset-validations@^2.1.0, ember-changeset-validations@~2.2.0:
   version "2.2.0"
   resolved "https://registry.yarnpkg.com/ember-changeset-validations/-/ember-changeset-validations-2.2.0.tgz#66079dbfeee296bd05d1be974bdb21d146b744d7"
   integrity sha512-j8c+YIgGuns9+ILKHy8uSMFEeUlF93z6nH3AtnYRNyDy39vKzo0EOgZYZiTa9OfeyDWlRSpS7U1zujlJGbEW2Q==
@@ -4419,18 +4419,7 @@ ember-changeset-validations@^2.1.0:
     ember-get-config "^0.2.4"
     ember-validators "^2.0.0"
 
-ember-changeset-validations@~2.1.0:
-  version "2.1.1"
-  resolved "https://registry.yarnpkg.com/ember-changeset-validations/-/ember-changeset-validations-2.1.1.tgz#8690210364c734ed44ed58746eed0a7e22fad565"
-  integrity sha512-3Jtl67cmK6s4r5H5upZU+xbFy7DOrgdRCI0Worpakbcumm0xTRkYvWSrPq85+7xT3Q+PJCpow7PhFu/sodV2hA==
-  dependencies:
-    ember-changeset "^2.1.3"
-    ember-cli-babel "^7.1.2"
-    ember-cli-htmlbars "^3.0.0"
-    ember-get-config "^0.2.4"
-    ember-validators "^2.0.0"
-
-ember-changeset@^2.1.3, ember-changeset@^2.2.1:
+ember-changeset@^2.2.1:
   version "2.2.2"
   resolved "https://registry.yarnpkg.com/ember-changeset/-/ember-changeset-2.2.2.tgz#6bf4593dc2d38fe4cd7e6a8a1d27b08cc37318db"
   integrity sha512-Fwsl8HtoLCox+92bHWVDOeJSaGfDJwVHU7dh3kv/RnwqlOH2Xs3AzZl546wGUc+Iq8PW2G+NidOAOdQ7RRQUVQ==
