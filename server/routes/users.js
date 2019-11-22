@@ -4,6 +4,7 @@ const validateAuthRoutes = require('../middleware/validation/validateAuthRoutes'
 const bcrypt = require('bcrypt');
 const getUserByUsername = require('../middleware/authenticate');
 
+
 const router = new Router({
   prefix: '/users'
 });

@@ -1,33 +1,49 @@
 const Router = require('koa-router');
 const Course = require('../models/course');
 const validatePostData = require('../middleware/validation/validatePostData');
-
+const queryStringSearch = require('../middleware/queryStringSearch');
 
 const router = new Router({
   prefix: '/courses'
 });
 
-
-router.get('/:id', async ctx => {
-  const course = await Course.query().findById(ctx.params.id).eager('modules');
-
-  ctx.assert(course, 404, 'no lesson by that ID');
-
-
-  if (course.modules) {
-    course.modules.forEach(mod => {
-      mod.type = 'module';
+async function returnType(parent) {
+  if (parent.length == undefined) {
+    parent.modules.forEach(lesson => {
+      return lesson.type = 'modules';
+    });
+  } else {
+    parent.forEach(mod => {
+      mod.modules.forEach(lesson => {
+        return lesson.type = 'modules';
+      });
     });
   }
+}
+
+router.get('/:id', async ctx => {
+  const course = await Course.query().findById(ctx.params.id).eager('modules(selectNameAndId)');
+  if (!course) {
+    ctx.assert(course, 404, 'no lesson by that ID');
+  }
+  returnType(course);
 
   ctx.status = 200;
   ctx.body = { course };
 });
 
-router.get('/', async ctx => {
-  const course = await Course.query();
-  ctx.status = 200;
-  ctx.body = { course };
+router.get('/', queryStringSearch, async ctx => {
+  try{
+    const course = await Course.query().where(ctx.query).eager('modules(selectNameAndId)');
+
+    returnType(course);
+
+    ctx.status = 200;
+    ctx.body = { course };
+  } catch (error) {
+    ctx.status = 400;
+    ctx.body = { message: 'The query key does not exist' };
+  }
 });
 
 router.post('/', validatePostData, async ctx => {
