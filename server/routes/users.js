@@ -5,7 +5,6 @@ const bcrypt = require('bcrypt');
 const getUserByUsername = require('../middleware/authenticate');
 const permController = require('../middleware/userAccessControlMiddleware');
 
-
 const router = new Router({
   prefix: '/users'
 });
@@ -35,8 +34,7 @@ router.post('/', validateAuthRoutes.validateNewUser, getUserByUsername, createPa
 });
 
 router.get('/:id', permController.grantAccess('readOwn', 'profile'), async ctx => {
-
-  let user = await User.query().findById(ctx.state.user.data.id);
+  const user = await User.query().findById(ctx.state.user.data.id);
 
   ctx.assert(user, 404, 'No User With that Id');
   ctx.status = 200;

@@ -4,10 +4,6 @@ exports.grantAccess = function (action, resource) {
   return async (ctx, next) => {
     try {
       const permission = roles.can(ctx.state.user.role)[action](resource);
-      console.log(permission.granted);
-      console.log(ctx.state.user);
-
-
       if (!permission.granted) {
         ctx.status = 401;
         ctx.body = {
