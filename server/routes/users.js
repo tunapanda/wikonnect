@@ -47,6 +47,8 @@ router.get('/:id', async ctx => {
 });
 
 router.get('/', async ctx => {
+  console.log(ctx.state);
+  
 
   let user = await User.query();
 

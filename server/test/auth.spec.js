@@ -69,6 +69,35 @@ describe('AUTHENTICATION ROUTES', () => {
           done();
         });
     });
+    it('Should get ONE user on GET requests using PARAMS', done => {
+      chai
+        .request(server)
+        .get(usersRoute + userId)
+        .set('Content-Type', 'application/json')
+        .send(registerUser)
+        .end((err, res) => {
+          res.should.have.status(200);
+          res.body.user.should.have.property('id');
+          res.body.user.should.have.property('username');
+          res.body.user.should.have.property('email');
+          done();
+        });
+    });
+
+    it('Should get ONE user on GET requests using QUERY', done => {
+      chai
+        .request(server)
+        .get(usersRoute + '?username=' + userId)
+        .set('Content-Type', 'application/json')
+        .send(registerUser)
+        .end((err, res) => {
+          res.should.have.status(200);
+          res.body.user[0].should.have.property('id');
+          res.body.user[0].should.have.property('username');
+          res.body.user[0].should.have.property('email');
+          done();
+        });
+    });
 
     it('Should throw an ERROR for POST requests with bad/malformed data', done => {
       chai
