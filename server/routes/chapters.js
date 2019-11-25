@@ -1,23 +1,51 @@
 const Router = require('koa-router');
 const Chapter = require('../models/chapter');
 const validateChapter = require('../middleware/validation/validateChapter');
+const queryStringSearch = require('../middleware/queryStringSearch');
 
 const router = new Router({
   prefix: '/chapters'
 });
 
 
+async function returnType(parent) {
+  try {
+    if (parent.length == undefined) {
+      parent.lesson.forEach(lesson => {
+        return lesson.type = 'lessons';
+      });
+    } else {
+      parent.forEach(mod => {
+        mod.lesson.forEach(lesson => {
+          return lesson.type = 'lessons';
+        });
+      });
+    }
+  } catch (error) {
+    null;
+  }
+}
 
-router.get('/', async ctx => {
-  const chapter = await Chapter.query();
-  ctx.status = 200;
-  ctx.body = { chapter };
+router.get('/', queryStringSearch, async ctx => {
+  try {
+    const chapter = await Chapter.query().where(ctx.query).eager('lesson(selectNameAndId)');
+    returnType(chapter);
+    ctx.status = 200;
+    ctx.body = { chapter };
+  } catch (error) {
+    ctx.status = 400;
+    ctx.body = { message: 'The query key does not exist' };
+  }
 });
 
 router.get('/:id', async ctx => {
-  const chapter = await Chapter.query().where('id', ctx.params.id).eager('lesson');
+  const chapter = await Chapter.query().findById(ctx.params.id).eager('lesson(selectNameAndId)');
 
-  ctx.assert(chapter, 404, 'no lesson by that ID');
+  if (!chapter) {
+    ctx.assert(chapter, 404, 'no lesson by that ID');
+  }
+
+  returnType(chapter);
 
   ctx.status = 200;
   ctx.body = { chapter };
@@ -27,9 +55,9 @@ router.post('/', validateChapter, async ctx => {
   let newChapter = ctx.request.body;
 
   const chapter = await Chapter.query().insertAndFetch(newChapter);
-
-  ctx.assert(module, 401, 'Something went wrong');
-
+  if (!chapter) {
+    ctx.assert(module, 401, 'Something went wrong');
+  }
   ctx.status = 201;
 
   ctx.body = { chapter };

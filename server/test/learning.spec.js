@@ -1,18 +1,19 @@
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 const server = require('../index');
+const assert = chai.assert;
 
 
 chai.should();
 chai.use(chaiHttp);
 
-const route = '/api/v1/paths';
-const itemID = '/learning_path10';
+const route = '/api/v1/paths/';
+const itemID = 'learning_path10';
 const data = {
   'id': 'learning_path10',
   'name': 'Testing Learning Path',
   'slug': 'testing-learning-path',
-  'description': 'Testing organisation of the courses.',
+  'description': 'Testing organization of the courses.',
   'status': 'published',
   'creator_id': 'user3'
 };
@@ -25,11 +26,15 @@ const invalidData = {
   'id': 'learning_path10',
   'name': 'Testing Learning Path',
   'slug': 'testing-learning-path',
-  'description': 'Testing organisation of the courses.',
+  'description': 'Testing organization of the courses.',
   'status': 'draft'
 };
 
-describe('routes: paths', () => {
+/**
+ *
+ */
+
+describe('LEARNING PATH ROUTE', () => {
   // Failing tests
   it('Should throw an ERROR on POST with invalid data', done => {
     chai
@@ -59,6 +64,26 @@ describe('routes: paths', () => {
         done();
       });
   });
+  it('Should throw an ERROR on GET req using valid key and invalid query', done => {
+    chai
+      .request(server)
+      .get(route + '?slug=a-learning')
+      .end((err, res) => {
+        res.should.have.status(200);
+        assert.equal(res.body.learningpath.length, 0);
+        done();
+      });
+  });
+  it('Should throw an ERROR on GET req using invalid key QUERY', done => {
+    chai
+      .request(server)
+      .get(route + '?wishabone=a-learning-path')
+      .end((err, res) => {
+        res.should.have.status(400);
+        res.body.message.should.eql('The query key does not exist');
+        done();
+      });
+  });
   // Passing tests
   it('Should CREATE a learning-path record on POST with valid data and return a JSON object', done => {
     chai
@@ -84,13 +109,16 @@ describe('routes: paths', () => {
         res.body.learningpath[0].should.have.property('name');
         res.body.learningpath[0].should.have.property('slug');
         res.body.learningpath[0].should.have.property('creatorId');
+        res.body.learningpath[0].should.have.property('courses');
+        res.body.learningpath[0].courses[0].should.have.property('id');
+
         done();
       });
   });
-  it('Should list ONE learning-paths item on GET', done => {
+  it('Should list ONE learning-paths item on GET using QUERY', done => {
     chai
       .request(server)
-      .get(route + itemID)
+      .get(route + '?slug=a-learning-path')
       .end((err, res) => {
         res.should.have.status(200);
         res.should.be.json;
@@ -98,6 +126,20 @@ describe('routes: paths', () => {
         res.body.learningpath[0].should.have.property('name');
         res.body.learningpath[0].should.have.property('slug');
         res.body.learningpath[0].should.have.property('creatorId');
+        done();
+      });
+  });
+  it('Should list ONE learning-paths item on GET using PARAMS', done => {
+    chai
+      .request(server)
+      .get(route + itemID)
+      .end((err, res) => {
+        res.should.have.status(200);
+        res.should.be.json;
+        res.body.learningpath.should.have.property('id');
+        res.body.learningpath.should.have.property('name');
+        res.body.learningpath.should.have.property('slug');
+        res.body.learningpath.should.have.property('creatorId');
         done();
       });
   });

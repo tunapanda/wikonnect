@@ -1,39 +1,72 @@
 const Router = require('koa-router');
 const Module = require('../models/module');
 const validatePostData = require('../middleware/validation/validatePostData');
+const queryStringSearch = require('../middleware/queryStringSearch');
+
+const config = require('../knexfile.js')['test'];
+const knex = require('knex')(config);
 
 
 const router = new Router({
   prefix: '/modules'
 });
 
-
-router.get('/:id', async ctx => {
-  const module = await Module.query().findById(ctx.params.id).eager('lessons');
-
-  ctx.assert(module, 404, 'no module by that ID');
-
-  if (module.lessons) {
-    module.lessons.forEach(lesson => {
-      lesson.type = 'lesson';
+async function returnType(parent) {
+  if (parent.length == undefined) {
+    parent.lessons.forEach(lesson => {
+      return lesson.type = 'lessons';
+    });
+  } else {
+    parent.forEach(mod => {
+      mod.lessons.forEach(lesson => {
+        return lesson.type = 'lessons';
+      });
     });
   }
+}
 
-  ctx.status = 200;
-  ctx.body = { module };
-});
 
-router.get('/', async ctx => {
-  const modules = await Module.query();
+router.get('/:id', async ctx => {
+  const modules = await Module.query().findById(ctx.params.id).eager('lessons(selectNameAndId)');
+
+  if (!modules) {
+    ctx.assert(module, 404, 'No matching record found');
+  }
+  returnType(modules);
+
   ctx.status = 200;
   ctx.body = { modules };
 });
+
+router.get('/', queryStringSearch, async ctx => {
+  try {
+    const modules = await Module.query().where(ctx.query).eager('lessons(selectNameAndId)');
+
+    returnType(modules);
+    ctx.status = 200;
+    ctx.body = { modules };
+
+  } catch (error) {
+    ctx.status = 400;
+    ctx.body = { message: 'The query key does not exist' };
+  }
+});
+
 router.post('/', validatePostData, async ctx => {
-  let newModule = ctx.request.body;
+
+  let { module_id, course_id, ...newModule } = ctx.request.body;
+
+  if (!newModule) {
+    ctx.assert(modules, 401, 'Something went wrong');
+  }
 
   const modules = await Module.query().insertAndFetch(newModule);
+  await knex('course_modules').insert([
+    {
+      module_id: module_id,
+      course_id: course_id
+    }]);
 
-  ctx.assert(module, 401, 'Something went wrong');
 
   ctx.status = 201;
 

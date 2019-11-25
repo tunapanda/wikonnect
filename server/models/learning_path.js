@@ -7,7 +7,7 @@ class LearningPath extends Model {
     return 'learning_paths';
   }
 
-  static get jsonSchema(){
+  static get jsonSchema() {
     return modelSchema;
   }
 
@@ -24,6 +24,14 @@ class LearningPath extends Model {
           },
           to: 'courses.id'
         }
+      }
+    };
+  }
+
+  static get modifiers() {
+    return {
+      selectNameAndId: (builder) => {
+        builder.select('id', 'name');
       }
     };
   }
