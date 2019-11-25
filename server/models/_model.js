@@ -22,12 +22,16 @@ class Base extends Model {
   $afterInsert() {
     if (!client.unavailable) {
       return this.$indexForSearch();
+    } else {
+      console.log(`Could not index ${this.constructor.tableName} ${this.id} because Elasticsearch is unavailable`);
     }
   }
 
   $afterUpdate() {
     if (!client.unavailable) {
       return this.$indexForSearch();
+    } else {
+      console.log(`Could not index ${this.constructor.tableName} ${this.id} because Elasticsearch is unavailable`);
     }
   }
 

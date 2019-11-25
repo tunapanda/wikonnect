@@ -16,30 +16,39 @@ const router = new Router({
 router.get('/', async ctx => {
   const queryText = ctx.query.q;
 
-  const elasticResponse = await search.search({
-    index: search.indexName,
-    body: {
-      query: {
-        query_string: {
-          fields: ['name^2', 'description'],
-          query: queryText
-        }
-      },
-      highlight: {
-        pre_tags: ['<strong>'],
-        post_tags: ['</strong>'],
-        fields: {
-          '*': {}
+  try {
+    const elasticResponse = await search.search({
+      index: search.indexName,
+      body: {
+        query: {
+          query_string: {
+            fields: ['name^2', 'description'],
+            query: queryText
+          }
+        },
+        highlight: {
+          pre_tags: ['<strong>'],
+          post_tags: ['</strong>'],
+          fields: {
+            '*': {}
+          }
         }
       }
+    });
+
+    const grouped = _.groupBy(elasticResponse.body.hits.hits, hit => hit._source.model);
+
+    // const results = Object.keys(grouped).map(async modelName => ({ [modelName]: await models[modelName].query().hydrateSearch(grouped[modelName]) }));
+
+    ctx.body = grouped;
+  } catch (e) {
+    if (e.name === 'ConnectionError') {
+      ctx.status = 502;
+      ctx.body = {
+        error: 'Search Unavailable'
+      };
     }
-  });
-
-  const grouped = _.groupBy(elasticResponse.body.hits.hits, hit => hit._source.model);
-
-  // const results = Object.keys(grouped).map(async modelName => ({ [modelName]: await models[modelName].query().hydrateSearch(grouped[modelName]) }));
-
-  ctx.body = grouped;
+  }
 });
 
 module.exports = router.routes();
