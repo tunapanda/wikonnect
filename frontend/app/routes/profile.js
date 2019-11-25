@@ -1,6 +1,5 @@
 import Route from '@ember/routing/route';
 import { inject } from '@ember/service';
-import { action } from '@ember/object';
 
 export default class ProfileRoute extends Route {
 
@@ -8,7 +7,7 @@ export default class ProfileRoute extends Route {
   me;
 
   model(params) {
-    return this.store.findByUsername(params.username)
+    return this.store.findByUsername(params.username);
   }
 
 }

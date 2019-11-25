@@ -1,6 +1,6 @@
 import Controller from '@ember/controller';
 import { inject } from '@ember/service';
-import { computed, action } from '@ember/object'
+import { computed, action } from '@ember/object';
 
 export default class ProfileController extends Controller {
 
@@ -11,12 +11,12 @@ export default class ProfileController extends Controller {
 
   @computed()
   get myProfile() {
-    return (this.me.user.id == this.model.id)
+    return (this.me.user.id == this.model.id);
   }
 
   @action
   saveUser(model) {
-    model.save()
+    model.save();
   }
 
 

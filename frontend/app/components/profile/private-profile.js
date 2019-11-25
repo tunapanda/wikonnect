@@ -10,29 +10,29 @@ export default class ProfilePrivateProfileComponent extends Component {
   profileView = 'profile';
   viewOnly = true;
 
-  @computed('me.user.firstName.user', 'me.user.lastName.user')
+  @computed('me.user.{firstName, lastName}')
   get name() {
-    if (this.me.user.firstName && this.me.user.lastName) { 
-      return `${this.me.user.firstName} ${this.me.user.lastName}`
+    if (this.me.user.firstName && this.me.user.lastName) {
+      return `${this.me.user.firstName} ${this.me.user.lastName}`;
     }
-    else if (this.me.user.firstName && !this.me.user.lastName) { 
-      return this.me.user.firstName
+    else if (this.me.user.firstName && !this.me.user.lastName) {
+      return this.me.user.firstName;
     }
     else if (!this.me.user.firstName && this.me.user.lastName) {
-      return this.me.user.lastName
+      return this.me.user.lastName;
     }
     else {
-      return this.me.user.username
+      return this.me.user.username;
     }
   }
 
   @computed('model.hasDirtyAttributes')
   get unsavedChanges() {
-    return this.model.hasDirtyAttributes
+    return this.model.hasDirtyAttributes;
   }
 
   @action
   editProfile() {
-    this.toggleProperty('viewOnly')
+    this.toggleProperty('viewOnly');
   }
 }
