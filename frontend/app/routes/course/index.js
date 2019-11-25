@@ -5,4 +5,8 @@ export default class CourseIndexRoute extends Route {
   //   console.log(params);
   //   return this.store.findRecord('course', "diglit", { include: 'modules' });
   // }
+  model(params) {
+    console.log(params);
+    return this.store.findBySlug('course', params.course_slug);
+  }
 }

@@ -1,18 +1,36 @@
 {{#unless me.user.id}}
-<div class="authentication-header">
-  {{#link-to "login" class="authentication-header-login"}}Login{{/link-to}}
-  {{#link-to "signup" class="authentication-header-signup btn-round"}}Sign up{{/link-to}}
-  {{!-- <BsButton class="authentication-header-signup" @type="round" @defaultText="Sign Up" /> --}}
-</div>
+  <div class="authentication-header">
+    {{#link-to "login" class="authentication-header-login"}}Login{{/link-to}}
+    {{#link-to "signup" class="authentication-header-signup btn-round"}}Sign up{{/link-to}}
+    {{!-- <BsButton class="authentication-header-signup" @type="round" @defaultText="Sign Up" /> --}}
+  </div>
 {{/unless}}
 <div class="main-header">
-  <a class="header-hamburger">
-    {{svg-jar "menu-bars" class="icon" width="40" height="18"}}
-  </a>
-  <a class="branding">
+  <button class="header-hamburger" {{action "opennav"}}>
+    {{svg-jar "menu-bars" class="icon"  width="40" height="18"}}
+  </button>
+  {{#link-to "home" class="branding"}}
     {{svg-jar "wikonnect-primary" width="175"}}
-  </a>
-  <a class="search-bar">
+
+  {{/link-to}}
+
+  {{#link-to "search" }}
     {{svg-jar "search" width="40" height="18"}}
-  </a>
+
+  {{/link-to}}
+
+
+</div>
+
+<div id="mySidenav" class="sidenav">
+  <button class="closebtn" {{action "closenav"}}>&times;</button>
+  {{!-- {{#link-to class="closebtn" invokeAction=(action "closenav") }}
+    &times;
+  {{/link-to}} --}}
+  {{#link-to "home" invokeAction=(action "closenav")  }}
+    Home
+  {{/link-to}}
+  <a href="#">Services</a>
+  <a href="#">Clients</a>
+  <a href="#">Contact</a>
 </div>
