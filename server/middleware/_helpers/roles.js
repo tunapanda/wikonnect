@@ -2,9 +2,9 @@ const AccessControl = require('accesscontrol');
 
 const ac = new AccessControl();
 
-exports.role = (() => {
+exports.roles = (() => {
   ac.grant('basic')
-    .readOwn('profile')
+    .readOwn('profile', ['!email'])
     .updateOwn('profile');
 
   ac.grant('supervisor')
@@ -17,4 +17,4 @@ exports.role = (() => {
     .updateAny('profile')
     .deleteAny('profile');
   return ac;
-});
+})();

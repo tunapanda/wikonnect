@@ -3,12 +3,17 @@ const { roles } = require('./_helpers/roles');
 exports.grantAccess = function (action, resource) {
   return async (ctx, next) => {
     try {
-      const permission = roles.can(ctx.state.role)[action](resource);
+      const permission = roles.can(ctx.state.user.role)[action](resource);
+      console.log(permission.granted);
+      console.log(ctx.state.user.role);
+
+
       if (!permission.granted) {
         ctx.status = 401;
         ctx.body = {
           error: 'You don\'t have enough permission to perform this action'
         };
+        return ctx;
       }
       await next();
     } catch (error) {
@@ -17,13 +22,9 @@ exports.grantAccess = function (action, resource) {
   };
 };
 
-
 exports.allowIfLoggedIn = async (ctx, next) => {
   try {
     const user = ctx.header.user;
-    console.log(user);
-    console.log(ctx.header.user);
-    
     if (!user) {
       ctx.status = 401;
       ctx.body = { error: 'You need to be logged in to access this route' };
