@@ -19,7 +19,7 @@ Router.map(function () {
       });
     });
   });
-  this.route('profile', { path: '/profile/:profile_id' }, function () {
+  this.route('profile', { path: '/profile/:username' }, function () {
     this.route('settings');
   });
   this.route('search');

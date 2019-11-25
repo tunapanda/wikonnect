@@ -20,8 +20,8 @@ class Base extends Model {
   $formatJson(json) {
     json = super.$formatJson(json);
 
-    json = { ...json, ...json.properties };
-    delete json.properties;
+    json = { ...json, ...json.metadata };
+    delete json.metadata;
 
     return _.omit(json, this.$secureFields);
   }

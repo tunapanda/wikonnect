@@ -3,6 +3,7 @@ const User = require('../models/user');
 const validateAuthRoutes = require('../middleware/validation/validateAuthRoutes');
 const bcrypt = require('bcrypt');
 const getUserByUsername = require('../middleware/authenticate');
+const { requireAuth } = require('../middleware/auth');
 
 
 const router = new Router({
@@ -48,7 +49,7 @@ router.get('/:id', async ctx => {
 
 router.get('/', async ctx => {
 
-  let user = await User.query();
+  let user = User.query();
 
   if (ctx.query.username) {
     user.where('username', ctx.query.username);
@@ -57,7 +58,19 @@ router.get('/', async ctx => {
 
   ctx.status = 200;
 
+  user = await user;
+
   ctx.body = { user };
+});
+
+router.put('/:id', requireAuth, async ctx => {
+
+  const user = await User.query().patchAndFetchById(ctx.params.id, ctx.request.body.user);
+
+  ctx.assert(user, 404, 'That user does not exist.');
+
+  ctx.body = { user };
+
 });
 
 module.exports = router.routes();
