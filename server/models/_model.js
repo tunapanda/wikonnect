@@ -2,6 +2,7 @@ const { Model } = require('objection');
 const knex = require('../db/db');
 const _ = require('lodash');
 const SearchQueryBuilder = require('../utils/querybuilder');
+const client = require('../utils/search');
 
 class Base extends Model {
 
@@ -16,6 +17,18 @@ class Base extends Model {
 
   $beforeUpdate() {
     this.updatedAt = new Date().toISOString();
+  }
+
+  $afterInsert() {
+    if (!client.unavailable) {
+      return this.$indexForSearch();
+    }
+  }
+
+  $afterUpdate() {
+    if (!client.unavailable) {
+      return this.$indexForSearch();
+    }
   }
 
   $formatJson(json) {

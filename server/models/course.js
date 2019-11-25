@@ -29,23 +29,8 @@ class Course extends Model {
     };
   }
 
-  async $afterInsert() {
+  async $indexForSearch() {
     return search.index({
-      index: search.indexName,
-      id: this.id,
-      body: {
-        model: 'course',
-        name: this.name,
-        description: this.description,
-        status: this.status,
-        created_at: this.createdAt,
-        modified_at: this.modifiedAt
-      }
-    });
-  }
-
-  async $afterUpdate() {
-    return search.update({
       index: search.indexName,
       id: this.id,
       body: {

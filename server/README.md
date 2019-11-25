@@ -54,6 +54,9 @@
 
     GET /api/v1/paths/{id}
 
+#### SEARCH Endpoint
+
+    GET /api/v1/search?q=your-query
 
 __Sample JSON__
 

@@ -2,12 +2,12 @@ const Router = require('koa-router');
 const search = require('../utils/search');
 const _ = require('lodash');
 
-const models = {
-  learning_path: require('../models/learning_path'),
-  course: require('../models/course'),
-  module: require('../models/module'),
-  lesson: require('../models/lesson')
-};
+// const models = {
+//   learning_path: require('../models/learning_path'),
+//   course: require('../models/course'),
+//   module: require('../models/module'),
+//   lesson: require('../models/lesson')
+// };
 
 const router = new Router({
   prefix: '/search'
@@ -21,7 +21,7 @@ router.get('/', async ctx => {
     body: {
       query: {
         query_string: {
-          fields: ['title^2', 'description'],
+          fields: ['name^2', 'description'],
           query: queryText
         }
       },
@@ -37,9 +37,9 @@ router.get('/', async ctx => {
 
   const grouped = _.groupBy(elasticResponse.body.hits.hits, hit => hit._source.model);
 
-  const results = Object.keys(grouped).map(modelName => models[modelName].query().hydrateSearch(grouped[modelName]));
+  // const results = Object.keys(grouped).map(async modelName => ({ [modelName]: await models[modelName].query().hydrateSearch(grouped[modelName]) }));
 
-  ctx.body = await Promise.all(results);
+  ctx.body = grouped;
 });
 
 module.exports = router.routes();

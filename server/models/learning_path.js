@@ -1,13 +1,14 @@
 const Model = require('./_model');
 const knex = require('../db/db');
 const modelSchema = require('../db/json_schema/modelSchema');
+const search = require('../utils/search');
 
 class LearningPath extends Model {
   static get tableName() {
     return 'learning_paths';
   }
 
-  static get jsonSchema(){
+  static get jsonSchema() {
     return modelSchema;
   }
 
@@ -26,6 +27,23 @@ class LearningPath extends Model {
         }
       }
     };
+  }
+
+
+
+  async $indexForSearch() {
+    return search.index({
+      index: search.indexName,
+      id: this.id,
+      body: {
+        model: 'course',
+        name: this.name,
+        description: this.description,
+        status: this.status,
+        created_at: this.createdAt,
+        modified_at: this.modifiedAt
+      }
+    });
   }
 }
 
