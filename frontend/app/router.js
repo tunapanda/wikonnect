@@ -10,10 +10,10 @@ Router.map(function () {
   this.route('signup');
   this.route('login');
   this.route('home');
-  this.route('course/index', { path: 'course/:course_slug' }, function () {
-    this.route('module/index', { path: 'module/:module_slug' }, function () {
+  this.route('course', { path: 'course/:course_slug' }, function () {
+    this.route('module', { path: 'module/:module_slug' }, function () {
       this.route('lesson', { path: '/lesson/:lesson_id' }, function () {
-        this.route('chapters', { path: '/chapter/:chapter_id' });
+        this.route('chapter', { path: '/chapter/:chapter_id' });
       });
     });
   });
