@@ -1,10 +1,15 @@
 const Model = require('./_model');
 const knex = require('../db/db');
 const search = require('../utils/search');
+const modelSchema = require('../db/json_schema/modelSchema');
 
 class Lesson extends Model {
   static get tableName() {
     return 'lessons';
+  }
+
+  static get jsonSchema() {
+    return modelSchema;
   }
 
   static get relationMappings() {
@@ -20,7 +25,6 @@ class Lesson extends Model {
     };
   }
 
-
   async $indexForSearch() {
     return search.index({
       index: search.indexName,
@@ -34,6 +38,14 @@ class Lesson extends Model {
         modified_at: this.modifiedAt
       }
     });
+  }
+
+  static get modifiers() {
+    return {
+      selectNameAndId: (builder) => {
+        builder.select('id', 'name');
+      }
+    };
   }
 }
 

@@ -43,6 +43,14 @@ class Course extends Model {
       }
     });
   }
+
+  static get modifiers() {
+    return {
+      selectNameAndId: (builder) => {
+        builder.select('id', 'name');
+      }
+    };
+  }
 }
 
 Course.knex(knex);

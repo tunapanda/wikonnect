@@ -38,6 +38,14 @@ class Module extends Model {
       }
     });
   }
+
+  static get modifiers() {
+    return {
+      selectNameAndId: (builder) => {
+        builder.select('id', 'name');
+      }
+    };
+  }
 }
 
 Module.knex(knex);

@@ -29,8 +29,6 @@ class LearningPath extends Model {
     };
   }
 
-
-
   async $indexForSearch() {
     return search.index({
       index: search.indexName,
@@ -44,6 +42,14 @@ class LearningPath extends Model {
         modified_at: this.modifiedAt
       }
     });
+  }
+
+  static get modifiers() {
+    return {
+      selectNameAndId: (builder) => {
+        builder.select('id', 'name');
+      }
+    };
   }
 }
 
