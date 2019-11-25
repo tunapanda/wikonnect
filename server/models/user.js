@@ -12,6 +12,10 @@ class User extends Model {
     return userSchema;
   }
 
+  get $virtualFields() {
+    return ['firstName','lastName','aboutMe']; 
+  }
+
   get $secureFields() {
     return ['hash', 'email','lastSeen', 'lastIp'];
   }

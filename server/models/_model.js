@@ -32,7 +32,7 @@ class Base extends Model {
     const virtualProperties = _.pick(json, this.$virtualFields);
 
     if (_.keys(virtualProperties).length) {
-      json.properties = virtualProperties;
+      json.metadata = virtualProperties;
     }
 
     json = _.omit(json, this.$virtualFields);
