@@ -4,16 +4,16 @@ const ac = new AccessControl();
 
 exports.roles = (() => {
   ac.grant('basic')
-    .readOwn('profile', ['!email'])
+    .readOwn('profile')
     .updateOwn('profile');
-
-  ac.grant('supervisor')
-    .extend('basic')
-    .readAny('profile');
 
   ac.grant('admin')
     .extend('basic')
-    .extend('supervisor')
+    .readAny('profile');
+
+  ac.grant('superadmin')
+    .extend('basic')
+    .extend('admin')
     .updateAny('profile')
     .deleteAny('profile');
   return ac;

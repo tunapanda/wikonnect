@@ -5,7 +5,7 @@ exports.grantAccess = function (action, resource) {
     try {
       const permission = roles.can(ctx.state.user.role)[action](resource);
       console.log(permission.granted);
-      console.log(ctx.state.user.role);
+      console.log(ctx.state.user);
 
 
       if (!permission.granted) {
