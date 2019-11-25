@@ -1,8 +1,17 @@
 const { Client } = require('@elastic/elasticsearch');
-const { host } = require('../config/elasticsearch');
+
+let config;
+
+try {
+  config = require('../config/elasticsearch');
+} catch (e) {
+  config = require('../config/elasticsearch.example');
+}
+
+const host = process.env.ELASTICSEARCH_HOST ? process.env.ELASTICSEARCH_HOST : config.host;
 
 const client = new Client({ node: host });
-client.indexName = 'swag-v1';
+client.indexName = 'swag-v1-' + process.env.NODE_ENV;
 
 async function setupElasticsearch() {
   try {
