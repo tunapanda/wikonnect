@@ -34,7 +34,8 @@ router.post('/', validateAuthRoutes.validateNewUser, getUserByUsername, createPa
 });
 
 router.get('/:id', permController.grantAccess('readOwn', 'profile'), async ctx => {
-  const user = await User.query().findById(ctx.state.user.data.id);
+  // const user = await User.query().findById(ctx.state.user.id);
+  const user = await User.query().findById(ctx.params.id);
 
   ctx.assert(user, 404, 'No User With that Id');
   ctx.status = 200;

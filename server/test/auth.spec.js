@@ -7,6 +7,7 @@ const knex = require('../db/db');
 chai.should();
 chai.use(chaiHttp);
 
+
 const usersRoute = '/api/v1/users/';
 const authRoute = '/api/v1/auth/';
 const userId = 'user99';
@@ -33,7 +34,14 @@ const badUserData = {
   }
 };
 
+const headers = {
+  'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7ImlkIjoiSGxOQTNsdUFBQU0iLCJlbWFpbCI6InVzZXI5OTFAd2lrb25lY3QuY29tIiwidXNlcm5hbWUiOiJ1c2VyOTkxIiwibGFzdFNlZW4iOm51bGwsImxhc3RJcCI6bnVsbCwibWV0YWRhdGEiOm51bGwsImNyZWF0ZWRBdCI6IjIwMTktMTEtMjVUMTk6NTI6NTkuNzM3WiIsInVwZGF0ZWRBdCI6IjIwMTktMTEtMjVUMTk6NTI6NTkuNzM3WiJ9LCJyb2xlIjoiYWRtaW4iLCJleHAiOjE1NzUzMTc3MDEsImlhdCI6MTU3NDcxMjkwMX0.gj8JRo44Hif3DFvf6fTeO-Lng78hb7aj-QCRfW-YAv4'
+};
+
 describe('AUTHENTICATION ROUTES', () => {
+  let token;
+  console.log(token);
+
   before(async () => {
     await knex.migrate.rollback();
     await knex.migrate.latest();
@@ -46,6 +54,7 @@ describe('AUTHENTICATION ROUTES', () => {
         .request(server)
         .post(usersRoute)
         .set('Content-Type', 'application/json')
+        .set(headers)
         .send(registerUser)
         .end((err, res) => {
           res.should.have.status(201);
@@ -60,6 +69,7 @@ describe('AUTHENTICATION ROUTES', () => {
         .request(server)
         .get(usersRoute)
         .set('Content-Type', 'application/json')
+        .set(headers)
         .send(registerUser)
         .end((err, res) => {
           res.should.have.status(200);
@@ -74,6 +84,7 @@ describe('AUTHENTICATION ROUTES', () => {
         .request(server)
         .get(usersRoute + userId)
         .set('Content-Type', 'application/json')
+        .set(headers)
         .send(registerUser)
         .end((err, res) => {
           res.should.have.status(200);
@@ -89,6 +100,7 @@ describe('AUTHENTICATION ROUTES', () => {
         .request(server)
         .get(usersRoute + '?username=' + userId)
         .set('Content-Type', 'application/json')
+        .set(headers)
         .send(registerUser)
         .end((err, res) => {
           res.should.have.status(200);
@@ -105,6 +117,7 @@ describe('AUTHENTICATION ROUTES', () => {
         .post(usersRoute)
         .send(badUserData)
         .set('Content-Type', 'application/json')
+        .set(headers)
         .end((err, res) => {
           res.should.have.status(400);
           expect(res.body.errors).to.deep.equal({ 'email': ['Email can\'t be blank'], 'phonenumber': ['Phonenumber can\'t be blank'] });
@@ -119,7 +132,8 @@ describe('AUTHENTICATION ROUTES', () => {
         .request(server)
         .post(usersRoute)
         .send(registerUser)
-        .set('Accept', 'application/json')
+        .set('Content-Type', 'application/json')
+        .set(headers)
         .end((err, res) => {
           res.should.have.status(406);
           expect(res.body).to.deep.equal({ 'error': 'User exists' });
@@ -135,8 +149,10 @@ describe('AUTHENTICATION ROUTES', () => {
         .request(server)
         .post(authRoute)
         .set('Content-Type', 'application/json')
+        .set(headers)
         .send(loginUserData)
         .end((err, res) => {
+          token = res.body.token;
           res.should.have.status(200);
           res.body.should.have.property('token');
           done();
@@ -147,6 +163,7 @@ describe('AUTHENTICATION ROUTES', () => {
         .request(server)
         .post(authRoute)
         .set('Content-Type', 'application/json')
+        .set(headers)
         .send({ 'username': 'urlencoded', 'hash': 'urlencodedurl' })
         .end((err, res) => {
           res.should.have.status(400);
