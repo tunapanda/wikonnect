@@ -3,6 +3,7 @@ const User = require('../models/user');
 const validateAuthRoutes = require('../middleware/validation/validateAuthRoutes');
 const bcrypt = require('bcrypt');
 const getUserByUsername = require('../middleware/authenticate');
+const permController = require('../middleware/userAccessControlMiddleware');
 
 
 const router = new Router({
@@ -33,30 +34,28 @@ router.post('/', validateAuthRoutes.validateNewUser, getUserByUsername, createPa
   ctx.body = { user };
 });
 
-router.get('/:id', async ctx => {
-
-  let user = await User.query().findById(ctx.params.id);
+router.get('/:id', permController.grantAccess('readOwn', 'profile'), async ctx => {
+  // const user = await User.query().findById(ctx.state.user.id);
+  const user = await User.query().findById(ctx.params.id);
 
   ctx.assert(user, 404, 'No User With that Id');
-
   ctx.status = 200;
-
   ctx.body = { user };
-
 
 });
 
-router.get('/', async ctx => {
+router.get('/', permController.grantAccess('readAny', 'profile'), async ctx => {
 
-  let user = await User.query();
+  let user = User.query();
 
   if (ctx.query.username) {
     user.where('username', ctx.query.username);
     ctx.assert(user, 404, 'No User With that username');
   }
 
-  ctx.status = 200;
+  user = await user;
 
+  ctx.status = 200;
   ctx.body = { user };
 });
 

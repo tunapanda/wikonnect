@@ -27,6 +27,14 @@ class User extends Model {
       }
     };
   }
+
+  static get modifiers() {
+    return {
+      selectNameAndId: (builder) => {
+        builder.select('id', 'name');
+      }
+    };
+  }
 }
 
 User.knex(knex);
