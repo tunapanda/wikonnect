@@ -10,7 +10,7 @@ export default class ProfilePrivateProfileComponent extends Component {
   profileView = 'profile';
   viewOnly = true;
 
-  @computed('me.user.{firstName, lastName}')
+  @computed('me.user.{firstName,lastName}')
   get name() {
     if (this.me.user.firstName && this.me.user.lastName) {
       return `${this.me.user.firstName} ${this.me.user.lastName}`;

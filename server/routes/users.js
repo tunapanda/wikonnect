@@ -63,7 +63,7 @@ router.get('/', async ctx => {
   ctx.body = { user };
 });
 
-router.put('/:id', requireAuth, async ctx => {
+router.put('/:id', async ctx => {
 
   const user = await User.query().patchAndFetchById(ctx.params.id, ctx.request.body.user);
 

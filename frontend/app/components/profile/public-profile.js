@@ -3,7 +3,7 @@ import { computed } from '@ember/object';
 
 export default class ProfilePublicProfileComponent extends Component {
 
-  @computed('model.{firstName, lastName}')
+  @computed('model.{firstName,lastName}')
   get name() {
     if (this.model.firstName && this.model.lastName) {
       return `${this.model.firstName} ${this.model.lastName}`;
