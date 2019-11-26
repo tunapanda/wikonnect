@@ -17,12 +17,14 @@ router.post('/', validateAuthRoutes.validateUserLogin, async ctx => {
   let { hash: hashPassword, ...userInfoWithoutPassword } = user[0];
 
   user = user[0];
+  let role = 'admin';
 
   if (await bcrypt.compare(ctx.request.body.password, hashPassword)) {
     // eslint-disable-next-line require-atomic-updates
     ctx.body = {
       token: jsonwebtoken.sign({
         data: userInfoWithoutPassword,
+        role: role,
         //exp in seconds
         exp: Math.floor(Date.now() / 1000 + 604800) // 60 seconds * 60 minutes * 24 hours * 7 days = 1 week
       }, jwt.secret)

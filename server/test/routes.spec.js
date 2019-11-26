@@ -50,15 +50,6 @@ const activityData = {
  *
  */
 
-
-// describe('DATABASE SETUP', () => {
-//   before(() => {
-//     return knex.migrate.rollback()
-//       .then(() => { return knex.migrate.latest(); })
-//       .then(() => { return knex.seed.run(); });
-//   });
-// });
-
 describe('LESSONS ROUTE', () => {
   // Failing tests
   it('Should throw an ERROR on POST with invalid lessonData', done => {

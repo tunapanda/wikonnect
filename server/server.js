@@ -6,6 +6,8 @@ const logger = require('./middleware/logger');
 const jwt = require('./middleware/jwt');
 const path = require('path');
 const koaQs = require('koa-qs');
+const User = require('./models/user');
+const jwToken = require('jsonwebtoken');
 
 const app = new Koa();
 
@@ -40,6 +42,27 @@ app.use(async function (ctx, next) {
   });
 });
 
+app.use(async function (ctx, next) {
+  if (ctx.request.header.authorization && ctx.request.header.authorization.split(' ')[0] === 'Bearer') {
+    const accessToken = ctx.request.header.authorization.split(' ')[1];
+    const { exp, data } = await jwToken.verify(accessToken, 'secret');
+
+    // Check if token has expired
+    if (exp < Date.now().valueOf() / 1000) {
+      ctx.status = 401;
+      ctx.body = {
+        error: 'JWT token has expired, please login to obtain a new one'
+      };
+      return ctx;
+    }
+    ctx.state.user = await User.query().findById(data.id);
+    await next();
+  } else {
+    await next();
+  }
+});
+
+
 app.use(require('koa-static')(path.resolve(__dirname, './public')));
 
 router.use(require('./routes/auth'));
@@ -60,9 +83,10 @@ router.use(require('./routes/activity'));
 
 router.use(require('./routes/achievements'));
 
+router.use(require('./routes/search'));
 
 router.get('/hello', async ctx => {
-  ctx.body = { user: 'You have acess to view this route' };
+  ctx.body = { user: 'You have access to view this route' };
 });
 
 app.use(router.routes());

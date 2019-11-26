@@ -2,6 +2,7 @@ const Router = require('koa-router');
 const LearningPath = require('../models/learning_path');
 const validatePostData = require('../middleware/validation/validatePostData');
 const queryStringSearch = require('../middleware/queryStringSearch');
+const permController = require('../middleware/userAccessControlMiddleware');
 
 
 const router = new Router({
@@ -41,7 +42,7 @@ router.get('/', queryStringSearch, async ctx => {
   }
 });
 
-router.get('/:id', async ctx => {
+router.get('/:id', permController.grantAccess('readAny', 'path'), async ctx => {
   const learningpath = await LearningPath.query().findById(ctx.params.id).eager('courses(selectNameAndId)');
 
   if (!learningpath) {
@@ -55,7 +56,7 @@ router.get('/:id', async ctx => {
 });
 
 
-router.post('/', validatePostData, async ctx => {
+router.post('/', permController.grantAccess('createAny', 'path'), validatePostData, async ctx => {
   let newLearningPath = ctx.request.body;
 
   const learningpath = await LearningPath.query().insertAndFetch(newLearningPath);
@@ -67,7 +68,7 @@ router.post('/', validatePostData, async ctx => {
   ctx.body = { learningpath };
 
 });
-router.put('/:id', async ctx => {
+router.put('/:id', permController.grantAccess('updateAny', 'path'),  async ctx => {
   const learningpath_record = await LearningPath.query().findById(ctx.params.id);
   if (!learningpath_record) {
     ctx.throw(400, 'That learning path does not exist');
@@ -79,7 +80,7 @@ router.put('/:id', async ctx => {
   ctx.status = 201;
   ctx.body = { learningpath };
 });
-router.delete('/:id', async ctx => {
+router.delete('/:id', permController.grantAccess('deleteAny', 'path'), async ctx => {
   const learningpath = await LearningPath.query().findById(ctx.params.id);
   if (!learningpath) {
     ctx.assert(learningpath, 401, 'No ID was found');

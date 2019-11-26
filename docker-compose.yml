@@ -4,3 +4,11 @@ services:
     image: postgres
     ports:
       - '15432:5432'
+  elasticsearch:
+    image: 'elasticsearch:7.4.2'
+    ports:
+      - '19200:9200'
+      - '19300:9300'
+    environment:
+      - discovery.type=single-node
+    mem_limit: 1g
