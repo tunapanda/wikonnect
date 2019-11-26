@@ -5,6 +5,13 @@ export default class CourseIndexRoute extends Route {
   //   console.log(params);
   //   return this.store.findRecord('course', "diglit", { include: 'modules' });
   // }
+
+  // breadCrumb() {
+  //   return {
+  //     title: 'Animals',
+  //     path: 'foo'
+  //   };
+  // }
   model(params) {
     console.log("course");
     console.log(params);
