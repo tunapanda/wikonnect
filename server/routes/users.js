@@ -5,6 +5,7 @@ const bcrypt = require('bcrypt');
 const getUserByUsername = require('../middleware/authenticate');
 const permController = require('../middleware/userAccessControlMiddleware');
 
+
 const router = new Router({
   prefix: '/users'
 });

@@ -7,7 +7,6 @@ const knex = require('../db/db');
 chai.should();
 chai.use(chaiHttp);
 
-
 const usersRoute = '/api/v1/users/';
 const authRoute = '/api/v1/auth/';
 const userId = 'user99';
