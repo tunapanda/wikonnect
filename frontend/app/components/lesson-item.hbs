@@ -11,17 +11,23 @@
 
     <div class="module-description">
 
-      {{#link-to "course.module.index" @module.slug }}
-        <h3>{{@module.name}}</h3>
+      {{#link-to "course.module.lesson" @lesson.slug }}
+        <h3>{{@lesson.name}}</h3>
 
       {{/link-to}}
-      <div>{{@module.description}}</div>
+      <div>{{@lesson.description}}</div>
 
 
     </div>
 
   </div>
+  {{!-- {{/link-to}} --}}
 
+  {{!-- <ul class="submodules">
+    <li><span>Chapter 1 : </span> Test Sub Modlue</li>
+    <li>Test Sub Modlue</li>
+    <li>Test Sub Modlue</li>
+  </ul> --}}
 
 
 </div>

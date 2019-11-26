@@ -2,24 +2,29 @@
 <div id="home" class="padded">
   <hr>
   <div>
-    <img src="https://dummyimage.com/300x100/272727" width="100%" />
+    <img src="https://dummyimage.com/300x100/272727" alt="0" width="100%">
   </div>
 
   <br>
   <h3>
     Courses
   </h3>
-  <p>Learn a new skill! The topics each tackle related subjects. Select a topic to follow through and monitor your
-    progress. Earn moja points for each topic completed.</p>
+  <p>
+    Learn a new skill! The topics each tackle related subjects. Select a topic to follow through and monitor your
+    progress. Earn moja points for each topic completed.
+  </p>
 
 
   <h2>
     What would you like to learn today?
   </h2>
 
-  <CourseItem @title="Internet usage, URL, websites" @description="This topic contains swagpaths on business management and administration, entrepreneurship, business communication, finance." @points="5" />
-  <CourseItem @title="Internet usage, URL, websites" @description="This topic contains swagpaths on business management and administration, entrepreneurship, business communication, finance." @points="5" />
-  <CourseItem @title="Internet usage, URL, websites" @description="This topic contains swagpaths on business management and administration, entrepreneurship, business communication, finance." @points="5" />
+  {{#each this.model as |course_item|}}
+    <CourseItem @title={{course_item.name}} @description={{course_item.description}} @points="5"
+      @slug={{course_item.slug}} @id={{course_item.id}} />
+  {{/each}}
+
+
 
 
 

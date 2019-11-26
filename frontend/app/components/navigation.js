@@ -2,11 +2,7 @@ import Component from '@ember/component';
 import { inject } from '@ember/service';
 // import { inject as service } from '@ember/service';
 import { action } from '@ember/object';
-
-
-
-
-export default class MainHeaderComponent extends Component {
+export default class NavigationComponent extends Component {
 
   @inject
   me;
@@ -21,6 +17,4 @@ export default class MainHeaderComponent extends Component {
   closenav() {
     document.getElementById("mySidenav").style.width = "0";
   }
-
-
 }

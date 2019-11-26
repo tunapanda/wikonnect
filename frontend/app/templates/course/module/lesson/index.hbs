@@ -1,1 +1,34 @@
 {{outlet}}
+{{!-- {{outlet}} --}}
+<div id="courses">
+  <div class="padded breadcrums">
+
+    {{!-- Tracks > Communication, Business & Organization --}}
+
+  </div>
+
+  <img class="padded" src="https://placekitten.com/300/147" width="100%" alt="">
+
+  <div class="padded details">
+    <h3>{{model.name}}</h3>
+    <p>
+      {{model.description}}
+    </p>
+  </div>
+  {{component "call-to-action-signup"}}
+
+
+  <div class="padded modules">
+    <h2>Chapters</h2>
+    <p>Click on a lesson to reveal chapters</p>
+
+
+    {{#each model.chapter as |lesson|}}
+
+      <ChapterItem @lesson={{lesson}} />
+    {{/each}}
+
+
+  </div>
+
+</div>

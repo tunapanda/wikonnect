@@ -6,16 +6,18 @@
   </div>
 {{/unless}}
 <div class="main-header">
-  <a class="header-hamburger">
-    {{svg-jar "menu-bars" class="icon" width="40" height="18"}}
-  </a>
-  <a class="branding">
+  <button class="header-hamburger" {{action "opennav"}}>
+    {{svg-jar "menu-bars" class="icon"  width="40" height="18"}}
+  </button>
+  {{#link-to "home" class="branding"}}
     {{svg-jar "wikonnect-primary" width="175"}}
-  </a>
-  <a class="search-bar">
+
+  {{/link-to}}
+
+  {{#link-to "search" }}
     {{svg-jar "search" width="40" height="18"}}
-  </a>
-  {{#if me.user.id}}
-    <BsButton onClick={{action logout}}>Log out</BsButton>
-  {{/if}}
+
+  {{/link-to}}
+
+
 </div>

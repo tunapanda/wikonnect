@@ -4936,6 +4936,13 @@ ember-let-polyfill@^0.1.0:
     ember-cli-babel "^6.16.0"
     ember-cli-version-checker "^2.1.2"
 
+ember-link-action@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/ember-link-action/-/ember-link-action-1.0.0.tgz#54894ec3debe3fdd9db96786f96c19b00ddbbd28"
+  integrity sha512-S6ZiD+P4sb+NqNqbx2iAbNMjmcibdaXL9Fu0Gp/RmMJUBgk/9ejYbCzPaJbUD7QrkQkwVLYaBdDulmdEwXhTSA==
+  dependencies:
+    ember-cli-babel "^7.7.3"
+
 ember-load-initializers@^2.0.0:
   version "2.1.1"
   resolved "https://registry.yarnpkg.com/ember-load-initializers/-/ember-load-initializers-2.1.1.tgz#d1a8bead00bc44222b0ab181840869992beb30f5"

@@ -2,27 +2,29 @@
 <div id="courses">
   <div class="padded breadcrums">
 
-    Tracks > Communication, Business & Organization
+    {{!-- Tracks > Communication, Business & Organization --}}
+    {{!-- {{bread-crumbs tagName="ol" outputStyle="bootstrap" linkable=true}} --}}
 
   </div>
 
   <img class="padded" src="https://placekitten.com/300/147" width="100%" alt="">
 
   <div class="padded details">
-    <h3>Navigating the internet... Browsers and websites</h3>
-    <p>This track contains swagpaths on business management and administration, entrepreneurship, business communication, finance.</p>
+    <h3>{{model.name}}</h3>
+    <p>
+      {{model.description}}
+    </p>
   </div>
   {{component "call-to-action-signup"}}
-
 
   <div class="padded modules">
     <h2>Modules</h2>
     <p>Click on a module to reveal lessons</p>
 
+    {{#each model.modules as |module|}}
 
-    <ModuleItem @title="Navigating the Internet" @description="the quick brown fox" @complete={{true}} />
-
-    <ModuleItem @title="Test" @description="the quick brown fox" @complete={{false}} />
+      <ModuleItem @module={{module}} @course={{model.id}} />
+    {{/each}}
 
 
     <Footer />
