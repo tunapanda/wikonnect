@@ -34,7 +34,7 @@ class LearningPath extends Model {
       index: search.indexName,
       id: this.id,
       body: {
-        model: 'course',
+        model: 'learning_path',
         name: this.name,
         description: this.description,
         status: this.status,

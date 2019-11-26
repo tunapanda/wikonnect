@@ -30,7 +30,7 @@ class Chapter extends Model {
       index: search.indexName,
       id: this.id,
       body: {
-        model: 'course',
+        model: 'chapter',
         name: this.name,
         description: this.description,
         content: '',
