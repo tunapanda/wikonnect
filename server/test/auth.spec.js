@@ -33,11 +33,18 @@ const badUserData = {
   }
 };
 
+const headers = {
+  'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7ImlkIjoiSGxOQTNsdUFBQU0iLCJlbWFpbCI6InVzZXI5OTFAd2lrb25lY3QuY29tIiwidXNlcm5hbWUiOiJ1c2VyOTkxIiwibGFzdFNlZW4iOm51bGwsImxhc3RJcCI6bnVsbCwibWV0YWRhdGEiOm51bGwsImNyZWF0ZWRBdCI6IjIwMTktMTEtMjVUMTk6NTI6NTkuNzM3WiIsInVwZGF0ZWRBdCI6IjIwMTktMTEtMjVUMTk6NTI6NTkuNzM3WiJ9LCJyb2xlIjoiYWRtaW4iLCJleHAiOjE1NzUzMTc3MDEsImlhdCI6MTU3NDcxMjkwMX0.gj8JRo44Hif3DFvf6fTeO-Lng78hb7aj-QCRfW-YAv4'
+};
+
 describe('AUTHENTICATION ROUTES', () => {
-  before(() => {
-    return knex.migrate.rollback()
-      .then(() => { return knex.migrate.latest(); })
-      .then(() => { return knex.seed.run(); });
+  let token;
+  console.log(token);
+
+  before(async () => {
+    await knex.migrate.rollback();
+    await knex.migrate.latest();
+    return knex.seed.run();
   });
   describe('Auth routes tests: /api/v1/users/', () => {
 
@@ -46,6 +53,7 @@ describe('AUTHENTICATION ROUTES', () => {
         .request(server)
         .post(usersRoute)
         .set('Content-Type', 'application/json')
+        .set(headers)
         .send(registerUser)
         .end((err, res) => {
           console.log(res.body.user);
@@ -61,11 +69,43 @@ describe('AUTHENTICATION ROUTES', () => {
         .request(server)
         .get(usersRoute)
         .set('Content-Type', 'application/json')
+        .set(headers)
         .send(registerUser)
         .end((err, res) => {
           res.should.have.status(200);
           res.body.user[0].should.have.property('id');
           res.body.user[1].should.have.property('username');
+          done();
+        });
+    });
+    it('Should get ONE user on GET requests using PARAMS', done => {
+      chai
+        .request(server)
+        .get(usersRoute + userId)
+        .set('Content-Type', 'application/json')
+        .set(headers)
+        .send(registerUser)
+        .end((err, res) => {
+          res.should.have.status(200);
+          res.body.user.should.have.property('id');
+          res.body.user.should.have.property('username');
+          res.body.user.should.have.property('email');
+          done();
+        });
+    });
+
+    it('Should get ONE user on GET requests using QUERY', done => {
+      chai
+        .request(server)
+        .get(usersRoute + '?username=' + userId)
+        .set('Content-Type', 'application/json')
+        .set(headers)
+        .send(registerUser)
+        .end((err, res) => {
+          res.should.have.status(200);
+          res.body.user[0].should.have.property('id');
+          res.body.user[0].should.have.property('username');
+          res.body.user[0].should.have.property('email');
           done();
         });
     });
@@ -76,6 +116,7 @@ describe('AUTHENTICATION ROUTES', () => {
         .post(usersRoute)
         .send(badUserData)
         .set('Content-Type', 'application/json')
+        .set(headers)
         .end((err, res) => {
           res.should.have.status(400);
           expect(res.body.errors).to.deep.equal({ 'email': ['Email can\'t be blank'], 'phonenumber': ['Phonenumber can\'t be blank'] });
@@ -90,7 +131,8 @@ describe('AUTHENTICATION ROUTES', () => {
         .request(server)
         .post(usersRoute)
         .send(registerUser)
-        .set('Accept', 'application/json')
+        .set('Content-Type', 'application/json')
+        .set(headers)
         .end((err, res) => {
           res.should.have.status(406);
           expect(res.body).to.deep.equal({ 'error': 'User exists' });
@@ -106,8 +148,10 @@ describe('AUTHENTICATION ROUTES', () => {
         .request(server)
         .post(authRoute)
         .set('Content-Type', 'application/json')
+        .set(headers)
         .send(loginUserData)
         .end((err, res) => {
+          token = res.body.token;
           res.should.have.status(200);
           res.body.should.have.property('token');
           done();
@@ -118,6 +162,7 @@ describe('AUTHENTICATION ROUTES', () => {
         .request(server)
         .post(authRoute)
         .set('Content-Type', 'application/json')
+        .set(headers)
         .send({ 'username': 'urlencoded', 'hash': 'urlencodedurl' })
         .end((err, res) => {
           res.should.have.status(400);
