@@ -4408,13 +4408,6 @@ ember-bootstrap@^3.0.1:
     rsvp "^4.0.1"
     silent-error "^1.0.1"
 
-ember-breadcrumbs@^0.2.2:
-  version "0.2.2"
-  resolved "https://registry.yarnpkg.com/ember-breadcrumbs/-/ember-breadcrumbs-0.2.2.tgz#15976a31780d495e92320cba0f17e1fde70ae8a3"
-  integrity sha512-dp4DP/yVx9V4ovd7Ncv3NqEMDQqLOmkN/fuCX5a4pntrf6fP3fDgGf4v1o4G8iy+chIFitxSKlT2QAdC+ctnpg==
-  dependencies:
-    ember-cli-babel "^7.10.0"
-
 ember-changeset-validations@^2.1.0:
   version "2.2.0"
   resolved "https://registry.yarnpkg.com/ember-changeset-validations/-/ember-changeset-validations-2.2.0.tgz#66079dbfeee296bd05d1be974bdb21d146b744d7"

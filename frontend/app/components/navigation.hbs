@@ -11,11 +11,11 @@
       My Courses
 
     {{/link-to}}
-    {{#link-to "proflie" invokeAction=(action "closenav")  }}
+    {{#link-to "profile" me.user.username invokeAction=(action "closenav")  }}
       Profile
 
     {{/link-to}}
-    {{#link-to "profile" invokeAction=(action "closenav")  }}
+    {{#link-to "profile" me.user.username invokeAction=(action "closenav")  }}
       Logout
 
     {{/link-to}}
