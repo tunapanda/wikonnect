@@ -3,7 +3,6 @@ const User = require('../models/user');
 const validateAuthRoutes = require('../middleware/validation/validateAuthRoutes');
 const bcrypt = require('bcrypt');
 const getUserByUsername = require('../middleware/authenticate');
-const { requireAuth } = require('../middleware/auth');
 
 
 const router = new Router({
