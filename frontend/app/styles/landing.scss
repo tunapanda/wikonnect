@@ -1,92 +1,93 @@
-
-
 #landing {
-    @include pages-main;
+  @include pages-main;
 
+  img {
+    width: 100%;
+  }
 
 }
 
 .welcome {
-    font-family: $karla;
-    width: 90%;
-    color: #535D64;
-    margin-bottom: 30px;
+  font-family: $karla;
+  width: 90%;
+  color: #535D64;
+  margin-bottom: 30px;
 
-    span {
-        color: $primary;
-        font-weight: bold;
-    }
+  span {
+    color: $primary;
+    font-weight: bold;
+  }
 }
 
 .def,
 .get-started {
 
-    color: white;
-    position: relative;
-    text-align: left;
-    color: white;
-    font-family: $karla;
+  color: white;
+  position: relative;
+  text-align: left;
+  color: white;
+  font-family: $karla;
 
-    p {
-        position: absolute;
-        bottom: 8px;
-        padding-left: 1em;
-        margin-left: 0.5em;
-        right: 16px;
+  p {
+    position: absolute;
+    bottom: 8px;
+    padding-left: 1em;
+    margin-left: 0.5em;
+    right: 16px;
 
-    }
+  }
 
 }
 
 #features {
-    min-height: 100%;
+  min-height: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  text-align: center;
+  align-content: center;
+  justify-content: space-evenly;
+
+  div {
+    margin-top: 20px;
     display: flex;
-    flex-wrap: wrap;
-    flex-direction: row;
-    text-align: center;
     align-content: center;
-    justify-content: space-evenly;
+    flex-basis: calc(50% - 40px);
+    justify-content: center;
+    flex-direction: column;
+  }
 
-    div {
-        margin-top: 20px;
-        display: flex;
-        align-content: center;
-        flex-basis: calc(50% - 40px);
-        justify-content: center;
-        flex-direction: column;
+  a {
+    padding: 3px 3px;
+    font-size: 12px;
+    color: $primary;
+    background-color: #e8eaf6;
+
+    span {
+      margin-left: 4px;
     }
-
-    a {
-        padding: 3px 3px;
-        font-size: 12px;
-        color: $primary;
-        background-color: #e8eaf6;
-
-        span {
-            margin-left: 4px;
-        }
-    }
+  }
 }
 
 .circle {
-    height: 50px;
-    width: 50px;
-    background-color: $primary;
-    border-radius: 50%;
-    display: inline-block;
-    margin: auto;
-    padding-bottom: 7px;
+  height: 50px;
+  width: 50px;
+  background-color: $primary;
+  border-radius: 50%;
+  display: inline-block;
+  margin: auto;
+  padding-bottom: 7px;
 }
 
 h6 {
-    font-size: 14px;
-    color: $primary;
-    padding-top: 1.5em;
+  font-size: 14px;
+  color: $primary;
+  padding-top: 1.5em;
 }
 
 .footer {
-    display: flex;
-    justify-content: space-between;
-    font-size: 10px;
+  display: flex;
+  justify-content: space-between;
+  font-size: 10px;
 
 }

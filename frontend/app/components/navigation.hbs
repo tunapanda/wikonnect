@@ -1,0 +1,59 @@
+<div id="mySidenav" class="sidenav">
+  <button class="closebtn" {{action "closenav"}}>&times;</button>
+  {{!-- {{#link-to class="closebtn" invokeAction=(action "closenav") }}
+    &times;
+  {{/link-to}} --}}
+  {{#if me.user.id}}
+    {{#link-to "index" invokeAction=(action "closenav")  }}
+      Home
+    {{/link-to}}
+    {{#link-to "home" invokeAction=(action "closenav")  }}
+      My Courses
+
+    {{/link-to}}
+    {{#link-to "profile" me.user.username invokeAction=(action "closenav")  }}
+      Profile
+
+    {{/link-to}}
+    {{#link-to "profile" me.user.username invokeAction=(action "closenav")  }}
+      Logout
+
+    {{/link-to}}
+    {{#link-to "home" invokeAction=(action "closenav")  }}
+      Settings
+
+    {{/link-to}}
+    {{#link-to "about" invokeAction=(action "closenav")  }}
+      About
+
+    {{/link-to}}
+
+  {{else}}
+
+
+    {{#link-to "home" invokeAction=(action "closenav")  }}
+      Home
+    {{/link-to}}
+    {{#link-to "home" invokeAction=(action "closenav")  }}
+      Courses
+
+    {{/link-to}}
+    {{#link-to "login" invokeAction=(action "closenav")  }}
+      Login
+
+    {{/link-to}}
+    {{#link-to "signup" invokeAction=(action "closenav")  }}
+      Signup
+
+    {{/link-to}}
+
+    {{#link-to "about" invokeAction=(action "closenav")  }}
+      About
+
+    {{/link-to}}
+
+
+  {{/if}}
+
+
+</div>
