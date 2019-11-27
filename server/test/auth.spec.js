@@ -59,7 +59,6 @@ describe('AUTHENTICATION ROUTES', () => {
           res.should.have.status(201);
           res.body.user.should.have.property('id');
           res.body.user.should.have.property('username');
-          res.body.user.should.have.property('email');
           done();
         });
     });
@@ -74,7 +73,6 @@ describe('AUTHENTICATION ROUTES', () => {
           res.should.have.status(200);
           res.body.user[0].should.have.property('id');
           res.body.user[1].should.have.property('username');
-          res.body.user[2].should.have.property('email');
           done();
         });
     });
@@ -89,7 +87,6 @@ describe('AUTHENTICATION ROUTES', () => {
           res.should.have.status(200);
           res.body.user.should.have.property('id');
           res.body.user.should.have.property('username');
-          res.body.user.should.have.property('email');
           done();
         });
     });
@@ -105,7 +102,6 @@ describe('AUTHENTICATION ROUTES', () => {
           res.should.have.status(200);
           res.body.user[0].should.have.property('id');
           res.body.user[0].should.have.property('username');
-          res.body.user[0].should.have.property('email');
           done();
         });
     });

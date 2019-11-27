@@ -1,0 +1,47 @@
+<div class="profile">
+  <div class="profile-head">
+    <img class="profile-picture" src="/images/profile-placeholder.gif">
+    <h2 class="profile-name">{{name}}</h2>
+  </div>
+  <div class="profile-options">
+    <BsButtonGroup @value={{profileView}} @type="radio" @onChange={{action (mut profileView)}} as |bg|>
+      {{#each viewOptions as |view|}}
+        <bg.button @type='default' @value={{view}}>{{view}}</bg.button>
+      {{/each}}
+
+    </BsButtonGroup>
+
+  </div>
+
+  {{#if (eq profileView "profile")}}
+    <BsButton class="profile-edit" onClick={{action editProfile}}>Edit</BsButton>
+    <BsForm class="profile-data" @model={{model}} @onSubmit={{action save}} @disabled={{viewOnly}} as |form|>
+      <p>First Name:</p>
+      <form.element @property="firstName" @placeholder="What is your first name?" />
+      <p>Last Name:</p>
+      <form.element @property="lastName" @placeholder="What is your second name?" />
+      <p>About Me:</p>
+      <form.element @property="aboutMe" @placeholder="Describe yourself" />
+      {{#if unsavedChanges}}
+        <BsButton @defaultText="Save Changes" @buttonType="submit" />
+      {{/if}}
+    </BsForm>
+
+  {{/if}}
+
+  {{#if (eq profileView "learning")}}
+    <h4>My completed courses</h4>
+    {{#if model.achievements.length}}
+      {{#each model.achievments as  |achievement|}}
+        {{achievement.name}}
+      {{/each}}
+    {{else}}
+      You have not completed any courses
+    {{/if}}
+
+  {{/if}}
+
+  {{#if (eq profileView "settings")}}
+    Set stuff
+  {{/if}}
+</div>
