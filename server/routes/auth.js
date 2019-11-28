@@ -17,7 +17,7 @@ router.post('/', validateAuthRoutes.validateUserLogin, async ctx => {
   let { hash: hashPassword, ...userInfoWithoutPassword } = user[0];
 
   user = user[0];
-  let role = 'admin';
+  let role = 'basic';
 
   if (await bcrypt.compare(ctx.request.body.password, hashPassword)) {
     // eslint-disable-next-line require-atomic-updates
