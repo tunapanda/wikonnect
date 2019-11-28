@@ -1,6 +1,8 @@
 @import url('https://fonts.googleapis.com/css?family=Karla&display=swap');
 $karla: 'Karla',
 sans-serif;
+
+$primary-purple:#534897;
 $primary-blue: #2C41B1;
 $light-blue: #24BDD1;
 $primary-dark : #1C4255;
@@ -14,11 +16,11 @@ $light-grey : #989898;
 $lightest-grey : #F8F8F8;
 
 @mixin pages-main {
-    font-family: $karla;
-    color: $light-grey
+  font-family: $karla;
+  color: $light-grey
 }
 
 .padded {
-    padding-left: 1em;
-    padding-right: 1em;
+  padding-left: 1em;
+  padding-right: 1em;
 }

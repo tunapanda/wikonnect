@@ -1,93 +1,64 @@
 #landing {
-  @include pages-main;
+  background-color: $primary-purple;
+  // @include pages-main;
+  padding: 2em;
+  color: white;
+  height: 100%;
 
-  img {
+  button {
+    border-radius: 7px;
     width: 100%;
+    height: 3em;
+    margin-top: 1em;
+
+    color: white;
   }
 
 }
 
-.welcome {
-  font-family: $karla;
-  width: 90%;
-  color: #535D64;
-  margin-bottom: 30px;
-
-  span {
-    color: $primary;
-    font-weight: bold;
-  }
-}
-
-.def,
-.get-started {
-
-  color: white;
-  position: relative;
-  text-align: left;
-  color: white;
-  font-family: $karla;
-
-  p {
-    position: absolute;
-    bottom: 8px;
-    padding-left: 1em;
-    margin-left: 0.5em;
-    right: 16px;
-
-  }
-
-}
-
-#features {
-  min-height: 100%;
-  display: flex;
-  flex-wrap: wrap;
-  flex-direction: row;
+.centered {
+  padding-top: 1em;
+  width: 100%;
   text-align: center;
-  align-content: center;
-  justify-content: space-evenly;
-
-  div {
-    margin-top: 20px;
-    display: flex;
-    align-content: center;
-    flex-basis: calc(50% - 40px);
-    justify-content: center;
-    flex-direction: column;
-  }
-
-  a {
-    padding: 3px 3px;
-    font-size: 12px;
-    color: $primary;
-    background-color: #e8eaf6;
-
-    span {
-      margin-left: 4px;
-    }
-  }
 }
 
-.circle {
-  height: 50px;
-  width: 50px;
-  background-color: $primary;
-  border-radius: 50%;
-  display: inline-block;
-  margin: auto;
-  padding-bottom: 7px;
+.page-content {
+
+  padding-top: 70px;
 }
 
-h6 {
-  font-size: 14px;
-  color: $primary;
-  padding-top: 1.5em;
+.learn {
+  background-color: #F57010;
+  border: 0;
+
 }
 
-.footer {
+.teach {
+  background-color: #32A583;
+  border: 0;
+
+}
+
+.build {
+  background-color: #FFCF00;
+  border: 0;
+
+}
+
+.login {
+  background: none;
+  border-color: white;
+}
+
+#white-header {
+  position: fixed;
+  width: 100%;
+  top: 0;
   display: flex;
+  background-color: $primary-purple;
+  flex-direction: row;
   justify-content: space-between;
-  font-size: 10px;
+  padding: 1em;
+  z-index: 999;
 
 }
