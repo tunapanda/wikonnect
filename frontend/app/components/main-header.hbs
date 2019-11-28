@@ -1,23 +1,10 @@
-{{#unless me.user.id}}
-  <div class="authentication-header">
-    {{#link-to "login" class="authentication-header-login"}}Login{{/link-to}}
-    {{#link-to "signup" class="authentication-header-signup btn-round"}}Sign up{{/link-to}}
-    {{!-- <BsButton class="authentication-header-signup" @type="round" @defaultText="Sign Up" /> --}}
-  </div>
-{{/unless}}
-<div class="main-header">
+<div id="white-header" class="build">
+
+  {{svg-jar "wikonnect-logo-white" class="icon"   height="40"}}
+
   <button class="header-hamburger" {{action "opennav"}}>
-    {{svg-jar "menu-bars" class="icon"  width="40" height="18"}}
+
+    {{svg-jar "ic_hamburger_white" class="icon"   height="40"}}
   </button>
-  {{#link-to "home" class="branding"}}
-    {{svg-jar "wikonnect-primary" width="175"}}
-
-  {{/link-to}}
-
-  {{#link-to "search" }}
-    {{svg-jar "search" width="40" height="18"}}
-
-  {{/link-to}}
-
 
 </div>
