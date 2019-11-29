@@ -3,13 +3,22 @@ const User = require('../models/user');
 const validateAuthRoutes = require('../middleware/validation/validateAuthRoutes');
 const bcrypt = require('bcrypt');
 const getUserByUsername = require('../middleware/authenticate');
-const permController = require('../middleware/userAccessControlMiddleware');
+const permController = require('../middleware/permController');
+const jwt = require('../middleware/jwt');
 
 
 const router = new Router({
   prefix: '/users'
 });
 
+/**
+ *
+ * @param {ctx.request.body.user} ctx
+ * @param {*} next
+ *
+ * delete password in the ctx
+ * return hashed password
+ */
 async function createPasswordHash(ctx, next) {
   if (ctx.request.body.user.password) {
     const hash = await bcrypt.hash(ctx.request.body.user.password, 10);
@@ -34,17 +43,17 @@ router.post('/', validateAuthRoutes.validateNewUser, getUserByUsername, createPa
   ctx.body = { user };
 });
 
-router.get('/:id', permController.grantAccess('readOwn', 'profile'), async ctx => {
-  // const user = await User.query().findById(ctx.state.user.id);
+router.get('/:id', jwt.authenticate, permController.grantAccess('readOwn', 'profile'), async ctx => {
   const user = await User.query().findById(ctx.params.id);
 
   ctx.assert(user, 404, 'No User With that Id');
+  const perm = ctx.state.user.attributes;
   ctx.status = 200;
-  ctx.body = { user };
+  ctx.body = { user, perm };
 
 });
 
-router.get('/', permController.grantAccess('readAny', 'profile'), async ctx => {
+router.get('/', jwt.authenticate, permController.grantAccess('readAny', 'profile'), async ctx => {
 
   let user = User.query();
 

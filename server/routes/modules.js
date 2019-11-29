@@ -29,9 +29,8 @@ async function returnType(parent) {
 router.get('/:id', async ctx => {
   const modules = await Module.query().findById(ctx.params.id).eager('lessons(selectNameAndId)');
 
-  if (!modules) {
-    ctx.assert(module, 404, 'No matching record found');
-  }
+  ctx.assert(modules, 404, 'No matching record found');
+
   returnType(modules);
 
   ctx.status = 200;
@@ -56,9 +55,7 @@ router.post('/', validatePostData, async ctx => {
 
   let { module_id, course_id, ...newModule } = ctx.request.body;
 
-  if (!newModule) {
-    ctx.assert(modules, 401, 'Something went wrong');
-  }
+  ctx.assert(newModule, 401, 'Something went wrong');
 
   const modules = await Module.query().insertAndFetch(newModule);
   await knex('course_modules').insert([
@@ -76,9 +73,7 @@ router.post('/', validatePostData, async ctx => {
 router.put('/:id', async ctx => {
   const modules = await Module.query().patchAndFetchById(ctx.params.id, ctx.request.body);
 
-  if (!modules) {
-    ctx.throw(400, 'That learning path does not exist');
-  }
+  ctx.assert(modules, 400, 'That learning path does not exist');
 
   ctx.status = 201;
   ctx.body = { modules };
@@ -87,7 +82,7 @@ router.delete('/:id', async ctx => {
   const modules = await Module.query().findById(ctx.params.id);
   await Module.query().delete().where({ id: ctx.params.id });
 
-  ctx.throw(modules, 401, 'No ID was provided');
+  ctx.assert(modules, 401, 'No ID was provided');
   ctx.status = 200;
   ctx.body = { modules };
 });
