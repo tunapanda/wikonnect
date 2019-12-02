@@ -1,12 +1,12 @@
 <div class="profile">
   <div class="profile-head">
-    <img class="profile-picture" src="/images/profile-placeholder.gif">
+    <img class="profile-picture" alt="" src="/images/profile-placeholder.gif">
     <h2 class="profile-name">{{name}}</h2>
   </div>
   <div class="profile-options">
     <BsButtonGroup @value={{profileView}} @type="radio" @onChange={{action (mut profileView)}} as |bg|>
       {{#each viewOptions as |view|}}
-        <bg.button @type='default' @value={{view}}>{{view}}</bg.button>
+        <bg.button @type="default" @value={{view}}>{{view}}</bg.button>
       {{/each}}
 
     </BsButtonGroup>
