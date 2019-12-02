@@ -1,0 +1,23 @@
+.profile {
+  display: flex;
+  flex-direction: column;
+  // justify-content: flex-start;
+  align-content: flex-start;
+}
+
+.profile-head {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-end;
+}
+
+.profile-edit {
+  width: 15%;
+}
+
+.profile-data {
+display: flex;
+flex-direction: column;
+justify-content: center;
+
+}

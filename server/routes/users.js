@@ -55,8 +55,19 @@ router.get('/', permController.grantAccess('readAny', 'profile'), async ctx => {
 
   user = await user;
 
-  ctx.status = 200;
   ctx.body = { user };
+});
+
+router.put('/:id', async ctx => {
+
+  const user = await User.query().patchAndFetchById(ctx.params.id, ctx.request.body.user);
+
+  ctx.assert(user, 404, 'That user does not exist.');
+
+  ctx.status = 200;
+
+  ctx.body = { user };
+
 });
 
 module.exports = router.routes();

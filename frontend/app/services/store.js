@@ -13,4 +13,10 @@ export default DS.Store.extend({
 
   },
 
+  findByUsername: function () {
+    return this.query('user', { "username": arguments[0] }).then((items) => {
+      return items.get('firstObject');
+    });
+  }
+
 });

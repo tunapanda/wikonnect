@@ -6,6 +6,10 @@ export default class UserModel extends Model {
   @attr() username;
   @attr() email;
   @attr() password;
+  @attr() firstName;
+  @attr() lastName;
+  @attr() aboutMe;
+  
   @hasMany('group') groups;
   @hasMany('activity') activities;
   @hasMany('achievement') achievements;
