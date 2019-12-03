@@ -1,49 +1,103 @@
 #home {
-    @include pages-main;
+  @include pages-main;
 
-    h2 {
-        font-size: 18px;
-        color: $primary;
-    }
 
-    h3 {
-        font-size: 24px;
-        color: $dark-blue;
-    }
 
-    p {
-        font-size: 13px;
+  h3 {
+    font-size: 24px;
+    color: $dark-blue;
+  }
 
-    }
+  p {
+    font-size: 13px;
+
+  }
+
+}
+
+.heading {
+  color: white;
+  background-color: $primary-purple;
+  padding: 1.3em;
+}
+
+.alert {
+  margin-top: 1em;
+  display: flex;
+  border-style: solid;
+
+  background-color: #FFEDF0;
+  border-color: #FDD6DD;
+  border-width: 1px;
+  justify-content: space-around;
+  color: #D56679;
+
+
+  .alert-text {
+    font-size: 13px;
+    margin: 3px;
+
+  }
+
+  .alert-icon {
+    padding-right: 7px;
+    display: flex;
+    align-content: center;
+  }
 
 }
 
 .course-item {
-    border-color: $primary;
-    border-width: 1px;
-    border-style: solid;
-    padding: 1em;
-    margin-top: 1em;
 
 
+  margin-top: 1em;
+  display: flex;
+  justify-content: flex-start;
 
-    .course-description {
-        color: $light-grey;
-        font-size: 12px;
+  hr {
+   margin: 0px;
+   padding: 0px;
+   margin-top: 4px;
+ }
+
+  .course-image {
+    height: 70px;
+    width: 70px;
+    background-color: paleturquoise;
+    margin-right: 1em;
+    border-radius: 7px;
+  }
+
+  .course {
+    flex: 1;
+  }
+
+  .course-meta {
+    padding: 0px;
+    margin: 0px;
+    display: flex;
+    font-size: 12px;
+    font-weight: 400;
+    justify-content: space-between;
+  }
+
+  .course-description {
+    color: #656565;
+    font-size: 14px;
+  }
+
+  span {
+    display: flex;
+    flex-shrink: 2;
+    justify-content: space-between;
+
+    .points {
+      font-size: 12px;
     }
 
-    span {
-        display: flex;
-        flex-shrink: 2;
-        justify-content: space-between;
-
-        .points {
-            font-size: 12px;
-        }
-
-        h4 {
-            font-size: 14px;
-            color: $primary;
-        }
+    h4 {
+      font-size: 18px;
+      color: black;
     }
+  }
 }
