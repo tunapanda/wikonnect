@@ -2972,7 +2972,7 @@ broccoli-sri-hash@^2.1.0:
     sri-toolbox "^0.2.0"
     symlink-or-copy "^1.0.1"
 
-broccoli-stew@^1.5.0:
+broccoli-stew@^1.4.0, broccoli-stew@^1.5.0:
   version "1.6.0"
   resolved "https://registry.yarnpkg.com/broccoli-stew/-/broccoli-stew-1.6.0.tgz#01f6d92806ed6679ddbe48d405066a0e164dfbef"
   integrity sha512-sUwCJNnYH4Na690By5xcEMAZqKgquUQnMAEuIiL3Z2k63mSw9Xg+7Ew4wCrFrMmXMcLpWjZDOm6Yqnq268N+ZQ==
@@ -4876,6 +4876,25 @@ ember-deep-set@^0.2.0:
   dependencies:
     ember-cli-babel "^7.1.2"
 
+ember-drag-drop-polyfill@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/ember-drag-drop-polyfill/-/ember-drag-drop-polyfill-1.0.0.tgz#23f8ccf7dee19d56fe580c92260df3140f581329"
+  integrity sha512-T7SPf34HPqmKFsnS3r2fbJBnEn4y91QlO+1iCgaC3PwHk3Ng3k407LHuWc3ftGaNvldzhwgXEAO8/kHXihMnIQ==
+  dependencies:
+    ember-cli-babel "^6.6.0"
+    ember-cli-node-assets "^0.2.2"
+    ember-get-config "^0.2.1"
+    mobile-drag-drop "^2.2.0"
+  optionalDependencies:
+    broccoli-stew "^1.4.0"
+
+ember-drag-drop@^0.7.0:
+  version "0.7.0"
+  resolved "https://registry.yarnpkg.com/ember-drag-drop/-/ember-drag-drop-0.7.0.tgz#d9c3669d10927bab84ed7031e91b447f303ef30c"
+  integrity sha512-Yhv7md9g99AyKPrIFt8oVlDhTwSgv4e9Ers5HggMBprBOM5gY97EwdgDo7jvYuyqriqMKocni0dINELBF2dpyg==
+  dependencies:
+    ember-cli-babel "^7.1.3"
+
 ember-export-application-global@^2.0.0:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/ember-export-application-global/-/ember-export-application-global-2.0.1.tgz#b120a70e322ab208defc9e2daebe8d0dfc2dcd46"
@@ -4916,7 +4935,7 @@ ember-focus-trap@^0.3.2:
     ember-modifier-manager-polyfill "^1.1.0"
     focus-trap "^5.0.1"
 
-ember-get-config@^0.2.4:
+ember-get-config@^0.2.1, ember-get-config@^0.2.4:
   version "0.2.4"
   resolved "https://registry.yarnpkg.com/ember-get-config/-/ember-get-config-0.2.4.tgz#118492a2a03d73e46004ed777928942021fe1ecd"
   integrity sha1-EYSSoqA9c+RgBO13eSiUICH+Hs0=
@@ -7978,6 +7997,11 @@ mktemp@~0.4.0:
   version "0.4.0"
   resolved "https://registry.yarnpkg.com/mktemp/-/mktemp-0.4.0.tgz#6d0515611c8a8c84e484aa2000129b98e981ff0b"
   integrity sha1-bQUVYRyKjITkhKogABKbmOmB/ws=
+
+mobile-drag-drop@^2.2.0:
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/mobile-drag-drop/-/mobile-drag-drop-2.2.0.tgz#d9e004416436e325f3d10e51570f2071396dcc3a"
+  integrity sha512-SbYUySukoQryFrIkpR4S70QOyr3WD90raxiEHHaH9Bwg6O7fbMlpB4ANlNUkQ/j05YtWPm/PWnjPAXotXB8bIA==
 
 morgan@^1.9.1:
   version "1.9.1"

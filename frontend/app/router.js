@@ -19,6 +19,7 @@ Router.map(function () {
         this.route('chapter', { path: '/chapter/:chapter_id' });
       });
     });
+    this.route('create');
   });
   this.route('profile', { path: '/profile/:username' }, function () {
     this.route('settings');

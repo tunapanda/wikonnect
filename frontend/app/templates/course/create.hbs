@@ -1,0 +1,35 @@
+{{#sortable-objects sortableObjectList=model enableSort=true}}
+  {{#each model as |module|}}
+    {{#draggable-object content=module overrideClass='sortObject' isSortable=true}}
+      <ModuleItem @module={{module}} @course={{model.id}} />
+    {{/draggable-object}}
+  {{/each}}
+{{/sortable-objects}}
+
+
+{{#draggable-object-target action=(action 'upcount')}}
+  <div class="module-item">
+
+    {{!-- {{#link-to "course" @course "module" @module.id}} --}}
+
+
+    <div class="module-flex">
+      <div class="circle-parent">
+        <div class="small-circle"></div>
+
+      </div>
+
+      <div class="module-description">
+
+        <h3>Add a module</h3>
+        <div>Drag a module here to add it to your course</div>
+
+
+      </div>
+
+    </div>
+
+
+
+  </div>
+{{/draggable-object-target}}
