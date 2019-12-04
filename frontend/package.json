@@ -66,6 +66,7 @@
   "dependencies": {
     "ember-drag-drop": "^0.7.0",
     "ember-drag-drop-polyfill": "^1.0.0",
+    "ember-power-select": "3.0.4",
     "ember-truth-helpers": "^2.1.0"
   }
 }

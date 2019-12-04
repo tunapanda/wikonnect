@@ -1,14 +1,9 @@
 import Controller from '@ember/controller';
 import { action, computed } from '@ember/object';
 
-export default class CourseCreateController extends Controller {
+export default class CourseEditController extends Controller {
 
   selectedModule = null;
-
-  @computed('model.name')
-  get courseSlug() {
-    return this.model.get('name').replace(/\s/g, "-")
-  }
 
   @computed('model.modules.[]')
   get courseModules() {
@@ -30,10 +25,6 @@ export default class CourseCreateController extends Controller {
 
   @action
   saveCourse(model) {
-    model.setProperties({
-      slug: this.get('courseSlug'),
-      status: "published"
-    })
     model.save()
   }
 }
