@@ -3,6 +3,8 @@ const expect = chai.expect;
 const chaiHttp = require('chai-http');
 const server = require('../index');
 const knex = require('../db/db');
+const jwt = require('jsonwebtoken');
+const { secret } = require('../middleware/jwt');
 
 chai.should();
 chai.use(chaiHttp);
@@ -34,7 +36,7 @@ const badUserData = {
 };
 
 const headers = {
-  'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7ImlkIjoiSGxOQTNsdUFBQU0iLCJlbWFpbCI6InVzZXI5OTFAd2lrb25lY3QuY29tIiwidXNlcm5hbWUiOiJ1c2VyOTkxIiwibGFzdFNlZW4iOm51bGwsImxhc3RJcCI6bnVsbCwibWV0YWRhdGEiOm51bGwsImNyZWF0ZWRBdCI6IjIwMTktMTEtMjVUMTk6NTI6NTkuNzM3WiIsInVwZGF0ZWRBdCI6IjIwMTktMTEtMjVUMTk6NTI6NTkuNzM3WiJ9LCJyb2xlIjoiYWRtaW4iLCJleHAiOjE1NzUzMTc3MDEsImlhdCI6MTU3NDcxMjkwMX0.gj8JRo44Hif3DFvf6fTeO-Lng78hb7aj-QCRfW-YAv4'
+  'Authorization': 'Bearer ' + jwt.sign({ data: registerUser.user }, secret, { expiresIn: '30d' })
 };
 
 describe('AUTHENTICATION ROUTES', () => {
