@@ -11,7 +11,7 @@ export default class CmsLessonCreateController extends Controller {
   async submit() {
     await this.model.save();
 
-    await all(this.model.chapters.invoke('save'));
+    all(this.model.chapters.invoke('save'));
 
     this.transitionToRoute('cms.lesson.edit', this.model);
   }

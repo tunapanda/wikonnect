@@ -3,20 +3,17 @@ const validate = require('validate.js');
 
 async function validateChapter(ctx, next) {
   try {
-    await validate.async(ctx.request.body, {
+    await validate.async(ctx.request.body.chapter, {
       name: {
-        presence: true,
-      },
-      slug: {
         presence: true,
       },
       description: {
         presence: true,
       },
-      lesson_id:{
+      lessonId: {
         presence: true,
       },
-      creator_id: {
+      creatorId: {
         presence: true,
       },
       status: {

@@ -23,7 +23,7 @@ async function returnType(parent) {
 }
 
 router.get('/:id', async ctx => {
-  const lesson = await Lesson.query().findById(ctx.params.id).eager('chapters(selectNameAndId)');
+  const lesson = await Lesson.query().findById(ctx.params.id).eager('chapters(selectId)');
 
   if (!lesson) {
     ctx.assert(lesson, 404, 'no lesson by that ID');
@@ -35,7 +35,7 @@ router.get('/:id', async ctx => {
 
 router.get('/', queryStringSearch, async ctx => {
   try {
-    const lesson = await Lesson.query().where(ctx.query).eager('chapters(selectNameAndId)');
+    const lesson = await Lesson.query().where(ctx.query).eager('chapters(selectId)');
 
     returnType(lesson);
 
@@ -48,8 +48,12 @@ router.get('/', queryStringSearch, async ctx => {
   }
 });
 
-router.post('/', validatePostData, async ctx => {
-  let newLesson = ctx.request.body;
+router.post('/', async ctx => {
+  let newLesson = ctx.request.body.lesson;
+
+  newLesson.slug = newLesson.name.replace(/[^a-z0-9]+/gi, '-')
+    .replace(/^-*|-*$/g, '')
+    .toLowerCase();
 
   const lesson = await Lesson.query().insertAndFetch(newLesson);
 
@@ -65,7 +69,7 @@ router.put('/:id', async ctx => {
   if (!lesson_record) {
     ctx.throw(400, 'That lesson path does not exist');
   }
-  const lesson = await Lesson.query().patchAndFetchById(ctx.params.id, ctx.request.body);
+  const lesson = await Lesson.query().patchAndFetchById(ctx.params.id, ctx.request.body.lesson);
 
   ctx.status = 201;
   ctx.body = { lesson };

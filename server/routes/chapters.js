@@ -52,7 +52,11 @@ router.get('/:id', async ctx => {
 });
 
 router.post('/', validateChapter, async ctx => {
-  let newChapter = ctx.request.body;
+  let newChapter = ctx.request.body.chapter;
+
+  newChapter.slug = newChapter.name.replace(/[^a-z0-9]+/gi, '-')
+    .replace(/^-*|-*$/g, '')
+    .toLowerCase();
 
   const chapter = await Chapter.query().insertAndFetch(newChapter);
   if (!chapter) {
@@ -69,7 +73,7 @@ router.put('/:id', async ctx => {
   if (!chapter_record) {
     ctx.throw(400, 'No chapter with that ID');
   }
-  const chapter = await Chapter.query().patchAndFetchById(ctx.params.id, ctx.request.body);
+  const chapter = await Chapter.query().patchAndFetchById(ctx.params.id, ctx.request.body.chapter);
 
   ctx.status = 201;
   ctx.body = { chapter };

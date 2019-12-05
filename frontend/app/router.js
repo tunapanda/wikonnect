@@ -31,6 +31,7 @@ Router.map(function () {
   this.route('cms', function () {
     this.route('lesson', function () {
       this.route('create');
+      this.route('edit', { path: '/:lesson_id' });
     });
   });
 

@@ -5,10 +5,7 @@ export default class CmsLessonCreateRoute extends Route {
   @inject
   me
 
-  model() {
-    return this.store.createRecord('lesson', {
-      creator: this.me.get('user'),
-      status: 'published'
-    })
+  model(params) {
+    return this.store.findRecord('lesson', params.lesson_id);
   }
 }
