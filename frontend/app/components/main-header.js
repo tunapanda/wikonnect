@@ -13,7 +13,6 @@ export default class MainHeaderComponent extends Component {
   @action
   opennav() {
     document.getElementById("mySidenav").style.width = "100%";
-
   }
 
   @action

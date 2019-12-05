@@ -1,26 +1,16 @@
-<div class="module-item {{if @available "green" "red"}}">
+<div class="module-item">
 
   {{!-- {{#link-to "course" @course "module" @module.id}} --}}
 
 
-  <div class="module-flex">
-    <div class="circle-parent">
-      <div class="small-circle"></div>
+  <img class="module-image" src="https://placekitten.com/300/147" alt="">
+  {{#link-to "course.module.index" @module.slug }}
+    <h6>{{@module.name}}</h6>
 
-    </div>
+  {{/link-to}}
+  {{!-- <div>{{@module.description}}</div> --}}
 
-    <div class="module-description">
-
-      {{#link-to "course.module.index" @module.slug }}
-        <h3>{{@module.name}}</h3>
-
-      {{/link-to}}
-      <div>{{@module.description}}</div>
-
-
-    </div>
-
-  </div>
+  <p>~ 5 Minutes</p>
 
 
 
