@@ -3,45 +3,58 @@
     <img class="profile-picture" alt="" src="/images/profile-placeholder.gif">
     <h2 class="profile-name">{{name}}</h2>
   </div>
-  <div class="profile-options">
-    <BsButtonGroup @value={{profileView}} @type="radio" @onChange={{action (mut profileView)}} as |bg|>
-      {{#each viewOptions as |view|}}
-        <bg.button @type="default" @value={{view}}>{{view}}</bg.button>
-      {{/each}}
+  <div class="profile-body padded">
+    <div class="profile-options">
+      <BsButtonGroup @value={{profileView}} @type="radio" @onChange={{action (mut profileView)}} as |bg|>
+        {{#each viewOptions as |view|}}
+          <bg.button @type="default" @value={{view}}>{{view}}</bg.button>
+        {{/each}}
 
-    </BsButtonGroup>
+      </BsButtonGroup>
 
-  </div>
+    </div>
+    <hr>
 
-  {{#if (eq profileView "profile")}}
-    <BsButton class="profile-edit" onClick={{action editProfile}}>Edit</BsButton>
-    <BsForm class="profile-data" @model={{model}} @onSubmit={{action save}} @disabled={{viewOnly}} as |form|>
-      <p>First Name:</p>
-      <form.element @property="firstName" @placeholder="What is your first name?" />
-      <p>Last Name:</p>
-      <form.element @property="lastName" @placeholder="What is your second name?" />
-      <p>About Me:</p>
-      <form.element @property="aboutMe" @placeholder="Describe yourself" />
-      {{#if unsavedChanges}}
-        <BsButton @defaultText="Save Changes" @buttonType="submit" />
-      {{/if}}
-    </BsForm>
+    {{#if (eq profileView "Profile")}}
+      <div class="profile-title">
+        <h4>Details</h4>
+        {{#if viewOnly}}
+          <button class="header-hamburger profile-edit " {{action editProfile}}>
+            Edit
+          </button>
+        {{else}}
+          <button class="header-hamburger profile-edit " {{action editProfile}}>
+            X
+          </button>
+        {{/if}}
 
-  {{/if}}
+      </div>
+      <BsForm class="profile-data" @model={{model}} @onSubmit={{action save}} @disabled={{viewOnly}} as |form|>
+        <form.element class="inputs" @property="firstName" @label="First Name"
+          @placeholder="What is your first name?" />
+        <form.element class="inputs" @property="lastName" @label="last Name" @placeholder="What is your second name?" />
+        <form.element class="inputs" @property="aboutMe" @label="About Me" @placeholder="Describe yourself" />
+        {{#unless viewOnly}}
+          <BsButton @defaultText="Save Changes" class="profile-submit" @buttonType="submit" />
+        {{/unless}}
+      </BsForm>
 
-  {{#if (eq profileView "learning")}}
-    <h4>My completed courses</h4>
-    {{#if model.achievements.length}}
-      {{#each model.achievments as  |achievement|}}
-        {{achievement.name}}
-      {{/each}}
-    {{else}}
-      You have not completed any courses
     {{/if}}
 
-  {{/if}}
+    {{#if (eq profileView "Learning")}}
+      <h4>My completed courses</h4>
+      {{#if model.achievements.length}}
+        {{#each model.achievments as  |achievement|}}
+          {{achievement.name}}
+        {{/each}}
+      {{else}}
+        You have not completed any courses
+      {{/if}}
 
-  {{#if (eq profileView "settings")}}
-    Set stuff
-  {{/if}}
+    {{/if}}
+
+    {{#if (eq profileView "Settings")}}
+      Set stuff
+    {{/if}}
+  </div>
 </div>

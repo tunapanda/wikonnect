@@ -5,11 +5,9 @@
   </div>
 
   <div class="padded">
-    <div class="alert">
-      <div class="alert-icon"> <span>&#9888;</span> </div>
-      <div class="alert-text">Please create an account to save your progress and earn moja points</div>
-      <div class="alert-close"> <span>&#88;</span> </div>
-    </div>
+    <BsAlert @visible={{true}} @fade={{true}} @type="info" @dismissible={{true}}>
+      You successfully read this important alert message.
+    </BsAlert>
 
     {{#each this.model as |course_item|}}
       <CourseItem @title={{course_item.name}} @description={{course_item.description}} @points="5"
