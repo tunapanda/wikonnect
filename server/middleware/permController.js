@@ -51,7 +51,7 @@ exports.grantAccess = function (action, resource) {
   return async (ctx, next) => {
     try {
       console.log(ctx.state.user.role);
-      
+
       const permission = roles.can(ctx.state.user.role)[action](resource);
       if (!permission.granted) {
         ctx.status = 401;
@@ -63,6 +63,8 @@ exports.grantAccess = function (action, resource) {
 
       let permissionData = JSON.parse(JSON.stringify(defaultPermissionObject));
       const permissions = roles.getGrants();
+      console.log(permissions);
+      
 
       Object.keys(permissions[ctx.state.user.role])
         .forEach(resource => {
@@ -80,7 +82,6 @@ exports.grantAccess = function (action, resource) {
 
       await next();
     } catch (error) {
-      // await next();
       ctx.status = 401;
       ctx.body = error;
     }

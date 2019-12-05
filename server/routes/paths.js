@@ -11,7 +11,7 @@ const router = new Router({
 
 /**
  *
- * @param {database object} parent
+ * @param {json} parent
  *
  * modify the parent object
  * return child relation object
@@ -43,7 +43,7 @@ router.get('/', permController.grantAccess('readAny', 'path'), queryStringSearch
     const userPermissions = ctx.state.user.attributes;
 
     ctx.status = 200;
-    ctx.body = { learningpath, userPermissions};
+    ctx.body = { learningpath, userPermissions };
   } catch (error) {
     ctx.status = 400;
     ctx.body = { message: 'The query key does not exist' };
@@ -59,7 +59,7 @@ router.get('/:id', permController.grantAccess('readOwn', 'path'), async ctx => {
   const userPermissions = ctx.state.user.attributes;
 
   ctx.status = 200;
-  ctx.body = { learningpath, userPermissions};
+  ctx.body = { learningpath, userPermissions };
 });
 
 
@@ -76,7 +76,7 @@ router.post('/', permController.grantAccess('createAny', 'path'), validatePostDa
 
 });
 
-router.put('/:id', permController.grantAccess('updateOwn', 'path'),  async ctx => {
+router.put('/:id', permController.grantAccess('updateOwn', 'path'), async ctx => {
   const learningpath_record = await LearningPath.query().findById(ctx.params.id);
   if (!learningpath_record) {
     ctx.throw(400, 'That learning path does not exist');

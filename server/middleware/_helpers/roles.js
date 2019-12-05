@@ -18,7 +18,7 @@ let grantList = [
   { role: 'basic', resource: 'profile', action: 'delete:own', attributes: '*' },
 
   { role: 'basic', resource: 'path', action: 'read:own', attributes: '*' },
-  // { role: 'basic', resource: 'path', action: 'read:any', attributes: '*' },
+  { role: 'basic', resource: 'path', action: 'read:any', attributes: '*' },
 
   { role: 'admin', resource: 'profile', action: 'create:any', attributes: '*' },
   { role: 'admin', resource: 'profile', action: 'read:any', attributes: '*' },
@@ -33,7 +33,6 @@ let grantList = [
   { role: 'superadmin', resource: 'path', action: 'create:any', attributes: '*' },
   { role: 'superadmin', resource: 'path', action: 'read:any', attributes: '*' },
   { role: 'superadmin', resource: 'path', action: 'update:any', attributes: '*' },
-
 ];
 const ac = new AccessControl(grantList);
 

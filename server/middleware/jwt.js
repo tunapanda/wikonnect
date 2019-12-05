@@ -5,4 +5,4 @@ const secret = 'secret';
 module.exports = {
   secret,
   authenticate: jwt({ secret: secret})
-}
+};

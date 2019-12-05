@@ -7,37 +7,21 @@ const knex = require('../db/db');
 chai.should();
 chai.use(chaiHttp);
 
-const usersRoute = '/api/v1/users/';
-const authRoute = '/api/v1/auth/';
-const userId = 'user99';
-const registerUser = {
-  'user': {
-    'id': userId,
-    'username': 'user99',
-    'password': 'tunapanda',
-    'email': 'user99@wikonnect.com'
-  }
-};
-
-const loginUserData = {
-  'username': userId,
-  'email': 'user99@wikonnect.com',
-  'password': 'tunapanda'
-};
-
-const badUserData = {
-  'user': {
-    'id': userId,
-    'username': 'user99',
-    'password': 'tunapanda'
-  }
+const routeCourse = '/api/v1/courses/';
+const routeCourseData = {
+  id: 'course6',
+  name: 'A Course 6',
+  slug: 'a-course-6',
+  description: 'Contains Modules.',
+  status: 'published',
+  creator_id: 'user1',
 };
 
 const headers = {
-  'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7ImlkIjoidXNlcjk5NiIsImVtYWlsIjoidXNlcjk5NkB3aWtvbmVjdC5jb20iLCJ1c2VybmFtZSI6InVzZXI5OTYiLCJsYXN0U2VlbiI6bnVsbCwibGFzdElwIjpudWxsLCJtZXRhZGF0YSI6bnVsbCwiY3JlYXRlZEF0IjoiMjAxOS0xMS0yOFQxMToxMzowOS4yMzZaIiwidXBkYXRlZEF0IjoiMjAxOS0xMS0yOFQxMToxMzowOS4yMzZaIn0sInJvbGUiOiJiYXNpYyIsImV4cCI6MTU3NTU1MDAxMSwiaWF0IjoxNTc0OTQ1MjExfQ.9BLqsUIyPWKtyd7RUHGKCh1duHFKORuS-15qcalc390'
+  'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7ImlkIjoidXNlcjEiLCJlbWFpbCI6InVzZXIxQHdpa29ubmVjdC5vcmciLCJ1c2VybmFtZSI6InVzZXIxIiwibGFzdFNlZW4iOiIyMDE3LTEyLTIwIDE5OjE3OjEwIiwibGFzdElwIjoiMjQ1LjE5LjIyNS41NSIsIm1ldGFkYXRhIjpudWxsLCJjcmVhdGVkQXQiOiIyMDE3LTEyLTIwVDE2OjE3OjEwLjAwMFoiLCJ1cGRhdGVkQXQiOiIyMDE3LTEyLTIwVDE2OjE3OjEwLjAwMFoifSwicm9sZSI6ImFkbWluIiwiZXhwIjoxNTc2MTUyMDE5LCJpYXQiOjE1NzU1NDcyMTl9.DL2I4ha4ZyF-JRKuH6L50GCqsWTwxMSwe6s01MV-Ar4'
 };
 
-describe('AUTHENTICATION ROUTES', () => {
+describe('COURSE ROUTE WITH PRIVILEGES', () => {
 
   before(async () => {
     await knex.migrate.rollback();
@@ -45,19 +29,18 @@ describe('AUTHENTICATION ROUTES', () => {
     return knex.seed.run();
   });
 
-  // it('Should get ALL users on GET requests', done => {
-  //   chai
-  //     .request(server)
-  //     .get(usersRoute)
-  //     .set('Content-Type', 'application/json')
-  //     .set(headers)
-  //     .send(registerUser)
-  //     .end((err, res) => {
-  //       res.should.have.status(200);
-  //       res.body.user[0].should.have.property('id');
-  //       res.body.user[1].should.have.property('username');
-  //       res.body.user[2].should.have.property('email');
-  //       done();
-  //     });
-  // });
+  it('Should create course with user as author', done => {
+    chai
+      .request(server)
+      .post(routeCourse)
+      .set('Content-Type', 'application/json')
+      .set(headers)
+      .send(routeCourseData)
+      .end((err, res) => {
+        console.log(res.body);
+        done();
+      });
+  });
+  it('Should return { edit:true, delete:true, update:true} if user == author', done => { done(); });
+  it('Should return { edit:false, delete:false, update:false} if user != author', done => { done(); });
 });
