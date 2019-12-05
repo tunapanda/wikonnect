@@ -1,0 +1,7 @@
+<BsForm @formLayout="vertical" @model={{model}} @onSubmit={{action "submit"}} as |form|>
+  <form.element @label="Name" @placeholder="Name" @property="name" @required={{true}} />
+  <form.element @controlType="textarea" @label="Description" @property="description" />
+
+
+  <BsButton @defaultText="Submit" @type="primary" @buttonType="submit" />
+</BsForm>

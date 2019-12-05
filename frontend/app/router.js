@@ -25,4 +25,9 @@ Router.map(function () {
   });
   this.route('search');
   this.route('about');
+  this.route('cms', function() {
+    this.route('lesson', function() {
+      this.route('create');
+    });
+  });
 });
