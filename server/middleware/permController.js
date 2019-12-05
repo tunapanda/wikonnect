@@ -1,6 +1,7 @@
 const jwToken = require('jsonwebtoken');
 const User = require('../models/user');
 const { roles } = require('./_helpers/roles');
+const { defaultPermissionObject } = require('./_helpers/permission');
 
 
 /**
@@ -45,9 +46,12 @@ exports.requireAuth = async function (ctx, next) {
  *
  *
  */
+
 exports.grantAccess = function (action, resource) {
   return async (ctx, next) => {
     try {
+      console.log(ctx.state.user.role);
+      
       const permission = roles.can(ctx.state.user.role)[action](resource);
       if (!permission.granted) {
         ctx.status = 401;
@@ -57,15 +61,22 @@ exports.grantAccess = function (action, resource) {
         return ctx;
       }
 
-      /**
-       * pass the user permissions attributes in the ctx
-       * ued to give the user specific access
-       */
-      if (ctx.params.id && ctx.params.id === ctx.state.user.data.id) {
-        ctx.state.user.attributes = permission.attributes;
-      } else {
-        ctx.state.user.attributes = 'none';
-      }
+      let permissionData = JSON.parse(JSON.stringify(defaultPermissionObject));
+      const permissions = roles.getGrants();
+
+      Object.keys(permissions[ctx.state.user.role])
+        .forEach(resource => {
+
+          Object.keys(permissions[ctx.state.user.role][resource])
+            .forEach(permission => {
+              if (permissions[ctx.state.user.role][resource][permission].length > 0) {
+                const permissionInfo = permission.split(':');
+                permissionData[resource][permissionInfo[0]] = permissionInfo[1];
+              }
+            });
+        });
+
+      ctx.state.user.attributes = permissionData[resource];
 
       await next();
     } catch (error) {
@@ -75,3 +86,4 @@ exports.grantAccess = function (action, resource) {
     }
   };
 };
+

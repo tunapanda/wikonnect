@@ -30,7 +30,9 @@ exports.up = knex =>
     .createTable('group_permissions', table => {
       table.text('id').primary().notNullable().defaultTo(knex.raw('next_id()'));
       table.text('group_id').references('groups');
-      table.text('name');
+      table.text('resource');
+      table.text('action');
+      table.text('attributes');
       table.timestamps();
     })
     .createTable('learning_paths', table => {

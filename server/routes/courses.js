@@ -2,6 +2,8 @@ const Router = require('koa-router');
 const Course = require('../models/course');
 const validatePostData = require('../middleware/validation/validatePostData');
 const queryStringSearch = require('../middleware/queryStringSearch');
+const permController = require('../middleware/permController');
+
 
 const router = new Router({
   prefix: '/courses'
@@ -32,7 +34,7 @@ router.get('/:id', async ctx => {
   ctx.body = { course };
 });
 
-router.get('/', queryStringSearch, async ctx => {
+router.get('/', permController.grantAccess('readAny', 'path'), queryStringSearch, async ctx => {
   try{
     const course = await Course.query().where(ctx.query).eager('modules(selectNameAndId)');
 

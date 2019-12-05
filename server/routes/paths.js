@@ -35,14 +35,15 @@ async function returnType(parent) {
   }
 }
 
-router.get('/', queryStringSearch, async ctx => {
+router.get('/', permController.grantAccess('readAny', 'path'), queryStringSearch, async ctx => {
   try {
     const learningpath = await LearningPath.query().where(ctx.query).eager('courses(selectNameAndId)');
 
     returnType(learningpath);
+    const userPermissions = ctx.state.user.attributes;
 
     ctx.status = 200;
-    ctx.body = { learningpath };
+    ctx.body = { learningpath, userPermissions};
   } catch (error) {
     ctx.status = 400;
     ctx.body = { message: 'The query key does not exist' };
@@ -55,10 +56,10 @@ router.get('/:id', permController.grantAccess('readOwn', 'path'), async ctx => {
   ctx.assert(learningpath, 404, 'No matching record found');
 
   returnType(learningpath);
-  const perm = ctx.state.user.attributes;
+  const userPermissions = ctx.state.user.attributes;
 
   ctx.status = 200;
-  ctx.body = { learningpath , perm};
+  ctx.body = { learningpath, userPermissions};
 });
 
 

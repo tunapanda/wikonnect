@@ -9,9 +9,19 @@ exports.seed = function (knex) {
         {
           id: 'module1',
           name: 'A Module',
-          slug: 'a-module',
+          slug: 'a-module-1',
           description: 'Contains Lessons.',
           status: 'published',
+          creator_id: 'user1',
+          created_at: '2017-12-20 19:17:10',
+          updated_at: '2017-12-20 19:17:10'
+        },
+        {
+          id: 'module2',
+          name: 'A Module',
+          slug: 'a-module-2',
+          description: 'Contains Lessons.',
+          status: 'draft',
           creator_id: 'user1',
           created_at: '2017-12-20 19:17:10',
           updated_at: '2017-12-20 19:17:10'

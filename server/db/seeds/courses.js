@@ -7,10 +7,20 @@ exports.seed = function (knex) {
       return knex('courses').insert([
         {
           id: 'course1',
-          name: 'A Course',
-          slug: 'a-course',
+          name: 'A Course 1',
+          slug: 'a-course-1',
           description: 'Contains Modules.',
           status: 'published',
+          creator_id: 'user1',
+          created_at: '2017-12-20 19:17:10',
+          updated_at: '2017-12-20 19:17:10'
+        },
+        {
+          id: 'course2',
+          name: 'A Course 2',
+          slug: 'a-course-2',
+          description: 'Contains Modules.',
+          status: 'draft',
           creator_id: 'user1',
           created_at: '2017-12-20 19:17:10',
           updated_at: '2017-12-20 19:17:10'

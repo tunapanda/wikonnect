@@ -3,7 +3,7 @@ const Module = require('../models/module');
 const validatePostData = require('../middleware/validation/validatePostData');
 const queryStringSearch = require('../middleware/queryStringSearch');
 
-const config = require('../knexfile.js')['test'];
+const config = require('../knexfile.js')['development'];
 const knex = require('knex')(config);
 
 

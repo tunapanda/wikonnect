@@ -7,6 +7,8 @@ const knex = require('../db/db');
 chai.should();
 chai.use(chaiHttp);
 
+let token;
+
 const usersRoute = '/api/v1/users/';
 const authRoute = '/api/v1/auth/';
 const userId = 'user99';
@@ -33,13 +35,11 @@ const badUserData = {
   }
 };
 
-const headers = {
+let headers = {
   'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7ImlkIjoidXNlcjk5NiIsImVtYWlsIjoidXNlcjk5NkB3aWtvbmVjdC5jb20iLCJ1c2VybmFtZSI6InVzZXI5OTYiLCJsYXN0U2VlbiI6bnVsbCwibGFzdElwIjpudWxsLCJtZXRhZGF0YSI6bnVsbCwiY3JlYXRlZEF0IjoiMjAxOS0xMS0yOFQxMToxMzowOS4yMzZaIiwidXBkYXRlZEF0IjoiMjAxOS0xMS0yOFQxMToxMzowOS4yMzZaIn0sInJvbGUiOiJiYXNpYyIsImV4cCI6MTU3NTU1MDAxMSwiaWF0IjoxNTc0OTQ1MjExfQ.9BLqsUIyPWKtyd7RUHGKCh1duHFKORuS-15qcalc390'
 };
 
 describe('AUTHENTICATION ROUTES', () => {
-  let token;
-  console.log(token);
 
   before(async () => {
     await knex.migrate.rollback();
@@ -53,7 +53,6 @@ describe('AUTHENTICATION ROUTES', () => {
         .request(server)
         .post(usersRoute)
         .set('Content-Type', 'application/json')
-        .set(headers)
         .send(registerUser)
         .end((err, res) => {
           res.should.have.status(201);
@@ -63,7 +62,58 @@ describe('AUTHENTICATION ROUTES', () => {
           done();
         });
     });
-    it('Should get ALL users on GET requests', done => {
+    it('Should throw an ERROR for POST requests with bad/malformed data', done => {
+      chai
+        .request(server)
+        .post(usersRoute)
+        .send(badUserData)
+        .set('Content-Type', 'application/json')
+        .end((err, res) => {
+          res.should.have.status(400);
+          expect(res.body.errors).to.deep.equal({ 'email': ['Email can\'t be blank'], 'phonenumber': ['Phonenumber can\'t be blank'] });
+          expect(res.body.errors).to.have.property('email').with.lengthOf(1);
+          expect(res.body.errors).to.have.property('phonenumber').with.lengthOf(1);
+          done();
+        });
+    });
+
+    it('Should throw an ERROR on POST data if user already exists', done => {
+      chai
+        .request(server)
+        .post(usersRoute)
+        .send(registerUser)
+        .set('Content-Type', 'application/json')
+        .end((err, res) => {
+          res.should.have.status(406);
+          expect(res.body).to.deep.equal({ 'error': 'User exists' });
+          done();
+        });
+    });
+    it('Should login a valid user on POST and return token', done => {
+      chai
+        .request(server)
+        .post(authRoute)
+        .set('Content-Type', 'application/json')
+        .send(loginUserData)
+        .end((err, res) => {
+          token = res.body.token;
+          res.should.have.status(200);
+          res.body.should.have.property('token');
+          done();
+        });
+    });
+    it('Should throw an ERROR on POST with invalid user data', done => {
+      chai
+        .request(server)
+        .post(authRoute)
+        .set('Content-Type', 'application/json')
+        .send({ 'username': 'urlencoded', 'hash': 'urlencodedurl' })
+        .end((err, res) => {
+          res.should.have.status(400);
+          done();
+        });
+    });
+    it('Should throw an unauthorized error on GET ALL users requests', done => {
       chai
         .request(server)
         .get(usersRoute)
@@ -71,10 +121,8 @@ describe('AUTHENTICATION ROUTES', () => {
         .set(headers)
         .send(registerUser)
         .end((err, res) => {
-          res.should.have.status(200);
-          res.body.user[0].should.have.property('id');
-          res.body.user[1].should.have.property('username');
-          res.body.user[2].should.have.property('email');
+          res.should.have.status(401);
+          res.body.should.have.property('error');
           done();
         });
     });
@@ -106,66 +154,6 @@ describe('AUTHENTICATION ROUTES', () => {
           res.body.user[0].should.have.property('id');
           res.body.user[0].should.have.property('username');
           res.body.user[0].should.have.property('email');
-          done();
-        });
-    });
-
-    it('Should throw an ERROR for POST requests with bad/malformed data', done => {
-      chai
-        .request(server)
-        .post(usersRoute)
-        .send(badUserData)
-        .set('Content-Type', 'application/json')
-        .set(headers)
-        .end((err, res) => {
-          res.should.have.status(400);
-          expect(res.body.errors).to.deep.equal({ 'email': ['Email can\'t be blank'], 'phonenumber': ['Phonenumber can\'t be blank'] });
-          expect(res.body.errors).to.have.property('email').with.lengthOf(1);
-          expect(res.body.errors).to.have.property('phonenumber').with.lengthOf(1);
-          done();
-        });
-    });
-
-    it('Should throw an ERROR on POST data if user already exists', done => {
-      chai
-        .request(server)
-        .post(usersRoute)
-        .send(registerUser)
-        .set('Content-Type', 'application/json')
-        .set(headers)
-        .end((err, res) => {
-          res.should.have.status(406);
-          expect(res.body).to.deep.equal({ 'error': 'User exists' });
-          done();
-        });
-    });
-  });
-
-  describe('USER AUTH ROUTES', () => {
-
-    it('Should login a valid user on POST and return token', done => {
-      chai
-        .request(server)
-        .post(authRoute)
-        .set('Content-Type', 'application/json')
-        .set(headers)
-        .send(loginUserData)
-        .end((err, res) => {
-          token = res.body.token;
-          res.should.have.status(200);
-          res.body.should.have.property('token');
-          done();
-        });
-    });
-    it('Should throw an ERROR on POST with invalid user data', done => {
-      chai
-        .request(server)
-        .post(authRoute)
-        .set('Content-Type', 'application/json')
-        .set(headers)
-        .send({ 'username': 'urlencoded', 'hash': 'urlencodedurl' })
-        .end((err, res) => {
-          res.should.have.status(400);
           done();
         });
     });
