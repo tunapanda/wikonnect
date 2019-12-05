@@ -9,7 +9,7 @@ describe('Sign Up Page', function () {
     cy.get('#password input').type('password1234');
     cy.get('#confirm-password input').type('password1234');
 
-    cy.get('submit').click();
+    cy.get('.submit').click();
 
     cy.location('pathname').should('eq', '/');
   });
