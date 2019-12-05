@@ -18,16 +18,23 @@ Router.map(function () {
         this.route('index', { path: '/:lesson_slug' });
         this.route('chapter', { path: '/chapter/:chapter_id' });
       });
+      this.route('edit', { path: '/edit/:module_slug' });
     });
+    this.route('create');
+    this.route('edit', { path: '/edit/:course_slug' });
   });
   this.route('profile', { path: '/profile/:username' }, function () {
     this.route('settings');
   });
   this.route('search');
   this.route('about');
-  this.route('cms', function() {
-    this.route('lesson', function() {
+  this.route('cms', function () {
+    this.route('lesson', function () {
       this.route('create');
     });
+  });
+
+  this.route('module', function () {
+    this.route('create');
   });
 });

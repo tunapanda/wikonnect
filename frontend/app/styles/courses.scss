@@ -1,186 +1,96 @@
 #courses {
-    @include pages-main;
+  @include pages-main;
 
 }
 
 .breadcrums {
-    font-size: 10dp;
+  font-size: 10dp;
 }
 
 .holdup {
-    background-color: #DCFBF0;
-    font-size: 12px;
-    padding: 1em;
-    display: flex;
-    flex-direction: row;
+  background-color: #DCFBF0;
+  font-size: 12px;
+  padding: 1em;
+  display: flex;
+  flex-direction: row;
 
-    span {
-        font-size: 25px;
-        color: red;
-        padding-right: 17px;
-    }
+  span {
+    font-size: 25px;
+    color: red;
+    padding-right: 17px;
+  }
 
 }
 
 .submodules {
-    // list-style: none;
-    margin: 0px;
-    padding: 0px;
-    list-style: none;
-    padding-bottom: 10px;
+  // list-style: none;
+  margin: 0px;
+  padding: 0px;
+  list-style: none;
+  padding-bottom: 10px;
 
 }
 
 @mixin sublist ($bgcolor, $highlight-color) {
-    margin-bottom: 5px;
-    padding: 7px;
-    margin-right: 7px;
-    font-size: 10px;
-    border-radius: 10px;
-    background-color: $bgcolor;
+  margin-bottom: 5px;
+  padding: 7px;
+  margin-right: 7px;
+  font-size: 10px;
+  border-radius: 10px;
+  background-color: $bgcolor;
 
-    span {
-        color: $highlight-color;
-    }
+  span {
+    color: $highlight-color;
+  }
 
-}
-
-details>summary {
-    list-style: none;
-}
-
-details>summary::-webkit-details-marker {
-    display: none;
-}
-
-
-
-.breadcrums {
-    font-size: 10px;
-
-}
-
-.call-to-action {
-    background-color: $primary;
-    color: white;
-    padding: 1em;
-    padding-left: 5em;
-    padding-right: 5em;
-    text-align: center;
-
-
-    p {
-        font-size: 12px;
-    }
-
-    button {
-        margin: 1em;
-        padding: 5px;
-        background-color: #fff;
-        color: #1E9BF7;
-
-        border: 0;
-        box-shadow: none;
-        border-radius: 2px;
-
-    }
-}
-
-.details {
-    h3 {
-        color: $primary-dark;
-        font-size: 16px;
-    }
-
-    margin-top: 1em;
-    font-size: 13px;
 }
 
 .modules {
-    margin-top: 2em;
+  margin-top: 1em;
 
-    h2 {
-        color: $primary-dark;
-        font-size: 16px;
+  h2 {
+    color: $primary-dark;
+    font-size: 18px;
 
-    }
+  }
 
-    p {
-        font-size: 10px;
-    }
+  h6 {
+    color: black;
+    font-size: 14px;
+    font-weight: 500;
 
-    .module-item {
+  }
 
-        padding-top: 1em;
-        border-style: solid;
-        border-width: 1px;
-        padding-left: 1em;
-        border-color: #E6E6E6;
-        margin-bottom: 1em;
-        border-right-style: none;
-        border-left-width: 5px;
+  hr {
+    padding: 0;
+    margin: 0;
+    margin-bottom: 1em;
+    ;
+  }
 
-        .module-flex {
-            display: flex;
-            flex-direction: row;
-            align-items: flex-start;
-            justify-content: flex-start;
-        }
+  p {
+    font-size: 10px;
+  }
 
-        .circle-parent {
-            margin-top: 2px;
-        }
+  .modules-list {
+    display: flex;
+    flex-wrap: wrap;
 
-    }
+    justify-content: space-around;
+    align-content: space-around;
+    flex-direction: row;
+  }
 
+  .module-image {
+    padding-right: 1em;
+    width: 100%;
+    border-radius: 7px;
 
+  }
 
+  .module-item {
+    flex: 0 50%;
 
-
-    .module-description {
-        font-size: 12px;
-        color: #989898;
-        padding-left: 1em;
-        padding-bottom: 1em;
-
-        h3 {
-            font-size: 16px;
-            color: $primary-dark;
-
-        }
-    }
-
-
-
-    .red {
-        margin-top: 1em;
-
-        border-left-color: #FD7F7F;
-        background-color: #F8F8F8;
-
-        li {
-            @include sublist(white, red);
-        }
-
-    }
-
-    .green {
-        border-left-color: #53EBB7;
-        list-style: none;
-
-
-
-        li {
-            @include sublist($lightest-grey, $primary);
-        }
-    }
-
-    .small-circle {
-        background: $primary-dark;
-        width: 100%;
-        width: 15px;
-        height: 15px;
-        border-radius: 50%;
-    }
+  }
 
 }

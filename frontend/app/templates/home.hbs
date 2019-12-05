@@ -1,32 +1,21 @@
-{{outlet}}
-<div id="home" class="padded">
-  <hr>
-  <div>
-    <img src="https://dummyimage.com/300x100/272727" alt="0" width="100%">
+<div id="home">
+  <div class="heading">
+    <h2>Courses</h2>
+    <p>Each module covers a broad area of knowledge divided into five related topics.</p>
   </div>
 
-  <br>
-  <h3>
-    Courses
-  </h3>
-  <p>
-    Learn a new skill! The topics each tackle related subjects. Select a topic to follow through and monitor your
-    progress. Earn moja points for each topic completed.
-  </p>
+  <div class="padded">
+    <BsAlert @visible={{true}} @fade={{true}} @type="info" @dismissible={{true}}>
+      You successfully read this important alert message.
+    </BsAlert>
 
+    {{#each this.model as |course_item|}}
+      <CourseItem @title={{course_item.name}} @description={{course_item.description}} @points="5"
+        @slug={{course_item.slug}} @id={{course_item.id}} />
+    {{/each}}
 
-  <h2>
-    What would you like to learn today?
-  </h2>
-
-  {{#each this.model as |course_item|}}
-    <CourseItem @title={{course_item.name}} @description={{course_item.description}} @points="5"
-      @slug={{course_item.slug}} @id={{course_item.id}} />
-  {{/each}}
+  </div>
 
 
 
-
-
-  <Footer />
 </div>
