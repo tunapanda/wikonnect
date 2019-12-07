@@ -7,6 +7,8 @@ const chapterSchema = {
     'status': { 'type': 'string' },
     'lessonId': { 'type': 'string' },
     'creatorId': { 'type': 'string' },
+    'contentType': { 'type': 'string' },
+    'contentUri': { 'type': 'string' }
   },
   'required': ['name', 'slug', 'description', 'status', 'lessonId', 'creatorId'],
 };

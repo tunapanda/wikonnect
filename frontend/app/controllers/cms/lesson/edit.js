@@ -28,11 +28,6 @@ export default class CmsLessonCreateController extends Controller {
   }
 
   @action
-  fileAdded(e, chapter) {
-    console.log(arguments);
-  }
-
-  @action
   removeChapter(chapter) {
     this.get('model.chapters').removeObject(chapter);
     chapter.destroy();

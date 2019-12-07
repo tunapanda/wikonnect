@@ -23,7 +23,9 @@
       "restart": true,
       "args": [
         "-w",
-        "${workspaceFolder}/server"
+        "${workspaceFolder}/server",
+        "--ignore",
+        "${workspaceFolder}/server/public/uploads/",
       ],
       "runtimeArgs": [
         "--exitcrash",
@@ -42,6 +44,8 @@
       "args": [
         "-w",
         "${workspaceFolder}/server",
+        "--ignore",
+        "${workspaceFolder}/server/public/uploads/",
         "--cypress"
       ],
       "runtimeArgs": [

@@ -7,12 +7,7 @@
       {{#each model.chapters as |chapter|}}
         {{#draggable-object content=chapter overrideClass="card" isSortable=true}}
           <div class="card-body">
-            <BsForm @formLayout="vertical" @model={{chapter}} @onSubmit={{action "submit"}} as |chapterForm|>
-              <chapterForm.element @label="Name" @placeholder="Name" @property="name" @required={{true}} />
-              <chapterForm.element @controlType="textarea" @label="Description" @property="description" />
-              <Forms::Upload @multiple="false" @accept=".h5p" @filesSelected={{action "fileAdded" chapter}}>Upload H5P</Forms::Upload>
-              <BsButton @type="danger" @onClick={{action "removeChapter" chapter}}>Remove</BsButton>
-            </BsForm>
+            <EditChapterItem @chapter={{chapter}} @removeChapter={{action "removeChapter"}} />
           </div>
         {{/draggable-object}}
       {{/each}}

@@ -69,8 +69,8 @@ export default class UploaderEmberObject extends EmberObject.extend(Evented) {
     });
 
     xhr.onload = () => run(() => this._onFinish());
-    xhr.upload.onprogress = () => run(() => this._onProgress());
-    xhr.upload.onerror = () => run(() => this._onError());
+    xhr.upload.onprogress = (e) => run(() => this._onProgress(e));
+    xhr.upload.onerror = (e) => run(() => this._onError(e));
 
     xhr.send(formData);
 
@@ -79,7 +79,7 @@ export default class UploaderEmberObject extends EmberObject.extend(Evented) {
 
   _onProgress(e) {
     if (e) {
-      let progress = 100 * e.loaded / e.total;
+      let progress = Math.ceil(100 * e.loaded / e.total);
       this.set('progress', progress);
       this.trigger('progress', progress);
     }
@@ -121,17 +121,17 @@ export default class UploaderEmberObject extends EmberObject.extend(Evented) {
     let msg = err;
     if (typeof err !== 'string') {
       switch (this.get('xhr').status) {
-      case 404:
-        msg = 'File not found';
-        break;
-      case 500:
-        msg = 'Server error';
-        break;
-      case 0:
-        msg = 'Request aborted';
-        break;
-      default:
-        msg = 'Unknown error ' + this.get('xhr').status;
+        case 404:
+          msg = 'File not found';
+          break;
+        case 500:
+          msg = 'Server error';
+          break;
+        case 0:
+          msg = 'Request aborted';
+          break;
+        default:
+          msg = 'Unknown error ' + this.get('xhr').status;
       }
     }
 

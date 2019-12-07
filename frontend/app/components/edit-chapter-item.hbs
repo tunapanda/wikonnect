@@ -1,0 +1,22 @@
+<BsForm @formLayout="vertical" @model={{chapter}} as |chapterForm|>
+  <chapterForm.element @label="Name" @placeholder="Name" @property="name" @required={{true}} />
+  <chapterForm.element @controlType="textarea" @label="Description" @property="description" />
+  {{#if chapter.contentUri}}
+    <span class="status-good"></span> H5P Present
+  {{else}}
+    <span class="status-bad"></span> No H5P
+  {{/if}}
+  <br>
+  {{#if uploader.finished}}
+    H5P Uploaded Successfully
+  {{else}}
+    <Forms::Upload @multiple="false" @accept=".h5p" @filesSelected={{action "fileAdded" chapter}} @disabled={{uploader.uploading}}>
+      {{#if uploader.uploading}}
+        Uploading... <span class="loading-spinner"></span> {{uploader.progress}}%
+      {{else}}
+        Upload H5P
+      {{/if}}
+    </Forms::Upload>
+  {{/if}}
+  <BsButton @type="danger" @onClick={{action removeChapter chapter}}>Remove</BsButton>
+</BsForm>

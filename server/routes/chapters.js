@@ -2,6 +2,9 @@ const Router = require('koa-router');
 const Chapter = require('../models/chapter');
 const validateChapter = require('../middleware/validation/validateChapter');
 const queryStringSearch = require('../middleware/queryStringSearch');
+const busboy = require('async-busboy');
+const path = require('path');
+const unzipper = require('unzipper');
 
 const router = new Router({
   prefix: '/chapters'
@@ -88,6 +91,27 @@ router.delete('/:id', async ctx => {
 
   ctx.status = 200;
   ctx.body = { chapter };
+});
+
+router.post('/:id/upload', async ctx => {
+  const dirName = ctx.params.id;
+  const uploadPath = `uploads/H5P/${dirName}`;
+  const uploadDir = path.resolve(__dirname, '../public/' + uploadPath);
+
+  await busboy(ctx.req, {
+    onFile: function (fieldname, file, filename, encoding, mimetype) {
+      file.pipe(unzipper.Extract({ path: uploadDir }));
+    }
+  });
+  // ctx.assert(files.length, 400, 'No files sent.');
+  // ctx.assert(files.length === 1, 400, 'Too many files sent.');
+
+  ctx.body = {
+    host: ctx.host,
+    path: uploadPath
+  };
+
+
 });
 
 module.exports = router.routes();
