@@ -4,10 +4,18 @@ const validatePostData = require('../middleware/validation/validatePostData');
 const queryStringSearch = require('../middleware/queryStringSearch');
 const permController = require('../middleware/permController');
 
+const { roles } = require('../middleware/_helpers/roles');
 
 const router = new Router({
   prefix: '/paths'
 });
+
+let userPermissions = {
+  'read': 'false',
+  'update': 'false',
+  'create': 'false',
+  'delete': 'false'
+};
 
 /**
  *
@@ -56,7 +64,20 @@ router.get('/:id', permController.grantAccess('readOwn', 'path'), async ctx => {
   ctx.assert(learningpath, 404, 'No matching record found');
 
   returnType(learningpath);
-  const userPermissions = ctx.state.user.attributes;
+  // let userPermissions = ctx.state.user.attributes;
+  userPermissions.delete = (ctx.state.user.data.id === learningpath.creatorId) ? 'true' : 'false';
+  userPermissions.read = learningpath.status === 'published' ? 'true' : 'false';
+
+  // const permission = (ctx.state.user.data.id === learningpath.creatorId)
+  //   ? roles.can(ctx.state.user.role).readOwn('path')
+  //   : roles.can(ctx.state.user.role).updateAny('path');
+
+  Object.keys(userPermissions)
+    .forEach(perm => {
+      if (ctx.state.user.data.id === learningpath.creatorId) {
+        userPermissions[perm] = 'true';
+      }
+    });
 
   ctx.status = 200;
   ctx.body = { learningpath, userPermissions };

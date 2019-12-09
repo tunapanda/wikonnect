@@ -38,12 +38,15 @@ const ac = new AccessControl(grantList);
 
 
 exports.roles = (() => {
-  ac.grant('admin')
-    .extend('basic');
+  ac.grant('basic');
 
-  ac.grant('superadmin')
-    .extend('basic')
-    .extend('admin');
+  ac.grant('admin');
+  // .extend('basic');
+
+  ac.grant('superadmin');
+  // .extend('basic')
+  // .extend('admin');
   ac.getGrants();
+
   return ac;
 })();
