@@ -61,22 +61,22 @@ exports.grantAccess = function (action, resource) {
         return ctx;
       }
 
-      let permissionData = JSON.parse(JSON.stringify(defaultPermissionObject));
-      const permissions = roles.getGrants();
+      // let permissionData = JSON.parse(JSON.stringify(defaultPermissionObject));
+      // const permissions = roles.getGrants();
 
-      Object.keys(permissions[ctx.state.user.role])
-        .forEach(resource => {
+      // Object.keys(permissions[ctx.state.user.role])
+      //   .forEach(resource => {
 
-          Object.keys(permissions[ctx.state.user.role][resource])
-            .forEach(permission => {
-              if (permissions[ctx.state.user.role][resource][permission].length > 0) {
-                const permissionInfo = permission.split(':');
-                permissionData[resource][permissionInfo[0]] = permissionInfo[1];
-              }
-            });
-        });
+      //     Object.keys(permissions[ctx.state.user.role][resource])
+      //       .forEach(permission => {
+      //         if (permissions[ctx.state.user.role][resource][permission].length > 0) {
+      //           const permissionInfo = permission.split(':');
+      //           permissionData[resource][permissionInfo[0]] = permissionInfo[1];
+      //         }
+      //       });
+      //   });
 
-      ctx.state.user.attributes = permissionData[resource];
+      // ctx.state.user.attributes = permissionData[resource];
 
       await next();
     } catch (error) {

@@ -3,19 +3,11 @@ const LearningPath = require('../models/learning_path');
 const validatePostData = require('../middleware/validation/validatePostData');
 const queryStringSearch = require('../middleware/queryStringSearch');
 const permController = require('../middleware/permController');
-
-const { roles } = require('../middleware/_helpers/roles');
+const { roles, userPermissions } = require('../middleware/_helpers/roles');
 
 const router = new Router({
   prefix: '/paths'
 });
-
-let userPermissions = {
-  'read': 'false',
-  'update': 'false',
-  'create': 'false',
-  'delete': 'false'
-};
 
 /**
  *
@@ -44,38 +36,65 @@ async function returnType(parent) {
 }
 
 router.get('/', permController.grantAccess('readAny', 'path'), queryStringSearch, async ctx => {
+// router.get('/', queryStringSearch, async ctx => {
   try {
     const learningpath = await LearningPath.query().where(ctx.query).eager('courses(selectNameAndId)');
-
     returnType(learningpath);
-    const userPermissions = ctx.state.user.attributes;
+
+    Object.keys(userPermissions)
+      .forEach(perm => {
+        if (ctx.state.user.role.toLowerCase() == 'superadmin') {
+          userPermissions[perm] = 'true';
+        }
+        if (ctx.state.user.role.toLowerCase() == 'admin') {
+          userPermissions[perm] = 'true';
+          userPermissions.delete = 'false';
+        } else {
+          userPermissions.read = 'true';
+        }
+      });
 
     ctx.status = 200;
     ctx.body = { learningpath, userPermissions };
+
   } catch (error) {
+
     ctx.status = 400;
-    ctx.body = { message: 'The query key does not exist' };
+    ctx.body = { message: 'The query key does not exist', userPermissions };
+
   }
 });
 
-router.get('/:id', permController.grantAccess('readOwn', 'path'), async ctx => {
+router.get('/:id', async ctx => {
   const learningpath = await LearningPath.query().findById(ctx.params.id).eager('courses(selectNameAndId)');
-
   ctx.assert(learningpath, 404, 'No matching record found');
-
   returnType(learningpath);
-  // let userPermissions = ctx.state.user.attributes;
-  userPermissions.delete = (ctx.state.user.data.id === learningpath.creatorId) ? 'true' : 'false';
-  userPermissions.read = learningpath.status === 'published' ? 'true' : 'false';
 
-  // const permission = (ctx.state.user.data.id === learningpath.creatorId)
-  //   ? roles.can(ctx.state.user.role).readOwn('path')
-  //   : roles.can(ctx.state.user.role).updateAny('path');
+  const permission = (ctx.state.user.data.id === learningpath.creatorId) ? roles.can(ctx.state.user.role).readOwn('path') : roles.can(ctx.state.user.role).readAny('path');
+
+  if (!permission.granted) {
+    ctx.status = 401;
+    ctx.body = {
+      error: 'You don\'t have enough permission to perform this action'
+    };
+    return ctx;
+  }
+
 
   Object.keys(userPermissions)
     .forEach(perm => {
-      if (ctx.state.user.data.id === learningpath.creatorId) {
+      if (ctx.state.user.role.toLowerCase() == 'superadmin') {
         userPermissions[perm] = 'true';
+      }
+      if (ctx.state.user.data.id === learningpath.creatorId || ctx.state.user.role.toLowerCase() == 'admin') {
+        userPermissions[perm] = 'true';
+        userPermissions.delete = 'false';
+      }
+      if (learningpath.status === 'draft' && ctx.state.user.data.id === learningpath.creatorId) {
+        userPermissions.read = 'true';
+        userPermissions.update = 'true';
+      } else {
+        userPermissions.read = 'true';
       }
     });
 
@@ -86,15 +105,29 @@ router.get('/:id', permController.grantAccess('readOwn', 'path'), async ctx => {
 
 router.post('/', permController.grantAccess('createAny', 'path'), validatePostData, async ctx => {
   let newLearningPath = ctx.request.body;
-
   const learningpath = await LearningPath.query().insertAndFetch(newLearningPath);
 
   ctx.assert(learningpath, 401, 'Something went wrong');
 
+  Object.keys(userPermissions)
+    .forEach(perm => {
+      if (ctx.state.user.role.toLowerCase() == 'superadmin') {
+        userPermissions[perm] = 'true';
+      }
+      if (ctx.state.user.data.id === learningpath.creatorId || ctx.state.user.role.toLowerCase() == 'admin') {
+        userPermissions[perm] = 'true';
+        userPermissions.delete = 'false';
+      }
+      if (learningpath.status === 'draft' && ctx.state.user.data.id === learningpath.creatorId) {
+        userPermissions.read = 'true';
+        userPermissions.update = 'true';
+      } else {
+        userPermissions.read = 'true';
+      }
+    });
+
   ctx.status = 201;
-
-  ctx.body = { learningpath };
-
+  ctx.body = { learningpath, userPermissions};
 });
 
 router.put('/:id', permController.grantAccess('updateOwn', 'path'), async ctx => {
@@ -106,8 +139,23 @@ router.put('/:id', permController.grantAccess('updateOwn', 'path'), async ctx =>
 
   ctx.assert(learningpath, 400, 'That learning path does not exist');
 
+  Object.keys(userPermissions)
+    .forEach(perm => {
+      if (ctx.state.user.role.toLowerCase() == 'superadmin') {
+        userPermissions[perm] = 'true';
+      }
+      if (ctx.state.user.data.id === learningpath.creatorId || ctx.state.user.role.toLowerCase() == 'admin') {
+        userPermissions[perm] = 'true';
+        userPermissions.delete = 'false';
+      }
+      if (learningpath.status === 'draft' && ctx.state.user.data.id === learningpath.creatorId) {
+        userPermissions.read = 'true';
+        userPermissions.update = 'true';
+      }
+    });
+
   ctx.status = 201;
-  ctx.body = { learningpath };
+  ctx.body = { learningpath, userPermissions };
 });
 
 router.delete('/:id', permController.grantAccess('deleteAny', 'path'), async ctx => {
@@ -117,8 +165,15 @@ router.delete('/:id', permController.grantAccess('deleteAny', 'path'), async ctx
   }
   await LearningPath.query().delete().where({ id: ctx.params.id });
 
+  Object.keys(userPermissions)
+    .forEach(perm => {
+      if (ctx.state.user.role.toLowerCase() == 'superadmin') {
+        userPermissions[perm] = 'true';
+      }
+    });
+
   ctx.status = 200;
-  ctx.body = { learningpath };
+  ctx.body = { learningpath, userPermissions };
 });
 
 module.exports = router.routes();

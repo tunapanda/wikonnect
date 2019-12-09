@@ -40,13 +40,20 @@ const ac = new AccessControl(grantList);
 exports.roles = (() => {
   ac.grant('basic');
 
-  ac.grant('admin');
-  // .extend('basic');
+  ac.grant('admin')
+    .extend('basic');
 
-  ac.grant('superadmin');
-  // .extend('basic')
-  // .extend('admin');
+  ac.grant('superadmin')
+    .extend('basic')
+    .extend('admin');
   ac.getGrants();
 
   return ac;
 })();
+
+exports.userPermissions = {
+  'read': 'false',
+  'update': 'false',
+  'create': 'false',
+  'delete': 'false'
+};
