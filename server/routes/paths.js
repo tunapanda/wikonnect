@@ -36,7 +36,6 @@ async function returnType(parent) {
 }
 
 router.get('/', permController.grantAccess('readAny', 'path'), queryStringSearch, async ctx => {
-// router.get('/', queryStringSearch, async ctx => {
   try {
     const learningpath = await LearningPath.query().where(ctx.query).eager('courses(selectNameAndId)');
     returnType(learningpath);
