@@ -1,9 +1,8 @@
 const Router = require('koa-router');
 const Module = require('../models/module');
 const validatePostData = require('../middleware/validation/validatePostData');
-const queryStringSearch = require('../middleware/queryStringSearch');
 
-const config = require('../knexfile.js')['test'];
+const config = require('../knexfile.js')['development'];
 const knex = require('knex')(config);
 
 
@@ -38,7 +37,7 @@ router.get('/:id', async ctx => {
   ctx.body = { modules };
 });
 
-router.get('/', queryStringSearch, async ctx => {
+router.get('/', async ctx => {
   try {
     const modules = await Module.query().where(ctx.query).eager('lessons(selectNameAndId)');
 
@@ -56,20 +55,15 @@ router.post('/', validatePostData, async ctx => {
 
   let { module_id, course_id, ...newModule } = ctx.request.body;
 
-  if (!newModule) {
-    ctx.assert(modules, 401, 'Something went wrong');
-  }
-
   const modules = await Module.query().insertAndFetch(newModule);
-  await knex('course_modules').insert([
-    {
-      module_id: module_id,
-      course_id: course_id
-    }]);
+  await knex('course_modules').insert([{
+    module_id: module_id,
+    course_id: course_id
+  }]);
 
+  ctx.assert(modules, 401, 'Something went wrong');
 
   ctx.status = 201;
-
   ctx.body = { modules };
 
 });

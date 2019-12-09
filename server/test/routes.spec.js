@@ -7,14 +7,17 @@ chai.should();
 chai.use(chaiHttp);
 
 const lessonRoute = '/api/v1/lessons/';
-const lessonID = 'basics3';
+const lessonID = 'lesson133';
 const lessonData = {
-  'id': 'lesson11',
-  'name': 'Testing Lessons Path',
-  'slug': 'testing-lesson-path',
-  'description': 'Testing organization of the courses.',
-  'status': 'published',
-  'creator_id': 'user1'
+  'lessons': {
+    'id': 'lesson133',
+    'name': 'Testing Lessons Path',
+    'slug': 'testing-lesson-path',
+    'description': 'Testing organization of the courses.',
+    'status': 'published',
+    'creator_id': 'user1',
+    'module_id': 'module9'
+  }
 };
 
 const putData = {
@@ -22,22 +25,26 @@ const putData = {
 };
 
 const invalidData = {
-  'id': 'lesson_path10',
-  'name': 'Testing Learning Path',
-  'slug': 'testing-lesson-path',
-  'description': 'Testing organization of the courses.',
-  'status': 'draft'
+  'lessons': {
+    'id': 'lesson_path10',
+    'name': 'Testing Learning Path',
+    'slug': 'testing-lesson-path',
+    'description': 'Testing organization of the courses.',
+    'status': 'draft'
+  }
 };
 
 
 const activityRoute = '/api/v1/activity/';
 const activityID = 'activity1';
 const activityData = {
-  'id': 'activity44',
-  'user_id': 'user1',
-  'chapter_id': 'chapter1',
-  'status': 'active',
-  'progress': '54',
+  'activity':{
+    'id': 'activity44',
+    'user_id': 'user1',
+    'chapter_id': 'chapter1',
+    'status': 'active',
+    'progress': '54',
+  }
 };
 /**
  * Test lessonRoutes

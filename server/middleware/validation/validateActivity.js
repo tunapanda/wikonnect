@@ -3,7 +3,7 @@ const validate = require('validate.js');
 
 async function validateActivity(ctx, next) {
   try {
-    await validate.async(ctx.request.body, {
+    await validate.async(ctx.request.body.activity, {
       user_id: {
         presence: true,
       },

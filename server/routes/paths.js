@@ -1,7 +1,6 @@
 const Router = require('koa-router');
 const LearningPath = require('../models/learning_path');
 const validatePostData = require('../middleware/validation/validatePostData');
-const queryStringSearch = require('../middleware/queryStringSearch');
 const permController = require('../middleware/userAccessControlMiddleware');
 
 
@@ -28,7 +27,7 @@ async function returnType(parent) {
   }
 }
 
-router.get('/', queryStringSearch, async ctx => {
+router.get('/', async ctx => {
   try {
     const learningpath = await LearningPath.query().where(ctx.query).eager('courses(selectNameAndId)');
 
@@ -45,9 +44,8 @@ router.get('/', queryStringSearch, async ctx => {
 router.get('/:id', permController.grantAccess('readAny', 'path'), async ctx => {
   const learningpath = await LearningPath.query().findById(ctx.params.id).eager('courses(selectNameAndId)');
 
-  if (!learningpath) {
-    ctx.assert(module, 404, 'No matching record found');
-  }
+
+  ctx.assert(learningpath, 404, 'No matching record found');
 
   returnType(learningpath);
 
@@ -57,7 +55,7 @@ router.get('/:id', permController.grantAccess('readAny', 'path'), async ctx => {
 
 
 router.post('/', permController.grantAccess('createAny', 'path'), validatePostData, async ctx => {
-  let newLearningPath = ctx.request.body;
+  let newLearningPath = ctx.request.body.paths;
 
   const learningpath = await LearningPath.query().insertAndFetch(newLearningPath);
 

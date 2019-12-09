@@ -10,12 +10,14 @@ chai.use(chaiHttp);
 const route = '/api/v1/paths/';
 const itemID = 'learning_path10';
 const data = {
-  'id': 'learning_path10',
-  'name': 'Testing Learning Path',
-  'slug': 'testing-learning-path',
-  'description': 'Testing organization of the courses.',
-  'status': 'published',
-  'creator_id': 'user3'
+  'paths':{
+    'id': 'learning_path10',
+    'name': 'Testing Learning Path',
+    'slug': 'testing-learning-path',
+    'description': 'Testing organization of the courses.',
+    'status': 'published',
+    'creator_id': 'user3'
+  }
 };
 
 const putData = {
@@ -23,11 +25,13 @@ const putData = {
 };
 
 const invalidData = {
-  'id': 'learning_path10',
-  'name': 'Testing Learning Path',
-  'slug': 'testing-learning-path',
-  'description': 'Testing organization of the courses.',
-  'status': 'draft'
+  'paths':{
+    'id': 'learning_path10',
+    'name': 'Testing Learning Path',
+    'slug': 'testing-learning-path',
+    'description': 'Testing organization of the courses.',
+    'status': 'draft'
+  }
 };
 
 /**

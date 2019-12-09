@@ -1,7 +1,11 @@
 const Router = require('koa-router');
 const Course = require('../models/course');
 const validatePostData = require('../middleware/validation/validatePostData');
-const queryStringSearch = require('../middleware/queryStringSearch');
+
+const environment = process.env.NODE_ENV || 'development';
+const config = require('../knexfile.js')[environment];
+const knex = require('knex')(config);
+
 
 const router = new Router({
   prefix: '/courses'
@@ -32,10 +36,9 @@ router.get('/:id', async ctx => {
   ctx.body = { course };
 });
 
-router.get('/', queryStringSearch, async ctx => {
+router.get('/', async ctx => {
   try{
     const course = await Course.query().where(ctx.query).eager('modules(selectNameAndId)');
-
     returnType(course);
 
     ctx.status = 200;
@@ -47,15 +50,22 @@ router.get('/', queryStringSearch, async ctx => {
 });
 
 router.post('/', validatePostData, async ctx => {
-  let newCourse = ctx.request.body;
+  let { learning_path_id, ...newCourse } = ctx.request.body.courses;
 
   const course = await Course.query().insertAndFetch(newCourse);
+
+  await knex('learning_path_courses').insert([
+    {
+      learning_path_id: learning_path_id,
+      course_id: course.id
+    }]);
+
 
   ctx.assert(course, 401, 'Something went wrong');
 
   ctx.status = 201;
 
-  ctx.body = { course };
+  ctx.body = { newCourse };
 
 });
 router.put('/:id', async ctx => {

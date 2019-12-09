@@ -13,13 +13,15 @@ chai.use(chaiJSON);
 const route = '/api/v1/chapters/';
 const itemID = 'chapter19';
 const data = {
-  'id': itemID,
-  'name': 'Testing chapter Path',
-  'slug': 'testing-chapter-path',
-  'description': 'Testing chapter route',
-  'status': 'published',
-  'lesson_id': 'lesson1',
-  'creator_id': 'user3'
+  'chapters': {
+    'id': itemID,
+    'name': 'Testing chapter Path',
+    'slug': 'testing-chapter-path',
+    'description': 'Testing chapter route',
+    'status': 'published',
+    'lesson_id': 'lesson1',
+    'creator_id': 'user3'
+  }
 };
 
 const putData = {
@@ -27,11 +29,13 @@ const putData = {
 };
 
 const invalidData = {
-  'id': itemID,
-  'name': 'Testing Chapter Route',
-  'slug': 'testing-chapter-route',
-  'description': 'Testing chapter route',
-  'status': 'draft'
+  'chapters': {
+    'id': itemID,
+    'name': 'Testing Chapter Route',
+    'slug': 'testing-chapter-route',
+    'description': 'Testing chapter route',
+    'status': 'draft'
+  }
 };
 
 

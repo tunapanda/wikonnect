@@ -1,8 +1,10 @@
 const Router = require('koa-router');
 const Lesson = require('../models/lesson');
 const validatePostData = require('../middleware/validation/validatePostData');
-const queryStringSearch = require('../middleware/queryStringSearch');
 
+const environment = process.env.NODE_ENV || 'development';
+const config = require('../knexfile.js')[environment];
+const knex = require('knex')(config);
 
 const router = new Router({
   prefix: '/lessons'
@@ -25,15 +27,13 @@ async function returnType(parent) {
 router.get('/:id', async ctx => {
   const lesson = await Lesson.query().findById(ctx.params.id).eager('chapters(selectNameAndId)');
 
-  if (!lesson) {
-    ctx.assert(lesson, 404, 'no lesson by that ID');
-  }
+  ctx.assert(lesson, 404, 'no lesson by that ID');
   returnType(lesson);
   ctx.status = 200;
   ctx.body = { lesson };
 });
 
-router.get('/', queryStringSearch, async ctx => {
+router.get('/', async ctx => {
   try {
     const lesson = await Lesson.query().where(ctx.query).eager('chapters(selectNameAndId)');
 
@@ -49,9 +49,15 @@ router.get('/', queryStringSearch, async ctx => {
 });
 
 router.post('/', validatePostData, async ctx => {
-  let newLesson = ctx.request.body;
+  let { module_id, ...newLesson} = ctx.request.body.lessons;
 
   const lesson = await Lesson.query().insertAndFetch(newLesson);
+
+  await knex('module_lessons').insert([
+    {
+      module_id: module_id,
+      lesson_id: lesson.id
+    }]);
 
   ctx.assert(lesson, 401, 'Something went wrong');
 
