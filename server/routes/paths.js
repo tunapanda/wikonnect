@@ -3,6 +3,10 @@ const LearningPath = require('../models/learning_path');
 const validatePostData = require('../middleware/validation/validatePostData');
 const permController = require('../middleware/userAccessControlMiddleware');
 
+const environment = process.env.NODE_ENV || 'development';
+const config = require('../knexfile.js')[environment];
+const knex = require('knex')(config);
+
 
 const router = new Router({
   prefix: '/paths'
@@ -44,7 +48,6 @@ router.get('/', async ctx => {
 router.get('/:id', permController.grantAccess('readAny', 'path'), async ctx => {
   const learningpath = await LearningPath.query().findById(ctx.params.id).eager('courses(selectNameAndId)');
 
-
   ctx.assert(learningpath, 404, 'No matching record found');
 
   returnType(learningpath);
@@ -56,22 +59,24 @@ router.get('/:id', permController.grantAccess('readAny', 'path'), async ctx => {
 
 router.post('/', permController.grantAccess('createAny', 'path'), validatePostData, async ctx => {
   let newLearningPath = ctx.request.body.paths;
-
   const learningpath = await LearningPath.query().insertAndFetch(newLearningPath);
 
   ctx.assert(learningpath, 401, 'Something went wrong');
 
   ctx.status = 201;
-
   ctx.body = { learningpath };
 
 });
-router.put('/:id', permController.grantAccess('updateAny', 'path'),  async ctx => {
+
+router.put('/:id', permController.grantAccess('updateAny', 'path'), async ctx => {
   const learningpath_record = await LearningPath.query().findById(ctx.params.id);
+
   if (!learningpath_record) {
     ctx.throw(400, 'That learning path does not exist');
   }
-  const learningpath = await LearningPath.query().patchAndFetchById(ctx.params.id, ctx.request.body);
+
+  const newLearningPath = ctx.request.body.paths;
+  const learningpath = await LearningPath.query().patchAndFetchById(ctx.params.id, newLearningPath).eager('courses(selectNameAndId)');
 
   ctx.assert(learningpath, 400, 'That learning path does not exist');
 
