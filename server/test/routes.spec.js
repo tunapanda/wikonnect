@@ -21,7 +21,11 @@ const lessonData = {
 };
 
 const putData = {
-  'name': 'PUT update works',
+  'lessons':{
+    'id': 'lesson133',
+    'name': 'PUT update works',
+    'module_id': 'module9'
+  }
 };
 
 const invalidData = {

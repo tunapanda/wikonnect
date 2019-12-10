@@ -84,7 +84,6 @@ router.put('/:id', async ctx => {
   const lesson = await Lesson.query().patchAndFetchById(ctx.params.id, newLesson).eager('chapters(selectNameAndId)');
   const rookie = await knex('module_lessons').where('lesson_id', lesson.id);
 
-
   let put_module = [];
   for (let index = 0; index < module_id.length; index++) {
     put_module.push(module_id[index]);
