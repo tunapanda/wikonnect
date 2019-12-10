@@ -12,7 +12,7 @@
 [Please follow this teps to contribute](https://github.com/tunapanda/swag/blob/master/CONTRIBUTING.md)
 
 ### API Overview
-#### AUTH Endpoints
+#### AUTH Endpoint
 
 prefix = `/api/v1`
 
@@ -46,23 +46,15 @@ prefix = `/api/v1`
 }
 ```
 
+#### Learning Path Endpoint
 
-#### LEARNING PATH Endpoints
-**GET ALL Learning Paths**
-
-    GET /api/v1/paths/
-
-**GET SINGLE Learning Paths**
-
-    GET /api/v1/paths/{id}
-
-**PUT[update] SINGLE Learning Paths**
-
-    GET /api/v1/paths/{id}
-
-**DELETE Learning Paths**
-
-    GET /api/v1/paths/{id}
+| method | resource      | description                          |
+|:-------|:--------------|:-------------------------------------|
+|  POST  | `/paths`      | creates a user account               |
+|  GET   | `/paths`      | returns a list of all users)         |
+|  GET   | `/paths/:id`  | returns a single user                |
+|  PUT   | `/paths/:id`  | returns a single user after update   |
+| DELETE | `/paths/:id`  | returns a single user after update   |
 
 #### SEARCH Endpoint
 
