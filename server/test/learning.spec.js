@@ -10,7 +10,7 @@ chai.use(chaiHttp);
 const route = '/api/v1/paths/';
 const itemID = 'learning_path10';
 const data = {
-  'paths':{
+  'paths': {
     'id': 'learning_path10',
     'name': 'Testing Learning Path',
     'slug': 'testing-learning-path',
@@ -21,11 +21,13 @@ const data = {
 };
 
 const putData = {
-  'name': 'PUT update works',
+  'paths': {
+    'name': 'PUT update works',
+  }
 };
 
 const invalidData = {
-  'paths':{
+  'paths': {
     'id': 'learning_path10',
     'name': 'Testing Learning Path',
     'slug': 'testing-learning-path',

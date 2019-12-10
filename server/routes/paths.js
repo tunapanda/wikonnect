@@ -3,18 +3,12 @@ const LearningPath = require('../models/learning_path');
 const validatePostData = require('../middleware/validation/validatePostData');
 const permController = require('../middleware/userAccessControlMiddleware');
 
-const environment = process.env.NODE_ENV || 'development';
-const config = require('../knexfile.js')[environment];
-const knex = require('knex')(config);
-
-
 const router = new Router({
   prefix: '/paths'
 });
 
 async function returnType(parent) {
   try {
-
     if (parent.length == undefined) {
       parent.courses.forEach(lesson => {
         return lesson.type = 'courses';

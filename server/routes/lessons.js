@@ -75,17 +75,16 @@ router.post('/', validatePostData, async ctx => {
 
 
 router.put('/:id', async ctx => {
-  const lesson_record = await Lesson.query().findById(ctx.params.id);
-  if (!lesson_record) {
+  let { module_id, ...newLesson } = ctx.request.body.lessons;
+  const lesson = await Lesson.query().patchAndFetchById(ctx.params.id, newLesson).eager('chapters(selectNameAndId)');
+
+  if (!lesson) {
     ctx.throw(400, 'That lesson path does not exist');
   }
 
-  let { module_id, ...newLesson } = ctx.request.body.lessons;
-  const lesson = await Lesson.query().patchAndFetchById(ctx.params.id, newLesson).eager('chapters(selectNameAndId)');
   const rookie = await knex('module_lessons').where('lesson_id', lesson.id);
-  console.log(module_id);
 
-  if (module_id == undefined) {
+  if (!module_id == undefined) {
     let put_module = [];
     for (let index = 0; index < module_id.length; index++) {
       put_module.push(module_id[index]);

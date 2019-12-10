@@ -22,7 +22,9 @@ const data = {
 };
 
 const putData = {
-  'name': 'PUT update works',
+  'courses':{
+    'name': 'PUT update works',
+  }
 };
 
 const invalidData = {

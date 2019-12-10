@@ -2,9 +2,6 @@ const Router = require('koa-router');
 const Chapter = require('../models/chapter');
 const validateChapter = require('../middleware/validation/validateChapter');
 
-const config = require('../knexfile.js')['development'];
-const knex = require('knex')(config);
-
 
 const router = new Router({
   prefix: '/chapters'
@@ -43,10 +40,7 @@ router.get('/', async ctx => {
 
 router.get('/:id', async ctx => {
   const chapter = await Chapter.query().findById(ctx.params.id).eager('lesson');
-
-  if (!chapter) {
-    ctx.assert(chapter, 404, 'no lesson by that ID');
-  }
+  ctx.assert(chapter, 404, 'no lesson by that ID');
 
   returnType(chapter);
 
@@ -56,8 +50,6 @@ router.get('/:id', async ctx => {
 
 router.post('/', validateChapter, async ctx => {
   let newChapter = ctx.request.body.chapters;
-  console.log(newChapter);
-  
 
   const chapter = await Chapter.query().insertAndFetch(newChapter);
   ctx.assert(chapter, 401, 'Something went wrong');
