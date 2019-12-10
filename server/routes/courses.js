@@ -78,7 +78,7 @@ router.put('/:id', async ctx => {
 
   ctx.assert(course, 400, 'That course does not exist');
 
-  const rookie = await knex('learning_path_courses').where('courses_id', course.id);
+  const rookie = await knex('learning_path_courses').where('course_id', course.id);
 
   if (!learning_path_id == undefined) {
     let put_data = [];
@@ -89,8 +89,8 @@ router.put('/:id', async ctx => {
     for (let index = 0; index < rookie.length; index++) {
       const rook = rookie[index].module_id;
       if (rook != put_data[index]) {
-        await knex('learning_path_courses').where({ 'courses_id': course.id, 'module_id': rook }).del();
-        await knex('learning_path_courses').insert({ 'courses_id': course.id, 'module_id': put_data[index] });
+        await knex('learning_path_courses').where({ 'course_id': course.id, 'module_id': rook }).del();
+        await knex('learning_path_courses').insert({ 'course_id': course.id, 'module_id': put_data[index] });
       }
     }
   }
