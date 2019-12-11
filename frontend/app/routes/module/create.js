@@ -1,5 +1,5 @@
 import Route from '@ember/routing/route';
-import { inject } from '@ember/service'
+import { inject } from '@ember/service';
 
 export default class ModuleCreateRoute extends Route {
   @inject
@@ -8,6 +8,6 @@ export default class ModuleCreateRoute extends Route {
   model() {
     return this.store.createRecord('module', {
       creator: this.me.get('user')
-    })
+    });
   }
 }

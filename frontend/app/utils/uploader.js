@@ -121,17 +121,17 @@ export default class UploaderEmberObject extends EmberObject.extend(Evented) {
     let msg = err;
     if (typeof err !== 'string') {
       switch (this.get('xhr').status) {
-        case 404:
-          msg = 'File not found';
-          break;
-        case 500:
-          msg = 'Server error';
-          break;
-        case 0:
-          msg = 'Request aborted';
-          break;
-        default:
-          msg = 'Unknown error ' + this.get('xhr').status;
+      case 404:
+        msg = 'File not found';
+        break;
+      case 500:
+        msg = 'Server error';
+        break;
+      case 0:
+        msg = 'Request aborted';
+        break;
+      default:
+        msg = 'Unknown error ' + this.get('xhr').status;
       }
     }
 

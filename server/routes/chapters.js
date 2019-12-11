@@ -61,7 +61,15 @@ router.post('/', validateChapter, async ctx => {
     .replace(/^-*|-*$/g, '')
     .toLowerCase();
 
-  const chapter = await Chapter.query().insertAndFetch(newChapter);
+  let chapter;
+  try {
+    chapter = await Chapter.query().insertAndFetch(newChapter);
+  } catch (e) {
+    if (e.statusCode) {
+      ctx.throw(e.statusCode, null, { errors: [e.message] });
+    } else { ctx.throw(400, null, { errors: ['Bad Request'] }); }
+    throw e;
+  }
   if (!chapter) {
     ctx.assert(module, 401, 'Something went wrong');
   }
@@ -76,8 +84,15 @@ router.put('/:id', async ctx => {
   if (!chapter_record) {
     ctx.throw(400, 'No chapter with that ID');
   }
-  const chapter = await Chapter.query().patchAndFetchById(ctx.params.id, ctx.request.body.chapter);
-
+  let chapter;
+  try {
+    chapter = await Chapter.query().patchAndFetchById(ctx.params.id, ctx.request.body.chapter);
+  } catch (e) {
+    if (e.statusCode) {
+      ctx.throw(e.statusCode, null, { errors: [e.message] });
+    } else { ctx.throw(400, null, { errors: ['Bad Request'] }); }
+    throw e;
+  }
   ctx.status = 201;
   ctx.body = { chapter };
 });
@@ -99,7 +114,7 @@ router.post('/:id/upload', async ctx => {
   const uploadDir = path.resolve(__dirname, '../public/' + uploadPath);
 
   await busboy(ctx.req, {
-    onFile: function (fieldname, file, filename, encoding, mimetype) {
+    onFile: function (fieldname, file) {
       file.pipe(unzipper.Extract({ path: uploadDir }));
     }
   });

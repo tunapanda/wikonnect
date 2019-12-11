@@ -10,24 +10,30 @@ chai.use(chaiHttp);
 const route = '/api/v1/paths/';
 const itemID = 'learning_path10';
 const data = {
-  'id': 'learning_path10',
-  'name': 'Testing Learning Path',
-  'slug': 'testing-learning-path',
-  'description': 'Testing organization of the courses.',
-  'status': 'published',
-  'creator_id': 'user3'
+  learningPath: {
+    'id': 'learning_path10',
+    'name': 'Testing Learning Path',
+    'slug': 'testing-learning-path',
+    'description': 'Testing organization of the courses.',
+    'status': 'published',
+    'creatorId': 'user3'
+  }
 };
 
 const putData = {
-  'name': 'PUT update works',
+  learningPath: {
+    'name': 'PUT update works',
+  }
 };
 
 const invalidData = {
-  'id': 'learning_path10',
-  'name': 'Testing Learning Path',
-  'slug': 'testing-learning-path',
-  'description': 'Testing organization of the courses.',
-  'status': 'draft'
+  learningPath: {
+    'id': 'learning_path10',
+    'name': 'Testing Learning Path',
+    'slug': 'testing-learning-path',
+    'description': 'Testing organization of the courses.',
+    'status': 'draft'
+  }
 };
 
 /**
@@ -47,7 +53,6 @@ describe('LEARNING PATH ROUTE', () => {
         res.should.be.json;
         res.body.should.be.a('object');
         res.body.should.have.property('errors');
-        res.body.errors.should.have.property('creator_id');
         done();
       });
   });

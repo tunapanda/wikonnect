@@ -7,25 +7,25 @@ export default class CourseEditController extends Controller {
 
   @computed('model.modules.[]')
   get courseModules() {
-    return this.model.get('modules')
+    return this.model.get('modules');
   }
 
 
   @computed()
   get allModules() {
-    return this.store.findAll('module')
+    return this.store.findAll('module');
   }
 
 
   @action
   addModule(mod) {
-    this.model.get('modules').pushObject(mod)
-    this.set('selectedModule', null)
+    this.model.get('modules').pushObject(mod);
+    this.set('selectedModule', null);
   }
 
   @action
   saveCourse(model) {
-    model.save()
+    model.save();
   }
 }
 

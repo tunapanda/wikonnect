@@ -9,6 +9,6 @@ export default class CmsLessonCreateRoute extends Route {
     return this.store.createRecord('lesson', {
       creator: this.me.get('user'),
       status: 'published'
-    })
+    });
   }
 }

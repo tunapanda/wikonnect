@@ -10,24 +10,30 @@ chai.use(chaiHttp);
 const route = '/api/v1/courses/';
 const itemID = 'course10';
 const data = {
-  'id': 'course10',
-  'name': 'Testing Course Path',
-  'slug': 'source-course-route',
-  'description': 'Colection of modules.',
-  'status': 'published',
-  'creator_id': 'user3'
+  course: {
+    'id': 'course10',
+    'name': 'Testing Course Path',
+    'slug': 'source-course-route',
+    'description': 'Colection of modules.',
+    'status': 'published',
+    'creatorId': 'user3'
+  }
 };
 
 const putData = {
-  'name': 'PUT update works',
+  course: {
+    'name': 'PUT update works',
+  }
 };
 
 const invalidData = {
-  'id': 'course10',
-  'name': 'Testing Course Path',
-  'slug': 'source-learning-path',
-  'description': 'Colection of modules.',
-  'status': 'published',
+  course: {
+    'id': 'course10',
+    'name': 'Testing Course Path',
+    'slug': 'source-learning-path',
+    'description': 'Colection of modules.',
+    'status': 'published',
+  }
 };
 
 describe('COURSES ROUTES', () => {
@@ -42,7 +48,7 @@ describe('COURSES ROUTES', () => {
         res.status.should.eql(400);
         res.should.be.json;
         res.body.should.be.a('object');
-        res.body.errors.should.have.property('creator_id');
+        res.body.should.have.property('errors');
         done();
       });
   });

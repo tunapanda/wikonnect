@@ -1,6 +1,5 @@
 const Router = require('koa-router');
 const Lesson = require('../models/lesson');
-const validatePostData = require('../middleware/validation/validatePostData');
 const queryStringSearch = require('../middleware/queryStringSearch');
 
 
@@ -55,8 +54,15 @@ router.post('/', async ctx => {
     .replace(/^-*|-*$/g, '')
     .toLowerCase();
 
-  const lesson = await Lesson.query().insertAndFetch(newLesson);
-
+  let lesson;
+  try {
+    lesson = await Lesson.query().insertAndFetch(newLesson);
+  } catch (e) {
+    if (e.statusCode) {
+      ctx.throw(e.statusCode, null, { errors: [e.message] });
+    } else { ctx.throw(400, null, { errors: ['Bad Request'] }); }
+    throw e;
+  }
   ctx.assert(lesson, 401, 'Something went wrong');
 
   ctx.status = 201;
@@ -69,7 +75,16 @@ router.put('/:id', async ctx => {
   if (!lesson_record) {
     ctx.throw(400, 'That lesson path does not exist');
   }
-  const lesson = await Lesson.query().patchAndFetchById(ctx.params.id, ctx.request.body.lesson);
+
+  let lesson;
+  try {
+    lesson = await Lesson.query().patchAndFetchById(ctx.params.id, ctx.request.body.lesson);
+  } catch (e) {
+    if (e.statusCode) {
+      ctx.throw(e.statusCode, null, { errors: [e.message] });
+    } else { ctx.throw(400, null, { errors: ['Bad Request'] }); }
+    throw e;
+  }
 
   ctx.status = 201;
   ctx.body = { lesson };
