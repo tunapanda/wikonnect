@@ -27,6 +27,7 @@ export default class CmsLessonCreateController extends Controller {
     this.get('model.chapters').pushObject(chapter);
   }
 
+  @action
   async fileAdded(chapter, files) {
     console.log(arguments);
 
