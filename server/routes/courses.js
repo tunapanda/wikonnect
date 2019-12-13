@@ -1,6 +1,5 @@
 const Router = require('koa-router');
 const Course = require('../models/course');
-const validatePostData = require('../middleware/validation/validatePostData');
 const queryStringSearch = require('../middleware/queryStringSearch');
 
 const router = new Router({
@@ -33,7 +32,7 @@ router.get('/:id', async ctx => {
 });
 
 router.get('/', queryStringSearch, async ctx => {
-  try{
+  try {
     const course = await Course.query().where(ctx.query).eager('modules(selectNameAndId)');
 
     returnType(course);
@@ -46,11 +45,18 @@ router.get('/', queryStringSearch, async ctx => {
   }
 });
 
-router.post('/', validatePostData, async ctx => {
-  let newCourse = ctx.request.body;
+router.post('/', async ctx => {
+  let newCourse = ctx.request.body.course;
 
-  const course = await Course.query().insertAndFetch(newCourse);
-
+  let course;
+  try {
+    course = await Course.query().insertAndFetch(newCourse);
+  } catch (e) {
+    if (e.statusCode) {
+      ctx.throw(e.statusCode, null, { errors: [e.message] });
+    } else { ctx.throw(400, null, { errors: ['Bad Request'] }); }
+    throw e;
+  }
   ctx.assert(course, 401, 'Something went wrong');
 
   ctx.status = 201;
@@ -59,8 +65,16 @@ router.post('/', validatePostData, async ctx => {
 
 });
 router.put('/:id', async ctx => {
-  const course = await Course.query().patchAndFetchById(ctx.params.id, ctx.request.body);
 
+  let course;
+  try {
+    course = await Course.query().patchAndFetchById(ctx.params.id, ctx.request.body.course);
+  } catch (e) {
+    if (e.statusCode) {
+      ctx.throw(e.statusCode, null, { errors: [e.message] });
+    } else { ctx.throw(400, null, { errors: ['Bad Request'] }); }
+    throw e;
+  }
   if (!course) {
     ctx.throw(400, 'That course does not exist');
   }
