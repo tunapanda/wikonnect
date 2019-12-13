@@ -8,6 +8,12 @@ module.exports = function (defaults) {
       enabled: EmberApp.env() !== 'production',
       extensions: ['js']
     },
+    "ember-drag-drop-polyfill": {
+      includeCSS: true,
+      includeIconsCss: false,
+      includeDebugCss: true,
+      includeScrollBehavior: false,
+    },
     babel: {
       sourceMaps: 'both'
     },
