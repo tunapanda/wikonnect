@@ -1,6 +1,6 @@
 const Router = require('koa-router');
 const Module = require('../models/module');
-const validatePostData = require('../middleware/validation/validatePostData');
+const { validateModules } = require('../middleware/validation/validatePostData');
 
 const config = require('../knexfile.js')['development'];
 const knex = require('knex')(config);
@@ -63,7 +63,7 @@ router.get('/', async ctx => {
   }
 });
 
-router.post('/', validatePostData, async ctx => {
+router.post('/', validateModules, async ctx => {
 
   let { course_id, ...newModule } = ctx.request.body.modules;
 

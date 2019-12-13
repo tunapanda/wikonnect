@@ -1,6 +1,6 @@
 const Router = require('koa-router');
 const LearningPath = require('../models/learning_path');
-const validatePostData = require('../middleware/validation/validatePostData');
+const { validatePaths } = require('../middleware/validation/validatePostData');
 const permController = require('../middleware/userAccessControlMiddleware');
 
 const router = new Router({
@@ -51,7 +51,7 @@ router.get('/:id', permController.grantAccess('readAny', 'path'), async ctx => {
 });
 
 
-router.post('/', permController.grantAccess('createAny', 'path'), validatePostData, async ctx => {
+router.post('/', permController.grantAccess('createAny', 'path'), validatePaths, async ctx => {
   let newLearningPath = ctx.request.body.paths;
   const learningpath = await LearningPath.query().insertAndFetch(newLearningPath);
 

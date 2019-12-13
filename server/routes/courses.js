@@ -1,6 +1,6 @@
 const Router = require('koa-router');
 const Course = require('../models/course');
-const validatePostData = require('../middleware/validation/validatePostData');
+const { validateCourses } = require('../middleware/validation/validatePostData');
 
 const environment = process.env.NODE_ENV || 'development';
 const config = require('../knexfile.js')[environment];
@@ -61,7 +61,7 @@ router.get('/', async ctx => {
   }
 });
 
-router.post('/', validatePostData, async ctx => {
+router.post('/', validateCourses, async ctx => {
   let { modules, ...newCourse } = ctx.request.body.course;
   const course = await Course.query().insertAndFetch(newCourse);
 

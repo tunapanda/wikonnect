@@ -53,7 +53,7 @@ describe('LEARNING PATH ROUTE', () => {
         res.should.be.json;
         res.body.should.be.a('object');
         res.body.should.have.property('errors');
-        res.body.errors.should.have.property('creator_id');
+        res.body.errors.should.have.property('creatorId');
         done();
       });
   });

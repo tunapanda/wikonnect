@@ -54,8 +54,8 @@ describe('CHAPTER ROUTE', () => {
         res.should.be.json;
         res.body.should.be.a('object');
         res.body.should.have.property('errors');
-        res.body.errors.should.have.property('creator_id');
-        res.body.errors.should.have.property('lesson_id');
+        res.body.errors.should.have.property('creatorId');
+        res.body.errors.should.have.property('lessonId');
         done();
       });
   });

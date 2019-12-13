@@ -9,27 +9,27 @@ chai.use(chaiHttp);
 const lessonRoute = '/api/v1/lessons/';
 const lessonID = 'lesson133';
 const lessonData = {
-  'lessons': {
+  'lesson': {
     'id': 'lesson133',
     'name': 'Testing Lessons Path',
     'slug': 'testing-lesson-path',
     'description': 'Testing organization of the courses.',
     'status': 'published',
     'creatorId': 'user1',
-    'module_id': ['module9']
+    'modules_id': ['module44']
   }
 };
 
 const putData = {
-  'lessons':{
+  'lesson':{
     'id': 'lesson133',
     'name': 'PUT update works',
-    'module_id': ['module9']
+    'modules_id': ['module45']
   }
 };
 
 const invalidData = {
-  'lessons': {
+  'lesson': {
     'id': 'lesson_path10',
     'name': 'Testing Learning Path',
     'slug': 'testing-lesson-path',
@@ -44,12 +44,13 @@ const activityID = 'activity1';
 const activityData = {
   'activity':{
     'id': 'activity44',
-    'user_id': 'user1',
+    'userId': 'user1',
     'chapterId': 'chapter1',
     'status': 'active',
     'progress': '54',
   }
 };
+
 /**
  * Test lessonRoutes
  * -- lessons
@@ -74,7 +75,7 @@ describe('LESSONS ROUTE', () => {
         res.should.be.json;
         res.body.should.be.a('object');
         res.body.should.have.property('errors');
-        res.body.errors.should.have.property('creator_id');
+        res.body.errors.should.have.property('creatorId');
         done();
       });
   });
