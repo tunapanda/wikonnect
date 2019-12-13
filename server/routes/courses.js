@@ -61,8 +61,8 @@ router.get('/', async ctx => {
   }
 });
 
-router.post('/', validatePostData, async ctx => {
-  let { modules, ...newCourse } = ctx.request.body.courses;
+router.post('/', async ctx => {
+  let { modules, ...newCourse } = ctx.request.body.course;
   const course = await Course.query().insertAndFetch(newCourse);
 
   insertType('course_modules', modules, course.id);

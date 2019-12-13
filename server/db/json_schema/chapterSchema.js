@@ -5,10 +5,10 @@ const chapterSchema = {
     'slug': { 'type': 'string' },
     'description': { 'type': 'string' },
     'status': { 'type': 'string' },
-    'lesson_id': { 'type': 'string' },
-    'creator_id': { 'type': 'string' },
+    'lessonId': { 'type': 'string' },
+    'creatorId': { 'type': 'string' },
   },
-  'required': ['name', 'slug', 'description', 'status', 'lesson_id', 'creator_id'],
+  'required': ['name', 'slug', 'description', 'status', 'lessonId', 'creatorId'],
 };
 
 
