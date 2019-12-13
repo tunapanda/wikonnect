@@ -7,25 +7,25 @@ export default class CourseCreateController extends Controller {
 
   @computed('model.name')
   get courseSlug() {
-    return this.model.get('name').replace(/\s/g, "-")
+    return this.model.get('name').replace(/\s/g, "-");
   }
 
   @computed('model.modules.[]')
   get courseModules() {
-    return this.model.get('modules')
+    return this.model.get('modules');
   }
 
 
   @computed()
   get allModules() {
-    return this.store.findAll('module')
+    return this.store.findAll('module');
   }
 
 
   @action
   addModule(mod) {
-    this.model.get('modules').pushObject(mod)
-    this.set('selectedModule', null)
+    this.model.get('modules').pushObject(mod);
+    this.set('selectedModule', null);
   }
 
   @action
@@ -33,8 +33,8 @@ export default class CourseCreateController extends Controller {
     model.setProperties({
       slug: this.get('courseSlug'),
       status: "published"
-    })
-    model.save()
+    });
+    model.save();
   }
 }
 

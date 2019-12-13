@@ -7,24 +7,24 @@ export default class ModuleEditController extends Controller {
 
   @computed('model.lessons.[]')
   get moduleLessons() {
-    return this.model.get('lessons')
+    return this.model.get('lessons');
   }
 
 
   @computed()
   get allLessons() {
-    return this.store.findAll('lesson')
+    return this.store.findAll('lesson');
   }
 
 
   @action
   addLesson(lesson) {
-    this.model.get('lessons').pushObject(lesson)
-    this.set('selectedLesson', null)
+    this.model.get('lessons').pushObject(lesson);
+    this.set('selectedLesson', null);
   }
 
   @action
   saveModule(model) {
-    model.save()
+    model.save();
   }
 }
