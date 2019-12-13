@@ -6,8 +6,8 @@ export default class ProfilePrivateProfileComponent extends Component {
   @inject
   me;
 
-  viewOptions = ['profile', 'learning', 'settings'];
-  profileView = 'profile';
+  viewOptions = ['Profile', 'Learning', 'Settings'];
+  profileView = 'Profile';
   viewOnly = true;
 
   @computed('me.user.{firstName,lastName}')
