@@ -22,7 +22,6 @@ const lessonData = {
 
 const putData = {
   'lesson':{
-    'id': 'lesson133',
     'name': 'PUT update works',
     'modules_id': ['module45']
   }
