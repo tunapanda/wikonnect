@@ -2,6 +2,7 @@ import Controller from '@ember/controller';
 import { action } from '@ember/object';
 import { inject } from '@ember/service';
 import { all } from 'rsvp';
+import Uploader from '../utils/uploader';
 
 export default class CmsLessonCreateController extends Controller {
   @inject
