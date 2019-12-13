@@ -29,7 +29,7 @@ async function insertType(model, collection, course_id) {
   for (let index = 0; index < collection.length; index++) {
     const element = collection[index];
     let data = {
-      'learning_path_id': element,
+      'module_id': element,
       'course_id': course_id
     };
     await knex(model).insert(data);
@@ -62,10 +62,10 @@ router.get('/', async ctx => {
 });
 
 router.post('/', validatePostData, async ctx => {
-  let { learning_path_id, ...newCourse } = ctx.request.body.courses;
+  let { modules, ...newCourse } = ctx.request.body.courses;
   const course = await Course.query().insertAndFetch(newCourse);
 
-  insertType('learning_path_courses', learning_path_id, course.id);
+  insertType('course_modules', modules, course.id);
 
   ctx.assert(course, 401, 'Something went wrong');
   ctx.status = 201;
@@ -78,7 +78,7 @@ router.put('/:id', async ctx => {
 
   ctx.assert(course, 400, 'That course does not exist');
 
-  const rookie = await knex('learning_path_courses').where('course_id', course.id);
+  const rookie = await knex('course_modules').where('course_id', course.id);
 
   if (!learning_path_id == undefined) {
     let put_data = [];
@@ -89,8 +89,8 @@ router.put('/:id', async ctx => {
     for (let index = 0; index < rookie.length; index++) {
       const rook = rookie[index].module_id;
       if (rook != put_data[index]) {
-        await knex('learning_path_courses').where({ 'course_id': course.id, 'learning_path_id': rook }).del();
-        await knex('learning_path_courses').insert({ 'course_id': course.id, 'learning_path_id': put_data[index] });
+        await knex('course_modules').where({ 'course_id': course.id, 'module_id': rook }).del();
+        await knex('course_modules').insert({ 'course_id': course.id, 'module_id': put_data[index] });
       }
     }
   }
