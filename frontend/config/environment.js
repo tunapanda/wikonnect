@@ -31,6 +31,10 @@ module.exports = function (environment) {
       refreshTokenPropertyName: 'token',
       serverTokenEndpoint: '/api/v1/auth/'
     },
+    "ember-drag-drop-polyfill": {
+      enableEnterLeave: true,
+      holdToDrag: false
+    },
 
   };
 
