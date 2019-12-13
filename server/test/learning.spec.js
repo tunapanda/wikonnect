@@ -16,7 +16,7 @@ const data = {
     'slug': 'testing-learning-path',
     'description': 'Testing organization of the courses.',
     'status': 'published',
-    'creator_id': 'user3'
+    'creatorId': 'user3'
   }
 };
 

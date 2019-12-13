@@ -61,7 +61,7 @@ router.get('/', async ctx => {
   }
 });
 
-router.post('/', async ctx => {
+router.post('/', validatePostData, async ctx => {
   let { modules, ...newCourse } = ctx.request.body.course;
   const course = await Course.query().insertAndFetch(newCourse);
 
@@ -73,17 +73,17 @@ router.post('/', async ctx => {
 });
 
 router.put('/:id', async ctx => {
-  let { learning_path_id, ...newCourse } = ctx.request.body.courses;
+  let { modules, ...newCourse } = ctx.request.body.course;
   const course = await Course.query().patchAndFetchById(ctx.params.id, newCourse);
 
   ctx.assert(course, 400, 'That course does not exist');
 
   const rookie = await knex('course_modules').where('course_id', course.id);
 
-  if (!learning_path_id == undefined) {
+  if (!modules == undefined) {
     let put_data = [];
-    for (let index = 0; index < learning_path_id.length; index++) {
-      put_data.push(learning_path_id[index]);
+    for (let index = 0; index < modules.length; index++) {
+      put_data.push(modules[index]);
     }
 
     for (let index = 0; index < rookie.length; index++) {

@@ -35,11 +35,9 @@ const validate = require('validate.js');
  *
 */
 async function validatePostData(ctx, next) {
-  const modelName = ctx.request.url.split('/');
-  console.log(modelName[3]);
 
   try {
-    await validate.async(ctx.request.body[modelName[3]], {
+    await validate.async(ctx.request.body.course, {
       name: {
         presence: true,
       },

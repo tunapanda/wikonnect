@@ -15,8 +15,8 @@ const lessonData = {
     'slug': 'testing-lesson-path',
     'description': 'Testing organization of the courses.',
     'status': 'published',
-    'creator_id': 'user1',
-    'module_id': 'module9'
+    'creatorId': 'user1',
+    'module_id': ['module9']
   }
 };
 
@@ -24,7 +24,7 @@ const putData = {
   'lessons':{
     'id': 'lesson133',
     'name': 'PUT update works',
-    'module_id': 'module9'
+    'module_id': ['module9']
   }
 };
 
@@ -45,7 +45,7 @@ const activityData = {
   'activity':{
     'id': 'activity44',
     'user_id': 'user1',
-    'chapter_id': 'chapter1',
+    'chapterId': 'chapter1',
     'status': 'active',
     'progress': '54',
   }

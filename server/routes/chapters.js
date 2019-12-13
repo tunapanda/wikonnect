@@ -49,7 +49,7 @@ router.get('/:id', async ctx => {
 });
 
 router.post('/', validateChapter, async ctx => {
-  let newChapter = ctx.request.body.chapters;
+  let newChapter = ctx.request.body.chapter;
 
   const chapter = await Chapter.query().insertAndFetch(newChapter);
   ctx.assert(chapter, 401, 'Something went wrong');
@@ -64,7 +64,7 @@ router.put('/:id', async ctx => {
   if (!chapter_record) {
     ctx.throw(400, 'No chapter with that ID');
   }
-  const chapter = await Chapter.query().patchAndFetchById(ctx.params.id, ctx.request.body);
+  const chapter = await Chapter.query().patchAndFetchById(ctx.params.id, ctx.request.body.chapter);
 
   ctx.status = 201;
   ctx.body = { chapter };
