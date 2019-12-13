@@ -1,6 +1,6 @@
-# Swag
+# Wikonnect
 
-Swag is an open-source e-learning platform that is designed to allow anyone to learn, create content, and contribute to the code. Developed by Tunapanda Institute in Nairobi, Kenya.
+Wikonnect is an open-source e-learning platform that is designed to allow anyone to learn, create content, and contribute to the code. The initial courses offered on the platform will be around digital literacy, to get more people using the internet in more productive ways. Developed by Tunapanda Institute in Nairobi, Kenya. The original platform (called 'swag') was used to provide technology, design, and business training in low-income communities with low bandwidth.
 
 ## Getting Started
 
@@ -10,7 +10,7 @@ The back-end is developed using Node.js.
 
 ### Prerequisites
 
-#### In order to get Swag running locally:
+#### In order to get Wikonnect running locally:
 
 Ensure that [Ember-cli](https://ember-cli.com/) and [Node.js](https://nodejs.org/en/) are installed. You will also need Yarn ([Ubuntu Installation](https://www.hostinger.com/tutorials/how-to-install-yarn-on-ubuntu/)), and [knex](https://gist.github.com/NigelEarle/80150ff1c50031e59b872baf0e474977).
 
@@ -37,13 +37,13 @@ A step by step series of examples that tell you how to get a development env run
 Clone the repository
 
 ```
-git clone https://github.com/tunapanda/swag.git
+git clone https://github.com/tunapanda/wikonnect.git
 ```
 
 Install the node packages in the main project directory...
 
 ```
-cd swag/
+cd wikonnect/
 yarn
 ```
 
@@ -67,7 +67,7 @@ development: {
 
 #### Next, you will want to set up your database and start your server.
 
-Running `knex migrate:latest ` in the `server/` directory will use the migration files in `server/migrations` to create and format the tables so that they will work with swag.
+Running `knex migrate:latest ` in the `server/` directory will use the migration files in `server/migrations` to create and format the tables so that they will work with wikonnect.
 
 To populate the database with dummy data (defined in `server/db/seeds`), run `knex seed:run`. 
 
@@ -75,7 +75,7 @@ Now start your server! `yarn start`.
 
 #### Get Ember up and running
 
-Install the node packages for the Ember app. Run `yarn` in `swag/frontend`.
+Install the node packages for the Ember app. Run `yarn` in `wikonnect/frontend`.
 
 Start the app!
 
