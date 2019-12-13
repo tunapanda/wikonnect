@@ -16,7 +16,6 @@ const lessonData = {
     'description': 'Testing organization of the courses.',
     'status': 'published',
     'creator_id': 'user1',
-    'module_id': 'module9'
   }
 };
 
@@ -24,7 +23,6 @@ const putData = {
   'lessons':{
     'id': 'lesson133',
     'name': 'PUT update works',
-    'module_id': 'module9'
   }
 };
 

@@ -17,7 +17,7 @@ const data = {
     'description': 'Colection of modules.',
     'status': 'published',
     'creator_id': 'user3',
-    'learning_path_id': 'path0'
+    'modules': 'path0'
   }
 };
 
