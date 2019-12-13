@@ -24,16 +24,6 @@ async function returnType(parent) {
   }
 }
 
-async function insertType(model, collection, model_id) {
-  for (let index = 0; index < collection.length; index++) {
-    const element = collection[index];
-    let data = {
-      'module_id': element,
-      'lesson_id': model_id
-    };
-    await knex(model).insert(data);
-  }
-}
 
 router.get('/:id', async ctx => {
   const lesson = await Lesson.query().findById(ctx.params.id).eager('chapters(selectNameAndId)');
@@ -60,11 +50,8 @@ router.get('/', async ctx => {
 });
 
 router.post('/', validatePostData, async ctx => {
-  let { module_id, ...newLesson } = ctx.request.body.lessons;
 
-  const lesson = await Lesson.query().insertAndFetch(newLesson).eager('chapters(selectNameAndId)');
-
-  insertType('module_lessons', module_id, lesson.id);
+  const lesson = await Lesson.query().insertAndFetch(ctx.request.body.lessons).eager('chapters(selectNameAndId)');
 
   ctx.assert(lesson, 401, 'Something went wrong');
 
@@ -75,28 +62,10 @@ router.post('/', validatePostData, async ctx => {
 
 
 router.put('/:id', async ctx => {
-  let { module_id, ...newLesson } = ctx.request.body.lessons;
-  const lesson = await Lesson.query().patchAndFetchById(ctx.params.id, newLesson).eager('chapters(selectNameAndId)');
+  const lesson = await Lesson.query().patchAndFetchById(ctx.params.id, ctx.request.body.lessons).eager('chapters(selectNameAndId)');
 
   if (!lesson) {
     ctx.throw(400, 'That lesson path does not exist');
-  }
-
-  const rookie = await knex('module_lessons').where('lesson_id', lesson.id);
-
-  if (!module_id == undefined) {
-    let put_module = [];
-    for (let index = 0; index < module_id.length; index++) {
-      put_module.push(module_id[index]);
-    }
-
-    for (let index = 0; index < rookie.length; index++) {
-      const rook = rookie[index].module_id;
-      if (rook != put_module[index]) {
-        await knex('module_lessons').where({ 'lesson_id': lesson.id, 'module_id': rook }).del();
-        await knex('module_lessons').insert({ 'lesson_id': lesson.id, 'module_id': put_module[index] });
-      }
-    }
   }
 
   ctx.status = 201;

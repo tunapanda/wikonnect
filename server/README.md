@@ -64,14 +64,17 @@ __Sample JSON__
 
 ```json
 {
-    "id": "learning_path1",
-    "name": "A Learning Path",
-    "slug": "a-learning-path",
-    "description": "For the organisation of courses.",
-    "status": "published",
-    "creatorId": "user1",
-    "metadata": null,
-    "createdAt": "2017-12-20T16:17:10.000Z",
-    "updatedAt": "2017-12-20T16:17:10.000Z"
+    "paths":{
+        "id": "learning_path1",
+        "name": "A Learning Path",
+        "slug": "a-learning-path",
+        "description": "For the organisation of courses.",
+        "status": "published",
+        "creatorId": "user1",
+        "metadata": null,
+        "createdAt": "2017-12-20T16:17:10.000Z",
+        "updatedAt": "2017-12-20T16:17:10.000Z",
+        
+    }
 }
 ```
