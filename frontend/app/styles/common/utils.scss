@@ -1,0 +1,19 @@
+.hide {
+  display: none;
+}
+
+.status-good {
+  display: inline-block;
+  background: rgb(62, 119, 55);
+  width: 1rem;
+  height: 1rem;
+  border-radius: 0.5rem;
+}
+
+.status-bad {
+  display: inline-block;
+  background: rgb(161, 56, 56);
+  width: 1rem;
+  height: 1rem;
+  border-radius: 0.5rem;
+}

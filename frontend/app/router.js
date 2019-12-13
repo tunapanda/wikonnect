@@ -28,6 +28,12 @@ Router.map(function () {
   });
   this.route('search');
   this.route('about');
+  this.route('cms', function () {
+    this.route('lesson', function () {
+      this.route('create');
+      this.route('edit', { path: '/:lesson_id' });
+    });
+  });
 
   this.route('module', function () {
     this.route('create');

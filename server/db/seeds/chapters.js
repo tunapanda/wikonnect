@@ -13,6 +13,7 @@ exports.seed = function (knex) {
           status: 'published',
           lesson_id: 'lesson1',
           creator_id: 'user1',
+          content_type: 'h5p',
           created_at: '2017-12-20 19:17:10',
           updated_at: '2017-12-20 19:17:10'
         }

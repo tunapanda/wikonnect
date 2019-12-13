@@ -5,10 +5,12 @@ const chapterSchema = {
     'slug': { 'type': 'string' },
     'description': { 'type': 'string' },
     'status': { 'type': 'string' },
-    'lesson_id': { 'type': 'string' },
-    'creator_id': { 'type': 'string' },
+    'lessonId': { 'type': 'string' },
+    'creatorId': { 'type': 'string' },
+    'contentType': { 'type': 'string' },
+    'contentUri': { 'type': ['string', 'null'] }
   },
-  'required': ['name', 'slug', 'description', 'status', 'lesson_id', 'creator_id'],
+  'required': ['name', 'slug', 'description', 'status', 'lessonId', 'creatorId'],
 };
 
 
