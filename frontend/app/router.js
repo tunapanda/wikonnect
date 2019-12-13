@@ -34,7 +34,6 @@ Router.map(function () {
       this.route('edit', { path: '/:lesson_id' });
     });
   });
-
   this.route('module', function () {
     this.route('create');
   });
