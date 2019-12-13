@@ -27,6 +27,29 @@ export default class CmsLessonCreateController extends Controller {
     this.get('model.chapters').pushObject(chapter);
   }
 
+  async fileAdded(chapter, files) {
+    console.log(arguments);
+
+    const uploader = Uploader.create({
+      file: files[0],
+      filename: files[0].name,
+    });
+
+    this.set('uploader', uploader);
+
+
+    const host = '/' + this.store.adapterFor('application').urlPrefix();
+
+    const uploadRes = await uploader.startUpload([host, 'chapters', chapter.id, 'upload'].join('/'));
+
+    const url = ['//', uploadRes.host, uploadRes.path].join('/');
+
+    chapter.set('contentType', 'h5p');
+    chapter.set('contentUri', url);
+
+    return chapter.save();
+  }
+
   @action
   removeChapter(chapter) {
     this.get('model.chapters').removeObject(chapter);
