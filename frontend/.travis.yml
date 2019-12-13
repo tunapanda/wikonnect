@@ -18,8 +18,14 @@ env:
     # See https://git.io/vdao3 for details.
     - JOBS=1
 
+<<<<<<< HEAD
 before_install:
   - npm config set spin false
+=======
+branches:
+  only:
+    - master
+>>>>>>> 2036585... message
 
 script:
   - npm run lint:hbs
