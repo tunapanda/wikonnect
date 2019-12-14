@@ -1,1 +1,10 @@
-{{outlet}}
+<div class="form-title">
+
+  <h1>Password Reset Form</h1>
+</div>
+
+
+<BsForm @class="form" @formLayout="vertical" as |form|>
+  <form.element @controlType="email" @class="inputs" @label="Email" @placeholder="Email" @property="email" />
+  <BsButton @defaultText="Submit" @type="primary" />
+</BsForm>
