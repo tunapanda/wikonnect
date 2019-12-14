@@ -1,0 +1,48 @@
+router.post('/AddUser', function(req, res, next) {
+    var user = new User();
+    user.name = req.body.name;
+    user.email = req.body.email;
+    user.is_verified = false;
+
+    user.save(function(err,user){
+       if(err){
+           console.log(err);
+           res.json(err);
+       } else{
+           console.log("User data saved");
+
+           var transport = mailer.createTransport({
+               service : "Gmail",
+               auth : {
+                   user : config.central_email,
+                   pass : config.central_email_password
+               }
+           });
+
+//           tommorow's date
+           var info = {};
+           info.user = user;
+           info.expiry = new Date(new Date().getTime() + 24 * 60 * 60 * 1000);
+           var token = jwt.encode(info,config.secret);
+           console.log("http://localhost:3000/verifyEmail/" + token);
+
+           var mailOptions = {
+               from : "TEST<noreply@wikonect.com>",
+               to : user.email,
+               subject : "Welcome to Wikonect",
+               text : 'Visit this http://localhost:3000/verifyEmail/'+token,
+               html : '<a href="http://localhost:3000/verifyEmail/'+token+'"><H2>Click on this</H2></a>'
+           }
+           transport.sendMail(mailOptions,function(email_err,email_data){
+               if(email_err){
+                   console.log(email_err);
+                   res.json(email_err);
+               }else{
+                   console.log("Email is Sent");
+                   res.json({result : 1});
+               }
+           });
+
+       }
+    });
+});
