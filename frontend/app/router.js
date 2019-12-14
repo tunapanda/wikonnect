@@ -37,4 +37,6 @@ Router.map(function () {
   this.route('module', function () {
     this.route('create');
   });
+  this.route('password-reset');
+  this.route('reset');
 });
