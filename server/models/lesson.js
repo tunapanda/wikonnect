@@ -18,8 +18,8 @@ class Lesson extends Model {
         relation: Model.HasManyRelation,
         modelClass: __dirname + '/chapter',
         join: {
-          from: 'chapters.lesson_id',
-          to: 'lessons.id'
+          from: 'lessons.id',
+          to: 'chapters.lessonId'
         }
       }
     };

@@ -51,9 +51,18 @@ router.get('/:id', permController.grantAccess('readAny', 'path'), async ctx => {
 });
 
 
-router.post('/', permController.grantAccess('createAny', 'path'), validatePaths, async ctx => {
-  let newLearningPath = ctx.request.body.paths;
-  const learningpath = await LearningPath.query().insertAndFetch(newLearningPath);
+router.post('/', permController.grantAccess('createAny', 'path'), async ctx => {
+  let newLearningPath = ctx.request.body.learningPath;
+
+  let learningpath;
+  try {
+    learningpath = await LearningPath.query().insertAndFetch(newLearningPath);
+  } catch (e) {
+    if (e.statusCode) {
+      ctx.throw(e.statusCode, null, { errors: [e.message] });
+    } else { ctx.throw(400, null, { errors: ['Bad Request'] }); }
+    throw e;
+  }
 
   ctx.assert(learningpath, 401, 'Something went wrong');
 
@@ -70,13 +79,23 @@ router.put('/:id', permController.grantAccess('updateAny', 'path'), async ctx =>
   }
 
   const newLearningPath = ctx.request.body.paths;
-  const learningpath = await LearningPath.query().patchAndFetchById(ctx.params.id, newLearningPath).eager('courses(selectNameAndId)');
+
+  let learningpath;
+  try {
+    learningpath = await LearningPath.query().patchAndFetchById(ctx.params.id, newLearningPath);
+  } catch (e) {
+    if (e.statusCode) {
+      ctx.throw(e.statusCode, null, { errors: [e.message] });
+    } else { ctx.throw(400, null, { errors: ['Bad Request'] }); }
+    throw e;
+  }
 
   ctx.assert(learningpath, 400, 'That learning path does not exist');
 
   ctx.status = 201;
   ctx.body = { learningpath };
 });
+
 router.delete('/:id', permController.grantAccess('deleteAny', 'path'), async ctx => {
   const learningpath = await LearningPath.query().findById(ctx.params.id);
   if (!learningpath) {

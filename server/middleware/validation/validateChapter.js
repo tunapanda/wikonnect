@@ -7,13 +7,10 @@ async function validateChapter(ctx, next) {
       name: {
         presence: true,
       },
-      slug: {
-        presence: true,
-      },
       description: {
         presence: true,
       },
-      lessonId:{
+      lessonId: {
         presence: true,
       },
       creatorId: {

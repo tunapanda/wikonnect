@@ -6,7 +6,6 @@ const environment = process.env.NODE_ENV || 'development';
 const config = require('../knexfile.js')[environment];
 const knex = require('knex')(config);
 
-
 const router = new Router({
   prefix: '/courses'
 });
@@ -36,7 +35,6 @@ async function insertType(model, collection, course_id) {
   }
 }
 
-
 router.get('/:id', async ctx => {
   const course = await Course.query().findById(ctx.params.id).eager('modules(selectNameAndId)');
   if (!course) {
@@ -63,8 +61,18 @@ router.get('/', async ctx => {
 
 router.post('/', validateCourses, async ctx => {
   let { modules, ...newCourse } = ctx.request.body.course;
-  const course = await Course.query().insertAndFetch(newCourse);
 
+  let course;
+  try {
+    course = await Course.query().insertAndFetch(newCourse);
+  } catch (e) {
+    if (e.statusCode) {
+      ctx.throw(e.statusCode, null, { errors: [e.message] });
+    } else { ctx.throw(400, null, { errors: ['Bad Request'] }); }
+    throw e;
+  }
+  ctx.assert(course, 401, 'Something went wrong');
+  
   insertType('course_modules', modules, course.id);
 
   ctx.assert(course, 401, 'Something went wrong');
@@ -74,14 +82,22 @@ router.post('/', validateCourses, async ctx => {
 
 router.put('/:id', async ctx => {
   let { modules, ...newCourse } = ctx.request.body.course;
-  const course = await Course.query().patchAndFetchById(ctx.params.id, newCourse);
-
-  ctx.assert(course, 400, 'That course does not exist');
 
   await knex('course_modules').where({ 'course_id': course.id}).del();
   await insertType('course_modules', modules, course.id);
 
-  console.log(course);
+  let course;
+  try {
+    course = await Course.query().patchAndFetchById(ctx.params.id, newCourse);
+  } catch (e) {
+    if (e.statusCode) {
+      ctx.throw(e.statusCode, null, { errors: [e.message] });
+    } else { ctx.throw(400, null, { errors: ['Bad Request'] }); }
+    throw e;
+  }
+  if (!course) {
+    ctx.throw(400, 'That course does not exist');
+  }
 
   ctx.status = 201;
   ctx.body = { course };

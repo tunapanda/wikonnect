@@ -21,7 +21,7 @@ async function returnType(parent) {
 }
 
 router.get('/:id', async ctx => {
-  const lesson = await Lesson.query().findById(ctx.params.id).eager('chapters(selectNameAndId)');
+  const lesson = await Lesson.query().findById(ctx.params.id).eager('chapters(selectId)');
 
   ctx.assert(lesson, 404, 'no lesson by that ID');
   returnType(lesson);
@@ -31,7 +31,7 @@ router.get('/:id', async ctx => {
 
 router.get('/', async ctx => {
   try {
-    const lesson = await Lesson.query().where(ctx.query).eager('chapters(selectNameAndId)');
+    const lesson = await Lesson.query().where(ctx.query).eager('chapters(selectId)');
 
     returnType(lesson);
 
@@ -45,11 +45,21 @@ router.get('/', async ctx => {
 });
 
 router.post('/', validateLessons, async ctx => {
-
   let newLesson  = ctx.request.body.lesson;
 
-  const lesson = await Lesson.query().insertAndFetch(newLesson).eager('chapters(selectNameAndId)');
+  newLesson.slug = newLesson.name.replace(/[^a-z0-9]+/gi, '-')
+    .replace(/^-*|-*$/g, '')
+    .toLowerCase();
 
+  let lesson;
+  try {
+    lesson = await Lesson.query().insertAndFetch(newLesson);
+  } catch (e) {
+    if (e.statusCode) {
+      ctx.throw(e.statusCode, null, { errors: [e.message] });
+    } else { ctx.throw(400, null, { errors: ['Bad Request'] }); }
+    throw e;
+  }
   ctx.assert(lesson, 401, 'Something went wrong');
 
   ctx.status = 201;
@@ -61,10 +71,14 @@ router.post('/', validateLessons, async ctx => {
 router.put('/:id', async ctx => {
   let newLesson = ctx.request.body.lesson;
 
-  const lesson = await Lesson.query().patchAndFetchById(ctx.params.id, newLesson).eager('chapters(selectNameAndId)');
-
-  if (!lesson) {
-    ctx.throw(400, 'That lesson path does not exist');
+  let lesson;
+  try {
+    lesson = await Lesson.query().patchAndFetchById(ctx.params.id, newLesson);
+  } catch (e) {
+    if (e.statusCode) {
+      ctx.throw(e.statusCode, null, { errors: [e.message] });
+    } else { ctx.throw(400, null, { errors: ['Bad Request'] }); }
+    throw e;
   }
 
   ctx.status = 201;

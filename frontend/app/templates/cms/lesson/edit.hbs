@@ -1,0 +1,21 @@
+<BsForm @formLayout="vertical" @model={{model}} @onSubmit={{action "submit"}} as |form|>
+  <form.element @label="Name" @placeholder="Name" @property="name" @required={{true}} />
+  <form.element @controlType="textarea" @label="Description" @property="description" />
+  <div class="mb-3">
+    <h2>Chapters</h2>
+    {{#sortable-objects sortableObjectList=module.chapters enableSort=true}}
+      {{#each model.chapters as |chapter|}}
+        {{#draggable-object content=chapter overrideClass="card" isSortable=true}}
+          <div class="card-body">
+            <EditChapterItem @chapter={{chapter}} @removeChapter={{action "removeChapter"}} />
+          </div>
+        {{/draggable-object}}
+      {{/each}}
+    {{/sortable-objects}}
+    <BsButton @type="primary" @onClick={{action "addChapter"}}>Add a Chapter</BsButton>
+
+  </div>
+
+
+  <BsButton @defaultText="Save Changes" @type="primary" @buttonType="submit" />
+</BsForm>

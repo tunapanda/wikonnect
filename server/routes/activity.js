@@ -33,8 +33,16 @@ router.get('/', async ctx => {
 router.post('/', validateActivity, async ctx => {
   let newActivity = ctx.request.body.activity;
 
-  const activity = await Activity.query().insertAndFetch(newActivity);
 
+  let activity;
+  try {
+    activity = await Activity.query().insertAndFetch(newActivity);
+  } catch (e) {
+    if (e.statusCode) {
+      ctx.throw(e.statusCode, null, { errors: [e.message] });
+    } else { ctx.throw(400, null, { errors: ['Bad Request'] }); }
+    throw e;
+  }
   ctx.assert(activity, 401, 'Something went wrong');
 
   ctx.status = 201;
@@ -50,16 +58,25 @@ router.put('/:id', async ctx => {
     ctx.throw(400, 'That activity path does not exist');
   }
 
-  const activity = await Activity.query().patchAndFetchById(ctx.params.id, ctx.request.body);
-
+  let activity;
+  try {
+    activity = await Activity.query().patchAndFetchById(ctx.params.id, ctx.request.body.activity);
+  } catch (e) {
+    if (e.statusCode) {
+      ctx.throw(e.statusCode, null, { errors: [e.message] });
+    } else { ctx.throw(400, null, { errors: ['Bad Request'] }); }
+    throw e;
+  }
   ctx.status = 201;
   ctx.body = { activity };
 });
 router.delete('/:id', async ctx => {
   const activity = await Activity.query().findById(ctx.params.id);
+
+  ctx.assert(activity, 400, 'No ID was found');
   await Activity.query().delete().where({ id: ctx.params.id });
 
-  ctx.assert(activity, 401, 'No ID was found');
+
   ctx.status = 200;
   ctx.body = { activity };
 });

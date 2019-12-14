@@ -13,14 +13,15 @@ chai.use(chaiJSON);
 const route = '/api/v1/chapters/';
 const itemID = 'chapter19';
 const data = {
-  'chapter': {
+  'chapter: {
     'id': itemID,
     'name': 'Testing chapter Path',
     'slug': 'testing-chapter-path',
     'description': 'Testing chapter route',
     'status': 'published',
     'lessonId': 'lesson1',
-    'creatorId': 'user3'
+    'creatorId': 'user3',
+    'contentType': 'h5p'
   }
 };
 

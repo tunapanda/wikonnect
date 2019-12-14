@@ -9,8 +9,8 @@ chai.use(chaiHttp);
 const lessonRoute = '/api/v1/lessons/';
 const lessonID = 'lesson143';
 const lessonData = {
-  'lesson': {
-    'id': lessonID,
+  lesson: {
+    'id': lessonID',
     'name': 'Testing Lessons Path',
     'slug': 'testing-lesson-path',
     'description': 'Testing organization of the courses.',
@@ -21,6 +21,7 @@ const lessonData = {
 
 const putData = {
   'lesson':{
+  lesson: {
     'name': 'PUT update works',
   }
 };
@@ -45,6 +46,7 @@ const activityData = {
     'chapterId': 'chapter1',
     'status': 'active',
     'progress': '54',
+    'progress': '54'
   }
 };
 
@@ -231,7 +233,7 @@ describe('ACTIVITY ROUTE', () => {
   it('Should throw an ERROR on GET req using valid key and invalid query', done => {
     chai
       .request(server)
-      .get(activityRoute + '?chapter_id=chapt')
+      .get(activityRoute + '?chapterId=chapt')
       .end((err, res) => {
         res.should.have.status(200);
         assert.equal(res.body.activity.length, 0);
@@ -277,7 +279,7 @@ describe('ACTIVITY ROUTE', () => {
   it('Should list ONE activity records item on GET using QUERY', done => {
     chai
       .request(server)
-      .get(activityRoute + '?chapter_id=chapter1')
+      .get(activityRoute + '?chapterId=chapter1')
       .end((err, res) => {
         res.should.have.status(200);
         res.should.be.json;
@@ -305,11 +307,11 @@ describe('ACTIVITY ROUTE', () => {
       .request(server)
       .put(activityRoute + activityID)
       .set('Content-Type', 'application/json')
-      .send({ 'user_id': 'user3' })
+      .send({ activity: { 'userId': 'user3' } })
       .end((err, res) => {
         res.status.should.eql(201);
         res.should.be.json;
-        res.body.activity.user_id.should.eql('user3');
+        res.body.activity.userId.should.eql('user3');
         done();
       });
   });

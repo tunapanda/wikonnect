@@ -52,6 +52,7 @@ describe('COURSES ROUTES', () => {
         res.should.be.json;
         res.body.should.be.a('object');
         res.body.errors.should.have.property('creatorId');
+        res.body.should.have.property('errors');
         done();
       });
   });

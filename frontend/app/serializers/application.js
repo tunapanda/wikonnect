@@ -1,12 +1,11 @@
 import RESTSerializer from '@ember-data/serializer/rest';
-import { camelize } from '@ember/string';
+import { underscore } from '@ember/string';
 
 export default class ApplicationSerializer extends RESTSerializer {
-
-  keyForRelationship(key) {
-    if (key === 'creator') {
-      return `${camelize(key)}Id`;
+  keyForRelationship(key, relationship) {
+    if (relationship === 'belongsTo') {
+      return `${underscore(key)}Id`;
     }
-    return camelize(key);
+    return key;
   }
 }
