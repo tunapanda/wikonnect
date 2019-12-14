@@ -9,35 +9,43 @@ chai.use(chaiHttp);
 const lessonRoute = '/api/v1/lessons/';
 const lessonID = 'basics3';
 const lessonData = {
-  'id': 'lesson11',
-  'name': 'Testing Lessons Path',
-  'slug': 'testing-lesson-path',
-  'description': 'Testing organization of the courses.',
-  'status': 'published',
-  'creator_id': 'user1'
+  lesson: {
+    'id': 'lesson11',
+    'name': 'Testing Lessons Path',
+    'slug': 'testing-lesson-path',
+    'description': 'Testing organization of the courses.',
+    'status': 'published',
+    'creatorId': 'user1'
+  }
 };
 
 const putData = {
-  'name': 'PUT update works',
+  lesson: {
+    'name': 'PUT update works',
+  }
 };
 
 const invalidData = {
-  'id': 'lesson_path10',
-  'name': 'Testing Learning Path',
-  'slug': 'testing-lesson-path',
-  'description': 'Testing organization of the courses.',
-  'status': 'draft'
+  lesson: {
+    'id': 'lesson_path10',
+    'name': 'Testing Learning Path',
+    'slug': 'testing-lesson-path',
+    'description': 'Testing organization of the courses.',
+    'status': 'draft'
+  }
 };
 
 
 const activityRoute = '/api/v1/activity/';
 const activityID = 'activity1';
 const activityData = {
-  'id': 'activity44',
-  'user_id': 'user1',
-  'chapter_id': 'chapter1',
-  'status': 'active',
-  'progress': '54',
+  activity: {
+    'id': 'activity44',
+    'userId': 'user1',
+    'chapterId': 'chapter1',
+    'status': 'active',
+    'progress': '54'
+  }
 };
 /**
  * Test lessonRoutes
@@ -63,7 +71,6 @@ describe('LESSONS ROUTE', () => {
         res.should.be.json;
         res.body.should.be.a('object');
         res.body.should.have.property('errors');
-        res.body.errors.should.have.property('creator_id');
         done();
       });
   });
@@ -222,7 +229,7 @@ describe('ACTIVITY ROUTE', () => {
   it('Should throw an ERROR on GET req using valid key and invalid query', done => {
     chai
       .request(server)
-      .get(activityRoute + '?chapter_id=chapt')
+      .get(activityRoute + '?chapterId=chapt')
       .end((err, res) => {
         res.should.have.status(200);
         assert.equal(res.body.activity.length, 0);
@@ -268,7 +275,7 @@ describe('ACTIVITY ROUTE', () => {
   it('Should list ONE activity records item on GET using QUERY', done => {
     chai
       .request(server)
-      .get(activityRoute + '?chapter_id=chapter1')
+      .get(activityRoute + '?chapterId=chapter1')
       .end((err, res) => {
         res.should.have.status(200);
         res.should.be.json;
@@ -296,11 +303,11 @@ describe('ACTIVITY ROUTE', () => {
       .request(server)
       .put(activityRoute + activityID)
       .set('Content-Type', 'application/json')
-      .send({ 'user_id': 'user3' })
+      .send({ activity: { 'userId': 'user3' } })
       .end((err, res) => {
         res.status.should.eql(201);
         res.should.be.json;
-        res.body.activity.user_id.should.eql('user3');
+        res.body.activity.userId.should.eql('user3');
         done();
       });
   });

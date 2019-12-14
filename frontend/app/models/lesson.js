@@ -8,4 +8,5 @@ export default class LessonModel extends Model {
   @attr() status;
   @belongsTo('user') creator;
   @hasMany('module') modules;
+  @hasMany('chapter') chapters;
 }

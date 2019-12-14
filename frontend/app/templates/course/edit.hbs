@@ -10,7 +10,7 @@
 <h1>Modules</h1>
 {{#sortable-objects sortableObjectList=courseModules enableSort=true}}
   {{#each courseModules as |module|}}
-    {{#draggable-object content=module overrideClass='sortObject' isSortable=true}}
+    {{#draggable-object content=module overrideClass="sortObject" isSortable=true}}
       <ModuleItem @module={{module}} />
     {{/draggable-object}}
   {{/each}}
@@ -21,5 +21,5 @@
 </PowerSelect>
 {{#if selectedModule}}
   <ModuleItem @module={{selectedModule}} />
-  <BsButton @onClick={{action 'addModule' selectedModule}}>Add This module to my course</BsButton>
+  <BsButton @onClick={{action "addModule" selectedModule}}>Add This module to my course</BsButton>
 {{/if}}

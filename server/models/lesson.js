@@ -19,7 +19,7 @@ class Lesson extends Model {
         modelClass: __dirname + '/chapter',
         join: {
           from: 'lessons.id',
-          to: 'chapters.lesson_id'
+          to: 'chapters.lessonId'
         }
       }
     };

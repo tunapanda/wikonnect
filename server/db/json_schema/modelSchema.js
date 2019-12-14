@@ -6,9 +6,9 @@ const modelSchema = {
     'slug': { 'type': 'string' },
     'description': { 'type': 'string' },
     'status': { 'type': 'string' },
-    'creator_id': { 'type': 'string' },
+    'creatorId': { 'type': 'string' },
   },
-  'required': ['name', 'slug', 'description', 'status', 'creator_id'],
+  'required': ['name', 'slug', 'description', 'status', 'creatorId'],
 };
 
 
