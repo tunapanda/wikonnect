@@ -13,23 +13,25 @@ chai.use(chaiJSON);
 const route = '/api/v1/chapters/';
 const itemID = 'chapter19';
 const data = {
-  'chapters': {
+  'chapter': {
     'id': itemID,
     'name': 'Testing chapter Path',
     'slug': 'testing-chapter-path',
     'description': 'Testing chapter route',
     'status': 'published',
-    'lesson_id': 'lesson1',
-    'creator_id': 'user3'
+    'lessonId': 'lesson1',
+    'creatorId': 'user3'
   }
 };
 
 const putData = {
-  'name': 'PUT update works',
+  'chapter': {
+    'name': 'PUT update works'
+  }
 };
 
 const invalidData = {
-  'chapters': {
+  'chapter': {
     'id': itemID,
     'name': 'Testing Chapter Route',
     'slug': 'testing-chapter-route',
@@ -52,8 +54,8 @@ describe('CHAPTER ROUTE', () => {
         res.should.be.json;
         res.body.should.be.a('object');
         res.body.should.have.property('errors');
-        res.body.errors.should.have.property('creator_id');
-        res.body.errors.should.have.property('lesson_id');
+        res.body.errors.should.have.property('creatorId');
+        res.body.errors.should.have.property('lessonId');
         done();
       });
   });

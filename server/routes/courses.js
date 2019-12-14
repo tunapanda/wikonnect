@@ -1,6 +1,6 @@
 const Router = require('koa-router');
 const Course = require('../models/course');
-const validatePostData = require('../middleware/validation/validatePostData');
+const { validateCourses } = require('../middleware/validation/validatePostData');
 
 const environment = process.env.NODE_ENV || 'development';
 const config = require('../knexfile.js')[environment];
@@ -32,7 +32,7 @@ async function insertType(model, collection, course_id) {
       'module_id': element,
       'course_id': course_id
     };
-    await knex(model).insert(data);
+    knex(model).insert(data);
   }
 }
 
@@ -61,8 +61,8 @@ router.get('/', async ctx => {
   }
 });
 
-router.post('/', validatePostData, async ctx => {
-  let { modules, ...newCourse } = ctx.request.body.courses;
+router.post('/', validateCourses, async ctx => {
+  let { modules, ...newCourse } = ctx.request.body.course;
   const course = await Course.query().insertAndFetch(newCourse);
 
   insertType('course_modules', modules, course.id);
@@ -73,27 +73,15 @@ router.post('/', validatePostData, async ctx => {
 });
 
 router.put('/:id', async ctx => {
-  let { learning_path_id, ...newCourse } = ctx.request.body.courses;
+  let { modules, ...newCourse } = ctx.request.body.course;
   const course = await Course.query().patchAndFetchById(ctx.params.id, newCourse);
 
   ctx.assert(course, 400, 'That course does not exist');
 
-  const rookie = await knex('course_modules').where('course_id', course.id);
+  await knex('course_modules').where({ 'course_id': course.id}).del();
+  await insertType('course_modules', modules, course.id);
 
-  if (!learning_path_id == undefined) {
-    let put_data = [];
-    for (let index = 0; index < learning_path_id.length; index++) {
-      put_data.push(learning_path_id[index]);
-    }
-
-    for (let index = 0; index < rookie.length; index++) {
-      const rook = rookie[index].module_id;
-      if (rook != put_data[index]) {
-        await knex('course_modules').where({ 'course_id': course.id, 'module_id': rook }).del();
-        await knex('course_modules').insert({ 'course_id': course.id, 'module_id': put_data[index] });
-      }
-    }
-  }
+  console.log(course);
 
   ctx.status = 201;
   ctx.body = { course };

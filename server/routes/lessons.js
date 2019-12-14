@@ -1,7 +1,6 @@
 const Router = require('koa-router');
 const Lesson = require('../models/lesson');
-const validatePostData = require('../middleware/validation/validatePostData');
-
+const { validateLessons } = require('../middleware/validation/validatePostData');
 
 const router = new Router({
   prefix: '/lessons'
@@ -20,7 +19,6 @@ async function returnType(parent) {
     });
   }
 }
-
 
 router.get('/:id', async ctx => {
   const lesson = await Lesson.query().findById(ctx.params.id).eager('chapters(selectNameAndId)');
@@ -46,9 +44,11 @@ router.get('/', async ctx => {
   }
 });
 
-router.post('/', validatePostData, async ctx => {
+router.post('/', validateLessons, async ctx => {
 
-  const lesson = await Lesson.query().insertAndFetch(ctx.request.body.lessons).eager('chapters(selectNameAndId)');
+  let newLesson  = ctx.request.body.lesson;
+
+  const lesson = await Lesson.query().insertAndFetch(newLesson).eager('chapters(selectNameAndId)');
 
   ctx.assert(lesson, 401, 'Something went wrong');
 
@@ -59,7 +59,9 @@ router.post('/', validatePostData, async ctx => {
 
 
 router.put('/:id', async ctx => {
-  const lesson = await Lesson.query().patchAndFetchById(ctx.params.id, ctx.request.body.lessons).eager('chapters(selectNameAndId)');
+  let newLesson = ctx.request.body.lesson;
+
+  const lesson = await Lesson.query().patchAndFetchById(ctx.params.id, newLesson).eager('chapters(selectNameAndId)');
 
   if (!lesson) {
     ctx.throw(400, 'That lesson path does not exist');

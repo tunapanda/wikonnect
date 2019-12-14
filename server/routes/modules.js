@@ -1,6 +1,6 @@
 const Router = require('koa-router');
 const Module = require('../models/module');
-const validatePostData = require('../middleware/validation/validatePostData');
+const { validateModules } = require('../middleware/validation/validatePostData');
 
 const config = require('../knexfile.js')['development'];
 const knex = require('knex')(config);
@@ -25,12 +25,12 @@ async function returnType(parent) {
 }
 
 
-async function insertType(model, collection, course_id) {
+async function insertType(model, collection, parent_id) {
   for (let index = 0; index < collection.length; index++) {
     const element = collection[index];
     let data = {
-      'module_id': element,
-      'course_id': course_id
+      'lesson_id': element,
+      'module_id': parent_id
     };
     await knex(model).insert(data);
   }
@@ -63,13 +63,13 @@ router.get('/', async ctx => {
   }
 });
 
-router.post('/', validatePostData, async ctx => {
+router.post('/', validateModules, async ctx => {
 
-  let { course_id, ...newModule } = ctx.request.body.modules;
+  let { lessons, ...newModule } = ctx.request.body.module;
 
   const modules = await Module.query().insertAndFetch(newModule);
 
-  insertType('course_modules', course_id, modules.id);
+  insertType('module_lessons', lessons, modules.id);
 
   ctx.assert(modules, 401, 'Something went wrong');
 
@@ -78,29 +78,16 @@ router.post('/', validatePostData, async ctx => {
 
 });
 router.put('/:id', async ctx => {
-  let { course_id, ...newModule } = ctx.request.body.modules;
+  let { lessons, ...newModule } = ctx.request.body.module;
 
   const modules = await Module.query().patchAndFetchById(ctx.params.id, newModule);
+
   if (!modules) {
     ctx.throw(400, 'That learning path does not exist');
   }
 
-  const rookie = await knex('module_lessons').where('module_id', modules.id);
-
-  if (!course_id == undefined) {
-    let put_module = [];
-    for (let index = 0; index < course_id.length; index++) {
-      put_module.push(course_id[index]);
-    }
-
-    for (let index = 0; index < rookie.length; index++) {
-      const rook = rookie[index].module_id;
-      if (rook != put_module[index]) {
-        await knex('module_lessons').where({ 'module_id': modules.id, 'course_id': rook }).del();
-        await knex('module_lessons').insert({ 'module_id': modules.id, 'course_id': put_module[index] });
-      }
-    }
-  }
+  await knex('module_lessons').where({ 'module_id': modules.id }).del();
+  insertType('module_lessons', lessons, modules.id);
 
   ctx.status = 201;
   ctx.body = { modules };

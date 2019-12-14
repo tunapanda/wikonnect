@@ -1,12 +1,12 @@
 const activitySchema = {
   'type': 'object',
   'properties': {
-    'user_id': { 'type': 'string' },
-    'chapter_id': { 'type': 'string' },
+    'userId': { 'type': 'string' },
+    'chapterId': { 'type': 'string' },
     'status': { 'type': 'string' },
     'progress': { 'type': 'string' }
   },
-  'required': ['user_id', 'chapter_id', 'status'],
+  'required': ['userId', 'chapterId', 'status'],
 };
 
 

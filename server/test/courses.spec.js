@@ -8,32 +8,34 @@ chai.should();
 chai.use(chaiHttp);
 
 const route = '/api/v1/courses/';
-const itemID = 'course10';
+const itemID = 'course45';
 const data = {
-  'courses':{
+  'course':{
     'id': itemID,
     'name': 'Testing Course Path',
     'slug': 'source-course-route',
     'description': 'Colection of modules.',
     'status': 'published',
-    'creator_id': 'user3',
-    'modules': 'path0'
+    'creatorId': 'user3',
+    'modules': ['path0']
   }
 };
 
 const putData = {
-  'courses':{
+  'course':{
     'name': 'PUT update works',
+    'modules': ['path2']
   }
 };
 
 const invalidData = {
-  'courses': {
+  'course': {
     'id': itemID,
     'name': 'Testing Course Path',
     'slug': 'source-learning-path',
     'description': 'Colection of modules.',
     'status': 'published',
+    'modules': ['path0']
   }
 };
 
@@ -49,7 +51,7 @@ describe('COURSES ROUTES', () => {
         res.status.should.eql(400);
         res.should.be.json;
         res.body.should.be.a('object');
-        res.body.errors.should.have.property('creator_id');
+        res.body.errors.should.have.property('creatorId');
         done();
       });
   });
