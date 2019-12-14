@@ -9,7 +9,7 @@ The back-end is developed using Node.js.
 Prerequisites
 In order to get Wikonnect running locally:
 
-Ensure that Ember-cli and Node.js are installed. You will also need Yarn (Ubuntu Installation), and knex.
+Ensure that `Ember-cli` and `Node.js` are installed. You will also need Yarn (Ubuntu Installation), and knex.
 Set up PostgreSQL
 
 Ubuntu installation
@@ -19,37 +19,44 @@ OSX installation
 Windows installation
 
 You should create a postgresql user (with password), and set up database. (Don't forget to grant privileges to your user on the database!)
-
+```
 =# CREATE USER my_user WITH PASSWORD 'my_password';
 =# CREATE DATABASE my_database;
 =# GRANT ALL PRIVILEGES ON DATABASE my_database TO my_user;
-
+```
 Installing
 
 A step by step series of examples that tell you how to get a development env running
 
 Clone the repository
-
+```
 git clone https://github.com/tunapanda/wikonnect.git
+```
 
 Install the node packages in the main project directory...
 
+```
 cd wikonnect/
 yarn
+```
 
 Now let's set up the server. First, go into the server directory and install the node packages.
 
+```
 cd server/
 yarn
+```
 
 Then, rename the file server/config/db.example.js to server/config/db.js, then edit the credentials that will provide access to your development datbase. (Do not use the development database in a production environment)
 
+```
 development: {
     host: 'localhost',
     database: 'my_database',
     user: 'my_user',
     password: 'my_password',
   },
+```
 
 Next, you will want to set up your database and start your server.
 
@@ -57,13 +64,18 @@ Running knex migrate:latest in the server/ directory will use the migration file
 
 To populate the database with dummy data (defined in server/db/seeds), run knex seed:run.
 
-Now start your server! yarn start.
+Now start your server! 
+```
+yarn start.
+```
 Get Ember up and running
 
-Install the node packages for the Ember app. Run yarn in wikonnect/frontend.
+Install the node packages for the Ember app. Run `yarn` in wikonnect/frontend.
 
 Start the app!
 
+```
 yarn start.
+```
 
 Now point your favorite browser to http://localhost:4200/ and you will be able to see the app.
