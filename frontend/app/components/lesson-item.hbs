@@ -4,16 +4,15 @@
 
   <div class="module-flex">
 
-
     <div class="module-description">
 
       {{#link-to "course.module.lesson" @lesson.slug }}
-        <h2>{{@lesson.name}}</h2>
+      <h2>{{@lesson.name}}</h2>
 
       {{/link-to}}
       <div>{{@lesson.description}}</div>
       <br>
-
+      <Voting @lessonId={{@lesson.id}} />
       <hr>
     </div>
 
