@@ -71,6 +71,12 @@ router.post('/', validateLessons, async ctx => {
 router.put('/:id', async ctx => {
   let newLesson = ctx.request.body.lesson;
 
+  const checkLesson = await Lesson.query().findById(ctx.params.id);
+
+  if (!checkLesson) {
+    ctx.throw(400, 'That lesson path does not exist');
+  }
+
   let lesson;
   try {
     lesson = await Lesson.query().patchAndFetchById(ctx.params.id, newLesson);

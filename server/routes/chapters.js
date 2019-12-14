@@ -1,7 +1,6 @@
 const Router = require('koa-router');
 const Chapter = require('../models/chapter');
 const validateChapter = require('../middleware/validation/validateChapter');
-const queryStringSearch = require('../middleware/queryStringSearch');
 const busboy = require('async-busboy');
 const path = require('path');
 const unzipper = require('unzipper');

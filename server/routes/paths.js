@@ -51,7 +51,7 @@ router.get('/:id', permController.grantAccess('readAny', 'path'), async ctx => {
 });
 
 
-router.post('/', permController.grantAccess('createAny', 'path'), async ctx => {
+router.post('/', permController.grantAccess('createAny', 'path'), validatePaths, async ctx => {
   let newLearningPath = ctx.request.body.learningPath;
 
   let learningpath;
@@ -78,7 +78,7 @@ router.put('/:id', permController.grantAccess('updateAny', 'path'), async ctx =>
     ctx.throw(400, 'That learning path does not exist');
   }
 
-  const newLearningPath = ctx.request.body.paths;
+  const newLearningPath = ctx.request.body.learningPath;
 
   let learningpath;
   try {

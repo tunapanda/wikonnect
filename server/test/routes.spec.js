@@ -10,7 +10,7 @@ const lessonRoute = '/api/v1/lessons/';
 const lessonID = 'lesson143';
 const lessonData = {
   lesson: {
-    'id': lessonID',
+    'id': lessonID,
     'name': 'Testing Lessons Path',
     'slug': 'testing-lesson-path',
     'description': 'Testing organization of the courses.',
@@ -20,15 +20,14 @@ const lessonData = {
 };
 
 const putData = {
-  'lesson':{
-  lesson: {
+  lesson:{
     'name': 'PUT update works',
   }
 };
 
 const invalidData = {
-  'lesson': {
-    'id': 'lesson_path10',
+  lesson: {
+    'id': lessonID,
     'name': 'Testing Learning Path',
     'slug': 'testing-lesson-path',
     'description': 'Testing organization of the courses.',
@@ -45,7 +44,6 @@ const activityData = {
     'userId': 'user1',
     'chapterId': 'chapter1',
     'status': 'active',
-    'progress': '54',
     'progress': '54'
   }
 };
@@ -81,7 +79,7 @@ describe('LESSONS ROUTE', () => {
   it('Should throw an ERROR on PUT with invalid path', done => {
     chai
       .request(server)
-      .put(lessonRoute + lessonID + '1')
+      .put(lessonRoute + lessonID + '54')
       .set('Content-Type', 'application/json')
       .send(putData)
       .end((err, res) => {

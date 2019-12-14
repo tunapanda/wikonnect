@@ -68,7 +68,7 @@ async function validateCourses(ctx, next) {
 async function validatePaths(ctx, next) {
 
   try {
-    await validate.async(ctx.request.body.paths, {
+    await validate.async(ctx.request.body.learningPath, {
       name: {
         presence: true,
       },

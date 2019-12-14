@@ -72,7 +72,7 @@ router.post('/', validateCourses, async ctx => {
     throw e;
   }
   ctx.assert(course, 401, 'Something went wrong');
-  
+
   insertType('course_modules', modules, course.id);
 
   ctx.assert(course, 401, 'Something went wrong');
@@ -82,9 +82,6 @@ router.post('/', validateCourses, async ctx => {
 
 router.put('/:id', async ctx => {
   let { modules, ...newCourse } = ctx.request.body.course;
-
-  await knex('course_modules').where({ 'course_id': course.id}).del();
-  await insertType('course_modules', modules, course.id);
 
   let course;
   try {
@@ -98,6 +95,9 @@ router.put('/:id', async ctx => {
   if (!course) {
     ctx.throw(400, 'That course does not exist');
   }
+
+  await knex('course_modules').where({ 'course_id': course.id }).del();
+  await insertType('course_modules', modules, course.id);
 
   ctx.status = 201;
   ctx.body = { course };
