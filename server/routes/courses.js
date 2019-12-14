@@ -77,7 +77,7 @@ router.post('/', validateCourses, async ctx => {
 
   ctx.assert(course, 401, 'Something went wrong');
   ctx.status = 201;
-  ctx.body = { newCourse };
+  ctx.body = { course };
 });
 
 router.put('/:id', async ctx => {
