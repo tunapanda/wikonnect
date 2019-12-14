@@ -7,23 +7,21 @@ chai.should();
 chai.use(chaiHttp);
 
 const lessonRoute = '/api/v1/lessons/';
-const lessonID = 'lesson133';
+const lessonID = 'lesson143';
 const lessonData = {
   'lesson': {
-    'id': 'lesson133',
+    'id': lessonID,
     'name': 'Testing Lessons Path',
     'slug': 'testing-lesson-path',
     'description': 'Testing organization of the courses.',
     'status': 'published',
     'creatorId': 'user1',
-    'modules_id': ['module44']
   }
 };
 
 const putData = {
   'lesson':{
     'name': 'PUT update works',
-    'modules_id': ['module45']
   }
 };
 

@@ -23,17 +23,6 @@ async function returnType(parent) {
   }
 }
 
-async function insertType(model, collection, course_id) {
-  for (let index = 0; index < collection.length; index++) {
-    const element = collection[index];
-    let data = {
-      'module_id': element,
-      'lesson_id': course_id
-    };
-    await knex(model).insert(data);
-  }
-}
-
 router.get('/:id', async ctx => {
   const lesson = await Lesson.query().findById(ctx.params.id).eager('chapters(selectNameAndId)');
 
@@ -60,13 +49,11 @@ router.get('/', async ctx => {
 
 router.post('/', validateLessons, async ctx => {
 
-  let { modules_id, ...newLesson } = ctx.request.body.lesson;
+  let newLesson  = ctx.request.body.lesson;
 
   const lesson = await Lesson.query().insertAndFetch(newLesson).eager('chapters(selectNameAndId)');
 
   ctx.assert(lesson, 401, 'Something went wrong');
-
-  insertType('module_lessons', modules_id, lesson.id);
 
   ctx.status = 201;
   ctx.body = { lesson };
@@ -75,31 +62,13 @@ router.post('/', validateLessons, async ctx => {
 
 
 router.put('/:id', async ctx => {
-  let { modules_id, ...newLesson } = ctx.request.body.lesson;
+  let newLesson = ctx.request.body.lesson;
 
   const lesson = await Lesson.query().patchAndFetchById(ctx.params.id, newLesson).eager('chapters(selectNameAndId)');
 
   if (!lesson) {
     ctx.throw(400, 'That lesson path does not exist');
   }
-
-  const rookie = await knex('module_lessons').where('lesson_id', lesson.id);
-
-  if (!modules_id == undefined) {
-    let put_module = [];
-    for (let index = 0; index < modules_id.length; index++) {
-      put_module.push(modules_id[index]);
-    }
-
-    for (let index = 0; index < rookie.length; index++) {
-      const rook = rookie[index].module_id;
-      if (rook != put_module[index]) {
-        await knex('module_lessons').where({ 'lesson_id': lesson.id, 'module_id': rook }).del();
-        await knex('module_lessons').insert({ 'lesson_id': lesson.id, 'module_id': put_module[index] });
-      }
-    }
-  }
-
 
   ctx.status = 201;
   ctx.body = { lesson };

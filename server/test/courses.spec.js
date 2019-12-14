@@ -8,7 +8,7 @@ chai.should();
 chai.use(chaiHttp);
 
 const route = '/api/v1/courses/';
-const itemID = 'course10';
+const itemID = 'course45';
 const data = {
   'course':{
     'id': itemID,
@@ -24,6 +24,7 @@ const data = {
 const putData = {
   'course':{
     'name': 'PUT update works',
+    'modules': ['path2']
   }
 };
 
