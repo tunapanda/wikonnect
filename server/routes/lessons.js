@@ -2,9 +2,6 @@ const Router = require('koa-router');
 const Lesson = require('../models/lesson');
 const { validateLessons } = require('../middleware/validation/validatePostData');
 
-const config = require('../knexfile.js')['development'];
-const knex = require('knex')(config);
-
 const router = new Router({
   prefix: '/lessons'
 });
