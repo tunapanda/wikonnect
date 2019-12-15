@@ -12,6 +12,13 @@
     border-radius: 0px;
   }
 
+  textarea {
+    border: 2px solid #534897;
+    border-radius:0.5em;
+    margin-bottom:1em;
+    width:100%;
+  }
+
   input:focus {
     border-color: green
   }
