@@ -23,19 +23,16 @@ Ensure that [Ember-cli](https://ember-cli.com/) and [Node.js](https://nodejs.org
 [Windows installation](http://www.postgresqltutorial.com/install-postgresql/)
 
 You should create a postgresql user (with password), and set up database. (Don't forget to grant privileges to your user on the database!)
-
 ```
 =# CREATE USER my_user WITH PASSWORD 'my_password';
 =# CREATE DATABASE my_database;
 =# GRANT ALL PRIVILEGES ON DATABASE my_database TO my_user;
 ```
-
 ### Installing
 
 A step by step series of examples that tell you how to get a development env running
 
 Clone the repository
-
 ```
 git clone https://github.com/tunapanda/wikonnect.git
 ```
@@ -73,12 +70,15 @@ To populate the database with dummy data (defined in `server/db/seeds`), run `kn
 
 Now start your server! `yarn start`.
 
+If you see an Elasticsearch error, don't worry, you don't need Elasticsearch to run the app.
+
 #### Get Ember up and running
 
-Install the node packages for the Ember app. Run `yarn` in `wikonnect/frontend`.
+Install the node packages for the Ember app. Run `yarn` in wikonnect/frontend.
 
-Start the app!
+Now start your server! 
 
-`yarn start`.
-
+```
+yarn start.
+```
 Now point your favorite browser to http://localhost:4200/ and you will be able to see the app.

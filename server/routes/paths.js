@@ -1,6 +1,5 @@
 const Router = require('koa-router');
 const LearningPath = require('../models/learning_path');
-const validatePostData = require('../middleware/validation/validatePostData');
 const queryStringSearch = require('../middleware/queryStringSearch');
 const permController = require('../middleware/userAccessControlMiddleware');
 
@@ -56,10 +55,18 @@ router.get('/:id', permController.grantAccess('readAny', 'path'), async ctx => {
 });
 
 
-router.post('/', permController.grantAccess('createAny', 'path'), validatePostData, async ctx => {
-  let newLearningPath = ctx.request.body;
+router.post('/', permController.grantAccess('createAny', 'path'), async ctx => {
+  let newLearningPath = ctx.request.body.learningPath;
 
-  const learningpath = await LearningPath.query().insertAndFetch(newLearningPath);
+  let learningpath;
+  try {
+    learningpath = await LearningPath.query().insertAndFetch(newLearningPath);
+  } catch (e) {
+    if (e.statusCode) {
+      ctx.throw(e.statusCode, null, { errors: [e.message] });
+    } else { ctx.throw(400, null, { errors: ['Bad Request'] }); }
+    throw e;
+  }
 
   ctx.assert(learningpath, 401, 'Something went wrong');
 
@@ -68,12 +75,22 @@ router.post('/', permController.grantAccess('createAny', 'path'), validatePostDa
   ctx.body = { learningpath };
 
 });
-router.put('/:id', permController.grantAccess('updateAny', 'path'),  async ctx => {
+router.put('/:id', permController.grantAccess('updateAny', 'path'), async ctx => {
   const learningpath_record = await LearningPath.query().findById(ctx.params.id);
   if (!learningpath_record) {
     ctx.throw(400, 'That learning path does not exist');
   }
-  const learningpath = await LearningPath.query().patchAndFetchById(ctx.params.id, ctx.request.body);
+
+
+  let learningpath;
+  try {
+    learningpath = await LearningPath.query().patchAndFetchById(ctx.params.id, ctx.request.body.learningPath);
+  } catch (e) {
+    if (e.statusCode) {
+      ctx.throw(e.statusCode, null, { errors: [e.message] });
+    } else { ctx.throw(400, null, { errors: ['Bad Request'] }); }
+    throw e;
+  }
 
   ctx.assert(learningpath, 400, 'That learning path does not exist');
 

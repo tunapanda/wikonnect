@@ -16,9 +16,9 @@
     <p>Click on a lesson to reveal chapters</p>
 
 
-    {{#each model.chapter as |lesson|}}
+    {{#each model.chapters as |chapter|}}
 
-      <ChapterItem @lesson={{lesson}} />
+      <ChapterItem @chapter={{chapter}} />
     {{/each}}
 
 
