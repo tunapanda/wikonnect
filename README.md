@@ -1,6 +1,6 @@
 # Wikonnect
 
-Swag is an open-source e-learning platform that is designed to allow anyone to learn, create content, and contribute to the code. Developed by Tunapanda Institute in Nairobi, Kenya.
+Wikonnect is an open-source e-learning platform that is designed to allow anyone to learn, create content, and contribute to the code. The initial courses offered on the platform will be around digital literacy, to get more people using the internet in more productive ways. Developed by Tunapanda Institute in Nairobi, Kenya. The original platform (called 'swag') was used to provide technology, design, and business training in low-income communities with low bandwidth.
 
 ## Getting Started
 
@@ -74,15 +74,9 @@ If you see an Elasticsearch error, don't worry, you don't need Elasticsearch to 
 
 #### Get Ember up and running
 
-Now start your server! 
-```
-yarn start.
-```
-Get Ember up and running
-
 Install the node packages for the Ember app. Run `yarn` in wikonnect/frontend.
 
-Start the app!
+Now start your server! 
 
 ```
 yarn start.
