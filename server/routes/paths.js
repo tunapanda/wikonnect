@@ -54,7 +54,8 @@ router.get('/', permController.grantAccess('readAny', 'path'), queryStringSearch
       });
 
     ctx.status = 200;
-    ctx.body = { learningpath, userPermissions };
+    learningpath['permissions'] = userPermissions;
+    ctx.body = { learningpath };
 
   } catch (error) {
 
@@ -104,7 +105,8 @@ router.get('/:id', async ctx => {
     });
 
   ctx.status = 200;
-  ctx.body = { learningpath, userPermissions };
+  learningpath['permissions'] = userPermissions;
+  ctx.body = { learningpath };
 });
 
 
@@ -132,7 +134,8 @@ router.post('/', permController.grantAccess('createAny', 'path'), validatePostDa
     });
 
   ctx.status = 201;
-  ctx.body = { learningpath, userPermissions };
+  learningpath['permissions'] = userPermissions;
+  ctx.body = { learningpath };
 });
 
 router.put('/:id', permController.grantAccess('updateOwn', 'path'), async ctx => {
@@ -160,7 +163,8 @@ router.put('/:id', permController.grantAccess('updateOwn', 'path'), async ctx =>
     });
 
   ctx.status = 201;
-  ctx.body = { learningpath, userPermissions };
+  learningpath['permissions'] = userPermissions;
+  ctx.body = { learningpath };
 });
 
 router.delete('/:id', permController.grantAccess('deleteAny', 'path'), async ctx => {
@@ -178,7 +182,8 @@ router.delete('/:id', permController.grantAccess('deleteAny', 'path'), async ctx
     });
 
   ctx.status = 200;
-  ctx.body = { learningpath, userPermissions };
+  learningpath['permissions'] = userPermissions;
+  ctx.body = { learningpath };
 });
 
 module.exports = router.routes();
