@@ -23,35 +23,12 @@ async function returnType(parent) {
   }
 }
 
-async function permissionsObject(course, ctx) {
-  if (course.length == undefined) {
-    Object.keys(userPermissions)
-      .forEach(perm => {
-        if (ctx.state.user.role.toLowerCase() == 'superadmin') {
-          userPermissions[perm] = 'true';
-        }
-        if (ctx.state.user.role.toLowerCase() == 'admin' && ctx.state.user.data.id != course.creatorId) {
-          userPermissions[perm] = 'true';
-          userPermissions.update = 'false';
-          userPermissions.create = 'false';
-          userPermissions.delete = 'false';
-        }
-        if (ctx.state.user.data.id === course.creatorId && ctx.state.user.role.toLowerCase() == 'admin') {
-          userPermissions[perm] = 'true';
-          userPermissions.delete = 'false';
-        }
-        if (course.status === 'draft' && ctx.state.user.data.id === course.creatorId) {
-          userPermissions.read = 'true';
-          userPermissions.update = 'true';
-        } else {
-          userPermissions.read = 'true';
-          userPermissions.update = 'false';
-          userPermissions.delete = 'false';
-          userPermissions.create = 'false';
-        }
-        return course.permissions = userPermissions;
-      });
-  } else {
+
+router.get('/', permController.grantAccess('readAny', 'path'), queryStringSearch, async ctx => {
+  try {
+    const course = await Course.query().where(ctx.query).eager('modules(selectNameAndId)');
+
+    returnType(course);
     course.forEach(crse => {
       Object.keys(userPermissions)
         .forEach(perm => {
@@ -74,17 +51,7 @@ async function permissionsObject(course, ctx) {
           }
 
         });
-      return crse.permissions = userPermissions;
     });
-  }
-}
-
-router.get('/', permController.grantAccess('readAny', 'path'), queryStringSearch, async ctx => {
-  try {
-    const course = await Course.query().where(ctx.query).eager('modules(selectNameAndId)');
-
-    returnType(course);
-    permissionsObject(course, ctx);
 
     ctx.status = 200;
     ctx.body = { course };
@@ -100,7 +67,32 @@ router.get('/:id', permController.grantAccess('readAny', 'path'), async ctx => {
   ctx.assert(course, 404, 'no lesson by that ID');
 
   returnType(course);
-  permissionsObject(course, ctx);
+  Object.keys(userPermissions)
+    .forEach(perm => {
+      if (ctx.state.user.role.toLowerCase() == 'superadmin') {
+        userPermissions[perm] = 'true';
+      }
+      if (ctx.state.user.role.toLowerCase() == 'admin' && ctx.state.user.data.id != course.creatorId) {
+        userPermissions[perm] = 'true';
+        userPermissions.update = 'false';
+        userPermissions.create = 'false';
+        userPermissions.delete = 'false';
+      }
+      if (ctx.state.user.data.id === course.creatorId && ctx.state.user.role.toLowerCase() == 'admin') {
+        userPermissions[perm] = 'true';
+        userPermissions.delete = 'false';
+      }
+      if (course.status === 'draft' && ctx.state.user.data.id === course.creatorId) {
+        userPermissions.read = 'true';
+        userPermissions.update = 'true';
+      } else {
+        userPermissions.read = 'true';
+        userPermissions.update = 'false';
+        userPermissions.delete = 'false';
+        userPermissions.create = 'false';
+      }
+      return course.permissions = userPermissions;
+    });
 
   ctx.status = 200;
   ctx.body = { course };
