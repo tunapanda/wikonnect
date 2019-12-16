@@ -45,7 +45,8 @@ router.get('/', permController.grantAccess('readAny', 'path'), queryStringSearch
       });
 
     ctx.status = 200;
-    ctx.body = { course, userPermissions };
+    course['permissions'] = userPermissions;
+    ctx.body = { course };
   } catch (error) {
     ctx.status = 400;
     ctx.body = { message: 'The query key does not exist' };
@@ -82,7 +83,8 @@ router.get('/:id', permController.grantAccess('readAny', 'path'), async ctx => {
     });
 
   ctx.status = 200;
-  ctx.body = { course, userPermissions };
+  course['permissions'] = userPermissions;
+  ctx.body = { course };
 });
 
 
@@ -110,7 +112,8 @@ router.post('/', permController.grantAccess('createAny', 'path'), validatePostDa
     });
 
   ctx.status = 2001;
-  ctx.body = { course, userPermissions };
+  course['permissions'] = userPermissions;
+  ctx.body = { course };
 });
 router.put('/:id', permController.grantAccess('deleteOwn', 'path'), async ctx => {
   const course = await Course.query().patchAndFetchById(ctx.params.id, ctx.request.body);
@@ -135,7 +138,8 @@ router.put('/:id', permController.grantAccess('deleteOwn', 'path'), async ctx =>
     });
 
   ctx.status = 201;
-  ctx.body = { course, userPermissions };
+  course['permissions'] = userPermissions;
+  ctx.body = { course };
 });
 router.delete('/:id', async ctx => {
   const course = await Course.query().findById(ctx.params.id);
@@ -150,7 +154,8 @@ router.delete('/:id', async ctx => {
     });
 
   ctx.status = 200;
-  ctx.body = { course, userPermissions };
+  course['permissions'] = userPermissions;
+  ctx.body = { course };
 });
 
 module.exports = router.routes();

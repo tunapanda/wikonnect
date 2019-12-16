@@ -17,6 +17,8 @@ router.post('/', validateAuthRoutes.validateUserLogin, async ctx => {
   let { hash: hashPassword, ...userInfoWithoutPassword } = user[0];
 
   user = user[0];
+  // add to user group on creation
+  // user id and groupName
   let role = 'basic';
 
   if (await bcrypt.compare(ctx.request.body.password, hashPassword)) {
