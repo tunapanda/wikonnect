@@ -1,8 +1,8 @@
 const Router = require('koa-router');
 const Module = require('../models/module');
-const queryStringSearch = require('../middleware/queryStringSearch');
+const { validateModules } = require('../middleware/validation/validatePostData');
 
-const config = require('../knexfile.js')['test'];
+const config = require('../knexfile.js')['development'];
 const knex = require('knex')(config);
 
 
@@ -25,6 +25,18 @@ async function returnType(parent) {
 }
 
 
+async function insertType(model, collection, parent_id) {
+  for (let index = 0; index < collection.length; index++) {
+    const element = collection[index];
+    let data = {
+      'lesson_id': element,
+      'module_id': parent_id
+    };
+    knex(model).insert(data);
+  }
+}
+
+
 router.get('/:id', async ctx => {
   const modules = await Module.query().findById(ctx.params.id).eager('lessons(selectNameAndId)');
 
@@ -37,7 +49,7 @@ router.get('/:id', async ctx => {
   ctx.body = { modules };
 });
 
-router.get('/', queryStringSearch, async ctx => {
+router.get('/', async ctx => {
   try {
     const modules = await Module.query().where(ctx.query).eager('lessons(selectNameAndId)');
 
@@ -51,33 +63,31 @@ router.get('/', queryStringSearch, async ctx => {
   }
 });
 
-router.post('/', async ctx => {
+router.post('/', validateModules, async ctx => {
 
-  let { moduleId, courseId, ...newModule } = ctx.request.body.module;
-
-  if (!newModule) {
-    ctx.assert(modules, 401, 'Something went wrong');
-  }
+  let { lessons, ...newModule } = ctx.request.body.module;
 
   const modules = await Module.query().insertAndFetch(newModule);
-  await knex('course_modules').insert([
-    {
-      moduleId: moduleId,
-      courseId: courseId
-    }]);
 
+  insertType('module_lessons', lessons, modules.id);
+
+  ctx.assert(modules, 401, 'Something went wrong');
 
   ctx.status = 201;
-
   ctx.body = { modules };
 
 });
 router.put('/:id', async ctx => {
-  const modules = await Module.query().patchAndFetchById(ctx.params.id, ctx.request.body.module);
+  let { lessons, ...newModule } = ctx.request.body.module;
+
+  const modules = await Module.query().patchAndFetchById(ctx.params.id, newModule);
 
   if (!modules) {
     ctx.throw(400, 'That learning path does not exist');
   }
+
+  await knex('module_lessons').where({ 'module_id': modules.id }).del();
+  insertType('module_lessons', lessons, modules.id);
 
   ctx.status = 201;
   ctx.body = { modules };
