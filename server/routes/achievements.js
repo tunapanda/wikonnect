@@ -1,14 +1,13 @@
 const Router = require('koa-router');
 const Achievement = require('../models/achievement');
 const validateAchievement = require('../middleware/validation/validateAchievement');
-const queryStringSearch = require('../middleware/queryStringSearch');
 
 const router = new Router({
   prefix: '/achievements'
 });
 
 
-router.get('/', queryStringSearch, async ctx => {
+router.get('/', async ctx => {
   try {
     const achievement = await Achievement.query().where(ctx.query);
     ctx.status = 200;

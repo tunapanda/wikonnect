@@ -1,6 +1,6 @@
 const Router = require('koa-router');
 const Activity = require('../models/activity');
-const queryStringSearch = require('../middleware/queryStringSearch');
+const validateActivity = require('../middleware/validation/validateActivity');
 
 
 const router = new Router({
@@ -18,7 +18,7 @@ router.get('/:id', async ctx => {
   ctx.body = { activity };
 });
 
-router.get('/', queryStringSearch, async ctx => {
+router.get('/', async ctx => {
   try {
     const activity = await Activity.query().where(ctx.query);
     ctx.status = 200;
@@ -30,7 +30,7 @@ router.get('/', queryStringSearch, async ctx => {
 });
 
 
-router.post('/', async ctx => {
+router.post('/', validateActivity, async ctx => {
   let newActivity = ctx.request.body.activity;
 
 

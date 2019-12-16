@@ -3,6 +3,11 @@ const Course = require('../models/course');
 const queryStringSearch = require('../middleware/queryStringSearch');
 const permController = require('../middleware/permController');
 const { userPermissions } = require('../middleware/_helpers/roles');
+const { validateCourses } = require('../middleware/validation/validatePostData');
+
+const environment = process.env.NODE_ENV || 'development';
+const config = require('../knexfile.js')[environment];
+const knex = require('knex')(config);
 
 const router = new Router({
   prefix: '/courses'
@@ -22,11 +27,21 @@ async function returnType(parent) {
   }
 }
 
+async function insertType(model, collection, course_id) {
+  for (let index = 0; index < collection.length; index++) {
+    const element = collection[index];
+    let data = {
+      'module_id': element,
+      'course_id': course_id
+    };
+    knex(model).insert(data);
+  }
+}
+
 
 router.get('/', permController.grantAccess('readAny', 'path'), queryStringSearch, async ctx => {
   try {
     const course = await Course.query().where(ctx.query).eager('modules(selectNameAndId)');
-
     returnType(course);
     course.forEach(crse => {
       Object.keys(userPermissions)
@@ -137,7 +152,7 @@ router.put('/:id', permController.grantAccess('deleteOwn', 'path'), async ctx =>
 
   let course;
   try {
-    course = await Course.query().patchAndFetchById(ctx.params.id, ctx.request.body.course);
+    course = await Course.query().patchAndFetchById(ctx.params.id, newCourse);
   } catch (e) {
     if (e.statusCode) {
       ctx.throw(e.statusCode, null, { errors: [e.message] });

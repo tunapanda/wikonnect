@@ -3,6 +3,8 @@ const LearningPath = require('../models/learning_path');
 const queryStringSearch = require('../middleware/queryStringSearch');
 const permController = require('../middleware/permController');
 const { roles, userPermissions } = require('../middleware/_helpers/roles');
+const { validatePaths } = require('../middleware/validation/validatePostData');
+const permController = require('../middleware/userAccessControlMiddleware');
 
 const router = new Router({
   prefix: '/paths'
@@ -109,8 +111,7 @@ router.get('/:id', permController.grantAccess('readAny', 'path'), async ctx => {
 });
 
 
-router.post('/', permController.grantAccess('createAny', 'path'), validatePostData, async ctx => {
-
+router.post('/', permController.grantAccess('createAny', 'path'), validatePaths, async ctx => {
   let newLearningPath = ctx.request.body.learningPath;
 
   let learningpath;
@@ -150,14 +151,16 @@ router.post('/', permController.grantAccess('createAny', 'path'), validatePostDa
 
 router.put('/:id', permController.grantAccess('updateOwn', 'path'), async ctx => {
   const learningpath_record = await LearningPath.query().findById(ctx.params.id);
+
   if (!learningpath_record) {
     ctx.throw(400, 'That learning path does not exist');
   }
 
+  const newLearningPath = ctx.request.body.learningPath;
 
   let learningpath;
   try {
-    learningpath = await LearningPath.query().patchAndFetchById(ctx.params.id, ctx.request.body.learningPath);
+    learningpath = await LearningPath.query().patchAndFetchById(ctx.params.id, newLearningPath);
   } catch (e) {
     if (e.statusCode) {
       ctx.throw(e.statusCode, null, { errors: [e.message] });
@@ -186,6 +189,7 @@ router.put('/:id', permController.grantAccess('updateOwn', 'path'), async ctx =>
   learningpath['permissions'] = userPermissions;
   ctx.body = { learningpath };
 });
+
 router.delete('/:id', permController.grantAccess('deleteAny', 'path'), async ctx => {
   const learningpath = await LearningPath.query().findById(ctx.params.id);
   if (!learningpath) {

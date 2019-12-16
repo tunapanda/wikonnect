@@ -1,7 +1,6 @@
 const Router = require('koa-router');
 const Chapter = require('../models/chapter');
 const validateChapter = require('../middleware/validation/validateChapter');
-const queryStringSearch = require('../middleware/queryStringSearch');
 const busboy = require('async-busboy');
 const path = require('path');
 const unzipper = require('unzipper');
@@ -29,9 +28,9 @@ async function returnType(parent) {
   }
 }
 
-router.get('/', queryStringSearch, async ctx => {
+router.get('/', async ctx => {
   try {
-    const chapter = await Chapter.query().where(ctx.query).eager('lesson(selectNameAndId)');
+    const chapter = await Chapter.query().where(ctx.query).eager('lesson');
     returnType(chapter);
     ctx.status = 200;
     ctx.body = { chapter };
@@ -42,11 +41,8 @@ router.get('/', queryStringSearch, async ctx => {
 });
 
 router.get('/:id', async ctx => {
-  const chapter = await Chapter.query().findById(ctx.params.id).eager('lesson(selectNameAndId)');
-
-  if (!chapter) {
-    ctx.assert(chapter, 404, 'no lesson by that ID');
-  }
+  const chapter = await Chapter.query().findById(ctx.params.id).eager('lesson');
+  ctx.assert(chapter, 404, 'no lesson by that ID');
 
   returnType(chapter);
 
@@ -74,7 +70,6 @@ router.post('/', validateChapter, async ctx => {
     ctx.assert(module, 401, 'Something went wrong');
   }
   ctx.status = 201;
-
   ctx.body = { chapter };
 
 });
