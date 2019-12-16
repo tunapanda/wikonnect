@@ -1,6 +1,5 @@
 const Router = require('koa-router');
 const Course = require('../models/course');
-const queryStringSearch = require('../middleware/queryStringSearch');
 const permController = require('../middleware/permController');
 const { userPermissions } = require('../middleware/_helpers/roles');
 const { validateCourses } = require('../middleware/validation/validatePostData');
@@ -39,7 +38,7 @@ async function insertType(model, collection, course_id) {
 }
 
 
-router.get('/', permController.grantAccess('readAny', 'path'), queryStringSearch, async ctx => {
+router.get('/', async ctx => {
   try {
     const course = await Course.query().where(ctx.query).eager('modules(selectNameAndId)');
     returnType(course);
@@ -112,7 +111,7 @@ router.get('/:id', permController.grantAccess('readAny', 'path'), async ctx => {
 });
 
 
-router.post('/', permController.grantAccess('createAny', 'path'), validatePostData, async ctx => {
+router.post('/', permController.grantAccess('createAny', 'path'), validateCourses, async ctx => {
   let newCourse = ctx.request.body.course;
 
   let course;

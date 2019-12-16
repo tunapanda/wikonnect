@@ -1,10 +1,8 @@
 const Router = require('koa-router');
 const LearningPath = require('../models/learning_path');
-const queryStringSearch = require('../middleware/queryStringSearch');
-const permController = require('../middleware/permController');
 const { roles, userPermissions } = require('../middleware/_helpers/roles');
 const { validatePaths } = require('../middleware/validation/validatePostData');
-const permController = require('../middleware/userAccessControlMiddleware');
+const permController = require('../middleware/permController');
 
 const router = new Router({
   prefix: '/paths'
@@ -36,7 +34,7 @@ async function returnType(parent) {
   }
 }
 
-router.get('/', permController.grantAccess('readAny', 'path'), queryStringSearch, async ctx => {
+router.get('/', permController.grantAccess('readAny', 'path'), async ctx => {
   try {
     const learningpath = await LearningPath.query().where(ctx.query).eager('courses(selectNameAndId)');
     returnType(learningpath);

@@ -37,4 +37,4 @@ Router.map(function () {
   this.route('module', function () {
     this.route('create');
   });
-});
+}); 
