@@ -84,16 +84,22 @@ router.get('/:id', async ctx => {
     .forEach(perm => {
       if (ctx.state.user.role.toLowerCase() == 'superadmin') {
         userPermissions[perm] = 'true';
-      }
-      if (ctx.state.user.data.id === learningpath.creatorId || ctx.state.user.role.toLowerCase() == 'admin') {
+      } else if (ctx.state.user.role.toLowerCase() == 'admin' && ctx.state.user.data.id != learningpath.creatorId) {
+        userPermissions[perm] = 'true';
+        userPermissions.update = 'false';
+        userPermissions.create = 'false';
+        userPermissions.delete = 'false';
+      }else if (ctx.state.user.data.id === learningpath.creatorId && ctx.state.user.role.toLowerCase() == 'admin') {
         userPermissions[perm] = 'true';
         userPermissions.delete = 'false';
-      }
-      if (learningpath.status === 'draft' && ctx.state.user.data.id === learningpath.creatorId) {
+      }  else if (learningpath.status === 'draft' && ctx.state.user.data.id === learningpath.creatorId) {
         userPermissions.read = 'true';
         userPermissions.update = 'true';
       } else {
         userPermissions.read = 'true';
+        userPermissions.update = 'false';
+        userPermissions.delete = 'false';
+        userPermissions.create = 'false';
       }
     });
 
@@ -126,7 +132,7 @@ router.post('/', permController.grantAccess('createAny', 'path'), validatePostDa
     });
 
   ctx.status = 201;
-  ctx.body = { learningpath, userPermissions};
+  ctx.body = { learningpath, userPermissions };
 });
 
 router.put('/:id', permController.grantAccess('updateOwn', 'path'), async ctx => {
