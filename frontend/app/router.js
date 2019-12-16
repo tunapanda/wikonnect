@@ -10,16 +10,31 @@ Router.map(function () {
   this.route('signup');
   this.route('login');
   this.route('home');
-  this.route('course', { path: 'course/:course_id' }, function () {
-    this.route('module', { path: 'module/:module_id' }, function () {
-      this.route('lesson', { path: '/lesson/:lesson_id' }, function () {
-        this.route('chapters', { path: '/chapter/:chapter_id' });
+  this.route('course', function () {
+    this.route('index', { path: '/:course_slug' });
+    this.route('module', function () {
+      this.route('index', { path: '/:module_slug' });
+      this.route('lesson', function () {
+        this.route('index', { path: '/:lesson_slug' });
+        this.route('chapter', { path: '/chapter/:chapter_id' });
       });
+      this.route('edit', { path: '/edit/:module_slug' });
     });
+    this.route('create');
+    this.route('edit', { path: '/edit/:course_slug' });
   });
-  this.route('profile', { path: '/profile/:profile_id' }, function () {
+  this.route('profile', { path: '/profile/:username' }, function () {
     this.route('settings');
   });
   this.route('search');
   this.route('about');
+  this.route('cms', function () {
+    this.route('lesson', function () {
+      this.route('create');
+      this.route('edit', { path: '/:lesson_id' });
+    });
+  });
+  this.route('module', function () {
+    this.route('create');
+  });
 });

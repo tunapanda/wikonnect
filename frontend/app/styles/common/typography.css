@@ -1,1 +1,5 @@
-/* No CSS *//*# sourceMappingURL=typography.css.map */
+.underlined-link {
+  color: inherit;
+  text-decoration: underline;
+}
+/*# sourceMappingURL=typography.css.map */

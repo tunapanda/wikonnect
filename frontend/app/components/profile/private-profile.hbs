@@ -1,0 +1,60 @@
+<div class="profile">
+  <div class="profile-head">
+    <img class="profile-picture" alt="" src="/images/profile-placeholder.gif">
+    <h2 class="profile-name">{{name}}</h2>
+  </div>
+  <div class="profile-body padded">
+    <div class="profile-options">
+      <BsButtonGroup @value={{profileView}} @type="radio" @onChange={{action (mut profileView)}} as |bg|>
+        {{#each viewOptions as |view|}}
+          <bg.button @type="default" @value={{view}}>{{view}}</bg.button>
+        {{/each}}
+
+      </BsButtonGroup>
+
+    </div>
+    <hr>
+
+    {{#if (eq profileView "Profile")}}
+      <div class="profile-title">
+        <h4>Details</h4>
+        {{#if viewOnly}}
+          <button class="header-hamburger profile-edit " {{action editProfile}}>
+            Edit
+          </button>
+        {{else}}
+          <button class="header-hamburger profile-edit " {{action editProfile}}>
+            X
+          </button>
+        {{/if}}
+
+      </div>
+      <BsForm class="profile-data" @model={{model}} @onSubmit={{action save}} @disabled={{viewOnly}} as |form|>
+        <form.element class="inputs" @property="firstName" @label="First Name"
+          @placeholder="What is your first name?" />
+        <form.element class="inputs" @property="lastName" @label="last Name" @placeholder="What is your second name?" />
+        <form.element class="inputs" @property="aboutMe" @label="About Me" @placeholder="Describe yourself" />
+        {{#unless viewOnly}}
+          <BsButton @defaultText="Save Changes" class="profile-submit" @buttonType="submit" />
+        {{/unless}}
+      </BsForm>
+
+    {{/if}}
+
+    {{#if (eq profileView "Learning")}}
+      <h4>My completed courses</h4>
+      {{#if model.achievements.length}}
+        {{#each model.achievments as  |achievement|}}
+          {{achievement.name}}
+        {{/each}}
+      {{else}}
+        You have not completed any courses
+      {{/if}}
+
+    {{/if}}
+
+    {{#if (eq profileView "Settings")}}
+      Set stuff
+    {{/if}}
+  </div>
+</div>

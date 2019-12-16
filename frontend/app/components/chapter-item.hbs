@@ -1,0 +1,26 @@
+<div class="module-item {{if @available "green" "red"}}">
+
+  {{!-- {{#link-to "course" @course "module" @module.id}} --}}
+
+
+  <div class="module-flex">
+    <div class="circle-parent">
+      <div class="small-circle"></div>
+
+    </div>
+
+    <div class="module-description">
+
+      {{#link-to "course.module.lesson.chapter" @chapter.id }}
+        <h3>{{@chapter.name}}</h3>
+
+      {{/link-to}}
+      <div>{{@chapter.description}}</div>
+
+
+    </div>
+
+  </div>
+
+
+</div>

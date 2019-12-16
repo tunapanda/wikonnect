@@ -4,208 +4,72 @@
   padding-right: 1em;
 }
 
-.form-primary-fields {
-  border-bottom: #9A9FA2;
-  margin-bottom: 2rem;
+.inputs input {
+  outline: 0;
+  border-width: 0 0 2px;
+  border-color: #534897;
+  padding-left: 0px;
+  border-radius: 0px;
+}
+
+.inputs input:focus {
+  border-color: green;
 }
 
 .invalid-feedback {
-  font-size: 0.7rem;
+  font-size: 0.2rem;
   color: red;
 }
 
 label {
-  color: #2C41B1;
+  color: grey;
+  font-size: 10px;
   font-weight: 600;
 }
 
-textarea {
-  min-height: 8rem;
+.form {
+  padding: 2rem;
 }
 
-textarea ::after {
+.form-title {
+  font-size: 30px;
+  color: white;
+  background-color: #534897;
+  text-align: left;
+  font-weight: bold;
+  padding-top: 1.6em;
+  padding-left: 0.5em;
+}
+
+.submit {
   color: red;
-}
-
-.form-control {
-  font-size: 0.85rem;
-  padding-top: 0.5rem;
-  padding-bottom: 0.5rem;
-  width: 100%;
-  outline: none;
-  border: none;
-  border-bottom: 0.1rem solid grey;
-}
-
-.form-control:focus {
-  border-color: #24BDD1;
-  border-width: 0.15rem;
-  -webkit-box-shadow: none;
-          box-shadow: none;
-}
-
-.signup-form {
-  display: -ms-grid;
-  display: grid;
-  -ms-grid-columns: 15% auto 15%;
-      grid-template-columns: 15% auto 15%;
-  -ms-grid-rows: 5% auto 8%;
-      grid-template-rows: 5% auto 8%;
-  background-color: transparent;
-  grid-row-gap: 1rem;
-  font-family: "Inter", sans-serif;
-  color: #2C41B1;
-  padding-top: 2rem;
-  height: 30rem;
-}
-
-.signup-form .signup-form-title {
-  font-size: 1rem;
-  -ms-grid-row: 1;
-      grid-row-start: 1;
-  grid-row-end: 2;
-  -ms-grid-column: 2;
-      grid-column-start: 2;
-  grid-column-end: 3;
-  text-align: center;
-  font-family: "Inter", sans-serif;
-  font-weight: bold;
-  padding-left: 1.5rem;
-  padding-right: 1.5rem;
-}
-
-.signup-form .signup-form-fields {
-  -webkit-box-sizing: border-box;
-          box-sizing: border-box;
-  padding-top: 1.5rem;
-  border-radius: 0.5rem;
-  -ms-grid-row: 2;
-      grid-row-start: 2;
-  grid-row-end: 3;
-  -ms-grid-column: 2;
-      grid-column-start: 2;
-  grid-column-end: 3;
-  display: -ms-grid;
-  display: grid;
-  -ms-grid-rows: 20% 20% 20% 20%;
-      grid-template-rows: 20% 20% 20% 20%;
-  grid-row-gap: 1.5rem;
-  background-color: white;
-  justify-items: stretch;
-  font-size: 0.7rem;
-  padding-left: 2rem;
-  padding-right: 2rem;
+  padding-top: 1em;
   width: 100%;
 }
 
-.signup-form .signup-username {
-  -ms-grid-row: 1;
-      grid-row-start: 1;
-  grid-row-end: 2;
+.form-text {
+  color: #afafaf;
+  font-size: 0.9rem;
 }
 
-.signup-form .signup-email {
-  -ms-grid-row: 2;
-      grid-row-start: 2;
-  grid-row-end: 3;
+slightly narrower for forms .form-container {
+  margin-left: 0;
+  margin-right: auto;
 }
 
-.signup-form .signup-password {
-  -ms-grid-row: 3;
-      grid-row-start: 3;
-  grid-row-end: 4;
+@media (min-width: 1200px) {
+  slightly narrower for forms .form-container {
+    max-width: 7240px;
+  }
 }
 
-.signup-form .signup-confirm-password {
-  -ms-grid-row: 4;
-      grid-row-start: 4;
-  grid-row-end: 5;
+@media (min-width: 992px) {
+  slightly narrower for forms .form-container {
+    max-width: 720px;
+  }
 }
 
-.signup-form .signup-submit {
-  -ms-grid-row: 3;
-      grid-row-start: 3;
-  grid-row-end: 4;
-  -ms-grid-column: 2;
-      grid-column-start: 2;
-  grid-column-end: 3;
-  width: 100%;
-}
-
-.login-form {
-  display: -ms-grid;
-  display: grid;
-  -ms-grid-columns: 20% auto 20%;
-      grid-template-columns: 20% auto 20%;
-  -ms-grid-rows: 20% 70% 10%;
-      grid-template-rows: 20% 70% 10%;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  justify-items: center;
-  padding-top: 2rem;
-  grid-row-gap: 1rem;
-  color: #2C41B1;
-}
-
-.login-form-title {
-  font-size: 1rem;
-  -ms-grid-row: 1;
-      grid-row-start: 1;
-  grid-row-end: 2;
-  -ms-grid-column: 2;
-      grid-column-start: 2;
-  grid-column-end: 3;
-  text-align: center;
-  font-weight: bold;
-  padding-left: 1.5rem;
-  padding-right: 1.5rem;
-}
-
-.login-form-fields {
-  -webkit-box-sizing: border-box;
-          box-sizing: border-box;
-  padding-top: 1.5rem;
-  border-radius: 0.5rem;
-  -ms-grid-row: 2;
-      grid-row-start: 2;
-  grid-row-end: 3;
-  -ms-grid-column: 2;
-      grid-column-start: 2;
-  grid-column-end: 3;
-  display: -ms-grid;
-  display: grid;
-  -ms-grid-rows: 50% 50%;
-      grid-template-rows: 50% 50%;
-  grid-row-gap: 1.5rem;
-  background-color: white;
-  justify-items: stretch;
-  font-size: 0.7rem;
-  padding-left: 2rem;
-  padding-right: 2rem;
-  padding-bottom: 2rem;
-  width: 100%;
-}
-
-.login-form-fields .login-username {
-  -ms-grid-row: 1;
-      grid-row-start: 1;
-  grid-row-end: 2;
-}
-
-.login-form-fields .login-password {
-  -ms-grid-row: 2;
-      grid-row-start: 2;
-  grid-row-end: 3;
-}
-
-.login-submit {
-  -ms-grid-row: 3;
-      grid-row-start: 3;
-  grid-row-end: 4;
-  -ms-grid-column: 2;
-      grid-column-start: 2;
-  grid-column-end: 3;
-  width: 100%;
+.form-primary-fields {
+  margin-bottom: 2rem;
 }
 /*# sourceMappingURL=forms.css.map */

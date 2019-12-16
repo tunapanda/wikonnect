@@ -1,6 +1,5 @@
 const Router = require('koa-router');
 const Module = require('../models/module');
-const validatePostData = require('../middleware/validation/validatePostData');
 const queryStringSearch = require('../middleware/queryStringSearch');
 
 const config = require('../knexfile.js')['development'];
@@ -51,17 +50,17 @@ router.get('/', queryStringSearch, async ctx => {
   }
 });
 
-router.post('/', validatePostData, async ctx => {
+router.post('/', async ctx => {
 
-  let { module_id, course_id, ...newModule } = ctx.request.body;
+  let { moduleId, courseId, ...newModule } = ctx.request.body.module;
 
   ctx.assert(newModule, 401, 'Something went wrong');
 
   const modules = await Module.query().insertAndFetch(newModule);
   await knex('course_modules').insert([
     {
-      module_id: module_id,
-      course_id: course_id
+      moduleId: moduleId,
+      courseId: courseId
     }]);
 
 
@@ -71,7 +70,7 @@ router.post('/', validatePostData, async ctx => {
 
 });
 router.put('/:id', async ctx => {
-  const modules = await Module.query().patchAndFetchById(ctx.params.id, ctx.request.body);
+  const modules = await Module.query().patchAndFetchById(ctx.params.id, ctx.request.body.module);
 
   ctx.assert(modules, 400, 'That learning path does not exist');
 

@@ -1,0 +1,46 @@
+.profile {
+  display: flex;
+  flex-direction: column;
+  // justify-content: flex-start;
+  align-content: flex-start;
+}
+
+.profile-title {
+  display: flex;
+  justify-content: space-between;
+}
+
+.profile-body {}
+
+.profile-submit {
+  background-color: $primary-purple;
+}
+
+.profile-picture {
+  width: 70px;
+  border-radius: 35px;
+  margin-right: 10px;
+}
+
+.profile-head {
+  background-color: $primary-purple;
+  color: white;
+  padding: 1em;
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-end;
+}
+
+.profile-edit {
+  background-color: red;
+  width: 2em;
+  padding-right: 2em;
+  border-radius: 1em;
+}
+
+.profile-data {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+}

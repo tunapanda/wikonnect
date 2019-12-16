@@ -4,10 +4,10 @@ describe('Login Page', function () {
   it('should login', function () {
     cy.visit('/login');
 
-    cy.get('.login-username input').type('user1');
-    cy.get('.login-password input').type('password1234');
+    cy.get('#username input').type('user1');
+    cy.get('#password input').type('password1234');
 
-    cy.get('.login-submit').click();
+    cy.get('.submit').click();
 
     cy.location('pathname').should('eq', '/');
   });
@@ -15,9 +15,9 @@ describe('Login Page', function () {
   it('should validate', function () {
     cy.visit('/login');
 
-    cy.get('.login-submit').click();
+    cy.get('.submit').click();
 
-    cy.get('.login-username .invalid-feedback').should('have.text', 'Username can\'t be blank');
-    cy.get('.login-password .invalid-feedback').should('have.text', 'Password can\'t be blank');
+    cy.get('#username .invalid-feedback').should('have.text', 'Username can\'t be blank');
+    cy.get('#password .invalid-feedback').should('have.text', 'Password can\'t be blank');
   });
 });

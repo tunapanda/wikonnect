@@ -5,7 +5,11 @@
 @import "home";
 @import "courses";
 @import "modules";
+@import "nav";
+@import "search";
 @import "common/typography";
+@import "profile";
+@import "common/utils";
 
 @import url("https://rsms.me/inter/inter.css");
 
@@ -20,3 +24,4 @@ html {
 }
 
 @import "ember-bootstrap/bootstrap";
+@import "ember-power-select";

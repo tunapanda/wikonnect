@@ -1,32 +1,24 @@
 {{outlet}}
 {{!-- {{outlet}} --}}
 <div id="courses">
-  <div class="padded breadcrums">
+  <div class="heading">
+    <h2>{{model.name}}</h2>
 
-    Tracks > Communication, Business & Organization
-
+    <p> {{model.description}}</p>
   </div>
-
-  <img class="padded" src="https://placekitten.com/300/147" width="100%" alt="">
-
-  <div class="padded details">
-    <h3>Navigating the internet... Browsers and websites</h3>
-    <p>This track contains swagpaths on business management and administration, entrepreneurship, business
-      communication, finance.</p>
-  </div>
-  {{component "call-to-action-signup"}}
 
 
   <div class="padded modules">
     <h2>Lessons</h2>
-    <p>Click on a lesson to reveal chapters</p>
+    <hr>
 
 
-    <ModuleItem @title="Firefox" @description="This is the best browser ever" @available={{true}} />
+    {{#each model.lessons as |lesson|}}
 
-    <Feedback />
-    <ModuleItem @title="Chrome" @description="This is the best browser ever" @available={{false}} />
-    <Footer />
+      <LessonItem @lesson={{lesson}} />
+    {{/each}}
+
+
   </div>
 
 </div>

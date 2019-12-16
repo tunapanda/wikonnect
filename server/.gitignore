@@ -103,5 +103,10 @@ dist
 # TernJS port file
 .tern-port
 
-config/db.js
-config/email.js
+config
+!config/*.example.js
+
+public/uploads/*
+!public/uploads/.gitinclude
+public/uploads/H5P/*
+!public/uploads/H5P/.gitinclude

@@ -1,6 +1,8 @@
 const { Model } = require('objection');
 const knex = require('../db/db');
 const _ = require('lodash');
+const SearchQueryBuilder = require('../utils/querybuilder');
+const client = require('../utils/search');
 
 class Base extends Model {
 
@@ -17,11 +19,27 @@ class Base extends Model {
     this.updatedAt = new Date().toISOString();
   }
 
+  $afterInsert() {
+    if (!client.unavailable) {
+      return this.$indexForSearch();
+    } else {
+      console.log(`Could not index ${this.constructor.tableName} ${this.id} because Elasticsearch is unavailable`);
+    }
+  }
+
+  $afterUpdate() {
+    if (!client.unavailable) {
+      return this.$indexForSearch();
+    } else {
+      console.log(`Could not index ${this.constructor.tableName} ${this.id} because Elasticsearch is unavailable`);
+    }
+  }
+
   $formatJson(json) {
     json = super.$formatJson(json);
 
-    json = { ...json, ...json.properties };
-    delete json.properties;
+    json = { ...json, ...json.metadata };
+    delete json.metadata;
 
     return _.omit(json, this.$secureFields);
   }
@@ -32,7 +50,7 @@ class Base extends Model {
     const virtualProperties = _.pick(json, this.$virtualFields);
 
     if (_.keys(virtualProperties).length) {
-      json.properties = virtualProperties;
+      json.metadata = virtualProperties;
     }
 
     json = _.omit(json, this.$virtualFields);
@@ -42,6 +60,10 @@ class Base extends Model {
 
   toJSON(opts) {
     return super.toJSON(opts);
+  }
+
+  static get QueryBuilder() {
+    return SearchQueryBuilder;
   }
 }
 

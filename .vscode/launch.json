@@ -7,6 +7,24 @@
     {
       "type": "node",
       "request": "launch",
+      "name": "Mocha Tests",
+      "program": "${workspaceFolder}/server/node_modules/mocha/bin/_mocha",
+      "args": [
+        "-u",
+        "tdd",
+        "--timeout",
+        "999999",
+        "--colors",
+        "${workspaceFolder}/server/test"
+      ],
+      "internalConsoleOptions": "openOnSessionStart",
+      "skipFiles": [
+        "<node_internals>/**"
+      ]
+    },
+    {
+      "type": "node",
+      "request": "launch",
       "name": "API",
       "program": "${workspaceFolder}/server/index.js",
       "runtimeVersion": "8.15.0"
@@ -14,6 +32,7 @@
     {
       "type": "node",
       "request": "launch",
+      "protocol": "inspector",
       "name": "nodemon",
       "runtimeExecutable": "nodemon",
       "program": "${workspaceFolder}/server/index.js",
@@ -22,12 +41,18 @@
       "restart": true,
       "args": [
         "-w",
-        "${workspaceFolder}/server"
+        "${workspaceFolder}/server",
+        "--ignore",
+        "${workspaceFolder}/server/public/uploads/",
+      ],
+      "runtimeArgs": [
+        "--exitcrash",
       ]
     },
     {
       "type": "node",
       "request": "launch",
+      "protocol": "inspector",
       "name": "nodemon test",
       "runtimeExecutable": "nodemon",
       "program": "${workspaceFolder}/server/index.js",
@@ -37,7 +62,12 @@
       "args": [
         "-w",
         "${workspaceFolder}/server",
+        "--ignore",
+        "${workspaceFolder}/server/public/uploads/",
         "--cypress"
+      ],
+      "runtimeArgs": [
+        "--exitcrash",
       ]
     },
     {

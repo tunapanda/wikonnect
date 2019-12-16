@@ -52,9 +52,7 @@ router.get('/:id', jwt.authenticate, permController.grantAccess('readOwn', 'prof
   ctx.body = { user, perm };
 
 });
-
 router.get('/', jwt.authenticate, permController.grantAccess('readAny', 'profile'), async ctx => {
-
   let user = User.query();
 
   if (ctx.query.username) {
@@ -64,8 +62,20 @@ router.get('/', jwt.authenticate, permController.grantAccess('readAny', 'profile
 
   user = await user;
 
+  ctx.body = { user };
+});
+
+router.put('/:id', jwt.authenticate, permController.grantAccess('updateOwn', 'profile'), async ctx => {
+
+  const user = await User.query().patchAndFetchById(ctx.params.id, ctx.request.body.user);
+
+  ctx.assert(user, 404, 'That user does not exist.');
+
+  ctx.status = 200;
+
   ctx.status = 200;
   ctx.body = { user };
+
 });
 
 module.exports = router.routes();

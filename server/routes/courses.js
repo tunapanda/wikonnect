@@ -1,6 +1,5 @@
 const Router = require('koa-router');
 const Course = require('../models/course');
-const validatePostData = require('../middleware/validation/validatePostData');
 const queryStringSearch = require('../middleware/queryStringSearch');
 const permController = require('../middleware/permController');
 const { userPermissions } = require('../middleware/_helpers/roles');
@@ -61,7 +60,6 @@ router.get('/', permController.grantAccess('readAny', 'path'), queryStringSearch
   }
 });
 
-
 router.get('/:id', permController.grantAccess('readAny', 'path'), async ctx => {
   const course = await Course.query().findById(ctx.params.id).eager('modules(selectNameAndId)');
   ctx.assert(course, 404, 'no lesson by that ID');
@@ -100,9 +98,17 @@ router.get('/:id', permController.grantAccess('readAny', 'path'), async ctx => {
 
 
 router.post('/', permController.grantAccess('createAny', 'path'), validatePostData, async ctx => {
-  let newCourse = ctx.request.body;
+  let newCourse = ctx.request.body.course;
 
-  const course = await Course.query().insertAndFetch(newCourse);
+  let course;
+  try {
+    course = await Course.query().insertAndFetch(newCourse);
+  } catch (e) {
+    if (e.statusCode) {
+      ctx.throw(e.statusCode, null, { errors: [e.message] });
+    } else { ctx.throw(400, null, { errors: ['Bad Request'] }); }
+    throw e;
+  }
 
   ctx.assert(course, 401, 'Something went wrong');
   Object.keys(userPermissions)
@@ -126,9 +132,18 @@ router.post('/', permController.grantAccess('createAny', 'path'), validatePostDa
   course['permissions'] = userPermissions;
   ctx.body = { course };
 });
-router.put('/:id', permController.grantAccess('deleteOwn', 'path'), async ctx => {
-  const course = await Course.query().patchAndFetchById(ctx.params.id, ctx.request.body);
 
+router.put('/:id', permController.grantAccess('deleteOwn', 'path'), async ctx => {
+
+  let course;
+  try {
+    course = await Course.query().patchAndFetchById(ctx.params.id, ctx.request.body.course);
+  } catch (e) {
+    if (e.statusCode) {
+      ctx.throw(e.statusCode, null, { errors: [e.message] });
+    } else { ctx.throw(400, null, { errors: ['Bad Request'] }); }
+    throw e;
+  }
   if (!course) {
     ctx.throw(400, 'That course does not exist');
   }

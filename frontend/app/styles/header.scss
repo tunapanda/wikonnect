@@ -1,48 +1,76 @@
 body,
 html {
-    font-family: 'Inter', sans-serif;
+  font-family: 'Inter', sans-serif;
 }
 
+.header-hamburger {
+  background: none !important;
+  border: none;
+}
 
 body {
-    background-color: #f8f9fa;
-    margin: 0 auto;
+  background-color: #f8f9fa;
+  margin: 0 auto;
 
+}
+
+.btn-link {
+
+  background: none !important;
+  border: none;
+
+  cursor: pointer;
+  padding: 8px 8px 8px 32px;
+  text-decoration: none;
+  font-size: 25px;
+  color: #818181;
+  display: block;
+  -webkit-transition: 0.3s;
+  transition: 0.3s;
+
+}
+
+.closebtn {
+  background-color: Transparent;
+  background-repeat: no-repeat;
+  border: none;
+  cursor: pointer;
+  overflow: hidden;
 }
 
 .authentication-header {
-    background-color: rgba(44, 65, 177, 0.26);
-    display: grid;
-    grid-template-columns: 50% 20% 20% 10%;
-    align-items: center;
-    justify-items: center;
+  background-color: rgba(44, 65, 177, 0.26);
+  display: grid;
+  grid-template-columns: 50% 20% 20% 10%;
+  align-items: center;
+  justify-items: center;
 
-    .authentication-header-login {
-        grid-column-start: 2;
-        color: $dark-blue;
-        font-size: 12px;
-        text-decoration: none;
-    }
+  .authentication-header-login {
+    grid-column-start: 2;
+    color: $dark-blue;
+    font-size: 12px;
+    text-decoration: none;
+  }
 
 
 }
 
 .main-header {
-    background-color: white;
-    margin: 1em;
-    min-height: 60px;
-    display: grid;
-    grid-template-columns: 10% auto 10%;
-    justify-items: center;
-    align-items: center;
+  background-color: white;
+  margin: 1em;
+  min-height: 60px;
+  display: grid;
+  grid-template-columns: 10% auto 10%;
+  justify-items: center;
+  align-items: center;
 
-    .header-hamburger {
-        grid-column-start: 1;
-    }
+  .header-hamburger {
+    grid-column-start: 1;
+  }
 
-    .branding {
-        grid-column-start: 2;
-        font-size: 2rem;
-        color: $primary;
-    }
+  .branding {
+    grid-column-start: 2;
+    font-size: 2rem;
+    color: $primary;
+  }
 }

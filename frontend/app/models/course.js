@@ -6,6 +6,7 @@ export default class CourseModel extends Model {
   @attr() slug;
   @attr() description;
   @attr() status;
+  @attr() slug;
   @belongsTo('user') creator;
   @hasMany('module') modules;
 }

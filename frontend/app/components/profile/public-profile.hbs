@@ -1,0 +1,17 @@
+<div class="profile-bio">
+  <img class="profile-picture" alt="" src="/images/profile-placeholder.gif">
+  <h2 class="profile-name"></h2>
+  <div class="profile-data">
+    <h3><strong>First Name:</strong> {{model.firstName}}</h3>
+    <h3><strong>Last Name:</strong> {{model.lastName}}</h3>
+    <h3><strong>About Me:</strong> {{model.aboutMe}}</h3>
+  </div>
+</div>
+<h4>{{name}}'s completed courses</h4>
+{{#if model.achievements.length}}
+  {{#each model.achievments as  |achievement|}}
+    {{achievement.name}}
+  {{/each}}
+{{else}}
+  {{model.username}} has not completed any courses
+{{/if}}

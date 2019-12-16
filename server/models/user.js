@@ -1,13 +1,23 @@
 const Model = require('./_model');
 const knex = require('../db/db');
+const userSchema = require('../db/json_schema/userSchema');
 
 class User extends Model {
+
   static get tableName() {
     return 'users';
   }
 
+  static get jsonSchema() {
+    return userSchema;
+  }
+
+  get $virtualFields() {
+    return ['firstName','lastName','aboutMe']; 
+  }
+
   get $secureFields() {
-    return ['hash', 'lastSeen', 'lastIp'];
+    return ['hash', 'email','lastSeen', 'lastIp'];
   }
 
   static get relationMappings() {
