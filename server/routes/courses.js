@@ -37,32 +37,34 @@ async function insertType(model, collection, course_id) {
   }
 }
 
-
 router.get('/', async ctx => {
   try {
     const course = await Course.query().where(ctx.query).eager('modules(selectNameAndId)');
     returnType(course);
+
     course.forEach(crse => {
       Object.keys(userPermissions)
         .forEach(perm => {
           if (ctx.state.user.role.toLowerCase() == 'superadmin') {
             userPermissions[perm] = 'true';
-          }
-          if (ctx.state.user.data.id === crse.creatorId || ctx.state.user.role.toLowerCase() == 'admin') {
+          } else if (ctx.state.user.data.id === crse.creatorId || ctx.state.user.role.toLowerCase() == 'admin') {
             userPermissions[perm] = 'true';
-            userPermissions.delete = 'false';
-          }
-          if (ctx.state.user.data.id != crse.creatorId) {
+            // userPermissions.delete = 'false';
+          } else if (ctx.state.user.role.toLowerCase() == 'admin' && ctx.state.user.data.id != crse.creatorId) {
             userPermissions[perm] = 'true';
             userPermissions.update = 'false';
             userPermissions.create = 'false';
             userPermissions.delete = 'false';
-          }
-          if (course.status === 'draft' && ctx.state.user.data.id === crse.creatorId) {
+          } else if (course.status === 'draft' && ctx.state.user.data.id === crse.creatorId) {
             userPermissions.read = 'true';
             userPermissions.update = 'true';
+          } else {
+            userPermissions.read = 'true';
+            userPermissions.update = 'false';
+            userPermissions.delete = 'false';
+            userPermissions.create = 'false';
           }
-
+          return crse.permissions = userPermissions;
         });
     });
 
