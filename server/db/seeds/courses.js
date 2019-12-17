@@ -32,6 +32,10 @@ exports.seed = function (knex) {
       {
         learning_path_id: 'learning_path1',
         course_id: 'course1'
+      },
+      {
+        learning_path_id: 'learning_path1',
+        course_id: 'diglit'
       }
     ]));
 };

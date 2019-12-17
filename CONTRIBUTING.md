@@ -1,12 +1,20 @@
+
+
+
 How to Contribute
 ==
 Reporting Bugs
 --
 Report issues you've discovered via the [issue tracker](https://github.com/anapanda/kummit/issues).
 
+Use git branches to write new functionality or bug fixes
+--
+If you have edit access to the repo simply clone it, if not create a fork.
+Always create a new branch from the latest master and work on a feature or a bug fix branch. Learn more about git branches [here](https://git-scm.com/book/en/v2/Git-Branching-Branches-in-a-Nutshell).
+
 Submitting Work
 --
-Create a pull requests against `master` branch. And describe in detail the work you've done.
+Once your feature is done, create a pull requests against `master` branch. And describe in detail the work you've done.
 
 Documentation
 --
@@ -14,7 +22,10 @@ Please document your code using the [jsdoc](https://github.com/jsdoc/jsdoc) stan
 
 Testing
 --
-There are 3 types of tests within Kummit, coding standards tests via [eslint](https://eslint.org), the API is unit tested using [mocha](https://mochajs.org/) with [should.js](https://shouldjs.github.io/), and integration tests are done via [cypress](https://cypress.io).
+There are 3 types of tests within Wikonnect
+- coding standards tests via [eslint](https://eslint.org)
+- the API is unit tested using [mocha](https://mochajs.org/) with [should.js](https://shouldjs.github.io/)
+- and integration tests are done via [cypress](https://cypress.io).
 
 ### Tools to Install
 
