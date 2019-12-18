@@ -37,32 +37,36 @@ async function insertType(model, collection, course_id) {
   }
 }
 
-router.get('/', permController.grantAccess('readAny', 'path'), async ctx => {
+router.get('/', permController.grantAccess('readOwn', 'path'), async ctx => {
+  console.log('==============checking state============');
+  console.log(ctx.state);
+  console.log('==============checking state============');
+
   try {
     const course = await Course.query().where(ctx.query).eager('modules(selectNameAndId)');
 
     returnType(course);
 
-    course.forEach(child => {
-      Object.keys(userPermissions)
-        .forEach(perm => {
-          if (ctx.state.user.role.toLowerCase() == 'superadmin') {
-            userPermissions[perm] = 'true';
-          } else if (ctx.state.user.data.id === child.creatorId || ctx.state.user.role.toLowerCase() == 'admin') {
-            userPermissions[perm] = 'true';
-            userPermissions.delete = 'false';
-          } else if (ctx.state.user.data.id != child.creatorId) {
-            userPermissions.read = 'true';
-            userPermissions.update = 'false';
-            userPermissions.create = 'false';
-            userPermissions.delete = 'false';
-          } else if (child.status === 'draft' && ctx.state.user.data.id === child.creatorId) {
-            userPermissions.read = 'true';
-            userPermissions.update = 'true';
-          }
-          child.permission = userPermissions;
-        });
-    });
+    // course.forEach(child => {
+    //   Object.keys(userPermissions)
+    //     .forEach(perm => {
+    //       if (ctx.state.user.role.toLowerCase() == 'superadmin') {
+    //         userPermissions[perm] = 'true';
+    //       } else if (ctx.state.user.data.id === child.creatorId || ctx.state.user.role.toLowerCase() == 'admin') {
+    //         userPermissions[perm] = 'true';
+    //         userPermissions.delete = 'false';
+    //       } else if (ctx.state.user.data.id != child.creatorId) {
+    //         userPermissions.read = 'true';
+    //         userPermissions.update = 'false';
+    //         userPermissions.create = 'false';
+    //         userPermissions.delete = 'false';
+    //       } else if (child.status === 'draft' && ctx.state.user.data.id === child.creatorId) {
+    //         userPermissions.read = 'true';
+    //         userPermissions.update = 'true';
+    //       }
+    //       child.permission = userPermissions;
+    //     });
+    // });
 
     ctx.status = 200;
     ctx.body = { course };
