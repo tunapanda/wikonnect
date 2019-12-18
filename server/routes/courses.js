@@ -4,7 +4,7 @@ const permController = require('../middleware/permController');
 const { userPermissions } = require('../middleware/_helpers/roles');
 const { validateCourses } = require('../middleware/validation/validatePostData');
 
-const environment = process.env.NODE_ENV || 'development';
+const environment = process.env.NODE_ENV;
 const config = require('../knexfile.js')[environment];
 const knex = require('knex')(config);
 
@@ -37,34 +37,30 @@ async function insertType(model, collection, course_id) {
   }
 }
 
-router.get('/', async ctx => {
+router.get('/', permController.grantAccess('readAny', 'path'), async ctx => {
   try {
     const course = await Course.query().where(ctx.query).eager('modules(selectNameAndId)');
+
     returnType(course);
 
-    course.forEach(crse => {
+    course.forEach(child => {
       Object.keys(userPermissions)
         .forEach(perm => {
           if (ctx.state.user.role.toLowerCase() == 'superadmin') {
             userPermissions[perm] = 'true';
-          } else if (ctx.state.user.data.id === crse.creatorId || ctx.state.user.role.toLowerCase() == 'admin') {
+          } else if (ctx.state.user.data.id === child.creatorId || ctx.state.user.role.toLowerCase() == 'admin') {
             userPermissions[perm] = 'true';
-            // userPermissions.delete = 'false';
-          } else if (ctx.state.user.role.toLowerCase() == 'admin' && ctx.state.user.data.id != crse.creatorId) {
-            userPermissions[perm] = 'true';
+            userPermissions.delete = 'false';
+          } else if (ctx.state.user.data.id != child.creatorId) {
+            userPermissions.read = 'true';
             userPermissions.update = 'false';
             userPermissions.create = 'false';
             userPermissions.delete = 'false';
-          } else if (course.status === 'draft' && ctx.state.user.data.id === crse.creatorId) {
+          } else if (child.status === 'draft' && ctx.state.user.data.id === child.creatorId) {
             userPermissions.read = 'true';
             userPermissions.update = 'true';
-          } else {
-            userPermissions.read = 'true';
-            userPermissions.update = 'false';
-            userPermissions.delete = 'false';
-            userPermissions.create = 'false';
           }
-          return crse.permissions = userPermissions;
+          child.permission = userPermissions;
         });
     });
 
@@ -81,22 +77,20 @@ router.get('/:id', permController.grantAccess('readAny', 'path'), async ctx => {
   ctx.assert(course, 404, 'no lesson by that ID');
 
   returnType(course);
+
   Object.keys(userPermissions)
     .forEach(perm => {
       if (ctx.state.user.role.toLowerCase() == 'superadmin') {
         userPermissions[perm] = 'true';
-      }
-      if (ctx.state.user.role.toLowerCase() == 'admin' && ctx.state.user.data.id != course.creatorId) {
+      } else if (ctx.state.user.role.toLowerCase() == 'admin' && ctx.state.user.data.id != course.creatorId) {
         userPermissions[perm] = 'true';
         userPermissions.update = 'false';
         userPermissions.create = 'false';
         userPermissions.delete = 'false';
-      }
-      if (ctx.state.user.data.id === course.creatorId && ctx.state.user.role.toLowerCase() == 'admin') {
+      } else if (ctx.state.user.data.id === course.creatorId && ctx.state.user.role.toLowerCase() == 'admin') {
         userPermissions[perm] = 'true';
         userPermissions.delete = 'false';
-      }
-      if (course.status === 'draft' && ctx.state.user.data.id === course.creatorId) {
+      } else if (course.status === 'draft' && ctx.state.user.data.id === course.creatorId) {
         userPermissions.read = 'true';
         userPermissions.update = 'true';
       } else {
@@ -105,16 +99,16 @@ router.get('/:id', permController.grantAccess('readAny', 'path'), async ctx => {
         userPermissions.delete = 'false';
         userPermissions.create = 'false';
       }
-      return course.permissions = userPermissions;
     });
 
   ctx.status = 200;
+  course['permissions'] = userPermissions;
   ctx.body = { course };
 });
 
 
 router.post('/', permController.grantAccess('createAny', 'path'), validateCourses, async ctx => {
-  let newCourse = ctx.request.body.course;
+  let { modules, ...newCourse } = ctx.request.body.course;
 
   let course;
   try {
@@ -125,8 +119,8 @@ router.post('/', permController.grantAccess('createAny', 'path'), validateCourse
     } else { ctx.throw(400, null, { errors: ['Bad Request'] }); }
     throw e;
   }
+  insertType('course_modules', modules, course.id);
 
-  ctx.assert(course, 401, 'Something went wrong');
   Object.keys(userPermissions)
     .forEach(perm => {
       if (ctx.state.user.role.toLowerCase() == 'superadmin') {

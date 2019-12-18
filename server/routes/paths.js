@@ -37,69 +37,59 @@ async function returnType(parent) {
 router.get('/', permController.grantAccess('readAny', 'path'), async ctx => {
   try {
     const learningpath = await LearningPath.query().where(ctx.query).eager('courses(selectNameAndId)');
+
     returnType(learningpath);
 
     Object.keys(userPermissions)
       .forEach(perm => {
-        if (ctx.state.user.role.toLowerCase() == 'superadmin') {
-          userPermissions[perm] = 'true';
-        }
-        if (ctx.state.user.role.toLowerCase() == 'admin') {
-          userPermissions[perm] = 'true';
-          userPermissions.delete = 'false';
-        } else {
-          userPermissions.read = 'true';
-        }
+        learningpath.forEach(child => {
+          if (ctx.state.user.role.toLowerCase() == 'superadmin') {
+            userPermissions[perm] = 'true';
+          } else if (ctx.state.user.data.id != child.creatorId) {
+            userPermissions[perm] = 'false';
+            userPermissions.read = 'true';
+          } else if (ctx.state.user.role.toLowerCase() == 'admin') {
+            userPermissions[perm] = 'true';
+            userPermissions.delete = 'false';
+          } else if (ctx.state.user.data.id === child.creatorId) {
+            userPermissions[perm] = 'true';
+            userPermissions.delete = 'false';
+          } else if (child.status === 'draft' && ctx.state.user.data.id === child.creatorId) {
+            userPermissions[perm] = 'true';
+            userPermissions.delete = 'false';
+          }
+          child.permissions = userPermissions;
+        });
       });
 
     ctx.status = 200;
-    learningpath['permissions'] = userPermissions;
     ctx.body = { learningpath };
 
   } catch (error) {
-
     ctx.status = 400;
-    ctx.body = { message: 'The query key does not exist', userPermissions };
-
+    ctx.body = { message: 'The query key does not exist' };
   }
 });
 
 router.get('/:id', permController.grantAccess('readAny', 'path'), async ctx => {
   const learningpath = await LearningPath.query().findById(ctx.params.id).eager('courses(selectNameAndId)');
   ctx.assert(learningpath, 404, 'No matching record found');
+
   returnType(learningpath);
-
-  const permission = (ctx.state.user.data.id === learningpath.creatorId) ? roles.can(ctx.state.user.role).readOwn('path') : roles.can(ctx.state.user.role).readAny('path');
-
-  if (!permission.granted) {
-    ctx.status = 401;
-    ctx.body = {
-      error: 'You don\'t have enough permission to perform this action'
-    };
-    return ctx;
-  }
-
 
   Object.keys(userPermissions)
     .forEach(perm => {
       if (ctx.state.user.role.toLowerCase() == 'superadmin') {
         userPermissions[perm] = 'true';
-      } else if (ctx.state.user.role.toLowerCase() == 'admin' && ctx.state.user.data.id != learningpath.creatorId) {
+      } else if (ctx.state.user.role.toLowerCase() == 'admin') {
         userPermissions[perm] = 'true';
-        userPermissions.update = 'false';
-        userPermissions.create = 'false';
         userPermissions.delete = 'false';
-      } else if (ctx.state.user.data.id === learningpath.creatorId && ctx.state.user.role.toLowerCase() == 'admin') {
+      } else if (ctx.state.user.data.id === learningpath.creatorId) {
         userPermissions[perm] = 'true';
         userPermissions.delete = 'false';
       } else if (learningpath.status === 'draft' && ctx.state.user.data.id === learningpath.creatorId) {
-        userPermissions.read = 'true';
-        userPermissions.update = 'true';
-      } else {
-        userPermissions.read = 'true';
-        userPermissions.update = 'false';
+        userPermissions[perm] = 'true';
         userPermissions.delete = 'false';
-        userPermissions.create = 'false';
       }
     });
 
