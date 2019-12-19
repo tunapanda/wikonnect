@@ -15,8 +15,8 @@ export default class HomeController extends Controller {
         'name': course.get('name'),
         'slug': course.get('slug'),
         'description': course.get('description')
-      }
+      };
 
-    })
+    });
   }
 }

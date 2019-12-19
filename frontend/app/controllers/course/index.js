@@ -15,9 +15,9 @@ export default class CourseIndexController extends Controller {
         'name': mod.get('name'),
         'slug': mod.get('slug'),
         'description': mod.get('description')
-      }
+      };
 
-    })
+    });
   }
 
 }
