@@ -9,9 +9,8 @@
       You successfully read this important alert message.
     </BsAlert>
 
-    {{#each this.model as |course_item|}}
-      <CourseItem @title={{course_item.name}} @description={{course_item.description}} @points="5"
-        @slug={{course_item.slug}} @id={{course_item.id}} />
+    {{#each this.courseList as |course_item|}}
+      <CourseItem @title={{course_item.name}} @description={{course_item.description}} @points="5" @slug={{course_item.slug}} @color={{course_item.color}} />
     {{/each}}
 
   </div>

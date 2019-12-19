@@ -1,20 +1,21 @@
-<div class="course-item">
+{{#link-to "course"  @slug }}
+  <div class="course-item">
 
 
-  <img class="course-image" src="https://placekitten.com/300/147" alt="">
-  <div class="course">
-    <span>
-      {{#link-to "course"  @slug }}
+    <img class="course-image" src="http://placehold.jp/20/{{@color}}/ffffff/140x140.png?text={{@title}}" alt="">
+    <div class="course">
+      <span>
         <h4>{{@title}}</h4>
-      {{/link-to}}
 
 
-    </span>
-    <div class="course-description">{{@description}}</div>
-    <hr>
-    <div class="course-meta"> <span>5 topics </span><span>5 minutes</span></div>
+      </span>
+      <div class="course-description">{{@description}}</div>
+      <hr>
+      <div class="course-meta"> <span>5 topics </span><span>5 minutes</span></div>
+
+    </div>
 
   </div>
+{{/link-to}}
 
-</div>
 <hr>

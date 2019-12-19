@@ -13,7 +13,7 @@
     <h2>Modules</h2>
     <hr>
     <div class="modules-list">
-      {{#each model.modules as |module|}}
+      {{#each modList as |module|}}
 
         <ModuleItem @module={{module}} @course={{model.id}} />
       {{/each}}

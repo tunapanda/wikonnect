@@ -9,20 +9,28 @@
   </div>
 
   <div>
-    <button class="learn">
-      Learn
-    </button>
-    <button class="teach">
-      Teach
-    </button>
-    <button class="build">
-      Build
-    </button>
+    {{#link-to "home"}}
+      <button class="learn">
+        Learn
+      </button>
+    {{/link-to}}
+    {{#link-to "course.create"}}
+      <button class="teach">
+        Teach
+      </button>
+    {{/link-to}}
+    <a href="http://github.com/tunapanda/wikonnect">
+      <button class="build">
+        Build
+      </button>
+    </a>
     <div class="centered">
       Have a Wikonnect account?
     </div>
-    <button class="login">
-      Build
-    </button>
+    {{#link-to "login"}}
+      <button class="login">
+        Log In
+      </button>
+    {{/link-to}}
   </div>
 </div>
