@@ -82,13 +82,14 @@
   }
 
   .module-image {
-    padding-right: 1em;
     width: 100%;
     border-radius: 7px;
+    margin-bottom: 4px;
 
   }
 
   .module-item {
+    padding: 1em;
     flex: 0 50%;
 
   }
