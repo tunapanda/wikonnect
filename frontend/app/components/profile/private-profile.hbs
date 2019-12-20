@@ -3,6 +3,27 @@
     <img class="profile-picture" alt="" src="/images/profile-placeholder.gif">
     <h2 class="profile-name">{{name}}</h2>
   </div>
+
+
+
+  <div class="profile-acheivements">
+    <div>
+      <h2>0</h2>
+      <p>TOPICS VIEWED</p>
+    </div>
+
+
+    <div>
+      <h2>0</h2>
+      <p>MOJA POINTS</p>
+    </div>
+
+
+    <div>
+      <h2>0</h2>
+      <p>BADGES</p>
+    </div>
+  </div>
   <div class="profile-body padded">
     <div class="profile-options">
       <BsButtonGroup @value={{profileView}} @type="radio" @onChange={{action (mut profileView)}} as |bg|>
@@ -13,6 +34,7 @@
       </BsButtonGroup>
 
     </div>
+
     <hr>
 
     {{#if (eq profileView "Profile")}}
