@@ -48,8 +48,16 @@ router.get('/:id', permController.grantAccess('readAny', 'path'), async ctx => {
 
   Object.keys(userPermissions)
     .forEach(perm => {
-      if (ctx.state.user.role.toLowerCase() == 'superadmin') {
+      if (!ctx.state.user) {
+        userPermissions.read = 'true';
+        userPermissions.update = 'false';
+        userPermissions.delete = 'false';
+        userPermissions.create = 'false';
+      } else if (ctx.state.user.role.toLowerCase() == 'superadmin') {
         userPermissions[perm] = 'true';
+        userPermissions.update = 'false';
+        userPermissions.create = 'false';
+        userPermissions.delete = 'false';
       } else if (ctx.state.user.role.toLowerCase() == 'admin' && ctx.state.user.data.id != modules.creatorId) {
         userPermissions[perm] = 'true';
         userPermissions.update = 'false';
@@ -83,7 +91,12 @@ router.get('/', permController.grantAccess('readAny', 'path'), async ctx => {
     modules.forEach(child => {
       Object.keys(userPermissions)
         .forEach(perm => {
-          if (ctx.state.user.data.role.toLowerCase() == 'superadmin') {
+          if (!ctx.state.user) {
+            userPermissions.read = 'true';
+            userPermissions.update = 'false';
+            userPermissions.delete = 'false';
+            userPermissions.create = 'false';
+          } else if (ctx.state.user.data.role.toLowerCase() == 'superadmin') {
             userPermissions[perm] = 'true';
           } else if (ctx.state.user.data.id === child.creatorId || ctx.state.user.data.role.toLowerCase() == 'admin') {
             userPermissions[perm] = 'true';
