@@ -41,6 +41,7 @@ router.get('/', async ctx => {
   try {
     const course = await Course.query().where(ctx.query).eager('modules(selectNameAndId)');
     returnType(course);
+
     course.forEach(child => {
       Object.keys(userPermissions)
         .forEach(perm => {
@@ -155,6 +156,8 @@ router.put('/:id', permController.grantAccess('deleteOwn', 'path'), async ctx =>
   if (!course) {
     ctx.throw(400, 'That course does not exist');
   }
+  await knex('course_modules').where({ 'course_id': course.id }).del();
+  insertType('course_modules', modules, course.id);
 
   Object.keys(userPermissions)
     .forEach(perm => {
