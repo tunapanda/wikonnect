@@ -10,6 +10,9 @@ export default class CmsLessonCreateController extends Controller {
 
   @action
   async submit() {
+
+    this.model.set('slug', this.model.get('name').replace(/\s/g, "-"));
+
     await this.model.save();
 
     await all(this.model.chapters.invoke('save'));
