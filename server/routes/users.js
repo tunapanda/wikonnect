@@ -43,7 +43,7 @@ router.post('/', validateAuthRoutes.validateNewUser, getUserByUsername, createPa
   ctx.body = { user };
 });
 
-router.get('/:id', jwt.authenticate, permController.requireAuth, permController.grantAccess('readAny', 'profile'), async ctx => {
+router.get('/:id', permController.requireAuth, permController.grantAccess('readAny', 'profile'),  async ctx => {
   const user = await User.query().findById(ctx.params.id);
 
   if (!user) {
