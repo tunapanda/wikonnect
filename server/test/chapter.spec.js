@@ -4,7 +4,6 @@ const chaiHttp = require('chai-http');
 const chaiJSON = require('chai-json-schema');
 const server = require('../index');
 const chapterSchema = require('../db/json_schema/chapterSchema');
-const tokens = require('./_tokens');
 
 
 chai.should();
