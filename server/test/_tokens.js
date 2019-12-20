@@ -17,20 +17,21 @@ const basicUser2 = {
     'id': 'user2',
     'username': 'user2',
     'password': 'tunapanda',
-    'email': 'user99@wikonnect.com'
+    'email': 'user99@wikonnect.com',
+    'role': 'basic'
   }
 };
 const headersSuperAdmin1 = {
   'Authorization': 'Bearer ' + jsonwebtoken.sign({ data: basicUser1.user }, secret, { expiresIn: '30d' })
 };
 const headersAdmin1 = {
-  'Authorization': 'Bearer ' + jsonwebtoken.sign({ data: basicUser1.user, role: 'admin' }, secret, { expiresIn: '30d' })
+  'Authorization': 'Bearer ' + jsonwebtoken.sign({ data: basicUser1.user }, secret, { expiresIn: '30d' })
 };
 const headersAdmin2 = {
-  'Authorization': 'Bearer ' + jsonwebtoken.sign({ data: basicUser1.user, role: 'admin' }, secret, { expiresIn: '30d' })
+  'Authorization': 'Bearer ' + jsonwebtoken.sign({ data: basicUser1.user }, secret, { expiresIn: '30d' })
 };
 const headerBasicUser2 = {
-  'Authorization': 'Bearer ' + jsonwebtoken.sign({ data: basicUser2.user, role: 'basic' }, secret, { expiresIn: '30d' })
+  'Authorization': 'Bearer ' + jsonwebtoken.sign({ data: basicUser2.user }, secret, { expiresIn: '30d' })
 };
 
 

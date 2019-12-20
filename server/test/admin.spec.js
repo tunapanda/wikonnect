@@ -5,7 +5,6 @@ const knex = require('../db/db');
 const jwt = require('jsonwebtoken');
 const { secret } = require('../middleware/jwt');
 
-
 chai.should();
 chai.use(chaiHttp);
 
