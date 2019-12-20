@@ -62,3 +62,16 @@
   z-index: 999;
 
 }
+
+#orange-header {
+  position: fixed;
+  width: 100%;
+  top: 0;
+  display: flex;
+  background-color: #F57010;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 1em;
+  z-index: 999;
+
+}
