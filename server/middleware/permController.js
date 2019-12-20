@@ -1,7 +1,7 @@
 const jwToken = require('jsonwebtoken');
 const User = require('../models/user');
 const { roles } = require('./_helpers/roles');
-const { defaultPermissionObject } = require('./_helpers/permission');
+// const { defaultPermissionObject } = require('./_helpers/permission');
 const { secret } = require('../middleware/jwt');
 
 
@@ -31,7 +31,7 @@ exports.requireAuth = async function (ctx, next) {
       };
       return ctx;
     }
-    ctx.state.user = User.query().findById(data.id);
+    ctx.state.user = data;
 
     // error handler for when role is not provided
     await next();
@@ -59,9 +59,11 @@ exports.requireAuth = async function (ctx, next) {
  */
 
 exports.grantAccess = function (action, resource) {
+
   return async (ctx, next) => {
+    console.log(ctx.state.user);
     try {
-      const permission = roles.can(ctx.state.user.data.role)[action](resource);
+      const permission = roles.can(ctx.state.user.role)[action](resource);
       if (!permission.granted) {
         ctx.status = 401;
         ctx.body = {
@@ -69,23 +71,6 @@ exports.grantAccess = function (action, resource) {
         };
         return ctx;
       }
-
-      // let permissionData = JSON.parse(JSON.stringify(defaultPermissionObject));
-      // const permissions = roles.getGrants();
-
-      // Object.keys(permissions[ctx.state.user.role])
-      //   .forEach(resource => {
-
-      //     Object.keys(permissions[ctx.state.user.role][resource])
-      //       .forEach(permission => {
-      //         if (permissions[ctx.state.user.role][resource][permission].length > 0) {
-      //           const permissionInfo = permission.split(':');
-      //           permissionData[resource][permissionInfo[0]] = permissionInfo[1];
-      //         }
-      //       });
-      //   });
-
-      // ctx.state.user.attributes = permissionData[resource];
 
       await next();
     } catch (error) {
