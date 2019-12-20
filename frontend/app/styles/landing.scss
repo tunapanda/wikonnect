@@ -50,7 +50,9 @@
   border-color: white;
 }
 
-#white-header {
+
+
+@mixin header {
   position: fixed;
   width: 100%;
   top: 0;
@@ -60,18 +62,49 @@
   justify-content: space-between;
   padding: 1em;
   z-index: 999;
+}
+
+.white-header {
+  @include header;
+  background-color: $primary-purple;
+}
+
+.orange-header {
+  @include header;
+
+  background-color: #F57010;
+}
+
+.yellow-header {
+  @include header;
+
+  background-color: #fecf00;
+}
+
+.green-header {
+  @include header;
+
+  background-color: #00AA83;
+}
+
+.bg-green {
+  background-color: #00AA83;
+  color: white;
 
 }
 
-#orange-header {
-  position: fixed;
-  width: 100%;
-  top: 0;
-  display: flex;
-  background-color: #F57010;
-  flex-direction: row;
-  justify-content: space-between;
-  padding: 1em;
-  z-index: 999;
+.bg-yellow {
+  background-color: #fecf00;
+  color: black;
+}
 
+.bg-orange {
+  background-color: #F57010;
+  color: white;
+
+}
+
+.bg-purple {
+  background-color: $primary-purple;
+  color: white;
 }

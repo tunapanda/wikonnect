@@ -1,5 +1,5 @@
 <div id="home">
-  <div class="heading">
+  <div class="heading bg-orange">
     <h2>Courses</h2>
     <p>Each module covers a broad area of knowledge divided into five related topics.</p>
   </div>
@@ -10,7 +10,8 @@
     </BsAlert>
 
     {{#each this.courseList as |course_item|}}
-      <CourseItem @title={{course_item.name}} @description={{course_item.description}} @points="5" @slug={{course_item.slug}} @color={{course_item.color}} />
+      <CourseItem @title={{course_item.name}} @description={{course_item.description}} @points="5"
+        @slug={{course_item.slug}} @color={{course_item.color}} />
     {{/each}}
 
   </div>
