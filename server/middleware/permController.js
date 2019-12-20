@@ -2,6 +2,7 @@ const jwToken = require('jsonwebtoken');
 const User = require('../models/user');
 const { roles } = require('./_helpers/roles');
 const { defaultPermissionObject } = require('./_helpers/permission');
+const { secret } = require('../middleware/jwt');
 
 
 /**
@@ -20,7 +21,7 @@ const { defaultPermissionObject } = require('./_helpers/permission');
 exports.requireAuth = async function (ctx, next) {
   if (ctx.request.header.authorization && ctx.request.header.authorization.split(' ')[0] === 'Bearer') {
     const accessToken = ctx.request.header.authorization.split(' ')[1];
-    const { exp, data } = jwToken.verify(accessToken, 'secret');
+    const { exp, data } = jwToken.verify(accessToken, secret);
 
     // Check if token has expired
     if (exp < Date.now().valueOf() / 1000) {
@@ -50,7 +51,7 @@ exports.requireAuth = async function (ctx, next) {
 exports.grantAccess = function (action, resource) {
   return async (ctx, next) => {
     try {
-      const permission = roles.can(ctx.state.user.role)[action](resource);
+      const permission = roles.can(ctx.state.user.data.role)[action](resource);
       if (!permission.granted) {
         ctx.status = 401;
         ctx.body = {

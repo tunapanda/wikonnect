@@ -12,12 +12,14 @@ chai.use(chaiHttp);
 const routePath = '/api/v1/paths/';
 const pathId = 'learningpath5';
 const routeCourseData = {
-  id: pathId,
-  name: 'A Path 5',
-  slug: 'a-path-5',
-  description: 'Contains courses.',
-  status: 'published',
-  creator_id: 'user1',
+  learningPath:{
+    id: pathId,
+    name: 'A Path 5',
+    slug: 'a-path-5',
+    description: 'Contains courses.',
+    status: 'published',
+    creatorId: 'user1',
+  }
 };
 
 const basicUser1 = {
@@ -25,7 +27,8 @@ const basicUser1 = {
     'id': 'user99',
     'username': 'user99',
     'password': 'tunapanda',
-    'email': 'user99@wikonnect.com'
+    'email': 'user99@wikonnect.com',
+    'role': 'superadmin'
   }
 };
 
@@ -38,7 +41,7 @@ const basicUser2 = {
   }
 };
 const headersSuperAdmin1 = {
-  'Authorization': 'Bearer ' + jwt.sign({ data: basicUser1.user, role: 'superadmin' }, secret, { expiresIn: '30d' })
+  'Authorization': 'Bearer ' + jwt.sign({ data: basicUser1.user}, secret, { expiresIn: '30d' })
 };
 const headersAdmin1 = {
   'Authorization': 'Bearer ' + jwt.sign({ data: basicUser1.user, role: 'admin' }, secret, { expiresIn: '30d' })
@@ -66,7 +69,6 @@ describe('Learning Path with Access Control', () => {
       .set(headersAdmin1)
       .send(routeCourseData)
       .end((err, res) => {
-        console.log(res.body);
         done();
       });
   });
@@ -77,7 +79,6 @@ describe('Learning Path with Access Control', () => {
       .set('Content-Type', 'application/json')
       .set(headersAdmin1)
       .end((err, res) => {
-        console.log(res.body);
         done();
       });
   });
@@ -88,7 +89,6 @@ describe('Learning Path with Access Control', () => {
       .set('Content-Type', 'application/json')
       .set(headersAdmin2)
       .end((err, res) => {
-        console.log(res.body);
         done();
       });
   });
@@ -99,7 +99,6 @@ describe('Learning Path with Access Control', () => {
       .set('Content-Type', 'application/json')
       .set(headersSuperAdmin1)
       .end((err, res) => {
-        console.log(res.body);
         done();
       });
   });

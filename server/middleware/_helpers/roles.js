@@ -34,8 +34,7 @@ let grantList = [
   { role: 'superadmin', resource: 'path', action: 'read:any', attributes: '*' },
   { role: 'superadmin', resource: 'path', action: 'update:any', attributes: '*' },
 ];
-const ac = new AccessControl(grantList);
-
+let ac = new AccessControl(grantList);
 
 exports.roles = (() => {
   ac.grant('basic');

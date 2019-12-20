@@ -43,13 +43,13 @@ router.post('/', validateAuthRoutes.validateNewUser, getUserByUsername, createPa
   ctx.body = { user };
 });
 
-router.get('/:id', jwt.authenticate, permController.grantAccess('readOwn', 'profile'), async ctx => {
+router.get('/:id', jwt.authenticate, permController.requireAuth, permController.grantAccess('readAny', 'profile'), async ctx => {
   const user = await User.query().findById(ctx.params.id);
 
+
   ctx.assert(user, 404, 'No User With that Id');
-  const perm = ctx.state.user.attributes;
   ctx.status = 200;
-  ctx.body = { user, perm };
+  ctx.body = { user };
 
 });
 router.get('/', jwt.authenticate, permController.grantAccess('readAny', 'profile'), async ctx => {

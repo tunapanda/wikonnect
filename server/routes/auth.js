@@ -3,7 +3,7 @@ const User = require('../models/user');
 const validateAuthRoutes = require('../middleware/validation/validateAuthRoutes');
 const bcrypt = require('bcrypt');
 const jsonwebtoken = require('jsonwebtoken');
-const jwt = require('../middleware/jwt');
+const { secret } = require('../middleware/jwt');
 
 const router = new Router({
   prefix: '/auth'
@@ -29,7 +29,7 @@ router.post('/', validateAuthRoutes.validateUserLogin, async ctx => {
       token: jsonwebtoken.sign({
         data: userInfoWithoutPassword,
         exp: Math.floor(Date.now() / 1000 + 604800) // 60 seconds * 60 minutes * 24 hours * 7 days = 1 week
-      }, jwt.secret)
+      }, secret)
     };
   } else {
     ctx.status = 401;
