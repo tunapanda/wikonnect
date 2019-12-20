@@ -23,6 +23,7 @@ exports.requireAuth = async function (ctx, next) {
     const accessToken = ctx.request.header.authorization.split(' ')[1];
     const { exp, data } = jwToken.verify(accessToken, secret);
 
+
     // Check if token has expired
     if (exp < Date.now().valueOf() / 1000) {
       ctx.status = 401;
@@ -32,6 +33,7 @@ exports.requireAuth = async function (ctx, next) {
       return ctx;
     }
     ctx.state.user = data;
+
 
     // error handler for when role is not provided
     await next();
@@ -62,7 +64,8 @@ exports.grantAccess = function (action, resource) {
 
   return async (ctx, next) => {
     try {
-      const permission = roles.can(ctx.state.user.role)[action](resource);
+      let roleName = ctx.state.user.role == undefined ? ctx.state.user.data.role : ctx.state.user.role;
+      const permission = roles.can(roleName)[action](resource);
       if (!permission.granted) {
         ctx.status = 401;
         ctx.body = {

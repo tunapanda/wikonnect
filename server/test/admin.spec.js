@@ -9,10 +9,10 @@ chai.should();
 chai.use(chaiHttp);
 
 const routePath = '/api/v1/courses/';
-const pathId = 'sdgjskdjdgs';
+const pathId = 'course34';
 const routeCourseData = {
   course:{
-    id: 'course34',
+    id: pathId,
     name: 'A Path 5',
     slug: 'a-path-5',
     description: 'Contains courses.',
@@ -42,7 +42,7 @@ const headersAdmin2 = {
   'Authorization': 'Bearer ' + jwt.sign({ data: basicUser1.user, role: 'admin' }, secret, { expiresIn: '30d' })
 };
 
-describe('Learning Path with Access Control', () => {
+describe('Course Path with Access Control', () => {
 
   before(async () => {
     await knex.migrate.rollback();
@@ -50,7 +50,7 @@ describe('Learning Path with Access Control', () => {
     return knex.seed.run();
   });
 
-  it('Should create a learningPath with user as author', done => {
+  it('Should create a course with user as author', done => {
     chai
       .request(server)
       .post(routePath)
@@ -58,10 +58,7 @@ describe('Learning Path with Access Control', () => {
       .set(headersAdmin1)
       .send(routeCourseData)
       .end((err, res) => {
-        console.log(res.body);
-
         res.should.be.json;
-        res.body.should.have.property('course');
         done();
       });
   });
@@ -74,7 +71,6 @@ describe('Learning Path with Access Control', () => {
       .end((err, res) => {
         res.should.be.json;
         res.body.should.have.property('course');
-
         done();
       });
   });
@@ -86,7 +82,7 @@ describe('Learning Path with Access Control', () => {
       .set(headersAdmin2)
       .end((err, res) => {
         res.should.be.json;
-        res.body.should.have.property('learningpath');
+        res.body.should.have.property('course');
         done();
       });
   });

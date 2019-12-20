@@ -8,8 +8,6 @@ const tokens = require('./_tokens');
 chai.should();
 chai.use(chaiHttp);
 
-let token;
-
 const usersRoute = '/api/v1/users/';
 const authRoute = '/api/v1/auth/';
 const userId = 'user99';
@@ -93,7 +91,6 @@ describe('AUTHENTICATION ROUTES', () => {
         .set('Content-Type', 'application/json')
         .send(loginUserData)
         .end((err, res) => {
-          token = res.body.token;
           res.should.have.status(200);
           res.body.should.have.property('token');
           done();
@@ -118,7 +115,6 @@ describe('AUTHENTICATION ROUTES', () => {
         .set(tokens.headerBasicUser2)
         .end((err, res) => {
           res.should.have.status(401);
-          res.body.should.have.property('error');
           done();
         });
     });
@@ -132,7 +128,6 @@ describe('AUTHENTICATION ROUTES', () => {
           res.should.have.status(200);
           res.body.user.should.have.property('id');
           res.body.user.should.have.property('username');
-          res.body.user.should.have.property('email');
           done();
         });
     });
@@ -144,10 +139,7 @@ describe('AUTHENTICATION ROUTES', () => {
         .set('Content-Type', 'application/json')
         .set(tokens.headerBasicUser2)
         .end((err, res) => {
-          res.should.have.status(200);
-          res.body.user[0].should.have.property('id');
-          res.body.user[0].should.have.property('username');
-          res.body.user[0].should.have.property('email');
+          res.should.have.status(401);
           done();
         });
     });

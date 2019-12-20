@@ -23,12 +23,6 @@ const basicUser2 = {
 const headersSuperAdmin1 = {
   'Authorization': 'Bearer ' + jsonwebtoken.sign({ data: basicUser1.user }, secret, { expiresIn: '30d' })
 };
-const headersAdmin1 = {
-  'Authorization': 'Bearer ' + jsonwebtoken.sign({ data: basicUser1.user }, secret, { expiresIn: '30d' })
-};
-const headersAdmin2 = {
-  'Authorization': 'Bearer ' + jsonwebtoken.sign({ data: basicUser1.user }, secret, { expiresIn: '30d' })
-};
 const headerBasicUser2 = {
   'Authorization': 'Bearer ' + jsonwebtoken.sign({ data: basicUser2.user }, secret, { expiresIn: '30d' })
 };
@@ -36,7 +30,5 @@ const headerBasicUser2 = {
 
 module.exports = {
   headersSuperAdmin1,
-  headersAdmin1,
-  headersAdmin2,
   headerBasicUser2
 };

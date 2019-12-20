@@ -80,31 +80,34 @@ router.get('/:id', permController.grantAccess('readAny', 'path'), async ctx => {
 
   returnType(course);
 
-  Object.keys(userPermissions)
-    .forEach(perm => {
-      if (ctx.state.user.role.toLowerCase() == 'superadmin') {
-        userPermissions[perm] = 'true';
-      } else if (ctx.state.user.role.toLowerCase() == 'admin' && ctx.state.user.data.id != course.creatorId) {
-        userPermissions[perm] = 'true';
-        userPermissions.update = 'false';
-        userPermissions.create = 'false';
-        userPermissions.delete = 'false';
-      } else if (ctx.state.user.data.id === course.creatorId && ctx.state.user.role.toLowerCase() == 'admin') {
-        userPermissions[perm] = 'true';
-        userPermissions.delete = 'false';
-      } else if (course.status === 'draft' && ctx.state.user.data.id === course.creatorId) {
-        userPermissions.read = 'true';
-        userPermissions.update = 'true';
-      } else {
-        userPermissions.read = 'true';
-        userPermissions.update = 'false';
-        userPermissions.delete = 'false';
-        userPermissions.create = 'false';
-      }
-    });
+  function permObjects() {
+    Object.keys(userPermissions)
+      .forEach(perm => {
+        if (ctx.state.user.data.role.toLowerCase() == 'superadmin') {
+          userPermissions[perm] = 'true';
+        } else if (ctx.state.user.data.role.toLowerCase() == 'admin' && ctx.state.user.data.id != course.creatorId) {
+          userPermissions[perm] = 'true';
+          userPermissions.update = 'false';
+          userPermissions.create = 'false';
+          userPermissions.delete = 'false';
+        } else if (ctx.state.user.data.id === course.creatorId && ctx.state.user.data.role.toLowerCase() == 'admin') {
+          userPermissions[perm] = 'true';
+          userPermissions.delete = 'false';
+        } else if (course.status === 'draft' && ctx.state.user.data.id === course.creatorId) {
+          userPermissions.read = 'true';
+          userPermissions.update = 'true';
+        } else {
+          userPermissions.read = 'true';
+          userPermissions.update = 'false';
+          userPermissions.delete = 'false';
+          userPermissions.create = 'false';
+        }
 
+      });
+    return course.permissions = userPermissions;
+  }
   ctx.status = 200;
-  course['permissions'] = userPermissions;
+  course['permissions'] = permObjects();
   ctx.body = { course };
 });
 
@@ -118,30 +121,32 @@ router.post('/', permController.grantAccess('readAny', 'path'), validateCourses,
   } catch (e) {
     if (e.statusCode) {
       ctx.throw(e.statusCode, null, { errors: [e.message] });
-    } else { ctx.throw(400, null, { errors: ['Bad Request'] }); }
+    } else { ctx.throw(400, null, { errors: [e.message] }); }
     throw e;
   }
-  insertType('course_modules', modules, course.id);
-
-  // Object.keys(userPermissions)
-  //   .forEach(perm => {
-  //     if (ctx.state.user.role.toLowerCase() == 'superadmin') {
-  //       userPermissions[perm] = 'true';
-  //     }
-  //     if (ctx.state.user.data.id === course.creatorId || ctx.state.user.role.toLowerCase() == 'admin') {
-  //       userPermissions[perm] = 'true';
-  //       userPermissions.delete = 'false';
-  //     }
-  //     if (course.status === 'draft' && ctx.state.user.data.id === course.creatorId) {
-  //       userPermissions.read = 'true';
-  //       userPermissions.update = 'true';
-  //     } else {
-  //       userPermissions.read = 'true';
-  //     }
-  //   });
+  // insertType('course_modules', modules, course.id);
+  function permObjects() {
+    Object.keys(userPermissions)
+      .forEach(perm => {
+        if (ctx.state.user.role.toLowerCase() == 'superadmin') {
+          userPermissions[perm] = 'true';
+        }
+        if (ctx.state.user.data.id === course.creatorId || ctx.state.user.role.toLowerCase() == 'admin') {
+          userPermissions[perm] = 'true';
+          userPermissions.delete = 'false';
+        }
+        if (course.status === 'draft' && ctx.state.user.data.id === course.creatorId) {
+          userPermissions.read = 'true';
+          userPermissions.update = 'true';
+        } else {
+          userPermissions.read = 'true';
+        }
+      });
+    return course.permissions = userPermissions;
+  }
 
   ctx.status = 2001;
-  course['permissions'] = userPermissions;
+  course['permissions'] = permObjects();
   ctx.body = { course };
 });
 
