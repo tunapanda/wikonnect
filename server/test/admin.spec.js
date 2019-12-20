@@ -8,16 +8,17 @@ const { secret } = require('../middleware/jwt');
 chai.should();
 chai.use(chaiHttp);
 
-const routePath = '/api/v1/paths/';
-const pathId = 'learningpath5';
+const routePath = '/api/v1/courses/';
+const pathId = 'sdgjskdjdgs';
 const routeCourseData = {
-  learningPath:{
-    id: pathId,
+  course:{
+    id: 'course34',
     name: 'A Path 5',
     slug: 'a-path-5',
     description: 'Contains courses.',
     status: 'published',
     creatorId: 'user1',
+    modules: ['module44', 'module2334']
   }
 };
 
@@ -31,14 +32,6 @@ const basicUser1 = {
   }
 };
 
-const basicUser2 = {
-  'user': {
-    'id': 'user2',
-    'username': 'user2',
-    'password': 'tunapanda',
-    'email': 'user99@wikonnect.com'
-  }
-};
 const headersSuperAdmin1 = {
   'Authorization': 'Bearer ' + jwt.sign({ data: basicUser1.user}, secret, { expiresIn: '30d' })
 };
@@ -47,9 +40,6 @@ const headersAdmin1 = {
 };
 const headersAdmin2 = {
   'Authorization': 'Bearer ' + jwt.sign({ data: basicUser1.user, role: 'admin' }, secret, { expiresIn: '30d' })
-};
-const headerBasicUser2 = {
-  'Authorization': 'Bearer ' + jwt.sign({ data: basicUser2.user, role: 'basic' }, secret, { expiresIn: '30d' })
 };
 
 describe('Learning Path with Access Control', () => {
@@ -68,6 +58,10 @@ describe('Learning Path with Access Control', () => {
       .set(headersAdmin1)
       .send(routeCourseData)
       .end((err, res) => {
+        console.log(res.body);
+
+        res.should.be.json;
+        res.body.should.have.property('course');
         done();
       });
   });
@@ -78,6 +72,9 @@ describe('Learning Path with Access Control', () => {
       .set('Content-Type', 'application/json')
       .set(headersAdmin1)
       .end((err, res) => {
+        res.should.be.json;
+        res.body.should.have.property('course');
+
         done();
       });
   });
@@ -88,6 +85,8 @@ describe('Learning Path with Access Control', () => {
       .set('Content-Type', 'application/json')
       .set(headersAdmin2)
       .end((err, res) => {
+        res.should.be.json;
+        res.body.should.have.property('learningpath');
         done();
       });
   });
@@ -98,7 +97,12 @@ describe('Learning Path with Access Control', () => {
       .set('Content-Type', 'application/json')
       .set(headersSuperAdmin1)
       .end((err, res) => {
+        res.should.be.json;
+        res.body.should.have.property('course');
         done();
       });
   });
 });
+
+
+

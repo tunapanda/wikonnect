@@ -3,12 +3,7 @@ const expect = chai.expect;
 const chaiHttp = require('chai-http');
 const server = require('../index');
 const knex = require('../db/db');
-
-const jwt = require('jsonwebtoken');
-const { secret } = require('../middleware/jwt');
-
 const tokens = require('./_tokens');
-
 
 chai.should();
 chai.use(chaiHttp);

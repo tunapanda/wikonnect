@@ -45,6 +45,9 @@ router.get('/', async ctx => {
     course.forEach(child => {
       Object.keys(userPermissions)
         .forEach(perm => {
+          if (!ctx.state.user) {
+            userPermissions.read = 'true';
+          }
           if (ctx.state.user.data.role.toLowerCase() == 'superadmin') {
             userPermissions[perm] = 'true';
           } else if (ctx.state.user.data.id === child.creatorId || ctx.state.user.data.role.toLowerCase() == 'admin') {
@@ -106,7 +109,7 @@ router.get('/:id', permController.grantAccess('readAny', 'path'), async ctx => {
 });
 
 
-router.post('/', permController.grantAccess('createAny', 'path'), validateCourses, async ctx => {
+router.post('/', permController.grantAccess('readAny', 'path'), validateCourses, async ctx => {
   let { modules, ...newCourse } = ctx.request.body.course;
 
   let course;
@@ -120,22 +123,22 @@ router.post('/', permController.grantAccess('createAny', 'path'), validateCourse
   }
   insertType('course_modules', modules, course.id);
 
-  Object.keys(userPermissions)
-    .forEach(perm => {
-      if (ctx.state.user.role.toLowerCase() == 'superadmin') {
-        userPermissions[perm] = 'true';
-      }
-      if (ctx.state.user.data.id === course.creatorId || ctx.state.user.role.toLowerCase() == 'admin') {
-        userPermissions[perm] = 'true';
-        userPermissions.delete = 'false';
-      }
-      if (course.status === 'draft' && ctx.state.user.data.id === course.creatorId) {
-        userPermissions.read = 'true';
-        userPermissions.update = 'true';
-      } else {
-        userPermissions.read = 'true';
-      }
-    });
+  // Object.keys(userPermissions)
+  //   .forEach(perm => {
+  //     if (ctx.state.user.role.toLowerCase() == 'superadmin') {
+  //       userPermissions[perm] = 'true';
+  //     }
+  //     if (ctx.state.user.data.id === course.creatorId || ctx.state.user.role.toLowerCase() == 'admin') {
+  //       userPermissions[perm] = 'true';
+  //       userPermissions.delete = 'false';
+  //     }
+  //     if (course.status === 'draft' && ctx.state.user.data.id === course.creatorId) {
+  //       userPermissions.read = 'true';
+  //       userPermissions.update = 'true';
+  //     } else {
+  //       userPermissions.read = 'true';
+  //     }
+  //   });
 
   ctx.status = 2001;
   course['permissions'] = userPermissions;
@@ -143,6 +146,7 @@ router.post('/', permController.grantAccess('createAny', 'path'), validateCourse
 });
 
 router.put('/:id', permController.grantAccess('deleteOwn', 'path'), async ctx => {
+  let { modules, ...newCourse } = ctx.request.body.course;
 
   let course;
   try {

@@ -1,4 +1,3 @@
-const chai = require('chai');
 const jsonwebtoken = require('jsonwebtoken');
 const { secret } = require('../middleware/jwt');
 
@@ -40,4 +39,4 @@ module.exports = {
   headersAdmin1,
   headersAdmin2,
   headerBasicUser2
-}
+};

@@ -43,7 +43,7 @@ router.post('/', validateAuthRoutes.validateNewUser, getUserByUsername, createPa
   ctx.body = { user };
 });
 
-router.get('/:id', permController.requireAuth, permController.grantAccess('readAny', 'profile'),  async ctx => {
+router.get('/:id', permController.requireAuth, permController.grantAccess('readOwn', 'profile'),  async ctx => {
   const user = await User.query().findById(ctx.params.id);
 
   if (!user) {
@@ -54,7 +54,7 @@ router.get('/:id', permController.requireAuth, permController.grantAccess('readA
   ctx.body = { user };
 
 });
-router.get('/', jwt.authenticate, permController.grantAccess('readAny', 'profile'), async ctx => {
+router.get('/', permController.grantAccess('readAny', 'profile'), async ctx => {
   let user = User.query();
 
   if (ctx.query.username) {

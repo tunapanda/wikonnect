@@ -1,6 +1,5 @@
 const Router = require('koa-router');
 const LearningPath = require('../models/learning_path');
-const { roles, userPermissions } = require('../middleware/_helpers/roles');
 const { validatePaths } = require('../middleware/validation/validatePostData');
 const permController = require('../middleware/permController');
 

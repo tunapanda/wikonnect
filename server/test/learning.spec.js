@@ -32,7 +32,7 @@ const invalidPutData ={
   learningPath:{
     creator_id : 'pub'
   }
-}
+};
 const invalidData = {
   learningPath: {
     'id': 'learning_path11',

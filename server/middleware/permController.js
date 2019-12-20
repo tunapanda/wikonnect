@@ -61,7 +61,6 @@ exports.requireAuth = async function (ctx, next) {
 exports.grantAccess = function (action, resource) {
 
   return async (ctx, next) => {
-    console.log(ctx.state.user);
     try {
       const permission = roles.can(ctx.state.user.role)[action](resource);
       if (!permission.granted) {

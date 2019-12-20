@@ -34,71 +34,73 @@ async function insertType(model, collection, parent_id) {
       'lesson_id': element,
       'module_id': parent_id
     };
-    knex(model).insert(data);
+    await knex(model).insert(data);
   }
 }
 
 
-router.get('/:id', async ctx => {
+router.get('/:id', permController.grantAccess('readAny', 'path'), async ctx => {
   const modules = await Module.query().findById(ctx.params.id).eager('lessons(selectNameAndId)');
 
   ctx.assert(modules, 404, 'No matching record found');
 
   returnType(modules);
 
-  modules.forEach(child => {
-    Object.keys(userPermissions)
-      .forEach(perm => {
-        if (ctx.state.user.data.role.toLowerCase() == 'superadmin') {
-          userPermissions[perm] = 'true';
-        } else if (ctx.state.user.data.id === child.creatorId || ctx.state.user.data.role.toLowerCase() == 'admin') {
-          userPermissions[perm] = 'true';
-          userPermissions.delete = 'false';
-        } else if (ctx.state.user.data.id != child.creatorId) {
-          userPermissions.read = 'true';
-          userPermissions.update = 'false';
-          userPermissions.create = 'false';
-          userPermissions.delete = 'false';
-        } else if (child.status === 'draft' && ctx.state.user.data.id === child.creatorId) {
-          userPermissions.read = 'true';
-          userPermissions.update = 'true';
-        }
-        child.permission = userPermissions;
-      });
-  });
+  Object.keys(userPermissions)
+    .forEach(perm => {
+      if (ctx.state.user.role.toLowerCase() == 'superadmin') {
+        userPermissions[perm] = 'true';
+      } else if (ctx.state.user.role.toLowerCase() == 'admin' && ctx.state.user.data.id != modules.creatorId) {
+        userPermissions[perm] = 'true';
+        userPermissions.update = 'false';
+        userPermissions.create = 'false';
+        userPermissions.delete = 'false';
+      } else if (ctx.state.user.data.id === modules.creatorId && ctx.state.user.role.toLowerCase() == 'admin') {
+        userPermissions[perm] = 'true';
+        userPermissions.delete = 'false';
+      } else if (modules.status === 'draft' && ctx.state.user.data.id === modules.creatorId) {
+        userPermissions.read = 'true';
+        userPermissions.update = 'true';
+      } else {
+        userPermissions.read = 'true';
+        userPermissions.update = 'false';
+        userPermissions.delete = 'false';
+        userPermissions.create = 'false';
+      }
+    });
 
   ctx.status = 200;
   ctx.body = { modules };
 });
 
-router.get('/', async ctx => {
+router.get('/', permController.grantAccess('readAny', 'path'), async ctx => {
   try {
     const modules = await Module.query().where(ctx.query).eager('lessons(selectNameAndId)');
 
     returnType(modules);
 
-    Object.keys(userPermissions)
-      .forEach(perm => {
-        if (ctx.state.user.role.toLowerCase() == 'superadmin') {
-          userPermissions[perm] = 'true';
-        } else if (ctx.state.user.role.toLowerCase() == 'admin' && ctx.state.user.data.id != modules.creatorId) {
-          userPermissions[perm] = 'true';
-          userPermissions.update = 'false';
-          userPermissions.create = 'false';
-          userPermissions.delete = 'false';
-        } else if (ctx.state.user.data.id === modules.creatorId && ctx.state.user.role.toLowerCase() == 'admin') {
-          userPermissions[perm] = 'true';
-          userPermissions.delete = 'false';
-        } else if (modules.status === 'draft' && ctx.state.user.data.id === modules.creatorId) {
-          userPermissions.read = 'true';
-          userPermissions.update = 'true';
-        } else {
-          userPermissions.read = 'true';
-          userPermissions.update = 'false';
-          userPermissions.delete = 'false';
-          userPermissions.create = 'false';
-        }
-      });
+    modules.forEach(child => {
+      Object.keys(userPermissions)
+        .forEach(perm => {
+          if (ctx.state.user.data.role.toLowerCase() == 'superadmin') {
+            userPermissions[perm] = 'true';
+          } else if (ctx.state.user.data.id === child.creatorId || ctx.state.user.data.role.toLowerCase() == 'admin') {
+            userPermissions[perm] = 'true';
+            userPermissions.delete = 'false';
+          } else if (ctx.state.user.data.id != child.creatorId) {
+            userPermissions.read = 'true';
+            userPermissions.update = 'false';
+            userPermissions.create = 'false';
+            userPermissions.delete = 'false';
+          } else if (child.status === 'draft' && ctx.state.user.data.id === child.creatorId) {
+            userPermissions.read = 'true';
+            userPermissions.update = 'true';
+          }
+          child.permission = userPermissions;
+        });
+    });
+
+
     ctx.status = 200;
     modules['permissions'] = userPermissions;
 
@@ -110,7 +112,7 @@ router.get('/', async ctx => {
   }
 });
 
-router.post('/', validateModules, async ctx => {
+router.post('/', permController.grantAccess('createAny', 'path'), validateModules, async ctx => {
 
   let { lessons, ...newModule } = ctx.request.body.module;
 
@@ -142,7 +144,7 @@ router.post('/', validateModules, async ctx => {
   ctx.body = { modules };
 
 });
-router.put('/:id', async ctx => {
+router.put('/:id', permController.grantAccess('deleteOwn', 'path'), async ctx => {
   let { lessons, ...newModule } = ctx.request.body.module;
 
   const modules = await Module.query().patchAndFetchById(ctx.params.id, newModule);
@@ -158,11 +160,11 @@ router.put('/:id', async ctx => {
       if (ctx.state.user.role.toLowerCase() == 'superadmin') {
         userPermissions[perm] = 'true';
       }
-      if (ctx.state.user.data.id === course.creatorId || ctx.state.user.role.toLowerCase() == 'admin') {
+      if (ctx.state.user.data.id === modules.creatorId || ctx.state.user.role.toLowerCase() == 'admin') {
         userPermissions[perm] = 'true';
         userPermissions.delete = 'false';
       }
-      if (course.status === 'draft' && ctx.state.user.data.id === course.creatorId) {
+      if (modules.status === 'draft' && ctx.state.user.data.id === modules.creatorId) {
         userPermissions.read = 'true';
         userPermissions.update = 'true';
       }
@@ -183,7 +185,7 @@ router.delete('/:id', async ctx => {
         userPermissions[perm] = 'true';
       }
     });
-    
+
   ctx.status = 200;
   ctx.body = { modules };
 });

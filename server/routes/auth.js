@@ -11,9 +11,7 @@ const router = new Router({
 
 router.post('/', validateAuthRoutes.validateUserLogin, async ctx => {
   let user = await User.query().where('username', ctx.request.body.username);
-
   ctx.assert(user.length, 401, 'no user', { errors: { username: ['Username does not exist.'] } });
-
   let { hash: hashPassword, ...userInfoWithoutPassword } = user[0];
 
   user = user[0];
@@ -36,9 +34,7 @@ router.post('/', validateAuthRoutes.validateUserLogin, async ctx => {
     ctx.body = {
       error: 'bad password'
     };
-    return;
   }
-  return ctx;
 });
 
 module.exports = router.routes();
