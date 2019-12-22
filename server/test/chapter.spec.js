@@ -13,7 +13,7 @@ chai.use(chaiJSON);
 const route = '/api/v1/chapters/';
 const itemID = 'chapter19';
 const data = {
-  chapter: {
+  'chapter': {
     'id': itemID,
     'name': 'Testing chapter Path',
     'slug': 'testing-chapter-path',
@@ -26,13 +26,13 @@ const data = {
 };
 
 const putData = {
-  chapter: {
-    'name': 'PUT update works',
+  'chapter': {
+    'name': 'PUT update works'
   }
 };
 
 const invalidData = {
-  chapter: {
+  'chapter': {
     'id': itemID,
     'name': 'Testing Chapter Route',
     'slug': 'testing-chapter-route',

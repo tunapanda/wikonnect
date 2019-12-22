@@ -1,3 +1,6 @@
+/**
+ * global logger for dev mode
+ */
 module.exports = async function (ctx, next) {
   const start = Date.now();
   await next();

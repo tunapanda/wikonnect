@@ -3,11 +3,11 @@ const validate = require('validate.js');
 
 async function validateActivity(ctx, next) {
   try {
-    await validate.async(ctx.request.body, {
-      user_id: {
+    await validate.async(ctx.request.body.activity, {
+      userId: {
         presence: true,
       },
-      chapter_id: {
+      chapterId: {
         presence: true,
       },
       progress: {

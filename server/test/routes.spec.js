@@ -7,27 +7,27 @@ chai.should();
 chai.use(chaiHttp);
 
 const lessonRoute = '/api/v1/lessons/';
-const lessonID = 'basics3';
+const lessonID = 'lesson143';
 const lessonData = {
   lesson: {
-    'id': 'lesson11',
+    'id': lessonID,
     'name': 'Testing Lessons Path',
     'slug': 'testing-lesson-path',
     'description': 'Testing organization of the courses.',
     'status': 'published',
-    'creatorId': 'user1'
+    'creatorId': 'user1',
   }
 };
 
 const putData = {
-  lesson: {
+  lesson:{
     'name': 'PUT update works',
   }
 };
 
 const invalidData = {
   lesson: {
-    'id': 'lesson_path10',
+    'id': lessonID,
     'name': 'Testing Learning Path',
     'slug': 'testing-lesson-path',
     'description': 'Testing organization of the courses.',
@@ -39,7 +39,7 @@ const invalidData = {
 const activityRoute = '/api/v1/activity/';
 const activityID = 'activity1';
 const activityData = {
-  activity: {
+  'activity':{
     'id': 'activity44',
     'userId': 'user1',
     'chapterId': 'chapter1',
@@ -47,6 +47,7 @@ const activityData = {
     'progress': '54'
   }
 };
+
 /**
  * Test lessonRoutes
  * -- lessons
@@ -71,13 +72,14 @@ describe('LESSONS ROUTE', () => {
         res.should.be.json;
         res.body.should.be.a('object');
         res.body.should.have.property('errors');
+        res.body.errors.should.have.property('creatorId');
         done();
       });
   });
   it('Should throw an ERROR on PUT with invalid path', done => {
     chai
       .request(server)
-      .put(lessonRoute + lessonID + '1')
+      .put(lessonRoute + lessonID + '54')
       .set('Content-Type', 'application/json')
       .send(putData)
       .end((err, res) => {
