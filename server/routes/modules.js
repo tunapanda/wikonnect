@@ -2,7 +2,8 @@ const Router = require('koa-router');
 const Module = require('../models/module');
 const { validateModules } = require('../middleware/validation/validatePostData');
 
-const config = require('../knexfile.js')['development'];
+const environment = process.env.NODE_ENV || 'development';
+const config = require('../knexfile.js')[environment];
 const knex = require('knex')(config);
 
 

@@ -15,11 +15,15 @@ class Lesson extends Model {
   static get relationMappings() {
     return {
       chapters: {
-        relation: Model.HasManyRelation,
+        relation: Model.ManyToManyRelation,
         modelClass: __dirname + '/chapter',
         join: {
           from: 'lessons.id',
-          to: 'chapters.lessonId'
+          through: {
+            from: 'lesson_chapters.lesson_id',
+            to: 'lesson_chapters.chapter_id'
+          },
+          to: 'chapters.id'
         }
       }
     };
