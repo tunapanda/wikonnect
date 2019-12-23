@@ -131,7 +131,8 @@ router.post('/', permController.grantAccess('readAny', 'path'), validateCourses,
     } else { ctx.throw(400, null, { errors: [e.message] }); }
     throw e;
   }
-  // insertType('course_modules', modules, course.id);
+  insertType('course_modules', modules, course.id);
+
   function permObjects() {
     Object.keys(userPermissions)
       .forEach(perm => {
