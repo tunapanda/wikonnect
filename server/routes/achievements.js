@@ -46,14 +46,12 @@ router.post('/', validateAchievement, async ctx => {
 });
 router.put('/:id', async ctx => {
   let putAchievement = ctx.request.body.achievement;
-
   const achievement_record = await Achievement.query().findById(ctx.params.id);
 
   if (!achievement_record) {
     ctx.throw(400, 'That achievement does not exist');
   }
   const achievement = await Achievement.query().patchAndFetchById(ctx.params.id, putAchievement);
-
 
   ctx.status = 201;
   ctx.body = { achievement };

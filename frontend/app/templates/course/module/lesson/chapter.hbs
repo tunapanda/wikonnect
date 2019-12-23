@@ -3,16 +3,19 @@
 <div id="chapter">
 
 
-  <div class="heading">
-    <h2>{{model.name}}</h2>
+  <div class="heading ">
+    <h2>{{model.name}} x</h2>
 
-    <p> {{model.description}}</p>
+    {{!-- <p> {{model.description}}</p> --}}
   </div>
 
 
 
-  <div class="chapter-content">
+  <div class="chapter-content padded">
+    <br>
     <H5p @location={{model.contentUri}} />
+    <br>
+    <p> {{model.description}}</p>
   </div>
 
 </div>

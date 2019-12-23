@@ -11,16 +11,22 @@
 @import "profile";
 @import "common/utils";
 
-@import url("https://rsms.me/inter/inter.css");
+
+@import url('https://rsms.me/inter/inter.css');
 
 html {
-  font-family: "Inter", sans-serif;
+  font-family: 'Inter', sans-serif;
 }
 
 @supports (font-variation-settings: normal) {
   html {
-    font-family: "Inter var", sans-serif;
+    font-family: 'Inter var', sans-serif;
   }
+}
+
+body {
+  font-family: 'Inter var', sans-serif;
+
 }
 
 @import "ember-bootstrap/bootstrap";

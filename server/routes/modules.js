@@ -76,7 +76,7 @@ router.get('/:id', permController.grantAccess('readAny', 'path'), async ctx => {
         userPermissions.create = 'false';
       }
     });
-  course.permissions = userPermissions;
+  modules.permissions = userPermissions;
 
   ctx.status = 200;
   ctx.body = { modules };
