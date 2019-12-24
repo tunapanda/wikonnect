@@ -16,6 +16,19 @@
 
 }
 
+.achievement {
+  display: flex;
+  flex-direction: row;
+  padding-top: 7px;
+
+  img {
+    margin-top: 6px;
+    padding-right: 8px;
+  }
+
+
+}
+
 .profile-acheivements {
   margin-top: 50px;
   display: flex;

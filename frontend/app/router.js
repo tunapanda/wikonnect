@@ -2,8 +2,8 @@ import EmberRouter from '@ember/routing/router';
 import config from './config/environment';
 
 export default class Router extends EmberRouter {
-  location=config.locationType;
-  rootURL=config.rootURL;
+  location = config.locationType;
+  rootURL = config.rootURL;
 }
 
 Router.map(function () {
@@ -32,8 +32,12 @@ Router.map(function () {
 
         );
 
-        this.route('chapter', {
-          path: '/chapter/:chapter_id'
+        this.route('chapter', function () {
+          this.route('index', {
+            path: '/:chapter_slug'
+          }
+
+          );
         }
 
         );
@@ -64,9 +68,9 @@ Router.map(function () {
     path: '/profile/:username'
   }
 
-  , function () {
-    this.route('settings');
-  }
+    , function () {
+      this.route('settings');
+    }
 
   );
   this.route('search');

@@ -64,13 +64,17 @@
     {{/if}}
 
     {{#if (eq profileView "Learning")}}
-      <h4>My completed courses</h4>
+      <h5>My Achievements</h5>
       {{#if model.achievements.length}}
         {{#each model.achievments as  |achievement|}}
           {{achievement.name}}
         {{/each}}
       {{else}}
-        You have not completed any courses
+        {{!-- You have not completed any courses --}}
+        <Achievement />
+        <Achievement />
+        <Achievement />
+
       {{/if}}
 
     {{/if}}
