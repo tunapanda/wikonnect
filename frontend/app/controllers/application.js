@@ -19,12 +19,12 @@ export default class ApplicationController extends Controller {
 
   @computed('currentRouteName')
   get headerStyle() {
-    let route = this.get('currentRouteName')
+    let route = this.get('currentRouteName');
     if (Object.keys(this.headerStyles).includes(route)) {
-      return this.headerStyles[route]
+      return this.headerStyles[route];
     }
     else {
-      return this.headerStyles.default
+      return this.headerStyles.default;
     }
   }
 

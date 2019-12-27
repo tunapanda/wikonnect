@@ -27,25 +27,49 @@
   padding-top: 70px;
 }
 
+@mixin btnx {
+  padding: 10px;
+  text-align: center;
+  border-radius: 7px;
+  color: white;
+  margin-top: 8px;
+
+  btnx:hover {
+    background-color: white;
+    color: black;
+    text-decoration: none;
+
+  }
+}
+
 .learn {
+  @include btnx;
+
   background-color: #F57010;
   border: 0;
 
 }
 
 .teach {
+  @include btnx;
+
   background-color: #32A583;
   border: 0;
 
 }
 
-.build {
+.buildr {
+  @include btnx;
   background-color: #FFCF00;
   border: 0;
 
 }
 
 .login {
+  @include btnx;
+  color: white;
+  border-style: solid;
+  border-width: 2px;
   background: none;
   border-color: white;
 }
