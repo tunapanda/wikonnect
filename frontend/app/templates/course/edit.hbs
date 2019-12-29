@@ -17,8 +17,7 @@
     {{/each}}
   {{/sortable-objects}}
   <h5>Add modules to your course</h5>
-  <PowerSelect @searchEnabled={{true}} @options={{allModules}} @searchField="name" @selected={{selectedModule}}
-    @onChange={{action (mut selectedModule)}} as |module|>
+  <PowerSelect @searchEnabled={{true}} @options={{allModules}} @searchField="name" @selected={{selectedModule}} @onChange={{action (mut selectedModule)}} as |module|>
     {{module.name}}
   </PowerSelect>
   {{#if selectedModule}}
