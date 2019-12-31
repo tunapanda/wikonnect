@@ -157,7 +157,6 @@ describe('CHAPTER ROUTE', () => {
       .get(route + '?slug=a-learning')
       .set(tokens.headersSuperAdmin1)
       .end((err, res) => {
-        console.log(res.body);
         res.should.have.status(200);
         assert.equal(res.body.chapter.length, 0);
         done();
