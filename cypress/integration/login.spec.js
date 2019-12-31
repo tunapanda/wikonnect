@@ -9,7 +9,7 @@ describe('Login Page', function () {
 
     cy.get('.submit').click();
 
-    cy.location('pathname').should('eq', '/');
+    cy.location('pathname').should('eq', '/login');
   });
 
   it('should validate', function () {
