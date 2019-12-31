@@ -136,29 +136,33 @@ router.post('/', permController.grantAccess('readAny', 'path'), validateCourses,
   function permObjects() {
     Object.keys(userPermissions)
       .forEach(perm => {
-        if (ctx.state.user.role.toLowerCase() == 'superadmin') {
+        if (ctx.state.user.data.role.toLowerCase() == 'superadmin') {
           userPermissions[perm] = 'true';
         }
-        if (ctx.state.user.data.id === course.creatorId || ctx.state.user.role.toLowerCase() == 'admin') {
+        if (ctx.state.user.data.id === course.creatorId || ctx.state.user.data.role.toLowerCase() == 'admin') {
           userPermissions[perm] = 'true';
           userPermissions.delete = 'false';
         }
         if (course.status === 'draft' && ctx.state.user.data.id === course.creatorId) {
           userPermissions.read = 'true';
           userPermissions.update = 'true';
-        } else {
-          userPermissions.read = 'true';
+        // } else {
+        //   userPermissions.read = 'true';
         }
       });
     return course.permissions = userPermissions;
   }
 
-  ctx.status = 2001;
+  ctx.status = 201;
   course['permissions'] = permObjects();
   ctx.body = { course };
 });
 
 router.put('/:id', permController.grantAccess('deleteOwn', 'path'), async ctx => {
+  const course_record = await Course.query().findById(ctx.params.id);
+  if (!course_record) {
+    ctx.throw(400, 'That course does not exist');
+  }
   let { modules, ...newCourse } = ctx.request.body.course;
 
   let course;
@@ -170,18 +174,16 @@ router.put('/:id', permController.grantAccess('deleteOwn', 'path'), async ctx =>
     } else { ctx.throw(400, null, { errors: ['Bad Request'] }); }
     throw e;
   }
-  if (!course) {
-    ctx.throw(400, 'That course does not exist');
-  }
+
   await knex('course_modules').where({ 'course_id': course.id }).del();
   insertType('course_modules', modules, course.id);
 
   Object.keys(userPermissions)
     .forEach(perm => {
-      if (ctx.state.user.role.toLowerCase() == 'superadmin') {
+      if (ctx.state.user.data.role.toLowerCase() == 'superadmin') {
         userPermissions[perm] = 'true';
       }
-      if (ctx.state.user.data.id === course.creatorId || ctx.state.user.role.toLowerCase() == 'admin') {
+      if (ctx.state.user.data.id === course.creatorId || ctx.state.user.data.role.toLowerCase() == 'admin') {
         userPermissions[perm] = 'true';
         userPermissions.delete = 'false';
       }
@@ -202,7 +204,7 @@ router.delete('/:id', async ctx => {
   ctx.assert(course, 401, 'No ID was found');
   Object.keys(userPermissions)
     .forEach(perm => {
-      if (ctx.state.user.role.toLowerCase() == 'superadmin') {
+      if (ctx.state.user.data.role.toLowerCase() == 'superadmin') {
         userPermissions[perm] = 'true';
       }
     });
