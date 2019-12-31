@@ -30,7 +30,7 @@ async function returnChapterStatus(chapter, achievement) {
 
 router.get('/', async ctx => {
   try {
-    const chapter = await Chapter.query();
+    const chapter = await Chapter.query().where(ctx.query);
     const achievement = await Achievement.query().where('user_id', ctx.state.user.data.id);
 
     returnChapterStatus(chapter, achievement);

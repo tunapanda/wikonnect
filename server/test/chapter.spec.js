@@ -3,6 +3,7 @@ const assert = chai.assert;
 const chaiHttp = require('chai-http');
 const chaiJSON = require('chai-json-schema');
 const server = require('../index');
+const tokens = require('./_tokens');
 
 
 chai.should();
@@ -48,6 +49,7 @@ describe('CHAPTER ROUTE', () => {
       .request(server)
       .post(route)
       .set('Content-Type', 'application/json')
+      .set(tokens.headersSuperAdmin1)
       .send(data)
       .end((err, res) => {
         res.status.should.eql(201);
@@ -60,6 +62,7 @@ describe('CHAPTER ROUTE', () => {
     chai
       .request(server)
       .get(route)
+      .set(tokens.headersSuperAdmin1)
       .end((err, res) => {
         res.should.have.status(200);
         res.should.be.json;
@@ -67,7 +70,7 @@ describe('CHAPTER ROUTE', () => {
         res.body.chapter[0].should.have.property('name');
         res.body.chapter[0].should.have.property('slug');
         res.body.chapter[0].should.have.property('creatorId');
-        res.body.chapter[0].should.have.property('lesson');
+        res.body.chapter[0].should.have.property('lessonId');
         done();
       });
   });
@@ -75,6 +78,7 @@ describe('CHAPTER ROUTE', () => {
     chai
       .request(server)
       .get(route + itemID)
+      .set(tokens.headersSuperAdmin1)
       .end((err, res) => {
         res.should.have.status(200);
         res.should.be.json;
@@ -90,6 +94,7 @@ describe('CHAPTER ROUTE', () => {
     chai
       .request(server)
       .get(route + '?slug=testing-chapter-path')
+      .set(tokens.headersSuperAdmin1)
       .end((err, res) => {
         res.should.have.status(200);
         res.should.be.json;
@@ -105,6 +110,7 @@ describe('CHAPTER ROUTE', () => {
       .request(server)
       .put(route + itemID)
       .set('Content-Type', 'application/json')
+      .set(tokens.headersSuperAdmin1)
       .send(putData)
       .end((err, res) => {
         res.status.should.eql(201);
@@ -119,6 +125,7 @@ describe('CHAPTER ROUTE', () => {
       .request(server)
       .post(route)
       .set('Content-Type', 'application/json')
+      .set(tokens.headersSuperAdmin1)
       .send(invalidData)
       .end((err, res) => {
         res.status.should.eql(400);
@@ -135,6 +142,7 @@ describe('CHAPTER ROUTE', () => {
       .request(server)
       .put(route + 'chapter778')
       .set('Content-Type', 'application/json')
+      .set(tokens.headersSuperAdmin1)
       .send(putData)
       .end((err, res) => {
         res.status.should.eql(400);
@@ -147,7 +155,9 @@ describe('CHAPTER ROUTE', () => {
     chai
       .request(server)
       .get(route + '?slug=a-learning')
+      .set(tokens.headersSuperAdmin1)
       .end((err, res) => {
+        console.log(res.body);
         res.should.have.status(200);
         assert.equal(res.body.chapter.length, 0);
         done();
@@ -158,6 +168,7 @@ describe('CHAPTER ROUTE', () => {
       .request(server)
       .delete(route + itemID)
       .set('Content-Type', 'application/json')
+      .set(tokens.headersSuperAdmin1)
       .end((err, res) => {
         res.status.should.eql(200);
         res.should.be.json;
