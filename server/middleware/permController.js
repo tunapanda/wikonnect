@@ -1,5 +1,4 @@
 const jwToken = require('jsonwebtoken');
-const User = require('../models/user');
 const { roles } = require('./_helpers/roles');
 // const { defaultPermissionObject } = require('./_helpers/permission');
 const { secret } = require('../middleware/jwt');
