@@ -1,11 +1,15 @@
 const Router = require('koa-router');
 const Achievement = require('../models/achievement');
 const validateAchievement = require('../middleware/validation/validateAchievement');
+const fetch = require('node-fetch');
+
+const lrsDomain = ' http://www.example.org';
+const lrsPrefix = 'data/xAPI/statements';
+const lrsServerAuth = 'Basic NTlkZGQzYmY4YTA5ZDAzMzU5OTBiOWZhOjVhZTcyZDA3MjQ4ODdhNWM2MTY4MzEwYQ==';
 
 const router = new Router({
   prefix: '/achievements'
 });
-
 
 router.get('/', async ctx => {
   try {
@@ -27,20 +31,69 @@ router.get('/:id', async ctx => {
   ctx.body = { achievement };
 });
 
+/**
+ * {
+  "actor": {
+    "name": "Sally Glider",
+    "mbox": "mailto:sally@domain.com"
+  },
+  "verb": {
+    "id": "http://adlnet.gov/expapi/verbs/experienced",
+    "display": { "en-US": "experienced" }
+  },
+  "object": {
+    "id": "http://example.com/activities/solo-hang-gliding",
+    "definition": {
+      "name": { "en-US": "Solo Hang Gliding" }
+    }
+  }
+}
+ */
+
+/**
+ * storing in the postgresql
+ *{
+ *   "actor": { "mbox": "mailto:test1@example.org" },
+ *   "verb": { "id": "http://www.example.org/verb" },
+ *   "object": { "id": "http://www.example.org/activity" },
+ * }
+ */
 
 router.post('/', validateAchievement, async ctx => {
-  let newAchievement = ctx.request.body.achievement;
+  let newAchievement = ctx.request.body.achievement.statement;
 
-  const achievement_record = await Achievement.query().where('id', newAchievement.id);
+  const xAPIRecord = {
+    user_id: newAchievement.actor.mbox,
+    target_status: newAchievement.verb.id,
+    target: newAchievement.object.id,
+    description: newAchievement.object.description
+  };
 
-  if (achievement_record.length > 0) {
-    ctx.throw(401, 'record already exists');
+  try {
+    await fetch(lrsDomain + lrsPrefix, {
+      body: JSON.stringify({
+        statement: {
+          newAchievement
+        },
+        ttl: 10000
+      }),
+      headers: {
+        'authorization': lrsServerAuth,
+        'content-type': 'application/json',
+      },
+      method: 'POST'
+    });
+    console.log(`Connection to Learning Locker on ${lrsDomain} successfully`);
+  } catch (e) {
+    if (e.name !== 'ConnectionError') {
+      console.log(e);
+    } else {
+      console.log(`Connection to Learning Locker on ${lrsDomain} failed`);
+    }
   }
-
-  const achievement = await Achievement.query().insertAndFetch(newAchievement);
+  const achievement = await Achievement.query().insertAndFetch(xAPIRecord);
 
   ctx.status = 201;
-
   ctx.body = { achievement };
 
 });
