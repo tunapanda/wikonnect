@@ -22,13 +22,13 @@ const port = process.argv.indexOf('--port') > -1 ? process.argv[process.argv.ind
 // app.set('port', port);
 // app.set('host', '0.0.0.0');
 
-/**
+/*
  * Create Server
  */
 
 const server = http.createServer(app.callback());
 
-/**
+/*
  * Listen on provided port, on all network interfaces.
  */
 

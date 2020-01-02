@@ -25,6 +25,21 @@
 }
 
 
+.sort-list {
+  display: flex;
+  flex-direction: row;
+
+} 
+
+.form-actions {
+  display: flex;
+  justify-content: space-between;
+}
+
+.card-body {
+  padding-bottom: 1em;
+}
+
 .invalid-feedback {
   font-size: 0.2rem;
   color: red;
