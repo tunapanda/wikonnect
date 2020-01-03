@@ -4,6 +4,7 @@ const validateAuthRoutes = require('../middleware/validation/validateAuthRoutes'
 const bcrypt = require('bcrypt');
 const jsonwebtoken = require('jsonwebtoken');
 const { secret } = require('../middleware/jwt');
+const sendMAil = require('../utils/sendMail');
 
 const router = new Router({
   prefix: '/auth'
@@ -35,6 +36,34 @@ router.post('/', validateAuthRoutes.validateUserLogin, async ctx => {
       error: 'bad password'
     };
   }
+});
+
+router.get('/reset/:mail', async ctx => {
+  let confirmEmail = await User.query().where('email', ctx.params.mail);
+  confirmEmail = confirmEmail[0];
+
+  if (!confirmEmail) {
+    ctx.throw(401, 'no user found with that email');
+  }
+
+  const token = jsonwebtoken.sign({
+    data: confirmEmail,
+    exp: Math.floor(Date.now() / 1000 + 604800) // 60 seconds * 60 minutes * 24 hours * 7 days = 1 week
+  }, secret);
+
+  try {
+    let status = sendMAil(ctx.params.mail, token);
+    console.log(status);
+  } catch (error) {
+    console.log(error.message);
+  }
+
+  ctx.status = 201;
+  ctx.body = { confirmEmail };
+});
+
+router.get('/validate/:resetToken', async ctx => {
+  console.log(ctx.params.resetToken);
 });
 
 module.exports = router.routes();

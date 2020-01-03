@@ -54,7 +54,7 @@ router.get('/:id', permController.requireAuth, permController.grantAccess('readO
   ctx.body = { user };
 
 });
-router.get('/', permController.grantAccess('readAny', 'profile'), async ctx => {
+router.get('/', permController.requireAuth, permController.grantAccess('readOwn', 'profile'), async ctx => {
   let user = User.query();
 
   if (ctx.query.username) {
@@ -72,8 +72,6 @@ router.put('/:id', jwt.authenticate, permController.grantAccess('updateOwn', 'pr
   const user = await User.query().patchAndFetchById(ctx.params.id, ctx.request.body.user);
 
   ctx.assert(user, 404, 'That user does not exist.');
-
-  ctx.status = 200;
 
   ctx.status = 200;
   ctx.body = { user };

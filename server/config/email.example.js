@@ -1,9 +1,9 @@
 module.exports = {
   mailgun: {
     auth: {
-      api_key: '',
-      domain: 'kummit.io'
+      apiKey: 'key-wikonnect.org',
+      domain: 'wikonnect.org'
     }
   },
-  default_from: 'Kummit <hello@kummit.io>'
+  default_from: 'Wikonnect <hello@wikonnect.org>'
 };
