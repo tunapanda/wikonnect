@@ -5,6 +5,34 @@ const bcrypt = require('bcrypt');
 const jsonwebtoken = require('jsonwebtoken');
 const { secret } = require('../middleware/jwt');
 const sendMAil = require('../utils/sendMail');
+const redis = require('redis');
+const redisClient = redis.createClient(); // default setting.
+
+
+// function(callback) {
+//   redisClient.exists(req.body.to, function (err, reply) {
+//     if (err) {
+//       return callback(true, "Error in redis");
+//     }
+//     if (reply === 1) {
+//       return callback(true, "Email already requested");
+//     }
+//     callback(null);
+//   });
+// }
+// function(callback) {
+//   // Generating random string.
+//   let rand = Math.floor((Math.random() * 100) + 54);
+//   let encodedMail = new Buffer(req.body.to).toString('base64');
+//   let link = "http://" + req.get('host') + "/verify?mail=" + encodedMail + "&id=" + rand;
+//   let mailOptions = {
+//     from: 'youremail@domain.com',
+//     to: req.body.to,
+//     subject: "Please confirm your Email account",
+//     html: "Hello,<br> Please Click on the link to verify your email.<br><a href=" + link + ">Click here to verify</a>"
+//   };
+//   callback(null, mailOptions, rand);
+// },
 
 const router = new Router({
   prefix: '/auth'
@@ -62,8 +90,14 @@ router.get('/reset/:mail', async ctx => {
   ctx.body = { confirmEmail };
 });
 
-router.get('/validate/:resetToken', async ctx => {
-  console.log(ctx.params.resetToken);
+router.get('/validate', async ctx => {
+  const buf = Buffer.from('okemwamoses@gmail.com', 'ascii').toString('base64');
+  console.log(buf);
+
+  const ver = Buffer.from('b2tlbXdhbW9zZXNAZ21haWwuY29t', 'base64').toString('ascii');
+
+  ctx.body =  { buf, ver };
+
 });
 
 module.exports = router.routes();
