@@ -74,14 +74,20 @@ router.get('/reset/:mail', async ctx => {
     ctx.throw(401, 'no user found with that email');
   }
 
-  const token = jsonwebtoken.sign({
-    data: confirmEmail,
-    exp: Math.floor(Date.now() / 1000 + 604800) // 60 seconds * 60 minutes * 24 hours * 7 days = 1 week
-  }, secret);
+  const rand = Math.floor((Math.random() * 100) + 54);
+  const resetMail = confirmEmail.email;
+
+  const reply = redisClient.exists(resetMail);
+  if (reply !== true) {
+    ctx.throw(401, 'Email verification already requested');
+  }
+
+  redisClient.set(resetMail, rand);
+  redisClient.expire(resetMail, 600);
 
   try {
-    let status = sendMAil(ctx.params.mail, token);
-    console.log(status);
+    const buf = Buffer.from(resetMail, 'ascii').toString('base64');
+    sendMAil(buf, rand);
   } catch (error) {
     console.log(error.message);
   }
@@ -91,12 +97,19 @@ router.get('/reset/:mail', async ctx => {
 });
 
 router.get('/validate', async ctx => {
-  const buf = Buffer.from('okemwamoses@gmail.com', 'ascii').toString('base64');
-  console.log(buf);
+  const decodedMail = Buffer.from(ctx.query.mail, 'base64').toString('ascii');
 
-  const ver = Buffer.from('b2tlbXdhbW9zZXNAZ21haWwuY29t', 'base64').toString('ascii');
+  const getEmail = redisClient.get(decodedMail);
+  if (getEmail === false) {
+    ctx.throw(401, 'Invalid email address');
+  }
+  const delEmail = redisClient.del(decodedMail, ctx.query.id);
+  if (delEmail !== true) {
+    ctx.throw(401, 'Token error');
+  }
 
-  ctx.body =  { buf, ver };
+  ctx.status = 200;
+  ctx.body = { message: 'Email has been verified' };
 
 });
 

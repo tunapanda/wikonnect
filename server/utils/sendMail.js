@@ -11,12 +11,13 @@ const mailgun = require('mailgun-js')(emailAuth.mailgun.auth);
 let from_who = emailAuth.default_from; //Your sending email address
 
 
-module.exports = async function sendMAil(mail, token) {
+module.exports = async function sendMAil(mail, rand) {
+  const link = 'http://localhost:3000/api/v1/auth/validate?mail=' + mail + '&id=' + rand;
   let data = {
     from: from_who,
-    to: mail,
+    to: Buffer.from(mail, 'base64').toString('ascii'),
     subject: 'Hello from Mailgun',
-    html: 'Hello, This is not a plain-text email, I wanted to test some spicy Mailgun sauce in NodeJS! <a href="http://0.0.0.0:3030/validate' + token + '">Password reset link here</a>'
+    html: 'Hello, This is not a plain-text email, I wanted to test some spicy Mailgun sauce in NodeJS! <br><a href=' + link + '>Password reset link here</a>'
   };
 
   //Invokes the method to send emails given the above data with the helper library
