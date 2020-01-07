@@ -27,30 +27,56 @@
   padding-top: 70px;
 }
 
+@mixin btnx {
+  padding: 10px;
+  text-align: center;
+  border-radius: 7px;
+  color: white;
+  margin-top: 8px;
+
+  btnx:hover {
+    background-color: white;
+    color: black;
+    text-decoration: none;
+
+  }
+}
+
 .learn {
+  @include btnx;
+
   background-color: #F57010;
   border: 0;
 
 }
 
 .teach {
+  @include btnx;
+
   background-color: #32A583;
   border: 0;
 
 }
 
-.build {
+.buildr {
+  @include btnx;
   background-color: #FFCF00;
   border: 0;
 
 }
 
 .login {
+  @include btnx;
+  color: white;
+  border-style: solid;
+  border-width: 2px;
   background: none;
   border-color: white;
 }
 
-#white-header {
+
+
+@mixin header {
   position: fixed;
   width: 100%;
   top: 0;
@@ -60,5 +86,49 @@
   justify-content: space-between;
   padding: 1em;
   z-index: 999;
+}
 
+.white-header {
+  @include header;
+  background-color: $primary-purple;
+}
+
+.orange-header {
+  @include header;
+
+  background-color: #F57010;
+}
+
+.yellow-header {
+  @include header;
+
+  background-color: #fecf00;
+}
+
+.green-header {
+  @include header;
+
+  background-color: #00AA83;
+}
+
+.bg-green {
+  background-color: #00AA83;
+  color: white;
+
+}
+
+.bg-yellow {
+  background-color: #fecf00;
+  color: black;
+}
+
+.bg-orange {
+  background-color: #F57010;
+  color: white;
+
+}
+
+.bg-purple {
+  background-color: $primary-purple;
+  color: white;
 }
