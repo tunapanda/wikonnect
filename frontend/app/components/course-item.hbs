@@ -11,6 +11,9 @@
       </span>
       <div class="course-description">{{@description}}</div>
       <hr>
+      <BsProgress as |pg|>
+        <pg.bar @showLabel={{true}} @roundDigits={{0}} @type="success" @value={{50}} />
+      </BsProgress>
       <div class="course-meta"> <span>5 topics </span><span>5 minutes</span></div>
 
     </div>
