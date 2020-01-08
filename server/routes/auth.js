@@ -1,5 +1,6 @@
 const Router = require('koa-router');
 const User = require('../models/user');
+const UserVerification = require('../models/user_verification');
 const validateAuthRoutes = require('../middleware/validation/validateAuthRoutes');
 const bcrypt = require('bcrypt');
 const jsonwebtoken = require('jsonwebtoken');
@@ -8,31 +9,6 @@ const sendMAil = require('../utils/sendMail');
 const redis = require('redis');
 const redisClient = redis.createClient(); // default setting.
 
-
-// function(callback) {
-//   redisClient.exists(req.body.to, function (err, reply) {
-//     if (err) {
-//       return callback(true, "Error in redis");
-//     }
-//     if (reply === 1) {
-//       return callback(true, "Email already requested");
-//     }
-//     callback(null);
-//   });
-// }
-// function(callback) {
-//   // Generating random string.
-//   let rand = Math.floor((Math.random() * 100) + 54);
-//   let encodedMail = new Buffer(req.body.to).toString('base64');
-//   let link = "http://" + req.get('host') + "/verify?mail=" + encodedMail + "&id=" + rand;
-//   let mailOptions = {
-//     from: 'youremail@domain.com',
-//     to: req.body.to,
-//     subject: "Please confirm your Email account",
-//     html: "Hello,<br> Please Click on the link to verify your email.<br><a href=" + link + ">Click here to verify</a>"
-//   };
-//   callback(null, mailOptions, rand);
-// },
 
 const router = new Router({
   prefix: '/auth'
@@ -89,7 +65,7 @@ router.get('/reset/:mail', async ctx => {
     const buf = Buffer.from(resetMail, 'ascii').toString('base64');
     sendMAil(buf, rand);
   } catch (error) {
-    console.log(error.message);
+    ctx.body = error.message;
   }
 
   ctx.status = 201;
@@ -108,8 +84,30 @@ router.get('/validate', async ctx => {
     ctx.throw(401, 'Token error');
   }
 
+  // after validation update user verification table with current data
+  let confirmEmail = await User.query().where('email', decodedMail);
+  if (!confirmEmail[0]) {
+    ctx.throw(401, 'No user with that email');
+  }
+  let userId = confirmEmail[0].id;
+  const data = {
+    userId: userId,
+    email: true,
+    phoneNumber: true
+  };
+
+  // check if validation record already exists
+  // if it does then update the record and avid making a new one
+  let verifiedData = await UserVerification.query().where('user_id', userId);
+  let veedData;
+  if (!verifiedData[0]) {
+    veedData = await UserVerification.query().insertAndFetch(data);
+  } else {
+    veedData = await UserVerification.query().patchAndFetchById(verifiedData[0].id, data);
+  }
+
   ctx.status = 200;
-  ctx.body = { message: 'Email has been verified' };
+  ctx.body = { message: 'Email has been verified', veedData };
 
 });
 

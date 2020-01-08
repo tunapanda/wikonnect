@@ -53,14 +53,14 @@ router.get('/:id', permController.requireAuth, permController.grantAccess('readO
     ctx.throw(404, 'No User With that Id');
   }
 
+  // get all users awards
   const achievementAwards = await knex('achievement_awards').where({ 'user_id': ctx.params.id });
-  if (achievementAwards.length) {
-    user.achievementAwards = achievementAwards;
-  } else {
-    console.log('nothing to display');
-    user.achievementAwards = 'No achievement awarded';
-  }
+  user.achievementAwards = achievementAwards;
 
+  // get all verification data
+  // const userVerification = await UserVerification.query().where({ 'user_id': ctx.params.id });
+  const userVerification = await knex('user_verification').where({ 'user_id': ctx.params.id });
+  user.userVerification = userVerification;
 
   ctx.status = 200;
   ctx.body = { user };
