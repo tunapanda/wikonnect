@@ -1,5 +1,6 @@
 const Router = require('koa-router');
 const Lesson = require('../models/lesson');
+const Chapter = require('../models/chapter');
 const { validateLessons } = require('../middleware/validation/validatePostData');
 
 const environment = process.env.NODE_ENV || 'development';
@@ -19,7 +20,7 @@ async function insertType(model, collection, parent_id) {
         'chapters_id': element,
         'lesson_id': parent_id
       };
-      knex(model).insert(data);
+      await knex(model).insert(data);
     }
   } catch (error) {
     // handle rejection
@@ -27,14 +28,22 @@ async function insertType(model, collection, parent_id) {
 
   }
 }
-
+async function attachChapters(lessons, chapters) {
+  for (let index = 0; index < lessons.length; index++) {
+    const lesson = lessons[index];
+    console.log(lesson.id);
+    if (lesson.id === chapters[index].lessonId) {
+      lesson.chapters = chapters;
+    }
+  }
+}
 
 router.get('/:id', async ctx => {
   const lesson = await Lesson.query().findById(ctx.params.id);
+  ctx.assert(lesson, 404, 'no lesson by that ID');
+
   const chapters = await lesson.$relatedQuery('chapters').where('lessonId', lesson.id);
   lesson.chapters = chapters;
-
-  ctx.assert(lesson, 404, 'no lesson by that ID');
 
   ctx.status = 200;
   ctx.body = { lesson };
@@ -42,10 +51,13 @@ router.get('/:id', async ctx => {
 
 router.get('/', async ctx => {
   try {
-    const lesson = await Lesson.query().where(ctx.query);
+    let lessons = await Lesson.query().where(ctx.query);
+    let chapters = await Chapter.query();
+
+    attachChapters(lessons, chapters);
 
     ctx.status = 200;
-    ctx.body = { lesson};
+    ctx.body = { lessons };
   } catch (error) {
     ctx.status = 400;
     ctx.body = { message: 'The query key does not exist' };
