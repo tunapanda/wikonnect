@@ -29,9 +29,14 @@
       Have a Wikonnect account?
     </div>
   </div>
-  {{#link-to "login"}}
-    <button class="login">
-      Log In
-    </button>
-  {{/link-to}}
+
+  {{#if myProfile}}
+
+
+    {{#link-to "login"}}
+      <button class="login">
+        Log In
+      </button>
+    {{/link-to}}
+  {{/if}}
 </div>
