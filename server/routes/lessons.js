@@ -36,7 +36,7 @@ async function insertType(model, collection, parent_id) {
       knex(model).insert(data);
     }
   } catch (error) {
-    // handle rejection
+    // handle rejection gracefully
     console.log(error.message);
 
   }
