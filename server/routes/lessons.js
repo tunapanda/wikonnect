@@ -11,20 +11,6 @@ const router = new Router({
   prefix: '/lessons'
 });
 
-async function returnType(parent) {
-  if (parent.length == undefined) {
-    parent.chapters.forEach(lesson => {
-      return lesson.type = 'chapters';
-    });
-  } else {
-    parent.forEach(mod => {
-      mod.chapters.forEach(lesson => {
-        return lesson.type = 'chapters';
-      });
-    });
-  }
-}
-
 async function insertType(model, collection, parent_id) {
   try {
     for (let index = 0; index < collection.length; index++) {
@@ -44,22 +30,22 @@ async function insertType(model, collection, parent_id) {
 
 
 router.get('/:id', async ctx => {
-  const lesson = await Lesson.query().findById(ctx.params.id).eager('chapters(selectId)');
+  const lesson = await Lesson.query().findById(ctx.params.id);
+  const chapters = await lesson.$relatedQuery('chapters').where('lessonId', lesson.id);
+  lesson.chapters = chapters;
 
   ctx.assert(lesson, 404, 'no lesson by that ID');
-  returnType(lesson);
+
   ctx.status = 200;
   ctx.body = { lesson };
 });
 
 router.get('/', async ctx => {
   try {
-    const lesson = await Lesson.query().where(ctx.query).eager('chapters(selectId)');
-
-    returnType(lesson);
+    const lesson = await Lesson.query().where(ctx.query);
 
     ctx.status = 200;
-    ctx.body = { lesson };
+    ctx.body = { lesson};
   } catch (error) {
     ctx.status = 400;
     ctx.body = { message: 'The query key does not exist' };
@@ -68,7 +54,7 @@ router.get('/', async ctx => {
 });
 
 router.post('/', validateLessons, async ctx => {
-  let { chapters, ...newLesson}  = ctx.request.body.lesson;
+  let { chapters, ...newLesson } = ctx.request.body.lesson;
 
   newLesson.slug = newLesson.name.replace(/[^a-z0-9]+/gi, '-')
     .replace(/^-*|-*$/g, '')
