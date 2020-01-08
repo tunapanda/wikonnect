@@ -9,6 +9,9 @@ export default class ProfileController extends Controller {
   @inject
   me;
 
+  queryParams = ['view'];
+  view = "Profile";
+
   @computed()
   get myProfile() {
     return (this.me.user.id == this.model.id);

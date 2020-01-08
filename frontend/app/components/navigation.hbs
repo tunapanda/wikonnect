@@ -19,7 +19,8 @@
       Logout
 
     {{/link-to}}
-    {{#link-to "home" invokeAction=(action "closenav")  }}
+    {{#link-to "profile" me.user.username (query-params view="Settings")
+  invokeAction=(action "closenav")  }}
       Settings
 
     {{/link-to}}
