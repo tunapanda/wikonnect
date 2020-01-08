@@ -31,9 +31,11 @@ async function insertType(model, collection, parent_id) {
 async function attachChapters(lessons, chapters) {
   for (let index = 0; index < lessons.length; index++) {
     const lesson = lessons[index];
-    console.log(lesson.id);
-    if (lesson.id === chapters[index].lessonId) {
+    console.log(chapters[index].lessonId);
+    if (chapters[index].lessonId === lesson.id) {
       lesson.chapters = chapters;
+    } else {
+      lesson.chapters = 'no chapters';
     }
   }
 }
@@ -51,13 +53,13 @@ router.get('/:id', async ctx => {
 
 router.get('/', async ctx => {
   try {
-    let lessons = await Lesson.query().where(ctx.query);
+    let lesson = await Lesson.query().where(ctx.query);
     let chapters = await Chapter.query();
 
-    attachChapters(lessons, chapters);
+    attachChapters(lesson, chapters);
 
     ctx.status = 200;
-    ctx.body = { lessons };
+    ctx.body = { lesson };
   } catch (error) {
     ctx.status = 400;
     ctx.body = { message: 'The query key does not exist' };
