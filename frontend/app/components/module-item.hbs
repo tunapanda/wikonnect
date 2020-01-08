@@ -9,7 +9,9 @@
 
   {{/link-to}}
   {{!-- <div>{{@module.description}}</div> --}}
-
+  <BsProgress as |pg|>
+    <pg.bar @showLabel={{true}} @roundDigits={{0}} @type="success" @value={{50}} />
+  </BsProgress>
   <p>~ 5 Minutes</p>
 
 

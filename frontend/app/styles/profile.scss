@@ -10,6 +10,44 @@
   justify-content: space-between;
 }
 
+.profile-name {
+  margin-left: 120px;
+  margin-top: 25px;
+
+}
+
+.achievement {
+  display: flex;
+  flex-direction: row;
+  padding-top: 7px;
+
+  img {
+    margin-top: 6px;
+    padding-right: 8px;
+  }
+
+
+}
+
+.profile-acheivements {
+  margin-top: 50px;
+  display: flex;
+  flex-direction: row;
+  text-align: left;
+  justify-content: space-around;
+
+  h2 {
+    font-weight: 500;
+    font-size: 39px;
+  }
+
+  p {
+    font-size: smaller;
+    font-weight: 300;
+  }
+
+}
+
 .profile-body {}
 
 .profile-submit {
@@ -17,8 +55,10 @@
 }
 
 .profile-picture {
-  width: 70px;
-  border-radius: 35px;
+  position: absolute;
+  top: 100px;
+  width: 100px;
+  border-radius: 50px;
   margin-right: 10px;
 }
 

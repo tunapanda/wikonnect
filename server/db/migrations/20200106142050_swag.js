@@ -1,4 +1,4 @@
-const { idGenerator, idGenRemoval } = require('../id_generator');
+const { idGenerator } = require('../id_generator');
 
 exports.up = knex =>
   knex.schema
@@ -14,5 +14,4 @@ exports.up = knex =>
 
 exports.down = knex =>
   knex.schema
-    .dropTableIfExists('user_verification')
-    .raw(idGenRemoval);
+    .dropTableIfExists('user_verification');

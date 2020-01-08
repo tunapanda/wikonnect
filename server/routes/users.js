@@ -6,6 +6,9 @@ const getUserByUsername = require('../middleware/authenticate');
 const permController = require('../middleware/permController');
 const jwt = require('../middleware/jwt');
 
+const environment = process.env.NODE_ENV || 'development';
+const config = require('../knexfile.js')[environment];
+const knex = require('knex')(config);
 
 const router = new Router({
   prefix: '/users'
@@ -49,6 +52,15 @@ router.get('/:id', permController.requireAuth, permController.grantAccess('readO
   if (!user) {
     ctx.throw(404, 'No User With that Id');
   }
+
+  const achievementAwards = await knex('achievement_awards').where({ 'user_id': ctx.params.id });
+  if (achievementAwards.length) {
+    user.achievementAwards = achievementAwards;
+  } else {
+    console.log('nothing to display');
+    user.achievementAwards = 'No achievement awarded';
+  }
+
 
   ctx.status = 200;
   ctx.body = { user };

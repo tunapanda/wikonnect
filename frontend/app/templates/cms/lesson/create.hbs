@@ -13,8 +13,8 @@
                 <chapterForm.element @label="Name" @placeholder="Name" @property="name" @required={{true}} />
                 <chapterForm.element @controlType="textarea" @label="Description" @property="description" />
                 <div class="form-actions">
-                  <Forms::Upload @multiple="false" @accept=".h5p" @filesSelected={{action "fileAdded" chapter}}>Upload
-                    H5P
+                  <Forms::Upload @multiple="false" @accept=".h5p" @filesSelected={{action "fileAdded" chapter}}>
+                    Upload H5P
                   </Forms::Upload>
                   <BsButton @type="danger" @onClick={{action "removeChapter" chapter}}>Remove</BsButton>
                 </div>
