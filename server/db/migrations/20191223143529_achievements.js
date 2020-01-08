@@ -1,6 +1,6 @@
 
-exports.up = function (knex) {
-  return knex.schema
+exports.up = knex =>
+  knex.schema
     .table('achievements', table => {
       table.text('user_id');
       table.text('target');
@@ -13,22 +13,18 @@ exports.up = function (knex) {
       table.text('badge_name');
       table.text('image_url');
       table.text('metadata');
-      table.dropColumn('achievement_id');
-      table.dropColumn('user_id');
-      table.timestamps();
     });
-};
 
-exports.down = function (knex) {
-  return knex.schema
+exports.down = knex =>
+  knex.schema
     .table('achievements', table => {
       table.dropColumn('user_id');
       table.dropColumn('target');
       table.dropColumn('target_status');
-    }).table('achievement_awards', table => {
-      table.dropColumn('user_id');
+    })
+    .table('achievement_awards', table => {
       table.dropColumn('badge_name');
       table.dropColumn('image_url');
       table.dropColumn('metadata');
     });
-};
+
