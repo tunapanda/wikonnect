@@ -25,18 +25,21 @@
         Build
       </div>
     </a>
-    <div class="centered">
-      Have a Wikonnect account?
-    </div>
+
+
+
+
+
+    {{#if (is-empty myProfile)}}
+      <div class="centered">
+        Have a Wikonnect account?
+      </div>
+      {{#link-to "login"}}
+        <button class="login">
+          Log In
+        </button>
+      {{/link-to}}
+    {{/if}}
   </div>
 
-  {{#if myProfile}}
-
-
-    {{#link-to "login"}}
-      <button class="login">
-        Log In
-      </button>
-    {{/link-to}}
-  {{/if}}
 </div>
