@@ -3,6 +3,27 @@
     <img class="profile-picture" alt="" src="/images/profile-placeholder.gif">
     <h2 class="profile-name">{{name}}</h2>
   </div>
+
+
+
+  <div class="profile-acheivements">
+    <div>
+      <h2>0</h2>
+      <p>TOPICS VIEWED</p>
+    </div>
+
+
+    <div>
+      <h2>0</h2>
+      <p>MOJA POINTS</p>
+    </div>
+
+
+    <div>
+      <h2>0</h2>
+      <p>BADGES</p>
+    </div>
+  </div>
   <div class="profile-body padded">
     <div class="profile-options">
       <BsButtonGroup @value={{profileView}} @type="radio" @onChange={{action (mut profileView)}} as |bg|>
@@ -13,6 +34,7 @@
       </BsButtonGroup>
 
     </div>
+
     <hr>
 
     {{#if (eq profileView "Profile")}}
@@ -42,13 +64,17 @@
     {{/if}}
 
     {{#if (eq profileView "Learning")}}
-      <h4>My completed courses</h4>
+      <h5>My Achievements</h5>
       {{#if model.achievements.length}}
         {{#each model.achievments as  |achievement|}}
           {{achievement.name}}
         {{/each}}
       {{else}}
-        You have not completed any courses
+        {{!-- You have not completed any courses --}}
+        <Achievement />
+        <Achievement />
+        <Achievement />
+
       {{/if}}
 
     {{/if}}
