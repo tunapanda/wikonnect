@@ -109,7 +109,6 @@ describe('CHAPTER ROUTE', () => {
         res.body.chapter[0].should.have.property('name');
         res.body.chapter[0].should.have.property('slug');
         res.body.chapter[0].should.have.property('creatorId');
-        res.body.chapter[0].should.have.property('lesson');
         done();
       });
   });

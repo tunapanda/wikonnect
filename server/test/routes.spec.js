@@ -94,8 +94,6 @@ describe('LESSONS ROUTE', () => {
       .request(server)
       .get(lessonRoute + '?slug=a-something-else')
       .end((err, res) => {
-        console.log(res.body);
-
         res.should.have.status(200);
         assert.equal(res.body.lesson.length, 0);
         done();
