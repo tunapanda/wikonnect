@@ -25,23 +25,6 @@ async function returnType(parent) {
   }
 }
 
-async function insertType(model, collection, parent_id) {
-  try {
-    for (let index = 0; index < collection.length; index++) {
-      const element = collection[index];
-      let data = {
-        'chapters_id': element,
-        'lesson_id': parent_id
-      };
-      await knex(model).insert(data);
-    }
-  } catch (error) {
-    // handle rejection
-    console.log(error.message);
-
-  }
-}
-
 router.get('/:id', async ctx => {
   const lesson = await Lesson.query().findById(ctx.params.id).eager('chapters(selectNameAndId)');
   ctx.assert(lesson, 404, 'no lesson by that ID');
@@ -67,7 +50,7 @@ router.get('/', async ctx => {
 });
 
 router.post('/', validateLessons, async ctx => {
-  let { chapters, ...newLesson } = ctx.request.body.lesson;
+  let newLesson = ctx.request.body.lesson;
 
   newLesson.slug = newLesson.name.replace(/[^a-z0-9]+/gi, '-')
     .replace(/^-*|-*$/g, '')
@@ -83,8 +66,6 @@ router.post('/', validateLessons, async ctx => {
     throw e;
   }
 
-  insertType('lesson_chapters', chapters, lesson.id);
-
   ctx.assert(lesson, 401, 'Something went wrong');
 
   ctx.status = 201;
@@ -94,7 +75,7 @@ router.post('/', validateLessons, async ctx => {
 
 
 router.put('/:id', async ctx => {
-  let { chapters, ...newLesson } = ctx.request.body.lesson;
+  let newLesson = ctx.request.body.lesson;
 
   const checkLesson = await Lesson.query().findById(ctx.params.id);
 
@@ -111,10 +92,6 @@ router.put('/:id', async ctx => {
     } else { ctx.throw(400, null, { errors: ['Bad Request'] }); }
     throw e;
   }
-
-
-  await knex('lesson_chapters').where({ 'lesson_id': lesson.id }).del();
-  insertType('lesson_chapters', chapters, lesson.id);
 
   ctx.status = 201;
   ctx.body = { lesson };
