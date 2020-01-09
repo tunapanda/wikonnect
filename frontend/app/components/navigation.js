@@ -22,7 +22,7 @@ export default class NavigationComponent extends Component {
     this.me.logout();
     document.location.reload();
 
-    this.router.transitionTo('index');
+    this.router.transitionTo('home');
 
 
   }
