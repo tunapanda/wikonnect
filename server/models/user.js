@@ -13,7 +13,7 @@ class User extends Model {
   }
 
   get $virtualFields() {
-    return ['firstName','lastName','aboutMe']; 
+    return ['firstName','lastName','aboutMe'];
   }
 
   get $secureFields() {
@@ -33,6 +33,14 @@ class User extends Model {
             to: 'enrollments.courseId'
           },
           to: 'courses.id'
+        }
+      },
+      achievement_awards: {
+        relation: Model.ManyToManyRelation,
+        modelClass: __dirname + '/achievement_awards',
+        join: {
+          from: 'users.id',
+          to: 'achievement_awards.userId'
         }
       }
     };
