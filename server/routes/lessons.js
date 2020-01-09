@@ -12,6 +12,20 @@ const router = new Router({
   prefix: '/lessons'
 });
 
+async function returnType(parent) {
+  if (parent.length == undefined) {
+    parent.chapters.forEach(chapter => {
+      return chapter.type = 'chapters';
+    });
+  } else {
+    parent.forEach(mod => {
+      mod.chapters.forEach(chapter => {
+        return chapter.type = 'chapters';
+      });
+    });
+  }
+}
+
 async function insertType(model, collection, parent_id) {
   try {
     for (let index = 0; index < collection.length; index++) {
@@ -28,35 +42,21 @@ async function insertType(model, collection, parent_id) {
 
   }
 }
-async function attachChapters(lessons, chapters) {
-  for (let index = 0; index < lessons.length; index++) {
-    const lesson = lessons[index];
-    console.log(chapters[index].lessonId);
-    if (chapters[index].lessonId === lesson.id) {
-      lesson.chapters = chapters;
-    } else {
-      lesson.chapters = 'no chapters';
-    }
-  }
-}
 
 router.get('/:id', async ctx => {
-  const lesson = await Lesson.query().findById(ctx.params.id);
+  const lesson = await Lesson.query().findById(ctx.params.id).eager('chapters(selectNameAndId)');
   ctx.assert(lesson, 404, 'no lesson by that ID');
 
-  const chapters = await lesson.$relatedQuery('chapters').where('lessonId', lesson.id);
-  lesson.chapters = chapters;
-
+  returnType(lesson);
   ctx.status = 200;
   ctx.body = { lesson };
 });
 
 router.get('/', async ctx => {
   try {
-    let lesson = await Lesson.query().where(ctx.query);
-    let chapters = await Chapter.query();
+    let lesson = await Lesson.query().where(ctx.query).eager('chapters(selectNameAndId)');
 
-    attachChapters(lesson, chapters);
+    returnType(lesson);
 
     ctx.status = 200;
     ctx.body = { lesson };
