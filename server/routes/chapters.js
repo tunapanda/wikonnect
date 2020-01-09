@@ -10,28 +10,10 @@ const router = new Router({
 });
 
 
-async function returnType(parent) {
-  try {
-    if (parent.length == undefined) {
-      parent.lesson.forEach(lesson => {
-        return lesson.type = 'lessons';
-      });
-    } else {
-      parent.forEach(mod => {
-        mod.lesson.forEach(lesson => {
-          return lesson.type = 'lessons';
-        });
-      });
-    }
-  } catch (error) {
-    null;
-  }
-}
-
 router.get('/', async ctx => {
   try {
-    const chapter = await Chapter.query().where(ctx.query).eager('lesson');
-    returnType(chapter);
+    const chapter = await Chapter.query().where(ctx.query);
+
     ctx.status = 200;
     ctx.body = { chapter };
   } catch (error) {
@@ -41,10 +23,8 @@ router.get('/', async ctx => {
 });
 
 router.get('/:id', async ctx => {
-  const chapter = await Chapter.query().findById(ctx.params.id).eager('lesson');
+  const chapter = await Chapter.query().findById(ctx.params.id);
   ctx.assert(chapter, 404, 'no lesson by that ID');
-
-  returnType(chapter);
 
   ctx.status = 200;
   ctx.body = { chapter };
