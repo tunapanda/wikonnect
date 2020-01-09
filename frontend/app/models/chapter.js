@@ -1,5 +1,5 @@
 import DS from 'ember-data';
-const { Model, attr, belongsTo, hasMany } = DS;
+const { Model, attr, belongsTo } = DS;
 
 export default class ChapterModel extends Model {
   @attr name;
@@ -10,5 +10,5 @@ export default class ChapterModel extends Model {
   @attr contentUri;
 
   @belongsTo('user') creator;
-  @hasMany('lesson') lessons;
+  @belongsTo('lesson') lesson;
 }

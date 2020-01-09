@@ -31,7 +31,7 @@ async function insertType(model, collection, course_id) {
       'module_id': element,
       'course_id': course_id
     };
-    knex(model).insert(data);
+    await knex(model).insert(data);
   }
 }
 

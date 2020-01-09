@@ -6,6 +6,7 @@ export default class CmsLessonCreateRoute extends Route {
   me
 
   model(params) {
-    return this.store.findRecord('lesson', params.lesson_id);
+    // return this.store.findRecord('lesson', params.lesson_id);
+    return this.store.findBySlug('lesson', params.lesson_slug);
   }
 }
