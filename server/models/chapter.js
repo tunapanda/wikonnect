@@ -43,8 +43,8 @@ class Chapter extends Model {
 
   static get modifiers() {
     return {
-      selectId: (builder) => {
-        builder.select('id');
+      selectNameAndId: (builder) => {
+        builder.select('id', 'name');
       }
     };
   }

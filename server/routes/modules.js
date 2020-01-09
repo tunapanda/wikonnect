@@ -33,7 +33,7 @@ async function insertType(model, collection, parent_id) {
       'lesson_id': element,
       'module_id': parent_id
     };
-    knex(model).insert(data);
+    await knex(model).insert(data);
   }
 }
 
