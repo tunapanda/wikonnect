@@ -25,13 +25,21 @@
         Build
       </div>
     </a>
-    <div class="centered">
-      Have a Wikonnect account?
-    </div>
+
+
+
+
+
+    {{#unless me.isAuthenticated}}
+      <div class="centered">
+        Have a Wikonnect account?
+      </div>
+      {{#link-to "login"}}
+        <button class="login">
+          Log In
+        </button>
+      {{/link-to}}
+    {{/unless}}
   </div>
-  {{#link-to "login"}}
-    <button class="login">
-      Log In
-    </button>
-  {{/link-to}}
+
 </div>
