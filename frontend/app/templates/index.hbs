@@ -30,7 +30,7 @@
 
 
 
-    {{#if (is-empty myProfile)}}
+    {{#unless me.isAuthenticated}}
       <div class="centered">
         Have a Wikonnect account?
       </div>
@@ -39,7 +39,7 @@
           Log In
         </button>
       {{/link-to}}
-    {{/if}}
+    {{/unless}}
   </div>
 
 </div>
