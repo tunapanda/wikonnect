@@ -17,7 +17,6 @@ async function getUserByUsername(ctx, next) {
     ctx.body = {
       error: 'User exists',
     };
-    return ctx;
   }
 }
 
