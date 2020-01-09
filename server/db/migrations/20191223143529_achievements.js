@@ -10,9 +10,11 @@ exports.up = knex =>
       table.dropColumn('name');
     })
     .table('achievement_awards', table => {
-      table.text('badge_name');
+      table.text('name');
+      table.text('slug');
       table.text('image_url');
       table.text('metadata');
+      table.text('id').notNullable().defaultTo(knex.raw('next_id()'));
     });
 
 exports.down = knex =>
@@ -23,8 +25,10 @@ exports.down = knex =>
       table.dropColumn('target_status');
     })
     .table('achievement_awards', table => {
-      table.dropColumn('badge_name');
+      table.dropColumn('name');
+      table.dropColumn('slug');
       table.dropColumn('image_url');
       table.dropColumn('metadata');
+      table.dropColumn('id');
     });
 

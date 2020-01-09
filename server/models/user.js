@@ -36,7 +36,7 @@ class User extends Model {
         }
       },
       achievement_awards: {
-        relation: Model.ManyToManyRelation,
+        relation: Model.HasManyRelation,
         modelClass: __dirname + '/achievement_awards',
         join: {
           from: 'users.id',

@@ -14,6 +14,21 @@ const router = new Router({
   prefix: '/users'
 });
 
+
+async function returnType(parent) {
+  if (parent.length == undefined) {
+    parent.achievement_awards.forEach(lesson => {
+      return lesson.type = 'achievement_awards';
+    });
+  } else {
+    parent.forEach(mod => {
+      mod.achievement_awards.forEach(lesson => {
+        return lesson.type = 'achievement_awards';
+      });
+    });
+  }
+}
+
 /**
  *
  * @param {ctx.request.body.user} ctx
@@ -47,15 +62,13 @@ router.post('/', validateAuthRoutes.validateNewUser, getUserByUsername, createPa
 });
 
 router.get('/:id', permController.requireAuth, permController.grantAccess('readOwn', 'profile'),  async ctx => {
-  const user = await User.query().findById(ctx.params.id);
+  const user = await User.query().findById(ctx.params.id).eager('achievement_awards(selectBadgeNameAndId)');
+  returnType(user);
+
 
   if (!user) {
     ctx.throw(404, 'No User With that Id');
   }
-
-  // get all users awards
-  const achievementAwards = await knex('achievement_awards').where({ 'user_id': ctx.params.id });
-  user.achievementAwards = achievementAwards;
 
   // get all verification data
   // const userVerification = await UserVerification.query().where({ 'user_id': ctx.params.id });
