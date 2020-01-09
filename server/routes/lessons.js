@@ -1,6 +1,5 @@
 const Router = require('koa-router');
 const Lesson = require('../models/lesson');
-const Chapter = require('../models/chapter');
 const { validateLessons } = require('../middleware/validation/validatePostData');
 
 const environment = process.env.NODE_ENV || 'development';
