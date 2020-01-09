@@ -81,7 +81,7 @@ Router.map(function () {
       this.route('create');
 
       this.route('edit', {
-        path: '/:lesson_id'
+        path: '/:lesson_slug'
       }
 
       );
