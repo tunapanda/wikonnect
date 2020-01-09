@@ -50,10 +50,13 @@ async function createPasswordHash(ctx, next) {
 router.post('/', validateAuthRoutes.validateNewUser, getUserByUsername, createPasswordHash, async ctx => {
 
   ctx.request.body.user.username = ctx.request.body.user.username.toLowerCase();
+  ctx.request.body.user.email = ctx.request.body.user.email.toLowerCase();
 
   let newUser = ctx.request.body.user;
 
   const user = await User.query().insertAndFetch(newUser);
+  console.log(user.email);
+
 
   ctx.assert(user, 401, 'Something went wrong.');
 
@@ -71,7 +74,6 @@ router.get('/:id', permController.requireAuth, permController.grantAccess('readO
   }
 
   // get all verification data
-  // const userVerification = await UserVerification.query().where({ 'user_id': ctx.params.id });
   const userVerification = await knex('user_verification').where({ 'user_id': ctx.params.id });
   user.userVerification = userVerification;
 
@@ -79,7 +81,7 @@ router.get('/:id', permController.requireAuth, permController.grantAccess('readO
   ctx.body = { user };
 
 });
-router.get('/', permController.requireAuth, permController.grantAccess('readOwn', 'profile'), async ctx => {
+router.get('/', permController.requireAuth, permController.grantAccess('readAny', 'profile'), async ctx => {
   let user = User.query();
 
   if (ctx.query.username) {
@@ -87,7 +89,8 @@ router.get('/', permController.requireAuth, permController.grantAccess('readOwn'
     ctx.assert(user, 404, 'No User With that username');
   }
 
-  user = await user;
+  user = await user.eager('achievement_awards(selectBadgeNameAndId)');
+  returnType(user);
 
   ctx.body = { user };
 });

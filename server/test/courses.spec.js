@@ -90,8 +90,6 @@ describe('COURSES ROUTES', () => {
       .set(tokens.headersSuperAdmin1)
       .send(data)
       .end((err, res) => {
-        console.log(res.body);
-
         res.status.should.eql(201);
         res.should.be.json;
         res.body.should.have.property('course');
