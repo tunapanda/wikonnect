@@ -1,8 +1,7 @@
 const Router = require('koa-router');
 const Lesson = require('../models/lesson');
-const Achievement = require('../models/achievement');
 const { validateLessons } = require('../middleware/validation/validatePostData');
-
+const achievementPercentage = require('../utils/achievementPercentage');
 const environment = process.env.NODE_ENV || 'development';
 const config = require('../knexfile.js')[environment];
 const knex = require('knex')(config);
@@ -46,27 +45,9 @@ async function insertType(model, collection, parent_id) {
 
 router.get('/:id', async ctx => {
   const lesson = await Lesson.query().findById(ctx.params.id).eager('chapters(selectId)');
-  const achievement = await Achievement.query().where('user_id', ctx.state.user.data.id);
-  console.log('user is ' + ctx.state.user.data.id);
 
-  let lessonChapters = [];
-  let achievementChapters = [];
-
-  lesson.chapters.forEach(chap => {
-    lessonChapters.push(chap.id);
-  });
-  achievement.forEach(element => {
-    if (element.targetStatus == 'completed') {
-      achievementChapters.push(element.target);
-    }
-  });
-
-  const completionMetric = {
-    type: 'percentage',
-    percent: (achievementChapters.length / lessonChapters.length) * 100
-  };
-
-  lesson.percentage = completionMetric;
+  await achievementPercentage(lesson, ctx.state.user.data.id);
+  // lesson.percentage = completionMetric;
 
   ctx.assert(lesson, 404, 'no lesson by that ID');
   returnType(lesson);
@@ -78,6 +59,7 @@ router.get('/', async ctx => {
   try {
     const lesson = await Lesson.query().where(ctx.query).eager('chapters(selectId)');
 
+    await achievementPercentage(lesson, ctx.state.user.data.id);
     returnType(lesson);
 
     ctx.status = 200;
