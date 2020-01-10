@@ -47,7 +47,25 @@ exports.seed = function (knex) {
           target_status: 'completed',
           created_at: '2017-12-20 19:17:10',
           updated_at: '2017-12-20 19:17:10'
-        }
+        },
+        {
+          id: 'achievements7',
+          user_id: 'user1',
+          target: 'chapter1',
+          description: 'completed chapter1',
+          target_status: 'started',
+          created_at: '2017-12-20 19:17:10',
+          updated_at: '2017-12-20 19:17:10'
+        },
+        {
+          id: 'achievements8',
+          user_id: 'user1',
+          target: 'chapter1',
+          description: 'completed chapter1',
+          target_status: 'attempted',
+          created_at: '2017-12-20 19:17:10',
+          updated_at: '2017-12-20 19:17:10'
+        },
       ]);
     });
 };

@@ -1,5 +1,6 @@
 const Router = require('koa-router');
 const Lesson = require('../models/lesson');
+const Achievement = require('../models/achievement');
 const { validateLessons } = require('../middleware/validation/validatePostData');
 
 const environment = process.env.NODE_ENV || 'development';
@@ -45,6 +46,27 @@ async function insertType(model, collection, parent_id) {
 
 router.get('/:id', async ctx => {
   const lesson = await Lesson.query().findById(ctx.params.id).eager('chapters(selectId)');
+  const achievement = await Achievement.query().where('user_id', ctx.state.user.data.id);
+  console.log('user is ' + ctx.state.user.data.id);
+
+  let lessonChapters = [];
+  let achievementChapters = [];
+
+  lesson.chapters.forEach(chap => {
+    lessonChapters.push(chap.id);
+  });
+  achievement.forEach(element => {
+    if (element.targetStatus == 'completed') {
+      achievementChapters.push(element.target);
+    }
+  });
+
+  const completionMetric = {
+    type: 'percentage',
+    percent: (achievementChapters.length / lessonChapters.length) * 100
+  };
+
+  lesson.percentage = completionMetric;
 
   ctx.assert(lesson, 404, 'no lesson by that ID');
   returnType(lesson);
