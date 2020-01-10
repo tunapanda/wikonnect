@@ -97,7 +97,7 @@ router.get('/:id', permController.grantAccess('readAny', 'path'), async ctx => {
           userPermissions.update = 'false';
           userPermissions.create = 'false';
           userPermissions.delete = 'false';
-        } else if (ctx.state.user.data.id === course.creatorId && ctx.state.user.data.role.toLowerCase() == 'admin') {
+        } else if (ctx.state.user.data.id === course.creatorId || ctx.state.user.data.role.toLowerCase() == 'admin') {
           userPermissions[perm] = 'true';
           userPermissions.delete = 'false';
         } else if (course.status === 'draft' && ctx.state.user.data.id === course.creatorId) {

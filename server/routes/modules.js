@@ -39,7 +39,7 @@ async function insertType(model, collection, parent_id) {
 }
 
 
-router.get('/:id', permController.grantAccess('readAny', 'path'), async ctx => {
+router.get('/:id', permController.grantAccess('readOwn', 'path'), async ctx => {
   const modules = await Module.query().findById(ctx.params.id).eager('lessons(selectNameAndId)');
 
   ctx.assert(modules, 404, 'No matching record found');
@@ -53,17 +53,14 @@ router.get('/:id', permController.grantAccess('readAny', 'path'), async ctx => {
         userPermissions.update = 'false';
         userPermissions.delete = 'false';
         userPermissions.create = 'false';
-      } else if (ctx.state.user.role.toLowerCase() == 'superadmin') {
+      } else if (ctx.state.user.data.role.toLowerCase() == 'superadmin') {
+        userPermissions[perm] = 'true';
+      } else if (ctx.state.user.data.role.toLowerCase() == 'admin' && ctx.state.user.data.id != modules.creatorId) {
         userPermissions[perm] = 'true';
         userPermissions.update = 'false';
         userPermissions.create = 'false';
         userPermissions.delete = 'false';
-      } else if (ctx.state.user.role.toLowerCase() == 'admin' && ctx.state.user.data.id != modules.creatorId) {
-        userPermissions[perm] = 'true';
-        userPermissions.update = 'false';
-        userPermissions.create = 'false';
-        userPermissions.delete = 'false';
-      } else if (ctx.state.user.data.id === modules.creatorId && ctx.state.user.role.toLowerCase() == 'admin') {
+      } else if (ctx.state.user.data.id === modules.creatorId || ctx.state.user.data.role.toLowerCase() == 'admin') {
         userPermissions[perm] = 'true';
         userPermissions.delete = 'false';
       } else if (modules.status === 'draft' && ctx.state.user.data.id === modules.creatorId) {
@@ -76,9 +73,10 @@ router.get('/:id', permController.grantAccess('readAny', 'path'), async ctx => {
         userPermissions.create = 'false';
       }
     });
-  modules.permissions = userPermissions;
+  // modules.permissions = userPermissions;
 
   ctx.status = 200;
+  modules['permissions'] = userPermissions;
   ctx.body = { modules };
 });
 
