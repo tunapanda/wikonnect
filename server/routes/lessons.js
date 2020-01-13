@@ -26,23 +26,6 @@ async function returnType(parent) {
   }
 }
 
-async function insertType(model, collection, parent_id) {
-  try {
-    for (let index = 0; index < collection.length; index++) {
-      const element = collection[index];
-      let data = {
-        'chapters_id': element,
-        'lesson_id': parent_id
-      };
-      knex(model).insert(data);
-    }
-  } catch (error) {
-    // handle rejection gracefully
-    console.log(error.message);
-
-  }
-}
-
 
 router.get('/:id', async ctx => {
   const lesson = await Lesson.query().findById(ctx.params.id).eager('chapters(selectNameAndId)');
