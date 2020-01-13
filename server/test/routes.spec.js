@@ -2,6 +2,8 @@ const chai = require('chai');
 const chaiHttp = require('chai-http');
 const server = require('../index');
 const assert = chai.assert;
+const tokens = require('./_tokens');
+
 
 chai.should();
 chai.use(chaiHttp);
@@ -92,6 +94,7 @@ describe('LESSONS ROUTE', () => {
     chai
       .request(server)
       .get(lessonRoute + '?slug=a-something-else')
+      .set(tokens.headerBasicUser2)
       .end((err, res) => {
         res.should.have.status(200);
         assert.equal(res.body.lesson.length, 0);
@@ -102,9 +105,10 @@ describe('LESSONS ROUTE', () => {
     chai
       .request(server)
       .get(lessonRoute + '?wishbone=a-lesson-path')
+      .set(tokens.headerBasicUser2)
       .end((err, res) => {
         res.should.have.status(400);
-        res.body.message.should.eql('The query key does not exist');
+        res.body.errors.should.eql(['Bad Request']);
         done();
       });
   });
@@ -114,6 +118,7 @@ describe('LESSONS ROUTE', () => {
       .request(server)
       .post(lessonRoute)
       .set('Content-Type', 'application/json')
+      .set(tokens.headerBasicUser2)
       .send(lessonData)
       .end((err, res) => {
         res.status.should.eql(201);
@@ -126,6 +131,7 @@ describe('LESSONS ROUTE', () => {
     chai
       .request(server)
       .get(lessonRoute)
+      .set(tokens.headerBasicUser2)
       .end((err, res) => {
         res.should.have.status(200);
         res.should.be.json;
@@ -140,6 +146,7 @@ describe('LESSONS ROUTE', () => {
     chai
       .request(server)
       .get(lessonRoute + '?slug=a-lesson')
+      .set(tokens.headerBasicUser2)
       .end((err, res) => {
         res.should.have.status(200);
         res.should.be.json;
@@ -154,6 +161,7 @@ describe('LESSONS ROUTE', () => {
     chai
       .request(server)
       .get(lessonRoute + lessonID)
+      .set(tokens.headerBasicUser2)
       .end((err, res) => {
         res.should.have.status(200);
         res.should.be.json;
