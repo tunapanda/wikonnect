@@ -92,51 +92,32 @@ router.get('/', permController.grantAccess('readAny', 'path'), async ctx => {
         achievementChapters.push(element.target);
       }
     });
+    console.log(achievementChapters);
 
-    // get all lesson id ina module
-    let lessonIds = [];
-    modules.forEach(mod => {
-      mod.lessons.forEach(lesson => {
-        lessonIds.push(lesson.id);
-      });
-    });
+
     let lesson = await Lesson.query().eager('chapters(selectNameAndId)');
 
-    // get all lessons with id in lessonIds
-    let lessonsData = [];
+    modules.forEach(mod => {
+      // mod.lessons.forEach(less =>{
+      for (let index = 0; index < mod.lessons.length; index++) {
+        const element = mod.lessons[index];
+        lesson.forEach(chap => {
 
-    for (let less = 0; less < lessonIds.length; less++) {
-      const element = lessonIds[less];
-      if (element === lesson[less].id) {
-        lessonsData.push(lesson[less].chapters);
-      } else {
-        console.log('no chapter');
-      }
-    }
+          if (element.id === chap.id) {
 
-    // calculate the lesson completion percentage
-    let completionData = [];
-    lessonsData.forEach(less => {
-      // console.log(less.length, achievementChapters.length);
-
-      let completionMetric = {
-        type: 'percentage',
-        percent: parseInt((achievementChapters.length / less.length) * 100)
-      };
-      completionData.push(completionMetric);
-    });
-
-    // aggregate completion of lesson in a modules
-    let percentage = 0;
-    completionData.forEach(element => {
-
-      if (element.percent > 0) {
-
-        percentage = percentage + element.percent;
+            // for (let i = 0; i < chap.chapters.length; i++) {
+            //   const el = chap.chapters[i].id;
+            //   let ans = achievementChapters.includes(el);
+            // if (ans === true) {
+            let completionMetric = parseInt((achievementChapters.length / chap.chapters.length) * 100);
+            // console.log(achievementChapters.length, chap.chapters.length);
+            return mod.progress = completionMetric;
+          }
+          // }
+          // }
+        });
       }
     });
-
-    let completionPercentage = { 'progress': parseFloat((percentage / completionData.length)) };
 
     returnType(modules);
 
@@ -167,7 +148,6 @@ router.get('/', permController.grantAccess('readAny', 'path'), async ctx => {
     });
 
     ctx.status = 200;
-    modules.push(completionPercentage);
     modules['permissions'] = userPermissions;
 
     ctx.body = { modules };
