@@ -87,7 +87,7 @@ jobs:
           at: ~/
       - run:
           name: migrate db
-          command: cd server && $(yarn bin)/knex migrate:latest; cd ../
+          command: cd server && $(yarn bin)/knex migrate:rollback && $(yarn bin)/knex migrate:latest; cd ../
       - run:
           name: Test API
           command: yarn --cwd ./server test
