@@ -75,7 +75,7 @@ router.get('/reset/:mail', async ctx => {
     const buf = Buffer.from(resetMail, 'ascii').toString('base64');
     sendMAil(buf, rand);
   } catch (error) {
-    ctx.body = error.message;
+    console.log(error.message);
   }
 
   ctx.status = 201;
