@@ -26,7 +26,6 @@ router.get('/:id', async ctx => {
   const lesson = await Lesson.query().findById(ctx.params.id).eager('chapters(selectNameAndId)');
 
   await achievementPercentage(lesson, ctx.state.user.data.id);
-  // lesson.percentage = completionMetric;
 
   ctx.assert(lesson, 404, 'no lesson by that ID');
 

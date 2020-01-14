@@ -123,11 +123,9 @@ describe('AUTHENTICATION ROUTES', () => {
         .request(server)
         .get(usersRoute + userId)
         .set('Content-Type', 'application/json')
-        .set(tokens.headerBasicUser2)
+        .set(tokens.headersSuperAdmin1)
         .end((err, res) => {
-          res.should.have.status(200);
-          res.body.user.should.have.property('id');
-          res.body.user.should.have.property('username');
+          res.should.have.status(401);
           done();
         });
     });

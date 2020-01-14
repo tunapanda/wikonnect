@@ -1,10 +1,11 @@
 const Achievement = require('../models/achievement');
 
 async function achievementPercentage(lesson, userId) {
+  // get all user achievements
   const achievement = await Achievement.query().where('user_id', userId);
   let achievementChapters = [];
   achievement.forEach(element => {
-    if (element.targetStatus == 'completed') {
+    if (element.targetStatus === 'completed') {
       achievementChapters.push(element.target);
     }
   });

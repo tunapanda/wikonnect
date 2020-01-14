@@ -76,7 +76,7 @@ router.get('/', async ctx => {
   }
 });
 
-router.get('/:id', permController.grantAccess('readAny', 'path'), async ctx => {
+router.get('/:id', async ctx => {
   const course = await Course.query().findById(ctx.params.id).eager('modules(selectNameAndId)');
   ctx.assert(course, 404, 'no lesson by that ID');
 

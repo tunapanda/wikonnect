@@ -1,5 +1,7 @@
 const Router = require('koa-router');
 const Module = require('../models/module');
+const Lesson = require('../models/lesson');
+const Achievement = require('../models/achievement');
 const permController = require('../middleware/permController');
 const { userPermissions } = require('../middleware/_helpers/roles');
 const { validateModules } = require('../middleware/validation/validatePostData');
@@ -39,9 +41,8 @@ async function insertType(model, collection, parent_id) {
 }
 
 
-router.get('/:id', permController.grantAccess('readAny', 'path'), async ctx => {
+router.get('/:id', async ctx => {
   const modules = await Module.query().findById(ctx.params.id).eager('lessons(selectNameAndId)');
-
   ctx.assert(modules, 404, 'No matching record found');
 
   returnType(modules);
@@ -83,6 +84,60 @@ router.get('/', permController.grantAccess('readAny', 'path'), async ctx => {
   try {
     const modules = await Module.query().where(ctx.query).eager('lessons(selectNameAndId)');
 
+    // get all achievements of a user
+    const achievement = await Achievement.query().where('user_id', ctx.state.user.data.id);
+    let achievementChapters = [];
+    achievement.forEach(element => {
+      if (element.targetStatus === 'completed') {
+        achievementChapters.push(element.target);
+      }
+    });
+
+    // get all lesson id ina module
+    let lessonIds = [];
+    modules.forEach(mod => {
+      mod.lessons.forEach(lesson => {
+        lessonIds.push(lesson.id);
+      });
+    });
+    let lesson = await Lesson.query().eager('chapters(selectNameAndId)');
+
+    // get all lessons with id in lessonIds
+    let lessonsData = [];
+
+    for (let less = 0; less < lessonIds.length; less++) {
+      const element = lessonIds[less];
+      if (element === lesson[less].id) {
+        lessonsData.push(lesson[less].chapters);
+      } else {
+        console.log('no chapter');
+      }
+    }
+
+    // calculate the lesson completion percentage
+    let completionData = [];
+    lessonsData.forEach(less => {
+      // console.log(less.length, achievementChapters.length);
+
+      let completionMetric = {
+        type: 'percentage',
+        percent: parseInt((achievementChapters.length / less.length) * 100)
+      };
+      completionData.push(completionMetric);
+    });
+
+    // aggregate completion of lesson in a modules
+    let percentage = 0;
+    completionData.forEach(element => {
+
+      if (element.percent > 0) {
+
+        percentage = percentage + element.percent;
+      }
+    });
+
+    let completionPercentage = { 'progress': parseFloat((percentage / completionData.length)) };
+
     returnType(modules);
 
     modules.forEach(child => {
@@ -111,16 +166,20 @@ router.get('/', permController.grantAccess('readAny', 'path'), async ctx => {
         });
     });
 
-
     ctx.status = 200;
+    modules.push(completionPercentage);
     modules['permissions'] = userPermissions;
 
     ctx.body = { modules };
 
-  } catch (error) {
-    ctx.status = 400;
-    ctx.body = { message: 'The query key does not exist' };
+  } catch (e) {
+    if (e.statusCode) {
+      ctx.throw(e.statusCode, { message: 'The query key does not exist' });
+      ctx.throw(e.statusCode, null, { errors: [e.message] });
+    } else { ctx.throw(400, null, { errors: [e.message] }); }
+    throw e;
   }
+
 });
 
 router.post('/', permController.grantAccess('createAny', 'path'), validateModules, async ctx => {
