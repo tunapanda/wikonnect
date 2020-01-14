@@ -16,16 +16,20 @@ const router = new Router({
 
 
 async function returnType(parent) {
-  if (parent.length == undefined) {
-    parent.achievement_awards.forEach(lesson => {
-      return lesson.type = 'achievement_awards';
-    });
-  } else {
-    parent.forEach(mod => {
-      mod.achievement_awards.forEach(lesson => {
-        return lesson.type = 'achievement_awards';
+  try {
+    if (parent.length == undefined) {
+      parent.achievementAwards.forEach(lesson => {
+        return lesson.type = 'achievementAwards';
       });
-    });
+    } else {
+      parent.forEach(mod => {
+        mod.achievementAwards.forEach(lesson => {
+          return lesson.type = 'achievementAwards';
+        });
+      });
+    }
+  } catch (error) {
+    console.log(error);
   }
 }
 
@@ -55,8 +59,7 @@ router.post('/', validateAuthRoutes.validateNewUser, getUserByUsername, createPa
   let newUser = ctx.request.body.user;
 
   const user = await User.query().insertAndFetch(newUser);
-  console.log(user.email);
-
+  await knex('group_members').insert({ 'user_id': user.id, 'group_id': 'groupBasic' });
 
   ctx.assert(user, 401, 'Something went wrong.');
 
@@ -64,8 +67,10 @@ router.post('/', validateAuthRoutes.validateNewUser, getUserByUsername, createPa
   ctx.body = { user };
 });
 
-router.get('/:id', permController.requireAuth, permController.grantAccess('readOwn', 'profile'),  async ctx => {
-  const user = await User.query().findById(ctx.params.id).eager('achievement_awards(selectBadgeNameAndId)');
+router.get('/:id', async ctx => {
+  const user = await User.query().findById(ctx.params.id).eager('achievementAwards');
+  console.log(user);
+
   returnType(user);
 
 
@@ -81,15 +86,23 @@ router.get('/:id', permController.requireAuth, permController.grantAccess('readO
   ctx.body = { user };
 
 });
-router.get('/', permController.requireAuth, permController.grantAccess('readAny', 'profile'), async ctx => {
+router.get('/', async ctx => {
   let user = User.query();
 
   if (ctx.query.username) {
     user.where('username', ctx.query.username);
     ctx.assert(user, 404, 'No User With that username');
   }
+  try {
+    user = await user.mergeJoinEager('[achievementAwards(selectBadgeNameAndId), userRoles(selectName)]');
+  } catch (e) {
+    if (e.statusCode) {
+      ctx.throw(e.statusCode, { message: 'The query key does not exist' });
+      ctx.throw(e.statusCode, null, { errors: [e.message] });
+    } else { ctx.throw(400, null, { errors: [e.message] }); }
+    throw e;
+  }
 
-  user = await user.eager('achievement_awards(selectBadgeNameAndId)');
   returnType(user);
 
   ctx.body = { user };

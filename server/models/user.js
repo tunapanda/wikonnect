@@ -13,11 +13,11 @@ class User extends Model {
   }
 
   get $virtualFields() {
-    return ['firstName','lastName','aboutMe'];
+    return ['firstName', 'lastName', 'aboutMe'];
   }
 
   get $secureFields() {
-    return ['hash', 'email','lastSeen', 'lastIp'];
+    return ['hash', 'email', 'lastSeen', 'lastIp'];
   }
 
   static get relationMappings() {
@@ -35,12 +35,24 @@ class User extends Model {
           to: 'courses.id'
         }
       },
-      achievement_awards: {
+      achievementAwards: {
         relation: Model.HasManyRelation,
         modelClass: __dirname + '/achievement_awards',
         join: {
           from: 'users.id',
           to: 'achievement_awards.userId'
+        }
+      },
+      userRoles: {
+        relation: Model.ManyToManyRelation,
+        modelClass: __dirname + '/group',
+        join: {
+          from: 'users.id',
+          through: {
+            from: 'group_members.user_id',
+            to: 'group_members.group_id'
+          },
+          to: 'groups.id'
         }
       }
     };
