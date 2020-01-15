@@ -43,8 +43,6 @@ async function insertType(model, collection, course_id) {
 router.get('/', permController.requireAuth, async ctx => {
   try {
     const course = await Course.query().where(ctx.query).eager('modules(selectNameAndId)');
-    console.log(ctx.state.user.data);
-    
     if (ctx.state.user.data.id !== 'anonymous') {
       // get all achievements of a user
       const achievement = await Achievement.query().where('user_id', ctx.state.user.data.id);
@@ -64,11 +62,12 @@ router.get('/', permController.requireAuth, async ctx => {
           modules.forEach(mod => {
             if (element.id === mod.id) {
               for (let index = 0; index < mod.lessons.length; index++) {
+
                 const element = mod.lessons[index];
                 lesson.forEach(chap => {
                   if (element.id === chap.id) {
-                    let completionMetric = parseInt((achievementChapters.length / chap.chapters.length) * 100);
-                    // console.log(completionMetric);
+                    let completionMetric = parseInt((achievementChapters.length / chap.chapters.length) * 100) > 0 ? parseInt((achievementChapters.length / chap.chapters.length) * 100) : 0;
+                    cour.progress = completionMetric;
                     return cour.progress = completionMetric;
                   }
                 });
@@ -253,4 +252,14 @@ router.delete('/:id', async ctx => {
   ctx.body = { course };
 });
 
+// router.post('/enrollment', async ctx => {
+//   try {
+
+//   } catch (e) {
+//     if (e.statusCode) {
+//       ctx.throw(e.statusCode, null, { errors: [e.message] });
+//     } else { ctx.throw(400, null, { errors: ['Bad Request'] }); }
+//     throw e;
+//   }
+// });
 module.exports = router.routes();
