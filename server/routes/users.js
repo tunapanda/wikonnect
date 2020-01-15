@@ -68,7 +68,7 @@ router.post('/', validateAuthRoutes.validateNewUser, getUserByUsername, createPa
 });
 
 router.get('/:id', permController.requireAuth, async ctx => {
-  const user = await User.query().findById(ctx.params.id).mergeJoinEager('[achievementAwards(selectBadgeNameAndId), userRoles(selectName), enrolledCourses(selectNameAndId)]');
+  const user = await User.query().findById(ctx.params.id).mergeJoinEager('[achievementAwards(selectBadgeNameAndId), userRoles(selectName)]');
   returnType(user);
 
 
@@ -88,7 +88,7 @@ router.get('/:id', permController.requireAuth, async ctx => {
   ctx.body = { user };
 
 });
-router.get('/', permController.grantAccess('readAny', 'profile'), async ctx => {
+router.get('/', permController.requireAuth, permController.grantAccess('readOwn', 'profile'), async ctx => {
   let user = User.query();
 
   if (ctx.query.username) {
@@ -96,7 +96,7 @@ router.get('/', permController.grantAccess('readAny', 'profile'), async ctx => {
     ctx.assert(user, 404, 'No User With that username');
   }
   try {
-    user = await user.mergeJoinEager('[achievementAwards(selectBadgeNameAndId), userRoles(selectName), enrolledCourses(selectNameAndId)]');
+    user = await user.mergeJoinEager('[achievementAwards(selectBadgeNameAndId), userRoles(selectName)]');
   } catch (e) {
     if (e.statusCode) {
       ctx.throw(e.statusCode, { message: 'The query key does not exist' });
@@ -111,9 +111,7 @@ router.get('/', permController.grantAccess('readAny', 'profile'), async ctx => {
 });
 
 router.put('/:id', jwt.authenticate, permController.grantAccess('updateOwn', 'profile'), async ctx => {
-
   const user = await User.query().patchAndFetchById(ctx.params.id, ctx.request.body.user);
-
   ctx.assert(user, 404, 'That user does not exist.');
 
   ctx.status = 200;
