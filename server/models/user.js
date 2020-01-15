@@ -24,13 +24,13 @@ class User extends Model {
     return {
       enrolledCourses: {
         relation: Model.ManyToManyRelation,
-        modelClass: __dirname + '/courses',
+        modelClass: __dirname + '/course',
         join: {
           from: 'users.id',
           through: {
-            modelClass: __dirname + '/enrollments',
-            from: 'enrollments.userId',
-            to: 'enrollments.courseId'
+            modelClass: __dirname + '/enrollment',
+            from: 'enrollments.user_id',
+            to: 'enrollments.course_id'
           },
           to: 'courses.id'
         }

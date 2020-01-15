@@ -68,12 +68,16 @@ router.post('/', validateAuthRoutes.validateNewUser, getUserByUsername, createPa
 });
 
 router.get('/:id', permController.requireAuth, async ctx => {
-  const user = await User.query().findById(ctx.params.id).eager('achievementAwards');
+  const user = await User.query().findById(ctx.params.id).mergeJoinEager('[achievementAwards(selectBadgeNameAndId), userRoles(selectName), enrolledCourses(selectNameAndId)]');
   returnType(user);
 
 
   if (!user) {
     ctx.throw(404, 'No User With that Id');
+  }
+
+  if (user.id !== ctx.state.user.data.id) {
+    ctx.throw(401, 'You do not have permissions to view that user');
   }
 
   // get all verification data
@@ -92,7 +96,7 @@ router.get('/', permController.grantAccess('readAny', 'profile'), async ctx => {
     ctx.assert(user, 404, 'No User With that username');
   }
   try {
-    user = await user.mergeJoinEager('[achievementAwards(selectBadgeNameAndId), userRoles(selectName)]');
+    user = await user.mergeJoinEager('[achievementAwards(selectBadgeNameAndId), userRoles(selectName), enrolledCourses(selectNameAndId)]');
   } catch (e) {
     if (e.statusCode) {
       ctx.throw(e.statusCode, { message: 'The query key does not exist' });

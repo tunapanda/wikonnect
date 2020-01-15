@@ -31,8 +31,7 @@ exports.requireAuth = async function (ctx, next) {
       };
       return ctx;
     }
-    ctx.state.user.data = data;
-
+    ctx.state.user = { 'data': data };
 
     // error handler for when role is not provided
     await next();

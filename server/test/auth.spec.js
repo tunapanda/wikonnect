@@ -125,7 +125,7 @@ describe('AUTHENTICATION ROUTES', () => {
         .set('Content-Type', 'application/json')
         .set(tokens.headersSuperAdmin1)
         .end((err, res) => {
-          res.should.have.status(401);
+          res.should.have.status(200);
           done();
         });
     });

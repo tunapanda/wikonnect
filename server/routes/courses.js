@@ -44,9 +44,6 @@ router.get('/', permController.requireAuth, async ctx => {
   try {
     const course = await Course.query().where(ctx.query).eager('modules(selectNameAndId)');
 
-    console.log(ctx.state.user);
-
-
     // get all achievements of a user
     const achievement = await Achievement.query().where('user_id', ctx.state.user.data.id);
     let achievementChapters = [];
