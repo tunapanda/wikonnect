@@ -13,6 +13,7 @@ with_db: &with_db
       environment:
         POSTGRES_USER: root
         POSTGRES_DB: swag_test
+    - image: circleci/redis
   working_directory: ~/ember-circleci
 without_db: &without_db
   docker:
@@ -87,7 +88,7 @@ jobs:
           at: ~/
       - run:
           name: migrate db
-          command: cd server && $(yarn bin)/knex migrate:rollback && $(yarn bin)/knex migrate:latest; cd ../
+          command: cd server && $(yarn bin)/knex migrate:latest; cd ../
       - run:
           name: Test API
           command: yarn --cwd ./server test
