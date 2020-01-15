@@ -39,6 +39,8 @@ router.use(jwt.authenticate, require('./routes/chapters'));
 
 router.use(jwt.authenticate, require('./routes/activity'));
 
+router.use(jwt.authenticate, require('./routes/enrollments'));
+
 router.use(jwt.authenticate, require('./routes/achievements'));
 router.use(require('./routes/search'));
 
