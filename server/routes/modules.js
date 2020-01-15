@@ -92,29 +92,17 @@ router.get('/', permController.grantAccess('readAny', 'path'), async ctx => {
         achievementChapters.push(element.target);
       }
     });
-    console.log(achievementChapters);
-
 
     let lesson = await Lesson.query().eager('chapters(selectNameAndId)');
 
     modules.forEach(mod => {
-      // mod.lessons.forEach(less =>{
       for (let index = 0; index < mod.lessons.length; index++) {
         const element = mod.lessons[index];
         lesson.forEach(chap => {
-
           if (element.id === chap.id) {
-
-            // for (let i = 0; i < chap.chapters.length; i++) {
-            //   const el = chap.chapters[i].id;
-            //   let ans = achievementChapters.includes(el);
-            // if (ans === true) {
             let completionMetric = parseInt((achievementChapters.length / chap.chapters.length) * 100);
-            // console.log(achievementChapters.length, chap.chapters.length);
             return mod.progress = completionMetric;
           }
-          // }
-          // }
         });
       }
     });

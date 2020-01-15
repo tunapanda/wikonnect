@@ -1,5 +1,8 @@
 const Router = require('koa-router');
 const Course = require('../models/course');
+const Module = require('../models/module');
+const Lesson = require('../models/lesson');
+const Achievement = require('../models/achievement');
 const permController = require('../middleware/permController');
 const { userPermissions } = require('../middleware/_helpers/roles');
 const { validateCourses } = require('../middleware/validation/validatePostData');
@@ -40,6 +43,51 @@ async function insertType(model, collection, course_id) {
 router.get('/', async ctx => {
   try {
     const course = await Course.query().where(ctx.query).eager('modules(selectNameAndId)');
+
+
+    // get all achievements of a user
+    const achievement = await Achievement.query().where('user_id', ctx.state.user.data.id);
+    let achievementChapters = [];
+    achievement.forEach(element => {
+      if (element.targetStatus === 'completed') {
+        achievementChapters.push(element.target);
+      }
+    });
+
+    let modules = await Module.query().eager('lessons(selectNameAndId)');
+    let lesson = await Lesson.query().eager('chapters(selectNameAndId)');
+
+    course.forEach(cour => {
+      for (let index = 0; index < cour.modules.length; index++) {
+        const element = cour.modules[index];
+        modules.forEach(mod => {
+          if (element.id === mod.id) {
+            for (let index = 0; index < mod.lessons.length; index++) {
+              const element = mod.lessons[index];
+              lesson.forEach(chap => {
+                if (element.id === chap.id) {
+                  let completionMetric = parseInt((achievementChapters.length / chap.chapters.length) * 100);
+                  // console.log(completionMetric);
+                  return cour.progress = completionMetric;
+                }
+              });
+            }
+          }
+        });
+      }
+    });
+
+    modules.forEach(mod => {
+      for (let index = 0; index < mod.lessons.length; index++) {
+        const element = mod.lessons[index];
+        lesson.forEach(chap => {
+          if (element.id === chap.id) {
+            let completionMetric = parseInt((achievementChapters.length / chap.chapters.length) * 100);
+            return mod.progress = completionMetric;
+          }
+        });
+      }
+    });
     returnType(course);
 
     course.forEach(child => {
@@ -146,8 +194,8 @@ router.post('/', permController.grantAccess('readAny', 'path'), validateCourses,
         if (course.status === 'draft' && ctx.state.user.data.id === course.creatorId) {
           userPermissions.read = 'true';
           userPermissions.update = 'true';
-        // } else {
-        //   userPermissions.read = 'true';
+          // } else {
+          //   userPermissions.read = 'true';
         }
       });
     return course.permissions = userPermissions;
