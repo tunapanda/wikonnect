@@ -80,11 +80,11 @@ router.get('/:id', async ctx => {
   ctx.body = { modules };
 });
 
-router.get('/', permController.grantAccess('readAny', 'path'), async ctx => {
+router.get('/', permController.requireAuth, async ctx => {
   try {
     const modules = await Module.query().where(ctx.query).eager('lessons(selectNameAndId)');
 
-    if (ctx.state.user) {
+    if (ctx.state.user.data.id !== 'anonymous') {
     // get all achievements of a user
       const achievement = await Achievement.query().where('user_id', ctx.state.user.data.id);
       let achievementChapters = [];
