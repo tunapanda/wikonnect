@@ -67,10 +67,8 @@ router.post('/', validateAuthRoutes.validateNewUser, getUserByUsername, createPa
   ctx.body = { user };
 });
 
-router.get('/:id', permController.grantAccess('readOwn', 'profile'), async ctx => {
+router.get('/:id', permController.requireAuth, async ctx => {
   const user = await User.query().findById(ctx.params.id).eager('achievementAwards');
-  console.log(user);
-
   returnType(user);
 
 
