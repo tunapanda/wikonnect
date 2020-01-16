@@ -57,17 +57,19 @@ router.get('/:id', async ctx => {
 
     let lesson = await Lesson.query().eager('chapters(selectNameAndId)');
 
-    console.log();
-
     if (!modules.lessons.length) {
       modules.progress = parseInt(0);
     }
     for (let index = 0; index < modules.lessons.length; index++) {
       const element = modules.lessons[index];
       lesson.forEach(chap => {
+        if (!chap.chapters.length) {
+          modules.progress = parseInt(0);
+        }
         if (element.id === chap.id) {
           let completionMetric = parseInt((achievementChapters.length / chap.chapters.length) * 100);
           modules.progress = completionMetric;
+          console.log(modules.lessons.length, achievementChapters.length / chap.chapters.length, achievementChapters.length, chap.chapters.length);
         }
       });
     }
@@ -128,6 +130,9 @@ router.get('/', permController.requireAuth, async ctx => {
         for (let index = 0; index < mod.lessons.length; index++) {
           const element = mod.lessons[index];
           lesson.forEach(chap => {
+            if (!chap.chapters.length) {
+              mod.progress = parseInt(0);
+            }
             if (element.id === chap.id) {
               let completionMetric = parseInt((achievementChapters.length / chap.chapters.length) * 100);
               return mod.progress = completionMetric;
