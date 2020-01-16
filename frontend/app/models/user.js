@@ -9,10 +9,9 @@ export default class UserModel extends Model {
   @attr() firstName;
   @attr() lastName;
   @attr() aboutMe;
-  @attr() achievementAward;
 
   @hasMany('group') groups;
   @hasMany('activity') activities;
-  @hasMany('achievementAward') achievementAwards;
+  @hasMany('achievement') achievementAwards;
   @hasMany('course') enrolledCourses;
 }

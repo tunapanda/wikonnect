@@ -19,12 +19,12 @@ async function returnType(parent) {
   try {
     if (parent.length == undefined) {
       parent.achievementAwards.forEach(lesson => {
-        return lesson.type = 'achievementAwards';
+        return lesson.type = 'achievement';
       });
     } else {
       parent.forEach(mod => {
         mod.achievementAwards.forEach(lesson => {
-          return lesson.type = 'achievementAwards';
+          return lesson.type = 'achievement';
         });
       });
     }
@@ -33,6 +33,23 @@ async function returnType(parent) {
   }
 }
 
+async function enrolledCoursesType(parent) {
+  try {
+    if (parent.length == undefined) {
+      parent.enrolledCourses.forEach(lesson => {
+        return lesson.type = 'course';
+      });
+    } else {
+      parent.forEach(mod => {
+        mod.enrolledCourses.forEach(lesson => {
+          return lesson.type = 'course';
+        });
+      });
+    }
+  } catch (error) {
+    console.log(error);
+  }
+}
 /**
  *
  * @param {ctx.request.body.user} ctx
@@ -67,9 +84,10 @@ router.post('/', validateAuthRoutes.validateNewUser, getUserByUsername, createPa
   ctx.body = { user };
 });
 
-router.get('/:id', permController.requireAuth, permController.grantAccess('readOwn', 'profile'), async ctx => {
-  const user = await User.query().findById(ctx.params.id).mergeJoinEager('[achievementAwards(selectBadgeNameAndId), userRoles(selectName)]');
+router.get('/:id', permController.requireAuth, async ctx => {
+  const user = await User.query().findById(ctx.params.id).mergeJoinEager('[achievementAwards(selectBadgeNameAndId), userRoles(selectName), enrolledCourses(selectNameAndId)]');
   returnType(user);
+  enrolledCoursesType(user);
 
 
   if (!user) {
@@ -96,7 +114,7 @@ router.get('/', permController.requireAuth, permController.grantAccess('readAny'
     ctx.assert(user, 404, 'No User With that username');
   }
   try {
-    user = await user.mergeJoinEager('[achievementAwards(selectBadgeNameAndId), userRoles(selectName)]');
+    user = await user.mergeJoinEager('[achievementAwards(selectBadgeNameAndId), userRoles(selectName), enrolledCourses(selectNameAndId)]');
   } catch (e) {
     if (e.statusCode) {
       ctx.throw(e.statusCode, { message: 'The query key does not exist' });
@@ -105,6 +123,7 @@ router.get('/', permController.requireAuth, permController.grantAccess('readAny'
     throw e;
   }
 
+  enrolledCoursesType(user);
   returnType(user);
 
   ctx.body = { user };
