@@ -10,7 +10,17 @@
 
 
   <div class="modules padded">
-    <h2>Modules</h2>
+    <div class="sub-header">
+      <h2>Modules</h2>
+      {{#if @model.permission.update}}
+
+
+        {{#link-to "cms.course.edit" @model.slug}}
+          <h2>Edit</h2>
+        {{/link-to}}
+      {{/if}}
+
+    </div>
     <hr>
     <div class="modules-list">
       {{#each modList as |module|}}

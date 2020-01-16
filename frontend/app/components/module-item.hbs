@@ -3,15 +3,20 @@
   {{!-- {{#link-to "course" @course "module" @module.id}} --}}
 
 
-  <img class="module-image" src="http://placehold.jp/20/{{@module.color}}/ffffff/200x140.png?text={{@module.name}}" alt="">
+  <img class="module-image" src="http://placehold.jp/20/{{@module.color}}/ffffff/200x140.png?text={{@module.name}}"
+    alt="">
   {{#link-to "course.module.index" @module.slug }}
     <h6>{{@module.name}}</h6>
 
   {{/link-to}}
   {{!-- <div>{{@module.description}}</div> --}}
-  <BsProgress as |pg|>
-    <pg.bar @showLabel={{true}} @roundDigits={{0}} @type="success" @value={{50}} />
-  </BsProgress>
+  {{#if me.isAuthenticated}}
+
+
+    <BsProgress as |pg|>
+      <pg.bar @showLabel={{true}} @roundDigits={{0}} @type="success" @value={{50}} />
+    </BsProgress>
+  {{/if}}
   <p>~ 5 Minutes</p>
 
 

@@ -2,18 +2,23 @@
   <div class="course-item">
 
 
-    <img class="course-image" src="http://placehold.jp/20/{{@color}}/ffffff/140x140.png?text={{@title}}" alt="">
+    <img class="course-image" src="http://placehold.jp/20/{{@color}}/ffffff/140x140.png?text={{@course.name}}" alt="">
     <div class="course">
       <span>
-        <h4>{{@title}}</h4>
+        <h4>{{@course.name}} / {{@course.progress}}</h4>
 
 
       </span>
-      <div class="course-description">{{@description}}</div>
+      <div class="course-description">{{@course.description}}</div>
       <hr>
-      <BsProgress as |pg|>
-        <pg.bar @showLabel={{true}} @roundDigits={{0}} @type="success" @value={{50}} />
-      </BsProgress>
+      {{#if me.isAuthenticated}}
+
+        <BsProgress as |pg|>
+          <pg.bar @showLabel={{true}} @roundDigits={{0}} @type="success" @value={{@course.progress}} />
+        </BsProgress>
+
+      {{/if}}
+
       <div class="course-meta"> <span>5 topics </span><span>5 minutes</span></div>
 
     </div>

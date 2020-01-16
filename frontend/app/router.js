@@ -68,9 +68,9 @@ Router.map(function () {
     path: '/profile/:username'
   }
 
-  , function () {
-    this.route('settings');
-  }
+    , function () {
+      this.route('settings');
+    }
 
   );
   this.route('search');
@@ -88,6 +88,24 @@ Router.map(function () {
     }
 
     );
+
+    this.route('course', function () {
+      this.route('create');
+      this.route('edit', {
+        path: '/:course_slug'
+      }
+
+      );
+    });
+
+    this.route('module', function () {
+      this.route('edit', {
+        path: '/:module_slug'
+      }
+
+      );
+      this.route('create');
+    });
   }
 
   );
