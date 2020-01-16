@@ -67,7 +67,7 @@ router.post('/', validateAuthRoutes.validateNewUser, getUserByUsername, createPa
   ctx.body = { user };
 });
 
-router.get('/:id', permController.requireAuth, async ctx => {
+router.get('/:id', permController.requireAuth, permController.grantAccess('readOwn', 'profile'), async ctx => {
   const user = await User.query().findById(ctx.params.id).mergeJoinEager('[achievementAwards(selectBadgeNameAndId), userRoles(selectName)]');
   returnType(user);
 
@@ -88,7 +88,7 @@ router.get('/:id', permController.requireAuth, async ctx => {
   ctx.body = { user };
 
 });
-router.get('/', permController.requireAuth, permController.grantAccess('readOwn', 'profile'), async ctx => {
+router.get('/', permController.requireAuth, permController.grantAccess('readAny', 'profile'), async ctx => {
   let user = User.query();
 
   if (ctx.query.username) {
