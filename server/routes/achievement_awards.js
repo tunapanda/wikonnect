@@ -4,7 +4,7 @@ const permController = require('../middleware/permController');
 
 
 const router = new Router({
-  prefix: '/achievement_awards'
+  prefix: '/achievementAwards'
 });
 router.get('/', permController.requireAuth, permController.grantAccess('readAny', 'profile'), async ctx => {
   const achievementAward = await AchievementAward.query();
