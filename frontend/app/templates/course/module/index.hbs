@@ -11,7 +11,7 @@
   <div class="padded modules">
     <div class="sub-header">
       <h2>Lessons</h2>
-      {{#if @model.permission.update}}
+      {{#if (eq model.permissions.update "true")}}
 
 
         {{#link-to "cms.module.edit" @model.slug}}

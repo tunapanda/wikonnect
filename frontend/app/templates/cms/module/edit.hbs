@@ -1,30 +1,35 @@
 <div class="padded">
-  <h1>Edit this module</h1>
-  <BsForm @model={{model}} @onSubmit={{action "saveModule"}} as |form|>
-    <form.element @controlType="text" @label="Module Title" @property="name" />
-    <form.element @controlType="text" @label="Module Description" @property="description" />
-    <BsButton @type="primary" @defaultText="Save Module" @buttonType="submit" />
+  {{#if (eq model.permissions.update "true")}}
+
+    <h1>Edit this module</h1>
+    <BsForm @model={{model}} @onSubmit={{action "saveModule"}} as |form|>
+      <form.element @controlType="text" @label="Module Title" @property="name" />
+      <form.element @controlType="text" @label="Module Description" @property="description" />
+      <BsButton @type="primary" @defaultText="Save Module" @buttonType="submit" />
 
 
-  </BsForm>
+    </BsForm>
 
-  <h3>Lessons</h3>
-  {{#sortable-objects sortableObjectList=moduleLessons enableSort=true}}
-    {{#each moduleLessons as |lesson|}}
-      {{#draggable-object content=lesson overrideClass="sortObject" isSortable=true}}
-        <LessonItem @lesson={{lesson}} />
-      {{/draggable-object}}
-    {{/each}}
-  {{/sortable-objects}}
-  <br>
-  <h5>Add lessons to your module</h5>
-  <PowerSelect @searchEnabled={{true}} @options={{allLessons}} @searchField="name" @selected={{selectedLesson}}
-    @onChange={{action (mut selectedLesson)}} as |lesson|>
-    {{lesson.name}}
-  </PowerSelect>
-  <br>
-  {{#if selectedLesson}}
-    <LessonItem @lesson={{selectedLesson}} />
-    <BsButton @onClick={{action "addLesson" selectedLesson}}>Add This lesson to my module</BsButton>
+    <h3>Lessons</h3>
+    {{#sortable-objects sortableObjectList=moduleLessons enableSort=true}}
+      {{#each moduleLessons as |lesson|}}
+        {{#draggable-object content=lesson overrideClass="sortObject" isSortable=true}}
+          <LessonItem @lesson={{lesson}} />
+        {{/draggable-object}}
+      {{/each}}
+    {{/sortable-objects}}
+    <br>
+    <h5>Add lessons to your module</h5>
+    <PowerSelect @searchEnabled={{true}} @options={{allLessons}} @searchField="name" @selected={{selectedLesson}}
+      @onChange={{action (mut selectedLesson)}} as |lesson|>
+      {{lesson.name}}
+    </PowerSelect>
+    <br>
+    {{#if selectedLesson}}
+      <LessonItem @lesson={{selectedLesson}} />
+      <BsButton @onClick={{action "addLesson" selectedLesson}}>Add This lesson to my module</BsButton>
+    {{/if}}
+  {{else}}
+    <Warning @message="You do not have sufficient permissions to view this page" />
   {{/if}}
 </div>
