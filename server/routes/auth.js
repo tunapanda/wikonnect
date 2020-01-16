@@ -32,7 +32,7 @@ router.post('/', validateAuthRoutes.validateUserLogin, async ctx => {
 
   const userData = await User.query().findById(user.id).eager('userRoles(selectName)');
 
-  let role = userData.userRoles[0].name != null ? userData.userRoles[0].name : 'basic';
+  let role = userData.userRoles[0].name !== null ? userData.userRoles[0].name : 'basic';
 
   userInfoWithoutPassword['role'] = role;
 

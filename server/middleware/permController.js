@@ -18,7 +18,15 @@ const { secret } = require('../middleware/jwt');
  *
  */
 exports.requireAuth = async function (ctx, next) {
-  if (ctx.request.header.authorization && ctx.request.header.authorization.split(' ')[0] === 'Bearer') {
+  if (ctx.request.header.authorization.split(' ')[1] === 'undefined') {
+    const data = {
+      user: 'anonymous',
+      id: 'anonymous',
+      role: 'anonymous'
+    };
+    ctx.state.user = { 'data': data };
+    await next();
+  } else if (ctx.request.header.authorization && ctx.request.header.authorization.split(' ')[0] === 'Bearer') {
     const accessToken = ctx.request.header.authorization.split(' ')[1];
     const { exp, data } = jwToken.verify(accessToken, secret);
 
