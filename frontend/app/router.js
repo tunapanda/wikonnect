@@ -68,9 +68,9 @@ Router.map(function () {
     path: '/profile/:username'
   }
 
-    , function () {
-      this.route('settings');
-    }
+  , function () {
+    this.route('settings');
+  }
 
   );
   this.route('search');
