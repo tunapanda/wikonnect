@@ -115,6 +115,7 @@ Router.map(function () {
   }
 
   );
+  this.route('cms-desktop');
 }
 
 );

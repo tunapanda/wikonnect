@@ -1,0 +1,132 @@
+<br>
+
+<div id="cms-desktop" class="padded">
+
+
+  <div class="card cms-colum">
+
+
+
+
+    <div class="card-header">
+      <h5>Course</h5><button class="btn btn-primary btn-sm " {{action "toggleCourseModal"}}>+ Create Course </button>
+    </div>
+    <ul class="list-group list-group-flush">
+      <a class="no-decoration" href="#">
+        <li class="list-group-item">Digital Literacy <br><span>Stay woke fam</span></li>
+      </a>
+
+      <a class="no-decoration" href="#">
+        <li class="list-group-item">Digital Literacy <br><span>Stay woke fam</span></li>
+      </a>
+
+      <a class="no-decoration" href="#">
+        <li class="list-group-item">Digital Literacy <br><span>Stay woke fam</span></li>
+      </a>
+
+      <a class="no-decoration" href="#">
+        <li class="list-group-item">Digital Literacy <br><span>Stay woke fam</span></li>
+      </a>
+
+
+
+
+
+
+    </ul>
+    <div class="card-footer">
+
+    </div>
+  </div>
+
+
+  <div class="card cms-colum">
+    <div class="card-header">
+      <h5>Module</h5><button class="btn btn-primary btn-sm " {{action "toggleModuleModal"}}>+ Create Module </button>
+    </div>
+    <div class="padded">
+      {{!-- <BsAlert class="" @type="danger">
+        Select a course to add modules to it
+      </BsAlert> --}}
+    </div>
+
+    <ul class="list-group list-group-flush">
+      <a class="no-decoration" href="#">
+        <li class="list-group-item">Cras justo odio <br><span>Sub x</span></li>
+      </a>
+    </ul> <br>
+    <div class="card-footer">
+      <button class=" btn btn-primary btn-sm " {{action "toggleModuleModal"}}>
+        + Add Module to [[Selected Course]]
+      </button>
+    </div>
+  </div>
+
+
+
+  <div class="card cms-colum">
+    <div class="card-header">
+      <h5>Lesson</h5><button class="btn btn-primary btn-sm " {{action "toggleModuleModal"}}>+ Create Lesson </button>
+    </div>
+    <div class="padded">
+      {{!-- <BsAlert class="" @type="danger">
+        Select a course to add modules to it
+      </BsAlert> --}}
+    </div>
+
+    <ul class="list-group list-group-flush">
+      <a class="no-decoration" href="#">
+        <li class="list-group-item">Cras justo odio <br><span>Sub x</span></li>
+      </a>
+    </ul> <br>
+    <div class="card-footer">
+      <button class=" btn btn-primary btn-sm " {{action "toggleModuleModal"}}>
+        + Add Lesson to [[Selected Module]]
+      </button>
+    </div>
+  </div>
+
+
+  <div class="card cms-colum">
+    <div class="card-header">
+      <h5>Module</h5>
+      <button class="btn btn-primary btn-sm " {{action "toggleModuleModal"}}>
+        + Create H5P Chapter
+      </button>
+    </div>
+    <div class="padded">
+      {{!-- <BsAlert class="" @type="danger">
+        Select a course to add modules to it
+      </BsAlert> --}}
+    </div>
+
+    <ul class="list-group list-group-flush">
+      <a class="no-decoration" href="#">
+        <li class="list-group-item">Cras justo odio <br><span>Sub x</span></li>
+      </a>
+    </ul> <br>
+    <div class="card-footer">
+      <button class=" btn btn-primary btn-sm " {{action "toggleModuleModal"}}>
+        + Add H5P to [[Selected Lesson]]
+      </button>
+    </div>
+  </div>
+
+
+
+
+
+  <BsModalSimple @open={{createCourseModal}} @title="Simple Modal" @closeTitle="Ok" @submitTitle={{null}} @size=""
+    @closeButton={{true}} @fade={{true}} @backdrop={{true}} @backdropClose={{true}} @onSubmit={{action "submit"}}
+    @onHidden={{action "toggleCourseModal"}} @renderInPlace={{true}}>
+    Hi there
+  </BsModalSimple>
+
+  <BsModalSimple @open={{createModuleModal}} @title="Simple Modal" @closeTitle="Ok" @submitTitle={{null}} @size=""
+    @closeButton={{true}} @fade={{true}} @backdrop={{true}} @backdropClose={{true}} @onSubmit={{action "submit"}}
+    @onHidden={{action "toggleModuleModal"}} @renderInPlace={{true}}>
+    Hi there
+  </BsModalSimple>
+
+
+</div>

@@ -1,0 +1,74 @@
+#cms-desktop {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  flex-flow: row nowrap;
+  align-items: flex-start;
+
+  span {
+    align-self: center;
+
+    font-size: 12px;
+  }
+
+
+}
+
+.header-action-button {
+  border: 0;
+  background: none;
+  box-shadow: none;
+  border-radius: 0px;
+  font-size: 12px;
+}
+
+.no-decoration:hover {
+  text-decoration: none;
+}
+
+.no-decoration:visited {
+  text-decoration: none;
+}
+
+.cms-column {
+  margin-top: 28px;
+  padding: 3px;
+  background-color: red;
+  width: auto;
+
+  border-left: 6px solid $primary-purple;
+  background-color: lightgrey;
+
+}
+
+.card {
+  flex: 0 1 calc(25% - 1em);
+}
+
+.card-header {
+  display: flex;
+
+  justify-content: space-between;
+
+  h5 {
+    align-self: center;
+
+  }
+
+}
+
+.list-group-item:hover {
+  background-color: $primary-purple;
+  color: white;
+  text-decoration: none;
+}
+
+.cms-column-header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.cms-column-action {
+  align-self: center;
+  font-size: 12px;
+}
