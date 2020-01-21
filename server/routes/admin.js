@@ -1,6 +1,5 @@
 const Router = require('koa-router');
-const { requireAuth } = require('../middleware/permController');
-// const User = require('../models/user');
+const { requireAuth, grantAccess } = require('../middleware/permController');
 
 const environment = process.env.NODE_ENV;
 const config = require('../knexfile.js')[environment];
@@ -41,7 +40,7 @@ router.get('/user', requireAuth, async ctx => {
   ctx.body = { group_members };
 });
 
-router.post('/', requireAuth, async ctx => {
+router.post('/', requireAuth, grantAccess('updateAny', 'path'), async ctx => {
   let group_members;
   try {
     group_members = await knex()
