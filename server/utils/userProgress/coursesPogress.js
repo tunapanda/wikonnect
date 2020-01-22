@@ -14,7 +14,6 @@ async function userEnrolledCourse(courseData, userId) {
   enrollment.forEach(element => {
     enrollmentCourses.push(element.courseId);
   });
-  console.log(enrollmentCourses);
 
   courseData.forEach(course => {
     const element = course.id;
