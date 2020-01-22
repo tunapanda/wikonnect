@@ -1,0 +1,9 @@
+{
+    "version": 3,
+    "mappings": "AAAA,AAAA,QAAQ,CAAC;EACP,UAAU,EAAE,MAAM;CAKnB;;AAND,AAGE,QAHM,CAGN,IAAI,CAAC;EACH,SAAS,EAAE,KAAK;CACjB",
+    "sources": [
+        "warning-component.scss"
+    ],
+    "names": [],
+    "file": "warning-component.css"
+}

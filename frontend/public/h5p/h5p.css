@@ -11,7 +11,9 @@
   font-weight: normal;
   font-style: normal;
 }
-
+html.h5p-iframe-wrapper .h5p-fullscreen .h5p-iframe{
+  height: inherit;
+}
 html.h5p-iframe, html.h5p-iframe > body {
   font-family: Sans-Serif; /* Use the browser's default sans-serif font. (Since Heletica doesn't look nice on Windows, and Arial on OS X.) */
   width: 100%;
@@ -22,6 +24,7 @@ html.h5p-iframe, html.h5p-iframe > body {
 .h5p-semi-fullscreen, .h5p-fullscreen, html.h5p-iframe .h5p-container {
   overflow: hidden;
 }
+
 .h5p-content {
   position: relative;
   background: #fefefe;

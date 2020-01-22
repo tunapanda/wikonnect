@@ -1,6 +1,7 @@
 const Router = require('koa-router');
 const Lesson = require('../models/lesson');
 const { validateLessons } = require('../middleware/validation/validatePostData');
+const achievementPercentage = require('../utils/achievementPercentage');
 
 const router = new Router({
   prefix: '/lessons'
@@ -20,8 +21,12 @@ async function returnType(parent) {
   }
 }
 
+
 router.get('/:id', async ctx => {
   const lesson = await Lesson.query().findById(ctx.params.id).eager('chapters(selectNameAndId)');
+
+  await achievementPercentage(lesson, ctx.state.user.data.id);
+
   ctx.assert(lesson, 404, 'no lesson by that ID');
 
   returnType(lesson);
@@ -30,18 +35,27 @@ router.get('/:id', async ctx => {
 });
 
 router.get('/', async ctx => {
-  try {
-    let lesson = await Lesson.query().where(ctx.query).eager('chapters(selectNameAndId)');
 
+  let lesson;
+  try {
+    lesson = await Lesson.query().where(ctx.query).eager('chapters(selectNameAndId)');
+
+    await achievementPercentage(lesson, ctx.state.user.data.id);
     returnType(lesson);
 
-    ctx.status = 200;
-    ctx.body = { lesson };
-  } catch (error) {
-    ctx.status = 400;
-    ctx.body = { message: 'The query key does not exist' };
 
+  } catch (e) {
+    if (e.statusCode) {
+      ctx.throw(e.statusCode, { message: 'The query key does not exist' });
+      ctx.throw(e.statusCode, null, { errors: [e.message] });
+    } else { ctx.throw(400, null, { errors: ['Bad Request'] }); }
+    throw e;
   }
+
+  ctx.assert(lesson, 401, 'Something went wrong');
+
+  ctx.status = 200;
+  ctx.body = { lesson };
 });
 
 router.post('/', validateLessons, async ctx => {

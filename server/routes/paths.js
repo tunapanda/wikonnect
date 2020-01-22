@@ -1,12 +1,20 @@
 const Router = require('koa-router');
 const LearningPath = require('../models/learning_path');
 const { validatePaths } = require('../middleware/validation/validatePostData');
-const permController = require('../middleware/userAccessControlMiddleware');
+const permController = require('../middleware/permController');
 
 const router = new Router({
   prefix: '/paths'
 });
 
+/**
+ *
+ * @param {json} parent
+ *
+ * modify the parent object
+ * return child relation object
+ *
+ */
 async function returnType(parent) {
   try {
     if (parent.length == undefined) {
@@ -25,7 +33,7 @@ async function returnType(parent) {
   }
 }
 
-router.get('/', async ctx => {
+router.get('/', permController.grantAccess('readAny', 'path'), async ctx => {
   try {
     const learningpath = await LearningPath.query().where(ctx.query).eager('courses(selectNameAndId)');
 
@@ -33,6 +41,7 @@ router.get('/', async ctx => {
 
     ctx.status = 200;
     ctx.body = { learningpath };
+
   } catch (error) {
     ctx.status = 400;
     ctx.body = { message: 'The query key does not exist' };
@@ -41,7 +50,6 @@ router.get('/', async ctx => {
 
 router.get('/:id', permController.grantAccess('readAny', 'path'), async ctx => {
   const learningpath = await LearningPath.query().findById(ctx.params.id).eager('courses(selectNameAndId)');
-
   ctx.assert(learningpath, 404, 'No matching record found');
 
   returnType(learningpath);
@@ -52,7 +60,7 @@ router.get('/:id', permController.grantAccess('readAny', 'path'), async ctx => {
 
 
 router.post('/', permController.grantAccess('createAny', 'path'), validatePaths, async ctx => {
-  let newLearningPath = ctx.request.body.learningPath;
+  const newLearningPath = ctx.request.body.learningPath;
 
   let learningpath;
   try {
@@ -68,10 +76,9 @@ router.post('/', permController.grantAccess('createAny', 'path'), validatePaths,
 
   ctx.status = 201;
   ctx.body = { learningpath };
-
 });
 
-router.put('/:id', permController.grantAccess('updateAny', 'path'), async ctx => {
+router.put('/:id', permController.grantAccess('updateOwn', 'path'), async ctx => {
   const learningpath_record = await LearningPath.query().findById(ctx.params.id);
 
   if (!learningpath_record) {
