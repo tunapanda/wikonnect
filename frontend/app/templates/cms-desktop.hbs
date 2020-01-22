@@ -1,5 +1,11 @@
 <br>
+<div class="padded">
+  <BsButton @type="primary" @icon="glyphicon glyphicon-download">
+    CREATE H5P
+  </BsButton>
+</div>
 
+<hr>
 <div id="cms-desktop" class="padded">
 
 
@@ -12,27 +18,13 @@
       <h5>Course</h5><button class="btn btn-primary btn-sm " {{action "toggleCourseModal"}}>+ Create Course </button>
     </div>
     <ul class="list-group list-group-flush">
-      <a class="no-decoration" href="#">
-        <li class="list-group-item">Digital Literacy <br><span>Stay woke fam</span></li>
-      </a>
 
-      <a class="no-decoration" href="#">
-        <li class="list-group-item">Digital Literacy <br><span>Stay woke fam</span></li>
-      </a>
+      {{#each allCourses as |course|}}
 
-      <a class="no-decoration" href="#">
-        <li class="list-group-item">Digital Literacy <br><span>Stay woke fam</span></li>
-      </a>
-
-      <a class="no-decoration" href="#">
-        <li class="list-group-item">Digital Literacy <br><span>Stay woke fam</span></li>
-      </a>
-
-
-
-
-
-
+        <button class=" flat-button no-decoration" href="#" {{action "selectCourse" course.slug}}>
+          <li class="list-group-item">{{course.name}} <br><span>{{course.description}}</span></li>
+        </button>
+      {{/each}}
     </ul>
     <div class="card-footer">
 
@@ -51,13 +43,17 @@
     </div>
 
     <ul class="list-group list-group-flush">
-      <a class="no-decoration" href="#">
-        <li class="list-group-item">Cras justo odio <br><span>Sub x</span></li>
-      </a>
+      {{#each selectedCourse.modules as |module|}}
+
+        <button class=" flat-button no-decoration" href="#" {{action "selectModule" module.slug}}>
+          <li class="list-group-item">{{module.name}} <br><span>{{module.description}}</span></li>
+        </button>
+
+      {{/each}}
     </ul> <br>
     <div class="card-footer">
       <button class=" btn btn-primary btn-sm " {{action "toggleModuleModal"}}>
-        + Add Module to [[Selected Course]]
+        + Add Module to {{selectedCourse.name}}
       </button>
     </div>
   </div>
@@ -75,13 +71,18 @@
     </div>
 
     <ul class="list-group list-group-flush">
-      <a class="no-decoration" href="#">
-        <li class="list-group-item">Cras justo odio <br><span>Sub x</span></li>
-      </a>
+
+      {{#each selectedModule.lessons as |lesson|}}
+
+        <button class=" flat-button no-decoration" href="#" {{action "selectLesson" lesson.slug}}>
+          <li class="list-group-item">{{lesson.name}} <br><span>{{lesson.description}}</span></li>
+        </button>
+
+      {{/each}}
     </ul> <br>
     <div class="card-footer">
       <button class=" btn btn-primary btn-sm " {{action "toggleModuleModal"}}>
-        + Add Lesson to [[Selected Module]]
+        + Add Lesson to {{selectedModule.name}}
       </button>
     </div>
   </div>
@@ -89,7 +90,7 @@
 
   <div class="card cms-colum">
     <div class="card-header">
-      <h5>Module</h5>
+      <h5>Chapter</h5>
       <button class="btn btn-primary btn-sm " {{action "toggleModuleModal"}}>
         + Create H5P Chapter
       </button>
@@ -101,13 +102,17 @@
     </div>
 
     <ul class="list-group list-group-flush">
-      <a class="no-decoration" href="#">
-        <li class="list-group-item">Cras justo odio <br><span>Sub x</span></li>
-      </a>
+      {{#each selectedLesson.chapters as |chapter|}}
+
+        <button class=" flat-button no-decoration" href="#" {{action "selectLesson" lesson.slug}}>
+          <li class="list-group-item">{{chapter.name}} <br><span>{{chapter.description}}</span></li>
+        </button>
+
+      {{/each}}
     </ul> <br>
     <div class="card-footer">
       <button class=" btn btn-primary btn-sm " {{action "toggleModuleModal"}}>
-        + Add H5P to [[Selected Lesson]]
+        + Add H5P to {{selectedLesson.name}}
       </button>
     </div>
   </div>

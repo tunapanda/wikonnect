@@ -1,12 +1,16 @@
 import Controller from '@ember/controller';
-import { action } from '@ember/object';
+import { action, computed } from '@ember/object';
+import { tracked } from '@glimmer/tracking';
+
 // import { inject } from '@ember/service';
 
 export default class CmsDesktopController extends Controller {
 
   createCourseModal = false;
   createModuleModal = false;
-
+  selectedCourse;
+  selectedModule;
+  selectedLesson;
 
 
 
@@ -22,6 +26,44 @@ export default class CmsDesktopController extends Controller {
 
   }
 
+  @action
+  async selectCourse(course_slug) {
+    this.set("selectedModule", null);
+    this.set("selectedLesson", null);
+
+
+    console.log("slug");
+    console.log(course_slug);
+    let _selectedCourse = await this.store.findBySlug('course', course_slug);
+    console.log(_selectedCourse);
+    this.set("selectedCourse", _selectedCourse);
+
+  }
+
+  @action
+  async selectModule(module_slug) {
+    this.set("selectedLesson", null);
+    let _selectedModule = await this.store.findBySlug('module', module_slug);
+    this.set("selectedModule", _selectedModule);
+
+  }
+
+  @action
+  async selectLesson(lesson_slug) {
+    let _selectedLesson = await this.store.findBySlug('lesson', lesson_slug);
+    this.set("selectedLesson", _selectedLesson);
+
+  }
+
+
+
+
+  @computed()
+  get allCourses() {
+    return this.store.findAll('course');
+  }
+
+
 
   @action
   submit() {
@@ -32,7 +74,6 @@ export default class CmsDesktopController extends Controller {
   @action
   close() {
     console.log();
-    // this.get('Modal').open('plain');
   }
 
 }

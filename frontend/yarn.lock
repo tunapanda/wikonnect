@@ -4717,6 +4717,16 @@ ember-cli-htmlbars-inline-precompile@^2.1.0:
     heimdalljs-logger "^0.1.9"
     silent-error "^1.1.0"
 
+ember-cli-htmlbars@^2.0.1:
+  version "2.0.5"
+  resolved "https://registry.yarnpkg.com/ember-cli-htmlbars/-/ember-cli-htmlbars-2.0.5.tgz#b5a105429a6bce4f7c9c97b667e3b8926e31397f"
+  integrity sha512-3f3PAxdnQ/fhQa8XP/3z4RLRgLHxV8j4Ln75aHbRdemOCjBa048KxL9l+acRLhCulbGQCMnLiIUIC89PAzLrcA==
+  dependencies:
+    broccoli-persistent-filter "^1.4.3"
+    hash-for-dep "^1.2.3"
+    json-stable-stringify "^1.0.0"
+    strip-bom "^3.0.0"
+
 ember-cli-htmlbars@^3.0.0, ember-cli-htmlbars@^3.0.1, ember-cli-htmlbars@^3.1.0:
   version "3.1.0"
   resolved "https://registry.yarnpkg.com/ember-cli-htmlbars/-/ember-cli-htmlbars-3.1.0.tgz#87806c2a0bca2ab52d4fb8af8e2215c1ca718a99"
@@ -5175,6 +5185,15 @@ ember-let-polyfill@^0.1.0:
     ember-cli-babel "^6.16.0"
     ember-cli-version-checker "^2.1.2"
 
+ember-line-clamp@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/ember-line-clamp/-/ember-line-clamp-1.0.1.tgz#e7cc54014f87ad74da4984944775df9755102c6c"
+  integrity sha512-0mUgDFdw2pfYbzWJ2IUX4RJCEV87vggt7MNK21rNILa7RQmRYqpl3167GcsoUtNVcpjxF0EyzqQj5lkKCndx2A==
+  dependencies:
+    ember-cli-babel "^6.3.0"
+    ember-cli-htmlbars "^2.0.1"
+    ember-singularity "^1.0.2"
+
 ember-link-action@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/ember-link-action/-/ember-link-action-1.0.0.tgz#54894ec3debe3fdd9db96786f96c19b00ddbbd28"
@@ -5348,6 +5367,13 @@ ember-simple-auth@^1.6.0, ember-simple-auth@^1.9.2:
     ember-fetch "^2.1.0 || ^3.0.0 || ^4.0.0 || ^5.0.0 || ^6.0.0"
     ember-getowner-polyfill "^1.1.0 || ^2.0.0"
     silent-error "^1.0.0"
+
+ember-singularity@^1.0.2:
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/ember-singularity/-/ember-singularity-1.2.1.tgz#16ae0b88add7ccb21b9c1638329f94c6a702c17e"
+  integrity sha512-GowBXcozi7iqM/1qx495IEy+NWu4QfWCHzaqOnt/gI4elcVGUZOF+vLuDtytwY71Kp1heQr9UDP8mGBQ1IHPbA==
+  dependencies:
+    ember-cli-babel "^6.6.0"
 
 ember-source-channel-url@^2.0.1:
   version "2.0.1"
