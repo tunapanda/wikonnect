@@ -43,6 +43,7 @@ router.post('/', requireAuth, async ctx => {
     } else { ctx.throw(400, null, { errors: [e.message] }); }
     throw e;
   }
+  ctx.assert(enrollments, 401, 'Something went wrong');
   ctx.status = 200;
   ctx.body = { enrollments };
 });
