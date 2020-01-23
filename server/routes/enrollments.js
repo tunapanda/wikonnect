@@ -36,7 +36,7 @@ router.post('/', requireAuth, async ctx => {
    */
   let enrollments;
   try {
-    enrollments = await Enrollments.query().insertAndFetch({ 'course_id': ctx.query.course_id, 'user_id': ctx.state.user.data.id});
+    enrollments = await Enrollments.query().insertAndFetch({ 'course_id': ctx.query.enrollment.course_id, 'user_id': ctx.state.user.data.id});
   } catch (e) {
     if (e.statusCode) {
       ctx.throw(e.statusCode, null, { errors: [e.message] });
