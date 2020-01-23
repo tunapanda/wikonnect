@@ -28,22 +28,32 @@ async function enrolledCoursesType(parent) {
 
 
 router.post('/', requireAuth, async ctx => {
+  const courseId = ctx.request.body.enrollment.course_id;
+  const userId = ctx.state.user.data.id;
   /**
    * enroll = {
    *    course_id => string,
    *    user_id => string
    * }
    */
+
+  //  check for existing courseID record
+  const enrollments_record = await Enrollments.query().findById(courseId);
+  if (!enrollments_record) {
+    ctx.throw(400, null, { errors: ['Bad Request'] });
+  }
+
+  // create new entry if courseId does not exist
   let enrollments;
   try {
-    enrollments = await Enrollments.query().insertAndFetch({ 'course_id': ctx.request.body.enrollment.course_id, 'user_id': ctx.state.user.data.id});
+    enrollments = await Enrollments.query().insertAndFetch({ 'course_id': courseId, 'user_id': userId });
   } catch (e) {
     if (e.statusCode) {
       ctx.throw(e.statusCode, null, { errors: [e.message] });
     } else { ctx.throw(400, null, { errors: [e.message] }); }
     throw e;
   }
-  ctx.assert(enrollments, 401, 'Something went wrong');
+
   ctx.status = 200;
   ctx.body = { enrollments };
 });
