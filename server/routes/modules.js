@@ -115,7 +115,7 @@ router.get('/', permController.requireAuth, async ctx => {
     const modules = await Module.query().where(ctx.query).eager('lessons(selectNameAndId)');
 
     if (ctx.state.user.data.id !== 'anonymous') {
-    // get all achievements of a user
+      // get all achievements of a user
       const achievement = await Achievement.query().where('user_id', ctx.state.user.data.id);
       let achievementChapters = [];
       achievement.forEach(element => {

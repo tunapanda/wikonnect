@@ -1,5 +1,5 @@
 import Controller from '@ember/controller';
-import { computed } from '@ember/object';
+import { computed, action } from '@ember/object';
 import { inject } from '@ember/service';
 
 
@@ -25,6 +25,17 @@ export default class CourseIndexController extends Controller {
       };
 
     });
+  }
+
+  @action
+  async enrollmentToggle(course_id) {
+    console.log(course_id);
+    console.log(this.me.user.id);
+    let enrollment = this.store.createRecord('enrollment');
+    enrollment.set('course_id', course_id);
+    let en = await enrollment.save();
+    console.log(en);
+
   }
 
 }

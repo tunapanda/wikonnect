@@ -65,17 +65,6 @@
 
     {{#if (eq profileView "Learning")}}
       <h5>My Achievements</h5>
-      {{#if model.achievements.length}}
-        {{#each model.achievement as  |achievement|}}
-          {{achievement.name}}
-        {{/each}}
-      {{else}}
-        {{!-- You have not completed any courses --}}
-        <Achievement @name="Profile Ninja" @description="You have completed your profile" @badge="015-new" />
-        <Achievement @name="New Teacher" @description="You have succesfuly created your first course"
-          @badge="016-medal-1" />
-        <Achievement @name="First Course Complete" @description="You have succesfuly completed your first course"
-          @badge="017-medal-2" />
 
 
       {{#each model.achievementAwards as  |achievement|}}

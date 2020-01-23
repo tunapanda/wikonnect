@@ -3,7 +3,7 @@ const Course = require('../models/course');
 const permController = require('../middleware/permController');
 const { userPermissions } = require('../middleware/_helpers/roles');
 const { validateCourses } = require('../middleware/validation/validatePostData');
-const { userProgress, returnType, insertType, userEnrolledCourse }= require('../utils/userProgress/coursesPogress');
+const { userProgress, returnType, insertType, userEnrolledCourse } = require('../utils/userProgress/coursesPogress');
 
 const environment = process.env.NODE_ENV;
 const config = require('../knexfile.js')[environment];
