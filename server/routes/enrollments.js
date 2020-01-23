@@ -30,13 +30,13 @@ async function enrolledCoursesType(parent) {
 router.post('/', requireAuth, async ctx => {
   /**
    * enroll = {
-   *    courses_id => string,
+   *    course_id => string,
    *    user_id => string
    * }
    */
   let enrollments;
   try {
-    enrollments = await Enrollments.query().insertAndFetch(ctx.query);
+    enrollments = await Enrollments.query().insertAndFetch({ 'course_id': ctx.query.course_id, 'user_id': ctx.state.user.data.id});
   } catch (e) {
     if (e.statusCode) {
       ctx.throw(e.statusCode, null, { errors: [e.message] });
