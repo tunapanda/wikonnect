@@ -9,11 +9,7 @@
       You successfully read this important alert message.
     </BsAlert>
 
-<<<<<<< HEAD
     {{#each model.enrolledCourses as |course_item|}}
-=======
-    {{#each this.courseList as |course_item|}}
->>>>>>> b0906f3eaa8f4d75e231d5eed9f9dc8c8c5ea4a8
       <CourseItem @course={{course_item}} @progress={{course_item.progress}} @title={{course_item.name}}
         @description={{course_item.description}} @points="5" @slug={{course_item.slug}} @color={{course_item.color}} />
     {{/each}}
