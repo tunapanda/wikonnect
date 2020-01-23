@@ -33,7 +33,6 @@ export default class CourseIndexController extends Controller {
     console.log(this.me.user.id);
     let enrollment = this.store.createRecord('enrollment');
     enrollment.set('course_id', course_id);
-    enrollment.set('creator_id', this.me.user.id);
     let en = await enrollment.save();
     console.log(en);
 
