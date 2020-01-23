@@ -12,7 +12,13 @@
 
 
   <div class="padded modules">
-    <h2>Chapters</h2>
+    {{#if @model.permission.update}}
+
+
+      {{#link-to "cms.lesson.edit" @model.slug}}
+        <h2>Edit</h2>
+      {{/link-to}}
+    {{/if}}
     <p>Click on a lesson to reveal chapters</p>
 
 

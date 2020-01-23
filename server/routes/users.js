@@ -19,12 +19,12 @@ async function returnType(parent) {
   try {
     if (parent.length == undefined) {
       parent.achievementAwards.forEach(lesson => {
-        return lesson.type = 'achievement';
+        return lesson.type = 'achievementAwards';
       });
     } else {
       parent.forEach(mod => {
         mod.achievementAwards.forEach(lesson => {
-          return lesson.type = 'achievement';
+          return lesson.type = 'achievementAwards';
         });
       });
     }

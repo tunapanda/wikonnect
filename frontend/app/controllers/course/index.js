@@ -1,7 +1,12 @@
 import Controller from '@ember/controller';
 import { computed } from '@ember/object';
+import { inject } from '@ember/service';
+
 
 export default class CourseIndexController extends Controller {
+
+  @inject
+  me
 
   colorList = ['54378B', 'F57010', '32A583']
 
@@ -14,6 +19,8 @@ export default class CourseIndexController extends Controller {
         'color': this.colorList[colorIndex],
         'name': mod.get('name'),
         'slug': mod.get('slug'),
+        'progress': mod.get('progress'),
+        'permission': mod.get('permission'),
         'description': mod.get('description')
       };
 

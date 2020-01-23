@@ -78,7 +78,14 @@
           @badge="017-medal-2" />
 
 
-      {{/if}}
+      {{#each model.achievementAwards as  |achievement|}}
+        <Achievement @name={{achievement.name}} @description="You have completed your profile" @badge="015-new" />
+      {{/each}}
+
+
+
+
+
 
     {{/if}}
 

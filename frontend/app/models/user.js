@@ -12,6 +12,6 @@ export default class UserModel extends Model {
 
   @hasMany('group') groups;
   @hasMany('activity') activities;
-  @hasMany('achievement') achievementAwards;
+  @hasMany('achievement-award') achievementAwards;
   @hasMany('course') enrolledCourses;
 }
