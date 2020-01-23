@@ -14,7 +14,6 @@ const router = new Router({
 });
 
 
-
 router.get('/', permController.requireAuth, async ctx => {
   try {
     const course = await Course.query().where(ctx.query).eager('modules(selectNameAndId)');
@@ -198,4 +197,14 @@ router.delete('/:id', async ctx => {
   ctx.body = { course };
 });
 
+// router.post('/enrollment', async ctx => {
+//   try {
+
+//   } catch (e) {
+//     if (e.statusCode) {
+//       ctx.throw(e.statusCode, null, { errors: [e.message] });
+//     } else { ctx.throw(400, null, { errors: ['Bad Request'] }); }
+//     throw e;
+//   }
+// });
 module.exports = router.routes();
