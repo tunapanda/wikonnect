@@ -45,7 +45,6 @@ router.use(jwt.authenticate, require('./routes/achievements'));
 
 router.use(jwt.authenticate, require('./routes/achievement_awards'));
 
-router.use(jwt.authenticate, require('./routes/achievements'));
 router.use(require('./routes/search'));
 
 router.get('/hello', async ctx => {
