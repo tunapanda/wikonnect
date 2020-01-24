@@ -30,7 +30,7 @@ async function enrolledCoursesType(parent) {
 router.post('/', requireAuth, async ctx => {
   const courseId = ctx.request.body.enrollment.course_id;
   const userId = ctx.state.user.data.id;
-  
+
   //  check for existing courseID record
   let enrollments_base = Enrollments.query();
   const enrollments_record = await enrollments_base.where('course_id', courseId);
@@ -50,18 +50,16 @@ router.post('/', requireAuth, async ctx => {
     throw e;
   }
 
-  ctx.status = 200;
+  ctx.status = 201;
   ctx.body = { enrollments };
 });
 
 
-router.put('/', requireAuth, async ctx => {
+router.put('/:id', requireAuth, async ctx => {
   const courseData = ctx.request.body.enrollment;
-  // const userId = ctx.state.user.data.id;
-  //  check for existing courseID record and return error if it does not exist
-  let enrollments_base = Enrollments.query();
-  const enrollments_record = await enrollments_base.findById(courseData.id);
 
+  //  check for existing courseID record and return error if it does not exist
+  let enrollments_record = await Enrollments.query().findById(ctx.params.id);
   if (!enrollments_record) {
     ctx.throw(400, null, { errors: ['Bad Request'] });
   }
@@ -69,7 +67,8 @@ router.put('/', requireAuth, async ctx => {
   // delete new entry if courseId does not exist
   let enrollment;
   try {
-    enrollment = await enrollments_base.patchAndFetch(courseData.id, courseData);
+    enrollment = await Enrollments.query().patchAndFetchById(ctx.params.id, courseData);
+
   } catch (e) {
     if (e.statusCode) {
       ctx.throw(e.statusCode, null, { errors: [e.message] });
@@ -77,7 +76,7 @@ router.put('/', requireAuth, async ctx => {
     throw e;
   }
 
-  ctx.status = 200;
+  ctx.status = 201;
   ctx.body = { enrollment };
 });
 
@@ -92,7 +91,7 @@ router.get('/', requireAuth, async ctx => {
     throw e;
   }
 
-  ctx.status = 200;
+  ctx.status = 201;
   ctx.body = { enrollment };
 });
 
@@ -107,7 +106,7 @@ router.get('/:id', requireAuth, async ctx => {
     throw e;
   }
 
-  ctx.status = 200;
+  ctx.status = 201;
   ctx.body = { enrollment };
 });
 
@@ -116,7 +115,6 @@ router.get('/user', requireAuth, async ctx => {
   try {
     user = await User.query().where(ctx.query).eager('enrolledCourses(selectNameAndId)');
     enrolledCoursesType(user);
-    ctx.status = 200;
   } catch (e) {
     if (e.statusCode) {
       ctx.throw(e.statusCode, null, { errors: [e.message] });
@@ -124,6 +122,7 @@ router.get('/user', requireAuth, async ctx => {
     throw e;
   }
 
+  ctx.status = 201;
   ctx.body = { user };
 
 });
