@@ -38,15 +38,17 @@ router.post('/', requireAuth, async ctx => {
    */
 
   //  check for existing courseID record
-  const enrollments_record = await Enrollments.query().findById(courseId);
-  if (!enrollments_record) {
+  let enrollments_base = await Enrollments.query();
+  const enrollments_record = enrollments.findById(courseId);
+
+  if (enrollments_record.length) {
     ctx.throw(400, null, { errors: ['Bad Request'] });
   }
 
   // create new entry if courseId does not exist
   let enrollments;
   try {
-    enrollments = await Enrollments.query().insertAndFetch({ 'course_id': courseId, 'user_id': userId });
+    enrollments = await enrollments_base.insertAndFetch({ 'course_id': courseId, 'user_id': userId });
   } catch (e) {
     if (e.statusCode) {
       ctx.throw(e.statusCode, null, { errors: [e.message] });
@@ -56,6 +58,38 @@ router.post('/', requireAuth, async ctx => {
 
   ctx.status = 200;
   ctx.body = { enrollments };
+});
+
+
+router.delete('/', requireAuth, async ctx => {
+  const courseId = ctx.request.body.enrollment.course_id;
+  const userId = ctx.state.user.data.id;
+  /**
+   * enroll = {
+   *    course_id => string,
+   *    user_id => string
+   * }
+   */
+
+  //  check for existing courseID record and return error if it does not exist
+  const enrollments_record = await Enrollments.query().findById(courseId);
+
+  if (!enrollments_record) {
+    ctx.throw(400, null, { errors: ['Bad Request'] });
+  }
+
+  // delete new entry if courseId does not exist
+  try {
+    await Enrollments.query().delete().where({ 'course_id': courseId, 'user_id': userId });
+  } catch (e) {
+    if (e.statusCode) {
+      ctx.throw(e.statusCode, null, { errors: [e.message] });
+    } else { ctx.throw(400, null, { errors: [e.message] }); }
+    throw e;
+  }
+
+  ctx.status = 200;
+  ctx.body = { enrollments_record };
 });
 
 router.get('/', requireAuth, async ctx => {
