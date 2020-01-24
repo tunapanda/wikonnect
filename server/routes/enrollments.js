@@ -30,13 +30,7 @@ async function enrolledCoursesType(parent) {
 router.post('/', requireAuth, async ctx => {
   const courseId = ctx.request.body.enrollment.course_id;
   const userId = ctx.state.user.data.id;
-  /**
-   * enroll = {
-   *    course_id => string,
-   *    user_id => string
-   * }
-   */
-
+  
   //  check for existing courseID record
   let enrollments_base = Enrollments.query();
   const enrollments_record = await enrollments_base.where('course_id', courseId);
@@ -48,11 +42,11 @@ router.post('/', requireAuth, async ctx => {
   // create new entry if courseId does not exist
   let enrollments;
   try {
-    enrollments = await enrollments_base.insertAndFetch('course_id', courseId, 'user_id', userId, 'status', true);
+    enrollments = await enrollments_base.insertAndFetch({'course_id': courseId, 'user_id': userId, 'status': true});
   } catch (e) {
     if (e.statusCode) {
       ctx.throw(e.statusCode, null, { errors: [e.message] });
-    } else { ctx.throw(400, null, { errors: [e.message] }); }
+    } else { ctx.throw(400, null, { errors: [e.message, 'Bad Request'] }); }
     throw e;
   }
 
@@ -79,7 +73,7 @@ router.put('/', requireAuth, async ctx => {
   } catch (e) {
     if (e.statusCode) {
       ctx.throw(e.statusCode, null, { errors: [e.message] });
-    } else { ctx.throw(400, null, { errors: [e.message] }); }
+    } else { ctx.throw(400, null, { errors: [e.message, 'Bad Request'] }); }
     throw e;
   }
 
