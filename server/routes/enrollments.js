@@ -38,8 +38,8 @@ router.post('/', requireAuth, async ctx => {
    */
 
   //  check for existing courseID record
-  let enrollments_base = await Enrollments.query();
-  const enrollments_record = enrollments_base.findById(courseId);
+  let enrollments_base = Enrollments.query();
+  const enrollments_record = await enrollments_base.where('course_id', courseId);
 
   if (enrollments_record.length) {
     ctx.throw(400, null, { errors: ['Bad Request'] });
@@ -48,7 +48,7 @@ router.post('/', requireAuth, async ctx => {
   // create new entry if courseId does not exist
   let enrollments;
   try {
-    enrollments = await enrollments_base.insertAndFetch({ 'course_id': courseId, 'user_id': userId });
+    enrollments = await enrollments_base.insertAndFetch('course_id', courseId, 'user_id', userId, 'status', true);
   } catch (e) {
     if (e.statusCode) {
       ctx.throw(e.statusCode, null, { errors: [e.message] });
@@ -61,26 +61,21 @@ router.post('/', requireAuth, async ctx => {
 });
 
 
-router.delete('/', requireAuth, async ctx => {
-  const courseId = ctx.request.body.enrollment.course_id;
-  const userId = ctx.state.user.data.id;
-  /**
-   * enroll = {
-   *    course_id => string,
-   *    user_id => string
-   * }
-   */
-
+router.put('/', requireAuth, async ctx => {
+  const courseData = ctx.request.body.enrollment;
+  // const userId = ctx.state.user.data.id;
   //  check for existing courseID record and return error if it does not exist
-  const enrollments_record = await Enrollments.query().findById(courseId);
+  let enrollments_base = Enrollments.query();
+  const enrollments_record = await enrollments_base.findById(courseData.id);
 
   if (!enrollments_record) {
     ctx.throw(400, null, { errors: ['Bad Request'] });
   }
 
   // delete new entry if courseId does not exist
+  let enrollment;
   try {
-    await Enrollments.query().delete().where({ 'course_id': courseId, 'user_id': userId });
+    enrollment = await enrollments_base.patchAndFetch(courseData.id, courseData);
   } catch (e) {
     if (e.statusCode) {
       ctx.throw(e.statusCode, null, { errors: [e.message] });
@@ -89,7 +84,7 @@ router.delete('/', requireAuth, async ctx => {
   }
 
   ctx.status = 200;
-  ctx.body = { enrollments_record };
+  ctx.body = { enrollment };
 });
 
 router.get('/', requireAuth, async ctx => {
@@ -98,8 +93,23 @@ router.get('/', requireAuth, async ctx => {
     enrollment = await Enrollments.query().where({ 'user_id': ctx.state.user.data.id });
   } catch (e) {
     if (e.statusCode) {
-      ctx.throw(e.statusCode, null, {errors: [e.message]});
-    } else { ctx.throw(400, null, { errors: ['Bad request']});}
+      ctx.throw(e.statusCode, null, { errors: [e.message] });
+    } else { ctx.throw(400, null, { errors: ['Bad request'] }); }
+    throw e;
+  }
+
+  ctx.status = 200;
+  ctx.body = { enrollment };
+});
+
+router.get('/:id', requireAuth, async ctx => {
+  let enrollment;
+  try {
+    enrollment = await Enrollments.query().findById(ctx.params.id);
+  } catch (e) {
+    if (e.statusCode) {
+      ctx.throw(e.statusCode, null, { errors: [e.message] });
+    } else { ctx.throw(400, null, { errors: ['Bad request'] }); }
     throw e;
   }
 
