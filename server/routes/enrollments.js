@@ -39,7 +39,7 @@ router.post('/', requireAuth, async ctx => {
 
   //  check for existing courseID record
   let enrollments_base = await Enrollments.query();
-  const enrollments_record = enrollments.findById(courseId);
+  const enrollments_record = enrollments_base.findById(courseId);
 
   if (enrollments_record.length) {
     ctx.throw(400, null, { errors: ['Bad Request'] });
