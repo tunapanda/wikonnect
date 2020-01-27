@@ -45,6 +45,36 @@ router.get('/:id', async ctx => {
   const modules = await Module.query().findById(ctx.params.id).eager('lessons(selectNameAndId)');
   ctx.assert(modules, 404, 'No matching record found');
 
+  if (ctx.state.user.data.id !== 'anonymous') {
+    // get all achievements of a user
+    const achievement = await Achievement.query().where('user_id', ctx.state.user.data.id);
+    let achievementChapters = [];
+    achievement.forEach(element => {
+      if (element.targetStatus === 'completed') {
+        achievementChapters.push(element.target);
+      }
+    });
+
+    let lesson = await Lesson.query().eager('chapters(selectNameAndId)');
+
+    if (!modules.lessons.length) {
+      modules.progress = parseInt(0);
+    }
+    for (let index = 0; index < modules.lessons.length; index++) {
+      const element = modules.lessons[index];
+      lesson.forEach(chap => {
+        if (!chap.chapters.length) {
+          modules.progress = parseInt(0);
+        }
+        if (element.id === chap.id) {
+          let completionMetric = parseInt((achievementChapters.length / chap.chapters.length) * 100);
+          modules.progress = completionMetric;
+          console.log(modules.lessons.length, achievementChapters.length / chap.chapters.length, achievementChapters.length, chap.chapters.length);
+        }
+      });
+    }
+  }
+
   returnType(modules);
 
   Object.keys(userPermissions)
@@ -85,7 +115,7 @@ router.get('/', permController.requireAuth, async ctx => {
     const modules = await Module.query().where(ctx.query).eager('lessons(selectNameAndId)');
 
     if (ctx.state.user.data.id !== 'anonymous') {
-    // get all achievements of a user
+      // get all achievements of a user
       const achievement = await Achievement.query().where('user_id', ctx.state.user.data.id);
       let achievementChapters = [];
       achievement.forEach(element => {
@@ -100,6 +130,9 @@ router.get('/', permController.requireAuth, async ctx => {
         for (let index = 0; index < mod.lessons.length; index++) {
           const element = mod.lessons[index];
           lesson.forEach(chap => {
+            if (!chap.chapters.length) {
+              mod.progress = parseInt(0);
+            }
             if (element.id === chap.id) {
               let completionMetric = parseInt((achievementChapters.length / chap.chapters.length) * 100);
               return mod.progress = completionMetric;

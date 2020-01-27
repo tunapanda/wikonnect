@@ -57,6 +57,10 @@ router.get('/', permController.requireAuth, async ctx => {
       let lesson = await Lesson.query().eager('chapters(selectNameAndId)');
 
       course.forEach(cour => {
+        if (!cour.modules.length) {
+          let completionMetric = parseInt(0);
+          return cour.progress = completionMetric;
+        }
         for (let index = 0; index < cour.modules.length; index++) {
           const element = cour.modules[index];
           modules.forEach(mod => {
@@ -66,7 +70,7 @@ router.get('/', permController.requireAuth, async ctx => {
                 const element = mod.lessons[index];
                 lesson.forEach(chap => {
                   if (element.id === chap.id) {
-                    let completionMetric = parseInt((achievementChapters.length / chap.chapters.length) * 100) > 0 ? parseInt((achievementChapters.length / chap.chapters.length) * 100) : 0;
+                    let completionMetric = parseInt((achievementChapters.length / chap.chapters.length) * 100) > 0 ? parseInt((achievementChapters.length / chap.chapters.length) * 100) : parseInt(0);
                     cour.progress = completionMetric;
                     return cour.progress = completionMetric;
                   }

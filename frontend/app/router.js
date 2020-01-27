@@ -88,6 +88,24 @@ Router.map(function () {
     }
 
     );
+
+    this.route('course', function () {
+      this.route('create');
+      this.route('edit', {
+        path: '/:course_slug'
+      }
+
+      );
+    });
+
+    this.route('module', function () {
+      this.route('edit', {
+        path: '/:module_slug'
+      }
+
+      );
+      this.route('create');
+    });
   }
 
   );
