@@ -8,7 +8,7 @@ assignees: '@mosesokemwa '
 ---
 
 ### Describe the user story:
-<!-- eg Admin should be able to delete single or multiple users.  -->
+<!-- eg Admin should be able to delete single or multiple users so that it is easy to manage users.  -->
 
 ### Tasks (where applicable)
 <!-- Please describe back-end tasks needed to accomplisd this-->
