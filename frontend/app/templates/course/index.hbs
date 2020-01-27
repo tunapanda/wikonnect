@@ -25,12 +25,12 @@
     {{#if me.isAuthenticated}}
 
       {{#if model.enrolled}}
-        <button type="button" class="btn btn-danger form-control" {{action "enrollmentToggle" model.id}}>
+        <button type="button" class="btn btn-danger form-control" {{action "leave" model.id}}>
           Leave
           {{model.name}}
         </button>
       {{else}}
-        <button type="button" class="btn btn-success form-control" {{action "enrollmentToggle" model.id}}>
+        <button type="button" class="btn btn-success form-control" {{action "enroll" model.id}}>
           Enroll in
           {{model.name}}
         </button>

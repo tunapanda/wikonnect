@@ -28,13 +28,27 @@ export default class CourseIndexController extends Controller {
   }
 
   @action
-  async enrollmentToggle(course_id) {
+  async enroll(course_id) {
     console.log(course_id);
     console.log(this.me.user.id);
     let enrollment = this.store.createRecord('enrollment');
     enrollment.set('course_id', course_id);
     let en = await enrollment.save();
     console.log(en);
+
+  }
+
+
+  @action
+  async leave(enrollment_id) {
+    console.log(enrollment_id);
+    let enroll = await this.store.findRecord('enrollment', "enrollment1");
+    console.log(enroll.id);
+    enroll.set("status", true);
+    console.log(enroll);
+    enroll.save();
+
+
 
   }
 
