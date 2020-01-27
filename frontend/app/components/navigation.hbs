@@ -11,6 +11,11 @@
       My Courses
 
     {{/link-to}}
+
+    {{#link-to "courses" invokeAction=(action "closenav")  }}
+      Explore Courses
+
+    {{/link-to}}
     {{#link-to "profile" me.user.username invokeAction=(action "closenav")  }}
       Profile
 
@@ -30,8 +35,8 @@
     {{#link-to "home" invokeAction=(action "closenav")  }}
       Home
     {{/link-to}}
-    {{#link-to "home" invokeAction=(action "closenav")  }}
-      Courses
+    {{#link-to "courses" invokeAction=(action "closenav")  }}
+      Explore Courses
 
     {{/link-to}}
     {{#link-to "login" invokeAction=(action "closenav")  }}

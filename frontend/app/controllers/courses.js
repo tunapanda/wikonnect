@@ -1,13 +1,13 @@
 import Controller from '@ember/controller';
 import { computed } from '@ember/object';
 
-export default class HomeController extends Controller {
+export default class CoursesController extends Controller {
 
   colorList = ['54378B', 'F57010', '32A583']
 
   @computed('model.[]')
   get courseList() {
-    return this.model.enrolledCourses.map((course, index) => {
+    return this.model.map((course, index) => {
       let colorIndex = index % 3;
 
       return {
