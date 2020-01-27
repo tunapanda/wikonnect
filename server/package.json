@@ -12,7 +12,7 @@
     "db:reset": "knex migrate:rollback && knex migrate:latest",
     "db:seed": "knex seed:run",
     "db:migrate": "knex migrate:make swag",
-    "test": "mocha test",
+    "test": "nyc --reporter=html mocha test",
     "lint:js": "eslint ."
   },
   "dependencies": {
