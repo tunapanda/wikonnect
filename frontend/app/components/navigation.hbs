@@ -15,18 +15,14 @@
       Profile
 
     {{/link-to}}
-    {{#link-to "profile" me.user.username invokeAction=(action "closenav")  }}
-      Logout
-
-    {{/link-to}}
-    {{#link-to "home" invokeAction=(action "closenav")  }}
+    <a href="#" {{ action "logout" }}>Logout</a>
+    {{#link-to "profile" me.user.username (query-params view="Settings")
+  invokeAction=(action "closenav")  }}
       Settings
 
     {{/link-to}}
-    {{#link-to "about" invokeAction=(action "closenav")  }}
-      About
+    <a href="https://wikonnect.org">About</a>
 
-    {{/link-to}}
 
   {{else}}
 
@@ -47,10 +43,10 @@
 
     {{/link-to}}
 
-    {{#link-to "about" invokeAction=(action "closenav")  }}
-      About
 
-    {{/link-to}}
+    <a href="https://wikonnect.org">About</a>
+
+
 
 
   {{/if}}

@@ -1,17 +1,25 @@
-<div class="module-item">
+{{#link-to "course.module.index" @module.slug }}
+  <div class="module-item">
 
-  {{!-- {{#link-to "course" @course "module" @module.id}} --}}
+    {{!-- {{#link-to "course" @course "module" @module.id}} --}}
 
 
-  <img class="module-image" src="https://placekitten.com/300/147" alt="">
-  {{#link-to "course.module.index" @module.slug }}
+    <img class="module-image" src="http://placehold.jp/20/{{@module.color}}/ffffff/200x140.png?text={{@module.name}}"
+      alt="">
+
     <h6>{{@module.name}}</h6>
 
-  {{/link-to}}
-  {{!-- <div>{{@module.description}}</div> --}}
-
-  <p>~ 5 Minutes</p>
+    {{!-- <div>{{@module.description}}</div> --}}
+    {{#if me.isAuthenticated}}
 
 
+      <BsProgress as |pg|>
+        <pg.bar @showLabel={{true}} @roundDigits={{0}} @type="success" @value={{@module.progress}} />
+      </BsProgress>
+    {{/if}}
+    <p>~ 5 Minutes</p>
 
-</div>
+
+
+  </div>
+{{/link-to}}

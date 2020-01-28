@@ -1,6 +1,6 @@
 {{!-- {{outlet}} --}}
 <div id="courses">
-  <div class="heading">
+  <div class="heading bg-purple">
 
     <p> {{model.description}}</p>
     <h2>{{model.name}}</h2>
@@ -10,12 +10,29 @@
 
 
   <div class="modules padded">
-    <h2>Modules</h2>
-    <hr>
-    <div class="modules-list">
-      {{#each model.modules as |module|}}
+    <div class="sub-header">
+      <h2>Modules </h2>
+      {{#if (eq model.permission.update "true")}}
 
-        <ModuleItem @module={{module}} @course={{model.id}} />
+
+        {{#link-to "cms.course.edit" @model.slug}}
+          <h2>Edit</h2>
+        {{/link-to}}
+      {{/if}}
+
+    </div>
+    <hr>
+    {{#if me.isAuthenticated}}
+
+
+      <BsProgress as |pg|>
+        <pg.bar @showLabel={{true}} @roundDigits={{0}} @type="success" @value={{model.progress}} />
+      </BsProgress>
+    {{/if}}
+    <div class="modules-list">
+      {{#each modList as |module|}}
+
+        <ModuleItem @module={{module}} @course={{model.id}} @progress={{module.progress}} />
       {{/each}}
 
     </div>

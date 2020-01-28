@@ -16,6 +16,29 @@
   border-color: green;
 }
 
+.sort-list {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+}
+
+.form-actions {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+}
+
+.card-body {
+  padding-bottom: 1em;
+}
+
 .invalid-feedback {
   font-size: 0.2rem;
   color: red;
@@ -71,5 +94,25 @@ slightly narrower for forms .form-container {
 
 .form-primary-fields {
   margin-bottom: 2rem;
+}
+
+.cms-button {
+  width: 100%;
+  margin-top: 1em;
+  border-style: solid;
+  background-color: white;
+  border-radius: 7px;
+  padding: 9px;
+  text-align: center;
+  background-color: white;
+  color: black;
+  border: 2px solid #d2d0d0;
+  /* Green */
+}
+
+.cms-button:hover {
+  color: white;
+  text-decoration: none;
+  background-color: #00AA83;
 }
 /*# sourceMappingURL=forms.css.map */

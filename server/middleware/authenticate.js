@@ -1,22 +1,22 @@
 const User = require('../models/user');
 
 /**
- * get user by username provided in ctx
- * @param {*} ctx 
- * @param {*} next 
+ * @param  { String } ctx
+ * ctx object with username
+ * @param  { * } next
+ * if username does not exists continue function
  */
 
-//Checks to ensure that username is unique
 async function getUserByUsername(ctx, next) {
-  const user = await User.query().findOne({ username: ctx.request.body.user.username.toLowerCase() });
-  if (!user) {
+  const userName = await User.query().findOne({ username: ctx.request.body.user.username.toLowerCase() });
+  const userEmail = await User.query().findOne({ email: ctx.request.body.user.email.toLowerCase() });
+  if (!userName && !userEmail) {
     await next();
   } else {
     ctx.status = 406;
     ctx.body = {
       error: 'User exists',
     };
-    return ctx;
   }
 }
 

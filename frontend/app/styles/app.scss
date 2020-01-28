@@ -11,7 +11,6 @@
 @import 'common/typography';
 @import 'profile';
 @import 'common/utils';
-
 @import url('https://rsms.me/inter/inter.css');
 
 html {
@@ -24,5 +23,10 @@ html {
   }
 }
 
-@import 'ember-bootstrap/bootstrap';
-@import 'ember-power-select';
+body {
+  font-family: 'Inter var', sans-serif;
+
+}
+
+@import "ember-bootstrap/bootstrap";
+@import "ember-power-select";

@@ -2,6 +2,8 @@ const chai = require('chai');
 const chaiHttp = require('chai-http');
 const server = require('../index');
 const assert = chai.assert;
+const tokens = require('./_tokens');
+
 
 chai.should();
 chai.use(chaiHttp);
@@ -44,7 +46,7 @@ const activityData = {
     'userId': 'user1',
     'chapterId': 'chapter1',
     'status': 'active',
-    'progress': '54'
+    'progress': '54',
   }
 };
 /**
@@ -71,6 +73,7 @@ describe('LESSONS ROUTE', () => {
         res.should.be.json;
         res.body.should.be.a('object');
         res.body.should.have.property('errors');
+        res.body.errors.should.have.property('creatorId');
         done();
       });
   });
@@ -91,6 +94,7 @@ describe('LESSONS ROUTE', () => {
     chai
       .request(server)
       .get(lessonRoute + '?slug=a-something-else')
+      .set(tokens.headerBasicUser2)
       .end((err, res) => {
         res.should.have.status(200);
         assert.equal(res.body.lesson.length, 0);
@@ -101,9 +105,10 @@ describe('LESSONS ROUTE', () => {
     chai
       .request(server)
       .get(lessonRoute + '?wishbone=a-lesson-path')
+      .set(tokens.headerBasicUser2)
       .end((err, res) => {
         res.should.have.status(400);
-        res.body.message.should.eql('The query key does not exist');
+        res.body.errors.should.eql(['Bad Request']);
         done();
       });
   });
@@ -113,6 +118,7 @@ describe('LESSONS ROUTE', () => {
       .request(server)
       .post(lessonRoute)
       .set('Content-Type', 'application/json')
+      .set(tokens.headerBasicUser2)
       .send(lessonData)
       .end((err, res) => {
         res.status.should.eql(201);
@@ -125,6 +131,7 @@ describe('LESSONS ROUTE', () => {
     chai
       .request(server)
       .get(lessonRoute)
+      .set(tokens.headerBasicUser2)
       .end((err, res) => {
         res.should.have.status(200);
         res.should.be.json;
@@ -139,6 +146,7 @@ describe('LESSONS ROUTE', () => {
     chai
       .request(server)
       .get(lessonRoute + '?slug=a-lesson')
+      .set(tokens.headerBasicUser2)
       .end((err, res) => {
         res.should.have.status(200);
         res.should.be.json;
@@ -153,6 +161,7 @@ describe('LESSONS ROUTE', () => {
     chai
       .request(server)
       .get(lessonRoute + lessonID)
+      .set(tokens.headerBasicUser2)
       .end((err, res) => {
         res.should.have.status(200);
         res.should.be.json;
@@ -229,7 +238,7 @@ describe('ACTIVITY ROUTE', () => {
   it('Should throw an ERROR on GET req using valid key and invalid query', done => {
     chai
       .request(server)
-      .get(activityRoute + '?chapterId=chapt')
+      .get(activityRoute + '?chapter_id=chapt')
       .end((err, res) => {
         res.should.have.status(200);
         assert.equal(res.body.activity.length, 0);
@@ -275,7 +284,7 @@ describe('ACTIVITY ROUTE', () => {
   it('Should list ONE activity records item on GET using QUERY', done => {
     chai
       .request(server)
-      .get(activityRoute + '?chapterId=chapter1')
+      .get(activityRoute + '?chapter_id=chapter1')
       .end((err, res) => {
         res.should.have.status(200);
         res.should.be.json;
@@ -298,16 +307,16 @@ describe('ACTIVITY ROUTE', () => {
         done();
       });
   });
-  it('Should UPDATE a activity records record on PUT', done => {
+  it('Should UPDATE an activity records record on PUT', done => {
     chai
       .request(server)
       .put(activityRoute + activityID)
       .set('Content-Type', 'application/json')
-      .send({ activity: { 'userId': 'user3' } })
+      .send({ 'activity': { 'user_id': 'user3' }})
       .end((err, res) => {
         res.status.should.eql(201);
         res.should.be.json;
-        res.body.activity.userId.should.eql('user3');
+        res.body.activity.user_id.should.eql('user3');
         done();
       });
   });

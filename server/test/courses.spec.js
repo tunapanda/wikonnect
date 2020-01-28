@@ -2,6 +2,7 @@ const chai = require('chai');
 const chaiHttp = require('chai-http');
 const server = require('../index');
 const assert = chai.assert;
+const tokens = require('./_tokens');
 
 
 chai.should();
@@ -10,29 +11,31 @@ chai.use(chaiHttp);
 const route = '/api/v1/courses/';
 const itemID = 'course10';
 const data = {
-  course: {
-    'id': 'course10',
+  'course': {
+    'id': itemID,
     'name': 'Testing Course Path',
     'slug': 'source-course-route',
     'description': 'Colection of modules.',
     'status': 'published',
-    'creatorId': 'user3'
+    'creatorId': 'user3',
+    'modules': ['module1', 'module2']
   }
 };
 
 const putData = {
-  course: {
+  'course': {
     'name': 'PUT update works',
+    'modules': ['module1']
   }
 };
 
 const invalidData = {
-  course: {
-    'id': 'course10',
+  'course': {
+    'id': itemID,
     'name': 'Testing Course Path',
     'slug': 'source-learning-path',
     'description': 'Colection of modules.',
-    'status': 'published',
+    'status': 'published'
   }
 };
 
@@ -43,23 +46,25 @@ describe('COURSES ROUTES', () => {
       .request(server)
       .post(route)
       .set('Content-Type', 'application/json')
+      .set(tokens.headersSuperAdmin1)
       .send(invalidData)
       .end((err, res) => {
-        res.status.should.eql(400);
+        res.status.should.eql(401);
         res.should.be.json;
-        res.body.should.be.a('object');
-        res.body.should.have.property('errors');
+        res.body.should.be.an('object');
+        res.body.errors.should.have.property('creatorId');
         done();
       });
   });
   it('Should throw an ERROR on PUT with invalid path', done => {
     chai
       .request(server)
-      .put(route + itemID)
+      .put(route + 'dirty-example-34')
       .set('Content-Type', 'application/json')
+      .set(tokens.headersSuperAdmin1)
       .send(putData)
       .end((err, res) => {
-        res.status.should.eql(400);
+        res.status.should.eql(401);
         res.should.be.json;
         res.body.message.should.eql('That course does not exist');
         done();
@@ -69,6 +74,7 @@ describe('COURSES ROUTES', () => {
     chai
       .request(server)
       .get(route + '?slug=a-learning')
+      .set(tokens.headersSuperAdmin1)
       .end((err, res) => {
         res.should.have.status(200);
         assert.equal(res.body.course.length, 0);
@@ -81,6 +87,7 @@ describe('COURSES ROUTES', () => {
       .request(server)
       .post(route)
       .set('Content-Type', 'application/json')
+      .set(tokens.headersSuperAdmin1)
       .send(data)
       .end((err, res) => {
         res.status.should.eql(201);
@@ -93,6 +100,7 @@ describe('COURSES ROUTES', () => {
     chai
       .request(server)
       .get(route)
+      .set(tokens.headersSuperAdmin1)
       .end((err, res) => {
         res.should.have.status(200);
         res.should.be.json;
@@ -109,6 +117,7 @@ describe('COURSES ROUTES', () => {
     chai
       .request(server)
       .get(route + itemID)
+      .set(tokens.headersSuperAdmin1)
       .end((err, res) => {
         res.should.have.status(200);
         res.should.be.json;
@@ -123,6 +132,7 @@ describe('COURSES ROUTES', () => {
     chai
       .request(server)
       .get(route + itemID + '?slug=source-course-route')
+      .set(tokens.headersSuperAdmin1)
       .end((err, res) => {
         res.should.have.status(200);
         res.should.be.json;
@@ -139,6 +149,7 @@ describe('COURSES ROUTES', () => {
       .request(server)
       .put(route + itemID)
       .set('Content-Type', 'application/json')
+      .set(tokens.headersSuperAdmin1)
       .send(putData)
       .end((err, res) => {
         res.status.should.eql(201);
@@ -152,6 +163,7 @@ describe('COURSES ROUTES', () => {
       .request(server)
       .delete(route + itemID)
       .set('Content-Type', 'application/json')
+      .set(tokens.headersSuperAdmin1)
       .end((err, res) => {
         res.status.should.eql(200);
         res.should.be.json;

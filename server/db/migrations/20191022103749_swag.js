@@ -30,7 +30,9 @@ exports.up = knex =>
     .createTable('group_permissions', table => {
       table.text('id').primary().notNullable().defaultTo(knex.raw('next_id()'));
       table.text('group_id').references('groups');
-      table.text('name');
+      table.text('resource');
+      table.text('action');
+      table.text('attributes');
       table.timestamps();
     })
     .createTable('learning_paths', table => {
@@ -133,6 +135,12 @@ exports.up = knex =>
       table.text('user_id').references('users');
       table.primary(['achievement_id', 'user_id']);
       table.timestamps();
+    })
+    .createTable('lesson_chapters', table => {
+      table.text('lesson_id').references('modules');
+      table.text('chapter_id').references('modules');
+      table.primary(['lesson_id', 'chapter_id']);
+      table.timestamps();
     });
 
 exports.down = knex =>
@@ -153,4 +161,5 @@ exports.down = knex =>
     .dropTableIfExists('activity')
     .dropTableIfExists('achievements')
     .dropTableIfExists('achievement_awards')
+    .dropTableIfExists('lesson_chapters')
     .raw(idGenRemoval);

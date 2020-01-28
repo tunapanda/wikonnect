@@ -1,7 +1,7 @@
 const Router = require('koa-router');
 const Chapter = require('../models/chapter');
+const Achievement = require('../models/achievement');
 const validateChapter = require('../middleware/validation/validateChapter');
-const queryStringSearch = require('../middleware/queryStringSearch');
 const busboy = require('async-busboy');
 const path = require('path');
 const unzipper = require('unzipper');
@@ -10,29 +10,31 @@ const router = new Router({
   prefix: '/chapters'
 });
 
-
-async function returnType(parent) {
-  try {
-    if (parent.length == undefined) {
-      parent.lesson.forEach(lesson => {
-        return lesson.type = 'lessons';
+async function returnChapterStatus(chapter, achievement) {
+  if (chapter.length == undefined) {
+    achievement.forEach(ach => {
+      if (chapter.id == ach.target) {
+        return chapter.targetStatus = ach.targetStatus;
+      }
+    });
+  } else {
+    chapter.forEach(chap => {
+      achievement.forEach(ach => {
+        if (chap.id == ach.target) {
+          return chap.targetStatus = ach.targetStatus;
+        }
       });
-    } else {
-      parent.forEach(mod => {
-        mod.lesson.forEach(lesson => {
-          return lesson.type = 'lessons';
-        });
-      });
-    }
-  } catch (error) {
-    null;
+    });
   }
 }
 
-router.get('/', queryStringSearch, async ctx => {
+router.get('/', async ctx => {
   try {
-    const chapter = await Chapter.query().where(ctx.query).eager('lesson(selectNameAndId)');
-    returnType(chapter);
+    const chapter = await Chapter.query().where(ctx.query);
+    const achievement = await Achievement.query().where('user_id', ctx.state.user.data.id);
+
+    returnChapterStatus(chapter, achievement);
+
     ctx.status = 200;
     ctx.body = { chapter };
   } catch (error) {
@@ -42,13 +44,11 @@ router.get('/', queryStringSearch, async ctx => {
 });
 
 router.get('/:id', async ctx => {
-  const chapter = await Chapter.query().findById(ctx.params.id).eager('lesson(selectNameAndId)');
+  const chapter = await Chapter.query().findById(ctx.params.id);
+  ctx.assert(chapter, 404, 'no lesson by that ID');
 
-  if (!chapter) {
-    ctx.assert(chapter, 404, 'no lesson by that ID');
-  }
-
-  returnType(chapter);
+  const achievement = await Achievement.query().where('user_id', ctx.state.user.data.id);
+  returnChapterStatus(chapter, achievement);
 
   ctx.status = 200;
   ctx.body = { chapter };
@@ -74,7 +74,6 @@ router.post('/', validateChapter, async ctx => {
     ctx.assert(module, 401, 'Something went wrong');
   }
   ctx.status = 201;
-
   ctx.body = { chapter };
 
 });

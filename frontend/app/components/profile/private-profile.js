@@ -26,6 +26,11 @@ export default class ProfilePrivateProfileComponent extends Component {
     }
   }
 
+  // @computed('me.user.{firstName,lastName}')
+  // @get achievements(){
+
+  // }
+
   @computed('model.hasDirtyAttributes')
   get unsavedChanges() {
     return this.model.hasDirtyAttributes;
