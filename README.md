@@ -54,8 +54,8 @@ cd wikonnect/
 yarn
 ```
 
-<details>
-<summary>Server(API) set-up</summary>
+### Server(API) setup
+_______
 
 Now let's set up the **server**. First, go into the server directory and install the node packages.
 
@@ -84,9 +84,9 @@ To populate the database with dummy data (defined in `server/db/seeds`), run `kn
 Now start your server! `yarn start`.
 
 If you see an Elasticsearch error, don't worry, you don't need Elasticsearch to run the app.
-</details>
-<details>
-<summary>Front End set-up</summary>
+
+### Front End set-up
+_______
 
 #### Get Ember up and running
 
@@ -98,9 +98,6 @@ Now start your server!
 yarn start.
 ```
 Now point your favorite browser to http://localhost:4200/ and you will be able to see the app.
-
-
-</details>
 
 Contributing
 --
