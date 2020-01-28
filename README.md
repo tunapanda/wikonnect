@@ -81,7 +81,7 @@ Running `knex migrate:latest ` in the `server/` directory will use the migration
 
 To populate the database with dummy data (defined in `server/db/seeds`), run `knex seed:run`.
 
-Now start your server! `yarn start`.
+Now start your server! `yarn start`
 
 If you see an Elasticsearch error, don't worry, you don't need Elasticsearch to run the app.
 
@@ -95,7 +95,7 @@ Install the node packages for the Ember app. Run `yarn` in wikonnect/frontend.
 Now start your server!
 
 ```
-yarn start.
+yarn start
 ```
 Now point your favorite browser to http://localhost:4200/ and you will be able to see the app.
 
