@@ -65,7 +65,7 @@ router.get('/:id', async ctx => {
 
   await returnType(course);
 
-  function permObjects() {
+  async function permObjects() {
     Object.keys(userPermissions)
       .forEach(perm => {
         if (!ctx.state.user) {
@@ -97,7 +97,7 @@ router.get('/:id', async ctx => {
     return course.permissions = userPermissions;
   }
   ctx.status = 200;
-  course['permissions'] = permObjects();
+  course['permissions'] = await permObjects();
   ctx.body = { course };
 });
 
@@ -197,14 +197,4 @@ router.delete('/:id', async ctx => {
   ctx.body = { course };
 });
 
-// router.post('/enrollment', async ctx => {
-//   try {
-
-//   } catch (e) {
-//     if (e.statusCode) {
-//       ctx.throw(e.statusCode, null, { errors: [e.message] });
-//     } else { ctx.throw(400, null, { errors: ['Bad Request'] }); }
-//     throw e;
-//   }
-// });
 module.exports = router.routes();
