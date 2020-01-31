@@ -12,7 +12,7 @@ export default class SignupController extends Controller {
 
   @action
   signupSuccess() {
-    this.transitionToRoute('index');
+    this.transitionToRoute('home');
   }
 
 }
