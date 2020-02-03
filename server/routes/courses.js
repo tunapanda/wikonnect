@@ -3,7 +3,7 @@ const Course = require('../models/course');
 const permController = require('../middleware/permController');
 const { userPermissions } = require('../middleware/_helpers/roles');
 const { validateCourses } = require('../middleware/validation/validatePostData');
-const { userProgress, returnType, insertType, userEnrolledCourse } = require('../utils/userProgress/coursesPogress');
+const { userProgress, returnType, insertType, userEnrollmentType} = require('../utils/userProgress/coursesPogress');
 
 const environment = process.env.NODE_ENV;
 const config = require('../knexfile.js')[environment];
@@ -16,13 +16,12 @@ const router = new Router({
 
 router.get('/', permController.requireAuth, async ctx => {
   try {
-    const course = await Course.query().where(ctx.query).eager('modules(selectNameAndId)');
+    const course = await Course.query().where(ctx.query).eager('[modules(selectNameAndId), enrollments(selectNameAndId)]');
     if (ctx.state.user.data.id !== 'anonymous') {
       // get all achievements of a user
       await userProgress(course, ctx.state.user.data.id);
-      await userEnrolledCourse(course, ctx.state.user.data.id);
     }
-
+    userEnrollmentType(course);
     returnType(course);
 
     course.forEach(child => {

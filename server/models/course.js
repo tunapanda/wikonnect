@@ -25,6 +25,14 @@ class Course extends Model {
           },
           to: 'modules.id'
         }
+      },
+      enrollments: {
+        relation: Model.HasManyRelation,
+        modelClass: __dirname + '/enrollment',
+        join: {
+          from: 'courses.id',
+          to: 'enrollments.courseId'
+        }
       }
     };
   }

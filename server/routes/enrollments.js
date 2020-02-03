@@ -56,9 +56,11 @@ router.post('/', requireAuth, async ctx => {
 
 
 router.put('/:id', requireAuth, async ctx => {
-  const courseData = ctx.request.body.enrollment;
+  let courseData = ctx.request.body.enrollment;
+  courseData.userId = ctx.state.user.data.id;
+  console.log(courseData);
 
-  //  check for existing courseID record and return error if it does not exist
+  //  check for existing chapter and user record and return error if it does not exist
   let enrollments_record = await Enrollments.query().findById(ctx.params.id);
   if (!enrollments_record) {
     ctx.throw(400, null, { errors: ['Bad Request'] });

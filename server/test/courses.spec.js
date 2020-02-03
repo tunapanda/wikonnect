@@ -109,6 +109,10 @@ describe('COURSES ROUTES', () => {
         res.body.course[0].should.have.property('slug');
         res.body.course[0].should.have.property('creatorId');
         res.body.course[0].modules[0].should.have.property('id');
+        res.body.course[0].modules[0].should.have.property('type');
+        res.body.course[0].modules[0].type.should.eql('modules');
+        res.body.course[0].enrollments[0].should.have.property('id');
+        res.body.course[0].enrollments[0].type.should.eql('enrollments');
 
         done();
       });

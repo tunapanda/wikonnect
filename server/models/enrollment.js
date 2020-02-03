@@ -11,8 +11,12 @@ class Enrollment extends Model {
     return enrollmentsSchema;
   }
 
-  static get relationMappings() {
-    return {};
+  static get modifiers() {
+    return {
+      selectNameAndId: (builder) => {
+        builder.select('enrollments.id', 'courseId');
+      }
+    };
   }
 }
 
