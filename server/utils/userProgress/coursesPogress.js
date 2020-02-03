@@ -7,25 +7,6 @@ const environment = process.env.NODE_ENV;
 const config = require('../../knexfile.js')[environment];
 const knex = require('knex')(config);
 
-async function userEnrolledCourse(courseData, userId) {
-  const enrollment = await Enrollment.query().where('user_id', userId);
-
-  let enrollmentCourses = [];
-  enrollment.forEach(element => {
-    enrollmentCourses.push(element.courseId);
-  });
-
-  courseData.forEach(course => {
-    const element = course.id;
-    const status = enrollmentCourses.indexOf(element);
-    if (status >= 0) {
-      return course.enrolled = true;
-    }
-    if (status === -1) {
-      return course.enrolled = false;
-    }
-  });
-}
 async function userProgress(courseData, userId) {
   const achievement = await Achievement.query().where('user_id', userId);
   let achievementChapters = [];
@@ -60,6 +41,25 @@ async function userProgress(courseData, userId) {
   });
 }
 
+async function userEnrolledCourse(courseData, userId) {
+  const enrollment = await Enrollment.query().where('user_id', userId);
+
+  let enrollmentCourses = [];
+  enrollment.forEach(element => {
+    enrollmentCourses.push(element.courseId);
+  });
+
+  courseData.forEach(course => {
+    const element = course.id;
+    const status = enrollmentCourses.indexOf(element);
+    if (status >= 0) {
+      return course.enrolled = true;
+    }
+    if (status === -1) {
+      return course.enrolled = false;
+    }
+  });
+}
 async function returnType(parent) {
   if (parent.length == undefined) {
     parent.modules.forEach(lesson => {
@@ -69,6 +69,21 @@ async function returnType(parent) {
     parent.forEach(mod => {
       mod.modules.forEach(lesson => {
         return lesson.type = 'modules';
+      });
+    });
+  }
+}
+async function userEnrollmentType(parent) {
+
+  if (parent.length == undefined) {
+    parent.enrollments.forEach(enrollment => {
+      console.log(enrollment);
+      return enrollment.type = 'enrollments';
+    });
+  } else {
+    parent.forEach(mod => {
+      mod.enrollments.forEach(enrollment => {
+        return enrollment.type = 'enrollments';
       });
     });
   }
@@ -89,5 +104,6 @@ module.exports = {
   userProgress,
   returnType,
   insertType,
-  userEnrolledCourse
+  userEnrolledCourse,
+  userEnrollmentType
 };
