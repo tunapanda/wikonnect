@@ -24,27 +24,30 @@ exports.requireAuth = async function (ctx, next) {
       id: 'anonymous',
       role: 'anonymous'
     };
-    ctx.state.user = { 'data': data };
+    ctx.state.user = data;
     await next();
-  } else if (ctx.request.header.authorization && ctx.request.header.authorization.split(' ')[0] === 'Bearer') {
-    const accessToken = ctx.request.header.authorization.split(' ')[1];
-    const { exp, data } = jwToken.verify(accessToken, secret);
 
+  }
+  try {
+
+    const accessToken = ctx.request.header.authorization.split(' ')[1];
+    const { exp, ...data } = jwToken.verify(accessToken, secret);
 
     // Check if token has expired
     if (exp < Date.now().valueOf() / 1000) {
-      ctx.status = 401;
-      ctx.body = {
-        error: 'JWT token has expired, please login to obtain a new one'
-      };
+      ctx.throw(400, null, { errors: ['Expired Token'] });
       return ctx;
     }
-    ctx.state.user = { 'data': data };
+    ctx.state.user = data;
 
-    // error handler for when role is not provided
     await next();
-  } else {
-    await next();
+
+  } catch (e) {
+    if (e.statusCode) {
+      ctx.throw(e.statusCode, { message: 'Something went Wrong' });
+      ctx.throw(e.statusCode, null, { errors: [e.message] });
+    } else { ctx.throw(400, null, { errors: ['Bad Request'] }); }
+    throw e;
   }
 };
 
@@ -73,17 +76,17 @@ exports.grantAccess = function (action, resource) {
       let roleName = ctx.state.user.role == undefined ? ctx.state.user.data.role : ctx.state.user.role;
       const permission = roles.can(roleName)[action](resource);
       if (!permission.granted) {
-        ctx.status = 401;
-        ctx.body = {
-          error: 'You don\'t have enough permission to perform this action'
-        };
+        ctx.throw(400, null, { errors: ['Bad Request'] });
         return ctx;
       }
 
       await next();
-    } catch (error) {
-      ctx.status = 401;
-      ctx.body = error;
+    } catch (e) {
+      if (e.statusCode) {
+        ctx.throw(e.statusCode, { message: 'The query key does not exist' });
+        ctx.throw(e.statusCode, null, { errors: [e.message] });
+      } else { ctx.throw(400, null, { errors: ['Bad Request'] }); }
+      throw e;
     }
   };
 };

@@ -6,6 +6,9 @@ const logger = require('./middleware/logger');
 const jwt = require('./middleware/jwt');
 const path = require('path');
 const koaQs = require('koa-qs');
+const debug = require('debug')('my-namespace');
+const name = 'my-app';
+debug('booting %s', name);
 
 const app = new Koa();
 
