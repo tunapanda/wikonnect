@@ -21,8 +21,8 @@ async function enrolledCoursesType(parent) {
         });
       });
     }
-  } catch (error) {
-    console.log(error);
+  } catch (e) {
+    console.log({errors: ['No enrolled courses type']});
   }
 }
 
