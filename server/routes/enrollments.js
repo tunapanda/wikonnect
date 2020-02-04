@@ -35,14 +35,14 @@ router.post('/', requireAuth, async ctx => {
   let enrollments_base = Enrollments.query();
   const enrollments_record = await enrollments_base.where('course_id', courseId);
 
-  if (enrollments_record.length) {
+  if (!enrollments_record) {
     ctx.throw(400, null, { errors: ['Bad Request'] });
   }
 
   // create new entry if courseId does not exist
   let enrollments;
   try {
-    enrollments = await enrollments_base.insertAndFetch({'course_id': courseId, 'user_id': userId, 'status': true});
+    enrollments = await enrollments_base.insertAndFetch({ 'course_id': courseId, 'user_id': userId, 'status': true });
   } catch (e) {
     if (e.statusCode) {
       ctx.throw(e.statusCode, null, { errors: [e.message] });

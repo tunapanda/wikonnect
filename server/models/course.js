@@ -31,7 +31,7 @@ class Course extends Model {
         modelClass: __dirname + '/enrollment',
         join: {
           from: 'courses.id',
-          to: 'enrollments.courseId'
+          to: 'enrollments.course_id'
         }
       }
     };

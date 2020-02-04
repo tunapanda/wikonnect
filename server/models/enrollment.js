@@ -7,14 +7,14 @@ class Enrollment extends Model {
     return 'enrollments';
   }
 
-  static get jsonSchema(){
+  static get jsonSchema() {
     return enrollmentsSchema;
   }
 
   static get modifiers() {
     return {
       selectNameAndId: (builder) => {
-        builder.select('enrollments.id', 'courseId');
+        builder.select('enrollments.id', 'course_id');
       }
     };
   }

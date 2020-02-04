@@ -44,7 +44,7 @@ export default class CourseIndexController extends Controller {
     console.log(enrollment_id);
     let enroll = await this.store.findRecord('enrollment', "enrollment1");
     console.log(enroll.id);
-    enroll.set("status", true);
+    enroll.set("status", false);
     console.log(enroll);
     enroll.save();
 
