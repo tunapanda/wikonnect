@@ -68,20 +68,40 @@ async function createPasswordHash(ctx, next) {
   await next();
 }
 
-router.post('/', validateAuthRoutes.validateNewUser, getUserByUsername, createPasswordHash, async ctx => {
+// router.post('/', validateAuthRoutes.validateNewUser, getUserByUsername, createPasswordHash, async ctx => {
+router.post('/', validateAuthRoutes.validateNewUser, createPasswordHash, async ctx => {
 
-  ctx.request.body.user.username = ctx.request.body.user.username.toLowerCase();
-  ctx.request.body.user.email = ctx.request.body.user.email.toLowerCase();
+  // ctx.assert(user, 401, 'Something went wrong.');
 
-  let newUser = ctx.request.body.user;
+  try {
+    ctx.request.body.user.username = ctx.request.body.user.username.toLowerCase();
+    ctx.request.body.user.email = ctx.request.body.user.email.toLowerCase();
 
-  const user = await User.query().insertAndFetch(newUser);
-  await knex('group_members').insert({ 'user_id': user.id, 'group_id': 'groupBasic' });
+    let newUser = ctx.request.body.user;
+    const user = await User.query().insertAndFetch(newUser);
+    await knex('group_members').insert({ 'user_id': user.id, 'group_id': 'groupBasic' });
+    ctx.status = 201;
+    ctx.body = { user };
 
-  ctx.assert(user, 401, 'Something went wrong.');
-
-  ctx.status = 201;
-  ctx.body = { user };
+  } catch (e) {
+    console.log(ctx.res);
+    // console.log(ctx);
+    ctx.throw(400, null, {
+      errors: [{
+        'id': '{unique identifier for this particular occurrence}',
+        'status': 400,
+        'code': e.code,
+        'title': e.name,
+        'detail': e.constraint,
+        'source': {
+          'pointer': '',
+          'parameter': '{a string indicating which URI query parameter caused the error}'
+        },
+        'meta': {}
+      }]
+    });
+    throw e;
+  }
 });
 
 router.get('/:id', permController.requireAuth, async ctx => {

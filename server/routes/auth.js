@@ -121,4 +121,37 @@ router.get('/validate', async ctx => {
 
 });
 
+async function $verifyOneTimeToken(token, type) {
+  const oneTimeKey = await knex('security_tokens').where({ token, type });
+  if (oneTimeKey.length && moment().isBefore(oneTimeKey[0].expires)) {
+    return true;
+  }
+  return false;
+}
+async function $createOneTimeToken(user_id, expires, type) {
+  const oneTimeKey = await knex('security_tokens').insert({ user_id, expires, type }).returning('token');
+  return oneTimeKey[0];
+}
+
+router.post('/reset-password/new-password', async (ctx) => {
+  const token = await User.$verifyOneTimeToken(ctx.request.body.token, 'password_reset');
+
+  if (!token) {
+    audit.log('auth.password_reset_token_invalid', ctx.state.user.id, ctx.request.ip);
+  }
+  ctx.assert(token, 404, 'Reset token is invalid.');
+
+  // ctx.assert(moment().isBefore(token.expires), 401, 'Token is expired.');
+
+  const user = await User.query().where({ id: ctx.state.user.id });
+
+  ctx.assert(user, 404, 'User for token doesn\'t exist.');
+
+  const hash = await bcrypt.hash(ctx.request.body.password, 10);
+
+  await User.query().patchAndFetchById(ctx.state.user.id, { hash });
+
+  ctx.status = 200;
+});
+
 module.exports = router.routes();

@@ -13,10 +13,7 @@ async function getUserByUsername(ctx, next) {
   if (!userName && !userEmail) {
     await next();
   } else {
-    ctx.status = 406;
-    ctx.body = {
-      error: 'User exists',
-    };
+    ctx.throw(406, null, { errors: ['Bad Request'] });
   }
 }
 
