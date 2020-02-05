@@ -14,7 +14,7 @@ class Enrollment extends Model {
   static get modifiers() {
     return {
       selectNameAndId: (builder) => {
-        builder.select('enrollments.id', 'courseId');
+        builder.select('enrollments.id', 'course_id');
       }
     };
   }
