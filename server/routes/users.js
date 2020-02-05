@@ -2,7 +2,7 @@ const Router = require('koa-router');
 const User = require('../models/user');
 const validateAuthRoutes = require('../middleware/validation/validateAuthRoutes');
 const bcrypt = require('bcrypt');
-const getUserByUsername = require('../middleware/authenticate');
+// const getUserByUsername = require('../middleware/authenticate');
 const permController = require('../middleware/permController');
 const jwt = require('../middleware/jwt');
 
