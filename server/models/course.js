@@ -30,8 +30,8 @@ class Course extends Model {
         relation: Model.HasManyRelation,
         modelClass: __dirname + '/enrollment',
         join: {
-          from: 'courses.id',
-          to: 'enrollments.course_id'
+          to: 'courses.id',
+          from: 'enrollments.courseId'
         }
       }
     };
