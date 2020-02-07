@@ -3,7 +3,7 @@ const Course = require('../models/course');
 const permController = require('../middleware/permController');
 const { userPermissions } = require('../middleware/_helpers/roles');
 const { validateCourses } = require('../middleware/validation/validatePostData');
-const { userProgress, returnType, insertType, userEnrollmentType} = require('../utils/userProgress/coursesPogress');
+const { userProgress, returnType, insertType, userEnrollmentType } = require('../utils/userProgress/coursesPogress');
 
 const environment = process.env.NODE_ENV;
 const config = require('../knexfile.js')[environment];
@@ -145,7 +145,8 @@ router.put('/:id', permController.grantAccess('deleteOwn', 'path'), async ctx =>
   if (!course_record) {
     ctx.throw(400, 'That course does not exist');
   }
-  let { modules, ...newCourse } = ctx.request.body.course;
+  let { modules, progress, ...newCourse } = ctx.request.body.course;
+  console.log(newCourse, modules, progress);
 
   let course;
   try {
@@ -153,7 +154,7 @@ router.put('/:id', permController.grantAccess('deleteOwn', 'path'), async ctx =>
   } catch (e) {
     if (e.statusCode) {
       ctx.throw(e.statusCode, null, { errors: [e.message] });
-    } else { ctx.throw(400, null, { errors: ['Bad Request'] }); }
+    } else { ctx.throw(400, null, { errors: ['Bad Request', e.message] }); }
     throw e;
   }
 
