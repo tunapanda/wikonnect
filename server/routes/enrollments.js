@@ -31,22 +31,31 @@ router.post('/', requireAuth, async ctx => {
 
   const course_data = ctx.request.body.enrollment;
   course_data.user_id = ctx.state.user.data.id;
+  delete course_data.courseId;
 
   //  check for existing courseID record
+  let enrollments_base = Enrollments.query();
+  const enrollments_record = await enrollments_base.where({ 'course_id': course_data.course_id, 'user_id': course_data.user_id });
 
-
-  let enrollment;
+  let enrollment_body;
   try {
-    // Creates new entry if record ID does not exist
-    enrollment = await Enrollments.query().insertAndFetch({ 'course_id': course_data.course_id, 'user_id': course_data.user_id, 'status': true });
+    // Patch data if record exists
+    if (enrollments_record.length) {
+      const patch_enrollments_base = await enrollments_base.patchAndFetchById(enrollments_record[0].id, course_data);
+      enrollment_body = patch_enrollments_base;
+    } else {
+      // Creates new entry if record ID does not exist
+      const enrollments = await enrollments_base.insertAndFetch({ 'course_id': course_data.course_id, 'user_id': course_data.user_id, 'status': true });
+      enrollment_body = enrollments;
+    }
   } catch (e) {
     if (e.statusCode) {
       ctx.throw(e.statusCode, null, { errors: [e.message] });
-    } else { ctx.throw(400, null, { errors: [e.message, 'Bad Request'] }); }
+    } else { ctx.throw(400, null, { errors: ['Bad Request'] }); }
     throw e;
   }
   ctx.status = 201;
-  ctx.body = { enrollment };
+  ctx.body = { enrollment_body };
 });
 
 
