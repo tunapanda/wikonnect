@@ -37,16 +37,16 @@ router.post('/', requireAuth, async ctx => {
   let enrollments_base = Enrollments.query();
   const enrollments_record = await enrollments_base.where({ 'course_id': course_data.course_id, 'user_id': course_data.user_id });
 
-  let enrollment_body;
+  let enrollment;
   try {
     // Patch data if record exists
     if (enrollments_record.length) {
       const patch_enrollments_base = await enrollments_base.patchAndFetchById(enrollments_record[0].id, course_data);
-      enrollment_body = patch_enrollments_base;
+      enrollment = patch_enrollments_base;
     } else {
       // Creates new entry if record ID does not exist
       const enrollments = await enrollments_base.insertAndFetch({ 'course_id': course_data.course_id, 'user_id': course_data.user_id, 'status': true });
-      enrollment_body = enrollments;
+      enrollment = enrollments;
     }
   } catch (e) {
     if (e.statusCode) {
@@ -55,7 +55,7 @@ router.post('/', requireAuth, async ctx => {
     throw e;
   }
   ctx.status = 201;
-  ctx.body = { enrollment_body };
+  ctx.body = { enrollment };
 });
 
 
