@@ -59,7 +59,7 @@ router.get('/', permController.requireAuth, async ctx => {
   }
 });
 
-router.get('/:id', async ctx => {
+router.get('/:id', permController.requireAuth, async ctx => {
   const course = await Course.query().findById(ctx.params.id).eager('modules(selectNameAndId)');
   ctx.assert(course, 404, 'no lesson by that ID');
 

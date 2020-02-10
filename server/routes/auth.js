@@ -9,10 +9,6 @@ const sendMAil = require('../utils/sendMail');
 const redis = require('redis');
 const redisClient = redis.createClient(); // default setting.
 
-// const environment = process.env.NODE_ENV;
-// const config = require('../knexfile.js')[environment];
-// const knex = require('knex')(config);
-
 
 const router = new Router({
   prefix: '/auth'

@@ -1,5 +1,6 @@
 const Router = require('koa-router');
 const Lesson = require('../models/lesson');
+const permController = require('../middleware/permController');
 const { validateLessons } = require('../middleware/validation/validatePostData');
 const achievementPercentage = require('../utils/achievementPercentage');
 
@@ -22,7 +23,7 @@ async function returnType(parent) {
 }
 
 
-router.get('/:id', async ctx => {
+router.get('/:id', permController.requireAuth, async ctx => {
   const lesson = await Lesson.query().findById(ctx.params.id).eager('chapters(selectNameAndId)');
 
   await achievementPercentage(lesson, ctx.state.user.data.id);
@@ -34,7 +35,7 @@ router.get('/:id', async ctx => {
   ctx.body = { lesson };
 });
 
-router.get('/', async ctx => {
+router.get('/', permController.requireAuth, async ctx => {
 
   let lesson;
   try {
@@ -58,7 +59,7 @@ router.get('/', async ctx => {
   ctx.body = { lesson };
 });
 
-router.post('/', validateLessons, async ctx => {
+router.post('/', permController.grantAccess('basic', 'path'), validateLessons, async ctx => {
   let newLesson = ctx.request.body.lesson;
 
   newLesson.slug = newLesson.name.replace(/[^a-z0-9]+/gi, '-')
@@ -83,7 +84,7 @@ router.post('/', validateLessons, async ctx => {
 });
 
 
-router.put('/:id', async ctx => {
+router.put('/:id', permController.grantAccess('admin', 'path'), async ctx => {
   let newLesson = ctx.request.body.lesson;
 
   const checkLesson = await Lesson.query().findById(ctx.params.id);
@@ -106,7 +107,7 @@ router.put('/:id', async ctx => {
   ctx.body = { lesson };
 
 });
-router.delete('/:id', async ctx => {
+router.delete('/:id', permController.grantAccess('superadmin', 'path'), async ctx => {
   const lesson = await Lesson.query().findById(ctx.params.id);
 
   if (!lesson) {
