@@ -27,8 +27,7 @@ export default class AuthenticationSignupComponent extends Component {
         Object.keys(err.errors).forEach(key => {
 
           let details = err.errors[key].detail.split("_");
-          console.log("ok")
-          console.log(err.errors[key].detail)
+
           let error_message;
           switch (details[2]) {
             case "unique":
