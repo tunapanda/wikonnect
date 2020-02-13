@@ -31,12 +31,12 @@ export default class CourseIndexController extends Controller {
     if (this.model.enrollments.length == 0) {
       return {
         status: "false"
-      }
+      };
     } else {
       console.log("this.model.e");
       console.log(this.model.enrollments.get("firstObject").status);
       console.log(this.model.enrollments.get("firstObject"));
-      return this.model.enrollments.get("firstObject")
+      return this.model.enrollments.get("firstObject");
     }
   }
 
