@@ -8,7 +8,8 @@
 
 
 
-
+  xx{{isEnrolled.id}}
+  xx{{isEnrolled.status}}
   <div class="modules padded">
     <div class="sub-header">
       <h2>Modules </h2>
@@ -24,11 +25,25 @@
     <hr>
     {{#if me.isAuthenticated}}
 
+      {{#if (eq isEnrolled.status "false") }}
+        {{#if isEnrolled.id}}
+          <button type="button" class="btn btn-success form-control" {{action "reenroll" isEnrolled.id}}>
+            ReEnroll in {{model.id}}
+            {{model.name}}
+          </button>
+        {{else}}
+          <button type="button" class="btn btn-success form-control" {{action "enroll" model.id}}>
+            Enroll in {{model.id}}
+            {{model.name}}
+          </button>
+        {{/if}}
 
-      <BsProgress as |pg|>
-        <pg.bar @showLabel={{true}} @roundDigits={{0}} @type="success" @value={{model.progress}} />
-      </BsProgress>
+
+      {{/if}}
     {{/if}}
+
+
+
     <div class="modules-list">
       {{#each modList as |module|}}
 
@@ -36,6 +51,15 @@
       {{/each}}
 
     </div>
+    {{#if me.isAuthenticated}}
+      {{#if (eq isEnrolled.status "true")}}
+        <button type="button" class="btn btn-danger form-control" {{action "leave" isEnrolled.id}}>
+          Unenroll from
+          {{model.name}}
+        </button>
+      {{/if}}
+    {{/if}}
+
 
   </div>
 

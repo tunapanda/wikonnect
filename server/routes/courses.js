@@ -1,11 +1,9 @@
 const Router = require('koa-router');
 const Course = require('../models/course');
-const Module = require('../models/module');
-const Lesson = require('../models/lesson');
-const Achievement = require('../models/achievement');
 const permController = require('../middleware/permController');
 const { userPermissions } = require('../middleware/_helpers/roles');
 const { validateCourses } = require('../middleware/validation/validatePostData');
+const { userProgress, returnType, insertType, userEnrollmentType } = require('../utils/userProgress/coursesPogress');
 
 const environment = process.env.NODE_ENV;
 const config = require('../knexfile.js')[environment];
@@ -15,73 +13,15 @@ const router = new Router({
   prefix: '/courses'
 });
 
-async function returnType(parent) {
-  if (parent.length == undefined) {
-    parent.modules.forEach(lesson => {
-      return lesson.type = 'modules';
-    });
-  } else {
-    parent.forEach(mod => {
-      mod.modules.forEach(lesson => {
-        return lesson.type = 'modules';
-      });
-    });
-  }
-}
-
-async function insertType(model, collection, course_id) {
-  for (let index = 0; index < collection.length; index++) {
-    const element = collection[index];
-    let data = {
-      'module_id': element,
-      'course_id': course_id
-    };
-    await knex(model).insert(data);
-  }
-}
 
 router.get('/', permController.requireAuth, async ctx => {
   try {
-    const course = await Course.query().where(ctx.query).eager('modules(selectNameAndId)');
+    const course = await Course.query().where(ctx.query).eager('[modules(selectNameAndId), enrollments(selectNameAndId)]');
     if (ctx.state.user.data.id !== 'anonymous') {
       // get all achievements of a user
-      const achievement = await Achievement.query().where('user_id', ctx.state.user.data.id);
-      let achievementChapters = [];
-      achievement.forEach(element => {
-        if (element.targetStatus === 'completed') {
-          achievementChapters.push(element.target);
-        }
-      });
-
-      let modules = await Module.query().eager('lessons(selectNameAndId)');
-      let lesson = await Lesson.query().eager('chapters(selectNameAndId)');
-
-      course.forEach(cour => {
-        if (!cour.modules.length) {
-          let completionMetric = parseInt(0);
-          return cour.progress = completionMetric;
-        }
-        for (let index = 0; index < cour.modules.length; index++) {
-          const element = cour.modules[index];
-          modules.forEach(mod => {
-            if (element.id === mod.id) {
-              for (let index = 0; index < mod.lessons.length; index++) {
-
-                const element = mod.lessons[index];
-                lesson.forEach(chap => {
-                  if (element.id === chap.id) {
-                    let completionMetric = parseInt((achievementChapters.length / chap.chapters.length) * 100) > 0 ? parseInt((achievementChapters.length / chap.chapters.length) * 100) : parseInt(0);
-                    cour.progress = completionMetric;
-                    return cour.progress = completionMetric;
-                  }
-                });
-              }
-            }
-          });
-        }
-      });
+      await userProgress(course, ctx.state.user.data.id);
     }
-
+    userEnrollmentType(course);
     returnType(course);
 
     course.forEach(child => {
@@ -122,7 +62,7 @@ router.get('/:id', async ctx => {
   const course = await Course.query().findById(ctx.params.id).eager('modules(selectNameAndId)');
   ctx.assert(course, 404, 'no lesson by that ID');
 
-  returnType(course);
+  await returnType(course);
 
   function permObjects() {
     Object.keys(userPermissions)
@@ -173,7 +113,7 @@ router.post('/', permController.grantAccess('readAny', 'path'), validateCourses,
     } else { ctx.throw(400, null, { errors: [e.message] }); }
     throw e;
   }
-  insertType('course_modules', modules, course.id);
+  await insertType('course_modules', modules, course.id);
 
   function permObjects() {
     Object.keys(userPermissions)
@@ -205,7 +145,8 @@ router.put('/:id', permController.grantAccess('deleteOwn', 'path'), async ctx =>
   if (!course_record) {
     ctx.throw(400, 'That course does not exist');
   }
-  let { modules, ...newCourse } = ctx.request.body.course;
+  let { modules, progress, ...newCourse } = ctx.request.body.course;
+  console.log(newCourse, modules, progress);
 
   let course;
   try {
@@ -213,7 +154,7 @@ router.put('/:id', permController.grantAccess('deleteOwn', 'path'), async ctx =>
   } catch (e) {
     if (e.statusCode) {
       ctx.throw(e.statusCode, null, { errors: [e.message] });
-    } else { ctx.throw(400, null, { errors: ['Bad Request'] }); }
+    } else { ctx.throw(400, null, { errors: ['Bad Request', e.message] }); }
     throw e;
   }
 
