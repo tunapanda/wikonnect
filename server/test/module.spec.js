@@ -65,9 +65,10 @@ describe('modules route and function test', () => {
       .set('Content-Type', 'application/json')
       .send(postData)
       .end((err, res) => {
-        console.log(res.body);
         res.should.be.json;
-        res.body.module.should.have.property('creatorId');
+        console.log(res.body, postData, moduleRoute);
+        res.body.modules[0].should.have.property('creatorId');
+        res.body.modules[0].should.have.property('lessons');
         done();
       });
   });
@@ -91,8 +92,7 @@ describe('modules route and function test', () => {
       .set('Content-Type', 'application/json')
       .send(postData)
       .end((err, res) => {
-        res.status.should.eql(401);
-        res.body.name.should.eql('AccessControlError');
+        res.status.should.eql(400);
         done();
       });
   });

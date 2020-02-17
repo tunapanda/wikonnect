@@ -73,7 +73,7 @@ describe('LESSONS ROUTE', () => {
         res.should.be.json;
         res.body.should.be.a('object');
         res.body.should.have.property('errors');
-        res.body.errors.should.have.property('creatorId');
+        res.body.errors.should.eql(['Bad Request']);
         done();
       });
   });
@@ -86,7 +86,7 @@ describe('LESSONS ROUTE', () => {
       .end((err, res) => {
         res.status.should.eql(400);
         res.should.be.json;
-        res.body.message.should.eql('That lesson path does not exist');
+        res.body.errors.should.eql(['Bad Request']);
         done();
       });
   });
@@ -176,6 +176,7 @@ describe('LESSONS ROUTE', () => {
     chai
       .request(server)
       .put(lessonRoute + lessonID)
+      .set(tokens.headerBasicUser2)
       .set('Content-Type', 'application/json')
       .send(putData)
       .end((err, res) => {

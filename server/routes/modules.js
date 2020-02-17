@@ -70,27 +70,26 @@ router.get('/', permController.requireAuth, async ctx => {
   } catch (e) {
     if (e.statusCode) {
       ctx.throw(e.statusCode, { message: 'The query key does not exist' });
-      ctx.throw(e.statusCode, null, { errors: [e.message] });
-    } else { ctx.throw(400, null, { errors: [e.message] }); }
+      ctx.throw(e.statusCode, null, { errors: ['bad Request'] });
+    } else { ctx.throw(400, null, { errors: ['bad Request'] }); }
     throw e;
   }
 
 });
 
-router.post('/', permController.grantAccess('createAny', 'path'), validateModules, async ctx => {
+router.post('/', validateModules, permController.requireAuth, permController.grantAccess('readAny', 'path'), async ctx => {
 
   let { lessons, ...newModule } = ctx.request.body.module;
 
-  const checkModules = await Module.query().findById(newModule.id);
+  // const checkModules = await Module.query().findById(newModule.id);
 
-  if (checkModules) {
-    ctx.throw(400, null, { errors: ['Bad Request'] });
-  }
+  // if (checkModules) {
+  //   ctx.throw(400, null, { errors: ['Bad Request'] });
+  // }
 
   let modules;
   try {
     modules = await Module.query().insertAndFetch(newModule);
-    await insertType('module_lessons', lessons, modules.id);
   } catch (e) {
     if (e.statusCode) {
       ctx.throw(e.statusCode, null, { errors: [e.message] });
@@ -98,12 +97,13 @@ router.post('/', permController.grantAccess('createAny', 'path'), validateModule
     throw e;
   }
 
+  await insertType('module_lessons', lessons, modules.id);
 
   Object.keys(userPermissions)
     .forEach(perm => {
-      if (ctx.state.user.role.toLowerCase() == 'superadmin') {
+      if (ctx.state.user.rata.role.toLowerCase() == 'superadmin') {
         userPermissions[perm] = 'true';
-      } else if (ctx.state.user.data.id === modules.creatorId || ctx.state.user.role.toLowerCase() == 'admin') {
+      } else if (ctx.state.user.data.id === modules.creatorId || ctx.state.user.data.role.toLowerCase() == 'admin') {
         userPermissions[perm] = 'true';
         userPermissions.delete = 'false';
       } else if (modules.status === 'draft' && ctx.state.user.data.id === modules.creatorId) {
@@ -120,7 +120,7 @@ router.post('/', permController.grantAccess('createAny', 'path'), validateModule
 
 });
 
-router.put('/:id', permController.grantAccess('deleteOwn', 'path'), async ctx => {
+router.put('/:id', permController.grantAccess('readAny', 'path'), async ctx => {
   let { lessons, ...newModule } = ctx.request.body.module;
 
   let modules;

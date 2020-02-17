@@ -135,11 +135,11 @@ describe('LEARNING PATH ROUTE', () => {
       .set(tokens.headersSuperAdmin1)
       .send(invalidData)
       .end((err, res) => {
-        res.status.should.eql(401);
+        res.status.should.eql(400);
         res.should.be.json;
         res.body.should.be.a('object');
-        res.body.should.have.property('errors');
-        res.body.errors.should.have.property('creatorId');
+        res.body.should.have.property('status');
+        res.body.should.have.property('message');
         done();
       });
   });
@@ -151,9 +151,9 @@ describe('LEARNING PATH ROUTE', () => {
       .set(tokens.headersSuperAdmin1)
       .send(invalidPutData)
       .end((err, res) => {
-        res.status.should.eql(401);
+        res.status.should.eql(400);
         res.should.be.json;
-        res.body.message.should.eql('That learning path does not exist');
+        res.body.message.should.eql('The query key does not exist');
         done();
       });
   });

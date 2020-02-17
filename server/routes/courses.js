@@ -102,7 +102,7 @@ router.get('/:id', permController.requireAuth, async ctx => {
 });
 
 
-router.post('/', permController.grantAccess('readAny', 'path'), validateCourses, async ctx => {
+router.post('/', validateCourses, permController.grantAccess('readAny', 'path'), async ctx => {
   let { modules, ...newCourse } = ctx.request.body.course;
 
   let course;

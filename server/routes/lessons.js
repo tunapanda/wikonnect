@@ -23,7 +23,7 @@ async function returnType(parent) {
 }
 
 
-router.get('/:id', permController.requireAuth, async ctx => {
+router.get('/:id',  async ctx => {
   const lesson = await Lesson.query().findById(ctx.params.id).eager('chapters(selectNameAndId)');
 
   await achievementPercentage(lesson, ctx.state.user.data.id);
@@ -35,7 +35,7 @@ router.get('/:id', permController.requireAuth, async ctx => {
   ctx.body = { lesson };
 });
 
-router.get('/', permController.requireAuth, async ctx => {
+router.get('/', async ctx => {
 
   let lesson;
   try {
@@ -59,7 +59,7 @@ router.get('/', permController.requireAuth, async ctx => {
   ctx.body = { lesson };
 });
 
-router.post('/', permController.grantAccess('basic', 'path'), validateLessons, async ctx => {
+router.post('/', permController.grantAccess('readAny', 'path'), validateLessons, async ctx => {
   let newLesson = ctx.request.body.lesson;
 
   newLesson.slug = newLesson.name.replace(/[^a-z0-9]+/gi, '-')
@@ -84,7 +84,7 @@ router.post('/', permController.grantAccess('basic', 'path'), validateLessons, a
 });
 
 
-router.put('/:id', permController.grantAccess('admin', 'path'), async ctx => {
+router.put('/:id', permController.grantAccess('readAny', 'path'), async ctx => {
   let newLesson = ctx.request.body.lesson;
 
   const checkLesson = await Lesson.query().findById(ctx.params.id);
@@ -107,7 +107,7 @@ router.put('/:id', permController.grantAccess('admin', 'path'), async ctx => {
   ctx.body = { lesson };
 
 });
-router.delete('/:id', permController.grantAccess('superadmin', 'path'), async ctx => {
+router.delete('/:id', permController.grantAccess('readAny', 'path'), async ctx => {
   const lesson = await Lesson.query().findById(ctx.params.id);
 
   if (!lesson) {

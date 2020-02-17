@@ -70,22 +70,17 @@ async function createPasswordHash(ctx, next) {
 
 // router.post('/', validateAuthRoutes.validateNewUser, getUserByUsername, createPasswordHash, async ctx => {
 router.post('/', validateAuthRoutes.validateNewUser, createPasswordHash, async ctx => {
+  ctx.request.body.user.username = ctx.request.body.user.username.toLowerCase();
+  ctx.request.body.user.email = ctx.request.body.user.email.toLowerCase();
 
-  // ctx.assert(user, 401, 'Something went wrong.');
+  const newUser = ctx.request.body.user;
 
   try {
-    ctx.request.body.user.username = ctx.request.body.user.username.toLowerCase();
-    ctx.request.body.user.email = ctx.request.body.user.email.toLowerCase();
-
-    let newUser = ctx.request.body.user;
     const user = await User.query().insertAndFetch(newUser);
     await knex('group_members').insert({ 'user_id': user.id, 'group_id': 'groupBasic' });
     ctx.status = 201;
     ctx.body = { user };
-
   } catch (e) {
-    console.log(ctx.res);
-    // console.log(ctx);
     ctx.throw(400, null, {
       errors: [{
         'id': '{unique identifier for this particular occurrence}',
@@ -94,10 +89,9 @@ router.post('/', validateAuthRoutes.validateNewUser, createPasswordHash, async c
         'title': e.name,
         'detail': e.constraint,
         'source': {
-          'pointer': '',
-          'parameter': '{a string indicating which URI query parameter caused the error}'
-        },
-        'meta': {}
+          'pointer': 'email_or_password_exists',
+          'parameter': 'email_or_password_exists'
+        }
       }]
     });
     throw e;
@@ -139,7 +133,7 @@ router.get('/', permController.requireAuth, permController.grantAccess('readAny'
     if (e.statusCode) {
       ctx.throw(e.statusCode, { message: 'The query key does not exist' });
       ctx.throw(e.statusCode, null, { errors: [e.message] });
-    } else { ctx.throw(400, null, { errors: [e.message] }); }
+    } else { ctx.throw(406, null, { errors: [e.message] }); }
     throw e;
   }
 

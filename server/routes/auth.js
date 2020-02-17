@@ -16,21 +16,28 @@ const router = new Router({
 
 router.post('/', validateAuthRoutes.validateUserLogin, async ctx => {
   let user = await User.query().where('username', ctx.request.body.username);
-
-  ctx.assert(user.length, 401, 'no user', { errors: { username: ['Username does not exist.'] } });
+  if (!user.length) {
+    ctx.throw(406, null, {
+      errors: [{
+        'id': '{unique identifier for this particular occurrence}',
+        'status': 406,
+        'code': 'email_or_password_is_wrong',
+        'title': 'authentication',
+        'detail': 'email_or_password_is_wrong',
+        'source': {
+          'pointer': 'email_or_password_is_wrong',
+          'parameter': 'email_or_password_is_wrong'
+        }
+      }]
+    });
+  }
   let { hash: hashPassword, ...userInfoWithoutPassword } = user[0];
-
   user = user[0];
-  // add to user group on creation
-  // user id and groupName
-  // adding role into  data signing object
-  // await knex('group_members').insert({ user_id: user.id, group_id: 'group_basic'});
 
   const userData = await User.query().findById(user.id).eager('userRoles(selectName)');
-
   let role = userData.userRoles[0].name !== null ? userData.userRoles[0].name : 'basic';
-
   userInfoWithoutPassword['role'] = role;
+
 
   if (await bcrypt.compare(ctx.request.body.password, hashPassword)) {
     // eslint-disable-next-line require-atomic-updates
@@ -41,10 +48,19 @@ router.post('/', validateAuthRoutes.validateUserLogin, async ctx => {
       }, secret)
     };
   } else {
-    ctx.status = 401;
-    ctx.body = {
-      error: 'bad password'
-    };
+    ctx.throw(406, null, {
+      errors: [{
+        'id': '{unique identifier for this particular occurrence}',
+        'status': 406,
+        'code': 'email_or_password_is_wrong',
+        'title': 'authentication',
+        'detail': 'email_or_password_is_wrong',
+        'source': {
+          'pointer': 'email_or_password_is_wrong',
+          'parameter': 'email_or_password_is_wrong'
+        }
+      }]
+    });
   }
 });
 
@@ -70,8 +86,11 @@ router.get('/reset/:mail', async ctx => {
   try {
     const buf = Buffer.from(resetMail, 'ascii').toString('base64');
     sendMAil(buf, rand);
-  } catch (error) {
-    console.log(error.message);
+  } catch (e) {
+    if (e.statusCode) {
+      ctx.throw(e.statusCode, null, { errors: [e.message] });
+    } else { ctx.throw(400, null, { errors: [e.message] }); }
+    throw e;
   }
 
   ctx.status = 201;
