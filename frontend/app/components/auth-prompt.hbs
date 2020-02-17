@@ -1,0 +1,9 @@
+{{#unless me.isAuthenticated}}
+  <BsAlert @type="error">
+    <strong> {{#link-to "login"}}
+        LOGIN
+      {{/link-to}} or {{#link-to "signup"}}
+        SIGNUP
+      {{/link-to}} to keep track of your progress</strong>
+  </BsAlert>
+{{/unless}}
