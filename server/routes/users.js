@@ -76,6 +76,7 @@ router.post('/', validateAuthRoutes.validateNewUser, getUserByUsername, createPa
   let newUser = ctx.request.body.user;
 
   const user = await User.query().insertAndFetch(newUser);
+  //await knex('group_members').insert({ 'user_id': user.id, 'group_id': 'groupAdmin' });
   await knex('group_members').insert({ 'user_id': user.id, 'group_id': 'groupBasic' });
 
   ctx.assert(user, 401, 'Something went wrong.');

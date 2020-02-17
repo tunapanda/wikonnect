@@ -2,7 +2,7 @@ import Controller from '@ember/controller';
 import { action, computed } from '@ember/object';
 import { tracked } from '@glimmer/tracking';
 
-// import { inject } from '@ember/service';
+import { inject } from '@ember/service';
 
 export default class CmsDesktopController extends Controller {
 
@@ -11,6 +11,21 @@ export default class CmsDesktopController extends Controller {
   selectedCourse;
   selectedModule;
   selectedLesson;
+
+  @inject
+  me;
+
+  @computed('name')
+  get courseSlug() {
+    return "slug";
+    //return this.get('name').replace(/\s/g, "-");
+  }
+
+  get coursemodel() {
+    return this.store.createRecord('course', {
+      creator: this.me.get('user')
+    });
+  }
 
 
 
@@ -46,6 +61,15 @@ export default class CmsDesktopController extends Controller {
     let _selectedModule = await this.store.findBySlug('module', module_slug);
     this.set("selectedModule", _selectedModule);
 
+  }
+
+  @action
+  saveCourse(model) {
+    model.setProperties({
+      slug: this.get('courseSlug'),
+      status: "published"
+    });
+    model.save();
   }
 
   @action
