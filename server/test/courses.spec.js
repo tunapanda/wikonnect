@@ -66,7 +66,7 @@ describe('COURSES ROUTES', () => {
       .end((err, res) => {
         res.status.should.eql(400);
         res.should.be.json;
-        res.body.message.should.eql('The query key does not exist');
+        res.body.errors[0].should.eql('That course does not exist');
         done();
       });
   });

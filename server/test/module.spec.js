@@ -24,8 +24,7 @@ const postData = {
 const putData = {
   'module': {
     'name': 'PUT update works',
-    'lessons': ['basics3']
-
+    'lessons': ['basics3', 'basics4']
   },
 };
 
@@ -61,31 +60,18 @@ describe('modules route and function test', () => {
     chai
       .request(server)
       .post(moduleRoute)
-      .set(tokens.headersSuperAdmin1)
+      .set(tokens.headerAdminUser)
       .set('Content-Type', 'application/json')
       .send(postData)
       .end((err, res) => {
         res.should.be.json;
-        console.log(res.body, postData, moduleRoute);
-        res.body.modules[0].should.have.property('creatorId');
-        res.body.modules[0].should.have.property('lessons');
+        res.body.modules.should.have.property('creatorId');
+        res.body.modules.should.have.property('slug');
+        res.body.modules.id.should.eql(moduleId);
         done();
       });
   });
-  it('PUT module data with correct credentials', done => {
-    chai
-      .request(server)
-      .put(moduleRoute + moduleId)
-      .set('Content-Type', 'application/json')
-      .set(tokens.headersSuperAdmin1)
-      .send(putData)
-      .end((err, res) => {
-        res.should.be.json;
-        res.body.module.should.have.property('creatorId');
-        done();
-      });
-  });
-  it('Throw error on PUT with wrong credentials', done => {
+  it('Throw error on PUT with missing token', done => {
     chai
       .request(server)
       .post(moduleRoute)
@@ -96,18 +82,59 @@ describe('modules route and function test', () => {
         done();
       });
   });
-  it('Throw error on PUT with wrong credentials', done => {
+  it('Throw error on PUT with broken token', done => {
     chai
       .request(server)
       .put(moduleRoute + moduleId)
       .set('Content-Type', 'application/json')
+      .set(tokens.brokenToken)
       .send(putData)
       .end((err, res) => {
-        res.status.should.eql(401);
-        res.body.name.should.eql('AccessControlError');
+        res.status.should.eql(400);
+        res.body.errors[0].should.eql('Bad Request');
+        done();
+      });
+  });
+  it('PUT module data with correct credentials', done => {
+    chai
+      .request(server)
+      .put(moduleRoute + moduleId)
+      .set('Content-Type', 'application/json')
+      .set(tokens.headerAdminUser)
+      .send(putData)
+      .end((err, res) => {
+        res.should.be.json;
+        res.body.modules.should.have.property('creatorId');
+        res.body.modules.should.have.property('permissions');
+        done();
+      });
+  });
+  it('Should throw an error on delete using wrong id param on route', done => {
+    chai
+      .request(server)
+      .delete(moduleRoute + 'testingModule2')
+      .set('Content-Type', 'application/json')
+      .set(tokens.headerAdminUser)
+      .end((err, res) => {
+        res.status.should.eql(400);
+        res.should.be.json;
+        res.body.errors[0].should.eql('Bad Request');
         done();
       });
   });
 
-
+  it('Should DELETE and return deleted module record on DELETE /:id', done => {
+    chai
+      .request(server)
+      .delete(moduleRoute + moduleId)
+      .set('Content-Type', 'application/json')
+      .set(tokens.headerAdminUser)
+      .end((err, res) => {
+        res.status.should.eql(200);
+        res.should.be.json;
+        res.body.modules.should.have.property('creatorId');
+        res.body.modules.should.have.property('description');
+        done();
+      });
+  });
 });

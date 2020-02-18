@@ -107,7 +107,7 @@ router.put('/:id', permController.grantAccess('readAny', 'path'), async ctx => {
   ctx.body = { lesson };
 
 });
-router.delete('/:id', permController.grantAccess('readAny', 'path'), async ctx => {
+router.delete('/:id', permController.grantAccess('deleteOwn', 'path'), async ctx => {
   const lesson = await Lesson.query().findById(ctx.params.id);
 
   if (!lesson) {

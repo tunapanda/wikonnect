@@ -82,7 +82,7 @@ exports.grantAccess = function (action, resource) {
       await next();
     } catch (e) {
       if (e.statusCode) {
-        ctx.throw(e.statusCode, { message: 'The query key does not exist' });
+        // ctx.throw(e.statusCode, { message: 'Bad Request Using Token' });
         ctx.throw(e.statusCode, null, { errors: [e.message] });
       } else { ctx.throw(400, null, { errors: ['Bad Request'] }); }
       throw e;

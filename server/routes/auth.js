@@ -16,28 +16,14 @@ const router = new Router({
 
 router.post('/', validateAuthRoutes.validateUserLogin, async ctx => {
   let user = await User.query().where('username', ctx.request.body.username);
-  if (!user.length) {
-    ctx.throw(406, null, {
-      errors: [{
-        'id': '{unique identifier for this particular occurrence}',
-        'status': 406,
-        'code': 'email_or_password_is_wrong',
-        'title': 'authentication',
-        'detail': 'email_or_password_is_wrong',
-        'source': {
-          'pointer': 'email_or_password_is_wrong',
-          'parameter': 'email_or_password_is_wrong'
-        }
-      }]
-    });
-  }
+  if (!user.length) ctx.throw(404, null, 'wrong_email_or_password');
+
   let { hash: hashPassword, ...userInfoWithoutPassword } = user[0];
   user = user[0];
 
   const userData = await User.query().findById(user.id).eager('userRoles(selectName)');
   let role = userData.userRoles[0].name !== null ? userData.userRoles[0].name : 'basic';
   userInfoWithoutPassword['role'] = role;
-
 
   if (await bcrypt.compare(ctx.request.body.password, hashPassword)) {
     // eslint-disable-next-line require-atomic-updates
@@ -48,19 +34,7 @@ router.post('/', validateAuthRoutes.validateUserLogin, async ctx => {
       }, secret)
     };
   } else {
-    ctx.throw(406, null, {
-      errors: [{
-        'id': '{unique identifier for this particular occurrence}',
-        'status': 406,
-        'code': 'email_or_password_is_wrong',
-        'title': 'authentication',
-        'detail': 'email_or_password_is_wrong',
-        'source': {
-          'pointer': 'email_or_password_is_wrong',
-          'parameter': 'email_or_password_is_wrong'
-        }
-      }]
-    });
+    ctx.throw(406, null, 'email_or_password_is_wrong');
   }
 });
 

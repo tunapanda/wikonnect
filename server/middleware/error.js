@@ -18,6 +18,7 @@ module.exports = async function (ctx, next) {
 
     if (status >= 500) {
       console.log(err.stack);
+      err.headers = Object.assign({}, err.headers, { 'Retry-After': 30 });
     }
 
     ctx.status = status;

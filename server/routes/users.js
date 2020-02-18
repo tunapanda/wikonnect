@@ -81,19 +81,23 @@ router.post('/', validateAuthRoutes.validateNewUser, createPasswordHash, async c
     ctx.status = 201;
     ctx.body = { user };
   } catch (e) {
-    ctx.throw(400, null, {
-      errors: [{
-        'id': '{unique identifier for this particular occurrence}',
-        'status': 400,
-        'code': e.code,
-        'title': e.name,
-        'detail': e.constraint,
-        'source': {
-          'pointer': 'email_or_password_exists',
-          'parameter': 'email_or_password_exists'
-        }
-      }]
-    });
+    if (e.status === 503) {
+      e.headers = Object.assign({}, e.headers, { 'Retry-After': 30 });
+    } else {
+      ctx.throw(400, null, {
+        errors: [{
+          'id': '{unique identifier for this particular occurrence}',
+          'status': 400,
+          'code': e.code,
+          'title': e.name,
+          'detail': e.constraint,
+          'source': {
+            'pointer': 'email_or_password_exists',
+            'parameter': 'email_or_password_exists'
+          }
+        }]
+      });
+    }
     throw e;
   }
 });

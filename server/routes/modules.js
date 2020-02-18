@@ -77,7 +77,8 @@ router.get('/', permController.requireAuth, async ctx => {
 
 });
 
-router.post('/', validateModules, permController.requireAuth, permController.grantAccess('readAny', 'path'), async ctx => {
+router.post('/', validateModules, permController.requireAuth, permController.grantAccess('createAny', 'path'), async ctx => {
+
 
   let { lessons, ...newModule } = ctx.request.body.module;
 
@@ -99,28 +100,31 @@ router.post('/', validateModules, permController.requireAuth, permController.gra
 
   await insertType('module_lessons', lessons, modules.id);
 
-  Object.keys(userPermissions)
-    .forEach(perm => {
-      if (ctx.state.user.rata.role.toLowerCase() == 'superadmin') {
-        userPermissions[perm] = 'true';
-      } else if (ctx.state.user.data.id === modules.creatorId || ctx.state.user.data.role.toLowerCase() == 'admin') {
-        userPermissions[perm] = 'true';
-        userPermissions.delete = 'false';
-      } else if (modules.status === 'draft' && ctx.state.user.data.id === modules.creatorId) {
-        userPermissions.read = 'true';
-        userPermissions.update = 'true';
-      } else {
-        userPermissions.read = 'true';
-      }
-    });
+  async function permObjects() {
+    Object.keys(userPermissions)
+      .forEach(perm => {
+        if (ctx.state.user.data.role.toLowerCase() == 'superadmin') {
+          userPermissions[perm] = 'true';
+        } else if (ctx.state.user.data.id === modules.creatorId || ctx.state.user.data.role.toLowerCase() == 'admin') {
+          userPermissions[perm] = 'true';
+          userPermissions.delete = 'false';
+        } else if (modules.status === 'draft' && ctx.state.user.data.id === modules.creatorId) {
+          userPermissions.read = 'true';
+          userPermissions.update = 'true';
+        } else {
+          userPermissions.read = 'true';
+        }
+      });
+    return modules.permissions = userPermissions;
+  }
 
   ctx.status = 201;
-  modules['permissions'] = userPermissions;
+  modules['permissions'] = await permObjects();
   ctx.body = { modules };
 
 });
 
-router.put('/:id', permController.grantAccess('readAny', 'path'), async ctx => {
+router.put('/:id', permController.grantAccess('createAny', 'path'), async ctx => {
   let { lessons, ...newModule } = ctx.request.body.module;
 
   let modules;
@@ -130,45 +134,42 @@ router.put('/:id', permController.grantAccess('readAny', 'path'), async ctx => {
   } catch (e) {
     if (e.statusCode) {
       ctx.throw(e.statusCode, null, { errors: [e.message] });
-    } else { ctx.throw(400, null, { errors: ['Bad Request'] }); }
+    } else { ctx.throw(401, null, { errors: ['Bad Request'] }); }
     throw e;
   }
-
 
   await knex('module_lessons').where({ 'module_id': modules.id }).del();
-  insertType('module_lessons', lessons, modules.id);
+  await insertType('module_lessons', lessons, modules.id);
 
 
-  Object.keys(userPermissions)
-    .forEach(perm => {
-      if (ctx.state.user.role.toLowerCase() == 'superadmin') {
-        userPermissions[perm] = 'true';
-      } else if (ctx.state.user.data.id === modules.creatorId || ctx.state.user.role.toLowerCase() == 'admin') {
-        userPermissions[perm] = 'true';
-        userPermissions.delete = 'false';
-      } else if (modules.status === 'draft' && ctx.state.user.data.id === modules.creatorId) {
-        userPermissions.read = 'true';
-        userPermissions.update = 'true';
-      }
-    });
+  async function permObjects() {
+    Object.keys(userPermissions)
+      .forEach(perm => {
+        if (ctx.state.user.data.role.toLowerCase() == 'superadmin') {
+          userPermissions[perm] = 'true';
+        } else if (ctx.state.user.data.id === modules.creatorId || ctx.state.user.data.role.toLowerCase() == 'admin') {
+          userPermissions[perm] = 'true';
+          userPermissions.delete = 'false';
+        } else if (modules.status === 'draft' && ctx.state.user.data.id === modules.creatorId) {
+          userPermissions.read = 'true';
+          userPermissions.update = 'true';
+        }
+      });
+    return modules.permissions = userPermissions;
+  }
 
   ctx.status = 201;
-  modules['permissions'] = userPermissions;
+  modules['permissions'] = await permObjects();
   ctx.body = { modules };
 });
-router.delete('/:id', permController.requireAuth, permController.grantAccess('deleteOwn', 'path'), async ctx => {
+router.delete('/:id',permController.grantAccess('deleteOwn', 'path'), async ctx => {
+  let modules = await Module.query().findById(ctx.params.id);
 
-  let modules;
-  try {
-    modules = await Module.query().findById(ctx.params.id);
-    await Module.query().delete().where({ id: ctx.params.id });
-  } catch (e) {
-    if (e.statusCode) {
-      ctx.throw(e.statusCode, { message: 'The query key does not exist' });
-      ctx.throw(e.statusCode, null, { errors: [e.message] });
-    } else { ctx.throw(400, null, { errors: [e.message] }); }
-    throw e;
+  if (modules === undefined) {
+    ctx.throw(400, null, { errors: ['Bad Request'] });
   }
+
+  await Module.query().delete().where({ id: ctx.params.id });
 
   ctx.status = 200;
   ctx.body = { modules };

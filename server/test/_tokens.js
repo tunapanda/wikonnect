@@ -20,6 +20,17 @@ const basicUser2 = {
     'role': 'basic'
   }
 };
+
+const adminUser = {
+  'user': {
+    'id': 'user44',
+    'username': 'user44',
+    'password': 'wikonnect',
+    'email': 'user44@wikonnect.com',
+    'role': 'admin'
+  }
+};
+
 const headersSuperAdmin1 = {
   'Authorization': 'Bearer ' + jsonwebtoken.sign({ data: basicUser1.user }, secret, { expiresIn: '1d' })
 };
@@ -27,8 +38,17 @@ const headerBasicUser2 = {
   'Authorization': 'Bearer ' + jsonwebtoken.sign({ data: basicUser2.user }, secret, { expiresIn: '1d' })
 };
 
+const headerAdminUser = {
+  'Authorization': 'Bearer ' + jsonwebtoken.sign({ data: adminUser.user }, secret, { expiresIn: '1d' })
+};
+
+const brokenToken = {
+  'Authorization': 'Bearer ' + jsonwebtoken.sign({ data: adminUser.user }, 'knskldnvlskndkvlskbds,mdlfnsdlnf', { expiresIn: '1d' })
+};
 
 module.exports = {
   headersSuperAdmin1,
-  headerBasicUser2
+  headerBasicUser2,
+  headerAdminUser,
+  brokenToken
 };

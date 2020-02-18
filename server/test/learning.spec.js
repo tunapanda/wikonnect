@@ -137,9 +137,7 @@ describe('LEARNING PATH ROUTE', () => {
       .end((err, res) => {
         res.status.should.eql(400);
         res.should.be.json;
-        res.body.should.be.a('object');
-        res.body.should.have.property('status');
-        res.body.should.have.property('message');
+        res.body.errors[0].should.eql('Bad Request');
         done();
       });
   });
@@ -153,7 +151,7 @@ describe('LEARNING PATH ROUTE', () => {
       .end((err, res) => {
         res.status.should.eql(400);
         res.should.be.json;
-        res.body.message.should.eql('The query key does not exist');
+        res.body.errors[0].should.eql('That learning path does not exist');
         done();
       });
   });
