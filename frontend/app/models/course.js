@@ -12,8 +12,7 @@ export default class CourseModel extends Model {
   @attr() permission;
   @belongsTo('user') creator;
   @hasMany('module') modules;
+  @hasMany('enrollment') enrollments;
 
-  // get progressval(){
-  //   this.progress
-  // }
+
 }

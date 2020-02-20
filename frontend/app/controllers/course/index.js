@@ -31,10 +31,36 @@ export default class CourseIndexController extends Controller {
   async enrollmentToggle(course_id) {
     console.log(course_id);
     console.log(this.me.user.id);
+
     let enrollment = this.store.createRecord('enrollment');
     enrollment.set('course_id', course_id);
     let en = await enrollment.save();
     console.log(en);
+  }
+
+  @action
+  async reenroll(enrollment_id) {
+    console.log("reenrolling");
+
+    console.log(enrollment_id);
+    let enroll = await this.store.findRecord('enrollment', enrollment_id);
+    console.log(enroll.id);
+    enroll.set("status", true);
+    console.log(enroll);
+    enroll.save();
+  }
+
+
+  @action
+  async leave(enrollment_id) {
+    console.log("leaving");
+
+    console.log(enrollment_id);
+    let enroll = await this.store.findRecord('enrollment', enrollment_id);
+    console.log(enroll.id);
+    enroll.set("status", false);
+    console.log(enroll);
+    enroll.save();
 
   }
 

@@ -21,53 +21,58 @@ async function enrolledCoursesType(parent) {
         });
       });
     }
-  } catch (error) {
-    console.log(error);
+  } catch (e) {
+    console.log({ errors: ['No enrolled courses type'] });
   }
 }
 
 
 router.post('/', requireAuth, async ctx => {
-  const courseId = ctx.request.body.enrollment.course_id;
-  const userId = ctx.state.user.data.id;
+
+  const course_data = ctx.request.body.enrollment;
+  course_data.user_id = ctx.state.user.data.id;
+  delete course_data.courseId;
 
   //  check for existing courseID record
   let enrollments_base = Enrollments.query();
-  const enrollments_record = await enrollments_base.where('course_id', courseId);
+  const enrollments_record = await enrollments_base.where({ 'course_id': course_data.course_id, 'user_id': course_data.user_id });
 
-  if (enrollments_record.length) {
-    ctx.throw(400, null, { errors: ['Bad Request'] });
-  }
-
-  // create new entry if courseId does not exist
-  let enrollments;
+  let enrollment;
   try {
-    enrollments = await enrollments_base.insertAndFetch({'course_id': courseId, 'user_id': userId, 'status': true});
+    // Patch data if record exists
+    if (enrollments_record.length) {
+      const patch_enrollments_base = await enrollments_base.patchAndFetchById(enrollments_record[0].id, course_data);
+      enrollment = patch_enrollments_base;
+    } else {
+      // Creates new entry if record ID does not exist
+      const enrollments = await enrollments_base.insertAndFetch({ 'course_id': course_data.course_id, 'user_id': course_data.user_id, 'status': true });
+      enrollment = enrollments;
+    }
   } catch (e) {
     if (e.statusCode) {
       ctx.throw(e.statusCode, null, { errors: [e.message] });
-    } else { ctx.throw(400, null, { errors: [e.message, 'Bad Request'] }); }
+    } else { ctx.throw(400, null, { errors: ['Bad Request'] }); }
     throw e;
   }
-
   ctx.status = 201;
-  ctx.body = { enrollments };
+  ctx.body = { enrollment };
 });
 
 
 router.put('/:id', requireAuth, async ctx => {
-  const courseData = ctx.request.body.enrollment;
+  let course_data = ctx.request.body.enrollment;
+  course_data.userId = ctx.state.user.data.id;
 
-  //  check for existing courseID record and return error if it does not exist
+  //  check for existing chapter and user record and return error if it does not exist
   let enrollments_record = await Enrollments.query().findById(ctx.params.id);
   if (!enrollments_record) {
     ctx.throw(400, null, { errors: ['Bad Request'] });
   }
 
-  // delete new entry if courseId does not exist
+  // Patch data if record exists
   let enrollment;
   try {
-    enrollment = await Enrollments.query().patchAndFetchById(ctx.params.id, courseData);
+    enrollment = await Enrollments.query().patchAndFetchById(ctx.params.id, course_data);
 
   } catch (e) {
     if (e.statusCode) {
