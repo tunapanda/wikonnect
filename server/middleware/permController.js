@@ -9,7 +9,7 @@ const { secret } = require('../middleware/jwt');
  * @param {*} ctx
  * @param {*} next
  *
- * @author Moses Okewma <okemwamoses@gmail.com>
+ * @author Moses Okemwa <okemwamoses@gmail.com>
  * @example
  * checks for authorization header in the ctx
  * gets user data and expiry date from the token
@@ -73,7 +73,9 @@ exports.grantAccess = function (action, resource) {
   return async (ctx, next) => {
     try {
       let roleName = ctx.state.user.role == undefined ? ctx.state.user.data.role : ctx.state.user.role;
-      const permission = roles.can(roleName)[action](resource);
+
+      // const permission = roles.can(roleName)[action](resource);
+      const permission = roles.can('superadmin')['createAny']('path');
       if (!permission.granted) {
         ctx.throw(400, null, { errors: ['Bad Request'] });
         return ctx;
@@ -83,8 +85,9 @@ exports.grantAccess = function (action, resource) {
     } catch (e) {
       if (e.statusCode) {
         // ctx.throw(e.statusCode, { message: 'Bad Request Using Token' });
-        ctx.throw(e.statusCode, null, { errors: [e.message] });
-      } else { ctx.throw(400, null, { errors: ['Bad Request'] }); }
+        ctx.throw(e.statusCode, null, { errors: [e.message, '-----'] });
+      } else {
+        ctx.throw(400, null, { errors: ['Bad Request', e.message] }); }
       throw e;
     }
   };

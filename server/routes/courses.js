@@ -102,7 +102,8 @@ router.get('/:id', permController.requireAuth, async ctx => {
 });
 
 
-router.post('/', validateCourses, permController.grantAccess('readAny', 'path'), async ctx => {
+router.post('/', permController.grantAccess('createAny', 'path'), validateCourses, async ctx => {
+
   let { modules, ...newCourse } = ctx.request.body.course;
 
   let course;
@@ -129,15 +130,13 @@ router.post('/', validateCourses, permController.grantAccess('readAny', 'path'),
         if (course.status === 'draft' && ctx.state.user.data.id === course.creatorId) {
           userPermissions.read = 'true';
           userPermissions.update = 'true';
-          // } else {
-          //   userPermissions.read = 'true';
         }
       });
     return course.permissions = userPermissions;
   }
 
   ctx.status = 201;
-  course['permissions'] = permObjects();
+  course['permissions'] = await permObjects();
   ctx.body = { course };
 });
 

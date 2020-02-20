@@ -23,4 +23,8 @@ module('Integration | Component | authentication/login', function(hooks) {
 
     assert.equal(this.element.textContent.trim(), 'template block text');
   });
+
+  test('it renders', async function (assert) {
+    
+  });
 });
