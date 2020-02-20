@@ -59,7 +59,7 @@ router.get('/', async ctx => {
   ctx.body = { lesson };
 });
 
-router.post('/', permController.grantAccess('readAny', 'path'), validateLessons, async ctx => {
+router.post('/', permController.requireAuth, permController.grantAccess('createAny', 'path'), validateLessons, async ctx => {
   let newLesson = ctx.request.body.lesson;
 
   newLesson.slug = newLesson.name.replace(/[^a-z0-9]+/gi, '-')
@@ -84,7 +84,7 @@ router.post('/', permController.grantAccess('readAny', 'path'), validateLessons,
 });
 
 
-router.put('/:id', permController.grantAccess('readAny', 'path'), async ctx => {
+router.put('/:id', permController.requireAuth, permController.grantAccess('updateAny', 'path'), async ctx => {
   let newLesson = ctx.request.body.lesson;
 
   const checkLesson = await Lesson.query().findById(ctx.params.id);

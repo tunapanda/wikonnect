@@ -19,7 +19,7 @@ const { secret } = require('../middleware/jwt');
  */
 exports.requireAuth = async function (ctx, next) {
   try {
-    if (ctx.request.header.authorization.split(' ')[1] === 'undefined') {
+    if (ctx.request.header.authorization === undefined || ctx.request.header.authorization.split(' ')[1] === 'undefined') {
       const data = {
         data: {
           user: 'anonymous',
@@ -84,7 +84,7 @@ exports.grantAccess = function (action, resource) {
     } catch (e) {
       if (e.statusCode) {
         // ctx.throw(e.statusCode, { message: 'Bad Request Using Token' });
-        ctx.throw(e.statusCode, null, { errors: [e.message, '-----'] });
+        ctx.throw(e.statusCode, null, { errors: [e.message] });
       } else {
         ctx.throw(400, null, { errors: ['Bad Request', e.message] }); }
       throw e;

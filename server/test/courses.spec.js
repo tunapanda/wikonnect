@@ -52,7 +52,7 @@ describe('COURSES ROUTES', () => {
         res.status.should.eql(400);
         res.should.be.json;
         res.body.should.be.an('object');
-        res.body.errors.should.have.property('creatorId');
+        res.body.errors[0].should.eql('Bad Request');
         done();
       });
   });

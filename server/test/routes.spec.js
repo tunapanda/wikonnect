@@ -118,7 +118,7 @@ describe('LESSONS ROUTE', () => {
       .request(server)
       .post(lessonRoute)
       .set('Content-Type', 'application/json')
-      .set(tokens.headerBasicUser2)
+      .set(tokens.headersSuperAdmin1)
       .send(lessonData)
       .end((err, res) => {
         res.status.should.eql(201);

@@ -30,8 +30,8 @@ const putData = {
 
 // it('', done => { chai.request().post().set().send().end((err, res) => { done(); }); });
 
-describe('modules route and function test', () => {
-  it('GET all MODULES with valid token and show user progress', done => {
+describe('MODULES route', () => {
+  it('should GET all MODULES with valid token and show user progress', done => {
     chai
       .request(server)
       .get(moduleRoute)
@@ -44,7 +44,7 @@ describe('modules route and function test', () => {
         done();
       });
   });
-  it('GET all MODULES as anonymous user', done => {
+  it('Should GET all MODULES as anonymous user', done => {
     chai
       .request(server)
       .get(moduleRoute)
@@ -56,7 +56,7 @@ describe('modules route and function test', () => {
       });
   });
 
-  it('POST data with correct credentials', done => {
+  it('should POST data with correct credentials', done => {
     chai
       .request(server)
       .post(moduleRoute)
@@ -71,7 +71,7 @@ describe('modules route and function test', () => {
         done();
       });
   });
-  it('Throw error on PUT with missing token', done => {
+  it('should Throw error on PUT with missing token', done => {
     chai
       .request(server)
       .post(moduleRoute)
@@ -82,7 +82,7 @@ describe('modules route and function test', () => {
         done();
       });
   });
-  it('Throw error on PUT with broken token', done => {
+  it('should Throw error on PUT with broken token', done => {
     chai
       .request(server)
       .put(moduleRoute + moduleId)
@@ -95,7 +95,7 @@ describe('modules route and function test', () => {
         done();
       });
   });
-  it('PUT module data with correct credentials', done => {
+  it('should PUT module data with correct credentials', done => {
     chai
       .request(server)
       .put(moduleRoute + moduleId)

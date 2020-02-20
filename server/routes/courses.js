@@ -53,9 +53,12 @@ router.get('/', permController.requireAuth, async ctx => {
 
     ctx.status = 200;
     ctx.body = { course };
-  } catch (error) {
-    ctx.status = 400;
-    ctx.body = { message: 'The query key does not exist', error: error.message };
+  } catch (e) {
+    if (e.statusCode) {
+      ctx.throw(e.statusCode, { message: 'The query key does not exist' });
+      ctx.throw(e.statusCode, null, { errors: [e.message] });
+    } else { ctx.throw(400, null, { errors: ['Bad Request'] }); }
+    throw e;
   }
 });
 
@@ -112,7 +115,7 @@ router.post('/', permController.grantAccess('createAny', 'path'), validateCourse
   } catch (e) {
     if (e.statusCode) {
       ctx.throw(e.statusCode, null, { errors: [e.message] });
-    } else { ctx.throw(400, null, { errors: [e.message] }); }
+    } else { ctx.throw(400, null, { errors: ['Bad Request'] }); }
     throw e;
   }
   await insertType('course_modules', modules, course.id);

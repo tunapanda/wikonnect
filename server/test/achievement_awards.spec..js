@@ -8,10 +8,6 @@ chai.should();
 chai.use(chaiHttp);
 
 const achievementAwardsRoute = '/api/v1/achievementAwards/';
-const achievementAwardsId = 'HyzXtpsAAAE';
-
-
-// it('', done => { chai.request().post().set().send().end((err, res) => { done(); }); });
 
 describe('Achievement Awards route and function test', () => {
   it('Should GET all Achievement Awards with valid token', done => {
