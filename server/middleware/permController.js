@@ -19,7 +19,7 @@ const { secret } = require('../middleware/jwt');
  */
 exports.requireAuth = async function (ctx, next) {
   try {
-    if (ctx.request.header.authorization === undefined) {
+    if (ctx.request.header.authorization.split(' ')[1] === 'undefined') {
       const data = {
         data: {
           user: 'anonymous',
