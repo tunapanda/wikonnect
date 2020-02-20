@@ -74,8 +74,7 @@ exports.grantAccess = function (action, resource) {
     try {
       let roleName = ctx.state.user.role == undefined ? ctx.state.user.data.role : ctx.state.user.role;
 
-      // const permission = roles.can(roleName)[action](resource);
-      const permission = roles.can('superadmin')['createAny']('path');
+      const permission = roles.can(roleName)[action](resource);
       if (!permission.granted) {
         ctx.throw(400, null, { errors: ['Bad Request'] });
         return ctx;

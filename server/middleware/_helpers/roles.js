@@ -30,9 +30,9 @@ let grantList = [
   { role: 'admin', resource: 'path', action: 'update:any', attributes: '*' },
 
   { role: 'superadmin', resource: 'path', action: 'delete:any', attributes: '*' },
-  // { role: 'superadmin', resource: 'path', action: 'create:any', attributes: '*' },
-  // { role: 'superadmin', resource: 'path', action: 'read:any', attributes: '*' },
-  // { role: 'superadmin', resource: 'path', action: 'update:any', attributes: '*' },
+  { role: 'superadmin', resource: 'path', action: 'create:any', attributes: '*' },
+  { role: 'superadmin', resource: 'path', action: 'read:any', attributes: '*' },
+  { role: 'superadmin', resource: 'path', action: 'update:any', attributes: '*' },
 ];
 let ac = new AccessControl(grantList);
 
