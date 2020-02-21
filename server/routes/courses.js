@@ -105,20 +105,23 @@ router.get('/:id', permController.requireAuth, async ctx => {
 });
 
 
-router.post('/', permController.grantAccess('createAny', 'path'), validateCourses, async ctx => {
-
+router.post('/', permController.requireAuth, permController.grantAccess('createAny', 'path'), validateCourses, async ctx => {
+  delete ctx.request.body.course.progress;
+  console.log(ctx.request.body.course);
   let { modules, ...newCourse } = ctx.request.body.course;
 
   let course;
   try {
     course = await Course.query().insertAndFetch(newCourse);
   } catch (e) {
+    console.log(e.message, 'lksndklgnskldnkglns');
+
     if (e.statusCode) {
       ctx.throw(e.statusCode, null, { errors: [e.message] });
     } else { ctx.throw(400, null, { errors: ['Bad Request'] }); }
     throw e;
   }
-  await insertType('course_modules', modules, course.id);
+  // await insertType('course_modules', modules, course.id);
 
   function permObjects() {
     Object.keys(userPermissions)
@@ -144,12 +147,13 @@ router.post('/', permController.grantAccess('createAny', 'path'), validateCourse
 });
 
 router.put('/:id', permController.grantAccess('deleteOwn', 'path'), async ctx => {
+  delete ctx.request.body.course.progress;
+  
   const course_record = await Course.query().findById(ctx.params.id);
   if (!course_record) {
     ctx.throw(400, 'That course does not exist');
   }
-  let { modules, progress, ...newCourse } = ctx.request.body.course;
-  console.log(newCourse, modules, progress);
+  let { modules, ...newCourse } = ctx.request.body.course;
 
   let course;
   try {
