@@ -1,39 +1,5 @@
 const validate = require('validate.js');
 
-/**
- *
- * @param { Object } ctx validates post data
- * @param { Object } next continues if valid
- *
- * @example
- * // POST data to course with empty obejcts
- * {
- *    "courses":{
- *    }
- * }
- *
- * // returns an error object
- * {
-    "errors": {
-        "name": [
-            "Name can't be blank"
-        ],
-        "slug": [
-            "Slug can't be blank"
-        ],
-        "description": [
-            "Description can't be blank"
-        ],
-        "creator_id": [
-            "Creator id can't be blank"
-        ],
-        "status": [
-            "Status can't be blank"
-        ]
-    }
-  }
- *
-*/
 async function validateCourses(ctx, next) {
 
   try {

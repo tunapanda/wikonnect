@@ -4,19 +4,6 @@ const { roles } = require('./_helpers/roles');
 const { secret } = require('../middleware/jwt');
 
 
-/**
- *
- * @param {*} ctx
- * @param {*} next
- *
- * @author Moses Okemwa <okemwamoses@gmail.com>
- * @example
- * checks for authorization header in the ctx
- * gets user data and expiry date from the token
- * returns an error if the token has expired
- * if (exp < Date.now().valueOf() / 1000) {}
- *
- */
 exports.requireAuth = async function (ctx, next) {
   try {
     if (ctx.request.header.authorization === undefined || ctx.request.header.authorization.split(' ')[1] === 'undefined') {
@@ -50,23 +37,6 @@ exports.requireAuth = async function (ctx, next) {
   }
 };
 
-
-/**
- * @param  { actionType } action
- * action type: readOwn || createOwn || deleteOwn || updateOwn
- * @param  { resource } resource
- * routes that the role has the permission to access
- * @returns { boolean }
- * if false (throws an error) if true (passes to the next function)
- * @example
- * grantAccess('readAny', 'path')
- *
- * // returns an error if the role does not have enough permission to perform action on the route
- * !permission.granted == True
- *
- * // moves to next function if the role has enough permissions to perform action on the route
- * !permission.granted == false
- */
 
 exports.grantAccess = function (action, resource) {
 

@@ -1,0 +1,15 @@
+{
+  "name": "Wikonnect",
+  "version": "0.4.0",
+  "description": "Wikonnect community docs",
+  "title": "Wikonnect community docs",
+  "url": "/v1/api",
+  "header": {
+    "title": "My own header title",
+    "filename": "header.md"
+  },
+  "footer": {
+    "title": "My own footer title",
+    "filename": "footer.md"
+  }
+}

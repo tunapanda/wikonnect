@@ -50,14 +50,8 @@ async function enrolledCoursesType(parent) {
     console.log(error);
   }
 }
-/**
- *
- * @param {ctx.request.body.user} ctx
- * @param {*} next
- *
- * delete password in the ctx
- * return hashed password
- */
+
+
 async function createPasswordHash(ctx, next) {
   if (ctx.request.body.user.password) {
     const hash = await bcrypt.hash(ctx.request.body.user.password, 10);

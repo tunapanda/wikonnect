@@ -7,14 +7,6 @@ const router = new Router({
   prefix: '/paths'
 });
 
-/**
- *
- * @param {json} parent
- *
- * modify the parent object
- * return child relation object
- *
- */
 async function returnType(parent) {
   try {
     if (parent.length == undefined) {
