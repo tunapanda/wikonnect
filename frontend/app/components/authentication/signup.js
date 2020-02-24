@@ -30,12 +30,12 @@ export default class AuthenticationSignupComponent extends Component {
 
           let error_message;
           switch (details[2]) {
-            case "unique":
-              error_message = "The " + details[1] + " is already in use";
-              break;
+          case "unique":
+            error_message = "The " + details[1] + " is already in use";
+            break;
 
-            default:
-              break;
+          default:
+            break;
           }
           // model.addError(details[1], + details[1] + ' should be ' + details[2])
           model.addError(details[1], error_message);

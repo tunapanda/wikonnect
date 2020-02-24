@@ -1,11 +1,14 @@
 {{#unless me.isAuthenticated}}
   <div class="padded">
     <BsAlert @type="error">
-      <strong> {{#link-to "login"}}
+      <strong>
+        {{#link-to "login"}}
           LOGIN
-        {{/link-to}} or {{#link-to "signup"}}
+        {{/link-to}} or
+        {{#link-to "signup"}}
           SIGNUP
-        {{/link-to}} to keep track of your progress</strong>
+        {{/link-to}} to keep track of your progress
+      </strong>
     </BsAlert>
   </div>
 {{/unless}}
