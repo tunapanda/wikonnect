@@ -1,4 +1,3 @@
-// import Component from '@glimmer/component'; @jake
 import Component from '@ember/component';
 import { inject } from '@ember/service';
 import { action } from '@ember/object';
