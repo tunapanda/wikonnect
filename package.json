@@ -7,15 +7,14 @@
   "scripts": {
     "test": "cypress run",
     "cy:open": "cypress open",
-    "start:frontend": "cd frontend && yarn start",
-    "start:server": "cd server && yarn start",
-    "test:frontend": "cd frontend && yarn test",
     "test:server": "cd server && yarn test",
-    "start:all": "concurrently yarn:start:frontend yarn:start:server",
-    "test:all": "concurrently yarn:test yarn:test:frontend yarn:test:server"
+    "test:frontend": "cd frontend && yarn test",
+    "test:all": "concurrently yarn:test yarn:test:frontend yarn:test:server",
+    "doc": "apidoc -i server -o doc/ -e node_modules -e doc && apidoc -i frontend -o doc/ -e node_modules -e doc"
   },
   "devDependencies": {
     "@cypress/code-coverage": "^1.12.2",
+    "apidocs": "^2017.3.9",
     "cypress": "^3.4.1",
     "eslint-plugin-cypress": "^2.6.1",
     "istanbul-lib-coverage": "^3.0.0",
