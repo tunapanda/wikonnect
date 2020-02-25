@@ -27,6 +27,7 @@ async function userEnrolledCourse(courseData, userId) {
     }
   });
 }
+
 async function userProgress(courseData, userId) {
   const achievement = await Achievement.query().where('user_id', userId);
   let achievementChapters = [];
@@ -60,6 +61,8 @@ async function userProgress(courseData, userId) {
     }
   });
 }
+
+
 async function returnType(parent) {
   if (parent.length == undefined) {
     parent.modules.forEach(lesson => {
@@ -73,7 +76,6 @@ async function returnType(parent) {
     });
   }
 }
-
 async function userEnrollmentType(parent) {
 
   if (parent.length == undefined) {

@@ -27,11 +27,25 @@ export default class CourseIndexController extends Controller {
     });
   }
 
+  get isEnrolled() {
+    if (this.model.enrollments.length == 0) {
+      return {
+        status: "false"
+      };
+    } else {
+      console.log("this.model.e");
+      console.log(this.model.enrollments.get("firstObject").status);
+      console.log(this.model.enrollments.get("firstObject"));
+      return this.model.enrollments.get("firstObject");
+    }
+  }
+
   @action
-  async enrollmentToggle(course_id) {
-    console.log(course_id);
+  async enroll(course_id) {
+    console.log("enrolling");
     console.log(this.me.user.id);
 
+    console.log(course_id);
     let enrollment = this.store.createRecord('enrollment');
     enrollment.set('course_id', course_id);
     let en = await enrollment.save();

@@ -97,6 +97,7 @@ router.post('/', validateAuthRoutes.validateNewUser, createPasswordHash, async c
 });
 
 router.get('/:id', permController.requireAuth, async ctx => {
+
   const user = await User.query().findById(ctx.params.id).mergeJoinEager('[achievementAwards(selectBadgeNameAndId), userRoles(selectName), enrolledCourses(selectNameAndId)]');
   returnType(user);
   enrolledCoursesType(user);
@@ -114,6 +115,8 @@ router.get('/:id', permController.requireAuth, async ctx => {
   const userVerification = await knex('user_verification').where({ 'user_id': ctx.params.id });
   user.userVerification = userVerification;
 
+  console.log(user);
+  
   ctx.status = 200;
   ctx.body = { user };
 

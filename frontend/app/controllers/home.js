@@ -9,6 +9,7 @@ export default class HomeController extends Controller {
   // get courseList() {
   //   return this.model.enrolledCourses.map((course, index) => {
   //     let colorIndex = index % 3;
+
   //     return {
   //       'color': this.colorList[colorIndex],
   //       'name': course.get('name'),
