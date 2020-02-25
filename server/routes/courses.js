@@ -207,15 +207,12 @@ router.get('/:id', permController.requireAuth, async ctx => {
  */
 
 router.post('/', permController.requireAuth, permController.grantAccess('createAny', 'path'), validateCourses, async ctx => {
-  let { modules, ...newCourse } = ctx.request.body.course;
-  console.log(modules);
+  let newCourse = ctx.request.body.course;
 
   let course;
   try {
     course = await Course.query().insertAndFetch(newCourse);
   } catch (e) {
-    console.log(e.message, 'lksndklgnskldnkglns');
-
     if (e.statusCode) {
       ctx.throw(e.statusCode, null, { errors: [e.message] });
     } else { ctx.throw(400, null, { errors: ['Bad Request'] }); }
@@ -286,8 +283,7 @@ router.put('/:id', permController.grantAccess('deleteOwn', 'path'), async ctx =>
   if (!course_record) {
     ctx.throw(400, 'That course does not exist');
   }
-  let { modules, progress, ...newCourse } = ctx.request.body.course;
-  console.log(newCourse, modules, progress);
+  let { modules, ...newCourse } = ctx.request.body.course;
 
   let course;
   try {
