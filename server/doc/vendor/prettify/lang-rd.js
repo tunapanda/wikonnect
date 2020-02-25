@@ -14,4 +14,4 @@
  See the License for the specific language governing permissions and
  limitations under the License.
 */
-PR.registerLangHandler(PR.createSimpleLexer([["pln",/^[\t\n\r \xA0]+/,null,"\t\n\r \u00a0"],["com",/^%[^\r\n]*/,null,"%"]],[["lit",/^\\(?:cr|l?dots|R|tab)\b/],["kwd",/^\\[a-zA-Z@]+/],["kwd",/^#(?:ifn?def|endif)/],["pln",/^\\[{}]/],["pun",/^[{}()\[\]]+/]]),["Rd","rd"]);
+PR.registerLangHandler(PR.createSimpleLexer([['pln',/^[\t\n\r \xA0]+/,null,'\t\n\r \u00a0'],['com',/^%[^\r\n]*/,null,'%']],[['lit',/^\\(?:cr|l?dots|R|tab)\b/],['kwd',/^\\[a-zA-Z@]+/],['kwd',/^#(?:ifn?def|endif)/],['pln',/^\\[{}]/],['pun',/^[{}()\[\]]+/]]),['Rd','rd']);

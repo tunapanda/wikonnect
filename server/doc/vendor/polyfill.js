@@ -2,25 +2,25 @@
 if (!Object.keys) {
   Object.keys = (function () {
     'use strict';
-    var hasOwnProperty = Object.prototype.hasOwnProperty,
-        hasDontEnumBug = !({toString: null}).propertyIsEnumerable('toString'),
-        dontEnums = [
-          'toString',
-          'toLocaleString',
-          'valueOf',
-          'hasOwnProperty',
-          'isPrototypeOf',
-          'propertyIsEnumerable',
-          'constructor'
-        ],
-        dontEnumsLength = dontEnums.length;
+    let hasOwnProperty = Object.prototype.hasOwnProperty,
+      hasDontEnumBug = !({toString: null}).propertyIsEnumerable('toString'),
+      dontEnums = [
+        'toString',
+        'toLocaleString',
+        'valueOf',
+        'hasOwnProperty',
+        'isPrototypeOf',
+        'propertyIsEnumerable',
+        'constructor'
+      ],
+      dontEnumsLength = dontEnums.length;
 
     return function (obj) {
       if (typeof obj !== 'object' && (typeof obj !== 'function' || obj === null)) {
         throw new TypeError('Object.keys called on non-object');
       }
 
-      var result = [], prop, i;
+      let result = [], prop, i;
 
       for (prop in obj) {
         if (hasOwnProperty.call(obj, prop)) {
@@ -44,23 +44,23 @@ if (!Object.keys) {
 //Reference: http://es5.github.com/#x15.4.4.18
 if (!Array.prototype.forEach) {
   Array.prototype.forEach = function (callback, thisArg) {
-    var T, k;
+    let T, k;
 
     if (this == null) {
       throw new TypeError(' this is null or not defined');
     }
 
     // 1. Let O be the result of calling ToObject passing the |this| value as the argument.
-    var O = Object(this);
+    let O = Object(this);
 
     // 2. Let lenValue be the result of calling the Get internal method of O with the argument "length".
     // 3. Let len be ToUint32(lenValue).
-    var len = O.length >>> 0;
+    let len = O.length >>> 0;
 
     // 4. If IsCallable(callback) is false, throw a TypeError exception.
     // See: http://es5.github.com/#x9.11
-    if (typeof callback !== "function") {
-      throw new TypeError(callback + " is not a function");
+    if (typeof callback !== 'function') {
+      throw new TypeError(callback + ' is not a function');
     }
 
     // 5. If thisArg was supplied, let T be thisArg; else let T be undefined.

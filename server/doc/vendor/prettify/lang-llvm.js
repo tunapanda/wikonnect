@@ -14,4 +14,4 @@
  See the License for the specific language governing permissions and
  limitations under the License.
 */
-PR.registerLangHandler(PR.createSimpleLexer([["pln",/^[\t\n\r \xA0]+/,null,"\t\n\r \u00a0"],["str",/^!?\"(?:[^\"\\]|\\[\s\S])*(?:\"|$)/,null,'"'],["com",/^;[^\r\n]*/,null,";"]],[["pln",/^[%@!](?:[-a-zA-Z$._][-a-zA-Z$._0-9]*|\d+)/],["kwd",/^[A-Za-z_][0-9A-Za-z_]*/,null],["lit",/^\d+\.\d+/],["lit",/^(?:\d+|0[xX][a-fA-F0-9]+)/],["pun",/^[()\[\]{},=*<>:]|\.\.\.$/]]),["llvm","ll"]);
+PR.registerLangHandler(PR.createSimpleLexer([['pln',/^[\t\n\r \xA0]+/,null,'\t\n\r \u00a0'],['str',/^!?\"(?:[^\"\\]|\\[\s\S])*(?:\"|$)/,null,'"'],['com',/^;[^\r\n]*/,null,';']],[['pln',/^[%@!](?:[-a-zA-Z$._][-a-zA-Z$._0-9]*|\d+)/],['kwd',/^[A-Za-z_][0-9A-Za-z_]*/,null],['lit',/^\d+\.\d+/],['lit',/^(?:\d+|0[xX][a-fA-F0-9]+)/],['pun',/^[()\[\]{},=*<>:]|\.\.\.$/]]),['llvm','ll']);
