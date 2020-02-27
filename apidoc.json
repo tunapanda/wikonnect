@@ -4,12 +4,28 @@
   "description": "Wikonnect community docs",
   "title": "Wikonnect community docs",
   "url": "/v1/api",
+  "order": [
+    "Courses",
+    "Modules",
+    "Lessons",
+    "GetCourses",
+    "GetACourse",
+    "PostACourse",
+    "PutACourse",
+    "DeleteACourse",
+    "GetModules",
+    "GetAModule",
+    "PostAModule",
+    "PutAModule",
+    "DeleteAModule",
+    "GetLessons",
+    "GetALesson",
+    "PostALesson",
+    "PutALesson",
+    "DeleteALesson"
+  ],
   "header": {
-    "title": "My own header title",
-    "filename": "header.md"
-  },
-  "footer": {
-    "title": "My own footer title",
-    "filename": "footer.md"
+    "title": "Getting Started",
+    "filename": "README.md"
   }
 }

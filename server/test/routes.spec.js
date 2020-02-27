@@ -97,7 +97,7 @@ describe('LESSONS ROUTE', () => {
       .set(tokens.headerBasicUser2)
       .end((err, res) => {
         res.should.have.status(200);
-        assert.equal(res.body.lesson.length, 0);
+        assert.equal(res.body.lessons.length, 0);
         done();
       });
   });
@@ -135,10 +135,10 @@ describe('LESSONS ROUTE', () => {
       .end((err, res) => {
         res.should.have.status(200);
         res.should.be.json;
-        res.body.lesson[0].should.have.property('id');
-        res.body.lesson[0].should.have.property('name');
-        res.body.lesson[0].should.have.property('slug');
-        res.body.lesson[0].should.have.property('creatorId');
+        res.body.lessons[0].should.have.property('id');
+        res.body.lessons[0].should.have.property('name');
+        res.body.lessons[0].should.have.property('slug');
+        res.body.lessons[0].should.have.property('creatorId');
         done();
       });
   });
@@ -150,10 +150,10 @@ describe('LESSONS ROUTE', () => {
       .end((err, res) => {
         res.should.have.status(200);
         res.should.be.json;
-        res.body.lesson[0].should.have.property('id');
-        res.body.lesson[0].should.have.property('name');
-        res.body.lesson[0].should.have.property('slug');
-        res.body.lesson[0].should.have.property('creatorId');
+        res.body.lessons[0].should.have.property('id');
+        res.body.lessons[0].should.have.property('name');
+        res.body.lessons[0].should.have.property('slug');
+        res.body.lessons[0].should.have.property('creatorId');
         done();
       });
   });
