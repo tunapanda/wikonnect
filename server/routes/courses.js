@@ -208,16 +208,11 @@ router.post('/', permController.requireAuth, permController.grantAccess('createA
   let newCourse = ctx.request.body.course;
 
   let course;
-  try {
-    course = await Course.query().insertAndFetch(newCourse);
-  } catch (e) {
-    if (e.statusCode) {
-      ctx.throw(e.statusCode, null, { errors: [e.message] });
-    } else { ctx.throw(400, null, { errors: ['Bad Request'] }); }
-    throw e;
-  }
+  course = await Course.query().insertAndFetch(newCourse);
+  console.log(course);
 
-  function permObjects() {
+
+  async function permObjects() {
     Object.keys(userPermissions)
       .forEach(perm => {
         if (ctx.state.user.data.role.toLowerCase() == 'superadmin') {
@@ -261,15 +256,12 @@ router.post('/', permController.requireAuth, permController.grantAccess('createA
  */
 
 router.put('/:id', permController.grantAccess('createAny', 'path'), async ctx => {
-  const course_record = await Course.query().findById(ctx.params.id);
-  if (!course_record) {
-    ctx.throw(400, 'That course does not exist');
-  }
   let { modules, ...newCourse } = ctx.request.body.course;
 
   let course;
   try {
     course = await Course.query().patchAndFetchById(ctx.params.id, newCourse);
+    ctx.assert(course, 404, 'Not Found');
   } catch (e) {
     if (e.statusCode) {
       ctx.throw(e.statusCode, null, { errors: [e.message] });
