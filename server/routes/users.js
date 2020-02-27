@@ -67,27 +67,32 @@ router.post('/', validateAuthRoutes.validateNewUser, createPasswordHash, async c
   ctx.request.body.user.username = ctx.request.body.user.username.toLowerCase();
   ctx.request.body.user.email = ctx.request.body.user.email.toLowerCase();
 
+
+
   const newUser = ctx.request.body.user;
+  const firstUserCheck = await User.query();
+  let role = !firstUserCheck.length ? 'groupSuperAdmin' : 'groupBasic';
 
   try {
     const user = await User.query().insertAndFetch(newUser);
-    await knex('group_members').insert({ 'user_id': user.id, 'group_id': 'groupBasic' });
+    await knex('group_members').insert({ 'user_id': user.id, 'group_id': role });
     ctx.status = 201;
     ctx.body = { user };
   } catch (e) {
     if (e.status === 503) {
       e.headers = Object.assign({}, e.headers, { 'Retry-After': 30 });
     } else {
-      ctx.throw(400, null, {
+      ctx.throw(400, {
         errors: [{
-          'id': '{unique identifier for this particular occurrence}',
+          'id': e.code,
           'status': 400,
           'code': e.code,
           'title': e.name,
           'detail': e.constraint,
+          'hint': e.hint,
           'source': {
-            'pointer': 'email_or_password_exists',
-            'parameter': 'email_or_password_exists'
+            'pointer': e.constraint,
+            'parameter': e.detail
           }
         }]
       });
