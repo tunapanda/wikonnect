@@ -16,7 +16,7 @@ const router = new Router({
 
 
 /**
- * @api {get} /modules/:id GET single course.
+ * @api {get} /modules/:id GET single module.
  * @apiName GetAModule
  * @apiGroup Modules
  * @apiPermission none
@@ -150,8 +150,8 @@ router.get('/', permController.requireAuth, async ctx => {
 
 
 /**
- * @api {post} /modules POST module.
- * @apiName PostModule
+ * @api {post} /modules POST a module.
+ * @apiName PostAModule
  * @apiGroup Modules
  * @apiPermission none
  *
@@ -167,7 +167,7 @@ router.get('/', permController.requireAuth, async ctx => {
  *     HTTP/1.1 201 OK
  *     {
  *      "module": {
- *        "name": string,
+ *        "name": "module",
  *        "slug": "a-module",
  *        "description": "this is a module.",
  *        "status": "published",
@@ -175,17 +175,12 @@ router.get('/', permController.requireAuth, async ctx => {
  *      }
  *    }
  *
- * @apiErrorExample {json} Error-Response:
- *     HTTP/1.1 201 OK
- *     { errors: ['Bad Request'] }
+ * @apiError {String} errors Bad Request.
  *
  */
 
 router.post('/', validateModules, permController.requireAuth, permController.grantAccess('createAny', 'path'), async ctx => {
-
-
   let newModule = ctx.request.body.module;
-
   let modules;
   try {
     modules = await Module.query().insertAndFetch(newModule);
@@ -221,8 +216,8 @@ router.post('/', validateModules, permController.requireAuth, permController.gra
 });
 
 /**
- * @api {put} /modules/:id PUT course.
- * @apiName PutModule
+ * @api {put} /modules/:id PUT a module.
+ * @apiName PutAModule
  * @apiGroup Modules
  * @apiPermission [admin, teacher, superadmin]
  *
@@ -235,11 +230,7 @@ router.post('/', validateModules, permController.requireAuth, permController.gra
  * @apiSampleRequest off
  *
  * @apiSuccess {String} module[object] Object data
- *
- * @apiErrorExample {json} Error-Response:
- *     HTTP/1.1 201 OK
- *     { errors: ['Bad Request'] }
- *
+ * @apiError {String} errors Bad Request.
  */
 router.put('/:id', permController.grantAccess('createAny', 'path'), async ctx => {
   let { lessons, ...newModule } = ctx.request.body.module;
@@ -281,16 +272,13 @@ router.put('/:id', permController.grantAccess('createAny', 'path'), async ctx =>
 });
 
 /**
- * @api {delete} /modules/:id DELETE course.
- * @apiName DeleteModule
+ * @api {delete} /modules/:id DELETE a module.
+ * @apiName DeleteAModule
  * @apiGroup Modules
  * @apiPermission [admin, superadmin]
  *
  * @apiSuccess {String} module[object] Object data
- *
- * @apiErrorExample {json} Error-Response:
- *     HTTP/1.1 201 OK
- *     { errors: ['Bad Request'] }
+ * @apiError {String} errors Bad Request.
  *
  */
 

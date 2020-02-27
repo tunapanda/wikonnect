@@ -67,8 +67,6 @@ router.post('/', validateAuthRoutes.validateNewUser, createPasswordHash, async c
   ctx.request.body.user.username = ctx.request.body.user.username.toLowerCase();
   ctx.request.body.user.email = ctx.request.body.user.email.toLowerCase();
 
-
-
   const newUser = ctx.request.body.user;
   const firstUserCheck = await User.query();
   let role = !firstUserCheck.length ? 'groupSuperAdmin' : 'groupBasic';

@@ -176,7 +176,7 @@ router.get('/:id', permController.requireAuth, async ctx => {
 
 /**
  * @api {post} /courses POST course.
- * @apiName PostCourse
+ * @apiName PostACourse
  * @apiGroup Courses
  * @apiPermission none
  *
@@ -200,9 +200,7 @@ router.get('/:id', permController.requireAuth, async ctx => {
  *      }
  *    }
  *
- * @apiErrorExample {json} Error-Response:
- *     HTTP/1.1 201 OK
- *     { errors: ['Bad Request'] }
+ * @apiError {String} errors Bad Request.
  *
  */
 
@@ -245,7 +243,7 @@ router.post('/', permController.requireAuth, permController.grantAccess('createA
 
 /**
  * @api {put} /courses/:id PUT course.
- * @apiName PutCourse
+ * @apiName PutACourse
  * @apiGroup Courses
  * @apiPermission [admin, teacher, superadmin]
  *
@@ -258,10 +256,7 @@ router.post('/', permController.requireAuth, permController.grantAccess('createA
  * @apiSampleRequest off
  *
  * @apiSuccess {String} course[object] Object data
- *
- * @apiErrorExample {json} Error-Response:
- *     HTTP/1.1 201 OK
- *     { errors: ['Bad Request'] }
+ * @apiError {String} errors Bad Request.
  *
  */
 
@@ -308,16 +303,12 @@ router.put('/:id', permController.grantAccess('createAny', 'path'), async ctx =>
 
 /**
  * @api {delete} /courses/:id DELETE course.
- * @apiName DeleteCourse
+ * @apiName DeleteACourse
  * @apiGroup Courses
  * @apiPermission [admin, superadmin]
  *
  * @apiSuccess {String} course[object] Object data
- *
- * @apiErrorExample {json} Error-Response:
- *     HTTP/1.1 201 OK
- *     { errors: ['Bad Request'] }
- *
+ * @apiError {String} errors Bad Request.
  */
 
 
