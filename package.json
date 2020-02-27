@@ -10,7 +10,7 @@
     "test:server": "cd server && yarn test",
     "test:frontend": "cd frontend && yarn test",
     "test:all": "concurrently yarn:test yarn:test:frontend yarn:test:server",
-    "doc": "apidoc -i server -o doc/ -e node_modules -e doc && apidoc -i frontend -o doc/ -e node_modules -e doc"
+    "doc": "apidoc -e node_modules -e doc"
   },
   "devDependencies": {
     "@cypress/code-coverage": "^1.12.2",
