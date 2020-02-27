@@ -25,11 +25,7 @@
     "DeleteALesson"
   ],
   "header": {
-    "title": "My own header title",
-    "filename": "header.md"
-  },
-  "footer": {
-    "title": "My own footer title",
-    "filename": "footer.md"
+    "title": "Getting Started",
+    "filename": "README.md"
   }
 }
