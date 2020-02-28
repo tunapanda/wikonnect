@@ -62,7 +62,6 @@ async function createPasswordHash(ctx, next) {
   await next();
 }
 
-
 /**
  * @api {post} /users POST new user data.
  * @apiName PostAUser

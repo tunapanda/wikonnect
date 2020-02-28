@@ -128,6 +128,7 @@ async function validateModules(ctx, next) {
     if (e.statusCode) {
       ctx.throw(e.statusCode, null, { errors: e });
     } else { ctx.throw(400, null, { errors: e }); }
+
     throw e;
   }
   await next();
