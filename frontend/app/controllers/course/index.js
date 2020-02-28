@@ -76,8 +76,6 @@ export default class CourseIndexController extends Controller {
     console.log(enroll);
     enroll.save();
 
-
-
   }
 
 }

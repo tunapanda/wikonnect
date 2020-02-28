@@ -1,6 +1,3 @@
-
-
-
 How to Contribute
 ==
 Reporting Bugs

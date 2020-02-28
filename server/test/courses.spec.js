@@ -49,10 +49,10 @@ describe('COURSES ROUTES', () => {
       .set(tokens.headersSuperAdmin1)
       .send(invalidData)
       .end((err, res) => {
-        res.status.should.eql(401);
+        res.status.should.eql(400);
         res.should.be.json;
         res.body.should.be.an('object');
-        res.body.errors.should.have.property('creatorId');
+        res.body.errors[0].should.eql('Bad Request');
         done();
       });
   });
@@ -64,9 +64,9 @@ describe('COURSES ROUTES', () => {
       .set(tokens.headersSuperAdmin1)
       .send(putData)
       .end((err, res) => {
-        res.status.should.eql(401);
+        res.status.should.eql(400);
         res.should.be.json;
-        res.body.message.should.eql('That course does not exist');
+        res.body.errors[0].should.eql('That course does not exist');
         done();
       });
   });

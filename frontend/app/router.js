@@ -116,6 +116,7 @@ Router.map(function () {
 
   );
   this.route('courses');
+  this.route('cms-desktop');
 }
 
 );

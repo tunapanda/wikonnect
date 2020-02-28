@@ -73,7 +73,7 @@ describe('LESSONS ROUTE', () => {
         res.should.be.json;
         res.body.should.be.a('object');
         res.body.should.have.property('errors');
-        res.body.errors.should.have.property('creatorId');
+        res.body.errors.should.eql(['Bad Request']);
         done();
       });
   });
@@ -86,7 +86,7 @@ describe('LESSONS ROUTE', () => {
       .end((err, res) => {
         res.status.should.eql(400);
         res.should.be.json;
-        res.body.message.should.eql('That lesson path does not exist');
+        res.body.errors.should.eql(['Bad Request']);
         done();
       });
   });
@@ -97,7 +97,7 @@ describe('LESSONS ROUTE', () => {
       .set(tokens.headerBasicUser2)
       .end((err, res) => {
         res.should.have.status(200);
-        assert.equal(res.body.lesson.length, 0);
+        assert.equal(res.body.lessons.length, 0);
         done();
       });
   });
@@ -118,7 +118,7 @@ describe('LESSONS ROUTE', () => {
       .request(server)
       .post(lessonRoute)
       .set('Content-Type', 'application/json')
-      .set(tokens.headerBasicUser2)
+      .set(tokens.headersSuperAdmin1)
       .send(lessonData)
       .end((err, res) => {
         res.status.should.eql(201);
@@ -135,10 +135,10 @@ describe('LESSONS ROUTE', () => {
       .end((err, res) => {
         res.should.have.status(200);
         res.should.be.json;
-        res.body.lesson[0].should.have.property('id');
-        res.body.lesson[0].should.have.property('name');
-        res.body.lesson[0].should.have.property('slug');
-        res.body.lesson[0].should.have.property('creatorId');
+        res.body.lessons[0].should.have.property('id');
+        res.body.lessons[0].should.have.property('name');
+        res.body.lessons[0].should.have.property('slug');
+        res.body.lessons[0].should.have.property('creatorId');
         done();
       });
   });
@@ -150,10 +150,10 @@ describe('LESSONS ROUTE', () => {
       .end((err, res) => {
         res.should.have.status(200);
         res.should.be.json;
-        res.body.lesson[0].should.have.property('id');
-        res.body.lesson[0].should.have.property('name');
-        res.body.lesson[0].should.have.property('slug');
-        res.body.lesson[0].should.have.property('creatorId');
+        res.body.lessons[0].should.have.property('id');
+        res.body.lessons[0].should.have.property('name');
+        res.body.lessons[0].should.have.property('slug');
+        res.body.lessons[0].should.have.property('creatorId');
         done();
       });
   });
@@ -176,6 +176,7 @@ describe('LESSONS ROUTE', () => {
     chai
       .request(server)
       .put(lessonRoute + lessonID)
+      .set(tokens.headersSuperAdmin1)
       .set('Content-Type', 'application/json')
       .send(putData)
       .end((err, res) => {
@@ -189,6 +190,7 @@ describe('LESSONS ROUTE', () => {
     chai
       .request(server)
       .delete(lessonRoute + lessonID)
+      .set(tokens.headersSuperAdmin1)
       .set('Content-Type', 'application/json')
       .end((err, res) => {
         res.status.should.eql(200);
@@ -325,6 +327,7 @@ describe('ACTIVITY ROUTE', () => {
       .request(server)
       .delete(activityRoute + activityID)
       .set('Content-Type', 'application/json')
+      .set(tokens.headerBasicUser2)
       .end((err, res) => {
         res.status.should.eql(200);
         res.should.be.json;

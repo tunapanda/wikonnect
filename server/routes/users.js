@@ -2,7 +2,7 @@ const Router = require('koa-router');
 const User = require('../models/user');
 const validateAuthRoutes = require('../middleware/validation/validateAuthRoutes');
 const bcrypt = require('bcrypt');
-const getUserByUsername = require('../middleware/authenticate');
+// const getUserByUsername = require('../middleware/authenticate');
 const permController = require('../middleware/permController');
 const jwt = require('../middleware/jwt');
 
@@ -50,14 +50,8 @@ async function enrolledCoursesType(parent) {
     console.log(error);
   }
 }
-/**
- *
- * @param {ctx.request.body.user} ctx
- * @param {*} next
- *
- * delete password in the ctx
- * return hashed password
- */
+
+
 async function createPasswordHash(ctx, next) {
   if (ctx.request.body.user.password) {
     const hash = await bcrypt.hash(ctx.request.body.user.password, 10);
@@ -68,23 +62,45 @@ async function createPasswordHash(ctx, next) {
   await next();
 }
 
-router.post('/', validateAuthRoutes.validateNewUser, getUserByUsername, createPasswordHash, async ctx => {
-
+// router.post('/', validateAuthRoutes.validateNewUser, getUserByUsername, createPasswordHash, async ctx => {
+router.post('/', validateAuthRoutes.validateNewUser, createPasswordHash, async ctx => {
   ctx.request.body.user.username = ctx.request.body.user.username.toLowerCase();
   ctx.request.body.user.email = ctx.request.body.user.email.toLowerCase();
 
-  let newUser = ctx.request.body.user;
+  const newUser = ctx.request.body.user;
+  const firstUserCheck = await User.query();
+  let role = !firstUserCheck.length ? 'groupSuperAdmin' : 'groupBasic';
 
-  const user = await User.query().insertAndFetch(newUser);
-  await knex('group_members').insert({ 'user_id': user.id, 'group_id': 'groupBasic' });
-
-  ctx.assert(user, 401, 'Something went wrong.');
-
-  ctx.status = 201;
-  ctx.body = { user };
+  try {
+    const user = await User.query().insertAndFetch(newUser);
+    await knex('group_members').insert({ 'user_id': user.id, 'group_id': role });
+    ctx.status = 201;
+    ctx.body = { user };
+  } catch (e) {
+    if (e.status === 503) {
+      e.headers = Object.assign({}, e.headers, { 'Retry-After': 30 });
+    } else {
+      ctx.throw(400, {
+        errors: [{
+          'id': e.code,
+          'status': 400,
+          'code': e.code,
+          'title': e.name,
+          'detail': e.constraint,
+          'hint': e.hint,
+          'source': {
+            'pointer': e.constraint,
+            'parameter': e.detail
+          }
+        }]
+      });
+    }
+    throw e;
+  }
 });
 
 router.get('/:id', permController.requireAuth, async ctx => {
+
   const user = await User.query().findById(ctx.params.id).mergeJoinEager('[achievementAwards(selectBadgeNameAndId), userRoles(selectName), enrolledCourses(selectNameAndId)]');
   returnType(user);
   enrolledCoursesType(user);
@@ -119,7 +135,7 @@ router.get('/', permController.requireAuth, permController.grantAccess('readAny'
     if (e.statusCode) {
       ctx.throw(e.statusCode, { message: 'The query key does not exist' });
       ctx.throw(e.statusCode, null, { errors: [e.message] });
-    } else { ctx.throw(400, null, { errors: [e.message] }); }
+    } else { ctx.throw(406, null, { errors: [e.message] }); }
     throw e;
   }
 
