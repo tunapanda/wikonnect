@@ -62,7 +62,32 @@ async function createPasswordHash(ctx, next) {
   await next();
 }
 
-// router.post('/', validateAuthRoutes.validateNewUser, getUserByUsername, createPasswordHash, async ctx => {
+
+/**
+ * @api {post} /users POST new user data.
+ * @apiName PostAUser
+ * @apiGroup Authentication
+ *
+ * @apiParam (Required Params) {string} user[username] username
+ * @apiParam (Required Params) {string} user[email] Unique email
+ * @apiParam (Required Params) {string} user[password] validated password
+ *
+ * @apiPermission none
+ *
+ * @apiSuccessExample {json} Success-Response:
+ *     HTTP/1.1 201 OK
+ *     {
+ *        "user": {
+ *          "username": "string",
+ *          "id": "string",
+ *          "createdAt": "string",
+ *          "updatedAt": "string"
+ *        }
+ *     }
+ *
+ * @apiError {String} errors Bad Request.
+ */
+
 router.post('/', validateAuthRoutes.validateNewUser, createPasswordHash, async ctx => {
   ctx.request.body.user.username = ctx.request.body.user.username.toLowerCase();
   ctx.request.body.user.email = ctx.request.body.user.email.toLowerCase();
@@ -98,6 +123,65 @@ router.post('/', validateAuthRoutes.validateNewUser, createPasswordHash, async c
     throw e;
   }
 });
+
+
+/**
+ * @api {get} /users/:id GET a single users.
+ * @apiName GetAUser
+ * @apiGroup Authentication
+ *
+ * @apiVersion 0.4.0
+ * @apiDescription This is the Description.
+ * It is multiline capable.
+ *
+ * Last line of Description.
+ * @apiPermission [admin, superadmin]
+ * @apiHeader (Header) {String} authorization Bearer <<YOUR_API_KEY_HERE>>
+ *
+ * @apiSuccessExample {json} Success-Response:
+ *     HTTP/1.1 201 OK
+ *     {
+ *       "user": {
+ *       "id": "user2",
+ *       "username": "user2",
+ *       "createdAt": "2017-12-20T16:17:10.000Z",
+ *       "updatedAt": "2017-12-20T16:17:10.000Z",
+ *       "achievementAwards": [
+ *         {
+ *           "id": "achievementaward1",
+ *           "name": "completed 10 courses",
+ *           "type": "achievementAwards"
+ *         },
+ *         {
+ *           "id": "achievementaward2",
+ *           "name": "fully filled profile",
+ *           "type": "achievementAwards"
+ *         }
+ *       ],
+ *       "userRoles": [
+ *         {
+ *           "name": "basic"
+ *         }
+ *       ],
+ *       "enrolledCourses": [],
+ *       "userVerification": []
+ *    }
+ * }
+ *
+ * @apiErrorExample
+ *    HTTP/1.1 401 Unauthorized
+ *    {
+ *      "status": 401,
+ *      "message": "You do not have permissions to view that user"
+ *    }
+ *
+ * @apiErrorExample
+ *    HTTP/1.1 404 Not Found
+ *    {
+ *      "status": 404,
+ *      "message": "No User With that Id"
+ *    }
+ */
 
 router.get('/:id', permController.requireAuth, async ctx => {
 
