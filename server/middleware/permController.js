@@ -28,12 +28,8 @@ exports.requireAuth = async function (ctx, next) {
       ctx.state.user = data;
       await next();
     }
-
-  } catch (e) {
-    if (e.statusCode) {
-      ctx.throw(e.statusCode, null, { errors: [e.message] });
-    } else { ctx.throw(400, null, { errors: ['Bad Request', e.message] }); }
-    throw e;
+  } catch (error) {
+    ctx.throw(400, null, { errors: ['Bad Request'] });
   }
 };
 
@@ -45,19 +41,14 @@ exports.grantAccess = function (action, resource) {
       let roleName = ctx.state.user.role == undefined ? ctx.state.user.data.role : ctx.state.user.role;
 
       const permission = roles.can(roleName)[action](resource);
+
       if (!permission.granted) {
-        ctx.throw(400, null, { errors: ['Bad Request'] });
-        return ctx;
+        return ctx.throw(400, null, { errors: ['Bad Request'] });
       }
 
       await next();
-    } catch (e) {
-      if (e.statusCode) {
-        // ctx.throw(e.statusCode, { message: 'Bad Request Using Token' });
-        ctx.throw(e.statusCode, null, { errors: [e.message] });
-      } else {
-        ctx.throw(400, null, { errors: ['Bad Request', e.message] }); }
-      throw e;
+    } catch (error) {
+      ctx.throw(400, null, { errors: ['Bad Request'] });
     }
   };
 };

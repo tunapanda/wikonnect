@@ -3,10 +3,11 @@ const chaiHttp = require('chai-http');
 const server = require('../index');
 const assert = chai.assert;
 const tokens = require('./_tokens');
+const knex = require('../db/db');
 
 
-chai.should();
 chai.use(chaiHttp);
+chai.should();
 
 const route = '/api/v1/courses/';
 const itemID = 'course10';
@@ -40,6 +41,12 @@ const invalidData = {
 };
 
 describe('COURSES ROUTES', () => {
+
+  before(async () => {
+    await knex.migrate.rollback();
+    await knex.migrate.latest();
+    return knex.seed.run();
+  });
   // Failing tests
   it('Should throw an ERROR on POST with invalid data', done => {
     chai
@@ -66,7 +73,7 @@ describe('COURSES ROUTES', () => {
       .end((err, res) => {
         res.status.should.eql(400);
         res.should.be.json;
-        res.body.errors[0].should.eql('That course does not exist');
+        res.body.errors[0].should.eql('Bad Request');
         done();
       });
   });

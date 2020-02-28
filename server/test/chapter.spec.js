@@ -4,11 +4,12 @@ const chaiHttp = require('chai-http');
 const chaiJSON = require('chai-json-schema');
 const server = require('../index');
 const tokens = require('./_tokens');
+const knex = require('../db/db');
 
 
-chai.should();
 chai.use(chaiHttp);
 chai.use(chaiJSON);
+chai.should();
 
 const route = '/api/v1/chapters/';
 const itemID = 'chapter19';
@@ -42,6 +43,12 @@ const invalidData = {
 
 
 describe('CHAPTER ROUTE', () => {
+
+  before(async () => {
+    await knex.migrate.rollback();
+    await knex.migrate.latest();
+    return knex.seed.run();
+  });
 
   // Passing tests
   it('Should CREATE a chapter record on POST with valid data and return a JSON object', done => {

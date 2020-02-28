@@ -179,7 +179,8 @@ router.get('/', permController.requireAuth, async ctx => {
  *
  */
 
-router.post('/', validateModules, permController.requireAuth, permController.grantAccess('createAny', 'path'), async ctx => {
+router.post('/', permController.requireAuth, permController.grantAccess('createAny', 'path'), validateModules, async ctx => {
+
   let newModule = ctx.request.body.module;
   let modules;
   try {
@@ -232,7 +233,7 @@ router.post('/', validateModules, permController.requireAuth, permController.gra
  * @apiSuccess {String} module[object] Object data
  * @apiError {String} errors Bad Request.
  */
-router.put('/:id', permController.grantAccess('createAny', 'path'), async ctx => {
+router.put('/:id', permController.requireAuth, permController.grantAccess('createAny', 'path'), async ctx => {
   let { lessons, ...newModule } = ctx.request.body.module;
 
   let modules;
@@ -283,7 +284,7 @@ router.put('/:id', permController.grantAccess('createAny', 'path'), async ctx =>
  */
 
 
-router.delete('/:id', permController.grantAccess('deleteOwn', 'path'), async ctx => {
+router.delete('/:id', permController.requireAuth, permController.grantAccess('deleteOwn', 'path'), async ctx => {
   let modules = await Module.query().findById(ctx.params.id);
 
   if (modules === undefined) {

@@ -5,6 +5,7 @@
   "title": "Wikonnect community docs",
   "url": "/v1/api",
   "order": [
+    "Authentication",
     "Courses",
     "Modules",
     "Lessons",
@@ -27,5 +28,9 @@
   "header": {
     "title": "Getting Started",
     "filename": "README.md"
+  },
+  "footer": {
+    "title": "Contributing Guidelines",
+    "filename": "CONTRIBUTING.md"
   }
 }

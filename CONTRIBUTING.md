@@ -58,7 +58,7 @@ We love contributors
 
 Documentation
 --
-Please document your code using the [jsdoc](https://github.com/jsdoc/jsdoc) standard.
+Please document your code using the [apidoc](https://apidocjs.com/) library.
 
 Testing
 --

@@ -6,7 +6,7 @@ const logger = require('./middleware/logger');
 const jwt = require('./middleware/jwt');
 const path = require('path');
 const koaQs = require('koa-qs');
-
+const koaBunyanLogger = require('koa-bunyan-logger');
 const app = new Koa();
 
 const router = new Router({
@@ -16,6 +16,10 @@ const router = new Router({
 koaQs(app);
 
 app.use(errorHandler);
+
+app.use(koaBunyanLogger());
+// app.use(koaBunyanLogger.requestIdContext());
+// app.use(koaBunyanLogger.requestLogger());
 
 app.use(logger);
 
