@@ -12,7 +12,7 @@
     "db:reset": "knex migrate:rollback && knex migrate:latest",
     "db:seed": "knex seed:run",
     "db:migrate": "knex migrate:make swag",
-    "test": "mocha test",
+    "test": "nyc --reporter=html mocha test",
     "lint:js": "eslint ."
   },
   "dependencies": {
@@ -22,12 +22,14 @@
     "bcrypt": "^3.0.7",
     "busboy": "^0.3.1",
     "chai-json-schema": "^1.5.1",
+    "debug": "^4.1.1",
     "jsdoc": "^3.6.3",
     "jsonwebtoken": "^8.5.1",
     "knex": "^0.19.5",
     "koa": "^2.10.0",
     "koa-body": "^4.1.1",
     "koa-bodyparser": "^4.2.1",
+    "koa-bunyan-logger": "^2.1.0",
     "koa-jwt": "^3.6.0",
     "koa-qs": "^2.0.0",
     "koa-router": "^7.4.0",
