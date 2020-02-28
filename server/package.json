@@ -12,7 +12,7 @@
     "db:reset": "knex migrate:rollback && knex migrate:latest",
     "db:seed": "knex seed:run",
     "db:migrate": "knex migrate:make swag",
-    "test": "nyc --reporter=html mocha test",
+    "test": "nyc --reporter=html mocha test --exit",
     "lint:js": "eslint ."
   },
   "dependencies": {
@@ -50,11 +50,11 @@
   },
   "devDependencies": {
     "ajv": "^6.10.2",
-    "chai": "3.5.0",
+    "chai": "^4.2.0",
     "chai-http": "2.0.1",
     "chai-json-schema-ajv": "^5.0.0",
     "eslint": "^6.4.0",
-    "mocha": "2.4.5",
+    "mocha": "^7.1.0",
     "nyc": "^14.1.1"
   }
 }

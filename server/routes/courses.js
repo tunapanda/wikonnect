@@ -252,7 +252,7 @@ router.post('/', permController.requireAuth, permController.grantAccess('createA
  *
  */
 
-router.put('/:id', permController.grantAccess('createAny', 'path'), async ctx => {
+router.put('/:id', permController.requireAuth, permController.grantAccess('createAny', 'path'), async ctx => {
   let { modules, ...newCourse } = ctx.request.body.course;
 
   let course;
@@ -301,7 +301,7 @@ router.put('/:id', permController.grantAccess('createAny', 'path'), async ctx =>
  */
 
 
-router.delete('/:id', async ctx => {
+router.delete('/:id', permController.requireAuth, permController.grantAccess('deleteOwn', 'path'), async ctx => {
   const course = await Course.query().findById(ctx.params.id);
   await Course.query().delete().where({ id: ctx.params.id });
 
