@@ -87,6 +87,9 @@ jobs:
       - attach_workspace:
           at: ~/
       - run:
+          name: Setup NODE_ENV variable
+          command: echo 'export NODE_ENV=ci' >> $BASH_ENV
+      - run:
           name: migrate db
           command: cd server && $(yarn bin)/knex migrate:latest; cd ../
       - run:
