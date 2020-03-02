@@ -41,7 +41,22 @@ const router = new Router({
  *               "name": "A Module",
  *               "type": "modules"
  *             }
- *           ]
+ *           ],
+ *           "enrollments": [
+ *              {
+ *                "id": "enrollment1",
+ *                "courseId": "course1",
+ *                "status": "true",
+ *                "type": "enrollments"
+ *              }
+ *            ],
+ *            "progress": 75,
+ *            "permission": {
+ *              "read": "boolean",
+ *              "update": "boolean",
+ *              "create": "boolean",
+ *              "delete": "boolean"
+ *            }
  *         }
  *       ]
  * @apiError {String} errors Bad Request.
@@ -51,6 +66,7 @@ const router = new Router({
 router.get('/', permController.requireAuth, async ctx => {
   try {
     const course = await Course.query().where(ctx.query).eager('[modules(selectNameAndId), enrollments(selectNameAndId)]');
+
     if (ctx.state.user.data.id !== 'anonymous') {
       // get all achievements of a user
       await userProgress(course, ctx.state.user.data.id);

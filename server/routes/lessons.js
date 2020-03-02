@@ -81,27 +81,42 @@ router.get('/:id',  async ctx => {
  *
  * @apiSuccessExample {json} Success-Response:
  *     HTTP/1.1 200 OK
- *     "lessons": [
- *         {
- *          "lessons": {
- *            "id": "lesson1",
- *            "name": "A Lesson",
- *            "slug": "a-lesson",
- *            "description": "this is a lesson.",
- *            "status": "published",
- *            "creatorId": "user1",
- *            "createdAt": "2017-12-20T19:17:10.000Z",
- *            "updatedAt": "2017-12-20T19:17:10.000Z",
- *            "chapters": [
- *             {
- *               "id": "chapter1",
- *               "name": "A Chapter",
- *               "type": "chapters"
- *             }
- *           ]
- *          }
+ *     "lessons": [{
+ *        "id": "lesson1",
+ *        "name": "A Lesson",
+ *        "slug": "a-lesson",
+ *        "description": "Contains Chapters.",
+ *        "status": "published",
+ *        "creatorId": "user1",
+ *        "createdAt": "2017-12-20T16:17:10.000Z",
+ *        "updatedAt": "2017-12-20T16:17:10.000Z",
+ *        "chapters": [
+ *            {
+ *                "id": "chapter1",
+ *                "name": "A Chapter",
+ *                "type": "chapters"
+ *            },
+ *            {
+ *                "id": "chapter2",
+ *                "name": "A Chapter 2",
+ *                "type": "chapters"
+ *            },
+ *            {
+ *                "id": "chapter3",
+ *                "name": "A Chapter3",
+ *                "type": "chapters"
+ *            },
+ *            {
+ *                "id": "chapter4",
+ *                "name": "A Chapter4",
+ *                "type": "chapters"
+ *            }
+ *        ],
+ *        "percentage": {
+ *            "type": "percentage",
+ *            "percent": 75
  *        }
- *      ]
+ *    }]
  * @apiError {String} errors Bad Request.
  */
 
