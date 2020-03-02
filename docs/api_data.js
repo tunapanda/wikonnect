@@ -476,7 +476,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "HTTP/1.1 200 OK\n\"lessons\": [\n    {\n     \"lessons\": {\n       \"id\": \"lesson1\",\n       \"name\": \"A Lesson\",\n       \"slug\": \"a-lesson\",\n       \"description\": \"this is a lesson.\",\n       \"status\": \"published\",\n       \"creatorId\": \"user1\",\n       \"createdAt\": \"2017-12-20T19:17:10.000Z\",\n       \"updatedAt\": \"2017-12-20T19:17:10.000Z\",\n       \"chapters\": [\n        {\n          \"id\": \"chapter1\",\n          \"name\": \"A Chapter\",\n          \"type\": \"chapters\"\n        }\n      ]\n     }\n   }\n ]",
+          "content": " HTTP/1.1 200 OK\n \"lessons\": [{\n    \"id\": \"lesson1\",\n    \"name\": \"A Lesson\",\n    \"slug\": \"a-lesson\",\n    \"description\": \"Contains Chapters.\",\n    \"status\": \"published\",\n    \"creatorId\": \"user1\",\n    \"createdAt\": \"2017-12-20T16:17:10.000Z\",\n    \"updatedAt\": \"2017-12-20T16:17:10.000Z\",\n    \"chapters\": [\n        {\n            \"id\": \"chapter1\",\n            \"name\": \"A Chapter\",\n            \"type\": \"chapters\"\n        },\n        {\n            \"id\": \"chapter2\",\n            \"name\": \"A Chapter 2\",\n            \"type\": \"chapters\"\n        },\n        {\n            \"id\": \"chapter3\",\n            \"name\": \"A Chapter3\",\n            \"type\": \"chapters\"\n        },\n        {\n            \"id\": \"chapter4\",\n            \"name\": \"A Chapter4\",\n            \"type\": \"chapters\"\n        }\n    ],\n    \"percentage\": {\n        \"type\": \"percentage\",\n        \"percent\": 75\n    }\n}]",
           "type": "json"
         }
       ]
@@ -708,7 +708,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Response:",
-          "content": " HTTP/1.1 200 OK\n {\n  \"modules\": {\n    \"id\": \"modules1\",\n    \"name\": \"A Module\",\n    \"slug\": \"a-module\",\n    \"description\": \"THis is a module.\",\n    \"status\": \"published\",\n    \"creatorId\": \"user1\",\n    \"createdAt\": \"2017-12-20T19:17:10.000Z\",\n    \"updatedAt\": \"2017-12-20T19:17:10.000Z\",\n    \"lessons\": [\n      {\n        \"id\": \"lesson1\",\n        \"name\": \"A Lesson\",\n        \"type\": \"lessons\"\n      }\n    ]\n  }\n}",
+          "content": "HTTP/1.1 200 OK\n{ \"modules\": {\n    \"id\": \"module1\",\n    \"name\": \"A Module\",\n    \"slug\": \"a-module-1\",\n    \"description\": \"Contains Lessons.\",\n    \"status\": \"published\",\n    \"creatorId\": \"user1\",\n    \"createdAt\": \"2017-12-20T16:17:10.000Z\",\n    \"updatedAt\": \"2017-12-20T16:17:10.000Z\",\n    \"lessons\": [\n        {\n            \"id\": \"lesson1\",\n            \"name\": \"A Lesson\",\n            \"type\": \"lessons\"\n        }\n    ],\n    \"progress\": 0,\n    \"permissions\": {\n        \"read\": \"true\",\n        \"update\": \"true\",\n        \"create\": \"true\",\n        \"delete\": \"true\"\n    }\n  }\n}",
           "type": "json"
         }
       ]
@@ -744,7 +744,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "HTTP/1.1 200 OK\n\"modules\": [\n    {\n     \"modules\": {\n       \"id\": \"modules1\",\n       \"name\": \"A Module\",\n       \"slug\": \"a-module\",\n       \"description\": \"THis is a module.\",\n       \"status\": \"published\",\n       \"creatorId\": \"user1\",\n       \"createdAt\": \"2017-12-20T19:17:10.000Z\",\n       \"updatedAt\": \"2017-12-20T19:17:10.000Z\",\n       \"lessons\": [\n        {\n          \"id\": \"lesson1\",\n          \"name\": \"A Lesson\",\n          \"type\": \"lessons\"\n        }\n      ]\n     }\n   }\n ]",
+          "content": " HTTP/1.1 200 OK\n \"modules\": [{\n    \"id\": \"module1\",\n    \"name\": \"A Module\",\n    \"slug\": \"a-module-1\",\n    \"description\": \"Contains Lessons.\",\n    \"status\": \"published\",\n    \"creatorId\": \"user1\",\n    \"createdAt\": \"2017-12-20T16:17:10.000Z\",\n    \"updatedAt\": \"2017-12-20T16:17:10.000Z\",\n    \"lessons\": [\n        {\n            \"id\": \"lesson1\",\n            \"name\": \"A Lesson\",\n            \"type\": \"lessons\"\n        }\n    ],\n    \"progress\": 0,\n    \"permission\": {\n        \"read\": \"true\",\n        \"update\": \"false\",\n        \"create\": \"false\",\n        \"delete\": \"false\"\n    }\n}]",
           "type": "json"
         }
       ]
