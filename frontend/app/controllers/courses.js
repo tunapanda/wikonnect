@@ -15,6 +15,7 @@ export default class CoursesController extends Controller {
         'name': course.get('name'),
         'slug': course.get('slug'),
         'progress': course.get('progress'),
+        'modules': course.get('modules'),
         'description': course.get('description')
       };
 
