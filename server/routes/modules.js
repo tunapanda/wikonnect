@@ -26,25 +26,31 @@ const router = new Router({
  *
  * @apiSuccessExample {json} Success-Response:
  *     HTTP/1.1 200 OK
- *     {
- *      "modules": {
- *        "id": "modules1",
- *        "name": "A Module",
- *        "slug": "a-module",
- *        "description": "THis is a module.",
- *        "status": "published",
- *        "creatorId": "user1",
- *        "createdAt": "2017-12-20T19:17:10.000Z",
- *        "updatedAt": "2017-12-20T19:17:10.000Z",
- *        "lessons": [
- *          {
- *            "id": "lesson1",
- *            "name": "A Lesson",
- *            "type": "lessons"
- *          }
- *        ]
- *      }
- *    }
+ *     { "modules": {
+ *         "id": "module1",
+ *         "name": "A Module",
+ *         "slug": "a-module-1",
+ *         "description": "Contains Lessons.",
+ *         "status": "published",
+ *         "creatorId": "user1",
+ *         "createdAt": "2017-12-20T16:17:10.000Z",
+ *         "updatedAt": "2017-12-20T16:17:10.000Z",
+ *         "lessons": [
+ *             {
+ *                 "id": "lesson1",
+ *                 "name": "A Lesson",
+ *                 "type": "lessons"
+ *             }
+ *         ],
+ *         "progress": 0,
+ *         "permissions": {
+ *             "read": "true",
+ *             "update": "true",
+ *             "create": "true",
+ *             "delete": "true"
+ *         }
+ *       }
+ *     }
  *
  * @apiError {String} errors Bad Request.
  */
@@ -103,27 +109,30 @@ router.get('/:id', permController.requireAuth, async ctx => {
  *
  * @apiSuccessExample {json} Success-Response:
  *     HTTP/1.1 200 OK
- *     "modules": [
- *         {
- *          "modules": {
- *            "id": "modules1",
- *            "name": "A Module",
- *            "slug": "a-module",
- *            "description": "THis is a module.",
- *            "status": "published",
- *            "creatorId": "user1",
- *            "createdAt": "2017-12-20T19:17:10.000Z",
- *            "updatedAt": "2017-12-20T19:17:10.000Z",
- *            "lessons": [
- *             {
- *               "id": "lesson1",
- *               "name": "A Lesson",
- *               "type": "lessons"
- *             }
- *           ]
- *          }
+ *     "modules": [{
+ *        "id": "module1",
+ *        "name": "A Module",
+ *        "slug": "a-module-1",
+ *        "description": "Contains Lessons.",
+ *        "status": "published",
+ *        "creatorId": "user1",
+ *        "createdAt": "2017-12-20T16:17:10.000Z",
+ *        "updatedAt": "2017-12-20T16:17:10.000Z",
+ *        "lessons": [
+ *            {
+ *                "id": "lesson1",
+ *                "name": "A Lesson",
+ *                "type": "lessons"
+ *            }
+ *        ],
+ *        "progress": 0,
+ *        "permission": {
+ *            "read": "true",
+ *            "update": "false",
+ *            "create": "false",
+ *            "delete": "false"
  *        }
- *      ]
+ *    }]
  * @apiError {String} errors Bad Request.
  */
 
