@@ -14,6 +14,23 @@
       <div>{{@lesson.description}}</div>
       <br>
 
+      {{#if me.isAuthenticated}}
+
+        {{#if @lesson.percentage.percent}}
+
+
+          <BsProgress as |pg|>
+            <pg.bar @showLabel={{true}} @roundDigits={{0}} @type="success" @value={{@lesson.percentage.percent}} />
+          </BsProgress>
+        {{else}}
+          <BsProgress as |pg|>
+            <pg.bar @showLabel={{true}} @roundDigits={{0}} @type="success" @value={{0}} />
+          </BsProgress>
+        {{/if}}
+      {{else}}
+        Not authed
+      {{/if}}
+
       <hr>
     </div>
 
