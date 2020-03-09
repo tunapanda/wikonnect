@@ -194,7 +194,7 @@ router.get('/:id', permController.requireAuth, async ctx => {
   }
 
   if (user.id !== ctx.state.user.data.id) {
-    ctx.log.error('Error logging  %s for %s', ctx.request.ip, ctx.path);
+    ctx.log.info('Error logging  %s for %s', ctx.request.ip, ctx.path);
     ctx.throw(401, 'You do not have permissions to view that user');
   }
 

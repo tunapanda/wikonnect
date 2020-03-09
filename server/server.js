@@ -1,12 +1,13 @@
 const Koa = require('koa');
+const path = require('path');
+const koaQs = require('koa-qs');
 const Router = require('koa-router');
 const bodyParser = require('koa-bodyparser');
+const koaBunyanLogger = require('koa-bunyan-logger');
 const errorHandler = require('./middleware/error');
 const logger = require('./middleware/logger');
 const jwt = require('./middleware/jwt');
-const path = require('path');
-const koaQs = require('koa-qs');
-const koaBunyanLogger = require('koa-bunyan-logger');
+const rateLimiter = require('./middleware/reteLimiter');
 const app = new Koa();
 
 const router = new Router({
@@ -28,6 +29,10 @@ app.use(require('koa-static')(path.resolve(__dirname, './public')));
 router.use(require('./routes/auth'));
 
 router.use(require('./routes/users'));
+
+if (process.env.NODE_ENV === 'production') {
+  app.use(rateLimiter);
+}
 
 router.use(jwt.authenticate, require('./routes/paths'));
 

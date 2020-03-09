@@ -4043,6 +4043,11 @@ qs@^6.4.0, qs@^6.5.2:
   resolved "https://registry.yarnpkg.com/qs/-/qs-6.9.1.tgz#20082c65cb78223635ab1a9eaca8875a29bf8ec9"
   integrity sha512-Cxm7/SS/y/Z3MHWSxXb8lIFqgqBowP5JMlTUFyJN88y0SGQhVmZnqFK/PeuMX9LzUyWsqqhNxIyg0jlzq946yA==
 
+rate-limiter-flexible@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/rate-limiter-flexible/-/rate-limiter-flexible-2.0.0.tgz#6b193fe302a279f2460f5caa3276b9d0b59f1e02"
+  integrity sha512-DjLeci3BuHWNr9LVVm+YPJ+Lrki/J9iDb9cEJFZELpa/ZBhXmfnfR+eCI5jzmsPJtpYGYhw/vyRfjjQjTzVtRg==
+
 raw-body@^2.2.0, raw-body@^2.3.3:
   version "2.4.1"
   resolved "https://registry.yarnpkg.com/raw-body/-/raw-body-2.4.1.tgz#30ac82f98bb5ae8c152e67149dac8d55153b168c"
