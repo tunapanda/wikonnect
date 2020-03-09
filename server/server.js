@@ -18,8 +18,6 @@ koaQs(app);
 app.use(errorHandler);
 
 app.use(koaBunyanLogger());
-// app.use(koaBunyanLogger.requestIdContext());
-// app.use(koaBunyanLogger.requestLogger());
 
 app.use(logger);
 
@@ -52,6 +50,7 @@ router.use(jwt.authenticate, require('./routes/achievement_awards'));
 router.use(require('./routes/search'));
 
 router.get('/hello', async ctx => {
+  ctx.log.info('Got a request from %s for %s', ctx.request.ip, ctx.path);
   ctx.body = { user: 'You have access to view this route' };
 });
 
