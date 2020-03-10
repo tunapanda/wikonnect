@@ -7,7 +7,7 @@ const koaBunyanLogger = require('koa-bunyan-logger');
 const errorHandler = require('./middleware/error');
 const logger = require('./middleware/logger');
 const jwt = require('./middleware/jwt');
-const {rateLimiterMiddleware} = require('./middleware/rateLimiter');
+const { rateLimiter, rateLimiterMiddleware } = require('./middleware/rateLimiter');
 const { requireAuth } = require('./middleware/permController');
 const app = new Koa();
 
@@ -25,7 +25,7 @@ app.use(logger);
 
 app.use(bodyParser());
 
-// app.use(rateLimiter);
+app.use(rateLimiter);
 
 app.use(requireAuth, rateLimiterMiddleware);
 

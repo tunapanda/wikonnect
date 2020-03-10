@@ -1,14 +1,14 @@
-const redis = require('redis');
+const redisClient = require('../utils/redisConfig');
 const { RateLimiterRedis } = require('rate-limiter-flexible');
 const environment = process.env.NODE_ENV || 'development';
 
 
 
-const REDIS_URL = process.env.REDISCLOUD_URL || 'redis://localhost:6379';
+// const REDIS_URL = process.env.REDISCLOUD_URL || 'redis://localhost:6379';
 
-const redisClient = redis.createClient(REDIS_URL, {
-  enable_offline_queue: false,
-});
+// const redisClient = redis.createClient(REDIS_URL, {
+//   enable_offline_queue: false,
+// });
 
 
 const env_rate_limiter = {

@@ -1,13 +1,13 @@
-const redis = require('redis');
 const bcrypt = require('bcrypt');
 const Router = require('koa-router');
 const jsonwebtoken = require('jsonwebtoken');
+
 const User = require('../models/user');
 const sendMAil = require('../utils/sendMail');
 const { secret } = require('../middleware/jwt');
+const redisClient = require('../utils/redisConfig');
 const UserVerification = require('../models/user_verification');
 const validateAuthRoutes = require('../middleware/validation/validateAuthRoutes');
-const redisClient = redis.createClient(); // default setting.
 
 
 const router = new Router({
