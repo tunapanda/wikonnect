@@ -68,15 +68,27 @@ exports.seed = function (knex) {
           chapter_id: 'chapter2'
         },
         {
-          lesson_id: 'lesson2',
-          chapter_id: 'chapter1'
-        },
-        {
-          lesson_id: 'lesson2',
+          lesson_id: 'lesson1',
           chapter_id: 'chapter3'
         },
         {
           lesson_id: 'lesson1',
+          chapter_id: 'chapter4'
+        },
+        {
+          lesson_id: 'basics1',
+          chapter_id: 'chapter1'
+        },
+        {
+          lesson_id: 'basics1',
+          chapter_id: 'chapter2'
+        },
+        {
+          lesson_id: 'basics1',
+          chapter_id: 'chapter3'
+        },
+        {
+          lesson_id: 'basics1',
           chapter_id: 'chapter4'
         },
       ]));
