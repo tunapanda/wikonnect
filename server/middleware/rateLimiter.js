@@ -15,14 +15,14 @@ const env_rate_limiter = {
   ci: {
     redis: redisClient,
     keyPrefix: 'middleware',
-    points: 100, // 100 requests for ctx.ip
-    duration: 1, // per 1 second
+    points: 300, // 300 requests for ctx.ip
+    duration: 60, // per 1 second
   },
   test: {
     redis: redisClient,
     keyPrefix: 'middlewareTest',
-    points: 100, // 100 requests for ctx.ip
-    duration: 1, // per 1 second
+    points: 1000, // 300 requests for ctx.ip
+    duration: 600, // per 1 second
   },
   development: {
     // redis: redisClient,
