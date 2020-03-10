@@ -63,7 +63,7 @@ async function createPasswordHash(ctx, next) {
 }
 
 /**
- * @api {post} /users POST new user data.
+ * @api {post} /users POST create a new user.
  * @apiName PostAUser
  * @apiGroup Authentication
  *
@@ -125,7 +125,7 @@ router.post('/', validateAuthRoutes.validateNewUser, createPasswordHash, async c
 
 
 /**
- * @api {get} /users/:id GET a single users.
+ * @api {get} /users/:id GET a single user using id.
  * @apiName GetAUser
  * @apiGroup Authentication
  *

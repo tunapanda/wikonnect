@@ -1,25 +1,69 @@
 const redis = require('redis');
 const { RateLimiterRedis } = require('rate-limiter-flexible');
+const environment = process.env.NODE_ENV || 'development';
+
+
 
 const REDIS_URL = process.env.REDISCLOUD_URL || 'redis://localhost:6379';
-console.log(REDIS_URL);
 
 const redisClient = redis.createClient(REDIS_URL, {
   enable_offline_queue: false,
 });
 
-const checkRateLimiter = new RateLimiterRedis({
-  redis: redisClient,
-  keyPrefix: 'middleware',
-  points: 100, // 100 requests for ctx.ip
-  duration: 1, // per 1 second
-});
 
-module.exports = async function rateLimiter(ctx, next) {
+const env_rate_limiter = {
+  test: {
+    // redis: redisClient,
+    // keyPrefix: 'middleware',
+    // points: 100, // 100 requests for ctx.ip
+    // duration: 1, // per 1 second
+  },
+  development: {
+    // redis: redisClient,
+    // keyPrefix: 'middleware',
+    // points: 100, // 100 requests for ctx.ip
+    // duration: 1, // per 1 second
+    storeClient: redisClient,
+    points: 300, // Number of points
+    duration: 60, // Per 60 seconds,
+    blockDuration: 120, // Block duration in store
+    inmemoryBlockOnConsumed: 301, // If userId or IP consume >300 points per minute
+    inmemoryBlockDuration: 120,
+  },
+  production: {
+    redis: redisClient,
+    keyPrefix: 'middleware',
+    points: 100, // 100 requests for ctx.ip
+    duration: 1, // per 1 second
+  }
+};
+
+const checkRateLimiter = new RateLimiterRedis(env_rate_limiter[environment]);
+
+
+async function rateLimiterMiddleware(ctx, next) {
+  // req.userId should be set
+  const key = ctx.state.user.data.id ? ctx.state.user.data.id : ctx.ip;
+  const pointsToConsume = ctx.state.user.data.id ? 1 : 30;
+  try {
+    await checkRateLimiter.consume(key, pointsToConsume);
+    await next();
+  } catch (error) {
+    ctx.throw(429, 'Too Many Requests');
+  }
+}
+
+async function rateLimiter(ctx, next) {
   try {
     await checkRateLimiter.consume(ctx.ip);
     await next();
   } catch (rejRes) {
     ctx.throw(429, 'Too Many Requests');
   }
+}
+
+module.exports = {
+  rateLimiterMiddleware,
+  rateLimiter
 };
+

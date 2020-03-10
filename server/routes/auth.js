@@ -14,6 +14,25 @@ const router = new Router({
   prefix: '/auth'
 });
 
+/**
+ * @api {post} /auth POST login a user.
+ * @apiName PostLoginAUser
+ * @apiGroup Authentication
+ *
+ * @apiParam (Required Params) {string} username username
+ * @apiParam (Required Params) {string} password validated password
+ *
+ * @apiPermission none
+ *
+ * @apiSuccessExample {json} Success-Response:
+ *     HTTP/1.1 201 OK
+ *     {
+ *       "username": "string",
+ *       "password": "string",
+ *     }
+ *
+ * @apiError {String} errors Bad Request.
+ */
 router.post('/', validateAuthRoutes.validateUserLogin, async ctx => {
   let user = await User.query().where('username', ctx.request.body.username);
   if (!user.length) ctx.throw(404, null, 'wrong_email_or_password');
@@ -35,6 +54,7 @@ router.post('/', validateAuthRoutes.validateUserLogin, async ctx => {
       }, secret)
     };
   } else {
+    ctx.log.error('Wrong email or password from %s for %s', ctx.request.ip, ctx.path);
     ctx.throw(406, null, 'email_or_password_is_wrong');
   }
 });
