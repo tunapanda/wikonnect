@@ -8,6 +8,7 @@ const errorHandler = require('./middleware/error');
 const logger = require('./middleware/logger');
 const jwt = require('./middleware/jwt');
 const {rateLimiterMiddleware} = require('./middleware/rateLimiter');
+const { requireAuth } = require('./middleware/permController');
 const app = new Koa();
 
 const router = new Router({
@@ -26,7 +27,7 @@ app.use(bodyParser());
 
 // app.use(rateLimiter);
 
-app.use(rateLimiterMiddleware);
+app.use(requireAuth, rateLimiterMiddleware);
 
 app.use(require('koa-static')(path.resolve(__dirname, './public')));
 

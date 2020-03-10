@@ -57,7 +57,7 @@ async function returnType(parent) {
  * @apiError {String} errors Bad Request.
  */
 
-router.get('/:id',  async ctx => {
+router.get('/:id', permController.requireAuth, async ctx => {
   const lesson = await Lesson.query().findById(ctx.params.id).eager('chapters(selectNameAndId)');
 
   await achievementPercentage(lesson, ctx.state.user.data.id);
@@ -120,7 +120,7 @@ router.get('/:id',  async ctx => {
  * @apiError {String} errors Bad Request.
  */
 
-router.get('/', async ctx => {
+router.get('/', permController.requireAuth, async ctx => {
 
   let lessons;
   try {

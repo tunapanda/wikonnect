@@ -17,6 +17,16 @@ exports.seed = function (knex) {
           updated_at: '2017-12-20 19:17:10'
         },
         {
+          id: 'module2',
+          name: 'A Module',
+          slug: 'a-module-2',
+          description: 'Contains Lessons.',
+          status: 'published',
+          creator_id: 'user1',
+          created_at: '2017-12-20 19:17:10',
+          updated_at: '2017-12-20 19:17:10'
+        },
+        {
           id: 'diglit1',
           name: 'Internet Basics',
           slug: 'internet-basics',
@@ -40,6 +50,10 @@ exports.seed = function (knex) {
     }).then(() => knex('course_modules').insert([
       {
         module_id: 'module1',
+        course_id: 'course1'
+      },
+      {
+        module_id: 'module2',
         course_id: 'course1'
       },
       {
