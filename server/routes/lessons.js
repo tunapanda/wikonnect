@@ -57,14 +57,14 @@ async function returnType(parent) {
  * @apiError {String} errors Bad Request.
  */
 
-router.get('/:id',  async ctx => {
+router.get('/:id', permController.requireAuth, async ctx => {
   const lesson = await Lesson.query().findById(ctx.params.id).eager('chapters(selectNameAndId)');
 
   await achievementPercentage(lesson, ctx.state.user.data.id);
 
   ctx.assert(lesson, 404, 'no lesson by that ID');
 
-  returnType(lesson);
+  await returnType(lesson);
   ctx.status = 200;
   ctx.body = { lesson };
 });
@@ -120,7 +120,7 @@ router.get('/:id',  async ctx => {
  * @apiError {String} errors Bad Request.
  */
 
-router.get('/', async ctx => {
+router.get('/', permController.requireAuth, async ctx => {
 
   let lessons;
   try {
@@ -190,7 +190,6 @@ router.post('/', permController.requireAuth, permController.grantAccess('createA
     } else { ctx.throw(400, null, { errors: ['Bad Request'] }); }
     throw e;
   }
-
   ctx.assert(lesson, 401, 'Something went wrong');
 
   ctx.status = 201;
@@ -221,18 +220,11 @@ router.put('/:id', permController.requireAuth, permController.grantAccess('updat
   const checkLesson = await Lesson.query().findById(ctx.params.id);
 
   if (!checkLesson) {
+    ctx.log.info('Error, path does not exists  %s for %s', ctx.request.ip, ctx.path);
     ctx.throw(400, 'That lesson path does not exist');
   }
 
-  let lesson;
-  try {
-    lesson = await Lesson.query().patchAndFetchById(ctx.params.id, newLesson);
-  } catch (e) {
-    if (e.statusCode) {
-      ctx.throw(e.statusCode, null, { errors: [e.message] });
-    } else { ctx.throw(400, null, { errors: ['Bad Request'] }); }
-    throw e;
-  }
+  const lesson = await Lesson.query().patchAndFetchById(ctx.params.id, newLesson);
 
   ctx.status = 201;
   ctx.body = { lesson };
@@ -252,7 +244,7 @@ router.delete('/:id', permController.grantAccess('deleteOwn', 'path'), async ctx
   const lesson = await Lesson.query().findById(ctx.params.id);
 
   if (!lesson) {
-    ctx.throw(lesson, 401, 'No record with id');
+    ctx.throw(401, 'No record with id');
   }
   await Lesson.query().delete().where({ id: ctx.params.id });
 

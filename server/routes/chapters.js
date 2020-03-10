@@ -1,10 +1,12 @@
 const Router = require('koa-router');
-const Chapter = require('../models/chapter');
-const Achievement = require('../models/achievement');
-const validateChapter = require('../middleware/validation/validateChapter');
-const busboy = require('async-busboy');
 const path = require('path');
 const unzipper = require('unzipper');
+const busboy = require('async-busboy');
+
+const Chapter = require('../models/chapter');
+const Achievement = require('../models/achievement');
+const permController = require('../middleware/permController');
+const validateChapter = require('../middleware/validation/validateChapter');
 
 const router = new Router({
   prefix: '/chapters'
@@ -28,7 +30,7 @@ async function returnChapterStatus(chapter, achievement) {
   }
 }
 
-router.get('/', async ctx => {
+router.get('/', permController.requireAuth, async ctx => {
   try {
     const chapter = await Chapter.query().where(ctx.query);
     const achievement = await Achievement.query().where('user_id', ctx.state.user.data.id);
@@ -43,7 +45,7 @@ router.get('/', async ctx => {
   }
 });
 
-router.get('/:id', async ctx => {
+router.get('/:id', permController.requireAuth, async ctx => {
   const chapter = await Chapter.query().findById(ctx.params.id);
   ctx.assert(chapter, 404, 'no lesson by that ID');
 
@@ -54,7 +56,7 @@ router.get('/:id', async ctx => {
   ctx.body = { chapter };
 });
 
-router.post('/', validateChapter, async ctx => {
+router.post('/', permController.requireAuth, permController.grantAccess('createAny', 'path'), validateChapter, async ctx => {
   let newChapter = ctx.request.body.chapter;
 
   newChapter.slug = newChapter.name.replace(/[^a-z0-9]+/gi, '-')
@@ -77,7 +79,7 @@ router.post('/', validateChapter, async ctx => {
   ctx.body = { chapter };
 
 });
-router.put('/:id', async ctx => {
+router.put('/:id', permController.requireAuth, permController.grantAccess('updateOwn', 'path'), async ctx => {
   const chapter_record = await Chapter.query().findById(ctx.params.id);
 
   if (!chapter_record) {
@@ -95,7 +97,7 @@ router.put('/:id', async ctx => {
   ctx.status = 201;
   ctx.body = { chapter };
 });
-router.delete('/:id', async ctx => {
+router.delete('/:id', permController.requireAuth, permController.grantAccess('deleteAny', 'path'), async ctx => {
   const chapter = await Chapter.query().findById(ctx.params.id);
 
   if (!chapter) {

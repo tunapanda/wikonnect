@@ -1,12 +1,14 @@
 const Koa = require('koa');
+const path = require('path');
+const koaQs = require('koa-qs');
 const Router = require('koa-router');
 const bodyParser = require('koa-bodyparser');
+const koaBunyanLogger = require('koa-bunyan-logger');
 const errorHandler = require('./middleware/error');
 const logger = require('./middleware/logger');
 const jwt = require('./middleware/jwt');
-const path = require('path');
-const koaQs = require('koa-qs');
-const koaBunyanLogger = require('koa-bunyan-logger');
+const { rateLimiterMiddleware } = require('./middleware/rateLimiter');
+const { requireAuth } = require('./middleware/permController');
 const app = new Koa();
 
 const router = new Router({
@@ -18,18 +20,20 @@ koaQs(app);
 app.use(errorHandler);
 
 app.use(koaBunyanLogger());
-// app.use(koaBunyanLogger.requestIdContext());
-// app.use(koaBunyanLogger.requestLogger());
 
 app.use(logger);
 
 app.use(bodyParser());
+
+
+app.use(requireAuth, rateLimiterMiddleware);
 
 app.use(require('koa-static')(path.resolve(__dirname, './public')));
 
 router.use(require('./routes/auth'));
 
 router.use(require('./routes/users'));
+
 
 router.use(jwt.authenticate, require('./routes/paths'));
 
@@ -52,6 +56,7 @@ router.use(jwt.authenticate, require('./routes/achievement_awards'));
 router.use(require('./routes/search'));
 
 router.get('/hello', async ctx => {
+  ctx.log.info('Got a request from %s for %s', ctx.request.ip, ctx.path);
   ctx.body = { user: 'You have access to view this route' };
 });
 

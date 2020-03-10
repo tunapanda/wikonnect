@@ -2,7 +2,7 @@ define({ "api": [
   {
     "type": "get",
     "url": "/users/:id",
-    "title": "GET a single users.",
+    "title": "GET a single user using id.",
     "name": "GetAUser",
     "group": "Authentication",
     "version": "0.4.0",
@@ -54,7 +54,7 @@ define({ "api": [
   {
     "type": "post",
     "url": "/users",
-    "title": "POST new user data.",
+    "title": "POST create a new user.",
     "name": "PostAUser",
     "group": "Authentication",
     "parameter": {
@@ -113,6 +113,63 @@ define({ "api": [
     },
     "version": "0.0.0",
     "filename": "./server/routes/users.js",
+    "groupTitle": "Authentication"
+  },
+  {
+    "type": "post",
+    "url": "/auth",
+    "title": "POST login a user.",
+    "name": "PostLoginAUser",
+    "group": "Authentication",
+    "parameter": {
+      "fields": {
+        "Required Params": [
+          {
+            "group": "Required Params",
+            "type": "string",
+            "optional": false,
+            "field": "username",
+            "description": "<p>username</p>"
+          },
+          {
+            "group": "Required Params",
+            "type": "string",
+            "optional": false,
+            "field": "password",
+            "description": "<p>validated password</p>"
+          }
+        ]
+      }
+    },
+    "permission": [
+      {
+        "name": "none"
+      }
+    ],
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 201 OK\n{\n  \"username\": \"string\",\n  \"password\": \"string\",\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "errors",
+            "description": "<p>Bad Request.</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "./server/routes/auth.js",
     "groupTitle": "Authentication"
   },
   {
