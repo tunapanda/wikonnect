@@ -56,7 +56,7 @@ router.get('/:id', permController.requireAuth, async ctx => {
   ctx.body = { chapter };
 });
 
-router.post('/', permController.requireAuth, permController.grantAccess(), validateChapter, async ctx => {
+router.post('/', permController.requireAuth, permController.grantAccess('createAny', 'path'), validateChapter, async ctx => {
   let newChapter = ctx.request.body.chapter;
 
   newChapter.slug = newChapter.name.replace(/[^a-z0-9]+/gi, '-')

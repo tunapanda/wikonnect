@@ -55,10 +55,11 @@ describe('CHAPTER ROUTE', () => {
     chai
       .request(server)
       .post(route)
-      .set('Content-Type', 'application/json')
       .set(tokens.headersSuperAdmin1)
+      .set('Content-Type', 'application/json')
       .send(data)
       .end((err, res) => {
+
         res.status.should.eql(201);
         res.should.be.json;
         res.body.should.have.property('chapter');
@@ -139,8 +140,7 @@ describe('CHAPTER ROUTE', () => {
         res.should.be.json;
         res.body.should.be.a('object');
         res.body.should.have.property('errors');
-        res.body.errors.should.have.property('creatorId');
-        res.body.errors.should.have.property('lessonId');
+        res.body.errors[0].should.eql('Bad Request');
         done();
       });
   });
@@ -154,7 +154,9 @@ describe('CHAPTER ROUTE', () => {
       .end((err, res) => {
         res.status.should.eql(400);
         res.should.be.json;
-        res.body.message.should.eql('No chapter with that ID');
+        res.body.should.be.a('object');
+        res.body.should.have.property('errors');
+        res.body.errors.should.eql(['Bad Request']);
         done();
       });
   });

@@ -13,10 +13,10 @@ const redisClient = redis.createClient(REDIS_URL, {
 
 const env_rate_limiter = {
   test: {
-    // redis: redisClient,
-    // keyPrefix: 'middleware',
-    // points: 100, // 100 requests for ctx.ip
-    // duration: 1, // per 1 second
+    redis: redisClient,
+    keyPrefix: 'middlewareTest',
+    points: 100, // 100 requests for ctx.ip
+    duration: 1, // per 1 second
   },
   development: {
     // redis: redisClient,

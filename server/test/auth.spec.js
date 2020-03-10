@@ -65,9 +65,7 @@ describe('AUTHENTICATION ROUTES', () => {
         .set('Content-Type', 'application/json')
         .end((err, res) => {
           res.should.have.status(400);
-          expect(res.body.errors).to.deep.equal({ 'email': ['Email can\'t be blank'], 'phonenumber': ['Phonenumber can\'t be blank'] });
-          expect(res.body.errors).to.have.property('email').with.lengthOf(1);
-          expect(res.body.errors).to.have.property('phonenumber').with.lengthOf(1);
+          expect(res.body.errors).to.deep.equal(['Bad Request']);
           done();
         });
     });
