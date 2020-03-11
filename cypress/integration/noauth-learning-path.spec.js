@@ -1,4 +1,4 @@
-describe('Login Page', function () {
+describe('Authenticated user learning path', function () {
 
 
   it('should flow through unauthenticated user learning path', function () {

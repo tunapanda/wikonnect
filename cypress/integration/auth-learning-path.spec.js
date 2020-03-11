@@ -1,16 +1,5 @@
-describe('Login Page', function () {
-  // it('should login', function () {
-  //   cy.visit('/login');
+describe('Authenticated user learning path', function () {
 
-  //   cy.get('#username input').type('user1');
-  //   cy.get('#password input').type('password1234');
-
-  //   cy.get('.submit').click();
-
-  //   cy.location('pathname').should('eq', '/login');
-
-
-  // });
 
   it('should flow through authed user learning path', function () {
 
