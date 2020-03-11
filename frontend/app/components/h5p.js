@@ -14,15 +14,16 @@ export default class H5pComponent extends Component {
       frameJs: '/h5p/frame.bundle.js',
       frameCss: '/h5p/h5p.css'
     };
-    this.get('currentUser.model').then(() => {
-      H5P.externalDispatcher.on('xAPI', this.xAPI.bind(this));
-    });
-
+    // this.get('currentUser.model').then(() => {
+    //   H5P.externalDispatcher.on('xAPI', this.xAPI.bind(this));
+    // });
+    console.log("HHHH")
+    console.log(h5pLocation)
     await new H5P(el, h5pLocation, options);
   }
-  xAPI(event) {
-    this.send('action', event);
-    console.log('action', event);
+  // xAPI(event) {
+  //   this.send('action', event);
+  //   console.log('action', event);
 
-  }
+  // }
 }
