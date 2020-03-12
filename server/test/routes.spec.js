@@ -12,7 +12,7 @@ const lessonRoute = '/api/v1/lessons/';
 const lessonID = 'basics3';
 const lessonData = {
   lesson: {
-    'id': 'lesson11',
+    'id': lessonID,
     'name': 'Testing Lessons Path',
     'slug': 'testing-lesson-path',
     'description': 'Testing organization of the courses.',
@@ -299,7 +299,7 @@ describe('ACTIVITY ROUTE', () => {
       .request(server)
       .put(activityRoute + activityID)
       .set('Content-Type', 'application/json')
-      .send({ 'activity': { 'user_id': 'user3' }})
+      .send({ 'activity': { 'user_id': 'user3' } })
       .end((err, res) => {
         res.status.should.eql(201);
         res.should.be.json;

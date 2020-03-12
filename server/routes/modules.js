@@ -303,22 +303,6 @@ router.put('/:id', permController.requireAuth, permController.grantAccess('creat
     return modules.permissions = userPermissions;
   }
 
-
-  Object.keys(userPermissions)
-    .forEach(perm => {
-      if (ctx.state.user.role.toLowerCase() == 'superadmin') {
-        userPermissions[perm] = 'true';
-      }
-      if (ctx.state.user.data.id === modules.creatorId || ctx.state.user.role.toLowerCase() == 'admin') {
-        userPermissions[perm] = 'true';
-        userPermissions.delete = 'false';
-      }
-      if (modules.status === 'draft' && ctx.state.user.data.id === modules.creatorId) {
-        userPermissions.read = 'true';
-        userPermissions.update = 'true';
-      }
-    });
-
   ctx.status = 201;
   modules['permissions'] = await permObjects();
   ctx.body = { modules };
@@ -344,14 +328,6 @@ router.delete('/:id', permController.requireAuth, permController.grantAccess('de
   }
 
   await Module.query().delete().where({ id: ctx.params.id });
-  ctx.assert(modules, 401, 'No ID was provided');
-
-  Object.keys(userPermissions)
-    .forEach(perm => {
-      if (ctx.state.user.role.toLowerCase() == 'superadmin') {
-        userPermissions[perm] = 'true';
-      }
-    });
 
   ctx.status = 200;
   ctx.body = { modules };
