@@ -14,8 +14,8 @@
       {{#if (eq model.permission.update "true")}}
 
 
-        {{#link-to "cms.course.edit" @model.slug}}
-          <h2>Edit</h2>
+        {{#link-to "cms.course.edit" @model.slug class="btn padded btn-primary btn-small"}}
+          <span>Edit</span>
         {{/link-to}}
       {{/if}}
 

@@ -1,12 +1,34 @@
 <div class="form-title">Register</div>
 
+
+
+
+
 <BsForm @class="form" @formLayout="vertical" @model={{newUser}} @onSubmit={{action "createUser"}} as |form|>
+
+  {{#each newUser.errors as |error|}}
+    <BsAlert @type="danger" @fade={{true}}>
+      {{error.validation}}
+    </BsAlert>
+  {{/each}}
+
+
   <div class="signup-form-fields">
     <form.element id="username" class="inputs" @controlType="text" @label="Username" @placeholder="Username"
       @property="username" @autocomplete="username" />
+    {{!-- {{#each newUser.errors as |err| }}
+      {{#if (eq err.key 'username')}}
+        {{err.validation}}
+      {{/if}}
+    {{/each}} --}}
 
     <form.element id="email" class="inputs" @controlType="text" @label="Email address" @placeholder="example@mail.com"
       @property="email" @autocomplete="email" />
+    {{!-- {{#each newUser.errors as |err| }}
+      {{#if (eq err.key 'email')}}
+        {{err.validation}}
+      {{/if}}
+    {{/each}} --}}
 
     <form.element id="password" class="inputs" @controlType="password" @label="Password" @placeholder="Enter Password"
       @property="password" @autocomplete="new-password" />

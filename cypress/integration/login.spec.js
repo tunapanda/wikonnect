@@ -5,12 +5,25 @@ describe('Login Page', function () {
     cy.visit('/login');
 
     cy.get('#username input').type('user1');
-    cy.get('#password input').type('password1234');
+    cy.get('#password input').type('wikonnect');
 
     cy.get('.submit').click();
 
-    cy.location('pathname').should('eq', '/login');
+    cy.location('pathname').should('eq', '/home');
   });
+
+  it('should fail', function () {
+    cy.visit('/login');
+
+    cy.get('#username input').type('krujj');
+    cy.get('#password input').type('wikonnect');
+
+    cy.get('.submit').click();
+
+    cy.location('pathname').should('not', '/home');
+  });
+
+
 
   it('should validate', function () {
     cy.visit('/login');
