@@ -1,11 +1,9 @@
 const Router = require('koa-router');
 const Course = require('../models/course');
-const Module = require('../models/module');
-const Lesson = require('../models/lesson');
-const Achievement = require('../models/achievement');
 const permController = require('../middleware/permController');
 const { userPermissions } = require('../middleware/_helpers/roles');
 const { validateCourses } = require('../middleware/validation/validatePostData');
+const { userProgress, returnType, insertType, userEnrollmentType } = require('../utils/userProgress/coursesPogress');
 
 const environment = process.env.NODE_ENV;
 const config = require('../knexfile.js')[environment];
@@ -15,69 +13,65 @@ const router = new Router({
   prefix: '/courses'
 });
 
-async function returnType(parent) {
-  if (parent.length == undefined) {
-    parent.modules.forEach(lesson => {
-      return lesson.type = 'modules';
-    });
-  } else {
-    parent.forEach(mod => {
-      mod.modules.forEach(lesson => {
-        return lesson.type = 'modules';
-      });
-    });
-  }
-}
 
-async function insertType(model, collection, course_id) {
-  for (let index = 0; index < collection.length; index++) {
-    const element = collection[index];
-    let data = {
-      'module_id': element,
-      'course_id': course_id
-    };
-    await knex(model).insert(data);
-  }
-}
+
+/**
+ * @api {get} /courses/ GET all courses.
+ * @apiName GetCourses
+ * @apiGroup Courses
+ * @apiPermission none
+ *
+ * @apiSampleRequest off
+ *
+ * @apiSuccessExample {json} Success-Response:
+ *     HTTP/1.1 200 OK
+ *     "course": [
+ *         {
+ *           "id": "course1",
+ *           "name": "A Course",
+ *           "slug": "a-course",
+ *           "description": "Contains Modules.",
+ *           "status": "published",
+ *           "creatorId": "user1",
+ *           "createdAt": "2017-12-20T19:17:10.000Z",
+ *           "updatedAt": "2017-12-20T19:17:10.000Z",
+ *           "modules": [
+ *             {
+ *               "id": "module1",
+ *               "name": "A Module",
+ *               "type": "modules"
+ *             }
+ *           ],
+ *           "enrollments": [
+ *              {
+ *                "id": "enrollment1",
+ *                "courseId": "course1",
+ *                "status": "true",
+ *                "type": "enrollments"
+ *              }
+ *            ],
+ *            "progress": 75,
+ *            "permission": {
+ *              "read": "boolean",
+ *              "update": "boolean",
+ *              "create": "boolean",
+ *              "delete": "boolean"
+ *            }
+ *         }
+ *       ]
+ * @apiError {String} errors Bad Request.
+ */
+
 
 router.get('/', permController.requireAuth, async ctx => {
   try {
-    const course = await Course.query().where(ctx.query).eager('modules(selectNameAndId)');
+    const course = await Course.query().where(ctx.query).eager('[modules(selectNameAndId), enrollments(selectNameAndId)]');
+
     if (ctx.state.user.data.id !== 'anonymous') {
       // get all achievements of a user
-      const achievement = await Achievement.query().where('user_id', ctx.state.user.data.id);
-      let achievementChapters = [];
-      achievement.forEach(element => {
-        if (element.targetStatus === 'completed') {
-          achievementChapters.push(element.target);
-        }
-      });
-
-      let modules = await Module.query().eager('lessons(selectNameAndId)');
-      let lesson = await Lesson.query().eager('chapters(selectNameAndId)');
-
-      course.forEach(cour => {
-        for (let index = 0; index < cour.modules.length; index++) {
-          const element = cour.modules[index];
-          modules.forEach(mod => {
-            if (element.id === mod.id) {
-              for (let index = 0; index < mod.lessons.length; index++) {
-
-                const element = mod.lessons[index];
-                lesson.forEach(chap => {
-                  if (element.id === chap.id) {
-                    let completionMetric = parseInt((achievementChapters.length / chap.chapters.length) * 100) > 0 ? parseInt((achievementChapters.length / chap.chapters.length) * 100) : 0;
-                    cour.progress = completionMetric;
-                    return cour.progress = completionMetric;
-                  }
-                });
-              }
-            }
-          });
-        }
-      });
+      await userProgress(course, ctx.state.user.data.id);
     }
-
+    userEnrollmentType(course);
     returnType(course);
 
     course.forEach(child => {
@@ -108,19 +102,58 @@ router.get('/', permController.requireAuth, async ctx => {
 
     ctx.status = 200;
     ctx.body = { course };
-  } catch (error) {
-    ctx.status = 400;
-    ctx.body = { message: 'The query key does not exist', error: error.message };
+  } catch (e) {
+    if (e.statusCode) {
+      ctx.throw(e.statusCode, { message: 'The query key does not exist' });
+      ctx.throw(e.statusCode, null, { errors: [e.message] });
+    } else { ctx.throw(400, null, { errors: [e.message] }); }
+    throw e;
   }
 });
 
-router.get('/:id', async ctx => {
+
+
+/**
+ * @api {get} /courses/:id GET single course.
+ * @apiName GetACourse
+ * @apiGroup Courses
+ * @apiPermission none
+ * @apiVersion 0.4.0
+ *
+ * @apiSampleRequest off
+ *
+ * @apiSuccessExample {json} Success-Response:
+ *     HTTP/1.1 200 OK
+ *     {
+ *      "course": {
+ *        "id": "course1",
+ *        "name": "A Course",
+ *        "slug": "a-course",
+ *        "description": "Contains Modules.",
+ *        "status": "published",
+ *        "creatorId": "user1",
+ *        "createdAt": "2017-12-20T19:17:10.000Z",
+ *        "updatedAt": "2017-12-20T19:17:10.000Z",
+ *        "modules": [
+ *          {
+ *            "id": "module1",
+ *            "name": "A Module",
+ *            "type": "modules"
+ *          }
+ *        ]
+ *      }
+ *    }
+ *
+ * @apiError {String} errors Bad Request.
+ */
+
+router.get('/:id', permController.requireAuth, async ctx => {
   const course = await Course.query().findById(ctx.params.id).eager('modules(selectNameAndId)');
   ctx.assert(course, 404, 'no lesson by that ID');
 
-  returnType(course);
+  await returnType(course);
 
-  function permObjects() {
+  async function permObjects() {
     Object.keys(userPermissions)
       .forEach(perm => {
         if (!ctx.state.user) {
@@ -152,26 +185,48 @@ router.get('/:id', async ctx => {
     return course.permissions = userPermissions;
   }
   ctx.status = 200;
-  course['permissions'] = permObjects();
+  course['permissions'] = await permObjects();
   ctx.body = { course };
 });
 
 
-router.post('/', permController.grantAccess('readAny', 'path'), validateCourses, async ctx => {
-  let { modules, ...newCourse } = ctx.request.body.course;
+/**
+ * @api {post} /courses POST course.
+ * @apiName PostACourse
+ * @apiGroup Courses
+ * @apiPermission none
+ *
+ * @apiParam (Post Params) {String} course[name] Name - Unique.
+ * @apiParam (Post Params) {String} course[slug] Slug - Unique and autogenerated.
+ * @apiParam (Post Params) {String} course[description] Description.
+ * @apiParam (Post Params) {String} course[status] Courses status - published | draft .
+ * @apiParam (Post Params) {String} course[creatorId] Id of the User.
 
-  let course;
-  try {
-    course = await Course.query().insertAndFetch(newCourse);
-  } catch (e) {
-    if (e.statusCode) {
-      ctx.throw(e.statusCode, null, { errors: [e.message] });
-    } else { ctx.throw(400, null, { errors: [e.message] }); }
-    throw e;
-  }
-  insertType('course_modules', modules, course.id);
+ *
+ * @apiSampleRequest off
+ *
+ * @apiSuccessExample {json} Success-Response:
+ *     HTTP/1.1 201 OK
+ *     {
+ *      "course": {
+ *        "name": "A Course",
+ *        "slug": "a-course",
+ *        "description": "Contains Modules.",
+ *        "status": "published",
+ *        "creatorId": "user1",
+ *      }
+ *    }
+ *
+ * @apiError {String} errors Bad Request.
+ *
+ */
 
-  function permObjects() {
+router.post('/', permController.requireAuth, permController.grantAccess('createAny', 'path'), validateCourses, async ctx => {
+  let newCourse = ctx.request.body.course;
+
+  let course = await Course.query().insertAndFetch(newCourse);
+
+  async function permObjects() {
     Object.keys(userPermissions)
       .forEach(perm => {
         if (ctx.state.user.data.role.toLowerCase() == 'superadmin') {
@@ -184,32 +239,46 @@ router.post('/', permController.grantAccess('readAny', 'path'), validateCourses,
         if (course.status === 'draft' && ctx.state.user.data.id === course.creatorId) {
           userPermissions.read = 'true';
           userPermissions.update = 'true';
-          // } else {
-          //   userPermissions.read = 'true';
         }
       });
     return course.permissions = userPermissions;
   }
 
   ctx.status = 201;
-  course['permissions'] = permObjects();
+  course['permissions'] = await permObjects();
   ctx.body = { course };
 });
 
-router.put('/:id', permController.grantAccess('deleteOwn', 'path'), async ctx => {
-  const course_record = await Course.query().findById(ctx.params.id);
-  if (!course_record) {
-    ctx.throw(400, 'That course does not exist');
-  }
+
+/**
+ * @api {put} /courses/:id PUT course.
+ * @apiName PutACourse
+ * @apiGroup Courses
+ * @apiPermission [admin, teacher, superadmin]
+ *
+ * @apiParam (Put Params) {String} course[name] Optional Name Unique.
+ * @apiParam (Put Params) {String} course[slug] Optional Slug is Unique and autogenerated.
+ * @apiParam (Put Params) {String} course[description] Optional Description.
+ * @apiParam (Put Params) {String} course[status] Course status[published or draft]
+ *
+ * @apiSampleRequest off
+ *
+ * @apiSuccess {String} course[object] Object data
+ * @apiError {String} errors Bad Request.
+ *
+ */
+
+router.put('/:id', permController.requireAuth, permController.grantAccess('createAny', 'path'), async ctx => {
   let { modules, ...newCourse } = ctx.request.body.course;
 
   let course;
   try {
     course = await Course.query().patchAndFetchById(ctx.params.id, newCourse);
+    ctx.assert(course, 404, 'Not Found');
   } catch (e) {
     if (e.statusCode) {
       ctx.throw(e.statusCode, null, { errors: [e.message] });
-    } else { ctx.throw(400, null, { errors: ['Bad Request'] }); }
+    } else { ctx.throw(400, null, { errors: ['Bad Request', e.message] }); }
     throw e;
   }
 
@@ -235,7 +304,20 @@ router.put('/:id', permController.grantAccess('deleteOwn', 'path'), async ctx =>
   course['permissions'] = userPermissions;
   ctx.body = { course };
 });
-router.delete('/:id', async ctx => {
+
+
+/**
+ * @api {delete} /courses/:id DELETE course.
+ * @apiName DeleteACourse
+ * @apiGroup Courses
+ * @apiPermission [admin, superadmin]
+ *
+ * @apiSuccess {String} course[object] Object data
+ * @apiError {String} errors Bad Request.
+ */
+
+
+router.delete('/:id', permController.requireAuth, permController.grantAccess('deleteOwn', 'path'), async ctx => {
   const course = await Course.query().findById(ctx.params.id);
   await Course.query().delete().where({ id: ctx.params.id });
 

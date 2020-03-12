@@ -11,7 +11,7 @@ describe('Sign Up Page', function () {
 
     cy.get('.submit').click();
 
-    cy.location('pathname').should('eq', '/');
+    cy.location('pathname').should('eq', '/signup');
   });
 
   it('should validate', function () {

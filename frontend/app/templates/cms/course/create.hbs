@@ -1,0 +1,34 @@
+<div class="padded">
+  <h1>Create a course</h1>
+
+  <BsForm @model={{model}} @onSubmit={{action "saveCourse"}} as |form|>
+    <form.element @controlType="text" @label="Course Title" @property="name" />
+    <form.element @controlType="text" @label="Course Description" @property="description" />
+    <BsButton @type="primary" @defaultText="Save Course" @buttonType="submit" />
+
+
+  </BsForm>
+
+  <h3>Modules</h3>
+  <div class="sortlist">
+    {{#sortable-objects sortableObjectList=courseModules enableSort=true}}
+      {{#each courseModules as |module|}}
+        {{#draggable-object content=module overrideClass="sortObject" isSortable=true}}
+          <ModuleItem @module={{module}} />
+        {{/draggable-object}}
+      {{/each}}
+    {{/sortable-objects}}
+  </div>
+  <br>
+  <h5>Add modules to your course</h5>
+  <PowerSelect @searchEnabled={{true}} @options={{allModules}} @searchField="name" @selected={{selectedModule}}
+    @onChange={{action (mut selectedModule)}} as |module|>
+    {{module.name}}
+  </PowerSelect>
+  <br>
+  {{#if selectedModule}}
+    <ModuleItem @module={{selectedModule}} />
+    <br>
+    <BsButton @onClick={{action "addModule" selectedModule}}>Add This module to my course</BsButton>
+  {{/if}}
+</div>

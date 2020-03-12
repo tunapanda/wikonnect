@@ -1,0 +1,979 @@
+[
+  {
+    "type": "get",
+    "url": "/users/:id",
+    "title": "GET a single user using id.",
+    "name": "GetAUser",
+    "group": "Authentication",
+    "version": "0.4.0",
+    "description": "<p>This is the Description. It is multiline capable.</p> <p>Last line of Description.</p>",
+    "permission": [
+      {
+        "name": "[admin, superadmin]"
+      }
+    ],
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "authorization",
+            "description": "<p>Bearer &lt;&lt;YOUR_API_KEY_HERE&gt;&gt;</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "    HTTP/1.1 201 OK\n    {\n      \"user\": {\n      \"id\": \"user2\",\n      \"username\": \"user2\",\n      \"createdAt\": \"2017-12-20T16:17:10.000Z\",\n      \"updatedAt\": \"2017-12-20T16:17:10.000Z\",\n      \"achievementAwards\": [\n        {\n          \"id\": \"achievementaward1\",\n          \"name\": \"completed 10 courses\",\n          \"type\": \"achievementAwards\"\n        },\n        {\n          \"id\": \"achievementaward2\",\n          \"name\": \"fully filled profile\",\n          \"type\": \"achievementAwards\"\n        }\n      ],\n      \"userRoles\": [\n        {\n          \"name\": \"basic\"\n        }\n      ],\n      \"enrolledCourses\": [],\n      \"userVerification\": []\n   }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "HTTP/1.1 401 Unauthorized",
+          "content": "HTTP/1.1 401 Unauthorized\n{\n  \"status\": 401,\n  \"message\": \"You do not have permissions to view that user\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "HTTP/1.1 404 Not Found",
+          "content": "HTTP/1.1 404 Not Found\n{\n  \"status\": 404,\n  \"message\": \"No User With that Id\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "./server/routes/users.js",
+    "groupTitle": "Authentication"
+  },
+  {
+    "type": "post",
+    "url": "/users",
+    "title": "POST create a new user.",
+    "name": "PostAUser",
+    "group": "Authentication",
+    "parameter": {
+      "fields": {
+        "Required Params": [
+          {
+            "group": "Required Params",
+            "type": "string",
+            "optional": false,
+            "field": "user[username]",
+            "description": "<p>username</p>"
+          },
+          {
+            "group": "Required Params",
+            "type": "string",
+            "optional": false,
+            "field": "user[email]",
+            "description": "<p>Unique email</p>"
+          },
+          {
+            "group": "Required Params",
+            "type": "string",
+            "optional": false,
+            "field": "user[password]",
+            "description": "<p>validated password</p>"
+          }
+        ]
+      }
+    },
+    "permission": [
+      {
+        "name": "none"
+      }
+    ],
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 201 OK\n{\n   \"user\": {\n     \"username\": \"string\",\n     \"id\": \"string\",\n     \"createdAt\": \"string\",\n     \"updatedAt\": \"string\"\n   }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "errors",
+            "description": "<p>Bad Request.</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "./server/routes/users.js",
+    "groupTitle": "Authentication"
+  },
+  {
+    "type": "post",
+    "url": "/auth",
+    "title": "POST login a user.",
+    "name": "PostLoginAUser",
+    "group": "Authentication",
+    "parameter": {
+      "fields": {
+        "Required Params": [
+          {
+            "group": "Required Params",
+            "type": "string",
+            "optional": false,
+            "field": "username",
+            "description": "<p>username</p>"
+          },
+          {
+            "group": "Required Params",
+            "type": "string",
+            "optional": false,
+            "field": "password",
+            "description": "<p>validated password</p>"
+          }
+        ]
+      }
+    },
+    "permission": [
+      {
+        "name": "none"
+      }
+    ],
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 201 OK\n{\n  \"username\": \"string\",\n  \"password\": \"string\",\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "errors",
+            "description": "<p>Bad Request.</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "./server/routes/auth.js",
+    "groupTitle": "Authentication"
+  },
+  {
+    "type": "delete",
+    "url": "/courses/:id",
+    "title": "DELETE course.",
+    "name": "DeleteACourse",
+    "group": "Courses",
+    "permission": [
+      {
+        "name": "[admin, superadmin]"
+      }
+    ],
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "course[object]",
+            "description": "<p>Object data</p>"
+          }
+        ]
+      }
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "errors",
+            "description": "<p>Bad Request.</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "./server/routes/courses.js",
+    "groupTitle": "Courses"
+  },
+  {
+    "type": "get",
+    "url": "/courses/:id",
+    "title": "GET single course.",
+    "name": "GetACourse",
+    "group": "Courses",
+    "permission": [
+      {
+        "name": "none"
+      }
+    ],
+    "version": "0.4.0",
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": " HTTP/1.1 200 OK\n {\n  \"course\": {\n    \"id\": \"course1\",\n    \"name\": \"A Course\",\n    \"slug\": \"a-course\",\n    \"description\": \"Contains Modules.\",\n    \"status\": \"published\",\n    \"creatorId\": \"user1\",\n    \"createdAt\": \"2017-12-20T19:17:10.000Z\",\n    \"updatedAt\": \"2017-12-20T19:17:10.000Z\",\n    \"modules\": [\n      {\n        \"id\": \"module1\",\n        \"name\": \"A Module\",\n        \"type\": \"modules\"\n      }\n    ]\n  }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "errors",
+            "description": "<p>Bad Request.</p>"
+          }
+        ]
+      }
+    },
+    "filename": "./server/routes/courses.js",
+    "groupTitle": "Courses"
+  },
+  {
+    "type": "get",
+    "url": "/courses/",
+    "title": "GET all courses.",
+    "name": "GetCourses",
+    "group": "Courses",
+    "permission": [
+      {
+        "name": "none"
+      }
+    ],
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n\"course\": [\n    {\n      \"id\": \"course1\",\n      \"name\": \"A Course\",\n      \"slug\": \"a-course\",\n      \"description\": \"Contains Modules.\",\n      \"status\": \"published\",\n      \"creatorId\": \"user1\",\n      \"createdAt\": \"2017-12-20T19:17:10.000Z\",\n      \"updatedAt\": \"2017-12-20T19:17:10.000Z\",\n      \"modules\": [\n        {\n          \"id\": \"module1\",\n          \"name\": \"A Module\",\n          \"type\": \"modules\"\n        }\n      ],\n      \"enrollments\": [\n         {\n           \"id\": \"enrollment1\",\n           \"courseId\": \"course1\",\n           \"status\": \"true\",\n           \"type\": \"enrollments\"\n         }\n       ],\n       \"progress\": 75,\n       \"permission\": {\n         \"read\": \"boolean\",\n         \"update\": \"boolean\",\n         \"create\": \"boolean\",\n         \"delete\": \"boolean\"\n       }\n    }\n  ]",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "errors",
+            "description": "<p>Bad Request.</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "./server/routes/courses.js",
+    "groupTitle": "Courses"
+  },
+  {
+    "type": "post",
+    "url": "/courses",
+    "title": "POST course.",
+    "name": "PostACourse",
+    "group": "Courses",
+    "permission": [
+      {
+        "name": "none"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Post Params": [
+          {
+            "group": "Post Params",
+            "type": "String",
+            "optional": false,
+            "field": "course[name]",
+            "description": "<p>Name - Unique.</p>"
+          },
+          {
+            "group": "Post Params",
+            "type": "String",
+            "optional": false,
+            "field": "course[slug]",
+            "description": "<p>Slug - Unique and autogenerated.</p>"
+          },
+          {
+            "group": "Post Params",
+            "type": "String",
+            "optional": false,
+            "field": "course[description]",
+            "description": "<p>Description.</p>"
+          },
+          {
+            "group": "Post Params",
+            "type": "String",
+            "optional": false,
+            "field": "course[status]",
+            "description": "<p>Courses status - published | draft .</p>"
+          },
+          {
+            "group": "Post Params",
+            "type": "String",
+            "optional": false,
+            "field": "course[creatorId]",
+            "description": "<p>Id of the User.</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": " HTTP/1.1 201 OK\n {\n  \"course\": {\n    \"name\": \"A Course\",\n    \"slug\": \"a-course\",\n    \"description\": \"Contains Modules.\",\n    \"status\": \"published\",\n    \"creatorId\": \"user1\",\n  }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "errors",
+            "description": "<p>Bad Request.</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "./server/routes/courses.js",
+    "groupTitle": "Courses"
+  },
+  {
+    "type": "put",
+    "url": "/courses/:id",
+    "title": "PUT course.",
+    "name": "PutACourse",
+    "group": "Courses",
+    "permission": [
+      {
+        "name": "[admin, teacher, superadmin]"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Put Params": [
+          {
+            "group": "Put Params",
+            "type": "String",
+            "optional": false,
+            "field": "course[name]",
+            "description": "<p>Optional Name Unique.</p>"
+          },
+          {
+            "group": "Put Params",
+            "type": "String",
+            "optional": false,
+            "field": "course[slug]",
+            "description": "<p>Optional Slug is Unique and autogenerated.</p>"
+          },
+          {
+            "group": "Put Params",
+            "type": "String",
+            "optional": false,
+            "field": "course[description]",
+            "description": "<p>Optional Description.</p>"
+          },
+          {
+            "group": "Put Params",
+            "type": "String",
+            "optional": false,
+            "field": "course[status]",
+            "description": "<p>Course status[published or draft]</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "course[object]",
+            "description": "<p>Object data</p>"
+          }
+        ]
+      }
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "errors",
+            "description": "<p>Bad Request.</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "./server/routes/courses.js",
+    "groupTitle": "Courses"
+  },
+  {
+    "type": "delete",
+    "url": "/lessons/:id",
+    "title": "DELETE a lesson.",
+    "name": "DeleteALesson",
+    "group": "Lessons",
+    "permission": [
+      {
+        "name": "[admin, superadmin]"
+      }
+    ],
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "lesson[object]",
+            "description": "<p>Object data</p>"
+          }
+        ]
+      }
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "errors",
+            "description": "<p>Bad Request.</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "./server/routes/lessons.js",
+    "groupTitle": "Lessons"
+  },
+  {
+    "type": "get",
+    "url": "/lessons/:id",
+    "title": "GET single lesson.",
+    "name": "GetALesson",
+    "group": "Lessons",
+    "permission": [
+      {
+        "name": "none"
+      }
+    ],
+    "version": "0.4.0",
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": " HTTP/1.1 200 OK\n {\n  \"lessons\": {\n    \"id\": \"lessons1\",\n    \"name\": \"A Lesson\",\n    \"slug\": \"a-lesson\",\n    \"description\": \"THis is a lesson.\",\n    \"status\": \"published\",\n    \"creatorId\": \"user1\",\n    \"createdAt\": \"2017-12-20T19:17:10.000Z\",\n    \"updatedAt\": \"2017-12-20T19:17:10.000Z\",\n    \"chapters\": [\n      {\n        \"id\": \"chapter1\",\n        \"name\": \"A Chapter\",\n        \"type\": \"chapters\"\n      }\n    ]\n  }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "errors",
+            "description": "<p>Bad Request.</p>"
+          }
+        ]
+      }
+    },
+    "filename": "./server/routes/lessons.js",
+    "groupTitle": "Lessons"
+  },
+  {
+    "type": "get",
+    "url": "/lessons/",
+    "title": "GET all lessons.",
+    "name": "GetLessons",
+    "group": "Lessons",
+    "permission": [
+      {
+        "name": "none"
+      }
+    ],
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": " HTTP/1.1 200 OK\n \"lessons\": [{\n    \"id\": \"lesson1\",\n    \"name\": \"A Lesson\",\n    \"slug\": \"a-lesson\",\n    \"description\": \"Contains Chapters.\",\n    \"status\": \"published\",\n    \"creatorId\": \"user1\",\n    \"createdAt\": \"2017-12-20T16:17:10.000Z\",\n    \"updatedAt\": \"2017-12-20T16:17:10.000Z\",\n    \"chapters\": [\n        {\n            \"id\": \"chapter1\",\n            \"name\": \"A Chapter\",\n            \"type\": \"chapters\"\n        },\n        {\n            \"id\": \"chapter2\",\n            \"name\": \"A Chapter 2\",\n            \"type\": \"chapters\"\n        },\n        {\n            \"id\": \"chapter3\",\n            \"name\": \"A Chapter3\",\n            \"type\": \"chapters\"\n        },\n        {\n            \"id\": \"chapter4\",\n            \"name\": \"A Chapter4\",\n            \"type\": \"chapters\"\n        }\n    ],\n    \"percentage\": {\n        \"type\": \"percentage\",\n        \"percent\": 75\n    }\n}]",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "errors",
+            "description": "<p>Bad Request.</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "./server/routes/lessons.js",
+    "groupTitle": "Lessons"
+  },
+  {
+    "type": "post",
+    "url": "/lessons",
+    "title": "POST a lesson.",
+    "name": "PostALesson",
+    "group": "Lessons",
+    "permission": [
+      {
+        "name": "none"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "lesson[name]",
+            "description": "<p>Name - Unique.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "lesson[slug]",
+            "description": "<p>Slug - Unique and autogenerated.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "lesson[description]",
+            "description": "<p>Description.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "lesson[status]",
+            "description": "<p>modules status - published | draft .</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "lesson[creatorId]",
+            "description": "<p>Id of the User.</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": " HTTP/1.1 201 OK\n {\n  \"lesson\": {\n    \"name\": \"lesson\",\n    \"slug\": \"a-lesson\",\n    \"description\": \"this is a lesson.\",\n    \"status\": \"published\",\n    \"creatorId\": \"user1\",\n  }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "errors",
+            "description": "<p>Bad Request.</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "./server/routes/lessons.js",
+    "groupTitle": "Lessons"
+  },
+  {
+    "type": "put",
+    "url": "/lessons/:id",
+    "title": "PUT lesson.",
+    "name": "PutALesson",
+    "group": "Lessons",
+    "permission": [
+      {
+        "name": "[admin, teacher, superadmin]"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "lesson[name]",
+            "description": "<p>Optional Name Unique.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "lesson[slug]",
+            "description": "<p>Optional Slug is Unique and autogenerated.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "lesson[description]",
+            "description": "<p>Optional Description.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "lesson[status]",
+            "description": "<p>lesson status[published or draft]</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "lesson[object]",
+            "description": "<p>Object data</p>"
+          }
+        ]
+      }
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "errors",
+            "description": "<p>Bad Request.</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "./server/routes/lessons.js",
+    "groupTitle": "Lessons"
+  },
+  {
+    "type": "delete",
+    "url": "/modules/:id",
+    "title": "DELETE a module.",
+    "name": "DeleteAModule",
+    "group": "Modules",
+    "permission": [
+      {
+        "name": "[admin, superadmin]"
+      }
+    ],
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "module[object]",
+            "description": "<p>Object data</p>"
+          }
+        ]
+      }
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "errors",
+            "description": "<p>Bad Request.</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "./server/routes/modules.js",
+    "groupTitle": "Modules"
+  },
+  {
+    "type": "get",
+    "url": "/modules/:id",
+    "title": "GET single module.",
+    "name": "GetAModule",
+    "group": "Modules",
+    "permission": [
+      {
+        "name": "none"
+      }
+    ],
+    "version": "0.4.0",
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n{ \"modules\": {\n    \"id\": \"module1\",\n    \"name\": \"A Module\",\n    \"slug\": \"a-module-1\",\n    \"description\": \"Contains Lessons.\",\n    \"status\": \"published\",\n    \"creatorId\": \"user1\",\n    \"createdAt\": \"2017-12-20T16:17:10.000Z\",\n    \"updatedAt\": \"2017-12-20T16:17:10.000Z\",\n    \"lessons\": [\n        {\n            \"id\": \"lesson1\",\n            \"name\": \"A Lesson\",\n            \"type\": \"lessons\"\n        }\n    ],\n    \"progress\": 0,\n    \"permissions\": {\n        \"read\": \"true\",\n        \"update\": \"true\",\n        \"create\": \"true\",\n        \"delete\": \"true\"\n    }\n  }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "errors",
+            "description": "<p>Bad Request.</p>"
+          }
+        ]
+      }
+    },
+    "filename": "./server/routes/modules.js",
+    "groupTitle": "Modules"
+  },
+  {
+    "type": "get",
+    "url": "/modules/",
+    "title": "GET all modules.",
+    "name": "GetModules",
+    "group": "Modules",
+    "permission": [
+      {
+        "name": "none"
+      }
+    ],
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": " HTTP/1.1 200 OK\n \"modules\": [{\n    \"id\": \"module1\",\n    \"name\": \"A Module\",\n    \"slug\": \"a-module-1\",\n    \"description\": \"Contains Lessons.\",\n    \"status\": \"published\",\n    \"creatorId\": \"user1\",\n    \"createdAt\": \"2017-12-20T16:17:10.000Z\",\n    \"updatedAt\": \"2017-12-20T16:17:10.000Z\",\n    \"lessons\": [\n        {\n            \"id\": \"lesson1\",\n            \"name\": \"A Lesson\",\n            \"type\": \"lessons\"\n        }\n    ],\n    \"progress\": 0,\n    \"permission\": {\n        \"read\": \"true\",\n        \"update\": \"false\",\n        \"create\": \"false\",\n        \"delete\": \"false\"\n    }\n}]",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "errors",
+            "description": "<p>Bad Request.</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "./server/routes/modules.js",
+    "groupTitle": "Modules"
+  },
+  {
+    "type": "post",
+    "url": "/modules",
+    "title": "POST a module.",
+    "name": "PostAModule",
+    "group": "Modules",
+    "permission": [
+      {
+        "name": "none"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "module[name]",
+            "description": "<p>Name - Unique.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "module[slug]",
+            "description": "<p>Slug - Unique and autogenerated.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "module[description]",
+            "description": "<p>Description.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "module[status]",
+            "description": "<p>modules status - published | draft .</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "module[creatorId]",
+            "description": "<p>Id of the User.</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": " HTTP/1.1 201 OK\n {\n  \"module\": {\n    \"name\": \"module\",\n    \"slug\": \"a-module\",\n    \"description\": \"this is a module.\",\n    \"status\": \"published\",\n    \"creatorId\": \"user1\",\n  }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "errors",
+            "description": "<p>Bad Request.</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "./server/routes/modules.js",
+    "groupTitle": "Modules"
+  },
+  {
+    "type": "put",
+    "url": "/modules/:id",
+    "title": "PUT a module.",
+    "name": "PutAModule",
+    "group": "Modules",
+    "permission": [
+      {
+        "name": "[admin, teacher, superadmin]"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "module[name]",
+            "description": "<p>Optional Name Unique.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "module[slug]",
+            "description": "<p>Optional Slug is Unique and autogenerated.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "module[description]",
+            "description": "<p>Optional Description.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "module[status]",
+            "description": "<p>modules status[published or draft]</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "module[object]",
+            "description": "<p>Object data</p>"
+          }
+        ]
+      }
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "errors",
+            "description": "<p>Bad Request.</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "./server/routes/modules.js",
+    "groupTitle": "Modules"
+  }
+]

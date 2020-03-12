@@ -20,23 +20,16 @@ module.exports = (on, config) => {
   // `config` is the resolved Cypress config
 
   on('task', {
-    'db:reset': function () {
+    'db:reset': async function () {
       const db = require('knex')(knexfile);
       // console.log('rolling back db');
-      return db.migrate.rollback()
-        .then(() => {
-          // console.log('rolling forward db');
-          return db.migrate.latest();
-        })
-        .then(() => {
-          // console.log('seeding db');
-          return db.seed.run();
-        }).then((files) => {
-          // console.log('seed files:');
-          // console.log(files);
-          db.destroy();
-          return files;
-        });
+      await db.migrate.rollback();
+      await db.migrate.latest();
+      const files = await db.seed.run();
+      // console.log('seed files:');
+      // console.log(files);
+      db.destroy();
+      return files;
     }
   });
 }

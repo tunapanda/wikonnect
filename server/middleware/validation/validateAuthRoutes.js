@@ -58,8 +58,11 @@ async function validateUserLogin(ctx, next) {
         }
       }
     });
-  } catch (error) {
-    return ctx.throw(400, { error });
+  } catch (e) {
+    if (e.statusCode) {
+      ctx.throw(e.statusCode, null, { errors: [e.message] });
+    } else { ctx.throw(400, null, { errors: [e.message] }); }
+    throw e;
   }
   await next();
 }

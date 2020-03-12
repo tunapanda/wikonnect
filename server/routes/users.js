@@ -2,7 +2,7 @@ const Router = require('koa-router');
 const User = require('../models/user');
 const validateAuthRoutes = require('../middleware/validation/validateAuthRoutes');
 const bcrypt = require('bcrypt');
-const getUserByUsername = require('../middleware/authenticate');
+// const getUserByUsername = require('../middleware/authenticate');
 const permController = require('../middleware/permController');
 const jwt = require('../middleware/jwt');
 
@@ -19,12 +19,12 @@ async function returnType(parent) {
   try {
     if (parent.length == undefined) {
       parent.achievementAwards.forEach(lesson => {
-        return lesson.type = 'achievement';
+        return lesson.type = 'achievementAwards';
       });
     } else {
       parent.forEach(mod => {
         mod.achievementAwards.forEach(lesson => {
-          return lesson.type = 'achievement';
+          return lesson.type = 'achievementAwards';
         });
       });
     }
@@ -50,14 +50,8 @@ async function enrolledCoursesType(parent) {
     console.log(error);
   }
 }
-/**
- *
- * @param {ctx.request.body.user} ctx
- * @param {*} next
- *
- * delete password in the ctx
- * return hashed password
- */
+
+
 async function createPasswordHash(ctx, next) {
   if (ctx.request.body.user.password) {
     const hash = await bcrypt.hash(ctx.request.body.user.password, 10);
@@ -68,23 +62,128 @@ async function createPasswordHash(ctx, next) {
   await next();
 }
 
-router.post('/', validateAuthRoutes.validateNewUser, getUserByUsername, createPasswordHash, async ctx => {
+/**
+ * @api {post} /users POST create a new user.
+ * @apiName PostAUser
+ * @apiGroup Authentication
+ *
+ * @apiParam (Required Params) {string} user[username] username
+ * @apiParam (Required Params) {string} user[email] Unique email
+ * @apiParam (Required Params) {string} user[password] validated password
+ *
+ * @apiPermission none
+ *
+ * @apiSuccessExample {json} Success-Response:
+ *     HTTP/1.1 201 OK
+ *     {
+ *        "user": {
+ *          "username": "string",
+ *          "id": "string",
+ *          "createdAt": "string",
+ *          "updatedAt": "string"
+ *        }
+ *     }
+ *
+ * @apiError {String} errors Bad Request.
+ */
 
+router.post('/', validateAuthRoutes.validateNewUser, createPasswordHash, async ctx => {
   ctx.request.body.user.username = ctx.request.body.user.username.toLowerCase();
   ctx.request.body.user.email = ctx.request.body.user.email.toLowerCase();
 
-  let newUser = ctx.request.body.user;
+  const newUser = ctx.request.body.user;
+  const firstUserCheck = await User.query();
+  let role = !firstUserCheck.length ? 'groupSuperAdmin' : 'groupBasic';
 
-  const user = await User.query().insertAndFetch(newUser);
-  await knex('group_members').insert({ 'user_id': user.id, 'group_id': 'groupBasic' });
-
-  ctx.assert(user, 401, 'Something went wrong.');
-
-  ctx.status = 201;
-  ctx.body = { user };
+  try {
+    const user = await User.query().insertAndFetch(newUser);
+    await knex('group_members').insert({ 'user_id': user.id, 'group_id': role });
+    ctx.status = 201;
+    ctx.body = { user };
+  } catch (e) {
+    if (e.status === 503) {
+      e.headers = Object.assign({}, e.headers, { 'Retry-After': 30 });
+    } else {
+      ctx.throw(400, {
+        errors: [{
+          'id': e.code,
+          'status': 400,
+          'code': e.code,
+          'title': e.name,
+          'detail': e.constraint,
+          'hint': e.hint,
+          'source': {
+            'pointer': e.constraint,
+            'parameter': e.detail
+          }
+        }]
+      });
+    }
+    throw e;
+  }
 });
 
+
+/**
+ * @api {get} /users/:id GET a single user using id.
+ * @apiName GetAUser
+ * @apiGroup Authentication
+ *
+ * @apiVersion 0.4.0
+ * @apiDescription This is the Description.
+ * It is multiline capable.
+ *
+ * Last line of Description.
+ * @apiPermission [admin, superadmin]
+ * @apiHeader (Header) {String} authorization Bearer <<YOUR_API_KEY_HERE>>
+ *
+ * @apiSuccessExample {json} Success-Response:
+ *     HTTP/1.1 201 OK
+ *     {
+ *       "user": {
+ *       "id": "user2",
+ *       "username": "user2",
+ *       "createdAt": "2017-12-20T16:17:10.000Z",
+ *       "updatedAt": "2017-12-20T16:17:10.000Z",
+ *       "achievementAwards": [
+ *         {
+ *           "id": "achievementaward1",
+ *           "name": "completed 10 courses",
+ *           "type": "achievementAwards"
+ *         },
+ *         {
+ *           "id": "achievementaward2",
+ *           "name": "fully filled profile",
+ *           "type": "achievementAwards"
+ *         }
+ *       ],
+ *       "userRoles": [
+ *         {
+ *           "name": "basic"
+ *         }
+ *       ],
+ *       "enrolledCourses": [],
+ *       "userVerification": []
+ *    }
+ * }
+ *
+ * @apiErrorExample
+ *    HTTP/1.1 401 Unauthorized
+ *    {
+ *      "status": 401,
+ *      "message": "You do not have permissions to view that user"
+ *    }
+ *
+ * @apiErrorExample
+ *    HTTP/1.1 404 Not Found
+ *    {
+ *      "status": 404,
+ *      "message": "No User With that Id"
+ *    }
+ */
+
 router.get('/:id', permController.requireAuth, async ctx => {
+
   const user = await User.query().findById(ctx.params.id).mergeJoinEager('[achievementAwards(selectBadgeNameAndId), userRoles(selectName), enrolledCourses(selectNameAndId)]');
   returnType(user);
   enrolledCoursesType(user);
@@ -95,6 +194,7 @@ router.get('/:id', permController.requireAuth, async ctx => {
   }
 
   if (user.id !== ctx.state.user.data.id) {
+    ctx.log.info('Error logging  %s for %s', ctx.request.ip, ctx.path);
     ctx.throw(401, 'You do not have permissions to view that user');
   }
 
@@ -102,6 +202,7 @@ router.get('/:id', permController.requireAuth, async ctx => {
   const userVerification = await knex('user_verification').where({ 'user_id': ctx.params.id });
   user.userVerification = userVerification;
 
+  ctx.log.info('Got a request from %s for %s', ctx.request.ip, ctx.path);
   ctx.status = 200;
   ctx.body = { user };
 
@@ -119,7 +220,7 @@ router.get('/', permController.requireAuth, permController.grantAccess('readAny'
     if (e.statusCode) {
       ctx.throw(e.statusCode, { message: 'The query key does not exist' });
       ctx.throw(e.statusCode, null, { errors: [e.message] });
-    } else { ctx.throw(400, null, { errors: [e.message] }); }
+    } else { ctx.throw(406, null, { errors: [e.message] }); }
     throw e;
   }
 
