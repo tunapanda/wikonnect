@@ -17,7 +17,9 @@
             @color={{course_item.color}} />
         {{/each}}
       {{else}}
+        You are not enrolled in any course.
 
+        <br>
         {{#link-to "courses" class="btn padded btn-primary btn-small form-control" }}
           Explore Courses
         {{/link-to}}
@@ -28,5 +30,6 @@
     <br>
 
     <Warning @message="You do not have  permission to view this page" />
+
   {{/if}}
 </div>

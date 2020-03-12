@@ -13,14 +13,15 @@ export default class HomeController extends Controller {
     return this.model.enrolledCourses.map((course, index) => {
       let colorIndex = index % 3;
 
-      //     return {
-      //       'color': this.colorList[colorIndex],
-      //       'name': course.get('name'),
-      //       'slug': course.get('slug'),
-      //       'progress': course.get('progress'),
-      //       'description': course.get('description')
-      //     };
+      return {
+        'color': this.colorList[colorIndex],
+        'name': course.get('name'),
+        'slug': course.get('slug'),
+        'progress': course.get('progress'),
+        'description': course.get('description'),
+        'module': course.get('module')
+      };
 
-      //   });
-      // }
-    }
+    });
+  }
+}
