@@ -106,7 +106,7 @@ router.get('/', permController.requireAuth, async ctx => {
     if (e.statusCode) {
       ctx.throw(e.statusCode, { message: 'The query key does not exist' });
       ctx.throw(e.statusCode, null, { errors: [e.message] });
-    } else { ctx.throw(400, null, { errors: ['Bad Request'] }); }
+    } else { ctx.throw(400, null, { errors: [e.message] }); }
     throw e;
   }
 });
@@ -334,4 +334,14 @@ router.delete('/:id', permController.requireAuth, permController.grantAccess('de
   ctx.body = { course };
 });
 
+// router.post('/enrollment', async ctx => {
+//   try {
+
+//   } catch (e) {
+//     if (e.statusCode) {
+//       ctx.throw(e.statusCode, null, { errors: [e.message] });
+//     } else { ctx.throw(400, null, { errors: ['Bad Request'] }); }
+//     throw e;
+//   }
+// });
 module.exports = router.routes();

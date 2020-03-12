@@ -299,7 +299,7 @@ describe('ACTIVITY ROUTE', () => {
       .request(server)
       .put(activityRoute + activityID)
       .set('Content-Type', 'application/json')
-      .send({ 'activity': { 'user_id': 'user3' }})
+      .send({ 'activity': { 'user_id': 'user3' } })
       .end((err, res) => {
         res.status.should.eql(201);
         res.should.be.json;

@@ -34,7 +34,6 @@ router.use(require('./routes/auth'));
 
 router.use(require('./routes/users'));
 
-
 router.use(jwt.authenticate, require('./routes/paths'));
 
 router.use(jwt.authenticate, require('./routes/modules'));
@@ -51,6 +50,7 @@ router.use(jwt.authenticate, require('./routes/enrollments'));
 
 router.use(jwt.authenticate, require('./routes/achievements'));
 
+router.use(jwt.authenticate, require('./routes/admin'));
 router.use(jwt.authenticate, require('./routes/achievement_awards'));
 
 router.use(require('./routes/search'));

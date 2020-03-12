@@ -127,7 +127,7 @@ describe('AUTHENTICATION ROUTES', () => {
         });
     });
 
-    it('Should get ONE user on GET requests using QUERY', done => {
+    it('Should throw an error is /:id does not match the stored user data', done => {
       chai
         .request(server)
         .get(usersRoute + '?id=' + userId)
@@ -135,6 +135,24 @@ describe('AUTHENTICATION ROUTES', () => {
         .set(tokens.headerBasicUser2)
         .end((err, res) => {
           res.should.have.status(400);
+          done();
+        });
+    });
+
+    it('Should return a user if the /:id matches stored user data ', done => {
+      chai
+        .request(server)
+        .get(usersRoute + userId)
+        .set('Content-Type', 'application/json')
+        .set(tokens.headersSuperAdmin1)
+        .end((err, res) => {
+          res.should.have.status(200);
+          expect(res.body.user).not.have.property('password');
+          expect(res.body.user).not.have.property('hash');
+          expect(res.body.user).to.have.property('id');
+          expect(res.body.user).to.have.property('achievementAwards');
+          expect(res.body.user).to.have.property('enrolledCourses');
+          expect(res.body.user).to.have.property('userVerification');
           done();
         });
     });

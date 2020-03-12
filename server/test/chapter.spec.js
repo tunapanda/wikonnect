@@ -57,6 +57,7 @@ describe('CHAPTER ROUTE', () => {
       .post(route)
       .set(tokens.headersSuperAdmin1)
       .set('Content-Type', 'application/json')
+      .set(tokens.headersSuperAdmin1)
       .send(data)
       .end((err, res) => {
 
