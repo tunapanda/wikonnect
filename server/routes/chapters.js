@@ -111,7 +111,7 @@ router.delete('/:id', permController.requireAuth, permController.grantAccess('de
 
 router.post('/:id/upload', async ctx => {
   const dirName = ctx.params.id;
-  const uploadPath = `uploads/H5P/${dirName}`;
+  const uploadPath = `uploads/h5p/${dirName}`;
   const uploadDir = path.resolve(__dirname, '../public/' + uploadPath);
 
   await busboy(ctx.req, {
