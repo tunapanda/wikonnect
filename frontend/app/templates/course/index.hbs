@@ -61,13 +61,13 @@
         <BsModal @open={{confirmModal}} @onHide={{action "hideConfirmModal"}} @onSubmit={{action "leave" isEnrolled.id}}
           as |Modal|>
           <Modal.header>
-            <h4 class="modal-title"><i class="glyphicon glyphicon-alert"></i> Alert</h4>
+            <h4 class="modal-title"><i class="glyphicon glyphicon-alert"></i> Hold Up</h4>
           </Modal.header>
           <Modal.body>
             Are you absolutely sure you want to do that???
           </Modal.body>
-          <Modal.footer as |footer|>
-            <BsButton @onClick={{action Modal.close}} @type="danger">Oh no, forget it!</BsButton>
+          <Modal.footer>
+            <BsButton @onClick={{action hideConfirmModal}} @type="danger">Oh no, forget it!</BsButton>
             <BsButton @onClick={{action Modal.submit}} @type="success">Yeah!</BsButton>
           </Modal.footer>
         </BsModal>

@@ -31,14 +31,12 @@ export default class CourseIndexController extends Controller {
 
   @action
   showConfirmModal() {
-    console.log("show")
-    this.set("confirmModal", true)
+    this.set("confirmModal", true);
   }
 
   @action
   hideConfirmModal() {
-    console.log("hide")
-    this.set("confirmModal", false)
+    this.set("confirmModal", false);
   }
 
   get isEnrolled() {
@@ -88,7 +86,7 @@ export default class CourseIndexController extends Controller {
     console.log(enroll.id);
     enroll.set("status", false);
     console.log(enroll);
-    this.set("toggleConfirm", false)
+    this.set("toggleConfirm", false);
 
     enroll.save();
 
