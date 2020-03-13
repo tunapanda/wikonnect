@@ -17,6 +17,16 @@ exports.seed = function (knex) {
           updated_at: '2017-12-20 19:17:10'
         },
         {
+          id: 'lesson2',
+          name: 'Human Science',
+          slug: 'human-science',
+          description: 'Human science studies the philosophical, biological, social, and cultural aspects of human life.',
+          status: 'published',
+          creator_id: 'user1',
+          created_at: '2017-12-20 19:17:10',
+          updated_at: '2017-12-20 19:17:10'
+        },
+        {
           id: 'basics1',
           name: 'Web Browsers',
           slug: 'web-browsers',
@@ -41,6 +51,10 @@ exports.seed = function (knex) {
       {
         module_id: 'module1',
         lesson_id: 'lesson1'
+      },
+      {
+        module_id: 'module2',
+        lesson_id: 'lesson2'
       },
       {
         module_id: 'diglit1',
