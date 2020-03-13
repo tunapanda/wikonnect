@@ -1,23 +1,28 @@
+{{#link-to "course.module.lesson" @lesson.slug }}
 <div class="module-item {{if @available "green" "red"}}">
 
 
+  <img class="module-image" src="http://placehold.jp/20/{{@module.color}}/ffffff/200x140.png?text={{@lesson.name}}"
+    alt="">
 
-  <div class="module-flex">
+  <div class="module-description">
 
+    <h2>{{@lesson.name}}</h2>
 
-    <div class="module-description">
+    <div>{{@lesson.description}}</div>
+    <br>
 
-      {{#link-to "course.module.lesson" @lesson.slug }}
-        <h2>{{@lesson.name}}</h2>
-
-      {{/link-to}}
-      <div>{{@lesson.description}}</div>
-      <br>
-
-      <hr>
-    </div>
-
+    <hr>
   </div>
+
+  {{#if me.isAuthenticated}}
+
+  <BsProgress as |pg|>
+    <pg.bar @showLabel={{true}} @roundDigits={{0}} @type="success" @value={{@module.progress}} />
+  </BsProgress>
+  {{/if}}
+  <p>~ 5 Minutes</p>
 
 
 </div>
+{{/link-to}}
