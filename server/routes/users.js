@@ -63,7 +63,7 @@ async function createPasswordHash(ctx, next) {
 }
 
 /**
- * @api {post} /users POST new user data.
+ * @api {post} /users POST create a new user.
  * @apiName PostAUser
  * @apiGroup Authentication
  *
@@ -125,7 +125,7 @@ router.post('/', validateAuthRoutes.validateNewUser, createPasswordHash, async c
 
 
 /**
- * @api {get} /users/:id GET a single users.
+ * @api {get} /users/:id GET a single user using id.
  * @apiName GetAUser
  * @apiGroup Authentication
  *
@@ -194,6 +194,7 @@ router.get('/:id', permController.requireAuth, async ctx => {
   }
 
   if (user.id !== ctx.state.user.data.id) {
+    ctx.log.info('Error logging  %s for %s', ctx.request.ip, ctx.path);
     ctx.throw(401, 'You do not have permissions to view that user');
   }
 
@@ -201,6 +202,7 @@ router.get('/:id', permController.requireAuth, async ctx => {
   const userVerification = await knex('user_verification').where({ 'user_id': ctx.params.id });
   user.userVerification = userVerification;
 
+  ctx.log.info('Got a request from %s for %s', ctx.request.ip, ctx.path);
   ctx.status = 200;
   ctx.body = { user };
 

@@ -1,40 +1,46 @@
-<div class="module-item {{if @available "green" "red"}}">
+{{#link-to "course.module.lesson" @lesson.slug }}
+  <div class="module-item {{if @available "green" "red"}}">
 
 
-
-  <div class="module-flex">
-
+    <img class="module-image" src="http://placehold.jp/20/{{@module.color}}/ffffff/200x140.png?text={{@lesson.name}}"
+      alt="">
 
     <div class="module-description">
 
-      {{#link-to "course.module.lesson" @lesson.slug }}
-        <h2>{{@lesson.name}}</h2>
+      <h2>{{@lesson.name}}</h2>
 
-      {{/link-to}}
       <div>{{@lesson.description}}</div>
       <br>
-
-      {{#if me.isAuthenticated}}
-
-        {{#if @lesson.percentage.percent}}
-
-
-          <BsProgress as |pg|>
-            <pg.bar @showLabel={{true}} @roundDigits={{0}} @type="success" @value={{@lesson.percentage.percent}} />
-          </BsProgress>
-        {{else}}
-          <BsProgress as |pg|>
-            <pg.bar @showLabel={{true}} @roundDigits={{0}} @type="success" @value={{0}} />
-          </BsProgress>
-        {{/if}}
-      {{else}}
-        Not authed
-      {{/if}}
 
       <hr>
     </div>
 
+    {{#if me.isAuthenticated}}
+
+      {{#if @lesson.percentage.percent}}
+
+
+        <BsProgress as |pg|>
+          <pg.bar @showLabel={{true}} @roundDigits={{0}} @type="success" @value={{@lesson.percentage.percent}} />
+        </BsProgress>
+      {{else}}
+        <BsProgress as |pg|>
+          <pg.bar @showLabel={{true}} @roundDigits={{0}} @type="success" @value={{0}} />
+        </BsProgress>
+      {{/if}}
+    {{else}}
+      Not authed
+    {{/if}}
+
+    <hr>
   </div>
 
+  <BsProgress as |pg|>
+    <pg.bar @showLabel={{true}} @roundDigits={{0}} @type="success" @value={{@module.progress}} />
+  </BsProgress>
+  {{/if}}
+  <p>~ 5 Minutes</p>
 
-</div>
+
+  </div>
+{{/link-to}}

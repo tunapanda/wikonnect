@@ -12,7 +12,7 @@ const lessonRoute = '/api/v1/lessons/';
 const lessonID = 'basics3';
 const lessonData = {
   lesson: {
-    'id': 'lesson11',
+    'id': lessonID,
     'name': 'Testing Lessons Path',
     'slug': 'testing-lesson-path',
     'description': 'Testing organization of the courses.',
@@ -157,27 +157,12 @@ describe('LESSONS ROUTE', () => {
         done();
       });
   });
-  it('Should list ONE lesson-paths item on GET using PARAMS', done => {
-    chai
-      .request(server)
-      .get(lessonRoute + lessonID)
-      .set(tokens.headerBasicUser2)
-      .end((err, res) => {
-        res.should.have.status(200);
-        res.should.be.json;
-        res.body.lesson.should.have.property('id');
-        res.body.lesson.should.have.property('name');
-        res.body.lesson.should.have.property('slug');
-        res.body.lesson.should.have.property('creatorId');
-        done();
-      });
-  });
   it('Should UPDATE a lesson-path record on PUT', done => {
     chai
       .request(server)
       .put(lessonRoute + lessonID)
-      .set(tokens.headersSuperAdmin1)
       .set('Content-Type', 'application/json')
+      .set(tokens.headersSuperAdmin1)
       .send(putData)
       .end((err, res) => {
         res.status.should.eql(201);
@@ -233,7 +218,7 @@ describe('ACTIVITY ROUTE', () => {
       .end((err, res) => {
         res.status.should.eql(400);
         res.should.be.json;
-        res.body.message.should.eql('That activity path does not exist');
+        res.body.errors.should.eql(['Bad Request']);
         done();
       });
   });
@@ -314,7 +299,7 @@ describe('ACTIVITY ROUTE', () => {
       .request(server)
       .put(activityRoute + activityID)
       .set('Content-Type', 'application/json')
-      .send({ 'activity': { 'user_id': 'user3' }})
+      .send({ 'activity': { 'user_id': 'user3' } })
       .end((err, res) => {
         res.status.should.eql(201);
         res.should.be.json;
