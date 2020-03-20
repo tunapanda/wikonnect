@@ -1,22 +1,18 @@
 {{!-- {{outlet}} --}}
 {{!-- {{outlet}} --}}
 <div id="chapter">
-
-
   <div class="heading  bg-purple">
     Chapter
     <h2>{{model.name}} </h2>
-
-    {{!-- <p> {{model.description}}</p> --}}
   </div>
-  {{!--  --}}
-
 
   <div class="chapter-content padded">
     <br>
-    <H5p @location={{model.contentUri}} />
-    <br>
+    <div class="embed-responsive embed-responsive-16by9">
+      <H5p @location={{model.contentUri}} />
+      <br>
+      <br>
+    </div>
     <p> {{model.description}}</p>
   </div>
-
 </div>
