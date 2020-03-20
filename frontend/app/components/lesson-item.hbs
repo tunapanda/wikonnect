@@ -1,4 +1,4 @@
-{{#link-to "course.module.lesson" @lesson.slug }}
+{{#link-to "lesson" @lesson.slug }}
   <div class="module-item {{if @available "green" "red"}}">
 
 
@@ -29,18 +29,12 @@
         </BsProgress>
       {{/if}}
     {{else}}
-      Not authed
     {{/if}}
 
     <hr>
   </div>
 
-  <BsProgress as |pg|>
-    <pg.bar @showLabel={{true}} @roundDigits={{0}} @type="success" @value={{@module.progress}} />
-  </BsProgress>
-  {{/if}}
-  <p>~ 5 Minutes</p>
 
 
-  </div>
+
 {{/link-to}}
