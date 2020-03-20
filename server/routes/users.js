@@ -130,10 +130,7 @@ router.post('/', validateAuthRoutes.validateNewUser, createPasswordHash, async c
  * @apiGroup Authentication
  *
  * @apiVersion 0.4.0
- * @apiDescription This is the Description.
- * It is multiline capable.
- *
- * Last line of Description.
+ * @apiDescription list a single user on the platform
  * @apiPermission [admin, superadmin]
  * @apiHeader (Header) {String} authorization Bearer <<YOUR_API_KEY_HERE>>
  *
@@ -207,6 +204,18 @@ router.get('/:id', permController.requireAuth, async ctx => {
   ctx.body = { user };
 
 });
+
+/**
+ * @api {get} /users GET all users.
+ * @apiName GetUsers
+ * @apiGroup Authentication
+ *
+ * @apiVersion 0.4.0
+ * @apiDescription list all user on the platform
+ * @apiPermission [admin, superadmin]
+ * @apiHeader (Header) {String} authorization Bearer <<YOUR_API_KEY_HERE>>
+ *
+ */
 router.get('/', permController.requireAuth, permController.grantAccess('readAny', 'profile'), async ctx => {
   let user = User.query();
 
@@ -230,9 +239,30 @@ router.get('/', permController.requireAuth, permController.grantAccess('readAny'
   ctx.body = { user };
 });
 
-router.put('/:id', jwt.authenticate, permController.grantAccess('updateOwn', 'profile'), async ctx => {
-  const user = await User.query().patchAndFetchById(ctx.params.id, ctx.request.body.user);
-  ctx.assert(user, 404, 'That user does not exist.');
+/**
+ * @api {put} /users/:id PUT users data.
+ * @apiName PutAUser
+ * @apiGroup Authentication
+ *
+ * @apiVersion 0.4.0
+ * @apiDescription edit users data on the platform
+ * @apiPermission [admin, superadmin]
+ * @apiHeader (Header) {String} authorization Bearer <<YOUR_API_KEY_HERE>>
+ *
+ */
+
+router.put('/:id', jwt.authenticate, permController.requireAuth, permController.grantAccess('updateOwn', 'profile'), async ctx => {
+
+  let user;
+  try {
+    const user = await User.query().patchAndFetchById(ctx.params.id, ctx.request.body.user);
+    ctx.assert(user, 404, 'That user does not exist.');
+  } catch (e) {
+    if (e.statusCode) {
+      ctx.throw(e.statusCode, null, { errors: [e.message] });
+    } else { ctx.throw(400, null, { errors: ['Bad Request', e.message] }); }
+    throw e;
+  }
 
   ctx.status = 200;
   ctx.body = { user };
