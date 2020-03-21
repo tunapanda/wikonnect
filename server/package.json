@@ -28,7 +28,7 @@
     "jsonwebtoken": "^8.5.1",
     "knex": "^0.19.5",
     "koa": "^2.10.0",
-    "koa-body": "^4.1.1",ga
+    "koa-body": "^4.1.1",
     "koa-bodyparser": "^4.2.1",
     "koa-bunyan-logger": "^2.1.0",
     "koa-jwt": "^3.6.0",
