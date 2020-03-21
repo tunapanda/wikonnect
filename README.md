@@ -31,6 +31,7 @@ Ensure you are installing Node 10 or greater and npm 6 or greater.
 ### Set up PostgreSQL
 
 - [Ubuntu installation](https://www.digitalocean.com/community/tutorials/how-to-install-and-use-postgresql-on-ubuntu-18-04)
+- [Fedora installation](https://fedoraproject.org/wiki/PostgreSQL)
 - [OSX installation](https://www.codementor.io/engineerapart/getting-started-with-postgresql-on-mac-osx-are8jcopb)
 - [Windows installation](http://www.postgresqltutorial.com/install-postgresql/)
 
