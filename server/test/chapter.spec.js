@@ -4,11 +4,12 @@ const chaiHttp = require('chai-http');
 const chaiJSON = require('chai-json-schema');
 const server = require('../index');
 const tokens = require('./_tokens');
+const knex = require('../db/db');
 
 
-chai.should();
 chai.use(chaiHttp);
 chai.use(chaiJSON);
+chai.should();
 
 const route = '/api/v1/chapters/';
 const itemID = 'chapter19';
@@ -43,15 +44,23 @@ const invalidData = {
 
 describe('CHAPTER ROUTE', () => {
 
+  before(async () => {
+    await knex.migrate.rollback();
+    await knex.migrate.latest();
+    return knex.seed.run();
+  });
+
   // Passing tests
   it('Should CREATE a chapter record on POST with valid data and return a JSON object', done => {
     chai
       .request(server)
       .post(route)
+      .set(tokens.headersSuperAdmin1)
       .set('Content-Type', 'application/json')
       .set(tokens.headersSuperAdmin1)
       .send(data)
       .end((err, res) => {
+
         res.status.should.eql(201);
         res.should.be.json;
         res.body.should.have.property('chapter');
@@ -132,8 +141,7 @@ describe('CHAPTER ROUTE', () => {
         res.should.be.json;
         res.body.should.be.a('object');
         res.body.should.have.property('errors');
-        res.body.errors.should.have.property('creatorId');
-        res.body.errors.should.have.property('lessonId');
+        res.body.errors[0].should.eql('Bad Request');
         done();
       });
   });
@@ -147,7 +155,9 @@ describe('CHAPTER ROUTE', () => {
       .end((err, res) => {
         res.status.should.eql(400);
         res.should.be.json;
-        res.body.message.should.eql('No chapter with that ID');
+        res.body.should.be.a('object');
+        res.body.should.have.property('errors');
+        res.body.errors.should.eql(['Bad Request']);
         done();
       });
   });

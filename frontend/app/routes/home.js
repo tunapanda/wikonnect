@@ -8,6 +8,7 @@ export default class HomeRoute extends Route {
   me;
 
   model() {
-    return this.me.user;
+    console.log(this.me.user.enrolledCourses.length);
+    return this.me.user.enrolledCourses;
   }
 }

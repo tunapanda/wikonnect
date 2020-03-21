@@ -5,9 +5,6 @@
   </div>
 
   <div class="padded">
-    <BsAlert @visible={{true}} @fade={{true}} @type="info" @dismissible={{true}}>
-      You successfully read this important alert message.
-    </BsAlert>
 
     {{#each model.enrolledCourses as |course_item|}}
       <CourseItem @course={{course_item}} @progress={{course_item.progress}} @title={{course_item.name}}
@@ -15,7 +12,4 @@
     {{/each}}
 
   </div>
-
-
-
 </div>

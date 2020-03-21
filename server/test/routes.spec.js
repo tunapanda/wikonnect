@@ -12,7 +12,7 @@ const lessonRoute = '/api/v1/lessons/';
 const lessonID = 'basics3';
 const lessonData = {
   lesson: {
-    'id': 'lesson11',
+    'id': lessonID,
     'name': 'Testing Lessons Path',
     'slug': 'testing-lesson-path',
     'description': 'Testing organization of the courses.',
@@ -73,7 +73,7 @@ describe('LESSONS ROUTE', () => {
         res.should.be.json;
         res.body.should.be.a('object');
         res.body.should.have.property('errors');
-        res.body.errors.should.have.property('creatorId');
+        res.body.errors.should.eql(['Bad Request']);
         done();
       });
   });
@@ -86,7 +86,7 @@ describe('LESSONS ROUTE', () => {
       .end((err, res) => {
         res.status.should.eql(400);
         res.should.be.json;
-        res.body.message.should.eql('That lesson path does not exist');
+        res.body.errors.should.eql(['Bad Request']);
         done();
       });
   });
@@ -97,7 +97,7 @@ describe('LESSONS ROUTE', () => {
       .set(tokens.headerBasicUser2)
       .end((err, res) => {
         res.should.have.status(200);
-        assert.equal(res.body.lesson.length, 0);
+        assert.equal(res.body.lessons.length, 0);
         done();
       });
   });
@@ -118,7 +118,7 @@ describe('LESSONS ROUTE', () => {
       .request(server)
       .post(lessonRoute)
       .set('Content-Type', 'application/json')
-      .set(tokens.headerBasicUser2)
+      .set(tokens.headersSuperAdmin1)
       .send(lessonData)
       .end((err, res) => {
         res.status.should.eql(201);
@@ -135,10 +135,10 @@ describe('LESSONS ROUTE', () => {
       .end((err, res) => {
         res.should.have.status(200);
         res.should.be.json;
-        res.body.lesson[0].should.have.property('id');
-        res.body.lesson[0].should.have.property('name');
-        res.body.lesson[0].should.have.property('slug');
-        res.body.lesson[0].should.have.property('creatorId');
+        res.body.lessons[0].should.have.property('id');
+        res.body.lessons[0].should.have.property('name');
+        res.body.lessons[0].should.have.property('slug');
+        res.body.lessons[0].should.have.property('creatorId');
         done();
       });
   });
@@ -150,25 +150,10 @@ describe('LESSONS ROUTE', () => {
       .end((err, res) => {
         res.should.have.status(200);
         res.should.be.json;
-        res.body.lesson[0].should.have.property('id');
-        res.body.lesson[0].should.have.property('name');
-        res.body.lesson[0].should.have.property('slug');
-        res.body.lesson[0].should.have.property('creatorId');
-        done();
-      });
-  });
-  it('Should list ONE lesson-paths item on GET using PARAMS', done => {
-    chai
-      .request(server)
-      .get(lessonRoute + lessonID)
-      .set(tokens.headerBasicUser2)
-      .end((err, res) => {
-        res.should.have.status(200);
-        res.should.be.json;
-        res.body.lesson.should.have.property('id');
-        res.body.lesson.should.have.property('name');
-        res.body.lesson.should.have.property('slug');
-        res.body.lesson.should.have.property('creatorId');
+        res.body.lessons[0].should.have.property('id');
+        res.body.lessons[0].should.have.property('name');
+        res.body.lessons[0].should.have.property('slug');
+        res.body.lessons[0].should.have.property('creatorId');
         done();
       });
   });
@@ -177,6 +162,7 @@ describe('LESSONS ROUTE', () => {
       .request(server)
       .put(lessonRoute + lessonID)
       .set('Content-Type', 'application/json')
+      .set(tokens.headersSuperAdmin1)
       .send(putData)
       .end((err, res) => {
         res.status.should.eql(201);
@@ -189,6 +175,7 @@ describe('LESSONS ROUTE', () => {
     chai
       .request(server)
       .delete(lessonRoute + lessonID)
+      .set(tokens.headersSuperAdmin1)
       .set('Content-Type', 'application/json')
       .end((err, res) => {
         res.status.should.eql(200);
@@ -231,7 +218,7 @@ describe('ACTIVITY ROUTE', () => {
       .end((err, res) => {
         res.status.should.eql(400);
         res.should.be.json;
-        res.body.message.should.eql('That activity path does not exist');
+        res.body.errors.should.eql(['Bad Request']);
         done();
       });
   });
@@ -312,7 +299,7 @@ describe('ACTIVITY ROUTE', () => {
       .request(server)
       .put(activityRoute + activityID)
       .set('Content-Type', 'application/json')
-      .send({ 'activity': { 'user_id': 'user3' }})
+      .send({ 'activity': { 'user_id': 'user3' } })
       .end((err, res) => {
         res.status.should.eql(201);
         res.should.be.json;
@@ -325,6 +312,7 @@ describe('ACTIVITY ROUTE', () => {
       .request(server)
       .delete(activityRoute + activityID)
       .set('Content-Type', 'application/json')
+      .set(tokens.headerBasicUser2)
       .end((err, res) => {
         res.status.should.eql(200);
         res.should.be.json;

@@ -9,7 +9,7 @@ class Enrollment extends Model {
     return 'enrollments';
   }
 
-  static get jsonSchema(){
+  static get jsonSchema() {
     return enrollmentsSchema;
   }
 
