@@ -1,4 +1,4 @@
-// @import "variables";
+@import 'colors';
 
 // .btn-primary {
 //   background: $primary-orange;
@@ -28,3 +28,35 @@
 //   text-align: center;
 //   line-height: 2;
 // }
+
+@mixin voting-button($base-color) {
+  background-color: $base-color;
+  border-color: $base-color;
+
+  &:hover {
+    background: darken($base-color, 10%);
+  }
+}
+.voting {
+  button {
+    border-block-start-width: 0.25rem;
+    border-radius: 0.25rem;
+    color: #fff;
+    text-align: center;
+    border: 0;
+    margin-bottom: 30px;
+  }
+
+  .votes {
+    display: inline-block;
+    margin-right: 20px;
+  }
+
+  .upvote {
+    @include voting-button($base-green);
+  }
+
+  .downvote {
+    @include voting-button($base-red);
+  }
+}
