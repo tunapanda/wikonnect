@@ -10,14 +10,18 @@ module.exports = async function (ctx, next) {
     }
 
     let status = err.status || 500;
-    let message = err.message && status < 500
-      ? err.message
-      : 'Sorry, an error has occurred.';
+    // let message = err.message && status < 500
+    //   ? err.message
+    //   : 'Sorry, an error has occurred.';
+
+    let message = err.message && status < 500 ? err.message : 'Sorry, an error has occurred.';
+
 
     console.log(`${ctx.method} ${ctx.url} - ${status} - ${message}`);
 
     if (status >= 500) {
       console.log(err.stack);
+      err.headers = Object.assign({}, err.headers, { 'Retry-After': 30 });
     }
 
     ctx.status = status;

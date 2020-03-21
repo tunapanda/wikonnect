@@ -1,0 +1,144 @@
+<br>
+<div class="padded">
+  <BsButton @type="primary" @icon="glyphicon glyphicon-download">
+    CREATE H5P
+  </BsButton>
+</div>
+
+<hr>
+<div id="cms-desktop" class="padded">
+
+
+  <div class="card cms-colum">
+
+
+
+
+    <div class="card-header">
+      <h5>Course</h5><button class="btn btn-primary btn-sm " {{action "toggleCourseModal"}}>+ Create Course </button>
+    </div>
+    <ul class="list-group list-group-flush">
+
+      {{#each allCourses as |course|}}
+
+        <button class=" flat-button no-decoration" href="#" {{action "selectCourse" course.slug}}>
+          <li class="list-group-item">{{course.name}} <br><span>{{course.description}}</span></li>
+        </button>
+      {{/each}}
+    </ul>
+    <div class="card-footer">
+
+    </div>
+  </div>
+
+
+  <div class="card cms-colum">
+    <div class="card-header">
+      <h5>Module</h5><button class="btn btn-primary btn-sm " {{action "toggleModuleModal"}}>+ Create Module </button>
+    </div>
+    <div class="padded">
+      {{!-- <BsAlert class="" @type="danger">
+        Select a course to add modules to it
+      </BsAlert> --}}
+    </div>
+
+    <ul class="list-group list-group-flush">
+      {{#each selectedCourse.modules as |module|}}
+
+        <button class=" flat-button no-decoration" href="#" {{action "selectModule" module.slug}}>
+          <li class="list-group-item">{{module.name}} <br><span>{{module.description}}</span></li>
+        </button>
+
+      {{/each}}
+    </ul> <br>
+    <div class="card-footer">
+      <button class=" btn btn-primary btn-sm " {{action "toggleModuleModal"}}>
+        + Add Module to {{selectedCourse.name}}
+      </button>
+    </div>
+  </div>
+
+
+
+  <div class="card cms-colum">
+    <div class="card-header">
+      <h5>Lesson</h5><button class="btn btn-primary btn-sm " {{action "toggleModuleModal"}}>+ Create Lesson </button>
+    </div>
+    <div class="padded">
+      {{!-- <BsAlert class="" @type="danger">
+        Select a course to add modules to it
+      </BsAlert> --}}
+    </div>
+
+    <ul class="list-group list-group-flush">
+
+      {{#each selectedModule.lessons as |lesson|}}
+
+        <button class=" flat-button no-decoration" href="#" {{action "selectLesson" lesson.slug}}>
+          <li class="list-group-item">{{lesson.name}} <br><span>{{lesson.description}}</span></li>
+        </button>
+
+      {{/each}}
+    </ul> <br>
+    <div class="card-footer">
+      <button class=" btn btn-primary btn-sm " {{action "toggleModuleModal"}}>
+        + Add Lesson to {{selectedModule.name}}
+      </button>
+    </div>
+  </div>
+
+
+  <div class="card cms-colum">
+    <div class="card-header">
+      <h5>Chapter</h5>
+      <button class="btn btn-primary btn-sm " {{action "toggleModuleModal"}}>
+        + Create H5P Chapter
+      </button>
+    </div>
+    <div class="padded">
+      {{!-- <BsAlert class="" @type="danger">
+        Select a course to add modules to it
+      </BsAlert> --}}
+    </div>
+
+    <ul class="list-group list-group-flush">
+      {{#each selectedLesson.chapters as |chapter|}}
+
+        <button class=" flat-button no-decoration" href="#" {{action "selectLesson" lesson.slug}}>
+          <li class="list-group-item">{{chapter.name}} <br><span>{{chapter.description}}</span></li>
+        </button>
+
+      {{/each}}
+    </ul> <br>
+    <div class="card-footer">
+      <button class=" btn btn-primary btn-sm " {{action "toggleModuleModal"}}>
+        + Add H5P to {{selectedLesson.name}}
+      </button>
+    </div>
+  </div>
+
+
+
+
+
+  <BsModalSimple @open={{createCourseModal}} @title="Create Course" @closeTitle={{null}} @submitTitle="Publish Course"
+    @size="" @closeButton={{true}} @fade={{true}} @backdrop={{true}} @backdropClose={{true}}
+    @onSubmit={{action "submit"}} @onHidden={{action "toggleCourseModal"}} @renderInPlace={{true}}>
+
+    <BsForm @model={{coursemodel}} @onSubmit={{action "saveCourse"}} as |form|>
+      <form.element @controlType="text" @label="Course Title" @property="name" />
+      <form.element @controlType="text" @label="Course Description" @property="description" />
+      <BsButton @type="primary" @defaultText="Save Course" @buttonType="submit" />
+
+
+    </BsForm>
+  </BsModalSimple>
+
+  <BsModalSimple @open={{createModuleModal}} @title="Simple Modal" @closeTitle="Ok" @submitTitle={{null}} @size=""
+    @closeButton={{true}} @fade={{true}} @backdrop={{true}} @backdropClose={{true}} @onSubmit={{action "submit"}}
+    @onHidden={{action "toggleModuleModal"}} @renderInPlace={{true}}>
+    Hi there
+  </BsModalSimple>
+
+
+</div>

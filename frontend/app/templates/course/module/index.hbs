@@ -1,7 +1,8 @@
 {{outlet}}
 {{!-- {{outlet}} --}}
 <div id="courses">
-  <div class="heading">
+    <div class="heading bg-yellow">
+
     <h2>{{model.name}}</h2>
 
     <p> {{model.description}}</p>
@@ -22,13 +23,14 @@
 
     <hr>
 
-
+<div class="modules-list">
     {{#each model.lessons as |lesson|}}
 
       <LessonItem @lesson={{lesson}} />
     {{/each}}
 
 
+  </div>
   </div>
 
 </div>

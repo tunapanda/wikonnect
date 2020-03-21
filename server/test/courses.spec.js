@@ -3,10 +3,11 @@ const chaiHttp = require('chai-http');
 const server = require('../index');
 const assert = chai.assert;
 const tokens = require('./_tokens');
+const knex = require('../db/db');
 
 
-chai.should();
 chai.use(chaiHttp);
+chai.should();
 
 const route = '/api/v1/courses/';
 const itemID = 'course10';
@@ -40,6 +41,12 @@ const invalidData = {
 };
 
 describe('COURSES ROUTES', () => {
+
+  before(async () => {
+    await knex.migrate.rollback();
+    await knex.migrate.latest();
+    return knex.seed.run();
+  });
   // Failing tests
   it('Should throw an ERROR on POST with invalid data', done => {
     chai
@@ -49,10 +56,10 @@ describe('COURSES ROUTES', () => {
       .set(tokens.headersSuperAdmin1)
       .send(invalidData)
       .end((err, res) => {
-        res.status.should.eql(401);
+        res.status.should.eql(400);
         res.should.be.json;
         res.body.should.be.an('object');
-        res.body.errors.should.have.property('creatorId');
+        res.body.errors[0].should.eql('Bad Request');
         done();
       });
   });
@@ -64,9 +71,9 @@ describe('COURSES ROUTES', () => {
       .set(tokens.headersSuperAdmin1)
       .send(putData)
       .end((err, res) => {
-        res.status.should.eql(401);
+        res.status.should.eql(400);
         res.should.be.json;
-        res.body.message.should.eql('That course does not exist');
+        res.body.errors[0].should.eql('Bad Request');
         done();
       });
   });
@@ -109,6 +116,10 @@ describe('COURSES ROUTES', () => {
         res.body.course[0].should.have.property('slug');
         res.body.course[0].should.have.property('creatorId');
         res.body.course[0].modules[0].should.have.property('id');
+        res.body.course[0].modules[0].should.have.property('type');
+        res.body.course[0].modules[0].type.should.eql('modules');
+        res.body.course[0].enrollments[0].should.have.property('id');
+        res.body.course[0].enrollments[0].type.should.eql('enrollments');
 
         done();
       });

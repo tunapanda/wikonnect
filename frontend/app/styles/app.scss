@@ -8,9 +8,12 @@
 @import 'modules';
 @import 'nav';
 @import 'search';
+@import "warning-component";
 @import 'common/typography';
 @import 'profile';
+@import "cms-desktop";
 @import 'common/utils';
+
 @import url('https://rsms.me/inter/inter.css');
 
 html {

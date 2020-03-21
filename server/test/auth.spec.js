@@ -65,9 +65,7 @@ describe('AUTHENTICATION ROUTES', () => {
         .set('Content-Type', 'application/json')
         .end((err, res) => {
           res.should.have.status(400);
-          expect(res.body.errors).to.deep.equal({ 'email': ['Email can\'t be blank'], 'phonenumber': ['Phonenumber can\'t be blank'] });
-          expect(res.body.errors).to.have.property('email').with.lengthOf(1);
-          expect(res.body.errors).to.have.property('phonenumber').with.lengthOf(1);
+          expect(res.body.errors).to.deep.equal(['Bad Request']);
           done();
         });
     });
@@ -79,8 +77,7 @@ describe('AUTHENTICATION ROUTES', () => {
         .send(registerUser)
         .set('Content-Type', 'application/json')
         .end((err, res) => {
-          res.should.have.status(406);
-          expect(res.body).to.deep.equal({ 'error': 'User exists' });
+          res.should.have.status(400);
           done();
         });
     });
@@ -114,7 +111,7 @@ describe('AUTHENTICATION ROUTES', () => {
         .set('Content-Type', 'application/json')
         .set(tokens.headerBasicUser2)
         .end((err, res) => {
-          res.should.have.status(401);
+          res.should.have.status(400);
           done();
         });
     });
@@ -130,14 +127,32 @@ describe('AUTHENTICATION ROUTES', () => {
         });
     });
 
-    it('Should get ONE user on GET requests using QUERY', done => {
+    it('Should throw an error is /:id does not match the stored user data', done => {
       chai
         .request(server)
         .get(usersRoute + '?id=' + userId)
         .set('Content-Type', 'application/json')
         .set(tokens.headerBasicUser2)
         .end((err, res) => {
-          res.should.have.status(401);
+          res.should.have.status(400);
+          done();
+        });
+    });
+
+    it('Should return a user if the /:id matches stored user data ', done => {
+      chai
+        .request(server)
+        .get(usersRoute + userId)
+        .set('Content-Type', 'application/json')
+        .set(tokens.headersSuperAdmin1)
+        .end((err, res) => {
+          res.should.have.status(200);
+          expect(res.body.user).not.have.property('password');
+          expect(res.body.user).not.have.property('hash');
+          expect(res.body.user).to.have.property('id');
+          expect(res.body.user).to.have.property('achievementAwards');
+          expect(res.body.user).to.have.property('enrolledCourses');
+          expect(res.body.user).to.have.property('userVerification');
           done();
         });
     });

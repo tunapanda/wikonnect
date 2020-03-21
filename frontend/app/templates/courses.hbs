@@ -1,0 +1,21 @@
+<div id="home">
+  <div class="heading bg-orange">
+    <h2>Courses</h2>
+    <p>Each module covers a broad area of knowledge divided into five related topics.</p>
+  </div>
+
+  <div class="padded">
+    <BsAlert @visible={{true}} @fade={{true}} @type="info" @dismissible={{true}}>
+      You successfully read this important alert message.
+    </BsAlert>
+
+    {{#each this.courseList as |course_item|}}
+      <CourseItem @course={{course_item}} @progress={{course_item.progress}} @title={{course_item.name}}
+        @description={{course_item.description}} @points="5" @slug={{course_item.slug}} @color={{course_item.color}} />
+    {{/each}}
+
+  </div>
+
+
+
+</div>

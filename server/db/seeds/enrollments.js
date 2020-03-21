@@ -8,6 +8,7 @@ exports.seed = function (knex) {
           id: 'enrollment1',
           user_id: 'user1',
           course_id: 'course1',
+          status: 'true',
           created_at: '2017-12-20 19:17:10',
           updated_at: '2017-12-20 19:17:10'
         }
