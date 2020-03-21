@@ -28,7 +28,7 @@
     "jsonwebtoken": "^8.5.1",
     "knex": "^0.19.5",
     "koa": "^2.10.0",
-    "koa-body": "^4.1.1",
+    "koa-body": "^4.1.1",ga
     "koa-bodyparser": "^4.2.1",
     "koa-bunyan-logger": "^2.1.0",
     "koa-jwt": "^3.6.0",
@@ -44,6 +44,7 @@
     "nodemon": "^2.0.1",
     "objection": "1.6.11",
     "pg": "^7.18.2",
+    "pino": "^5.17.0",
     "rate-limiter-flexible": "^2.0.0",
     "redis": "^2.8.0",
     "sharp": "^0.25.1",
