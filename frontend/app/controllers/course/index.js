@@ -27,6 +27,7 @@ export default class CourseIndexController extends Controller {
     });
   }
 
+
   get isEnrolled() {
     if (this.model.enrollments.length == 0) {
       return {

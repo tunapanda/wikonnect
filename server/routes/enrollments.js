@@ -55,6 +55,7 @@ router.post('/', requireAuth, async ctx => {
     throw e;
   }
   ctx.status = 201;
+
   ctx.body = { enrollment };
 });
 
@@ -76,7 +77,6 @@ router.put('/:id', requireAuth, async ctx => {
     const enrollment = await enrollment_query.patchAndFetchById(ctx.params.id, course_data);
     ctx.status = 201;
     ctx.body = { enrollment };
-
   } catch (e) {
     if (e.statusCode) {
       ctx.throw(e.statusCode, null, { errors: [e.message] });
