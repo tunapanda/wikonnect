@@ -84,23 +84,34 @@ development: {
 
 #### Next, you will want to set up your database and start your server.
 
-Ensure that knex is installed globally to run some of the commands below
-Using npm:
+Ensure that you have redis-server running locally in your pc.
 
-```
-npm install -g knex
-```
+For Macos and Windows systems, check out the [Download page](https://redis.io/download) to download redis-server
 
-Also ensure that you have redis-server running locally in your pc, To install it in your pc run the command below
-
+To install it in a linux system, run the command below:
 ```
 sudo apt-get install redis-server
 ```
-
-To confirm that the service is active, enter the command below
-
+To confirm that the service is active, use the command below:
 ```
 sudo service redis-server status
+```
+If the service is not running, use the command below to start it:
+```
+sudo service redis-server start
+```
+
+To run the knex commands that follow later, there are 2 possible options:
+- Install knex CLI globally
+- prefix all the knex commands with npx e.g `npx knex migrate:latest`  (If you have [npx](https://www.npmjs.com/package/npx) installed)
+
+To check if knex CLI is installed globally, run the command below which shows the Knex CLI version:
+```
+knex --version
+```
+If knex CLI is not installed globally, install it using the command below and make sure to confirm that the installation was successful using the command above:
+```
+npm install -g knex
 ```
 
 Running `knex migrate:latest` in the `server/` directory will use the migration files in `server/migrations` to create and format the tables so that they will work with wikonnect.
