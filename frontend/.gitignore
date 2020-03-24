@@ -23,8 +23,4 @@
 /.node_modules.ember-try/
 /bower.json.ember-try
 /package.json.ember-try
-<<<<<<< HEAD
-/public/uploads/h5p
-=======
 /public/uploads/
->>>>>>> 7118de32c253ed9895cc8c90bba4c4e10f05cb23
