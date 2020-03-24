@@ -62,7 +62,6 @@ async function userProgress(courseData, userId) {
   });
 }
 
-
 async function returnType(parent) {
   if (parent.length == undefined) {
     parent.modules.forEach(lesson => {
