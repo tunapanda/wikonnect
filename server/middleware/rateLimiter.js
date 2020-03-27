@@ -48,8 +48,9 @@ const env_rate_limiter = {
 
 const checkRateLimiter = new RateLimiterRedis(env_rate_limiter[environment]);
 
+module.exports = async function (ctx, next) {
+  console.log(ctx.state.user);
 
-async function rateLimiterMiddleware(ctx, next) {
   // req.userId should be set
   const key = ctx.state.user.data.id ? ctx.state.user.data.id : ctx.ip;
   const pointsToConsume = ctx.state.user.data.id ? 1 : 30;
@@ -59,19 +60,5 @@ async function rateLimiterMiddleware(ctx, next) {
   } catch (error) {
     ctx.throw(429, 'Too Many Requests');
   }
-}
-
-async function rateLimiter(ctx, next) {
-  try {
-    await checkRateLimiter.consume(ctx.ip);
-    await next();
-  } catch (rejRes) {
-    ctx.throw(429, 'Too Many Requests');
-  }
-}
-
-module.exports = {
-  rateLimiterMiddleware,
-  rateLimiter
 };
 

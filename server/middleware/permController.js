@@ -32,7 +32,7 @@ exports.requireAuth = async function (ctx, next) {
       await next();
     }
   } catch (error) {
-    log.error('Token has expired');
+    log.error('Token has expired with error - %s', error);
     ctx.throw(400, null, { errors: ['Bad Request'] });
   }
 };

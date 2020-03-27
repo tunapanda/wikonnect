@@ -7,6 +7,7 @@ const sharp = require('sharp');
 
 const s3 = require('../utils/s3Util');
 const User = require('../models/user');
+const log = require('../utils/logger');
 const jwt = require('../middleware/jwt');
 const permController = require('../middleware/permController');
 const validateAuthRoutes = require('../middleware/validation/validateAuthRoutes');
@@ -15,6 +16,8 @@ const validateAuthRoutes = require('../middleware/validation/validateAuthRoutes'
 const environment = process.env.NODE_ENV || 'development';
 const config = require('../knexfile.js')[environment];
 const knex = require('knex')(config);
+
+
 
 const router = new Router({
   prefix: '/users'
@@ -110,6 +113,8 @@ router.post('/', validateAuthRoutes.validateNewUser, createPasswordHash, async c
     if (e.status === 503) {
       e.headers = Object.assign({}, e.headers, { 'Retry-After': 30 });
     } else {
+      log.info('Failed for user - %s, with error %s', ctx.request.body.user.email, e.message);
+
       ctx.throw(400, {
         errors: [{
           'id': e.code,
@@ -285,7 +290,7 @@ router.put('/:id', jwt.authenticate, permController.requireAuth, permController.
  * @apiPermission [basic, admin, superadmin]
  * @apiHeader (Header) {String} authorization Bearer <<YOUR_API_KEY_HERE>>
  *
- * 
+ *
  * @apiError {String} errors Bad Request.
  */
 
