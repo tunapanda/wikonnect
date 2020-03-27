@@ -49,7 +49,6 @@ const env_rate_limiter = {
 const checkRateLimiter = new RateLimiterRedis(env_rate_limiter[environment]);
 
 module.exports = async function (ctx, next) {
-  console.log(ctx.state.user);
 
   // req.userId should be set
   const key = ctx.state.user.data.id ? ctx.state.user.data.id : ctx.ip;
