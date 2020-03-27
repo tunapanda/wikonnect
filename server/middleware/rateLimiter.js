@@ -2,15 +2,6 @@ const redisClient = require('../utils/redisConfig');
 const { RateLimiterRedis } = require('rate-limiter-flexible');
 const environment = process.env.NODE_ENV || 'development';
 
-
-
-// const REDIS_URL = process.env.REDISCLOUD_URL || 'redis://localhost:6379';
-
-// const redisClient = redis.createClient(REDIS_URL, {
-//   enable_offline_queue: false,
-// });
-
-
 const env_rate_limiter = {
   ci: {
     redis: redisClient,
@@ -51,8 +42,8 @@ const checkRateLimiter = new RateLimiterRedis(env_rate_limiter[environment]);
 module.exports = async function (ctx, next) {
 
   // req.userId should be set
-  const key = ctx.state.user.data.id ? ctx.state.user.data.id : ctx.ip;
-  const pointsToConsume = ctx.state.user.data.id ? 1 : 30;
+  const key = ctx.ip;
+  const pointsToConsume = process.env.NODE_ENV === 'test' ? 100 : 30;
   try {
     await checkRateLimiter.consume(key, pointsToConsume);
     await next();
