@@ -6,7 +6,7 @@ define({ "api": [
     "name": "GetAUser",
     "group": "Authentication",
     "version": "0.4.0",
-    "description": "<p>This is the Description. It is multiline capable.</p> <p>Last line of Description.</p>",
+    "description": "<p>list a single user on the platform</p>",
     "permission": [
       {
         "name": "[admin, superadmin]"
@@ -47,6 +47,77 @@ define({ "api": [
           "type": "json"
         }
       ]
+    },
+    "filename": "./server/routes/users.js",
+    "groupTitle": "Authentication"
+  },
+  {
+    "type": "get",
+    "url": "/users",
+    "title": "GET all users.",
+    "name": "GetUsers",
+    "group": "Authentication",
+    "version": "0.4.0",
+    "description": "<p>list all user on the platform</p>",
+    "permission": [
+      {
+        "name": "[admin, superadmin]"
+      }
+    ],
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "authorization",
+            "description": "<p>Bearer &lt;&lt;YOUR_API_KEY_HERE&gt;&gt;</p>"
+          }
+        ]
+      }
+    },
+    "filename": "./server/routes/users.js",
+    "groupTitle": "Authentication"
+  },
+  {
+    "type": "post",
+    "url": "/users/:id/profile-image",
+    "title": "POST users profile picture.",
+    "name": "PostAUser",
+    "group": "Authentication",
+    "version": "0.4.0",
+    "description": "<p>upload user profile pic</p>",
+    "permission": [
+      {
+        "name": "[basic, admin, superadmin]"
+      }
+    ],
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "authorization",
+            "description": "<p>Bearer &lt;&lt;YOUR_API_KEY_HERE&gt;&gt;</p>"
+          }
+        ]
+      }
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "errors",
+            "description": "<p>Bad Request.</p>"
+          }
+        ]
+      }
     },
     "filename": "./server/routes/users.js",
     "groupTitle": "Authentication"
@@ -170,6 +241,35 @@ define({ "api": [
     },
     "version": "0.0.0",
     "filename": "./server/routes/auth.js",
+    "groupTitle": "Authentication"
+  },
+  {
+    "type": "put",
+    "url": "/users/:id",
+    "title": "PUT users data.",
+    "name": "PutAUser",
+    "group": "Authentication",
+    "version": "0.4.0",
+    "description": "<p>edit users data on the platform</p>",
+    "permission": [
+      {
+        "name": "[admin, superadmin]"
+      }
+    ],
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "authorization",
+            "description": "<p>Bearer &lt;&lt;YOUR_API_KEY_HERE&gt;&gt;</p>"
+          }
+        ]
+      }
+    },
+    "filename": "./server/routes/users.js",
     "groupTitle": "Authentication"
   },
   {

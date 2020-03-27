@@ -4,9 +4,10 @@ Wikonnect is an open-source e-learning platform that is designed to allow anyone
 
 Getting Started
 --
+The
 The front-end is developed using Ember.js. We recommend [getting started](https://guides.emberjs.com/release/getting-started/quick-start/) with Ember by going through the tutorials.
 
-The back-end is developed using [KoaJS](https://koajs.com/).
+The back-end is developed using [KoaJS](https://koajs.com/). API doc is hosted at [tunapanda.github.io/wikonnect)](https://tunapanda.github.io/wikonnect)
 
 ## Prerequisites
 ### Tech Stack

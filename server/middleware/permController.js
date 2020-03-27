@@ -2,6 +2,7 @@ const jwToken = require('jsonwebtoken');
 const { roles } = require('./_helpers/roles');
 // const { defaultPermissionObject } = require('./_helpers/permission');
 const { secret } = require('../middleware/jwt');
+const log = require('../utils/logger');
 
 
 exports.requireAuth = async function (ctx, next) {
@@ -15,6 +16,7 @@ exports.requireAuth = async function (ctx, next) {
         }
       };
       ctx.state.user = data;
+      log.info('Access granted to Anonymous user');
       await next();
     } else if (ctx.request.header.authorization.split(' ')[0] === 'Bearer') {
       const accessToken = ctx.request.header.authorization.split(' ')[1];
@@ -26,9 +28,11 @@ exports.requireAuth = async function (ctx, next) {
         return ctx;
       }
       ctx.state.user = data;
+      log.info('Access granted to %s user', ctx.state.user.data.username);
       await next();
     }
   } catch (error) {
+    log.error('Token has expired');
     ctx.throw(400, null, { errors: ['Bad Request'] });
   }
 };
@@ -48,6 +52,7 @@ exports.grantAccess = function (action, resource) {
 
       await next();
     } catch (error) {
+      log.error('Bad request with the following message %s', error);
       ctx.throw(400, null, { errors: ['Bad Request'] });
     }
   };
