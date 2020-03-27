@@ -275,6 +275,19 @@ router.put('/:id', jwt.authenticate, permController.requireAuth, permController.
 
 });
 
+/**
+ * @api {post} /users/:id/profile-image POST users profile picture.
+ * @apiName PostAUser
+ * @apiGroup Authentication
+ *
+ * @apiVersion 0.4.0
+ * @apiDescription upload user profile pic
+ * @apiPermission [basic, admin, superadmin]
+ * @apiHeader (Header) {String} authorization Bearer <<YOUR_API_KEY_HERE>>
+ *
+ * 
+ * @apiError {String} errors Bad Request.
+ */
 
 router.post('/:id/profile-image', async (ctx, next) => {
   if ('POST' != ctx.method) return await next();
