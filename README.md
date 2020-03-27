@@ -31,6 +31,7 @@ Ensure you are installing Node 10 or greater and npm 6 or greater.
 
 ### Set up PostgreSQL
 - [Ubuntu installation](https://www.digitalocean.com/community/tutorials/how-to-install-and-use-postgresql-on-ubuntu-18-04)
+- [Fedora installation](https://fedoraproject.org/wiki/PostgreSQL)
 - [OSX installation](https://www.codementor.io/engineerapart/getting-started-with-postgresql-on-mac-osx-are8jcopb)
 - [Windows installation](http://www.postgresqltutorial.com/install-postgresql/)
 
@@ -102,5 +103,5 @@ Now point your favorite browser to http://localhost:4200/ and you will be able t
 
 Contributing
 --
-- You should join our [Discourse](https://discord.gg/P3d7ds7) server to get connected with people interested in this project and to be aware of our future announcements.
+- You should join our [Discourse](https://discord.gg/tT9Ug6D) server to get connected with people interested in this project and to be aware of our future announcements.
 - Please read the suggested [steps to contribute code to the Wikonnect project](https://github.com/tunapanda/wikonnect/blob/master/CONTRIBUTING.md) before creating issues, forking, or submitting any pull requests.

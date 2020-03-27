@@ -14,7 +14,6 @@ const router = new Router({
 });
 
 
-
 /**
  * @api {get} /courses/ GET all courses.
  * @apiName GetCourses
@@ -66,7 +65,6 @@ const router = new Router({
 router.get('/', permController.requireAuth, async ctx => {
   try {
     const course = await Course.query().where(ctx.query).eager('[modules(selectNameAndId), enrollments(selectNameAndId)]');
-
     if (ctx.state.user.data.id !== 'anonymous') {
       // get all achievements of a user
       await userProgress(course, ctx.state.user.data.id);
@@ -201,7 +199,6 @@ router.get('/:id', permController.requireAuth, async ctx => {
  * @apiParam (Post Params) {String} course[description] Description.
  * @apiParam (Post Params) {String} course[status] Courses status - published | draft .
  * @apiParam (Post Params) {String} course[creatorId] Id of the User.
-
  *
  * @apiSampleRequest off
  *
@@ -223,7 +220,6 @@ router.get('/:id', permController.requireAuth, async ctx => {
 
 router.post('/', permController.requireAuth, permController.grantAccess('createAny', 'path'), validateCourses, async ctx => {
   let newCourse = ctx.request.body.course;
-
   let course = await Course.query().insertAndFetch(newCourse);
 
   async function permObjects() {
@@ -248,7 +244,6 @@ router.post('/', permController.requireAuth, permController.grantAccess('createA
   course['permissions'] = await permObjects();
   ctx.body = { course };
 });
-
 
 /**
  * @api {put} /courses/:id PUT course.

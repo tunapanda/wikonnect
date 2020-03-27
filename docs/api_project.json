@@ -43,7 +43,11 @@
   "apidoc": "0.3.0",
   "generator": {
     "name": "apidoc",
+<<<<<<< HEAD
     "time": "2020-03-27T07:06:05.666Z",
+=======
+    "time": "2020-03-18T11:42:37.027Z",
+>>>>>>> master
     "url": "http://apidocjs.com",
     "version": "0.20.0"
   }
