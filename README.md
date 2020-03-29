@@ -19,6 +19,7 @@ The back-end is developed using [KoaJS](https://koajs.com/). API doc is hosted a
   - chai-http
 - [Cypress](https://cypress.io) for integration testing
 - [Yarn](https://yarnpkg.com/) project package manager
+- [ElasticSearch](https://www.elastic.co/) search and indexing tool
 
 Development Setup
 --
