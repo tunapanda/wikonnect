@@ -13,7 +13,8 @@
     "db:seed": "knex seed:run",
     "db:migrate": "knex migrate:make swag",
     "test": "nyc --reporter=html mocha test --exit",
-    "lint:js": "eslint ."
+    "lint:check": "eslint .",
+    "lint:fix": "eslint . --fix"
   },
   "dependencies": {
     "@elastic/elasticsearch": "^7.4.0",
