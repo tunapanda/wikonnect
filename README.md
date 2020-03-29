@@ -28,7 +28,7 @@ Development Setup
 ### Installing Node.js
 Follow instructions for downloading and [installing Node.js](https://nodejs.org/en/download/) for your operating system from the official Node.js website.
 
-Ensure you are installing Node 10 or greater and npm 6 or greater.
+Ensure you are installing Node 10 or greater.
 
 ### Set up PostgreSQL
 - [Ubuntu installation](https://www.digitalocean.com/community/tutorials/how-to-install-and-use-postgresql-on-ubuntu-18-04)
