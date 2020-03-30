@@ -7,7 +7,6 @@ const koaBunyanLogger = require('koa-bunyan-logger');
 const errorHandler = require('./middleware/error');
 const logger = require('./middleware/logger');
 const jwt = require('./middleware/jwt');
-const rateLimiter = require('./middleware/rateLimiter');
 const app = new Koa();
 
 const router = new Router({
@@ -23,8 +22,6 @@ app.use(koaBunyanLogger());
 app.use(logger);
 
 app.use(bodyParser());
-
-app.use(rateLimiter);
 
 app.use(require('koa-static')(path.resolve(__dirname, './public')));
 
@@ -64,18 +61,18 @@ if (process.env.NODE_ENv == 'development') {
     // so that koa doesn't assign 200 on body=
     ctx.status = 404;
     switch (ctx.accepts('html', 'json')) {
-    case 'html':
-      ctx.type = 'html';
-      ctx.body = '<p>Page Not Found</p>';
-      break;
-    case 'json':
-      ctx.body = {
-        message: 'Page Not Found'
-      };
-      break;
-    default:
-      ctx.type = 'text';
-      ctx.body = 'Page Not Found';
+      case 'html':
+        ctx.type = 'html';
+        ctx.body = '<p>Page Not Found</p>';
+        break;
+      case 'json':
+        ctx.body = {
+          message: 'Page Not Found'
+        };
+        break;
+      default:
+        ctx.type = 'text';
+        ctx.body = 'Page Not Found';
     }
   });
 }

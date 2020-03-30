@@ -110,27 +110,17 @@ router.post('/', validateAuthRoutes.validateNewUser, createPasswordHash, async c
     ctx.status = 201;
     ctx.body = { user };
   } catch (e) {
+    log.info('Failed for user - %s, with error %s', ctx.request.body.user.email, e.message);
     if (e.status === 503) {
       e.headers = Object.assign({}, e.headers, { 'Retry-After': 30 });
-    } else {
-      log.info('Failed for user - %s, with error %s', ctx.request.body.user.email, e.message);
-
-      ctx.throw(400, {
-        errors: [{
-          'id': e.code,
-          'status': 400,
-          'code': e.code,
-          'title': e.name,
-          'detail': e.constraint,
-          'hint': e.hint,
-          'source': {
-            'pointer': e.constraint,
-            'parameter': e.detail
-          }
-        }]
-      });
     }
-    throw e;
+    if (e.constraint === 'users_email_unique') {
+      ctx.throw(422, 'email is not unique', { errors: 'email' });
+    }
+    if (e.constraint === 'users_username_unique'){
+      ctx.throw(422, 'username is not unique', { errors: 'username' });
+    }
+    ctx.throw(400, null, { errors: ['Bad Request'] });
   }
 });
 
