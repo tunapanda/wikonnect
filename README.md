@@ -20,6 +20,7 @@ The back-end is developed using [KoaJS](https://koajs.com/). API doc is hosted a
   - chai-http
 - [Cypress](https://cypress.io) for integration testing
 - [Yarn](https://yarnpkg.com/) project package manager
+- [ElasticSearch](https://www.elastic.co/) search and indexing tool
 
 ## Development Setup
 
@@ -27,7 +28,7 @@ The back-end is developed using [KoaJS](https://koajs.com/). API doc is hosted a
 
 Follow instructions for downloading and [installing Node.js](https://nodejs.org/en/download/) for your operating system from the official Node.js website.
 
-Ensure you are installing Node 10 or greater and npm 6 or greater.
+Ensure you are installing Node 10 or greater.
 
 ### Set up PostgreSQL
 
