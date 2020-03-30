@@ -2,11 +2,12 @@
 
 Wikonnect is an open-source e-learning platform that is designed to allow anyone to learn, create content, and contribute to the code. The initial courses offered on the platform will be around digital literacy, to get more people using the internet in more productive ways. Developed by Tunapanda Institute in Nairobi, Kenya. The original platform (called 'swag') was used to provide technology, design, and business training in low-income communities with low bandwidth.
 
-## Getting Started
 
+Getting Started
+--
 The front-end is developed using Ember.js. We recommend [getting started](https://guides.emberjs.com/release/getting-started/quick-start/) with Ember by going through the tutorials.
 
-The back-end is developed using [KoaJS](https://koajs.com/).
+The back-end is developed using [KoaJS](https://koajs.com/). API doc is hosted at [tunapanda.github.io/wikonnect)](https://tunapanda.github.io/wikonnect)
 
 ## Prerequisites
 
