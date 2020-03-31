@@ -65,7 +65,7 @@ describe('AUTHENTICATION ROUTES', () => {
         .set('Content-Type', 'application/json')
         .end((err, res) => {
           res.should.have.status(400);
-          expect(res.body.errors).to.deep.equal(['Bad Request']);
+          res.body.errors.should.be.a('object');
           done();
         });
     });
