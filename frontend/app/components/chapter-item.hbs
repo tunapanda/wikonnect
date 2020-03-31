@@ -16,6 +16,15 @@
 
       {{/link-to}}
       <div>{{@chapter.description}}</div>
+      {{#if (eq @chapter.targetStatus "attempted")}}
+        <span class="badge badge-warning">Contiue</span>
+
+      {{/if}}
+
+      {{#if (eq @chapter.targetStatus "completed")}}
+        <span class="badge badge-success">Complete</span>
+
+      {{/if}}
 
 
     </div>
