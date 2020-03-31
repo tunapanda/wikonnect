@@ -1,4 +1,5 @@
 const Router = require('koa-router');
+const log = require('../utils/logger');
 const Lesson = require('../models/lesson');
 const permController = require('../middleware/permController');
 const { validateLessons } = require('../middleware/validation/validatePostData');
@@ -63,6 +64,7 @@ router.get('/:id', permController.requireAuth, async ctx => {
   await achievementPercentage(lesson, ctx.state.user.data.id);
 
   ctx.assert(lesson, 404, 'no lesson by that ID');
+  log.error('The user path accessed does not exist');
 
   await returnType(lesson);
   ctx.status = 200;
@@ -139,6 +141,7 @@ router.get('/', permController.requireAuth, async ctx => {
   }
 
   ctx.assert(lessons, 401, 'Something went wrong');
+
 
   ctx.status = 200;
   ctx.body = { lessons };
