@@ -22,7 +22,6 @@
     </div>
     <hr>
     {{#if me.isAuthenticated}}
-
       {{#if (eq isEnrolled.status "false") }}
         {{#if isEnrolled.id}}
           <button type="button" class="btn btn-success form-control" {{action "reenroll" isEnrolled.id}}>
@@ -35,8 +34,6 @@
             {{model.name}}
           </button>
         {{/if}}
-
-
       {{/if}}
     {{/if}}
 

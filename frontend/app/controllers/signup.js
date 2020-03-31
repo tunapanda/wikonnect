@@ -12,7 +12,9 @@ export default class SignupController extends Controller {
 
   @action
   signupSuccess() {
-    this.transitionToRoute('home');
+    // this.transitionToRoute('upload');
+
+    this.transitionToRoute('upload', { queryParams: { signup: 'true' } });
   }
 
 }

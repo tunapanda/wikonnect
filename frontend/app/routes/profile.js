@@ -7,7 +7,9 @@ export default class ProfileRoute extends Route {
   me;
 
   model(params) {
-    return this.store.findByUsername(params.username);
+    //console.log(this.store.findByUsername(params.username));
+    console.log(this.me);
+    //return me;
   }
 
 }

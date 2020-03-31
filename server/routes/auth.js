@@ -59,38 +59,48 @@ router.post('/', validateAuthRoutes.validateUserLogin, async ctx => {
   }
 });
 
-router.get('/reset/:mail', async ctx => {
-  let confirmEmail = await User.query().where('email', ctx.params.mail);
-  confirmEmail = confirmEmail[0];
 
-  if (!confirmEmail) {
-    ctx.throw(401, 'no user found with that email');
-  }
-
+async function verifyEmail(email) {
   const rand = Math.floor((Math.random() * 100) + 54);
-  const resetMail = confirmEmail.email;
+  const resetMail = email;
 
   const reply = redisClient.exists(resetMail);
   if (reply !== true) {
-    ctx.log.info('Email verification already requested by  %s for %s', ctx.request.ip, ctx.path);
-    ctx.throw(401, 'Email verification already requested');
+    return true;
   }
 
   redisClient.set(resetMail, rand);
   redisClient.expire(resetMail, 600);
 
+  const buf = Buffer.from(resetMail, 'ascii').toString('base64');
+  sendMAil(buf, rand);
+}
+router.get('/reset/:mail', async ctx => {
+  let confirmEmail = await User.query().where('email', ctx.params.mail);
+  confirmEmail = confirmEmail[0];
+
+  if (confirmEmail == undefined) {
+    console.log('criminal', { error: { errors: ['User email not found'] } });
+    throw new Error({ error: { errors: ['User email not found'] } });
+  }
+
   try {
-    const buf = Buffer.from(resetMail, 'ascii').toString('base64');
-    sendMAil(buf, rand);
+    await verifyEmail(confirmEmail.email);
+
+
+    ctx.log.info('Email verification sent to %s', confirmEmail.email);
+    ctx.status = 201;
+    ctx.body = { confirmEmail };
+
   } catch (e) {
+    ctx.log.info('Email verification already requested');
     if (e.statusCode) {
       ctx.throw(e.statusCode, null, { errors: [e.message] });
     } else { ctx.throw(400, null, { errors: [e.message] }); }
     throw e;
   }
 
-  ctx.status = 201;
-  ctx.body = { confirmEmail };
+
 });
 
 router.get('/validate', async ctx => {

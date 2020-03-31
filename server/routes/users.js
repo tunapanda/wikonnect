@@ -1,10 +1,16 @@
 const Router = require('koa-router');
-const User = require('../models/user');
-const validateAuthRoutes = require('../middleware/validation/validateAuthRoutes');
 const bcrypt = require('bcrypt');
-// const getUserByUsername = require('../middleware/authenticate');
-const permController = require('../middleware/permController');
+const path = require('path');
+const busboy = require('async-busboy');
+const shortid = require('shortid');
+const sharp = require('sharp');
+
+const s3 = require('../utils/s3Util');
+const User = require('../models/user');
 const jwt = require('../middleware/jwt');
+const permController = require('../middleware/permController');
+const validateAuthRoutes = require('../middleware/validation/validateAuthRoutes');
+// const getUserByUsername = require('../middleware/authenticate');
 
 const environment = process.env.NODE_ENV || 'development';
 const config = require('../knexfile.js')[environment];
@@ -130,10 +136,7 @@ router.post('/', validateAuthRoutes.validateNewUser, createPasswordHash, async c
  * @apiGroup Authentication
  *
  * @apiVersion 0.4.0
- * @apiDescription This is the Description.
- * It is multiline capable.
- *
- * Last line of Description.
+ * @apiDescription list a single user on the platform
  * @apiPermission [admin, superadmin]
  * @apiHeader (Header) {String} authorization Bearer <<YOUR_API_KEY_HERE>>
  *
@@ -207,6 +210,18 @@ router.get('/:id', permController.requireAuth, async ctx => {
   ctx.body = { user };
 
 });
+
+/**
+ * @api {get} /users GET all users.
+ * @apiName GetUsers
+ * @apiGroup Authentication
+ *
+ * @apiVersion 0.4.0
+ * @apiDescription list all user on the platform
+ * @apiPermission [admin, superadmin]
+ * @apiHeader (Header) {String} authorization Bearer <<YOUR_API_KEY_HERE>>
+ *
+ */
 router.get('/', permController.requireAuth, permController.grantAccess('readAny', 'profile'), async ctx => {
   let user = User.query();
 
@@ -230,13 +245,123 @@ router.get('/', permController.requireAuth, permController.grantAccess('readAny'
   ctx.body = { user };
 });
 
-router.put('/:id', jwt.authenticate, permController.grantAccess('updateOwn', 'profile'), async ctx => {
-  const user = await User.query().patchAndFetchById(ctx.params.id, ctx.request.body.user);
-  ctx.assert(user, 404, 'That user does not exist.');
+/**
+ * @api {put} /users/:id PUT users data.
+ * @apiName PutAUser
+ * @apiGroup Authentication
+ *
+ * @apiVersion 0.4.0
+ * @apiDescription edit users data on the platform
+ * @apiPermission [admin, superadmin]
+ * @apiHeader (Header) {String} authorization Bearer <<YOUR_API_KEY_HERE>>
+ *
+ */
+
+router.put('/:id', jwt.authenticate, permController.requireAuth, permController.grantAccess('updateOwn', 'profile'), async ctx => {
+
+  let user;
+  try {
+    const user = await User.query().patchAndFetchById(ctx.params.id, ctx.request.body.user);
+    ctx.assert(user, 404, 'That user does not exist.');
+  } catch (e) {
+    if (e.statusCode) {
+      ctx.throw(e.statusCode, null, { errors: [e.message] });
+    } else { ctx.throw(400, null, { errors: ['Bad Request', e.message] }); }
+    throw e;
+  }
 
   ctx.status = 200;
   ctx.body = { user };
 
+});
+
+/**
+ * @api {post} /users/:id/profile-image POST users profile picture.
+ * @apiName PostAUser
+ * @apiGroup Authentication
+ *
+ * @apiVersion 0.4.0
+ * @apiDescription upload user profile pic
+ * @apiPermission [basic, admin, superadmin]
+ * @apiHeader (Header) {String} authorization Bearer <<YOUR_API_KEY_HERE>>
+ *
+ * 
+ * @apiError {String} errors Bad Request.
+ */
+
+router.post('/:id/profile-image', async (ctx, next) => {
+  if ('POST' != ctx.method) return await next();
+
+  const { files } = await busboy(ctx.req);
+  const fileNameBase = shortid.generate();
+  const uploadPath = 'uploads/images/profile';
+  const uploadDir = path.resolve(__dirname, '../public/' + uploadPath);
+
+  // const sizes = [
+  //   70,
+  //   320,
+  //   640
+  // ];
+
+  ctx.assert(files.length, 400, 'No files sent.');
+  ctx.assert(files.length === 1, 400, 'Too many files sent.');
+
+  // const resizedFiles = Promise.all(sizes.map((size) => {
+  //   const resize = sharp()
+  //     .resize(size, size)
+  //     .jpeg({ quality: 70 })
+  //     .toFile(`public/uploads/images/profile/${fileNameBase}_${size}.jpg`);
+  //   files[0].pipe(resize);
+  //   return resize;
+  // }));
+
+  const resizer = sharp()
+    .resize(500, 500)
+    .jpeg({ quality: 70 });
+
+  files[0].pipe(resizer);
+
+
+  if (s3.config) {
+
+
+    let buffer = await resizer.toBuffer();
+
+    const params = {
+      Bucket: s3.config.bucket, // pass your bucket name
+      Key: `uploads/profiles/${fileNameBase}.jpg`, // key for saving filename
+      Body: buffer, //image to be uploaded
+    };
+
+
+    try {
+      //Upload image to AWS S3 bucket
+      const uploaded = await s3.s3.upload(params).promise();
+
+      console.log('Uploaded in:', uploaded.Location);
+      ctx.body = {
+        host: `${params.Bucket}.s3.amazonaws.com/uploads/profiles`,
+        path: `${fileNameBase}.jpg`
+      };
+    }
+
+    catch (e) {
+      console.log(e);
+      ctx.throw(e.statusCode, null, { message: e.message });
+    }
+
+  }
+
+  else {
+
+
+    await resizer.toFile(`${uploadDir}/${fileNameBase}.jpg`);
+
+    ctx.body = {
+      host: ctx.host,
+      path: `${uploadPath}/${fileNameBase}.jpg`
+    };
+  }
 });
 
 module.exports = router.routes();

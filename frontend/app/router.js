@@ -64,12 +64,7 @@ Router.map(function () {
 
   );
 
-  this.route('profile', {
-    path: '/profile/:username'
-  }
-
-
-  );
+  this.route('profile');
   this.route('search');
   this.route('about');
 
@@ -133,6 +128,7 @@ Router.map(function () {
 
     );
   });
+  this.route('upload');
 }
 
 );

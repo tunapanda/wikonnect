@@ -1,0 +1,35 @@
+{{outlet}}
+
+{{#if me.isAuthenticated}}
+
+  <div class="text-center">
+    <br>
+    <img class="rounded-circle" alt="" src="/images/profile-placeholder.gif">
+
+    <br>
+
+    <br>
+
+    <Forms::Upload @multiple="false" @accept=".h5p" @filesSelected={{action "uploadPic" chapter}}
+      @disabled={{uploader.uploading}}>
+      {{#if uploader.uploading}}
+        Uploading... <span class="loading-spinner"></span> {{uploader.progress}}%
+      {{else}}
+        Upload Profile Picture
+      {{/if}}
+    </Forms::Upload>
+    {{#if signup}}
+
+      <br><br>
+      {{#link-to "home"}}
+        Skip
+      {{/link-to}}
+    {{/if}}
+  </div>
+
+
+{{else}}
+
+  <Warning @message="You do not have  permission to view this page" />
+
+{{/if}}
