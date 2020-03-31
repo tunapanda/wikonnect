@@ -1,4 +1,5 @@
 const Router = require('koa-router');
+const log = require('../utils/logger');
 const Activity = require('../models/activity');
 const validateActivity = require('../middleware/validation/validateActivity');
 
@@ -55,7 +56,8 @@ router.put('/:id', async ctx => {
   const activity_record = await Activity.query().findById(ctx.params.id);
 
   if (!activity_record) {
-    ctx.throw(400, 'That activity path does not exist');
+    log.error('The user path accessed does not exist');
+    ctx.throw(400, null, { errors: ['Bad Request'] });
   }
 
   let activity;

@@ -9,7 +9,7 @@
 ## The learning platform
 ## Contributing
 
-[Please follow this teps to contribute](https://github.com/tunapanda/swag/blob/master/CONTRIBUTING.md)
+[Please follow this steps to contribute](https://github.com/tunapanda/swag/blob/master/CONTRIBUTING.md)
 
 ### API Overview
 #### AUTH Endpoint

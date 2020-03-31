@@ -13,12 +13,14 @@
     "db:seed": "knex seed:run",
     "db:migrate": "knex migrate:make swag",
     "test": "nyc --reporter=html mocha test --exit",
-    "lint:js": "eslint ."
+    "lint:js": "eslint .",
+    "lint:fix": "eslint . --fix"
   },
   "dependencies": {
     "@elastic/elasticsearch": "^7.4.0",
     "accesscontrol": "^2.2.1",
     "async-busboy": "^0.7.0",
+    "aws-sdk": "^2.643.0",
     "bcrypt": "^3.0.7",
     "busboy": "^0.3.1",
     "chai-json-schema": "^1.5.1",
@@ -43,9 +45,11 @@
     "nodemon": "^2.0.1",
     "objection": "1.6.11",
     "pg": "^7.18.2",
+    "pino": "^5.17.0",
     "rate-limiter-flexible": "^2.0.0",
-    "redis": "^2.8.0",
-    "sharp": "^0.23.1",
+    "redis": "^3.0.2",
+    "sharp": "^0.25.1",
+    "shortid": "^2.2.15",
     "unzipper": "^0.10.5",
     "validate.js": "^0.13.1"
   },
