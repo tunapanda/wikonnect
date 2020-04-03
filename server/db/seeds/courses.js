@@ -16,19 +16,9 @@ exports.seed = function (knex) {
           updated_at: '2017-12-20 19:17:10'
         },
         {
-          id: 'course2',
-          name: 'A Course 2',
-          slug: 'a-course-2',
-          description: 'Contains Modules.',
-          status: 'draft',
-          creator_id: 'user1',
-          created_at: '2017-12-20 19:17:10',
-          updated_at: '2017-12-20 19:17:10'
-        },
-        {
+          id: 'diglit',
           name: 'Digital Literacy',
           slug: 'digital-literacy',
-          id: 'diglit',
           description: 'Learn the basics of how to navigate the digital world',
           status: 'published',
           creator_id: 'user2',

@@ -1,19 +1,38 @@
+const bcrypt = require('bcrypt');
 const Router = require('koa-router');
+const jsonwebtoken = require('jsonwebtoken');
+
 const User = require('../models/user');
+const sendMAil = require('../utils/sendMail');
+const { secret } = require('../middleware/jwt');
+const redisClient = require('../utils/redisConfig');
 const UserVerification = require('../models/user_verification');
 const validateAuthRoutes = require('../middleware/validation/validateAuthRoutes');
-const bcrypt = require('bcrypt');
-const jsonwebtoken = require('jsonwebtoken');
-const { secret } = require('../middleware/jwt');
-const sendMAil = require('../utils/sendMail');
-const redis = require('redis');
-const redisClient = redis.createClient(); // default setting.
 
 
 const router = new Router({
   prefix: '/auth'
 });
 
+/**
+ * @api {post} /auth POST login a user.
+ * @apiName PostLoginAUser
+ * @apiGroup Authentication
+ *
+ * @apiParam (Required Params) {string} username username
+ * @apiParam (Required Params) {string} password validated password
+ *
+ * @apiPermission none
+ *
+ * @apiSuccessExample {json} Success-Response:
+ *     HTTP/1.1 201 OK
+ *     {
+ *       "username": "string",
+ *       "password": "string",
+ *     }
+ *
+ * @apiError {String} errors Bad Request.
+ */
 router.post('/', validateAuthRoutes.validateUserLogin, async ctx => {
   let user = await User.query().where('username', ctx.request.body.username);
   if (!user.length) ctx.throw(404, null, 'wrong_email_or_password');
@@ -35,41 +54,53 @@ router.post('/', validateAuthRoutes.validateUserLogin, async ctx => {
       }, secret)
     };
   } else {
+    ctx.log.error('Wrong email or password from %s for %s', ctx.request.ip, ctx.path);
     ctx.throw(406, null, 'email_or_password_is_wrong');
   }
 });
 
-router.get('/reset/:mail', async ctx => {
-  let confirmEmail = await User.query().where('email', ctx.params.mail);
-  confirmEmail = confirmEmail[0];
 
-  if (!confirmEmail) {
-    ctx.throw(401, 'no user found with that email');
-  }
-
+async function verifyEmail(email) {
   const rand = Math.floor((Math.random() * 100) + 54);
-  const resetMail = confirmEmail.email;
+  const resetMail = email;
 
   const reply = redisClient.exists(resetMail);
   if (reply !== true) {
-    ctx.throw(401, 'Email verification already requested');
+    return true;
   }
 
   redisClient.set(resetMail, rand);
   redisClient.expire(resetMail, 600);
 
+  const buf = Buffer.from(resetMail, 'ascii').toString('base64');
+  sendMAil(buf, rand);
+}
+router.get('/reset/:mail', async ctx => {
+  let confirmEmail = await User.query().where('email', ctx.params.mail);
+  confirmEmail = confirmEmail[0];
+
+  if (confirmEmail == undefined) {
+    console.log('criminal', { error: { errors: ['User email not found'] } });
+    throw new Error({ error: { errors: ['User email not found'] } });
+  }
+
   try {
-    const buf = Buffer.from(resetMail, 'ascii').toString('base64');
-    sendMAil(buf, rand);
+    await verifyEmail(confirmEmail.email);
+
+
+    ctx.log.info('Email verification sent to %s', confirmEmail.email);
+    ctx.status = 201;
+    ctx.body = { confirmEmail };
+
   } catch (e) {
+    ctx.log.info('Email verification already requested');
     if (e.statusCode) {
       ctx.throw(e.statusCode, null, { errors: [e.message] });
     } else { ctx.throw(400, null, { errors: [e.message] }); }
     throw e;
   }
 
-  ctx.status = 201;
-  ctx.body = { confirmEmail };
+
 });
 
 router.get('/validate', async ctx => {
@@ -85,7 +116,7 @@ router.get('/validate', async ctx => {
   }
 
   // after validation update user verification table with current data
-  let confirmEmail = await User.query().where('email', decodedMail);
+  const confirmEmail = await User.query().where('email', decodedMail);
   if (!confirmEmail[0]) {
     ctx.throw(401, 'No user with that email');
   }

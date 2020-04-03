@@ -6,13 +6,10 @@
 
   <div class="padded">
 
-    {{#each model as |course_item|}}
-    <CourseItem @course={{course_item}} @progress={{course_item.progress}} @title={{course_item.name}}
-      @description={{course_item.description}} @points="5" @slug={{course_item.slug}} @color={{course_item.color}} />
+    {{#each model.enrolledCourses as |course_item|}}
+      <CourseItem @course={{course_item}} @progress={{course_item.progress}} @title={{course_item.name}}
+        @description={{course_item.description}} @points="5" @slug={{course_item.slug}} @color={{course_item.color}} />
     {{/each}}
 
   </div>
-
-
-
 </div>

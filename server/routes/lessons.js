@@ -1,4 +1,5 @@
 const Router = require('koa-router');
+const log = require('../utils/logger');
 const Lesson = require('../models/lesson');
 const permController = require('../middleware/permController');
 const { validateLessons } = require('../middleware/validation/validatePostData');
@@ -57,14 +58,15 @@ async function returnType(parent) {
  * @apiError {String} errors Bad Request.
  */
 
-router.get('/:id',  async ctx => {
+router.get('/:id', permController.requireAuth, async ctx => {
   const lesson = await Lesson.query().findById(ctx.params.id).eager('chapters(selectNameAndId)');
 
   await achievementPercentage(lesson, ctx.state.user.data.id);
 
   ctx.assert(lesson, 404, 'no lesson by that ID');
+  log.error('The user path accessed does not exist');
 
-  returnType(lesson);
+  await returnType(lesson);
   ctx.status = 200;
   ctx.body = { lesson };
 });
@@ -81,31 +83,46 @@ router.get('/:id',  async ctx => {
  *
  * @apiSuccessExample {json} Success-Response:
  *     HTTP/1.1 200 OK
- *     "lessons": [
- *         {
- *          "lessons": {
- *            "id": "lesson1",
- *            "name": "A Lesson",
- *            "slug": "a-lesson",
- *            "description": "this is a lesson.",
- *            "status": "published",
- *            "creatorId": "user1",
- *            "createdAt": "2017-12-20T19:17:10.000Z",
- *            "updatedAt": "2017-12-20T19:17:10.000Z",
- *            "chapters": [
- *             {
- *               "id": "chapter1",
- *               "name": "A Chapter",
- *               "type": "chapters"
- *             }
- *           ]
- *          }
+ *     "lessons": [{
+ *        "id": "lesson1",
+ *        "name": "A Lesson",
+ *        "slug": "a-lesson",
+ *        "description": "Contains Chapters.",
+ *        "status": "published",
+ *        "creatorId": "user1",
+ *        "createdAt": "2017-12-20T16:17:10.000Z",
+ *        "updatedAt": "2017-12-20T16:17:10.000Z",
+ *        "chapters": [
+ *            {
+ *                "id": "chapter1",
+ *                "name": "A Chapter",
+ *                "type": "chapters"
+ *            },
+ *            {
+ *                "id": "chapter2",
+ *                "name": "A Chapter 2",
+ *                "type": "chapters"
+ *            },
+ *            {
+ *                "id": "chapter3",
+ *                "name": "A Chapter3",
+ *                "type": "chapters"
+ *            },
+ *            {
+ *                "id": "chapter4",
+ *                "name": "A Chapter4",
+ *                "type": "chapters"
+ *            }
+ *        ],
+ *        "percentage": {
+ *            "type": "percentage",
+ *            "percent": 75
  *        }
- *      ]
+ *    }]
  * @apiError {String} errors Bad Request.
  */
 
-router.get('/', async ctx => {
+router.get('/', permController.requireAuth, async ctx => {
 
   let lessons;
   try {
@@ -124,6 +141,7 @@ router.get('/', async ctx => {
   }
 
   ctx.assert(lessons, 401, 'Something went wrong');
+
 
   ctx.status = 200;
   ctx.body = { lessons };
@@ -175,7 +193,6 @@ router.post('/', permController.requireAuth, permController.grantAccess('createA
     } else { ctx.throw(400, null, { errors: ['Bad Request'] }); }
     throw e;
   }
-
   ctx.assert(lesson, 401, 'Something went wrong');
 
   ctx.status = 201;
@@ -206,18 +223,11 @@ router.put('/:id', permController.requireAuth, permController.grantAccess('updat
   const checkLesson = await Lesson.query().findById(ctx.params.id);
 
   if (!checkLesson) {
+    ctx.log.info('Error, path does not exists  %s for %s', ctx.request.ip, ctx.path);
     ctx.throw(400, 'That lesson path does not exist');
   }
 
-  let lesson;
-  try {
-    lesson = await Lesson.query().patchAndFetchById(ctx.params.id, newLesson);
-  } catch (e) {
-    if (e.statusCode) {
-      ctx.throw(e.statusCode, null, { errors: [e.message] });
-    } else { ctx.throw(400, null, { errors: ['Bad Request'] }); }
-    throw e;
-  }
+  const lesson = await Lesson.query().patchAndFetchById(ctx.params.id, newLesson);
 
   ctx.status = 201;
   ctx.body = { lesson };
@@ -237,7 +247,7 @@ router.delete('/:id', permController.grantAccess('deleteOwn', 'path'), async ctx
   const lesson = await Lesson.query().findById(ctx.params.id);
 
   if (!lesson) {
-    ctx.throw(lesson, 401, 'No record with id');
+    ctx.throw(401, 'No record with id');
   }
   await Lesson.query().delete().where({ id: ctx.params.id });
 
