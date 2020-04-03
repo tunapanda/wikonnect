@@ -138,7 +138,7 @@ If you see an Elasticsearch error, don't worry, you don't need Elasticsearch to 
   </tr>
  </table>
 
-Head over to [Adobe XD](https://xd.adobe.com/view/4373354a-a52e-4413-4a61-8831bd731d75-3542/grid) to see the proposed design
+Head over to [Adobe XD](https://xd.adobe.com/view/4373354a-a52e-4413-4a61-8831bd731d75-3542/grid) to see the complete design.
 
 ### Front End set-up
 
