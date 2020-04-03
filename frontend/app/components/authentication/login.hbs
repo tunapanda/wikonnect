@@ -1,4 +1,4 @@
-<div class="form-title">Log In</div>
+<div class="auth-title">Log In</div>
 
 <BsForm @class="form" @formLayout="vertical" @model={{registeredUser}} @onSubmit={{action "login"}} as |form|>
   {{#each registeredUser.errors as |err| }}
@@ -18,7 +18,7 @@
 
   </div>
 
-  <BsButton class="submit" @defaultText="Login" @buttonType="submit" @disabled={{form.isSubmitting}}
+  <BsButton class="submit auth-btn" @defaultText="Login" @buttonType="submit" @disabled={{form.isSubmitting}}
     @type={{if form.isRejected "danger" "primary"}}>
   </BsButton>
 </BsForm>
