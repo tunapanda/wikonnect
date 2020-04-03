@@ -124,6 +124,22 @@ Now start your server! `yarn start`
 
 If you see an Elasticsearch error, don't worry, you don't need Elasticsearch to run the app.
 
+
+
+### Designs
+
+
+<table>
+ 
+  <tr>
+    <td><img src="screenshots/1.png" width=270 height=480></td>
+    <td><img src="screenshots/2.png" width=270 height=480></td>
+    <td><img src="screenshots/3.png" width=270 height=480></td>
+  </tr>
+ </table>
+
+Head over to [Adobe XD](https://xd.adobe.com/view/4373354a-a52e-4413-4a61-8831bd731d75-3542/grid) to see the proposed design
+
 ### Front End set-up
 
 ---
