@@ -25,14 +25,13 @@ exports.requireAuth = async function (ctx, next) {
       // Check if token has expired
       if (exp < Date.now().valueOf() / 1000) {
         ctx.throw(400, null, { errors: ['Expired Token'] });
-        return ctx;
       }
       ctx.state.user = data;
       log.info('Access granted to %s user', ctx.state.user.data.username);
       await next();
     }
   } catch (error) {
-    log.error('Token has expired');
+    log.error('Token has expired with error - %s', error);
     ctx.throw(400, null, { errors: ['Bad Request'] });
   }
 };
@@ -47,7 +46,7 @@ exports.grantAccess = function (action, resource) {
       const permission = roles.can(roleName)[action](resource);
 
       if (!permission.granted) {
-        return ctx.throw(400, null, { errors: ['Bad Request'] });
+        ctx.throw(400, null, { errors: ['Bad Request'] });
       }
 
       await next();
