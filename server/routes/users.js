@@ -7,6 +7,7 @@ const sharp = require('sharp');
 
 const s3 = require('../utils/s3Util');
 const User = require('../models/user');
+const log = require('../utils/logger');
 const jwt = require('../middleware/jwt');
 const permController = require('../middleware/permController');
 const validateAuthRoutes = require('../middleware/validation/validateAuthRoutes');
@@ -15,6 +16,8 @@ const validateAuthRoutes = require('../middleware/validation/validateAuthRoutes'
 const environment = process.env.NODE_ENV || 'development';
 const config = require('../knexfile.js')[environment];
 const knex = require('knex')(config);
+
+
 
 const router = new Router({
   prefix: '/users'
@@ -107,25 +110,14 @@ router.post('/', validateAuthRoutes.validateNewUser, createPasswordHash, async c
     ctx.status = 201;
     ctx.body = { user };
   } catch (e) {
-    if (e.status === 503) {
-      e.headers = Object.assign({}, e.headers, { 'Retry-After': 30 });
-    } else {
-      ctx.throw(400, {
-        errors: [{
-          'id': e.code,
-          'status': 400,
-          'code': e.code,
-          'title': e.name,
-          'detail': e.constraint,
-          'hint': e.hint,
-          'source': {
-            'pointer': e.constraint,
-            'parameter': e.detail
-          }
-        }]
-      });
+    ctx.log.info('Failed for user - %s, with error %s', ctx.request.body.user.email, e.message);
+    if (e.constraint === 'users_email_unique') {
+      ctx.throw(422, 'email is not unique', { message: 'email' });
     }
-    throw e;
+    if (e.constraint === 'users_username_unique'){
+      ctx.throw(422, 'username is not unique', { message: 'username' });
+    }
+    ctx.throw(400, null, { errors: ['Bad Request'] });
   }
 });
 
@@ -197,7 +189,7 @@ router.get('/:id', permController.requireAuth, async ctx => {
   }
 
   if (user.id !== ctx.state.user.data.id) {
-    ctx.log.info('Error logging  %s for %s', ctx.request.ip, ctx.path);
+    log.info('Error logging  %s for %s', ctx.request.ip, ctx.path);
     ctx.throw(401, 'You do not have permissions to view that user');
   }
 
@@ -205,7 +197,7 @@ router.get('/:id', permController.requireAuth, async ctx => {
   const userVerification = await knex('user_verification').where({ 'user_id': ctx.params.id });
   user.userVerification = userVerification;
 
-  ctx.log.info('Got a request from %s for %s', ctx.request.ip, ctx.path);
+  log.info('Got a request from %s for %s', ctx.request.ip, ctx.path);
   ctx.status = 200;
   ctx.body = { user };
 
@@ -285,7 +277,7 @@ router.put('/:id', jwt.authenticate, permController.requireAuth, permController.
  * @apiPermission [basic, admin, superadmin]
  * @apiHeader (Header) {String} authorization Bearer <<YOUR_API_KEY_HERE>>
  *
- * 
+ *
  * @apiError {String} errors Bad Request.
  */
 

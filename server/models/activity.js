@@ -10,6 +10,11 @@ class Activity extends Model {
   static get jsonSchema(){
     return activitySchema;
   }
+
+  async $indexForSearch() {
+    return null;
+  }
+  
   static get relationMappings() {
     return {};
   }
