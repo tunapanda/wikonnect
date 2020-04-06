@@ -8,11 +8,16 @@ export default class SignupController extends Controller {
   @inject
   me;
 
+  queryParams = ['invite_code'];
+
+
   UserValidation = UserValidation;
 
   @action
   signupSuccess() {
-    this.transitionToRoute('index');
+    // this.transitionToRoute('upload');
+
+    this.transitionToRoute('upload', { queryParams: { signup: 'true' } });
   }
 
 }
