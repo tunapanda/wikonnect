@@ -15,7 +15,5 @@ describe('Authenticated user learning path', function () {
     cy.location('pathname').should('eq', '/chapter/chapter2');
 
     cy.contains("A Chapter")
-
-
   });
 });
