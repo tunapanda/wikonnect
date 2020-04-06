@@ -7,7 +7,7 @@ describe('Home page test', function () {
 
   it('should show a propmt if logged out', function () {
     cy.visit('/home');
-    cy.contains(" LOGIN or SIGNUP to keep track of your progress");
+    cy.contains("LOGIN or SIGNUP to keep track of your progress");
   });
 
   it('should not show a warning if logged in', function () {
@@ -19,7 +19,7 @@ describe('Home page test', function () {
 
     cy.location('pathname').should('eq', '/home');
 
-    cy.contains(" LOGIN or SIGNUP to keep track of your progress").should('not.exist');
+    cy.contains("LOGIN or SIGNUP to keep track of your progress").should('not.exist');
   });
 
 
