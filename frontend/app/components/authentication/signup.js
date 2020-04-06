@@ -1,4 +1,3 @@
-// import Component from '@glimmer/component'; @jake
 import Component from '@ember/component';
 import { inject } from '@ember/service';
 import { action } from '@ember/object';
@@ -11,6 +10,9 @@ export default class AuthenticationSignupComponent extends Component {
   me;
 
   @inject
+  session;
+
+  @inject
   store;
 
   @action
@@ -19,8 +21,25 @@ export default class AuthenticationSignupComponent extends Component {
 
     this.me.register(fields).then(() => this.me.authenticate(model.get('username'), model.get('password')).then(() => this.success()), err => {
       if (err && err.errors) {
-        Object.keys(err.errors).forEach(field => {
-          model.addError(field, err.errors[field]);
+
+
+        Object.keys(err.errors).forEach(key => {
+
+          let details = err.errors[key].detail.split("_");
+
+          let error_message;
+          switch (details[2]) {
+          case "unique":
+            error_message = "The " + details[1] + " is already in use";
+            break;
+
+          default:
+            break;
+          }
+          // model.addError(details[1], + details[1] + ' should be ' + details[2])
+          model.addError(details[1], error_message);
+
+
         });
       }
     });

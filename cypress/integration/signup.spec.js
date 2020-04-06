@@ -14,6 +14,14 @@ describe('Sign Up Page', function () {
     cy.location('pathname').should('eq', '/signup');
   });
 
+  it('should fill in invite code on signup', function () {
+    cy.visit('/signup?invite_code=theInviteCode');
+
+    cy.get('#invite_code-field').should('have.value', 'theInviteCode');
+
+
+  });
+
   it('should validate', function () {
     cy.visit('/signup');
 

@@ -18,10 +18,5 @@ export default class H5pComponent extends Component {
     console.log(H5PxAPI, H5P);
     await new H5P(el, h5pLocation, options);
   }
-  @action
-  async addEventListener() {
-    H5P.externalDispatcher.on('xAPI', function (event) {
-      console.log(event.data.statement);
-    });
-  }
+
 }
