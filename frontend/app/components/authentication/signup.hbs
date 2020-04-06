@@ -38,14 +38,11 @@
 
 
 
-    {{!-- <form.element id="invite_code" value="k" class="inputs" @controlType="text" @label="Invite Code"
-      @placeholder="Invite Code" @property="invite_code" /> --}}
-
 
 
     {{#form.element label="Invite Code" id="invite_code" class="inputs" placeholder="Invite Code" property="invite_code" as |el|}}
       <div class="input-group">
-        <input value={{inviteCode}} class="{{el.class}}" placeholder="Invite Code"
+        <input value={{inviteCode}} class={{el.class}} placeholder="Invite Code"
           oninput={{action (mut el.value) value="target.value"}} onchange={{action (mut el.value) value="target.value"}}
           id={{el.id}} type="text">
       </div>
