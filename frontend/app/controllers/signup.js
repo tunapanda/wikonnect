@@ -8,6 +8,9 @@ export default class SignupController extends Controller {
   @inject
   me;
 
+  queryParams = ['invite_code'];
+
+
   UserValidation = UserValidation;
 
   @action

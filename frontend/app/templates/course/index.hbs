@@ -48,8 +48,8 @@
     </div>
     {{#if me.isAuthenticated}}
       {{#if (eq isEnrolled.status "true")}}
-        <button type="button" class="btn btn-danger form-control" {{action "showConfirmModal"}}>
-          Unenroll froms
+        <button type="button" class="btn bg-transparent form-control text-danger" {{action "showConfirmModal"}}>
+          Unenroll from
           {{model.name}}
         </button>
 

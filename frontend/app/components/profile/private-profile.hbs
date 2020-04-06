@@ -65,7 +65,13 @@
     {{/if}}
 
     {{#if (eq profileView "Settings")}}
-      Set stuff
+      Invite Link : <br>
+      <code>{{inviteCode}}</code>
+
+      <CopyButton @clipboardText={{inviteCode}} @success={{this.onSuccess}} @error={{this.onError}}
+        title="copy to clipboard">
+        <span>copy</span>
+      </CopyButton>
     {{/if}}
   </div>
 </div>

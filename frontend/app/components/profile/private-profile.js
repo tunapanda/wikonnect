@@ -10,6 +10,8 @@ export default class ProfilePrivateProfileComponent extends Component {
   profileView = 'Profile';
   viewOnly = true;
 
+  inviteCode = location.protocol + '//' + location.host + '/signup?invite_code=' + this.me.user.username;
+
   @computed('me.user.{firstName,lastName}')
   get name() {
     if (this.me.user.firstName && this.me.user.lastName) {
@@ -30,6 +32,17 @@ export default class ProfilePrivateProfileComponent extends Component {
   // @get achievements(){
 
   // }
+
+  @action
+  onSuccess() {
+    console.log("copied")
+  }
+
+
+  @action
+  onError() {
+    console.log("no copy")
+  }
 
   @computed('model.hasDirtyAttributes')
   get unsavedChanges() {
