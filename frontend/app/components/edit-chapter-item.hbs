@@ -10,7 +10,8 @@
   {{#if uploader.finished}}
     H5P Uploaded Successfully
   {{else}}
-    <Forms::Upload @multiple="false" @accept=".h5p" @filesSelected={{action "fileAdded" chapter}} @disabled={{uploader.uploading}}>
+    <Forms::Upload @multiple="false" @accept=".h5p" @filesSelected={{action "fileAdded" chapter}}
+      @disabled={{uploader.uploading}}>
       {{#if uploader.uploading}}
         Uploading... <span class="loading-spinner"></span> {{uploader.progress}}%
       {{else}}
