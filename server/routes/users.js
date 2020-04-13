@@ -1,17 +1,17 @@
 const Router = require('koa-router');
 const bcrypt = require('bcrypt');
 const path = require('path');
+
 const busboy = require('async-busboy');
 const shortid = require('shortid');
 const sharp = require('sharp');
-
 const s3 = require('../utils/s3Util');
+
 const User = require('../models/user');
 const log = require('../utils/logger');
 const jwt = require('../middleware/jwt');
 const permController = require('../middleware/permController');
 const validateAuthRoutes = require('../middleware/validation/validateAuthRoutes');
-// const getUserByUsername = require('../middleware/authenticate');
 
 const environment = process.env.NODE_ENV || 'development';
 const config = require('../knexfile.js')[environment];
