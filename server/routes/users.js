@@ -79,6 +79,7 @@ async function createPasswordHash(ctx, next) {
  * @apiParam (Required Params) {string} user[username] username
  * @apiParam (Required Params) {string} user[email] Unique email
  * @apiParam (Required Params) {string} user[password] validated password
+ * @apiParam (Optional Params) {string} user[invitedBy] auto filled on the form
  *
  * @apiPermission none
  *
@@ -86,8 +87,9 @@ async function createPasswordHash(ctx, next) {
  *     HTTP/1.1 201 OK
  *     {
  *        "user": {
- *          "username": "string",
  *          "id": "string",
+ *          "username": "string",
+ *          "inviteCode": "DTrbi6aLj",
  *          "createdAt": "string",
  *          "updatedAt": "string"
  *        }
@@ -100,13 +102,24 @@ router.post('/', validateAuthRoutes.validateNewUser, createPasswordHash, async c
   ctx.request.body.user.username = ctx.request.body.user.username.toLowerCase();
   ctx.request.body.user.email = ctx.request.body.user.email.toLowerCase();
 
-  const newUser = ctx.request.body.user;
+  const invitedBy = ctx.request.body.user.invitedBy;
+  delete ctx.request.body.user.invitedBy;
+
+  let newUser = ctx.request.body.user;
+  // generate personal invite code for use when inviting others
+  newUser.inviteCode = shortid.generate();
+
   const firstUserCheck = await User.query();
   let role = !firstUserCheck.length ? 'groupSuperAdmin' : 'groupBasic';
+
 
   try {
     const user = await User.query().insertAndFetch(newUser);
     await knex('group_members').insert({ 'user_id': user.id, 'group_id': role });
+    await knex('user_invite_tracker').insert({ 'user_id' : user.id, 'invited_by': invitedBy });
+
+    log.info('Created a user with id %s with username %s with the invite code %s', user.id, user.username, user.invite_code);
+
     ctx.status = 201;
     ctx.body = { user };
   } catch (e) {
@@ -119,6 +132,8 @@ router.post('/', validateAuthRoutes.validateNewUser, createPasswordHash, async c
     }
     ctx.throw(400, null, { errors: ['Bad Request'] });
   }
+
+
 });
 
 
@@ -253,7 +268,7 @@ router.put('/:id', jwt.authenticate, permController.requireAuth, permController.
 
   let user;
   try {
-    const user = await User.query().patchAndFetchById(ctx.params.id, ctx.request.body.user);
+    user = await User.query().patchAndFetchById(ctx.params.id, ctx.request.body.user);
     ctx.assert(user, 404, 'That user does not exist.');
   } catch (e) {
     if (e.statusCode) {
@@ -264,6 +279,22 @@ router.put('/:id', jwt.authenticate, permController.requireAuth, permController.
 
   ctx.status = 200;
   ctx.body = { user };
+
+});
+
+router.post('/invite/:id', async ctx => {
+  let invite;
+  try {
+    invite = await User.query().patchAndFetchById(ctx.params.id, ctx.request.body.user);
+    ctx.assert(invite, 404, 'That user does not exist.');
+  } catch (e) {
+    if (e.statusCode) {
+      ctx.throw(e.statusCode, null, { errors: [e.message] });
+    } else { ctx.throw(400, null, { errors: ['Bad Request', e.message] }); }
+  }
+
+  ctx.status = 200;
+  ctx.body = { invite };
 
 });
 
