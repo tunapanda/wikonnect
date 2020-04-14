@@ -17,7 +17,7 @@ describe('Authenticated user learning path', function () {
     cy.contains("A Lesson").click({ force: true })
     cy.location('pathname').should('eq', '/lesson/a-lesson');
     cy.contains("A Chapter").click({ force: true })
-    cy.location('pathname').should('eq', '/chapter/chapter2');
+    cy.location('pathname').should('eq', '/chapter/chapter1');
 
     cy.contains("A Chapter")
 
