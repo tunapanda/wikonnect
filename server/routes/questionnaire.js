@@ -2,10 +2,6 @@ const Router = require('koa-router');
 const Questionnaire = require('../models/questionnaire');
 const permController = require('../middleware/permController');
 
-const environment = process.env.NODE_ENV;
-const config = require('../knexfile.js')[environment];
-const knex = require('knex')(config);
-
 const router = new Router({
   prefix: '/questionnaire'
 });
