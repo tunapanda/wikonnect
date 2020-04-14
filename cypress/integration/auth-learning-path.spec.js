@@ -1,7 +1,7 @@
 describe('Authenticated user learning path', function () {
 
 
-  it('should flow through authed user learning path', function () {
+  it('should flow through auth an auth required learning path', function () {
 
     cy.visit('/login');
 
@@ -23,4 +23,4 @@ describe('Authenticated user learning path', function () {
 
 
   });
-}); 
+});

@@ -3,10 +3,16 @@ const path = require('path');
 const unzipper = require('unzipper');
 const busboy = require('async-busboy');
 
+const shortid = require('shortid');
+const sharp = require('sharp');
+const s3 = require('../utils/s3Util');
+
+
 const Chapter = require('../models/chapter');
 const Achievement = require('../models/achievement');
 const permController = require('../middleware/permController');
 const validateChapter = require('../middleware/validation/validateChapter');
+
 
 const router = new Router({
   prefix: '/chapters'
@@ -107,6 +113,78 @@ router.delete('/:id', permController.requireAuth, permController.grantAccess('de
 
   ctx.status = 200;
   ctx.body = { chapter };
+});
+
+router.post('/:id/chapter-image', async (ctx, next) => {
+  if ('POST' != ctx.method) return await next();
+
+  const { files } = await busboy(ctx.req);
+  const fileNameBase = shortid.generate();
+  const uploadPath = 'uploads/images/content/chapters';
+  const uploadDir = path.resolve(__dirname, '../public/' + uploadPath);
+
+  // const sizes = [
+  //   70,
+  //   320,
+  //   640
+  // ];
+
+  ctx.assert(files.length, 400, 'No files sent.');
+  ctx.assert(files.length === 1, 400, 'Too many files sent.');
+
+  // const resizedFiles = Promise.all(sizes.map((size) => {
+  //   const resize = sharp()
+  //     .resize(size, size)
+  //     .jpeg({ quality: 70 })
+  //     .toFile(`public/uploads/images/profile/${fileNameBase}_${size}.jpg`);
+  //   files[0].pipe(resize);
+  //   return resize;
+  // }));
+
+  const resizer = sharp()
+    .resize(500, 500)
+    .jpeg({ quality: 70 });
+
+  files[0].pipe(resizer);
+
+
+  if (s3.config) {
+
+
+    let buffer = await resizer.toBuffer();
+
+    const params = {
+      Bucket: s3.config.bucket, // pass your bucket name
+      Key: `uploads/profiles/${fileNameBase}.jpg`, // key for saving filename
+      Body: buffer, //image to be uploaded
+    };
+
+
+    try {
+      //Upload image to AWS S3 bucket
+      const uploaded = await s3.s3.upload(params).promise();
+
+      console.log('Uploaded in:', uploaded.Location);
+      ctx.body = {
+        host: `${params.Bucket}.s3.amazonaws.com/uploads/profiles`,
+        path: `${fileNameBase}.jpg`
+      };
+    }
+
+    catch (e) {
+      console.log(e);
+      ctx.throw(e.statusCode, null, { message: e.message });
+    }
+
+  } else {
+
+    await resizer.toFile(`${uploadDir}/${fileNameBase}.jpg`);
+
+    ctx.body = {
+      host: ctx.host,
+      path: `${uploadPath}/${fileNameBase}.jpg`
+    };
+  }
 });
 
 router.post('/:id/upload', async ctx => {
