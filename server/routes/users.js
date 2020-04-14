@@ -116,7 +116,7 @@ router.post('/', validateAuthRoutes.validateNewUser, createPasswordHash, async c
   try {
     const user = await User.query().insertAndFetch(newUser);
     await knex('group_members').insert({ 'user_id': user.id, 'group_id': role });
-    await knex('user_invite_tracker').insert({ 'user_id' : user.id, 'invited_by': invitedBy });
+    await knex('user_invite').insert({ 'user_id' : user.id, 'invited_by': invitedBy });
 
     log.info('Created a user with id %s with username %s with the invite code %s', user.id, user.username, user.invite_code);
 
