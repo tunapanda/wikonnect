@@ -1,5 +1,4 @@
 <div class="padded">
-  {{#if (eq model.permission.update "true")}}
 
     <BsForm @formLayout="vertical" @model={{model}} @onSubmit={{action "submit"}} as |form|>
       <form.element @label="Name" @placeholder="Name" @property="name" @required={{true}} />
@@ -22,7 +21,5 @@
 
       <BsButton @defaultText="Save Changes" @type="primary" @buttonType="submit" />
     </BsForm>
-  {{else}}
-    <Warning @message="You do not have sufficient permissions to view this page" />
-  {{/if}}
+ 
 </div>

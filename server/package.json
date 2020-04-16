@@ -42,7 +42,7 @@
     "node-fetch": "^2.6.0",
     "nodemailer": "^6.3.0",
     "nodemailer-mailgun-transport": "^1.4.0",
-    "nodemon": "^2.0.1",
+    "nodemon": "^2.0.3",
     "objection": "1.6.11",
     "pg": "^7.18.2",
     "pino": "^5.17.0",
