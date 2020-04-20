@@ -36,6 +36,36 @@ async function returnChapterStatus(chapter, achievement) {
   }
 }
 
+
+
+/**
+ * @api {get} /chapters/ GET all chapters.
+ * @apiName GetChapters
+ * @apiGroup Chapters
+ * @apiPermission none
+ *
+ * @apiSampleRequest off
+ *
+ * @apiSuccessExample {json} Success-Response:
+ *     HTTP/1.1 200 OK
+ *      {
+ *         "chapter": [{
+ *            "id": "chapter1",
+ *            "lessonId": "lesson1",
+ *            "name": "A Chapter",
+ *            "slug": "a-chapter",
+ *            "description": "An H5P Chapter.",
+ *            "status": "published",
+ *            "creatorId": "user1",
+ *            "createdAt": "2017-12-20T16:17:10.000Z",
+ *            "updatedAt": "2017-12-20T16:17:10.000Z",
+ *            "contentType": "h5p",
+ *           "contentUri": "/uploads/h5p/chapter1"
+ *         }]
+ *      }
+ * @apiError {String} errors Bad Request.
+ */
+
 router.get('/', permController.requireAuth, async ctx => {
   try {
     const chapter = await Chapter.query().where(ctx.query);
