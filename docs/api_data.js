@@ -152,6 +152,15 @@ define({ "api": [
             "field": "user[password]",
             "description": "<p>validated password</p>"
           }
+        ],
+        "Optional Params": [
+          {
+            "group": "Optional Params",
+            "type": "string",
+            "optional": false,
+            "field": "user[invitedBy]",
+            "description": "<p>auto filled on the form</p>"
+          }
         ]
       }
     },
@@ -164,7 +173,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "HTTP/1.1 201 OK\n{\n   \"user\": {\n     \"username\": \"string\",\n     \"id\": \"string\",\n     \"createdAt\": \"string\",\n     \"updatedAt\": \"string\"\n   }\n}",
+          "content": "HTTP/1.1 201 OK\n{\n   \"user\": {\n     \"id\": \"string\",\n     \"username\": \"string\",\n     \"inviteCode\": \"DTrbi6aLj\",\n     \"createdAt\": \"string\",\n     \"updatedAt\": \"string\"\n   }\n}",
           "type": "json"
         }
       ]

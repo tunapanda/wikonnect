@@ -48,6 +48,7 @@ router.use(jwt.authenticate, require('./routes/achievements'));
 router.use(jwt.authenticate, require('./routes/dashboard'));
 
 router.use(jwt.authenticate, require('./routes/admin'));
+
 router.use(jwt.authenticate, require('./routes/achievement_awards'));
 
 router.use(require('./routes/search'));

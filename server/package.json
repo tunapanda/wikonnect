@@ -21,7 +21,7 @@
     "accesscontrol": "^2.2.1",
     "async-busboy": "^0.7.0",
     "aws-sdk": "^2.643.0",
-    "bcrypt": "^3.0.7",
+    "bcrypt": "^4.0.1",
     "busboy": "^0.3.1",
     "chai-json-schema": "^1.5.1",
     "debug": "^4.1.1",

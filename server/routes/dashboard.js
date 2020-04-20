@@ -22,3 +22,5 @@ router.get('/', permController.requireAuth, async ctx =>{
     throw e;
   }
 });
+
+module.exports = router.routes();
