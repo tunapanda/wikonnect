@@ -13,6 +13,6 @@ exports.down = function (knex) {
     .table('chapters', table => {
       table.dropColumn('content_type');
       table.dropColumn('content_uri');
-      table.text('image_url');
+      table.dropColumn('image_url');
     });
 };
