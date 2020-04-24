@@ -13,7 +13,7 @@
     "docs": "apidoc -e node_modules -e docs -o docs/"
   },
   "devDependencies": {
-    "@cypress/code-coverage": "^3.4.1",
+    "@cypress/code-coverage": "^3.5.1",
     "apidocs": "^2017.3.9",
     "babel-plugin-istanbul": "^6.0.0",
     "cypress": "^4.4.1",
