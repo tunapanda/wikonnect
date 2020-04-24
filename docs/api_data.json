@@ -1458,5 +1458,33 @@
     "version": "0.0.0",
     "filename": "./server/routes/modules.js",
     "groupTitle": "Modules"
+  },
+  {
+    "type": "get",
+    "url": "/search/",
+    "title": "GET result search query.",
+    "name": "GetSearch",
+    "group": "Search",
+    "permission": [
+      {
+        "name": "none"
+      }
+    ],
+    "version": "0.4.0",
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "errors",
+            "description": "<p>Bad Request.</p>"
+          }
+        ]
+      }
+    },
+    "filename": "./server/routes/search.js",
+    "groupTitle": "Search"
   }
 ]

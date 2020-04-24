@@ -22,10 +22,7 @@ const router = new Router({
  * @apiVersion 0.4.0
  *
  * @apiSampleRequest off
- *
- * @apiSuccessExample {json} Success-Response:
- *
- *
+ * 
  * @apiError {String} errors Bad Request.
  */
 
