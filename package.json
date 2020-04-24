@@ -26,6 +26,6 @@
   "dependencies": {
     "eslint-plugin-ember": "^7.6.0",
     "eslint-plugin-node": "^10.0.0",
-    "redis": "^2.8.0"
+    "redis": "^3.0.2"
   }
 }
