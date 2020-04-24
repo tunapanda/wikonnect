@@ -152,6 +152,15 @@ define({ "api": [
             "field": "user[password]",
             "description": "<p>validated password</p>"
           }
+        ],
+        "Optional Params": [
+          {
+            "group": "Optional Params",
+            "type": "string",
+            "optional": false,
+            "field": "user[invitedBy]",
+            "description": "<p>auto filled on the form</p>"
+          }
         ]
       }
     },
@@ -164,7 +173,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "HTTP/1.1 201 OK\n{\n   \"user\": {\n     \"username\": \"string\",\n     \"id\": \"string\",\n     \"createdAt\": \"string\",\n     \"updatedAt\": \"string\"\n   }\n}",
+          "content": "HTTP/1.1 201 OK\n{\n   \"user\": {\n     \"id\": \"string\",\n     \"username\": \"string\",\n     \"inviteCode\": \"DTrbi6aLj\",\n     \"createdAt\": \"string\",\n     \"updatedAt\": \"string\"\n   }\n}",
           "type": "json"
         }
       ]
@@ -271,6 +280,117 @@ define({ "api": [
     },
     "filename": "./server/routes/users.js",
     "groupTitle": "Authentication"
+  },
+  {
+    "type": "get",
+    "url": "/chapters/:id",
+    "title": "GET single chapter.",
+    "name": "GetAChapter",
+    "group": "Chapters",
+    "permission": [
+      {
+        "name": "none"
+      }
+    ],
+    "version": "0.4.0",
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n{\n   \"chapter\": {\n   \"id\": \"chapter4\",\n   \"lessonId\": \"lesson2\",\n   \"name\": \"A Chapter4\",\n   \"slug\": \"a-chapter4\",\n   \"description\": \"An H5P Chapter.\",\n   \"status\": \"published\",\n   \"creatorId\": \"user1\",\n   \"createdAt\": \"2017-12-20T16:17:10.000Z\",\n   \"updatedAt\": \"2017-12-20T16:17:10.000Z\",\n   \"contentType\": \"h5p\",\n   \"contentUri\": \"/uploads/h5p/chapter4\",\n   \"imageUrl\": null\n }",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "errors",
+            "description": "<p>Bad Request.</p>"
+          }
+        ]
+      }
+    },
+    "filename": "./server/routes/chapters.js",
+    "groupTitle": "Chapters"
+  },
+  {
+    "type": "get",
+    "url": "/chapters/",
+    "title": "GET all chapters.",
+    "name": "GetChapters",
+    "group": "Chapters",
+    "permission": [
+      {
+        "name": "none"
+      }
+    ],
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n {\n    \"chapter\": [{\n       \"id\": \"chapter1\",\n       \"lessonId\": \"lesson1\",\n       \"name\": \"A Chapter\",\n       \"slug\": \"a-chapter\",\n       \"description\": \"An H5P Chapter.\",\n       \"status\": \"published\",\n       \"creatorId\": \"user1\",\n       \"createdAt\": \"2017-12-20T16:17:10.000Z\",\n       \"updatedAt\": \"2017-12-20T16:17:10.000Z\",\n       \"contentType\": \"h5p\",\n      \"contentUri\": \"/uploads/h5p/chapter1\",\n      \"imageUrl\": \"/uploads/images/content/chapters/chapter1.jpeg\"\n    }]\n }",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "errors",
+            "description": "<p>Bad Request.</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "./server/routes/chapters.js",
+    "groupTitle": "Chapters"
+  },
+  {
+    "type": "post",
+    "url": "/chapters/:id/chapter-image",
+    "title": "POST chapter banner image.",
+    "name": "PostBannerImage",
+    "group": "Chapters",
+    "permission": [
+      {
+        "name": "none"
+      }
+    ],
+    "version": "0.4.0",
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": " HTTP/1.1 200 OK\n {\n  \"host\": hostname of where the image has been uploaded\n  \"path\": image path\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "errors",
+            "description": "<p>Bad Request.</p>"
+          }
+        ]
+      }
+    },
+    "filename": "./server/routes/chapters.js",
+    "groupTitle": "Chapters"
   },
   {
     "type": "delete",

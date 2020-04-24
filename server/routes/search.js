@@ -13,8 +13,25 @@ const router = new Router({
   prefix: '/search'
 });
 
+
+/**
+ * @api {get} /search/  GET result search query.
+ * @apiName GetSearch
+ * @apiGroup Search
+ * @apiPermission none
+ * @apiVersion 0.4.0
+ *
+ * @apiSampleRequest off
+ *
+ * @apiSuccessExample {json} Success-Response:
+ *
+ *
+ * @apiError {String} errors Bad Request.
+ */
+
 router.get('/', async ctx => {
   const queryText = ctx.query.q;
+  console.log(queryText);
 
   try {
     const elasticResponse = await search.search({
