@@ -100,7 +100,6 @@ async function createPasswordHash(ctx, next) {
 
 router.post('/', validateAuthRoutes.validateNewUser, createPasswordHash, async ctx => {
   console.log(ctx.req.body);
-  
   ctx.request.body.user.username = ctx.request.body.user.username.toLowerCase();
   ctx.request.body.user.email = ctx.request.body.user.email.toLowerCase();
 
@@ -157,6 +156,8 @@ router.post('/', validateAuthRoutes.validateNewUser, createPasswordHash, async c
  *       "username": "user2",
  *       "createdAt": "2017-12-20T16:17:10.000Z",
  *       "updatedAt": "2017-12-20T16:17:10.000Z",
+ *       "profileUri": "uploads/profiles/user1.jpg",
+ *       "inviteCode": "DTrbi6aLj",
  *       "achievementAwards": [
  *         {
  *           "id": "achievementaward1",
@@ -174,7 +175,13 @@ router.post('/', validateAuthRoutes.validateNewUser, createPasswordHash, async c
  *           "name": "basic"
  *         }
  *       ],
- *       "enrolledCourses": [],
+ *       "enrolledCourses": [
+ *          {
+ *            "id": "course1",
+ *            "name": "A Course 1",
+ *            "type": "course"
+ *          }
+ *       ],
  *       "userVerification": []
  *    }
  * }
