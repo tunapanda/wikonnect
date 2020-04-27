@@ -11,7 +11,7 @@ try {
 const host = process.env.ELASTICSEARCH_HOST ? process.env.ELASTICSEARCH_HOST : config.host;
 
 const client = new Client({ node: host });
-client.indexName = 'swag-v1-' + process.env.NODE_ENV;
+client.indexName = 'wikonnect-v1-' + process.env.NODE_ENV;
 
 async function setupElasticsearch() {
   try {

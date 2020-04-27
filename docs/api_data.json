@@ -1461,8 +1461,8 @@
   },
   {
     "type": "get",
-    "url": "/search/",
-    "title": "GET result search query.",
+    "url": "/search?q={query",
+    "title": "string goes here} GET result search query.",
     "name": "GetSearch",
     "group": "Search",
     "permission": [
@@ -1472,17 +1472,13 @@
     ],
     "version": "0.4.0",
     "error": {
-      "fields": {
-        "Error 4xx": [
-          {
-            "group": "Error 4xx",
-            "type": "String",
-            "optional": false,
-            "field": "errors",
-            "description": "<p>Bad Request.</p>"
-          }
-        ]
-      }
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 404 Not Found\n[{\n   \"error\": \"Search Unavailable\"\n}]",
+          "type": "json"
+        }
+      ]
     },
     "filename": "./server/routes/search.js",
     "groupTitle": "Search"
