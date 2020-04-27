@@ -15,15 +15,19 @@ const router = new Router({
 
 
 /**
- * @api {get} /search/  GET result search query.
+ * @api {get} /search?q={query string goes here} GET result search query.
  * @apiName GetSearch
  * @apiGroup Search
  * @apiPermission none
  * @apiVersion 0.4.0
  *
  * @apiSampleRequest off
- * 
- * @apiError {String} errors Bad Request.
+ *
+ * @apiErrorExample {json} Error-Response:
+ *     HTTP/1.1 404 Not Found
+ *     [{
+ *        "error": "Search Unavailable"
+ *     }]
  */
 
 router.get('/', async ctx => {
