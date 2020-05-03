@@ -15,7 +15,7 @@ const router = new Router({
 
 
 /**
- * @api {get} /search?q={query string goes here} GET result search query.
+ * @api {get} /search?q={query-string-goes-here} GET result search query.
  * @apiName GetSearch
  * @apiGroup Search
  * @apiPermission none

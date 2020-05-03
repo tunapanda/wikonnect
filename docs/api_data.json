@@ -1461,8 +1461,8 @@
   },
   {
     "type": "get",
-    "url": "/search?q={query",
-    "title": "string goes here} GET result search query.",
+    "url": "/search?q={query-string-goes-here}",
+    "title": "GET result search query.",
     "name": "GetSearch",
     "group": "Search",
     "permission": [
