@@ -32,15 +32,13 @@ const router = new Router({
 
 router.get('/', async ctx => {
   const queryText = ctx.query.q;
-  console.log(queryText);
-
   try {
     const elasticResponse = await search.search({
       index: search.indexName,
       body: {
         query: {
           query_string: {
-            fields: ['name^2', 'description'],
+            fields: ['name^2', 'description', 'tags'],
             query: queryText
           }
         },
