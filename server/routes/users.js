@@ -157,6 +157,7 @@ router.post('/', validateAuthRoutes.validateNewUser, createPasswordHash, async c
  *       "createdAt": "2017-12-20T16:17:10.000Z",
  *       "updatedAt": "2017-12-20T16:17:10.000Z",
  *       "profileUri": "uploads/profiles/user1.jpg",
+ *       "private": boolean,
  *       "inviteCode": "DTrbi6aLj",
  *       "achievementAwards": [
  *         {
