@@ -6,7 +6,7 @@
   {{#if me.user.id}}
   {{#link-to "index" invokeAction=(action "closenav")  }}
   Home
-  --}}
+  {{/link-to}}
   <a href="https://teach.wikonnect.org/api/auth?token={{token}}&user={{me.user.username}}">Teach</a>
   {{!-- 
   {{#link-to "courses" invokeAction=(action "closenav")  }}
