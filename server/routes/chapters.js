@@ -270,6 +270,8 @@ router.post('/:id/chapter-image', async (ctx, next) => {
         imageUrl: uploadPath
       });
 
+
+
     ctx.body = {
       host: ctx.host,
       path: `${uploadPath}/${fileNameBase}.jpg`

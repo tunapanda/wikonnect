@@ -4,4 +4,3 @@ config/db.js
 email.js
 examples
 coverage/*
-teacher

@@ -1,0 +1,19 @@
+<div class="col-lg-4 col-md-6 mb-4">
+  <div class="card h-100">
+    {{#link-to "chapter" @chapter.id }}<img class="card-img-top"
+      src="http://placehold.jp/20/{{color}}/ffffff/400x150.png?text={{@chapter.name}}" alt="">{{/link-to}}
+    <div class="card-body">
+      <h4 class="card-title">
+        {{#link-to "chapter" @chapter.id }}
+
+        <a href="#">{{@chapter.name}}</a>
+        {{/link-to}}
+      </h4>
+
+      <p class="card-text">{{@chapter.description}}</p>
+    </div>
+    <div class="card-footer">
+      <small class="text-muted">&#9733; &#9733; &#9733; &#9733; &#9734;</small>
+    </div>
+  </div>
+</div>

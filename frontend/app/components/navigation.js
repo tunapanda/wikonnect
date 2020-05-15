@@ -7,9 +7,12 @@ export default class NavigationComponent extends Component {
   me;
 
 
+
+
   @service router;
   @service session;
-
+  token = this.session.data.authenticated.token
+  username = this.me.user.username
   @action
   closenav() {
     document.getElementById("mySidenav").style.width = "0";
