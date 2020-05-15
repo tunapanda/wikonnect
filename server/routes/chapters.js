@@ -264,7 +264,7 @@ router.post('/:id/chapter-image', async (ctx, next) => {
     await resizer.toFile(`${uploadDir}/${fileNameBase}.jpg`);
 
 
-    const add_h5p = await Chapter.query()
+    await Chapter.query()
       .findById(chapter_id)
       .patch({
         imageUrl: uploadPath
@@ -292,7 +292,7 @@ router.post('/:id/upload', async ctx => {
   // ctx.assert(files.length, 400, 'No files sent.');
   // ctx.assert(files.length === 1, 400, 'Too many files sent.');
 
-  const add_h5p = await Chapter.query()
+  await Chapter.query()
     .findById(dirName)
     .patch({
       content_uri: uploadPath

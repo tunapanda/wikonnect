@@ -6,17 +6,13 @@
   {{#if me.user.id}}
   {{#link-to "index" invokeAction=(action "closenav")  }}
   Home
-  {{/link-to}}
-  {{#link-to "home" invokeAction=(action "closenav")  }}
-  My Courses
-
-  {{/link-to}}
+  --}}
   <a href="https://teach.wikonnect.org/api/auth?token={{token}}&user={{me.user.username}}">Teach</a>
-
+  {{!-- 
   {{#link-to "courses" invokeAction=(action "closenav")  }}
   Explore Courses
 
-  {{/link-to}}
+  {{/link-to}} --}}
   {{#link-to "profile" invokeAction=(action "closenav")  }}
   Profile
 
@@ -36,10 +32,10 @@
   {{#link-to "home" invokeAction=(action "closenav")  }}
   Home
   {{/link-to}}
-  {{#link-to "courses" invokeAction=(action "closenav")  }}
+  {{!-- {{#link-to "courses" invokeAction=(action "closenav")  }}
   Explore Courses
 
-  {{/link-to}}
+  {{/link-to}} --}}
   {{#link-to "login" invokeAction=(action "closenav")  }}
   Login
 
