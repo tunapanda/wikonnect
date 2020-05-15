@@ -11,7 +11,7 @@
   My Courses
 
   {{/link-to}}
-  <a href="https://teach.wikonnect.org/api/auth?token={{token}}&user={{username}}">Teach</a>
+  <a href="https://teach.wikonnect.org/api/auth?token={{token}}&user={{me.user.username}}">Teach</a>
 
   {{#link-to "courses" invokeAction=(action "closenav")  }}
   Explore Courses
