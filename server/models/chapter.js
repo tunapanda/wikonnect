@@ -34,6 +34,7 @@ class Chapter extends Model {
         name: this.name,
         description: this.description,
         content: '',
+        tags: this.tags,
         status: this.status,
         created_at: this.createdAt,
         modified_at: this.modifiedAt

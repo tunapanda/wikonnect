@@ -99,6 +99,7 @@ async function createPasswordHash(ctx, next) {
  */
 
 router.post('/', validateAuthRoutes.validateNewUser, createPasswordHash, async ctx => {
+  console.log(ctx.req.body);
   ctx.request.body.user.username = ctx.request.body.user.username.toLowerCase();
   ctx.request.body.user.email = ctx.request.body.user.email.toLowerCase();
 
@@ -116,7 +117,7 @@ router.post('/', validateAuthRoutes.validateNewUser, createPasswordHash, async c
   try {
     const user = await User.query().insertAndFetch(newUser);
     await knex('group_members').insert({ 'user_id': user.id, 'group_id': role });
-    await knex('user_invite').insert({ 'user_id' : user.id, 'invited_by': invitedBy });
+    await knex('user_invite').insert({ 'user_id': user.id, 'invited_by': invitedBy });
 
     log.info('Created a user with id %s with username %s with the invite code %s', user.id, user.username, user.invite_code);
 
@@ -127,7 +128,7 @@ router.post('/', validateAuthRoutes.validateNewUser, createPasswordHash, async c
     if (e.constraint === 'users_email_unique') {
       ctx.throw(422, 'email is not unique', { message: 'email' });
     }
-    if (e.constraint === 'users_username_unique'){
+    if (e.constraint === 'users_username_unique') {
       ctx.throw(422, 'username is not unique', { message: 'username' });
     }
     ctx.throw(400, null, { errors: ['Bad Request'] });
@@ -155,6 +156,9 @@ router.post('/', validateAuthRoutes.validateNewUser, createPasswordHash, async c
  *       "username": "user2",
  *       "createdAt": "2017-12-20T16:17:10.000Z",
  *       "updatedAt": "2017-12-20T16:17:10.000Z",
+ *       "profileUri": "uploads/profiles/user1.jpg",
+ *       "private": boolean,
+ *       "inviteCode": "DTrbi6aLj",
  *       "achievementAwards": [
  *         {
  *           "id": "achievementaward1",
@@ -172,7 +176,13 @@ router.post('/', validateAuthRoutes.validateNewUser, createPasswordHash, async c
  *           "name": "basic"
  *         }
  *       ],
- *       "enrolledCourses": [],
+ *       "enrolledCourses": [
+ *          {
+ *            "id": "course1",
+ *            "name": "A Course 1",
+ *            "type": "course"
+ *          }
+ *       ],
  *       "userVerification": []
  *    }
  * }
@@ -193,6 +203,10 @@ router.post('/', validateAuthRoutes.validateNewUser, createPasswordHash, async c
  */
 
 router.get('/:id', permController.requireAuth, async ctx => {
+
+  if (ctx.state.user.data.id !== 'anonymous') {
+    // do something here
+  }
 
   const user = await User.query().findById(ctx.params.id).mergeJoinEager('[achievementAwards(selectBadgeNameAndId), userRoles(selectName), enrolledCourses(selectNameAndId)]');
   returnType(user);

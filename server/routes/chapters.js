@@ -36,6 +36,37 @@ async function returnChapterStatus(chapter, achievement) {
   }
 }
 
+
+
+/**
+ * @api {get} /chapters/ GET all chapters.
+ * @apiName GetChapters
+ * @apiGroup Chapters
+ * @apiPermission none
+ *
+ * @apiSampleRequest off
+ *
+ * @apiSuccessExample {json} Success-Response:
+ *     HTTP/1.1 200 OK
+ *      {
+ *         "chapter": [{
+ *            "id": "chapter1",
+ *            "lessonId": "lesson1",
+ *            "name": "A Chapter",
+ *            "slug": "a-chapter",
+ *            "description": "An H5P Chapter.",
+ *            "status": "published",
+ *            "creatorId": "user1",
+ *            "createdAt": "2017-12-20T16:17:10.000Z",
+ *            "updatedAt": "2017-12-20T16:17:10.000Z",
+ *            "contentType": "h5p",
+ *           "contentUri": "/uploads/h5p/chapter1",
+ *           "imageUrl": "/uploads/images/content/chapters/chapter1.jpeg"
+ *         }]
+ *      }
+ * @apiError {String} errors Bad Request.
+ */
+
 router.get('/', permController.requireAuth, async ctx => {
   try {
     const chapter = await Chapter.query().where(ctx.query);
@@ -51,6 +82,38 @@ router.get('/', permController.requireAuth, async ctx => {
   }
 });
 
+
+
+
+/**
+ * @api {get} /chapters/:id GET single chapter.
+ * @apiName GetAChapter
+ * @apiGroup Chapters
+ * @apiPermission none
+ * @apiVersion 0.4.0
+ *
+ * @apiSampleRequest off
+ *
+ * @apiSuccessExample {json} Success-Response:
+ *     HTTP/1.1 200 OK
+ *     {
+ *        "chapter": {
+ *        "id": "chapter4",
+ *        "lessonId": "lesson2",
+ *        "name": "A Chapter4",
+ *        "slug": "a-chapter4",
+ *        "description": "An H5P Chapter.",
+ *        "status": "published",
+ *        "creatorId": "user1",
+ *        "createdAt": "2017-12-20T16:17:10.000Z",
+ *        "updatedAt": "2017-12-20T16:17:10.000Z",
+ *        "contentType": "h5p",
+ *        "contentUri": "/uploads/h5p/chapter4",
+ *        "imageUrl": null
+ *      }
+ *
+* @apiError {String} errors Bad Request.
+ */
 router.get('/:id', permController.requireAuth, async ctx => {
   const chapter = await Chapter.query().findById(ctx.params.id);
   ctx.assert(chapter, 404, 'no lesson by that ID');
@@ -115,6 +178,25 @@ router.delete('/:id', permController.requireAuth, permController.grantAccess('de
   ctx.body = { chapter };
 });
 
+
+/**
+ * @api {post} /chapters/:id/chapter-image POST chapter banner image.
+ * @apiName PostBannerImage
+ * @apiGroup Chapters
+ * @apiPermission none
+ * @apiVersion 0.4.0
+ *
+ * @apiSampleRequest off
+ *
+ * @apiSuccessExample {json} Success-Response:
+ *     HTTP/1.1 200 OK
+ *     {
+ *      "host": hostname of where the image has been uploaded
+ *      "path": image path
+ *    }
+ *
+ * @apiError {String} errors Bad Request.
+ */
 router.post('/:id/chapter-image', async (ctx, next) => {
   if ('POST' != ctx.method) return await next();
 
@@ -166,7 +248,7 @@ router.post('/:id/chapter-image', async (ctx, next) => {
 
       console.log('Uploaded in:', uploaded.Location);
       ctx.body = {
-        host: `${params.Bucket}.s3.amazonaws.com/uploads/profiles`,
+        host: `${params.Bucket}.s3.amazonaws.com/uploads/chapters`,
         path: `${fileNameBase}.jpg`
       };
     }
