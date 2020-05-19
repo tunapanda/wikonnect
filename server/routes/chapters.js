@@ -19,17 +19,17 @@ const router = new Router({
 });
 
 async function returnChapterStatus(chapter, achievement) {
-  if (chapter.length == undefined) {
+  if (chapter.length === undefined) {
     achievement.forEach(ach => {
-      if (chapter.id == ach.target) {
-        return chapter.targetStatus = ach.targetStatus;
+      if (chapter.id === ach.target) {
+        return chapter.targetStatus = ach.target_status;
       }
     });
   } else {
     chapter.forEach(chap => {
       achievement.forEach(ach => {
-        if (chap.id == ach.target) {
-          return chap.targetStatus = ach.targetStatus;
+        if (chap.id === ach.target) {
+          return chap.targetStatus = ach.target_status;
         }
       });
     });
@@ -69,7 +69,7 @@ async function returnChapterStatus(chapter, achievement) {
 
 router.get('/', permController.requireAuth, async ctx => {
   try {
-    const chapter = await Chapter.query().where(ctx.query);
+    const chapter = await Chapter.query().where(ctx.query).where('status', 'published');
     const achievement = await Achievement.query().where('user_id', ctx.state.user.data.id);
 
     returnChapterStatus(chapter, achievement);
@@ -115,7 +115,13 @@ router.get('/', permController.requireAuth, async ctx => {
 * @apiError {String} errors Bad Request.
  */
 router.get('/:id', permController.requireAuth, async ctx => {
-  const chapter = await Chapter.query().findById(ctx.params.id);
+  const chapter = await Chapter.query().where({ id: ctx.params.id, status: 'published' });
+
+  if (chapter.length === 0) {
+    ctx.status = 401;
+    ctx.body = { message: 'un published chapter' };
+    return ctx;
+  }
   ctx.assert(chapter, 404, 'no lesson by that ID');
 
   const achievement = await Achievement.query().where('user_id', ctx.state.user.data.id);
