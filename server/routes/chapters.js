@@ -115,7 +115,7 @@ router.get('/', permController.requireAuth, async ctx => {
 * @apiError {String} errors Bad Request.
  */
 router.get('/:id', permController.requireAuth, async ctx => {
-  const chapter = await Chapter.query().where({ id: ctx.params.id, status: 'published' });
+  const chapter = await Chapter.query().where({ id: ctx.params.id, status: 'published'});
 
   if (chapter.length === 0) {
     ctx.status = 401;
