@@ -32,7 +32,7 @@ exports.requireAuth = async function (ctx, next) {
     }
   } catch (error) {
     log.error('Token has expired with error - %s', error);
-    if (process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'test') {
+    if (process.env.NODE_ENV === 'development') {
       ctx.throw(400, error);
     }
     ctx.throw(400, null, { errors: ['Bad Request'] });
