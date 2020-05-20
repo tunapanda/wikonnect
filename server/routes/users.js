@@ -205,7 +205,6 @@ router.post('/', validateAuthRoutes.validateNewUser, createPasswordHash, async c
 router.get('/:id', permController.requireAuth, async ctx => {
 
   let stateUserId = ctx.state.user.id == undefined ? ctx.state.user.data.id : ctx.state.user.id;
-  console.log(stateUserId);
 
   let userId = ctx.params.id != 'current' ? ctx.params.id : stateUserId;
   const user = await User.query().findById(userId).mergeJoinEager('[achievementAwards(selectBadgeNameAndId), userRoles(selectName), enrolledCourses(selectNameAndId)]');

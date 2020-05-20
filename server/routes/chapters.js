@@ -69,19 +69,30 @@ async function returnChapterStatus(chapter, achievement) {
  */
 
 router.get('/', permController.requireAuth, async ctx => {
-  try {
-    const chapter = await Chapter.query().where(ctx.query);
-    // .where('status', 'published');
-    const achievement = await Achievement.query().where('user_id', ctx.state.user.data.id);
 
-    returnChapterStatus(chapter, achievement);
+  let stateUserId = ctx.state.user.role == undefined ? ctx.state.user.data.role : ctx.state.user.role;
 
-    ctx.status = 200;
-    ctx.body = { chapter };
-  } catch (error) {
-    ctx.status = 400;
-    ctx.body = { message: 'The query key does not exist' };
+  let chapter;
+  switch (stateUserId) {
+  case 'anonymous':
+    chapter = await Chapter.query().where(ctx.query).where('status', 'published');
+    ctx.status = 401;
+    ctx.body = { message: 'un published chapter' };
+    break;
+  case 'basic':
+    chapter = await Chapter.query().where(ctx.query).where('status', 'published');
+    break;
+  default:
+    chapter = await Chapter.query().where(ctx.query);
   }
+
+  // const chapter = await Chapter.query().where(ctx.query).where('status', 'published');
+  const achievement = await Achievement.query().where('user_id', ctx.state.user.data.id);
+
+  returnChapterStatus(chapter, achievement);
+
+  ctx.status = 200;
+  ctx.body = { chapter };
 });
 
 
@@ -117,13 +128,22 @@ router.get('/', permController.requireAuth, async ctx => {
 * @apiError {String} errors Bad Request.
  */
 router.get('/:id', permController.requireAuth, async ctx => {
-  const chapter = await Chapter.query().where({ id: ctx.params.id, status: 'published'});
+  let stateUserId = ctx.state.user.role == undefined ? ctx.state.user.data.role : ctx.state.user.role;
 
-  if (chapter.length === 0) {
+  let chapter;
+  switch (stateUserId) {
+  case 'anonymous':
+    chapter = await Chapter.query().where({ id: ctx.params.id, status: 'published' });
     ctx.status = 401;
     ctx.body = { message: 'un published chapter' };
-    return ctx;
+    break;
+  case 'basic':
+    chapter = await Chapter.query().where({ id: ctx.params.id, status: 'published' });
+    break;
+  default:
+    chapter = await Chapter.query().where({ id: ctx.params.id });
   }
+
   ctx.assert(chapter, 404, 'no lesson by that ID');
 
   const achievement = await Achievement.query().where('user_id', ctx.state.user.data.id);
