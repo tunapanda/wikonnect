@@ -13,6 +13,7 @@ const Achievement = require('../models/achievement');
 const permController = require('../middleware/permController');
 const validateChapter = require('../middleware/validation/validateChapter');
 
+const slugGen = require('../utils/slugGen');
 
 const router = new Router({
   prefix: '/chapters'
@@ -69,7 +70,8 @@ async function returnChapterStatus(chapter, achievement) {
 
 router.get('/', permController.requireAuth, async ctx => {
   try {
-    const chapter = await Chapter.query().where(ctx.query).where('status', 'published');
+    const chapter = await Chapter.query().where(ctx.query);
+    // .where('status', 'published');
     const achievement = await Achievement.query().where('user_id', ctx.state.user.data.id);
 
     returnChapterStatus(chapter, achievement);
@@ -134,9 +136,8 @@ router.get('/:id', permController.requireAuth, async ctx => {
 router.post('/', permController.requireAuth, permController.grantAccess('createAny', 'path'), validateChapter, async ctx => {
   let newChapter = ctx.request.body.chapter;
 
-  newChapter.slug = newChapter.name.replace(/[^a-z0-9]+/gi, '-')
-    .replace(/^-*|-*$/g, '')
-    .toLowerCase();
+  // slug generation automated
+  newChapter.slug = await slugGen(newChapter.name);
 
   let chapter;
   try {
