@@ -62,7 +62,8 @@ async function returnChapterStatus(chapter, achievement) {
  *            "updatedAt": "2017-12-20T16:17:10.000Z",
  *            "contentType": "h5p",
  *           "contentUri": "/uploads/h5p/chapter1",
- *           "imageUrl": "/uploads/images/content/chapters/chapter1.jpeg"
+ *           "imageUrl": "/uploads/images/content/chapters/chapter1.jpeg",
+ *           "contentId": null
  *         }]
  *      }
  * @apiError {String} errors Bad Request.
@@ -122,7 +123,8 @@ router.get('/', permController.requireAuth, async ctx => {
  *        "updatedAt": "2017-12-20T16:17:10.000Z",
  *        "contentType": "h5p",
  *        "contentUri": "/uploads/h5p/chapter4",
- *        "imageUrl": null
+ *        "imageUrl": null,
+ *        "contentId": null
  *      }
  *
 * @apiError {String} errors Bad Request.
