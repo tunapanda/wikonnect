@@ -82,6 +82,10 @@ async function setupElasticsearch() {
             type: 'text',
             analyzer: 'keyword'
           },
+          tags:{
+            type: 'text',
+            analyzer: 'keyword'
+          },
           content: {
             type: 'text',
             analyzer: 'standard'

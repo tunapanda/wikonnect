@@ -11,7 +11,7 @@
     "db:init": "knex migrate:latest",
     "db:reset": "knex migrate:rollback && knex migrate:latest",
     "db:seed": "knex seed:run",
-    "db:migrate": "knex migrate:make swag",
+    "db:migrate": "knex migrate:make",
     "test": "nyc --reporter=html mocha test --exit",
     "lint:js": "eslint .",
     "lint:fix": "eslint . --fix"

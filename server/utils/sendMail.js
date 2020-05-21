@@ -12,7 +12,8 @@ let from_who = emailAuth.default_from; //Your sending email address
 
 
 module.exports = async function sendMAil(mail, rand) {
-  const link = 'http://localhost:3000/api/v1/auth/validate?mail=' + mail + '&id=' + rand;
+  // const link = 'http://localhost:3000/api/v1/auth/validate?mail=' + mail + '&id=' + rand;
+  const link = 'http://app.wikonnect.org/auth/validate?mail=' + mail + '&id=' + rand;
   let data = {
     from: from_who,
     to: Buffer.from(mail, 'base64').toString('ascii'),

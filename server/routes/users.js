@@ -117,7 +117,7 @@ router.post('/', validateAuthRoutes.validateNewUser, createPasswordHash, async c
   try {
     const user = await User.query().insertAndFetch(newUser);
     await knex('group_members').insert({ 'user_id': user.id, 'group_id': role });
-    await knex('user_invite').insert({ 'user_id' : user.id, 'invited_by': invitedBy });
+    await knex('user_invite').insert({ 'user_id': user.id, 'invited_by': invitedBy });
 
     log.info('Created a user with id %s with username %s with the invite code %s', user.id, user.username, user.invite_code);
 
@@ -128,7 +128,7 @@ router.post('/', validateAuthRoutes.validateNewUser, createPasswordHash, async c
     if (e.constraint === 'users_email_unique') {
       ctx.throw(422, 'email is not unique', { message: 'email' });
     }
-    if (e.constraint === 'users_username_unique'){
+    if (e.constraint === 'users_username_unique') {
       ctx.throw(422, 'username is not unique', { message: 'username' });
     }
     ctx.throw(400, null, { errors: ['Bad Request'] });
@@ -157,6 +157,7 @@ router.post('/', validateAuthRoutes.validateNewUser, createPasswordHash, async c
  *       "createdAt": "2017-12-20T16:17:10.000Z",
  *       "updatedAt": "2017-12-20T16:17:10.000Z",
  *       "profileUri": "uploads/profiles/user1.jpg",
+ *       "private": boolean,
  *       "inviteCode": "DTrbi6aLj",
  *       "achievementAwards": [
  *         {
@@ -203,22 +204,24 @@ router.post('/', validateAuthRoutes.validateNewUser, createPasswordHash, async c
 
 router.get('/:id', permController.requireAuth, async ctx => {
 
-  const user = await User.query().findById(ctx.params.id).mergeJoinEager('[achievementAwards(selectBadgeNameAndId), userRoles(selectName), enrolledCourses(selectNameAndId)]');
-  returnType(user);
-  enrolledCoursesType(user);
+  let stateUserId = ctx.state.user.id == undefined ? ctx.state.user.data.id : ctx.state.user.id;
 
+  let userId = ctx.params.id != 'current' ? ctx.params.id : stateUserId;
+  const user = await User.query().findById(userId).mergeJoinEager('[achievementAwards(selectBadgeNameAndId), userRoles(selectName), enrolledCourses(selectNameAndId)]');
 
   if (!user) {
     ctx.throw(404, 'No User With that Id');
   }
 
-  if (user.id !== ctx.state.user.data.id) {
+  if (user.id != stateUserId || stateUserId === 'anonymous') {
     log.info('Error logging  %s for %s', ctx.request.ip, ctx.path);
     ctx.throw(401, 'You do not have permissions to view that user');
   }
 
+  returnType(user);
+  enrolledCoursesType(user);
   // get all verification data
-  const userVerification = await knex('user_verification').where({ 'user_id': ctx.params.id });
+  const userVerification = await knex('user_verification').where({ 'user_id': userId });
   user.userVerification = userVerification;
 
   log.info('Got a request from %s for %s', ctx.request.ip, ctx.path);

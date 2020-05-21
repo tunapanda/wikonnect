@@ -10,9 +10,6 @@ async function validateChapter(ctx, next) {
       description: {
         presence: true,
       },
-      lessonId: {
-        presence: true,
-      },
       creatorId: {
         presence: true,
       },

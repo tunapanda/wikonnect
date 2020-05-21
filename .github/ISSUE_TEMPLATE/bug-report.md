@@ -3,7 +3,7 @@ name: 'Bug Report: Issues with Wikonnect'
 about: Report an issue or flaw in wikonnect software's schema, architecture, APIs, UI or anything related to our software.
 title: '[BUG]'
 labels: 'type: bug'
-assignees: ''
+assignees: '@mosesokemwa'
 
 ---
 
@@ -25,9 +25,9 @@ assignees: ''
 
 
 ### Tell us about your browser and operating system:
-- Operating System: 
-- NodeJS Version: 
-- Ember Version: 
+- Operating System:
+- NodeJS Version:
+- Ember Version:
 
 
 ### Screenshots where applicable
