@@ -269,6 +269,7 @@ router.delete('/:id', permController.requireAuth, permController.grantAccess('de
  */
 router.post('/:id/chapter-image', async (ctx, next) => {
   if ('POST' != ctx.method) return await next();
+  const chapter_id = ctx.params.id;
 
   const { files } = await busboy(ctx.req);
   const fileNameBase = shortid.generate();
@@ -332,6 +333,15 @@ router.post('/:id/chapter-image', async (ctx, next) => {
 
     await resizer.toFile(`${uploadDir}/${fileNameBase}.jpg`);
 
+
+    await Chapter.query()
+      .findById(chapter_id)
+      .patch({
+        imageUrl: uploadPath
+      });
+
+
+
     ctx.body = {
       host: ctx.host,
       path: `${uploadPath}/${fileNameBase}.jpg`
@@ -351,6 +361,13 @@ router.post('/:id/upload', async ctx => {
   });
   // ctx.assert(files.length, 400, 'No files sent.');
   // ctx.assert(files.length === 1, 400, 'Too many files sent.');
+
+  await Chapter.query()
+    .findById(dirName)
+    .patch({
+      content_uri: uploadPath
+    });
+
 
   ctx.body = {
     host: ctx.host,
