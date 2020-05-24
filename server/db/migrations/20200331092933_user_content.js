@@ -2,13 +2,14 @@
 exports.up = function (knex) {
   return knex.schema
     .table('users', table => {
-      table.text('profile_uri');
+      table.text('private');
     });
+
 };
 
 exports.down = function (knex) {
   return knex.schema
     .table('users', table => {
-      table.dropColumn('profile_uri');
+      table.dropColumn('private');
     });
 };

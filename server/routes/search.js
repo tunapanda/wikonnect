@@ -13,16 +13,32 @@ const router = new Router({
   prefix: '/search'
 });
 
+
+/**
+ * @api {get} /search?q={query-string-goes-here} GET result search query.
+ * @apiName GetSearch
+ * @apiGroup Search
+ * @apiPermission none
+ * @apiVersion 0.4.0
+ *
+ * @apiSampleRequest off
+ *
+ * @apiErrorExample {json} Error-Response:
+ *     HTTP/1.1 404 Not Found
+ *     [{
+ *        "error": "Search Unavailable"
+ *     }]
+ */
+
 router.get('/', async ctx => {
   const queryText = ctx.query.q;
-
   try {
     const elasticResponse = await search.search({
       index: search.indexName,
       body: {
         query: {
           query_string: {
-            fields: ['name^2', 'description'],
+            fields: ['name^2', 'description', 'tags'],
             query: queryText
           }
         },

@@ -1,3 +1,32 @@
+<p align="center">
+  <img  height="200" src="https://app.wikonnect.org/images/icons/wikonnect-primary.svg">
+</p>
+
+
+<h1 align="center">Welcome to wikonnect 👋</h1>
+<p align="center">
+  <img alt="Version" src="https://img.shields.io/badge/version-0.1.0-blue.svg?cacheSeconds=2592000" />
+  <a href="https://docs.wikonnect.org/" target="_blank">
+    <img alt="Documentation" src="https://img.shields.io/badge/documentation-yes-brightgreen.svg" />
+  </a>
+  <a href="#" target="_blank">
+    <img alt="License: MIT" src="https://img.shields.io/badge/License-MIT-yellow.svg" />
+  </a>
+
+  <a href="#" target="_blank">
+    <img alt="Issues" src="https://img.shields.io/github/issues/tunapanda/wikonnect" />
+  </a>
+
+  <a href="#" target="_blank">
+    <img alt="Forks" src="https://img.shields.io/github/forks/tunapanda/wikonnect" />
+  </a> 
+  <a href="#" target="_blank">
+    <img alt="Stars" src="https://img.shields.io/github/stars/tunapanda/wikonnect" />
+  </a>
+</p>
+
+
+
 # Wikonnect
 
 Wikonnect is an open-source e-learning platform that is designed to allow anyone to learn, create content, and contribute to the code. The initial courses offered on the platform will be around digital literacy, to get more people using the internet in more productive ways. Developed by Tunapanda Institute in Nairobi, Kenya. The original platform (called 'swag') was used to provide technology, design, and business training in low-income communities with low bandwidth.
@@ -123,6 +152,22 @@ To populate the database with dummy data (defined in `server/db/seeds`), run `kn
 Now start your server! `yarn start`
 
 If you see an Elasticsearch error, don't worry, you don't need Elasticsearch to run the app.
+
+
+
+### Designs
+
+
+<table>
+ 
+  <tr>
+    <td><img src="screenshots/1.png" width=270 height=480></td>
+    <td><img src="screenshots/2.png" width=270 height=480></td>
+    <td><img src="screenshots/3.png" width=270 height=480></td>
+  </tr>
+ </table>
+
+Head over to [Adobe XD](https://xd.adobe.com/view/4373354a-a52e-4413-4a61-8831bd731d75-3542/grid) to see the complete design.
 
 ### Front End set-up
 

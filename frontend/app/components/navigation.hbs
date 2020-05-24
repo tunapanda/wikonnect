@@ -16,12 +16,12 @@
       Explore Courses
 
     {{/link-to}}
-    {{#link-to "profile" me.user.username invokeAction=(action "closenav")  }}
+    {{#link-to "profile" invokeAction=(action "closenav")  }}
       Profile
 
     {{/link-to}}
     <a href="#" {{ action "logout" }}>Logout</a>
-    {{#link-to "profile" me.user.username (query-params view="Settings")
+    {{#link-to "profile"  (query-params view="Settings")
   invokeAction=(action "closenav")  }}
       Settings
 

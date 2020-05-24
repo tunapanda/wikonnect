@@ -1,17 +1,17 @@
 const Router = require('koa-router');
 const bcrypt = require('bcrypt');
 const path = require('path');
+
 const busboy = require('async-busboy');
 const shortid = require('shortid');
 const sharp = require('sharp');
-
 const s3 = require('../utils/s3Util');
+
 const User = require('../models/user');
 const log = require('../utils/logger');
 const jwt = require('../middleware/jwt');
 const permController = require('../middleware/permController');
 const validateAuthRoutes = require('../middleware/validation/validateAuthRoutes');
-// const getUserByUsername = require('../middleware/authenticate');
 
 const environment = process.env.NODE_ENV || 'development';
 const config = require('../knexfile.js')[environment];
@@ -79,6 +79,7 @@ async function createPasswordHash(ctx, next) {
  * @apiParam (Required Params) {string} user[username] username
  * @apiParam (Required Params) {string} user[email] Unique email
  * @apiParam (Required Params) {string} user[password] validated password
+ * @apiParam (Optional Params) {string} user[invitedBy] auto filled on the form
  *
  * @apiPermission none
  *
@@ -86,8 +87,9 @@ async function createPasswordHash(ctx, next) {
  *     HTTP/1.1 201 OK
  *     {
  *        "user": {
- *          "username": "string",
  *          "id": "string",
+ *          "username": "string",
+ *          "inviteCode": "DTrbi6aLj",
  *          "createdAt": "string",
  *          "updatedAt": "string"
  *        }
@@ -97,16 +99,28 @@ async function createPasswordHash(ctx, next) {
  */
 
 router.post('/', validateAuthRoutes.validateNewUser, createPasswordHash, async ctx => {
+  console.log(ctx.req.body);
   ctx.request.body.user.username = ctx.request.body.user.username.toLowerCase();
   ctx.request.body.user.email = ctx.request.body.user.email.toLowerCase();
 
-  const newUser = ctx.request.body.user;
+  const invitedBy = ctx.request.body.user.invitedBy;
+  delete ctx.request.body.user.invitedBy;
+
+  let newUser = ctx.request.body.user;
+  // generate personal invite code for use when inviting others
+  newUser.inviteCode = shortid.generate();
+
   const firstUserCheck = await User.query();
   let role = !firstUserCheck.length ? 'groupSuperAdmin' : 'groupBasic';
+
 
   try {
     const user = await User.query().insertAndFetch(newUser);
     await knex('group_members').insert({ 'user_id': user.id, 'group_id': role });
+    await knex('user_invite').insert({ 'user_id': user.id, 'invited_by': invitedBy });
+
+    log.info('Created a user with id %s with username %s with the invite code %s', user.id, user.username, user.invite_code);
+
     ctx.status = 201;
     ctx.body = { user };
   } catch (e) {
@@ -114,11 +128,13 @@ router.post('/', validateAuthRoutes.validateNewUser, createPasswordHash, async c
     if (e.constraint === 'users_email_unique') {
       ctx.throw(422, 'email is not unique', { message: 'email' });
     }
-    if (e.constraint === 'users_username_unique'){
+    if (e.constraint === 'users_username_unique') {
       ctx.throw(422, 'username is not unique', { message: 'username' });
     }
     ctx.throw(400, null, { errors: ['Bad Request'] });
   }
+
+
 });
 
 
@@ -140,6 +156,9 @@ router.post('/', validateAuthRoutes.validateNewUser, createPasswordHash, async c
  *       "username": "user2",
  *       "createdAt": "2017-12-20T16:17:10.000Z",
  *       "updatedAt": "2017-12-20T16:17:10.000Z",
+ *       "profileUri": "uploads/profiles/user1.jpg",
+ *       "private": boolean,
+ *       "inviteCode": "DTrbi6aLj",
  *       "achievementAwards": [
  *         {
  *           "id": "achievementaward1",
@@ -157,7 +176,13 @@ router.post('/', validateAuthRoutes.validateNewUser, createPasswordHash, async c
  *           "name": "basic"
  *         }
  *       ],
- *       "enrolledCourses": [],
+ *       "enrolledCourses": [
+ *          {
+ *            "id": "course1",
+ *            "name": "A Course 1",
+ *            "type": "course"
+ *          }
+ *       ],
  *       "userVerification": []
  *    }
  * }
@@ -178,6 +203,10 @@ router.post('/', validateAuthRoutes.validateNewUser, createPasswordHash, async c
  */
 
 router.get('/:id', permController.requireAuth, async ctx => {
+
+  if (ctx.state.user.data.id !== 'anonymous') {
+    // do something here
+  }
 
   const user = await User.query().findById(ctx.params.id).mergeJoinEager('[achievementAwards(selectBadgeNameAndId), userRoles(selectName), enrolledCourses(selectNameAndId)]');
   returnType(user);
@@ -253,7 +282,7 @@ router.put('/:id', jwt.authenticate, permController.requireAuth, permController.
 
   let user;
   try {
-    const user = await User.query().patchAndFetchById(ctx.params.id, ctx.request.body.user);
+    user = await User.query().patchAndFetchById(ctx.params.id, ctx.request.body.user);
     ctx.assert(user, 404, 'That user does not exist.');
   } catch (e) {
     if (e.statusCode) {
@@ -264,6 +293,22 @@ router.put('/:id', jwt.authenticate, permController.requireAuth, permController.
 
   ctx.status = 200;
   ctx.body = { user };
+
+});
+
+router.post('/invite/:id', async ctx => {
+  let invite;
+  try {
+    invite = await User.query().patchAndFetchById(ctx.params.id, ctx.request.body.user);
+    ctx.assert(invite, 404, 'That user does not exist.');
+  } catch (e) {
+    if (e.statusCode) {
+      ctx.throw(e.statusCode, null, { errors: [e.message] });
+    } else { ctx.throw(400, null, { errors: ['Bad Request', e.message] }); }
+  }
+
+  ctx.status = 200;
+  ctx.body = { invite };
 
 });
 

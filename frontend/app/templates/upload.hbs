@@ -1,0 +1,51 @@
+{{outlet}}
+
+{{#if me.isAuthenticated}}
+
+  <div class="text-center">
+    <br>
+    <img class="rounded-circle" width="300px" alt="" src={{profileImage}}>
+
+    <br>
+
+    <br>
+    {{#unless complete}}
+
+
+      <Forms::Upload @multiple="false" @accept="image/*" @filesSelected={{action "uploadPic"}}
+        @disabled={{uploader.uploading}}>
+        {{#if uploader.uploading}}
+          Uploading... <span class="loading-spinner"></span> {{uploader.progress}}%
+        {{else}}
+          Upload Profile Picture
+        {{/if}}
+      </Forms::Upload>
+    {{/unless}}
+    {{#if signup}}
+
+      <br><br>
+      {{#link-to "home"}}
+        {{#if complete}}
+          <button type="button" class="btn btn-success">Proceed</button>
+        {{else}}
+          Skip
+        {{/if}}
+
+      {{/link-to}}
+    {{else}}
+      {{#if complete}}
+        {{#link-to "profile"}}
+          <br>
+          <button type="button" class="btn btn-success">Back to profile</button>
+        {{/link-to}}
+
+      {{/if}}
+    {{/if}}
+  </div>
+
+
+{{else}}
+
+  <Warning @message="You do not have  permission to view this page" />
+
+{{/if}}

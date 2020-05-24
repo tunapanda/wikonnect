@@ -64,15 +64,7 @@ Router.map(function () {
 
   );
 
-  this.route('profile', {
-    path: '/profile/:username'
-  }
-
-  , function () {
-    this.route('settings');
-  }
-
-  );
+  this.route('profile');
   this.route('search');
   this.route('about');
 
@@ -112,11 +104,31 @@ Router.map(function () {
 
   this.route('module', function () {
     this.route('create');
+    this.route('index', {
+      path: '/:module_slug'
+    }
+
+    );
   }
 
   );
   this.route('courses');
   this.route('cms-desktop');
+  this.route('lesson', function () {
+    this.route('index', {
+      path: '/:lesson_slug'
+    }
+
+    );
+  });
+  this.route('chapter', function () {
+    this.route('index', {
+      path: '/:chapter_slug'
+    }
+
+    );
+  });
+  this.route('upload');
 }
 
 );

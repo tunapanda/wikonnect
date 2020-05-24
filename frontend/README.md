@@ -1,7 +1,7 @@
 # wikonnect
 
 This README outlines the details of collaborating on this Ember application.
-A short introduction of this app could easily go here.   
+A short introduction of this app could easily go here.
 
 ## Prerequisites
 
@@ -55,3 +55,11 @@ Specify what it takes to deploy your app.
 * Development Browser Extensions
   * [ember inspector for chrome](https://chrome.google.com/webstore/detail/ember-inspector/bmdblncegkenkacieihfhpjfppoconhi)
   * [ember inspector for firefox](https://addons.mozilla.org/en-US/firefox/addon/ember-inspector/)
+
+
+
+## Hazina BRCK Moja Points
+
+```html
+<iframe _ngcontent-odi-c2="" id="moja-hazina" loading="eager" name="moja-hazina" sandbox="allow-forms allow-modals allow-scripts allow-popups" src="https://hazina.stg.brck.io/?quest=e05455f7-7cf7-4984-9146-30ee90e74505" style="border:none; height:180px; overflow:hidden; width: 350px; background-color:white;"></iframe>
+```

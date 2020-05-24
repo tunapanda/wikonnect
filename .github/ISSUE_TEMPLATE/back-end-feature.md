@@ -3,7 +3,7 @@ name: 'Back-End Feature Issue:'
 about: 'create features related to back-end'
 title: '[FEATURE] [BACKEND]'
 labels: 'type: feature, backend'
-assignees: '@mosesokemwa '
+assignees: '@mosesokemwa'
 
 ---
 
@@ -12,7 +12,7 @@ assignees: '@mosesokemwa '
 
 ### Tasks (where applicable)
 <!-- Please describe back-end tasks needed to accomplisd this-->
-- [ ]  eg. Fetch users end point 
+- [ ]  eg. Fetch users end point
 
 
 
