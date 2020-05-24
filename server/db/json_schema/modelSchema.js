@@ -8,7 +8,7 @@ const modelSchema = {
     'status': { 'type': 'string' },
     'creatorId': { 'type': 'string' },
   },
-  'required': ['name', 'slug', 'description', 'status', 'creatorId'],
+  'required': ['name', 'description', 'status', 'creatorId'],
 };
 
 

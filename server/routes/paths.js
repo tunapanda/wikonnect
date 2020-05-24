@@ -3,6 +3,8 @@ const LearningPath = require('../models/learning_path');
 const { validatePaths } = require('../middleware/validation/validatePostData');
 const permController = require('../middleware/permController');
 
+const slugGen = require('../utils/slugGen');
+
 const router = new Router({
   prefix: '/paths'
 });
@@ -178,6 +180,7 @@ router.get('/:id', permController.requireAuth, async ctx => {
 
 router.post('/', permController.requireAuth, permController.grantAccess('createAny', 'path'), validatePaths, async ctx => {
   const newLearningPath = ctx.request.body.learningPath;
+  newLearningPath.slug = await slugGen(newLearningPath.name);
 
   let learningpath;
   try {
