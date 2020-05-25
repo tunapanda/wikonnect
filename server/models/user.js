@@ -20,6 +20,10 @@ class User extends Model {
     return ['hash', 'email', 'lastSeen', 'lastIp'];
   }
 
+  async $indexForSearch() {
+    return null;
+  }
+
   static get relationMappings() {
     return {
       enrolledCourses: {

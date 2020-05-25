@@ -2,7 +2,6 @@
 
 - [ ] I have read [Wikonnects contributing guidelines](https://github.com/tunapanda/wikonnect/blob/master/CONTRIBUTING.md).
 - [ ] My pull request has a descriptive title (not a vague title like `Update README.md`).
-- [ ] My pull request targets the `master` branch of Wikonnect.
 - [ ] My pull request passes all test.
 
 <!-- If your pull request closes a GitHub issue, replace the XXXXX below with the issue number. For e.g. Closes #12. The issue #12 will automatically get closed when this PR gets merged. -->

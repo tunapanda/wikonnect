@@ -14,7 +14,7 @@ export default class ProfileController extends Controller {
 
   @computed()
   get myProfile() {
-    return (this.me.user.id == this.model.id);
+    return this.me.user.id;
   }
 
   @action

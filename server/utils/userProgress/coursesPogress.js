@@ -7,7 +7,6 @@ const environment = process.env.NODE_ENV;
 const config = require('../../knexfile.js')[environment];
 const knex = require('knex')(config);
 
-
 async function userEnrolledCourse(courseData, userId) {
   const enrollment = await Enrollment.query().where('user_id', userId);
 
@@ -27,7 +26,6 @@ async function userEnrolledCourse(courseData, userId) {
     }
   });
 }
-
 async function userProgress(courseData, userId) {
   const achievement = await Achievement.query().where('user_id', userId);
   let achievementChapters = [];

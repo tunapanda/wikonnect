@@ -6,7 +6,7 @@ define({ "api": [
     "name": "GetAUser",
     "group": "Authentication",
     "version": "0.4.0",
-    "description": "<p>This is the Description. It is multiline capable.</p> <p>Last line of Description.</p>",
+    "description": "<p>list a single user on the platform</p>",
     "permission": [
       {
         "name": "[admin, superadmin]"
@@ -29,7 +29,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "    HTTP/1.1 201 OK\n    {\n      \"user\": {\n      \"id\": \"user2\",\n      \"username\": \"user2\",\n      \"createdAt\": \"2017-12-20T16:17:10.000Z\",\n      \"updatedAt\": \"2017-12-20T16:17:10.000Z\",\n      \"achievementAwards\": [\n        {\n          \"id\": \"achievementaward1\",\n          \"name\": \"completed 10 courses\",\n          \"type\": \"achievementAwards\"\n        },\n        {\n          \"id\": \"achievementaward2\",\n          \"name\": \"fully filled profile\",\n          \"type\": \"achievementAwards\"\n        }\n      ],\n      \"userRoles\": [\n        {\n          \"name\": \"basic\"\n        }\n      ],\n      \"enrolledCourses\": [],\n      \"userVerification\": []\n   }\n}",
+          "content": "    HTTP/1.1 201 OK\n    {\n      \"user\": {\n      \"id\": \"user2\",\n      \"username\": \"user2\",\n      \"createdAt\": \"2017-12-20T16:17:10.000Z\",\n      \"updatedAt\": \"2017-12-20T16:17:10.000Z\",\n      \"profileUri\": \"uploads/profiles/user1.jpg\",\n      \"private\": boolean,\n      \"inviteCode\": \"DTrbi6aLj\",\n      \"achievementAwards\": [\n        {\n          \"id\": \"achievementaward1\",\n          \"name\": \"completed 10 courses\",\n          \"type\": \"achievementAwards\"\n        },\n        {\n          \"id\": \"achievementaward2\",\n          \"name\": \"fully filled profile\",\n          \"type\": \"achievementAwards\"\n        }\n      ],\n      \"userRoles\": [\n        {\n          \"name\": \"basic\"\n        }\n      ],\n      \"enrolledCourses\": [\n         {\n           \"id\": \"course1\",\n           \"name\": \"A Course 1\",\n           \"type\": \"course\"\n         }\n      ],\n      \"userVerification\": []\n   }\n}",
           "type": "json"
         }
       ]
@@ -47,6 +47,77 @@ define({ "api": [
           "type": "json"
         }
       ]
+    },
+    "filename": "./server/routes/users.js",
+    "groupTitle": "Authentication"
+  },
+  {
+    "type": "get",
+    "url": "/users",
+    "title": "GET all users.",
+    "name": "GetUsers",
+    "group": "Authentication",
+    "version": "0.4.0",
+    "description": "<p>list all user on the platform</p>",
+    "permission": [
+      {
+        "name": "[admin, superadmin]"
+      }
+    ],
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "authorization",
+            "description": "<p>Bearer &lt;&lt;YOUR_API_KEY_HERE&gt;&gt;</p>"
+          }
+        ]
+      }
+    },
+    "filename": "./server/routes/users.js",
+    "groupTitle": "Authentication"
+  },
+  {
+    "type": "post",
+    "url": "/users/:id/profile-image",
+    "title": "POST users profile picture.",
+    "name": "PostAUser",
+    "group": "Authentication",
+    "version": "0.4.0",
+    "description": "<p>upload user profile pic</p>",
+    "permission": [
+      {
+        "name": "[basic, admin, superadmin]"
+      }
+    ],
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "authorization",
+            "description": "<p>Bearer &lt;&lt;YOUR_API_KEY_HERE&gt;&gt;</p>"
+          }
+        ]
+      }
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "errors",
+            "description": "<p>Bad Request.</p>"
+          }
+        ]
+      }
     },
     "filename": "./server/routes/users.js",
     "groupTitle": "Authentication"
@@ -81,6 +152,15 @@ define({ "api": [
             "field": "user[password]",
             "description": "<p>validated password</p>"
           }
+        ],
+        "Optional Params": [
+          {
+            "group": "Optional Params",
+            "type": "string",
+            "optional": false,
+            "field": "user[invitedBy]",
+            "description": "<p>auto filled on the form</p>"
+          }
         ]
       }
     },
@@ -93,7 +173,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "HTTP/1.1 201 OK\n{\n   \"user\": {\n     \"username\": \"string\",\n     \"id\": \"string\",\n     \"createdAt\": \"string\",\n     \"updatedAt\": \"string\"\n   }\n}",
+          "content": "HTTP/1.1 201 OK\n{\n   \"user\": {\n     \"id\": \"string\",\n     \"username\": \"string\",\n     \"inviteCode\": \"DTrbi6aLj\",\n     \"createdAt\": \"string\",\n     \"updatedAt\": \"string\"\n   }\n}",
           "type": "json"
         }
       ]
@@ -171,6 +251,146 @@ define({ "api": [
     "version": "0.0.0",
     "filename": "./server/routes/auth.js",
     "groupTitle": "Authentication"
+  },
+  {
+    "type": "put",
+    "url": "/users/:id",
+    "title": "PUT users data.",
+    "name": "PutAUser",
+    "group": "Authentication",
+    "version": "0.4.0",
+    "description": "<p>edit users data on the platform</p>",
+    "permission": [
+      {
+        "name": "[admin, superadmin]"
+      }
+    ],
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "authorization",
+            "description": "<p>Bearer &lt;&lt;YOUR_API_KEY_HERE&gt;&gt;</p>"
+          }
+        ]
+      }
+    },
+    "filename": "./server/routes/users.js",
+    "groupTitle": "Authentication"
+  },
+  {
+    "type": "get",
+    "url": "/chapters/:id",
+    "title": "GET single chapter.",
+    "name": "GetAChapter",
+    "group": "Chapters",
+    "permission": [
+      {
+        "name": "none"
+      }
+    ],
+    "version": "0.4.0",
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n{\n   \"chapter\": {\n   \"id\": \"chapter4\",\n   \"lessonId\": \"lesson2\",\n   \"name\": \"A Chapter4\",\n   \"slug\": \"a-chapter4\",\n   \"description\": \"An H5P Chapter.\",\n   \"status\": \"published\",\n   \"creatorId\": \"user1\",\n   \"createdAt\": \"2017-12-20T16:17:10.000Z\",\n   \"updatedAt\": \"2017-12-20T16:17:10.000Z\",\n   \"contentType\": \"h5p\",\n   \"contentUri\": \"/uploads/h5p/chapter4\",\n   \"imageUrl\": null\n }",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "errors",
+            "description": "<p>Bad Request.</p>"
+          }
+        ]
+      }
+    },
+    "filename": "./server/routes/chapters.js",
+    "groupTitle": "Chapters"
+  },
+  {
+    "type": "get",
+    "url": "/chapters/",
+    "title": "GET all chapters.",
+    "name": "GetChapters",
+    "group": "Chapters",
+    "permission": [
+      {
+        "name": "none"
+      }
+    ],
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n {\n    \"chapter\": [{\n       \"id\": \"chapter1\",\n       \"lessonId\": \"lesson1\",\n       \"name\": \"A Chapter\",\n       \"slug\": \"a-chapter\",\n       \"description\": \"An H5P Chapter.\",\n       \"status\": \"published\",\n       \"creatorId\": \"user1\",\n       \"createdAt\": \"2017-12-20T16:17:10.000Z\",\n       \"updatedAt\": \"2017-12-20T16:17:10.000Z\",\n       \"contentType\": \"h5p\",\n      \"contentUri\": \"/uploads/h5p/chapter1\",\n      \"imageUrl\": \"/uploads/images/content/chapters/chapter1.jpeg\"\n    }]\n }",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "errors",
+            "description": "<p>Bad Request.</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "./server/routes/chapters.js",
+    "groupTitle": "Chapters"
+  },
+  {
+    "type": "post",
+    "url": "/chapters/:id/chapter-image",
+    "title": "POST chapter banner image.",
+    "name": "PostBannerImage",
+    "group": "Chapters",
+    "permission": [
+      {
+        "name": "none"
+      }
+    ],
+    "version": "0.4.0",
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": " HTTP/1.1 200 OK\n {\n  \"host\": hostname of where the image has been uploaded\n  \"path\": image path\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "errors",
+            "description": "<p>Bad Request.</p>"
+          }
+        ]
+      }
+    },
+    "filename": "./server/routes/chapters.js",
+    "groupTitle": "Chapters"
   },
   {
     "type": "delete",
@@ -1238,5 +1458,29 @@ define({ "api": [
     "version": "0.0.0",
     "filename": "./server/routes/modules.js",
     "groupTitle": "Modules"
+  },
+  {
+    "type": "get",
+    "url": "/search?q={query-string-goes-here}",
+    "title": "GET result search query.",
+    "name": "GetSearch",
+    "group": "Search",
+    "permission": [
+      {
+        "name": "none"
+      }
+    ],
+    "version": "0.4.0",
+    "error": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 404 Not Found\n[{\n   \"error\": \"Search Unavailable\"\n}]",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "./server/routes/search.js",
+    "groupTitle": "Search"
   }
 ] });
