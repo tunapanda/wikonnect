@@ -3,7 +3,7 @@ name: 'Frontend Feature Issue:'
 about: 'create features related to front-end'
 title: '[FEATURE] [FRONTEND]'
 labels: 'type: feature, frontend'
-assignees: '@proverbial-nijna'
+assignees: '@proverbial-ninja'
 
 ---
 
@@ -14,7 +14,7 @@ assignees: '@proverbial-nijna'
 <!-- Please describe front-end tasks needed to accomplisd this-->
 - [ ]  eg. Fetch users from backend
 - [ ]  eg. List users on template with checkbox
-- [ ]  eg. Send delete request to backend with 
+- [ ]  eg. Send delete request to backend with
 
 ### Tests (where applicable)
 <!-- Please describe tests-->
