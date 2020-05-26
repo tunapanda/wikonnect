@@ -108,5 +108,8 @@ config
 
 public/uploads/*
 !public/uploads/.gitinclude
-public/uploads/H5P/*
-!public/uploads/H5P/.gitinclude
+public/uploads/h5p/*
+!public/uploads/h5p/.gitinclude
+db/seeds/*
+!db/seeds/groups.js
+!db/seeds/chapters.js
