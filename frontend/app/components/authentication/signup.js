@@ -24,22 +24,26 @@ export default class AuthenticationSignupComponent extends Component {
 
 
         Object.keys(err.errors).forEach(key => {
+          console.log(err.errors[key].detail.split(" "));
 
-          let details = err.errors[key].detail.split("_");
+          let constraint = err.errors[key].constraint;
+          console.log(constraint);
+
+          let details = err.errors[key].detail.split(" ");
 
           let error_message;
-          switch (details[2]) {
-          case "unique":
-            error_message = "The " + details[1] + " is already in use";
+          switch (constraint) {
+          case "users_email_unique":
+              error_message = "The email " + fields['email'] + " is already in use";
             break;
-
+          case "users_username_unique":
+              error_message = "The username - " + fields['username'] + " is already in use";
+            break;
           default:
             break;
           }
           // model.addError(details[1], + details[1] + ' should be ' + details[2])
           model.addError(details[1], error_message);
-
-
         });
       }
     });

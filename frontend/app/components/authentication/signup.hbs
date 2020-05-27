@@ -16,11 +16,11 @@
   <div class="signup-form-fields">
     <form.element id="username" class="inputs" @controlType="text" @label="Username" @placeholder="Username"
       @property="username" @autocomplete="username" />
-    {{!-- {{#each newUser.errors as |err| }}
+    {{#each newUser.errors as |err| }}
       {{#if (eq err.key 'username')}}
         {{err.validation}}
       {{/if}}
-    {{/each}} --}}
+    {{/each}}
 
     <form.element id="email" class="inputs" @controlType="text" @label="Email address" @placeholder="example@mail.com"
       @property="email" @autocomplete="email" />
