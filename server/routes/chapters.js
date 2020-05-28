@@ -61,8 +61,10 @@ async function returnChapterStatus(chapter, achievement) {
  *            "createdAt": "2017-12-20T16:17:10.000Z",
  *            "updatedAt": "2017-12-20T16:17:10.000Z",
  *            "contentType": "h5p",
- *           "contentUri": "/uploads/h5p/chapter1",
- *           "imageUrl": "/uploads/images/content/chapters/chapter1.jpeg"
+ *            "contentUri": "/uploads/h5p/chapter1",
+ *            "imageUrl": "/uploads/images/content/chapters/chapter1.jpeg",
+ *            "contentId": null,
+ *            "tags": []
  *         }]
  *      }
  * @apiError {String} errors Bad Request.
@@ -122,7 +124,9 @@ router.get('/', permController.requireAuth, async ctx => {
  *        "updatedAt": "2017-12-20T16:17:10.000Z",
  *        "contentType": "h5p",
  *        "contentUri": "/uploads/h5p/chapter4",
- *        "imageUrl": null
+ *        "imageUrl": null,
+ *        "contentId": null,
+ *        "tags": []
  *      }
  *
 * @apiError {String} errors Bad Request.
@@ -153,6 +157,45 @@ router.get('/:id', permController.requireAuth, async ctx => {
   ctx.body = { chapter };
 });
 
+
+/**
+ * @api {post} /chapters POST single chapter.
+ * @apiName PostAChapter
+ * @apiGroup Chapters
+ * @apiPermission none
+ * @apiVersion 0.4.0
+ *
+ * @apiSampleRequest off
+ *
+ * @apiParam {String} chapter[name] Name - Unique.
+ * @apiParam {String} chapter[description] Description.
+ * @apiParam {String} chapter[status] modules status - published | draft .
+ * @apiParam {String} chapter[tags:[ Array ]] Array of tags.
+ *
+ * @apiSampleRequest off
+ *
+* @apiSuccessExample {json} Success-Response:
+ *     HTTP/1.1 200 OK
+ *     {
+ *        "chapter": {
+ *        "id": "chapter4",
+ *        "lessonId": "lesson2",
+ *        "name": "A Chapter4",
+ *        "slug": "a-chapter4",
+ *        "description": "An H5P Chapter.",
+ *        "status": "published",
+ *        "creatorId": "user1",
+ *        "createdAt": "2017-12-20T16:17:10.000Z",
+ *        "updatedAt": "2017-12-20T16:17:10.000Z",
+ *        "contentType": "h5p",
+ *        "contentUri": "/uploads/h5p/chapter4",
+ *        "imageUrl": null,
+ *        "contentId": null,
+ *        "tags": []
+ *      }
+ *
+ * @apiError {String} errors Bad Request.
+ */
 router.post('/', permController.requireAuth, permController.grantAccess('createAny', 'path'), validateChapter, async ctx => {
   let newChapter = ctx.request.body.chapter;
 
@@ -226,6 +269,7 @@ router.delete('/:id', permController.requireAuth, permController.grantAccess('de
  */
 router.post('/:id/chapter-image', async (ctx, next) => {
   if ('POST' != ctx.method) return await next();
+  const chapter_id = ctx.params.id;
 
   const { files } = await busboy(ctx.req);
   const fileNameBase = shortid.generate();
@@ -289,6 +333,15 @@ router.post('/:id/chapter-image', async (ctx, next) => {
 
     await resizer.toFile(`${uploadDir}/${fileNameBase}.jpg`);
 
+
+    await Chapter.query()
+      .findById(chapter_id)
+      .patch({
+        imageUrl: uploadPath
+      });
+
+
+
     ctx.body = {
       host: ctx.host,
       path: `${uploadPath}/${fileNameBase}.jpg`
@@ -308,6 +361,13 @@ router.post('/:id/upload', async ctx => {
   });
   // ctx.assert(files.length, 400, 'No files sent.');
   // ctx.assert(files.length === 1, 400, 'Too many files sent.');
+
+  await Chapter.query()
+    .findById(dirName)
+    .patch({
+      content_uri: uploadPath
+    });
+
 
   ctx.body = {
     host: ctx.host,
