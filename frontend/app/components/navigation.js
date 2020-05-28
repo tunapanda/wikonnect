@@ -13,6 +13,7 @@ export default class NavigationComponent extends Component {
 
   @service router;
   @service session;
+  token = this.session.data.authenticated.token
 
 
   @tracked token = this.session.data.authenticated.token
