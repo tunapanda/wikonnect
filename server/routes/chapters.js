@@ -13,23 +13,24 @@ const Achievement = require('../models/achievement');
 const permController = require('../middleware/permController');
 const validateChapter = require('../middleware/validation/validateChapter');
 
+const slugGen = require('../utils/slugGen');
 
 const router = new Router({
   prefix: '/chapters'
 });
 
 async function returnChapterStatus(chapter, achievement) {
-  if (chapter.length == undefined) {
+  if (chapter.length === undefined) {
     achievement.forEach(ach => {
-      if (chapter.id == ach.target) {
-        return chapter.targetStatus = ach.targetStatus;
+      if (chapter.id === ach.target) {
+        return chapter.targetStatus = ach.target_status;
       }
     });
   } else {
     chapter.forEach(chap => {
       achievement.forEach(ach => {
-        if (chap.id == ach.target) {
-          return chap.targetStatus = ach.targetStatus;
+        if (chap.id === ach.target) {
+          return chap.targetStatus = ach.target_status;
         }
       });
     });
@@ -60,26 +61,40 @@ async function returnChapterStatus(chapter, achievement) {
  *            "createdAt": "2017-12-20T16:17:10.000Z",
  *            "updatedAt": "2017-12-20T16:17:10.000Z",
  *            "contentType": "h5p",
- *           "contentUri": "/uploads/h5p/chapter1",
- *           "imageUrl": "/uploads/images/content/chapters/chapter1.jpeg"
+ *            "contentUri": "/uploads/h5p/chapter1",
+ *            "imageUrl": "/uploads/images/content/chapters/chapter1.jpeg",
+ *            "contentId": null,
+ *            "tags": []
  *         }]
  *      }
  * @apiError {String} errors Bad Request.
  */
 
 router.get('/', permController.requireAuth, async ctx => {
-  try {
-    const chapter = await Chapter.query().where(ctx.query);
-    const achievement = await Achievement.query().where('user_id', ctx.state.user.data.id);
 
-    returnChapterStatus(chapter, achievement);
+  let stateUserId = ctx.state.user.role == undefined ? ctx.state.user.data.role : ctx.state.user.role;
 
-    ctx.status = 200;
-    ctx.body = { chapter };
-  } catch (error) {
-    ctx.status = 400;
-    ctx.body = { message: 'The query key does not exist' };
+  let chapter;
+  switch (stateUserId) {
+  case 'anonymous':
+    chapter = await Chapter.query().where(ctx.query).where('status', 'published');
+    ctx.status = 401;
+    ctx.body = { message: 'un published chapter' };
+    break;
+  case 'basic':
+    chapter = await Chapter.query().where(ctx.query).where('status', 'published');
+    break;
+  default:
+    chapter = await Chapter.query().where(ctx.query);
   }
+
+  // const chapter = await Chapter.query().where(ctx.query).where('status', 'published');
+  const achievement = await Achievement.query().where('user_id', ctx.state.user.data.id);
+
+  returnChapterStatus(chapter, achievement);
+
+  ctx.status = 200;
+  ctx.body = { chapter };
 });
 
 
@@ -109,13 +124,30 @@ router.get('/', permController.requireAuth, async ctx => {
  *        "updatedAt": "2017-12-20T16:17:10.000Z",
  *        "contentType": "h5p",
  *        "contentUri": "/uploads/h5p/chapter4",
- *        "imageUrl": null
+ *        "imageUrl": null,
+ *        "contentId": null,
+ *        "tags": []
  *      }
  *
 * @apiError {String} errors Bad Request.
  */
 router.get('/:id', permController.requireAuth, async ctx => {
-  const chapter = await Chapter.query().findById(ctx.params.id);
+  let stateUserId = ctx.state.user.role == undefined ? ctx.state.user.data.role : ctx.state.user.role;
+
+  let chapter;
+  switch (stateUserId) {
+  case 'anonymous':
+    chapter = await Chapter.query().where({ id: ctx.params.id, status: 'published' });
+    ctx.status = 401;
+    ctx.body = { message: 'un published chapter' };
+    break;
+  case 'basic':
+    chapter = await Chapter.query().where({ id: ctx.params.id, status: 'published' });
+    break;
+  default:
+    chapter = await Chapter.query().where({ id: ctx.params.id });
+  }
+
   ctx.assert(chapter, 404, 'no lesson by that ID');
 
   const achievement = await Achievement.query().where('user_id', ctx.state.user.data.id);
@@ -125,12 +157,50 @@ router.get('/:id', permController.requireAuth, async ctx => {
   ctx.body = { chapter };
 });
 
+
+/**
+ * @api {post} /chapters POST single chapter.
+ * @apiName PostAChapter
+ * @apiGroup Chapters
+ * @apiPermission none
+ * @apiVersion 0.4.0
+ *
+ * @apiSampleRequest off
+ *
+ * @apiParam {String} chapter[name] Name - Unique.
+ * @apiParam {String} chapter[description] Description.
+ * @apiParam {String} chapter[status] modules status - published | draft .
+ * @apiParam {String} chapter[tags:[ Array ]] Array of tags.
+ *
+ * @apiSampleRequest off
+ *
+* @apiSuccessExample {json} Success-Response:
+ *     HTTP/1.1 200 OK
+ *     {
+ *        "chapter": {
+ *        "id": "chapter4",
+ *        "lessonId": "lesson2",
+ *        "name": "A Chapter4",
+ *        "slug": "a-chapter4",
+ *        "description": "An H5P Chapter.",
+ *        "status": "published",
+ *        "creatorId": "user1",
+ *        "createdAt": "2017-12-20T16:17:10.000Z",
+ *        "updatedAt": "2017-12-20T16:17:10.000Z",
+ *        "contentType": "h5p",
+ *        "contentUri": "/uploads/h5p/chapter4",
+ *        "imageUrl": null,
+ *        "contentId": null,
+ *        "tags": []
+ *      }
+ *
+ * @apiError {String} errors Bad Request.
+ */
 router.post('/', permController.requireAuth, permController.grantAccess('createAny', 'path'), validateChapter, async ctx => {
   let newChapter = ctx.request.body.chapter;
 
-  newChapter.slug = newChapter.name.replace(/[^a-z0-9]+/gi, '-')
-    .replace(/^-*|-*$/g, '')
-    .toLowerCase();
+  // slug generation automated
+  newChapter.slug = await slugGen(newChapter.name);
 
   let chapter;
   try {
@@ -199,6 +269,7 @@ router.delete('/:id', permController.requireAuth, permController.grantAccess('de
  */
 router.post('/:id/chapter-image', async (ctx, next) => {
   if ('POST' != ctx.method) return await next();
+  const chapter_id = ctx.params.id;
 
   const { files } = await busboy(ctx.req);
   const fileNameBase = shortid.generate();
@@ -262,6 +333,15 @@ router.post('/:id/chapter-image', async (ctx, next) => {
 
     await resizer.toFile(`${uploadDir}/${fileNameBase}.jpg`);
 
+
+    await Chapter.query()
+      .findById(chapter_id)
+      .patch({
+        imageUrl: uploadPath
+      });
+
+
+
     ctx.body = {
       host: ctx.host,
       path: `${uploadPath}/${fileNameBase}.jpg`
@@ -281,6 +361,13 @@ router.post('/:id/upload', async ctx => {
   });
   // ctx.assert(files.length, 400, 'No files sent.');
   // ctx.assert(files.length === 1, 400, 'Too many files sent.');
+
+  await Chapter.query()
+    .findById(dirName)
+    .patch({
+      content_uri: uploadPath
+    });
+
 
   ctx.body = {
     host: ctx.host,

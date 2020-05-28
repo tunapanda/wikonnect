@@ -11,7 +11,7 @@ const chapterSchema = {
     'contentUri': { 'type': ['string', 'null'] },
     'tags': [{ 'type': 'string', }],
   },
-  'required': ['name', 'slug', 'description', 'status', 'lessonId', 'creatorId'],
+  'required': ['name', 'description', 'status', 'creatorId'],
 };
 
 

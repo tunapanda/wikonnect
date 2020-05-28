@@ -9,6 +9,8 @@ const environment = process.env.NODE_ENV;
 const config = require('../knexfile.js')[environment];
 const knex = require('knex')(config);
 
+const slugGen = require('../utils/slugGen');
+
 const router = new Router({
   prefix: '/courses'
 });
@@ -220,7 +222,10 @@ router.get('/:id', permController.requireAuth, async ctx => {
 
 router.post('/', permController.requireAuth, permController.grantAccess('createAny', 'path'), validateCourses, async ctx => {
   let newCourse = ctx.request.body.course;
+  newCourse.slug = await slugGen(newCourse.name);
+
   let course = await Course.query().insertAndFetch(newCourse);
+
 
   async function permObjects() {
     Object.keys(userPermissions)
