@@ -9,17 +9,17 @@
   </div>
 
   <div>
-    {{#link-to "courses"}}
-      <div class="learn">
-        Learn
-      </div>
+    {{#link-to "home"}}
+    <div class="learn">
+      Learn
+    </div>
     {{/link-to}}
 
-    {{#link-to "cms"}}
+    <a href="https://teach.wikonnect.org">
       <div class="teach">
         Teach
       </div>
-    {{/link-to}}
+    </a>
     <a href="http://github.com/tunapanda/wikonnect">
       <div class="buildr">
         Build
@@ -32,14 +32,14 @@
 
 
     {{#unless me.isAuthenticated}}
-      <div class="centered">
-        Have a Wikonnect account?
-      </div>
-      {{#link-to "login"}}
-        <button class="login">
-          Log In
-        </button>
-      {{/link-to}}
+    <div class="centered">
+      Have a Wikonnect account?
+    </div>
+    {{#link-to "login"}}
+    <button class="login">
+      Log In
+    </button>
+    {{/link-to}}
     {{/unless}}
   </div>
 
