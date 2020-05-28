@@ -124,13 +124,7 @@ router.post('/', validateAuthRoutes.validateNewUser, createPasswordHash, async c
     ctx.status = 201;
     ctx.body = { user };
   } catch (e) {
-    ctx.log.info('Failed for user - %s, with error %s', ctx.request.body.user.email, e.message);
-    if (e.constraint === 'users_email_unique') {
-      ctx.throw(422, 'email is not unique', { errors: [e] });
-    }
-    if (e.constraint === 'users_username_unique') {
-      ctx.throw(422, 'username is not unique', { errors: [e] });
-    }
+    ctx.log.info('Failed for user - %s, with error %s', ctx.request.body.user.email, e.message, e.detail);
     ctx.throw(400, null, { errors: [e] });
   }
 
