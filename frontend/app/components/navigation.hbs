@@ -7,13 +7,10 @@
     {{#link-to "index" invokeAction=(action "closenav")  }}
       Home
     {{/link-to}}
-    <a href="http://localhost:8080/api/auth?token={{token}}&user={{me.user.username}}">Teach</a>
-    {{!-- <a href="https://teach.wikonnect.org/api/auth?token={{token}}&user={{me.user.username}}">Teach</a> --}}
-    {{!-- 
-  {{#link-to "courses" invokeAction=(action "closenav")  }}
-  Explore Courses
+    <a href="http://localhost:8080/api/auth?token={{token}}&user={{me.user.username}}">
+      Teach
+    </a>
 
-  {{/link-to}} --}}
     {{#link-to "profile" invokeAction=(action "closenav")  }}
       Profile
 
@@ -26,7 +23,9 @@
     {{/link-to}}
     <a href="https://wikonnect.org">About</a>
     <a
-      href="https://community.wikonnect.org/new-topic?title=[FEEDBACK] Title&body=Explain the feedback in detail&category=Site Feedback">Feedback</a>
+      href="https://community.wikonnect.org/new-topic?title=[FEEDBACK] Title&body=Explain the feedback in detail&category=Site Feedback">
+      Feedback
+    </a>
 
 
   {{else}}
