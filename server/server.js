@@ -57,7 +57,6 @@ router.get('/hello', async ctx => {
   ctx.log.info('Got a request from %s for %s', ctx.request.ip, ctx.path);
   ctx.body = { user: 'You have access to view this route' };
 });
-console.log(process.env.NODE_ENV);
 
 app.use(router.routes());
 
