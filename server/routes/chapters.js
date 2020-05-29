@@ -75,15 +75,17 @@ router.get('/', permController.requireAuth, async ctx => {
   let stateUserId = ctx.state.user.role == undefined ? ctx.state.user.data.role : ctx.state.user.role;
 
   let chapter;
-  switch (stateUserId)   case 'anonymous':
-    apter = await Chapter.query().where(ctx.query).where('status', 'published');
-    status = 401;
-    dy = { message: 'un published chapter' };
-    br     case '  c':
-      chapte    ait Chapter.query().where(ctx.query).where('status', 'published');
+  switch (stateUserId) {
+    case 'anonymous':
+      chapter = await Chapter.query().where(ctx.query).where('status', 'published');
+      ctx.status = 401;
+      ctx.body = { message: 'un published chapter' };
       break;
-      lt:
-      pter = aw    apter.query().where(ctx.query);
+    case 'basic':
+      chapter = await Chapter.query().where(ctx.query).where('status', 'published');
+      break;
+    default:
+      chapter = await Chapter.query().where(ctx.query);
   }
 
   // const chapter = await Chapter.query().where(ctx.query).where('status', 'published');
@@ -134,25 +136,25 @@ router.get('/:id', permController.requireAuth, async ctx => {
 
   let chapter;
   switch (stateUserId) {
-    case 'anonymous'    chapter = await r.query().where({ id: ctx.params.id, status: 'published' });
+    case 'anonymous':
+      chapter = await Chapter.query().where({ id: ctx.params.id, status: 'published' });
       ctx.status = 401;
-      x.body = {
-        message    published chapter' };
-    break;
-        case 'basic': hapter   ait Chapter.qu    where({ id: ctx.params.id, status: 'published'
-      });
-break;
-  default:
-chapte    ait Cha.query().    { id: ctx.params.id });
+      ctx.body = { message: 'un published chapter' };
+      break;
+    case 'basic':
+      chapter = await Chapter.query().where({ id: ctx.params.id, status: 'published' });
+      break;
+    default:
+      chapter = await Chapter.query().where({ id: ctx.params.id });
   }
 
-ctx.assert(chapter, 404, 'no lesson by that ID');
+  ctx.assert(chapter, 404, 'no lesson by that ID');
 
-const achievement = await Achievement.query().where('user_id', ctx.state.user.data.id);
-returnChapterStatus(chapter, achievement);
+  const achievement = await Achievement.query().where('user_id', ctx.state.user.data.id);
+  returnChapterStatus(chapter, achievement);
 
-ctx.status = 200;
-ctx.body = { chapter };
+  ctx.status = 200;
+  ctx.body = { chapter };
 });
 
 
