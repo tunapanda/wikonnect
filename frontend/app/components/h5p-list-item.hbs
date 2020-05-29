@@ -2,7 +2,7 @@
   <div class="card h-100">
     {{#if @chapter.imageUrl}}
       {{#link-to "chapter" @chapter.id }}
-        <img class="card-img-top" src="{{@chapter.imageUrl}}" alt="">{{/link-to}}
+        <img height="200px" class="card-img-top" src="{{@chapter.imageUrl}}" alt="">{{/link-to}}
     {{else}}
       {{#link-to "chapter" @chapter.id }}<img class="card-img-top"
           src="http://placehold.jp/20/{{color}}/ffffff/400x150.png?text={{@chapter.name}}" alt="">{{/link-to}}
