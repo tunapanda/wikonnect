@@ -10,9 +10,6 @@ module.exports = async function (ctx, next) {
     }
 
     let status = err.status || 500;
-    // let message = err.message && status < 500
-    //   ? err.message
-    //   : 'Sorry, an error has occurred.';
 
     let message = err.message && status < 500 ? err.message : 'Sorry, an error has occurred.';
 
@@ -20,7 +17,6 @@ module.exports = async function (ctx, next) {
     console.log(`${ctx.method} ${ctx.url} - ${status} - ${message}`);
 
     if (status >= 500) {
-      console.log(err.stack);
       err.headers = Object.assign({}, err.headers, { 'Retry-After': 30 });
     }
 
@@ -28,7 +24,7 @@ module.exports = async function (ctx, next) {
 
     // for validation errors
     if (err.errors) {
-      return ctx.body = { errors: err.errors };
+      return ctx.body = { errors: err.errors, error_message: err.detail };
     }
 
     ctx.body = {
