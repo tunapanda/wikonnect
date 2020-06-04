@@ -9,6 +9,7 @@ const s3 = require('../utils/s3Util');
 
 
 const Chapter = require('../models/chapter');
+const Comment = require('../models/comment');
 const Achievement = require('../models/achievement');
 const permController = require('../middleware/permController');
 const validateChapter = require('../middleware/validation/validateChapter');
@@ -374,6 +375,46 @@ router.post('/:id/upload', async ctx => {
     path: uploadPath
   };
 
+
+});
+
+/**
+ * @api {post} /:chapterId/comments POST comment
+ * @apiName PostAChapterComment
+ * @apiGroup Chapters
+ * @apiPermission authenticated user
+ *
+ * @apiSuccessExample {json} Success-Response:
+ *     HTTP/1.1 201 OK
+ *     {
+ *      "comments": {
+ *        "creatorId": { type: String },
+ *        "comment": { type: String },
+ *        "metadata": { type: JSON }
+ *      }
+ *    }
+ *
+ */
+// router.post('/:chapterId/comments', permController.requireAuth, permController.grantAccess('createAny', 'path'), async ctx => {
+router.post('/:chapterId/comments', async ctx => {
+  let newChapterComment = ctx.request.body.comment;
+  newChapterComment.chapterId = ctx.params.chapterId;
+  console.log(newChapterComment);
+
+  let comment;
+  try {
+    comment = await Comment.query().insertAndFetch(newChapterComment);
+  } catch (e) {
+    if (e.statusCode) {
+      ctx.throw(e.statusCode, null, { errors: [e] });
+    } else { ctx.throw(400, null, { errors: [e] }); }
+    throw e;
+  }
+  if (!comment) {
+    ctx.assert(module, 401, 'Something went wrong');
+  }
+  ctx.status = 201;
+  ctx.body = { comment };
 
 });
 
