@@ -35,14 +35,14 @@ const router = new Router({
  */
 router.post('/', validateAuthRoutes.validateUserLogin, async ctx => {
   let user = await User.query().where('username', ctx.request.body.username);
-  if (!user.length) ctx.throw(404, null, 'wrong_email_or_password');
+  if (!user.length) ctx.throw(404, null, { errors: ['wrong_email_or_password']});
 
   let { hash: hashPassword, ...userInfoWithoutPassword } = user[0];
   user = user[0];
 
   const userData = await User.query().findById(user.id).eager('userRoles(selectName)');
 
-  let role = userData.userRoles[0].name !== null ? userData.userRoles[0].name : 'basic';
+  let role = userData['userRoles'][0] !== undefined ? userData['userRoles'][0].name : 'basic';
   userInfoWithoutPassword['role'] = role;
 
   if (await bcrypt.compare(ctx.request.body.password, hashPassword)) {

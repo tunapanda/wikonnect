@@ -124,14 +124,8 @@ router.post('/', validateAuthRoutes.validateNewUser, createPasswordHash, async c
     ctx.status = 201;
     ctx.body = { user };
   } catch (e) {
-    ctx.log.info('Failed for user - %s, with error %s', ctx.request.body.user.email, e.message);
-    if (e.constraint === 'users_email_unique') {
-      ctx.throw(422, 'email is not unique', { message: 'email' });
-    }
-    if (e.constraint === 'users_username_unique') {
-      ctx.throw(422, 'username is not unique', { message: 'username' });
-    }
-    ctx.throw(400, null, { errors: ['Bad Request'] });
+    ctx.log.info('Failed for user - %s, with error %s', ctx.request.body.user.email, e.message, e.detail);
+    ctx.throw(400, null, { errors: [e] });
   }
 
 
@@ -204,26 +198,24 @@ router.post('/', validateAuthRoutes.validateNewUser, createPasswordHash, async c
 
 router.get('/:id', permController.requireAuth, async ctx => {
 
-  if (ctx.state.user.data.id !== 'anonymous') {
-    // do something here
-  }
+  let stateUserId = ctx.state.user.id == undefined ? ctx.state.user.data.id : ctx.state.user.id;
 
-  const user = await User.query().findById(ctx.params.id).mergeJoinEager('[achievementAwards(selectBadgeNameAndId), userRoles(selectName), enrolledCourses(selectNameAndId)]');
-  returnType(user);
-  enrolledCoursesType(user);
-
+  let userId = ctx.params.id != 'current' ? ctx.params.id : stateUserId;
+  const user = await User.query().findById(userId).mergeJoinEager('[achievementAwards(selectBadgeNameAndId), userRoles(selectName), enrolledCourses(selectNameAndId)]');
 
   if (!user) {
     ctx.throw(404, 'No User With that Id');
   }
 
-  if (user.id !== ctx.state.user.data.id) {
+  if (user.id != stateUserId || stateUserId === 'anonymous') {
     log.info('Error logging  %s for %s', ctx.request.ip, ctx.path);
     ctx.throw(401, 'You do not have permissions to view that user');
   }
 
+  returnType(user);
+  enrolledCoursesType(user);
   // get all verification data
-  const userVerification = await knex('user_verification').where({ 'user_id': ctx.params.id });
+  const userVerification = await knex('user_verification').where({ 'user_id': userId });
   user.userVerification = userVerification;
 
   log.info('Got a request from %s for %s', ctx.request.ip, ctx.path);
