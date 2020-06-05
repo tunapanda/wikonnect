@@ -5547,6 +5547,14 @@ ember-deep-set@^0.2.0:
   dependencies:
     ember-cli-babel "^7.1.2"
 
+ember-disqus@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/ember-disqus/-/ember-disqus-1.0.0.tgz#3a693113849ec803a69fd51d7deb2ae0ca882376"
+  integrity sha512-qYZEX0+aH6hcKxjoY8LoO4Ci1voMKLzvs747jFYB8oz9sslGbNlZm78Pi5qGSxpqlUl9jZlyHLJPcJPokH5Rbw==
+  dependencies:
+    ember-cli-babel "^7.1.0"
+    ember-cli-htmlbars "^2.0.1"
+
 ember-drag-drop-polyfill@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/ember-drag-drop-polyfill/-/ember-drag-drop-polyfill-1.0.0.tgz#23f8ccf7dee19d56fe580c92260df3140f581329"

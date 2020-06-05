@@ -1,0 +1,49 @@
+<div class="padded">
+  {{#unless me.isAuthenticated}}
+
+
+
+
+    <div class="padded">
+      <BsAlert @type="error">
+        <strong>
+          {{#link-to "login"}}
+            LOGIN
+          {{/link-to}} or
+          {{#link-to "signup"}}
+            SIGNUP
+          {{/link-to}} to leave comment
+        </strong>
+      </BsAlert>
+    </div>
+  {{else}}
+    <BsForm @model={{comment}} @onSubmit={{action "saveComment"}} as |form|>
+      <form.element @controlType="textarea" @label="Comment" @property="comment" />
+      <BsButton @type="primary" @defaultText="Comment" @buttonType="submit" />
+
+
+    </BsForm>
+  {{/unless}}
+
+</div>
+<hr>
+<div class="media padded">
+  <img class="mr-3 round" src="https://placehold.co/80">
+  <div class="media-body">
+    <h5 class="mt-0">Media heading</h5>
+    Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio,
+    vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia
+    congue felis in faucibus.
+  </div>
+</div>
+<br>
+<hr>
+<div class="media padded">
+  <img class="mr-3 round" src="https://placehold.co/80">
+  <div class="media-body">
+    <h5 class="mt-0">Media heading</h5>
+    Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio,
+    vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia
+    congue felis in faucibus.
+  </div>
+</div>
