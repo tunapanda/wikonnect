@@ -14,6 +14,14 @@ class Comment extends Model {
   static get relationMappings() {
     return { };
   }
+
+  static get modifiers() {
+    return {
+      selectComment: (builder) => {
+        builder.select('id', 'comment');
+      }
+    };
+  }
 }
 
 Comment.knex(knex);

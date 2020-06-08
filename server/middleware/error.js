@@ -5,6 +5,8 @@ module.exports = async function (ctx, next) {
     await next();
   } catch (error) {
     err = error;
+    console.log(err);
+
     if (typeof error === 'function') {
       err = error();
     }
