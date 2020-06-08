@@ -5,7 +5,7 @@ module.exports = async function (ctx, next) {
     await next();
   } catch (error) {
     err = error;
-    console.log(err);
+    ctx.log.info(err);
 
     if (typeof error === 'function') {
       err = error();
@@ -15,8 +15,7 @@ module.exports = async function (ctx, next) {
 
     let message = err.message && status < 500 ? err.message : 'Sorry, an error has occurred.';
 
-
-    console.log(`${ctx.method} ${ctx.url} - ${status} - ${message}`);
+    ctx.log.info(`${ctx.method} ${ctx.url} - ${status} - ${message}`);
 
     if (status >= 500) {
       err.headers = Object.assign({}, err.headers, { 'Retry-After': 30 });
