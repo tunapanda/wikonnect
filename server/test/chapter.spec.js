@@ -4,8 +4,6 @@ const chaiHttp = require('chai-http');
 const chaiJSON = require('chai-json-schema');
 const server = require('../index');
 const tokens = require('./_tokens');
-const knex = require('../db/db');
-
 
 chai.use(chaiHttp);
 chai.use(chaiJSON);
@@ -46,14 +44,16 @@ const invalidData = {
   }
 };
 
+const userComment = {
+  comment: {
+    'creatorId': 'user3',
+    'comment': 'testing comment',
+    'metadata': ''
+  }
+};
+
 
 describe('CHAPTER ROUTE', () => {
-
-  before(async () => {
-    await knex.migrate.rollback();
-    await knex.migrate.latest();
-    return knex.seed.run();
-  });
 
   // Passing tests
   it('Should CREATE a chapter record on POST with valid data and return a JSON object', done => {
@@ -102,7 +102,33 @@ describe('CHAPTER ROUTE', () => {
         done();
       });
   });
-  
+  // comments tests
+  it('Should POST a chapter on POST /:id/comments and return a JSON object', done => {
+    chai
+      .request(server)
+      .post(route + itemID + '/comments')
+      .set('Content-Type', 'application/json')
+      .set(tokens.headersSuperAdmin1)
+      .send(userComment)
+      .end((err, res) => {
+        res.status.should.eql(201);
+        res.should.be.json;
+        console.log(res.body);
+        done();
+      });
+  });
+  it('Should list ONE chapter item on GET using id', done => {
+    chai
+      .request(server)
+      .get(route + itemID)
+      .set(tokens.headersSuperAdmin1)
+      .end((err, res) => {
+        res.should.have.status(200);
+        res.should.be.json;
+        console.log(res.body.chapter);
+        done();
+      });
+  });
   it('Should have tags object in ONE chapter item on GET', done => {
     chai
       .request(server)

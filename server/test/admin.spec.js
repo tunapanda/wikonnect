@@ -1,7 +1,6 @@
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 const server = require('../index');
-const knex = require('../db/db');
 const jwt = require('jsonwebtoken');
 const { secret } = require('../middleware/jwt');
 
@@ -44,11 +43,11 @@ const headersAdmin2 = {
 
 describe('Course Path with Access Control', () => {
 
-  before(async () => {
-    await knex.migrate.rollback();
-    await knex.migrate.latest();
-    return knex.seed.run();
-  });
+  // before(async () => {
+  //   await knex.migrate.rollback();
+  //   await knex.migrate.latest();
+  //   return knex.seed.run();
+  // });
 
   it('Should create a course with user as author', done => {
     chai

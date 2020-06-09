@@ -2,7 +2,8 @@ const chai = require('chai');
 const expect = chai.expect;
 const chaiHttp = require('chai-http');
 const server = require('../index');
-const knex = require('../db/db');
+const jsonwebtoken = require('jsonwebtoken');
+const { secret } = require('../middleware/jwt');
 const tokens = require('./_tokens');
 
 chai.should();
@@ -10,13 +11,14 @@ chai.use(chaiHttp);
 
 const usersRoute = '/api/v1/users/';
 const authRoute = '/api/v1/auth/';
-const userId = 'user99';
+const userId = 'user100';
 const registerUser = {
   'user': {
     'id': userId,
-    'username': 'user99',
+    'username': userId,
     'password': 'tunapanda',
-    'email': 'user99@wikonnect.com',
+    'email': userId + '@wikonnect.com',
+    'role': 'basic'
   }
 };
 
@@ -35,13 +37,17 @@ const badUserData = {
   }
 };
 
+const registerUserTest = {
+  'Authorization': 'Bearer ' + jsonwebtoken.sign({ data: registerUser.user }, secret, { expiresIn: '1d' })
+};
+
 describe('AUTHENTICATION ROUTES', () => {
 
-  before(async () => {
-    await knex.migrate.rollback();
-    await knex.migrate.latest();
-    return knex.seed.run();
-  });
+  // before(async () => {
+  //   await knex.migrate.rollback();
+  //   await knex.migrate.latest();
+  //   return knex.seed.run();
+  // });
   describe('Auth routes tests: /api/v1/users/', () => {
 
     it('Should create user on POST requests', done => {
@@ -51,6 +57,7 @@ describe('AUTHENTICATION ROUTES', () => {
         .set('Content-Type', 'application/json')
         .send(registerUser)
         .end((err, res) => {
+          console.log(res.body);
           res.should.have.status(201);
           res.body.user.should.have.property('id');
           res.body.user.should.have.property('username');
@@ -120,7 +127,7 @@ describe('AUTHENTICATION ROUTES', () => {
         .request(server)
         .get(usersRoute + userId)
         .set('Content-Type', 'application/json')
-        .set(tokens.headersSuperAdmin1)
+        .set(registerUserTest)
         .end((err, res) => {
           res.should.have.status(200);
           done();

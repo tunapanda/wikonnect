@@ -10,7 +10,6 @@ const s3 = require('../utils/s3Util');
 
 const Chapter = require('../models/chapter');
 const Comment = require('../models/comment');
-const Achievement = require('../models/achievement');
 const permController = require('../middleware/permController');
 const validateChapter = require('../middleware/validation/validateChapter');
 
@@ -20,28 +19,28 @@ const router = new Router({
   prefix: '/chapters'
 });
 
-async function returnChapterStatus(chapter, achievement) {
-  if (chapter.length === undefined) {
-    achievement.forEach(ach => {
-      if (chapter.id === ach.target) {
-        // console.log(ach.target_status);
-        return chapter.targetStatus = ach.target_status;
-      }
-    });
-  } else {
-    chapter.forEach(chap => {
+// async function returnChapterStatus(chapter, achievement) {
+//   if (chapter.length === undefined) {
+//     achievement.forEach(ach => {
+//       if (chapter.id === ach.target) {
+//         // console.log(ach.target_status);
+//         return chapter.targetStatus = ach.target_status;
+//       }
+//     });
+//   } else {
+//     chapter.forEach(chap => {
 
-      achievement.forEach(ach => {
-        console.log(chap.id, ach.id);
-        if (chap.id === ach.target) {
-          console.log(ach.target_status);
+//       achievement.forEach(ach => {
+//         console.log(chap.id, ach.id);
+//         if (chap.id === ach.target) {
+//           console.log(ach.target_status);
 
-          return chap.targetStatus = ach.target_status;
-        }
-      });
-    });
-  }
-}
+//           return chap.targetStatus = ach.target_status;
+//         }
+//       });
+//     });
+//   }
+// }
 
 
 async function returnType(parent) {
@@ -154,12 +153,12 @@ router.get('/:id', permController.requireAuth, async ctx => {
   let chapter;
   switch (stateUserId) {
   case 'anonymous':
-    chapter = await Chapter.query().where({ id: ctx.params.id, status: 'published' });
+    chapter = await Chapter.query().where({ id: ctx.params.id, status: 'published' }).eager('comment(selectComment)');
     ctx.status = 401;
     ctx.body = { message: 'un published chapter' };
     break;
   case 'basic':
-    chapter = await Chapter.query().where({ id: ctx.params.id, status: 'published' });
+    chapter = await Chapter.query().where({ id: ctx.params.id, status: 'published' }).eager('comment(selectComment)');
     break;
   default:
     chapter = await Chapter.query().where({ id: ctx.params.id });
@@ -168,8 +167,8 @@ router.get('/:id', permController.requireAuth, async ctx => {
 
   ctx.assert(chapter, 404, 'no lesson by that ID');
 
-  const achievement = await Achievement.query().where('user_id', ctx.state.user.data.id);
-  returnChapterStatus(chapter, achievement);
+  // const achievement = await Achievement.query().where('user_id', ctx.state.user.data.id);
+  // returnChapterStatus(chapter, achievement);
 
   ctx.status = 200;
   ctx.body = { chapter };
@@ -404,7 +403,7 @@ router.post('/:id/upload', async ctx => {
  * @apiSuccessExample {json} Success-Response:
  *     HTTP/1.1 201 OK
  *     {
- *      "comments": {
+ *      "comment": {
  *        "creatorId": { type: String },
  *        "comment": { type: String },
  *        "metadata": { type: JSON }
