@@ -1,5 +1,7 @@
 const jsonwebtoken = require('jsonwebtoken');
 const { secret } = require('../middleware/jwt');
+const knex = require('../db/db');
+
 
 const superAdmin = {
   'user': {
