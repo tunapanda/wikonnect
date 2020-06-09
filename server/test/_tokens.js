@@ -1,5 +1,7 @@
 const jsonwebtoken = require('jsonwebtoken');
 const { secret } = require('../middleware/jwt');
+const knex = require('../db/db');
+
 
 const superAdmin = {
   'user': {
@@ -45,6 +47,14 @@ const headerAdminUser = {
 const brokenToken = {
   'Authorization': 'Bearer ' + jsonwebtoken.sign({ data: adminUser.user }, 'f', { expiresIn: '1d' })
 };
+
+describe('',()=>{
+  before(async () => {
+    await knex.migrate.rollback();
+    await knex.migrate.latest();
+    return knex.seed.run();
+  });
+});
 
 module.exports = {
   headersSuperAdmin1,
