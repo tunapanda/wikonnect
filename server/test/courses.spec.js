@@ -3,6 +3,7 @@ const chaiHttp = require('chai-http');
 const server = require('../index');
 const assert = chai.assert;
 const tokens = require('./_tokens');
+const knex = require('../db/db');
 
 chai.use(chaiHttp);
 chai.should();
@@ -39,6 +40,11 @@ const invalidData = {
 };
 
 describe('COURSES ROUTES', () => {
+  before(async () => {
+    await knex.migrate.rollback();
+    await knex.migrate.latest();
+    return knex.seed.run();
+  });
   // Failing tests
   it('Should throw an ERROR on POST with invalid data', done => {
     chai

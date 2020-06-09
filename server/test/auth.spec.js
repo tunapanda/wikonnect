@@ -2,8 +2,7 @@ const chai = require('chai');
 const expect = chai.expect;
 const chaiHttp = require('chai-http');
 const server = require('../index');
-const jsonwebtoken = require('jsonwebtoken');
-const { secret } = require('../middleware/jwt');
+const knex = require('../db/db');
 const tokens = require('./_tokens');
 
 chai.should();
@@ -11,14 +10,13 @@ chai.use(chaiHttp);
 
 const usersRoute = '/api/v1/users/';
 const authRoute = '/api/v1/auth/';
-const userId = 'user100';
+const userId = 'user99';
 const registerUser = {
   'user': {
     'id': userId,
-    'username': userId,
+    'username': 'user99',
     'password': 'tunapanda',
-    'email': userId + '@wikonnect.com',
-    'role': 'basic'
+    'email': 'user99@wikonnect.com',
   }
 };
 
@@ -37,19 +35,19 @@ const badUserData = {
   }
 };
 
-const registerUserTest = {
-  'Authorization': 'Bearer ' + jsonwebtoken.sign({ data: registerUser.user }, secret, { expiresIn: '1d' })
-};
-
 describe('AUTHENTICATION ROUTES', () => {
 
-  // before(async () => {
-  //   await knex.migrate.rollback();
-  //   await knex.migrate.latest();
-  //   return knex.seed.run();
-  // });
+  before(async () => {
+    await knex.migrate.rollback();
+    await knex.migrate.latest();
+    return knex.seed.run();
+  });
   describe('Auth routes tests: /api/v1/users/', () => {
-
+    before(async () => {
+      await knex.migrate.rollback();
+      await knex.migrate.latest();
+      return knex.seed.run();
+    });
     it('Should create user on POST requests', done => {
       chai
         .request(server)
@@ -57,7 +55,6 @@ describe('AUTHENTICATION ROUTES', () => {
         .set('Content-Type', 'application/json')
         .send(registerUser)
         .end((err, res) => {
-          console.log(res.body);
           res.should.have.status(201);
           res.body.user.should.have.property('id');
           res.body.user.should.have.property('username');
@@ -127,7 +124,7 @@ describe('AUTHENTICATION ROUTES', () => {
         .request(server)
         .get(usersRoute + userId)
         .set('Content-Type', 'application/json')
-        .set(registerUserTest)
+        .set(tokens.headersSuperAdmin1)
         .end((err, res) => {
           res.should.have.status(200);
           done();
