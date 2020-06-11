@@ -77,12 +77,12 @@ router.get('/', permController.requireAuth, async ctx => {
   let chapter;
   switch (stateUserId) {
   case 'anonymous':
-    chapter = await Chapter.query().where(ctx.query).where('status', 'published');
+    chapter = await Chapter.query().where(ctx.query).where({ status: 'published', approved: 'true' });
     ctx.status = 401;
     ctx.body = { message: 'un published chapter' };
     break;
   case 'basic':
-    chapter = await Chapter.query().where(ctx.query).where('status', 'published');
+    chapter = await Chapter.query().where(ctx.query).where({ status: 'published', approved: 'true' });
     break;
   default:
     chapter = await Chapter.query().where(ctx.query);
@@ -137,12 +137,12 @@ router.get('/:id', permController.requireAuth, async ctx => {
   let chapter;
   switch (stateUserId) {
   case 'anonymous':
-    chapter = await Chapter.query().where({ id: ctx.params.id, status: 'published' });
+    chapter = await Chapter.query().where({ id: ctx.params.id, status: 'published', approved: 'true' });
     ctx.status = 401;
     ctx.body = { message: 'un published chapter' };
     break;
   case 'basic':
-    chapter = await Chapter.query().where({ id: ctx.params.id, status: 'published' });
+    chapter = await Chapter.query().where({ id: ctx.params.id, status: 'published', approved: 'true' });
     break;
   default:
     chapter = await Chapter.query().where({ id: ctx.params.id });

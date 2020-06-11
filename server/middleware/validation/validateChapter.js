@@ -19,6 +19,13 @@ async function validateChapter(ctx, next) {
           within: ['published', 'draft', 'archived'],
           message: '\'%{value}\' is not allowed in status, try [published, draft, archived]'
         }
+      },
+      approved:{
+        presence: true,
+        inclusion: {
+          within: ['true', 'false'],
+          message: '\'%{value}\' is not allowed in approved field, try a boolean'
+        }
       }
     });
   } catch (errors) {
