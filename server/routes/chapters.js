@@ -220,13 +220,19 @@ router.post('/', permController.requireAuth, permController.grantAccess('createA
 });
 router.put('/:id', permController.requireAuth, permController.grantAccess('updateOwn', 'path'), async ctx => {
   const chapter_record = await Chapter.query().findById(ctx.params.id);
+  let chapterData = ctx.request.body.chapter;
 
   if (!chapter_record) {
     ctx.throw(400, 'No chapter with that ID');
   }
+
+  if (chapterData.imageUrl === null || chapterData.contentUri === null) {
+    chapterData.status = 'draft';
+  }
+
   let chapter;
   try {
-    chapter = await Chapter.query().patchAndFetchById(ctx.params.id, ctx.request.body.chapter);
+    chapter = await Chapter.query().patchAndFetchById(ctx.params.id, chapterData);
   } catch (e) {
     if (e.statusCode) {
       ctx.throw(e.statusCode, null, { errors: [e.message] });
