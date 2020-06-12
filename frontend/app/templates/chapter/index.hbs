@@ -19,4 +19,9 @@
     <p> {{model.description}}</p>
   </div>
 
+  <div class="text-center">
+    {{#if (eq me.user.id "user1")}}
+      <button type="button" class="btn form-controll btn-success">Approve This</button>
+    {{/if}}
+  </div>
 </div>

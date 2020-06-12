@@ -129,6 +129,7 @@ Router.map(function () {
     );
   });
   this.route('upload');
+  this.route('manage');
 }
 
 );
