@@ -27,13 +27,11 @@ const router = new Router({
  *    }
  *
  */
-router.post('/:chapterId', requireAuth, grantAccess('createAny', 'path'), async ctx => {
-// router.post('/:chapterId',  async ctx => {
+router.post('/:id', requireAuth, grantAccess('createAny', 'path'), async ctx => {
   let stateUserId = ctx.state.user.id == undefined ? ctx.state.user.data.id : ctx.state.user.id;
-
   let newChapterComment = ctx.request.body.comment;
-  newChapterComment.chapterId = ctx.params.chapterId;
-  newChapterComment.chapterId = stateUserId;
+  newChapterComment.chapterId = ctx.params.id;
+  newChapterComment.creatorId = stateUserId;
 
   let comment;
   try {
