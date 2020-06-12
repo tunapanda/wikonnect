@@ -49,13 +49,12 @@ const invalidData = {
 };
 
 const userComment = {
-  comment: {
+  'comment': {
     'creatorId': 'user3',
     'comment': 'testing comment',
     'metadata': ''
   }
 };
-
 
 describe('CHAPTER ROUTE', () => {
   before(async () => {
@@ -74,7 +73,6 @@ describe('CHAPTER ROUTE', () => {
       .set(tokens.headersSuperAdmin1)
       .send(data)
       .end((err, res) => {
-        console.log(res.body);
         res.status.should.eql(201);
         res.should.be.json;
         res.body.should.have.property('chapter');
@@ -112,14 +110,15 @@ describe('CHAPTER ROUTE', () => {
       });
   });
   // comments tests
-  it('Should POST a chapter on POST /:id/comments and return a JSON object', done => {
+  it('Should POST a chapter on POST /:id and return a JSON object', done => {
     chai
       .request(server)
-      .post(route + itemID + '/comments')
+      .post('/comments/' + itemID)
       .set('Content-Type', 'application/json')
       .set(tokens.headersSuperAdmin1)
       .send(userComment)
       .end((err, res) => {
+        console.log(err);
         res.status.should.eql(201);
         res.should.be.json;
         done();
