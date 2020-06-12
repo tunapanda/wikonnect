@@ -208,7 +208,8 @@ router.get('/:id', permController.requireAuth, async ctx => {
  *        "contentUri": "/uploads/h5p/chapter4",
  *        "imageUrl": null,
  *        "contentId": null,
- *        "tags": []
+ *        "tags": [],
+ *        "approved": false
  *      }
  *
  * @apiError {String} errors Bad Request.
@@ -245,6 +246,8 @@ router.put('/:id', permController.requireAuth, permController.grantAccess('updat
 
   if (chapterData.imageUrl === null || chapterData.contentUri === null) {
     chapterData.status = 'draft';
+    console.log(chapterData.status);
+
   }
 
   let chapter;

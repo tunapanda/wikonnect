@@ -26,12 +26,14 @@ const data = {
     'contentUri': '/uploads/h5p/chapter1',
     'imageUrl': null,
     'contentId': null,
+    'approved': false
   }
 };
 
 const putData = {
   chapter: {
     'name': 'PUT update works',
+    'approved': true
   }
 };
 
@@ -41,7 +43,8 @@ const invalidData = {
     'name': 'Testing Chapter Route',
     'slug': 'testing-chapter-route',
     'description': 'Testing chapter route',
-    'status': 'draft'
+    'status': 'draft',
+    'approved': true
   }
 };
 
@@ -71,6 +74,7 @@ describe('CHAPTER ROUTE', () => {
       .set(tokens.headersSuperAdmin1)
       .send(data)
       .end((err, res) => {
+        console.log(res.body);
         res.status.should.eql(201);
         res.should.be.json;
         res.body.should.have.property('chapter');
