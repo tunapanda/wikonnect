@@ -1,31 +1,17 @@
 <div class="profile">
   <div class="profile-head">
-    <img class="profile-picture" alt="" src="/images/profile-placeholder.gif">
+    {{#link-to "upload"}}
+      <img class="profile-picture" alt="" src="/images/profile-placeholder.gif">
+
+    {{/link-to}}
     <h2 class="profile-name">{{name}}</h2>
   </div>
 
 
 
-  <div class="profile-acheivements">
-    <div>
-      <h2>3</h2>
-      <p>TOPICS VIEWED</p>
-    </div>
-
-
-    <div>
-      <h2>500</h2>
-      <p>MOJA POINTS</p>
-    </div>
-
-
-    <div>
-      <h2>3</h2>
-      <p>BADGES</p>
-    </div>
-  </div>
   <div class="profile-body padded">
     <div class="profile-options">
+      <br><br>
       <BsButtonGroup @value={{profileView}} @type="radio" @onChange={{action (mut profileView)}} as |bg|>
         {{#each viewOptions as |view|}}
           <bg.button @type="default" @value={{view}}>{{view}}</bg.button>
@@ -79,7 +65,13 @@
     {{/if}}
 
     {{#if (eq profileView "Settings")}}
-      Set stuff
+      Invite Link : <br>
+      <code>{{inviteCode}}</code>
+
+      <CopyButton @clipboardText={{inviteCode}} @success={{this.onSuccess}} @error={{this.onError}}
+        title="copy to clipboard">
+        <span>copy</span>
+      </CopyButton>
     {{/if}}
   </div>
 </div>

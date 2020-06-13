@@ -1,18 +1,10 @@
-<div id="home">
-  <div class="heading bg-orange">
-    <h2>Courses</h2>
-    <p>Each module covers a broad area of knowledge divided into five related topics.</p>
-  </div>
+<div class="container">
 
-  <div class="padded">
 
-    {{#each model as |course_item|}}
-    <CourseItem @course={{course_item}} @progress={{course_item.progress}} @title={{course_item.name}}
-      @description={{course_item.description}} @points="5" @slug={{course_item.slug}} @color={{course_item.color}} />
+  <div class="row mt-5">
+    {{#each model as |chapter|}}
+
+    <H5pListItem @chapter={{chapter}} />
     {{/each}}
-
   </div>
-
-
-
 </div>

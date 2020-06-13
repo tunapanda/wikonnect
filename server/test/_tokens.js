@@ -1,7 +1,7 @@
 const jsonwebtoken = require('jsonwebtoken');
 const { secret } = require('../middleware/jwt');
 
-const basicUser1 = {
+const superAdmin = {
   'user': {
     'id': 'user99',
     'username': 'user99',
@@ -11,7 +11,7 @@ const basicUser1 = {
   }
 };
 
-const basicUser2 = {
+const basicUser = {
   'user': {
     'id': 'user10',
     'username': 'user10',
@@ -32,10 +32,10 @@ const adminUser = {
 };
 
 const headersSuperAdmin1 = {
-  'Authorization': 'Bearer ' + jsonwebtoken.sign({ data: basicUser1.user }, secret, { expiresIn: '1d' })
+  'Authorization': 'Bearer ' + jsonwebtoken.sign({ data: superAdmin.user }, secret, { expiresIn: '1d' })
 };
 const headerBasicUser2 = {
-  'Authorization': 'Bearer ' + jsonwebtoken.sign({ data: basicUser2.user }, secret, { expiresIn: '1d' })
+  'Authorization': 'Bearer ' + jsonwebtoken.sign({ data: basicUser.user }, secret, { expiresIn: '1d' })
 };
 
 const headerAdminUser = {
@@ -43,7 +43,7 @@ const headerAdminUser = {
 };
 
 const brokenToken = {
-  'Authorization': 'Bearer ' + jsonwebtoken.sign({ data: adminUser.user }, 'knskldnvlskndkvlskbds,mdlfnsdlnf', { expiresIn: '1d' })
+  'Authorization': 'Bearer ' + jsonwebtoken.sign({ data: adminUser.user }, 'f', { expiresIn: '1d' })
 };
 
 module.exports = {

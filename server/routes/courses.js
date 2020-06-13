@@ -9,10 +9,11 @@ const environment = process.env.NODE_ENV;
 const config = require('../knexfile.js')[environment];
 const knex = require('knex')(config);
 
+const slugGen = require('../utils/slugGen');
+
 const router = new Router({
   prefix: '/courses'
 });
-
 
 
 /**
@@ -66,7 +67,6 @@ const router = new Router({
 router.get('/', permController.requireAuth, async ctx => {
   try {
     const course = await Course.query().where(ctx.query).eager('[modules(selectNameAndId), enrollments(selectNameAndId)]');
-
     if (ctx.state.user.data.id !== 'anonymous') {
       // get all achievements of a user
       await userProgress(course, ctx.state.user.data.id);
@@ -106,7 +106,7 @@ router.get('/', permController.requireAuth, async ctx => {
     if (e.statusCode) {
       ctx.throw(e.statusCode, { message: 'The query key does not exist' });
       ctx.throw(e.statusCode, null, { errors: [e.message] });
-    } else { ctx.throw(400, null, { errors: ['Bad Request'] }); }
+    } else { ctx.throw(400, null, { errors: [e.message] }); }
     throw e;
   }
 });
@@ -201,7 +201,6 @@ router.get('/:id', permController.requireAuth, async ctx => {
  * @apiParam (Post Params) {String} course[description] Description.
  * @apiParam (Post Params) {String} course[status] Courses status - published | draft .
  * @apiParam (Post Params) {String} course[creatorId] Id of the User.
-
  *
  * @apiSampleRequest off
  *
@@ -223,8 +222,10 @@ router.get('/:id', permController.requireAuth, async ctx => {
 
 router.post('/', permController.requireAuth, permController.grantAccess('createAny', 'path'), validateCourses, async ctx => {
   let newCourse = ctx.request.body.course;
+  newCourse.slug = await slugGen(newCourse.name);
 
   let course = await Course.query().insertAndFetch(newCourse);
+
 
   async function permObjects() {
     Object.keys(userPermissions)
@@ -248,7 +249,6 @@ router.post('/', permController.requireAuth, permController.grantAccess('createA
   course['permissions'] = await permObjects();
   ctx.body = { course };
 });
-
 
 /**
  * @api {put} /courses/:id PUT course.
@@ -334,4 +334,14 @@ router.delete('/:id', permController.requireAuth, permController.grantAccess('de
   ctx.body = { course };
 });
 
+// router.post('/enrollment', async ctx => {
+//   try {
+
+//   } catch (e) {
+//     if (e.statusCode) {
+//       ctx.throw(e.statusCode, null, { errors: [e.message] });
+//     } else { ctx.throw(400, null, { errors: ['Bad Request'] }); }
+//     throw e;
+//   }
+// });
 module.exports = router.routes();

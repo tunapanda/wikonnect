@@ -9,6 +9,8 @@ const environment = process.env.NODE_ENV;
 const config = require('../knexfile.js')[environment];
 const knex = require('knex')(config);
 
+const slugGen = require('../utils/slugGen');
+
 const router = new Router({
   prefix: '/modules'
 });
@@ -142,6 +144,33 @@ router.get('/', permController.requireAuth, async ctx => {
 
     await anonymousUser(modules, ctx.state.user.data.id);
     returnType(modules);
+
+    modules.forEach(child => {
+      Object.keys(userPermissions)
+        .forEach(perm => {
+          if (!ctx.state.user) {
+            userPermissions.read = 'true';
+            userPermissions.update = 'false';
+            userPermissions.delete = 'false';
+            userPermissions.create = 'false';
+          } else if (ctx.state.user.data.role.toLowerCase() == 'superadmin') {
+            userPermissions[perm] = 'true';
+          } else if (ctx.state.user.data.id === child.creatorId || ctx.state.user.data.role.toLowerCase() == 'admin') {
+            userPermissions[perm] = 'true';
+            userPermissions.delete = 'false';
+          } else if (ctx.state.user.data.id != child.creatorId) {
+            userPermissions.read = 'true';
+            userPermissions.update = 'false';
+            userPermissions.create = 'false';
+            userPermissions.delete = 'false';
+          } else if (child.status === 'draft' && ctx.state.user.data.id === child.creatorId) {
+            userPermissions.read = 'true';
+            userPermissions.update = 'true';
+          }
+          child.permission = userPermissions;
+        });
+    });
+
     ctx.status = 200;
     modules['permissions'] = await permissionsType(ctx.state.user, modules);
     ctx.body = { modules };
@@ -191,6 +220,8 @@ router.get('/', permController.requireAuth, async ctx => {
 router.post('/', permController.requireAuth, permController.grantAccess('createAny', 'path'), validateModules, async ctx => {
 
   let newModule = ctx.request.body.module;
+  newModule.slug = await slugGen(newModule.name);
+  
   let modules;
   try {
     modules = await Module.query().insertAndFetch(newModule);

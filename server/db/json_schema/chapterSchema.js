@@ -8,9 +8,10 @@ const chapterSchema = {
     'lessonId': { 'type': 'string' },
     'creatorId': { 'type': 'string' },
     'contentType': { 'type': 'string' },
-    'contentUri': { 'type': ['string', 'null'] }
+    'contentUri': { 'type': ['string', 'null'] },
+    'tags': [{ 'type': 'string', }],
   },
-  'required': ['name', 'slug', 'description', 'status', 'lessonId', 'creatorId'],
+  'required': ['name', 'description', 'status', 'creatorId'],
 };
 
 

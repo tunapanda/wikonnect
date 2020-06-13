@@ -4,6 +4,7 @@ import {
   validateFormat,
   validateConfirmation,
 } from 'ember-changeset-validations/validators';
+// validatePasswordStrength,
 
 export default {
   username: [
@@ -14,6 +15,7 @@ export default {
   password: [
     validatePresence(true),
     validateLength({ min: 8 })
+    // validatePasswordStrength({ minScore: 80 })
   ],
   passwordConfirmation: validateConfirmation({ on: 'password' })
 };

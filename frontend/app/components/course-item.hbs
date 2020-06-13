@@ -13,13 +13,20 @@
       <hr>
       {{#if me.isAuthenticated}}
 
-        <BsProgress as |pg|>
-          <pg.bar @showLabel={{true}} @roundDigits={{0}} @type="success" @value={{@course.progress}} />
-        </BsProgress>
+        {{#if @course.progress}}
 
+
+          <BsProgress as |pg|>
+            <pg.bar @showLabel={{true}} @roundDigits={{0}} @type="success" @value={{@course.progress}} />
+          </BsProgress>
+        {{else}}
+          <BsProgress as |pg|>
+            <pg.bar @showLabel={{true}} @roundDigits={{0}} @type="success" @value={{0}} />
+          </BsProgress>
+        {{/if}}
       {{/if}}
 
-      <div class="course-meta"> <span>5 topics </span><span>5 minutes</span></div>
+      <div class="course-meta"> <span>{{@course.modules.length}} topics </span></div>
 
     </div>
 

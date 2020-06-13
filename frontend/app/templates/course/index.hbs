@@ -14,15 +14,14 @@
       {{#if (eq model.permission.update "true")}}
 
 
-        {{#link-to "cms.course.edit" @model.slug}}
-          <h2>Edit</h2>
+        {{#link-to "cms.course.edit" @model.slug class="btn padded btn-primary btn-small"}}
+          <span>Edit</span>
         {{/link-to}}
       {{/if}}
 
     </div>
     <hr>
     {{#if me.isAuthenticated}}
-
       {{#if (eq isEnrolled.status "false") }}
         {{#if isEnrolled.id}}
           <button type="button" class="btn btn-success form-control" {{action "reenroll" isEnrolled.id}}>
@@ -35,8 +34,6 @@
             {{model.name}}
           </button>
         {{/if}}
-
-
       {{/if}}
     {{/if}}
 
@@ -51,10 +48,27 @@
     </div>
     {{#if me.isAuthenticated}}
       {{#if (eq isEnrolled.status "true")}}
-        <button type="button" class="btn btn-danger form-control" {{action "leave" isEnrolled.id}}>
+        <button type="button" class="btn bg-transparent form-control text-danger" {{action "showConfirmModal"}}>
           Unenroll from
           {{model.name}}
         </button>
+
+
+
+        <BsModal @open={{confirmModal}} @onHide={{action "hideConfirmModal"}} @onSubmit={{action "leave" isEnrolled.id}}
+          as |Modal|>
+          <Modal.header>
+            <h4 class="modal-title"><i class="glyphicon glyphicon-alert"></i> Hold Up</h4>
+          </Modal.header>
+          <Modal.body>
+            Are you absolutely sure you want to do that???
+          </Modal.body>
+          <Modal.footer>
+            <BsButton @onClick={{action hideConfirmModal}} @type="danger">Oh no, forget it!</BsButton>
+            <BsButton @onClick={{action Modal.submit}} @type="success">Yeah!</BsButton>
+          </Modal.footer>
+        </BsModal>
+
       {{/if}}
     {{/if}}
 

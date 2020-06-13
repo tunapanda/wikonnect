@@ -8,6 +8,8 @@ export default class CourseIndexController extends Controller {
   @inject
   me
 
+  confirmModal = false;
+
   colorList = ['54378B', 'F57010', '32A583']
 
   @computed('model.modules.@each.name')
@@ -25,6 +27,16 @@ export default class CourseIndexController extends Controller {
       };
 
     });
+  }
+
+  @action
+  showConfirmModal() {
+    this.set("confirmModal", true);
+  }
+
+  @action
+  hideConfirmModal() {
+    this.set("confirmModal", false);
   }
 
   get isEnrolled() {
@@ -74,7 +86,10 @@ export default class CourseIndexController extends Controller {
     console.log(enroll.id);
     enroll.set("status", false);
     console.log(enroll);
+    this.set("toggleConfirm", false);
+
     enroll.save();
+
 
   }
 

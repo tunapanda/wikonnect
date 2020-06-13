@@ -11,11 +11,20 @@
 
     <div class="module-description">
 
-      {{#link-to "course.module.lesson.chapter" @chapter.id }}
+      {{#link-to "chapter" @chapter.id }}
         <h3>{{@chapter.name}}</h3>
 
       {{/link-to}}
       <div>{{@chapter.description}}</div>
+      {{#if (eq @chapter.targetStatus "attempted")}}
+        <span class="badge badge-warning">Contiue</span>
+
+      {{/if}}
+
+      {{#if (eq @chapter.targetStatus "completed")}}
+        <span class="badge badge-success">Complete</span>
+
+      {{/if}}
 
 
     </div>
