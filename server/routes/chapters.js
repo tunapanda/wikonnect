@@ -403,42 +403,4 @@ router.post('/:id/upload', async ctx => {
 
 });
 
-/**
- * @api {post} /:chapterId/comments POST comment
- * @apiName PostAChapterComment
- * @apiGroup Chapters
- * @apiPermission authenticated user
- *
- * @apiSuccessExample {json} Success-Response:
- *     HTTP/1.1 201 OK
- *     {
- *      "comment": {
- *        "creatorId": { type: String },
- *        "comment": { type: String },
- *        "metadata": { type: JSON }
- *      }
- *    }
- *
- */
-router.post('/:chapterId/comments', permController.requireAuth, permController.grantAccess('createAny', 'path'), async ctx => {
-  let newChapterComment = ctx.request.body.comment;
-  newChapterComment.chapterId = ctx.params.chapterId;
-
-  let comment;
-  try {
-    comment = await Comment.query().insertAndFetch(newChapterComment);
-  } catch (e) {
-    if (e.statusCode) {
-      ctx.throw(e.statusCode, null, { errors: [e] });
-    } else { ctx.throw(400, null, { errors: [e] }); }
-    throw e;
-  }
-  if (!comment) {
-    ctx.assert(module, 401, 'Something went wrong');
-  }
-  ctx.status = 201;
-  ctx.body = { comment };
-
-});
-
 module.exports = router.routes();
