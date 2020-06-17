@@ -38,7 +38,7 @@ const putData = {
 };
 
 const invalidData = {
-  chapter: {
+  'chapter': {
     'id': 'chapter778',
     'name': 'Testing Chapter Route',
     'slug': 'testing-chapter-route',
@@ -49,7 +49,7 @@ const invalidData = {
 };
 
 const userComment = {
-  comment: {
+  'comment': {
     'creatorId': 'user3',
     'comment': 'testing comment',
     'metadata': ''
@@ -75,6 +75,22 @@ describe('CHAPTER ROUTE', () => {
         res.status.should.eql(201);
         res.should.be.json;
         res.body.should.have.property('chapter');
+        done();
+      });
+  });
+  // comments tests
+  it('Should POST a chapter on POST /comments/:id/ and return a JSON object', done => {
+    chai
+      .request(server)
+      .post('/api/v1/comments/chapter19')
+      .set('Content-Type', 'application/json')
+      .set(tokens.headersSuperAdmin1)
+      .send(userComment)
+      .end((err, res) => {
+        console.log(err);
+
+        res.status.should.eql(201);
+        res.should.be.json;
         done();
       });
   });
@@ -105,20 +121,6 @@ describe('CHAPTER ROUTE', () => {
         res.body.chapter[0].should.have.property('name');
         res.body.chapter[0].should.have.property('slug');
         res.body.chapter[0].should.have.property('creatorId');
-        done();
-      });
-  });
-  // comments tests
-  it('Should POST a chapter on POST /:id/comments and return a JSON object', done => {
-    chai
-      .request(server)
-      .post(route + itemID + '/comments')
-      .set('Content-Type', 'application/json')
-      .set(tokens.headersSuperAdmin1)
-      .send(userComment)
-      .end((err, res) => {
-        res.status.should.eql(201);
-        res.should.be.json;
         done();
       });
   });

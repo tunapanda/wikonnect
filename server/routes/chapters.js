@@ -9,7 +9,6 @@ const s3 = require('../utils/s3Util');
 
 
 const Chapter = require('../models/chapter');
-const Comment = require('../models/comment');
 const permController = require('../middleware/permController');
 const validateChapter = require('../middleware/validation/validateChapter');
 
