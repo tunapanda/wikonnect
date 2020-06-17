@@ -148,10 +148,10 @@ router.get('/', permController.requireAuth, async ctx => {
 * @apiError {String} errors Bad Request.
  */
 router.get('/:id', permController.requireAuth, async ctx => {
-  let stateUserId = ctx.state.user.role == undefined ? ctx.state.user.data.role : ctx.state.user.role;
+  let stateUserRole = ctx.state.user.role == undefined ? ctx.state.user.data.role : ctx.state.user.role;
 
   let chapter;
-  switch (stateUserId) {
+  switch (stateUserRole) {
   case 'anonymous':
     chapter = await Chapter.query().where({ id: ctx.params.id, status: 'published', approved: 'true' }).eager('comment(selectComment)');
     ctx.status = 401;

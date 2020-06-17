@@ -56,7 +56,6 @@ const userComment = {
   }
 };
 
-
 describe('CHAPTER ROUTE', () => {
   before(async () => {
     await knex.migrate.rollback();
@@ -71,10 +70,8 @@ describe('CHAPTER ROUTE', () => {
       .post(route)
       .set(tokens.headersSuperAdmin1)
       .set('Content-Type', 'application/json')
-      .set(tokens.headersSuperAdmin1)
       .send(data)
       .end((err, res) => {
-        console.log(res.body);
         res.status.should.eql(201);
         res.should.be.json;
         res.body.should.have.property('chapter');

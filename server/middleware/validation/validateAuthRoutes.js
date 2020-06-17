@@ -59,7 +59,7 @@ async function validateUserLogin(ctx, next) {
       }
     });
   } catch (e) {
-    ctx.throw(400, null, { errors: ['Bad Request'] });
+    ctx.throw(400, null, { errors: [e] });
   }
   await next();
 }
