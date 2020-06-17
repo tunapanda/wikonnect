@@ -19,6 +19,7 @@ let grantList = [
 
   { role: 'basic', resource: 'path', action: 'read:own', attributes: '*' },
   { role: 'basic', resource: 'path', action: 'read:any', attributes: '*' },
+  { role: 'basic', resource: 'path', action: 'create:any', attributes: '*' },
 
   { role: 'admin', resource: 'profile', action: 'create:any', attributes: '*' },
   { role: 'admin', resource: 'profile', action: 'read:any', attributes: '*' },
