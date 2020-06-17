@@ -57,17 +57,17 @@ router.get('/mande', permController.requireAuth, async ctx => {
  */
 
 
-router.get('/teach', permController.requireAuth, async ctx => {
-  try {
-    const data = CourseSearch.query();
-    ctx.status = 200;
-    ctx.body = { data };
-  } catch (e) {
-    if (e.statusCode) {
-      ctx.throw(e.statusCode, { message: ['No data found'] });
-    } else { ctx.throw(400, null, { errors: [e.message] }); }
-    throw e;
-  }
-});
+// router.get('/teach', permController.requireAuth, async ctx => {
+//   try {
+//     const data = CourseSearch.query();
+//     ctx.status = 200;
+//     ctx.body = { data };
+//   } catch (e) {
+//     if (e.statusCode) {
+//       ctx.throw(e.statusCode, { message: ['No data found'] });
+//     } else { ctx.throw(400, null, { errors: [e.message] }); }
+//     throw e;
+//   }
+// });
 
 module.exports = router.routes();

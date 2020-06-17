@@ -1,8 +1,8 @@
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 const server = require('../index');
-const knex = require('../db/db');
 const jwt = require('jsonwebtoken');
+const knex = require('../db/db');
 const { secret } = require('../middleware/jwt');
 
 chai.should();

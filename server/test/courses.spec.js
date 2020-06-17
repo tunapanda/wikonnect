@@ -5,7 +5,6 @@ const assert = chai.assert;
 const tokens = require('./_tokens');
 const knex = require('../db/db');
 
-
 chai.use(chaiHttp);
 chai.should();
 
@@ -41,7 +40,6 @@ const invalidData = {
 };
 
 describe('COURSES ROUTES', () => {
-
   before(async () => {
     await knex.migrate.rollback();
     await knex.migrate.latest();
