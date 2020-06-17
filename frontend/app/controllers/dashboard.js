@@ -1,8 +1,5 @@
 import Controller from '@ember/controller';
-import { inject } from '@ember/service';
 import { computed } from '@ember/object';
-// import { tracked } from '@glimmer/tracking';
-
 
 export default class CoursesController extends Controller {
 
@@ -48,7 +45,7 @@ export default class CoursesController extends Controller {
         }
       ],
       options: this.options
-    }
+    };
   }
 
   @computed('model.[]')
@@ -75,7 +72,7 @@ export default class CoursesController extends Controller {
           data: [30, 55, 50, 25, 50, 55, 40]
         }
       ]
-    }
+    };
   }
 
   @computed('model.[]')
@@ -102,7 +99,7 @@ export default class CoursesController extends Controller {
           data: [30, 55, 50, 25, 50, 55, 40]
         }
       ]
-    }
+    };
   }
 
   @computed('model.[]')
@@ -129,6 +126,6 @@ export default class CoursesController extends Controller {
           data: [30, 55, 50, 25, 50, 55, 40]
         }
       ]
-    }
+    };
   }
 }
