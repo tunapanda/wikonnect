@@ -1,7 +1,12 @@
 <div class="form-title">Log In</div>
 
-<BsForm @class="form" @formLayout="vertical" @model={{changeset user LoginValidations}} @onSubmit={{action "login"}} as
+<BsForm @class="form" @formLayout="vertical" @model={{registeredUser}} @onSubmit={{action "login"}} as
   |form|>
+  {{#each registeredUser.errors as |err| }}
+  <BsAlert @type="danger" @fade={{true}}>
+    {{err.validation}}
+  </BsAlert>
+  {{/each}}
   <div class="login-form-fields">
     <form.element class="inputs" id="username" @controlType="text" @label="Username" @placeholder="Username"
       @property="username" @autocomplete="username" />
