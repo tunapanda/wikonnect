@@ -1,5 +1,5 @@
 const Router = require('koa-router');
-const Questionnaire = require('../models/questionnaire');
+const Dashboard = require('../models/questionnaire');
 const permController = require('../middleware/permController');
 
 const router = new Router({
@@ -8,7 +8,7 @@ const router = new Router({
 
 
 /**
- * @api {get} /dashboard/mande GET all M&E data.
+ * @api {get} /dashboard GET all M&E data.
  * @apiName GetM&E
  * @apiGroup Dashboard
  * @apiPermission superadmin
@@ -24,16 +24,16 @@ const router = new Router({
  */
 
 
-router.get('/mande', permController.requireAuth, async ctx => {
+router.get('/', permController.requireAuth, async ctx => {
   try {
-    const postQ = await Questionnaire.query();
+    const board = await Dashboard.query();
 
     ctx.status = 200;
-    ctx.body = { postQ };
+    ctx.body = { board };
 
   } catch (e) {
     if (e.statusCode) {
-      ctx.throw(e.statusCode, { message: 'The query key does not exist' });
+      ctx.throw(e.statusCode, { message: 'No data found' });
       ctx.throw(e.statusCode, null, { errors: [e.message] });
     } else { ctx.throw(400, null, { errors: [e.message] }); }
     throw e;
