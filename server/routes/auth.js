@@ -42,7 +42,7 @@ router.post('/', validateAuthRoutes.validateUserLogin, async ctx => {
     ctx.throw(404, null, {
       errors: [{
         'name': 'Wrong username or password',
-        'constraint': 'wrong_username_or_password',
+        'constraint': 'errors',
       }]
     });
   }
@@ -69,7 +69,7 @@ router.post('/', validateAuthRoutes.validateUserLogin, async ctx => {
     ctx.throw(404, null, {
       errors: [{
         'name': 'Wrong username or password',
-        'constraint': 'wrong_password_or_username',
+        'constraint': 'errors',
       }]
     });
   }

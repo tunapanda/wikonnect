@@ -3,7 +3,7 @@
 <BsForm @class="form" @formLayout="vertical" @model={{registeredUser}} @onSubmit={{action "login"}} as
   |form|>
   {{#each registeredUser.errors as |err| }}
-  {{#if (eq err.key 'wrong_username_or_password')}}
+  {{#if (eq err.key 'errors')}}
   <BsAlert @type="danger" @fade={{true}}>
     {{err.validation}}
   </BsAlert>
