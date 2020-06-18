@@ -35,8 +35,18 @@ const router = new Router({
  */
 router.post('/', validateAuthRoutes.validateUserLogin, async ctx => {
   const username = ctx.request.body.username.toLowerCase();
+  console.log(username);
+  
   let user = await User.query().where('username', username);
-  if (!user.length) ctx.throw(404, null, { errors: ['wrong_email_or_password']});
+  if (!user.length) {
+    ctx.throw(404, null, {
+      errors: [{
+        'name': 'wrong_email_or_password',
+        'constraint': 'wrong_email_or_password',
+      }]
+    });
+  }
+
 
   let { hash: hashPassword, ...userInfoWithoutPassword } = user[0];
   user = user[0];
@@ -56,7 +66,12 @@ router.post('/', validateAuthRoutes.validateUserLogin, async ctx => {
     };
   } else {
     ctx.log.error('Wrong email or password from %s for %s', ctx.request.ip, ctx.path);
-    ctx.throw(406, null, 'email_or_password_is_wrong');
+    ctx.throw(404, null, {
+      errors: [{
+        'name': 'email_or_password_is_wrong',
+        'constraint': 'email_or_password_is_wrong',
+      }]
+    });
   }
 });
 
