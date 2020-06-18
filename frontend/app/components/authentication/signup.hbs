@@ -6,7 +6,11 @@
 
 <BsForm @class="form" @formLayout="vertical" @model={{newUser}} @onSubmit={{action "createUser"}} as |form|>
 
-
+{{#each newUser.errors as |error|}}
+<BsAlert @type="danger" @fade={{true}}>
+  {{error.validation}}
+</BsAlert>
+{{/each}}
 
   <div class="signup-form-fields">
     <form.element id="username" class="inputs" @controlType="text" @label="Username" @placeholder="Username"
