@@ -35,7 +35,6 @@ const router = new Router({
  */
 router.post('/', validateAuthRoutes.validateUserLogin, async ctx => {
   const username = ctx.request.body.username.toLowerCase();
-  console.log(username);
 
   let user = await User.query().where('username', username);
   if (!user.length) {
