@@ -14,7 +14,7 @@ const userId = 'user99';
 const registerUser = {
   'user': {
     'id': userId,
-    'username': 'user99',
+    'username': userId,
     'password': 'tunapanda',
     'email': 'user99@wikonnect.com',
   }
@@ -25,14 +25,6 @@ const loginUserData = {
   'email': 'user99@wikonnect.com',
   'password': 'tunapanda',
   role: 'admin'
-};
-
-const badUserData = {
-  'user': {
-    'id': userId,
-    'username': 'user99',
-    'password': 'tunapanda'
-  }
 };
 
 describe('AUTHENTICATION ROUTES', () => {
@@ -61,19 +53,6 @@ describe('AUTHENTICATION ROUTES', () => {
           done();
         });
     });
-    it('Should throw an ERROR for POST requests with bad/malformed data', done => {
-      chai
-        .request(server)
-        .post(usersRoute)
-        .send(badUserData)
-        .set('Content-Type', 'application/json')
-        .end((err, res) => {
-          res.should.have.status(400);
-          res.body.errors.should.be.a('object');
-          done();
-        });
-    });
-
     it('Should throw an ERROR on POST data if user already exists', done => {
       chai
         .request(server)
