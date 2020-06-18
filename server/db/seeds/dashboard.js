@@ -9,25 +9,25 @@ exports.seed = function (knex) {
         {
           id: 1,
           key_result: 'kr1',
-          achieved: '30',
+          achieved: 30,
           quarter: 'q1 2020'
         },
         {
           id: 2,
           key_result: 'kr1',
-          achieved: '38',
+          achieved: 38,
           quarter: 'q2 2020'
         },
         {
           id: 3,
           key_result: 'kr1',
-          achieved: '40',
+          achieved: 40,
           quarter: 'q3 2020'
         },
         {
           id: 4,
           key_result: 'kr1',
-          achieved: '40',
+          achieved: 40,
           quarter: 'q4 2020'
         }
       ]);
@@ -36,7 +36,7 @@ exports.seed = function (knex) {
       {
         id: 1,
         key_result: 'kr1',
-        target: '90'
+        target: 90
       }
     ]));
 };

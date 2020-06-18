@@ -6,7 +6,7 @@ exports.up = knex =>
     .createTable('dashboard', table => {
       table.text('id').primary().notNullable().defaultTo(knex.raw('next_id()'));
       table.text('key_result');
-      table.text('achieved');
+      table.integer('achieved');
       table.text('quarter');
       table.jsonb('metadata');
       table.timestamps();
@@ -14,7 +14,7 @@ exports.up = knex =>
     .createTable('targets', table => {
       table.text('id').primary().notNullable().defaultTo(knex.raw('next_id()'));
       table.text('key_result');
-      table.text('target');
+      table.integer('target');
     });
 
 exports.down = knex =>

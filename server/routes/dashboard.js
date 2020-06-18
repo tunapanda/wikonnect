@@ -1,9 +1,9 @@
 const Router = require('koa-router');
-const Dashboard = require('../models/questionnaire');
-const permController = require('../middleware/permController');
+const Dashboard = require('../models/dashboard');
+// const { requireAuth, grantAccess } = require('../middleware/permController');
 
 const router = new Router({
-  prefix: '/dashboard'
+  prefix: '/dashboards'
 });
 
 
@@ -24,12 +24,12 @@ const router = new Router({
  */
 
 
-router.get('/', permController.requireAuth, async ctx => {
+router.get('/', async ctx => {
   try {
-    const board = await Dashboard.query();
+    const dashboard = await Dashboard.query();
 
     ctx.status = 200;
-    ctx.body = { board };
+    ctx.body = { dashboard };
 
   } catch (e) {
     if (e.statusCode) {
