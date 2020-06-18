@@ -10,7 +10,7 @@ export default {
   username: [
     validatePresence(true),
     validateLength({ min: 4 }),
-    validateFormat({ regex: '[a-zA-Z0-9_-]*'})
+    validateFormat({ type: 'username', regex: '[a-zA-Z0-9_-]*'})
   ],
   email: validateFormat({ type: 'email' }),
   password: [
