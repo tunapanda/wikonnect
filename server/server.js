@@ -49,6 +49,8 @@ router.use(jwt.authenticate, require('./routes/lessons'));
 
 router.use(jwt.authenticate, require('./routes/chapters'));
 
+router.use(jwt.authenticate, require('./routes/comments'));
+
 router.use(jwt.authenticate, require('./routes/activity'));
 
 router.use(jwt.authenticate, require('./routes/enrollments'));
@@ -62,6 +64,7 @@ router.use(jwt.authenticate, require('./routes/admin'));
 router.use(jwt.authenticate, require('./routes/achievement_awards'));
 
 router.use(require('./routes/search'));
+
 
 router.get('/hello', async ctx => {
   ctx.log.info('Got a request from %s for %s', ctx.request.ip, ctx.path);

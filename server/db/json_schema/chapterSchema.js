@@ -10,6 +10,7 @@ const chapterSchema = {
     'contentType': { 'type': 'string' },
     'contentUri': { 'type': ['string', 'null'] },
     'tags': [{ 'type': 'string', }],
+    'approved': { 'type': 'boolean'},
   },
   'required': ['name', 'description', 'status', 'creatorId'],
 };

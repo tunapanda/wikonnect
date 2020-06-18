@@ -129,6 +129,9 @@ Router.map(function () {
     );
   });
   this.route('upload');
+  this.route('redeem', function(){
+    this.route('moja');
+  });
 }
 
 );
