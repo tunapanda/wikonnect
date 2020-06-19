@@ -6,28 +6,25 @@
 
 <BsForm @class="form" @formLayout="vertical" @model={{newUser}} @onSubmit={{action "createUser"}} as |form|>
 
-
-
   <div class="signup-form-fields">
     <form.element id="username" class="inputs" @controlType="text" @label="Username" @placeholder="Username"
       @property="username" @autocomplete="username" />
     {{#each newUser.errors as |err| }}
-      {{#if (eq err.key 'username')}}
+    {{#if (eq err.key 'username')}}
     <BsAlert @type="danger" @fade={{true}}>
-        {{err.validation}}
-        </BsAlert>
-      {{/if}}
+      {{err.validation}}
+    </BsAlert>
+    {{/if}}
     {{/each}}
 
     <form.element id="email" class="inputs" @controlType="text" @label="Email address" @placeholder="example@mail.com"
       @property="email" @autocomplete="email" />
     {{#each newUser.errors as |err| }}
-      {{#if (eq err.key 'email')}}
+    {{#if (eq err.key 'email')}}
     <BsAlert @type="danger" @fade={{true}}>
-
-        {{err.validation}}
+      {{err.validation}} 
     </BsAlert>
-      {{/if}}
+    {{/if}}
     {{/each}}
 
     <form.element id="password" class="inputs" @controlType="password" @label="Password" @placeholder="Enter Password"
@@ -38,11 +35,11 @@
 
 
     {{#form.element label="Invite Code" id="invite_code" class="inputs" placeholder="Invite Code" property="invite_code" as |el|}}
-      <div class="input-group">
-        <input value={{inviteCode}} class={{el.class}} placeholder="Invite Code"
-          oninput={{action (mut el.value) value="target.value"}} onchange={{action (mut el.value) value="target.value"}}
-          id={{el.id}} type="text">
-      </div>
+    <div class="input-group">
+      <input value={{inviteCode}} class={{el.class}} placeholder="Invite Code"
+        oninput={{action (mut el.value) value="target.value"}} onchange={{action (mut el.value) value="target.value"}}
+        id={{el.id}} type="text">
+    </div>
     {{/form.element}}
   </div>
 
