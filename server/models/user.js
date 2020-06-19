@@ -17,7 +17,7 @@ class User extends Model {
   }
 
   get $secureFields() {
-    return ['hash', 'email', 'lastSeen', 'lastIp'];
+    return ['hash', 'lastIp'];
   }
 
   async $indexForSearch() {

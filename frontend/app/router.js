@@ -132,6 +132,10 @@ Router.map(function () {
   this.route('redeem', function(){
     this.route('moja');
   });
+
+  this.route('admin', function() {
+    this.route('accounts');
+  });
 }
 
 );

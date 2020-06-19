@@ -234,7 +234,8 @@ router.get('/:id', permController.requireAuth, async ctx => {
  * @apiHeader (Header) {String} authorization Bearer <<YOUR_API_KEY_HERE>>
  *
  */
-router.get('/', permController.requireAuth, permController.grantAccess('readAny', 'profile'), async ctx => {
+// router.get('/', permController.requireAuth, permController.grantAccess('readAny', 'profile'), async ctx => {
+router.get('/', async ctx => {
   let user = User.query();
 
   if (ctx.query.username) {
