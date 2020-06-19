@@ -1,0 +1,137 @@
+<div class="container">
+  <h2 id="title">Learners</h2>
+  <div class="row">
+    <div class="col-sm-6">
+      <div class="card">
+        <h5 class="card-header">Number of learners self-reporting an increase in online commercial activities</h5>
+        <div class="card-body">
+          {{ember-chart
+          type="bar"
+          data=this.k1Data
+          width=600
+          height=400
+          options=options
+        }}
+        
+
+          <footer class="text-right blockquote-footer">Updated: <cite title="Source Title">3 Days</cite></footer>
+        </div>
+      </div>
+    </div>
+
+
+
+    <div class="col-sm-6">
+      <div class="card">
+        <h5 class="card-header">Number of learners self-reporting improved knowledge and skills through learning from
+          the platform<< /h5>
+            <div class="card-body">
+              {{ember-chart
+              type="bar"
+              data=this.k2Data
+              width=600
+              height=400
+              options=options
+            }}
+              <footer class="text-right blockquote-footer">Updated: <cite title="Source Title">Source Title</cite>
+              </footer>
+            </div>
+      </div>
+    </div>
+  </div>
+
+  <br>
+  <br>
+
+  <div class="row">
+    <div class="col-sm-6">
+      <div class="card">
+        <h5 class="card-header">Number of learners (signups) that successfully enrol and complete at least 2 modules
+        </h5>
+        <div class="card-body">
+          {{ember-chart
+                  type="bar"
+                  data=this.k3Data
+                  width=600
+                  height=400
+                  options=options
+                }}
+          <footer class="text-right blockquote-footer">Updated: <cite title="Source Title">Source Title</cite></footer>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-sm-6">
+      <div class="card">
+        <h5 class="card-header">Total number of learning modules successfully completed</h5>
+        <div class="card-body">
+          {{ember-chart
+                  type="bar"
+                  data=this.k4Data
+                  width=600
+                  height=400
+                  options=options
+                }}
+          <footer class="text-right blockquote-footer">Updated: <cite title="Source Title">Source Title</cite></footer>
+        </div>
+      </div>
+    </div>
+  </div>
+  <br>
+  <br>
+  {{!-- <h2 id="title align-center">Content Creators</h2>
+
+  <div class="row">
+    <div class="col-sm-6">
+      <div class="card">
+        <h5 class="card-header">Net Promoter Score(NPS) of content creators on the WIKONNECT platform.</h5>
+        <div class="card-body">
+          {{ember-chart
+        type="bar"
+        data=this.k1Data
+        width=600
+        height=400
+        options=options
+      }}
+        </div>
+      </div>
+    </div>
+
+    <div class="col">
+      <p>Proportion of user-generated modules that have been consumed by at least 5 learners</p>
+      {{ember-chart
+        type="bar"
+        data=this.barData
+        width=600
+        height=400
+        options=options
+      }}
+    </div>
+  </div>
+  <div class="row">
+
+
+    <div class="col">
+      <p>Number of active content contributors in the platform</p>
+      {{ember-chart
+                type="bar"
+                data=this.barData
+                width=600
+                height=400
+                options=options
+              }}
+    </div>
+
+    <div class="col">
+      <p>Number of qualified content creators in the platform</p>
+      {{ember-chart
+                type="bar"
+                data=this.barData
+                width=600
+                height=400
+                options=options
+              }}
+    </div> --}}
+    {{!-- {{outlet}} --}}
+  {{!-- </div> --}}
+</div>
