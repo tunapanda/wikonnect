@@ -35,6 +35,7 @@ export default class AuthenticationSignupComponent extends Component {
             error_message = "This username already exists";
             break;
           default:
+            error_message = err.errors[key].errors;
             break;
           }
           model.addError(constraint[1], error_message);

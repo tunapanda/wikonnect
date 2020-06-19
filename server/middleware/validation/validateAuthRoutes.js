@@ -37,8 +37,12 @@ async function validateNewUser(ctx, next) {
         }
       }
     });
-  } catch (errors) {
-    return ctx.throw(400, { errors });
+  } catch (e) {
+    if (e['username']) {
+      e['constraint'] = 'wrong_wrong';
+      console.log(e);
+      return ctx.throw(400, { errors: [e] });
+    }
   }
   await next();
 }
