@@ -33,4 +33,26 @@ describe('Login Page', function () {
     cy.get('#username .invalid-feedback').should('have.text', 'Username can\'t be blank');
     cy.get('#password .invalid-feedback').should('have.text', 'Password can\'t be blank');
   });
+
+  it('should reject username with special characters', function () {
+    cy.visit('/login');
+
+    cy.get('#username input').type('    ');
+    cy.get('#password input').type('wikonnect');
+
+    cy.get('.submit').click();
+
+    cy.get('#username .invalid-feedback').should('have.text', 'No special characters allowed');
+  });
+
+  it('should reject username with special characters', function () {
+    cy.visit('/login');
+
+    cy.get('#username input').type('=-4$;;');
+    cy.get('#password input').type('wikonnect');
+
+    cy.get('.submit').click();
+
+    cy.get('#username .invalid-feedback').should('have.text', 'No special characters allowed');
+  });
 });
