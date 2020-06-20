@@ -10,51 +10,23 @@
   </div>
 
 
-  <div class="fluid-container">
+  <div class="container">
     <div class="row">
-      <div class="col">
-        <div class="card" style="width: 18rem;">
+      <div class="col-sm-6">
+        <div class="card">
           <div class="card-body">
             <h5 class="card-title">Accounts Created</h5>
-            <h6 class="card-text">{{this.accountMetric.total}}</h6>
+            <h1 class="card-text">{{this.accountMetric.total}}</h1>
           </div>
         </div>
       </div>
-      <div class="col-9">
-        {{ember-chart type="line" data=this.accountMetric.lineData width=600 height=200 }}
+      <div class="col-sm-6">
+        <div class="card">
+          <div class="card-body">
+            {{ember-chart type="line" data=this.accountMetric.lineData width=600 height=500}}
+          </div>
+        </div>
       </div>
     </div>
-  </div>
-
-  <div class="padded">
-    {{#if isExpanded}}
-    <button {{action "toggleBody"}}>Hide Body</button>
-    <div class="body">
-      <table class="table">
-        <thead>
-          <tr>
-            <th scope="col">#</th>
-            <th scope="col">Username</th>
-            <th scope="col">email</th>
-            <th scope="col">Last Seen</th>
-          </tr>
-        </thead>
-        <tbody>
-          {{#each this.userAccounts as |user_account|}}
-          <tr>
-            <th scope="row">{{user_account.index}}</th>
-            <td>{{user_account.email}}</td>
-            <td>{{user_account.username}}</td>
-            <td>{{user_account.lastSeen}}</td>
-          </tr>
-          {{/each}}
-
-        </tbody>
-      </table>
-
-    </div>
-    {{else}}
-    <button {{action "toggleBody"}}>Show Body</button>
-    {{/if}}
   </div>
 </div>

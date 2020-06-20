@@ -5,13 +5,12 @@ import moment from 'moment';
 
 export default class AdminAccountsController extends Controller {
 
+  // isExpanded = false
 
-  isExpanded = false
-
-  @action
-  toggleBody() {
-    this.toggleProperty('isExpanded');
-  }
+  // @action
+  // toggleBody() {
+  //   this.toggleProperty('isExpanded');
+  // }
 
 
   total = 0
@@ -45,9 +44,7 @@ export default class AdminAccountsController extends Controller {
       let colorIndex = index % 3;
 
       return {
-        'index': index + 1,
         'color': this.colorList[colorIndex],
-        'email': users.get('email'),
         'username': users.get('username'),
         'lastSeen': this.lastSeenComputed(users.get('lastSeen')),
         'created': this.lastSeenComputed(users.get('createdAt'))
@@ -86,26 +83,10 @@ export default class AdminAccountsController extends Controller {
   accountCreated() {
     // let trialData = this.numberOfUsers
     let trialData = this.userAccounts
-
-    let data = [
-      { "name": "user1", "created": "may" },
-      { "name": "user2", "created": "may" },
-      { "name": "user3", "created": "may" },
-      { "name": "user4", "created": "may" },
-      { "name": "user5", "created": "june" },
-      { "name": "user6", "created": "june" },
-      { "name": "user7", "created": "august" },
-      { "name": "user8", "created": "august" },
-      { "name": "user9", "created": "august" }
-    ]
-    let result = data.reduce(function (r, e) {
+    let computedLineData = trialData.reduce(function (r, e) {
       return r[e.created] = (r[e.created] || 0) + 1, r
     }, {})
 
-    let stuff = trialData.reduce(function (r, e) {
-      return r[e.created] = (r[e.created] || 0) + 1, r
-    }, {})
-
-    return stuff;
+    return computedLineData;
   }
 }
