@@ -1,17 +1,42 @@
 import Controller from '@ember/controller';
-import { computed } from '@ember/object';
+import { computed, action } from '@ember/object';
+import moment from 'moment';
+
 
 export default class AdminAccountsController extends Controller {
 
-  colorList = ['54378B', 'F57010', '32A583']
-  // startdate = moment().subtract(1, 'days').format('DD-MM-YYYY');
 
-  lastSeenComputed(date){
-    // let date1 = moment('2016-10-08 11:06:55');
-    // let date2 = moment(date);
-    // let diff = date2.diff(date1);
-    return "2017-12-20 19:17:10"
-    // return diff
+  isExpanded = false
+
+  @action
+  toggleBody() {
+    this.toggleProperty('isExpanded');
+  }
+
+
+  total = 0
+  colorList = ['54378B', 'F57010', '32A583']
+
+
+  options = {
+    legend: false,
+    tooltips: true,
+    elements: {
+      line: {
+        fill: false,
+        backgroundColor: "rgb(255, 99, 132)",
+        borderColor: "rgb(255, 99, 132)",
+      },
+      point: {
+        backgroundColor: "rgb(153, 102, 255)",
+        hoverBackgroundColor: "rgb(153, 102, 255)",
+        hoverRadius: 15,
+      }
+    }
+  }
+
+  lastSeenComputed(date) {
+    return moment().from(date);
   }
 
   @computed('model.[]')
@@ -20,13 +45,67 @@ export default class AdminAccountsController extends Controller {
       let colorIndex = index % 3;
 
       return {
+        'index': index + 1,
         'color': this.colorList[colorIndex],
         'email': users.get('email'),
         'username': users.get('username'),
         'lastSeen': this.lastSeenComputed(users.get('lastSeen')),
+        'created': this.lastSeenComputed(users.get('createdAt'))
       };
 
     });
   }
 
+  @computed('model.[]')
+  get accountMetric() {
+    let data = this.accountCreated()
+    let labels = [];
+    let dataset = [];
+
+
+    for (const [key, value] of Object.entries(data)) {
+      labels.push(key)
+      dataset.push(value)
+    }
+
+    return {
+      'total': this.model.length,
+      'lineData': {
+        labels: labels,
+        datasets: [
+          {
+            label: "Users Created",
+            data: dataset
+          }
+        ],
+        options: this.options
+      }
+    }
+  }
+
+  accountCreated() {
+    // let trialData = this.numberOfUsers
+    let trialData = this.userAccounts
+
+    let data = [
+      { "name": "user1", "created": "may" },
+      { "name": "user2", "created": "may" },
+      { "name": "user3", "created": "may" },
+      { "name": "user4", "created": "may" },
+      { "name": "user5", "created": "june" },
+      { "name": "user6", "created": "june" },
+      { "name": "user7", "created": "august" },
+      { "name": "user8", "created": "august" },
+      { "name": "user9", "created": "august" }
+    ]
+    let result = data.reduce(function (r, e) {
+      return r[e.created] = (r[e.created] || 0) + 1, r
+    }, {})
+
+    let stuff = trialData.reduce(function (r, e) {
+      return r[e.created] = (r[e.created] || 0) + 1, r
+    }, {})
+
+    return stuff;
+  }
 }
