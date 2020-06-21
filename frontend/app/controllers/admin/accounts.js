@@ -1,5 +1,5 @@
 import Controller from '@ember/controller';
-import { computed, action } from '@ember/object';
+import { computed } from '@ember/object';
 import { inject } from '@ember/service';
 import moment from 'moment';
 
@@ -57,14 +57,14 @@ export default class AdminAccountsController extends Controller {
 
   @computed('model.[]')
   get accountMetric() {
-    let data = this.accountCreated()
+    let data = this.accountCreated();
     let labels = [];
     let dataset = [];
 
 
     for (const [key, value] of Object.entries(data)) {
-      labels.push(key)
-      dataset.push(value)
+      labels.push(key);
+      dataset.push(value);
     }
 
     return {
@@ -79,15 +79,15 @@ export default class AdminAccountsController extends Controller {
         ],
         options: this.options
       }
-    }
+    };
   }
 
   accountCreated() {
     // let trialData = this.numberOfUsers
-    let trialData = this.userAccounts
+    let trialData = this.userAccounts;
     let computedLineData = trialData.reduce(function (r, e) {
-      return r[e.created] = (r[e.created] || 0) + 1, r
-    }, {})
+      return r[e.created] = (r[e.created] || 0) + 1, r;
+    }, {});
 
     return computedLineData;
   }
