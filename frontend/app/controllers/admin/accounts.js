@@ -1,16 +1,18 @@
 import Controller from '@ember/controller';
 import { computed, action } from '@ember/object';
+import { inject } from '@ember/service';
 import moment from 'moment';
 
 
 export default class AdminAccountsController extends Controller {
+  editing = false;
 
-  // isExpanded = false
+  @inject
+  me;
 
-  // @action
-  // toggleBody() {
-  //   this.toggleProperty('isExpanded');
-  // }
+  @inject
+  session
+
 
 
   total = 0

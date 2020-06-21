@@ -43,6 +43,24 @@ async function returnType(parent) {
   }
 }
 
+async function userRoles(parent) {
+  try {
+    if (parent.length == undefined) {
+      parent.userRoles.forEach(role => {
+        return role.type = 'userRoles';
+      });
+    } else {
+      parent.forEach(roles => {
+        roles.userRoles.forEach(role => {
+          return role.type = 'userRoles';
+        });
+      });
+    }
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 async function enrolledCoursesType(parent) {
   try {
     if (parent.length == undefined) {
@@ -216,6 +234,7 @@ router.get('/:id', permController.requireAuth, async ctx => {
 
   returnType(user);
   enrolledCoursesType(user);
+  userRoles(user);
   // get all verification data
   const userVerification = await knex('user_verification').where({ 'user_id': userId });
   user.userVerification = userVerification;
@@ -256,6 +275,7 @@ router.get('/', permController.requireAuth, permController.grantAccess('readAny'
 
   enrolledCoursesType(user);
   returnType(user);
+  userRoles(user);
 
   ctx.body = { user };
 });

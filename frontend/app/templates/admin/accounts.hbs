@@ -8,25 +8,34 @@
       </div>
     </div>
   </div>
-
-
+  {{#if this.session.isAuthenticated}}
   <div class="container">
     <div class="row">
-      <div class="col-sm-6">
+      <div class="col">
         <div class="card">
           <div class="card-body">
-            <h5 class="card-title">Accounts Created</h5>
-            <h1 class="card-text">{{this.accountMetric.total}}</h1>
+            <Admin::Accounts @account={{this.accountMetric.total}} />
           </div>
         </div>
       </div>
-      <div class="col-sm-6">
+      </div>
+    <div class="row">
+      <div class="col">
         <div class="card">
           <div class="card-body">
+            {{!-- <Admin::Accounts @data={{model}} /> --}}
             {{ember-chart type="line" data=this.accountMetric.lineData width=600 height=500}}
           </div>
         </div>
       </div>
     </div>
   </div>
+  <div>
+    {{!-- {{ log model.user }} --}}
+  </div>
+  {{else}}
+  {{#link-to 'login'}}Login{{/link-to}}
+  {{/if}}
+
+
 </div>
