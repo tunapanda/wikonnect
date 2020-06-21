@@ -6,6 +6,7 @@ const busboy = require('async-busboy');
 const shortid = require('shortid');
 const sharp = require('sharp');
 const s3 = require('../utils/s3Util');
+const { lastSeen, updatedAt } = require('../utils/timestamp');
 
 const User = require('../models/user');
 const log = require('../utils/logger');
@@ -101,6 +102,8 @@ async function createPasswordHash(ctx, next) {
 router.post('/', validateAuthRoutes.validateNewUser, createPasswordHash, async ctx => {
   ctx.request.body.user.username = ctx.request.body.user.username.toLowerCase();
   ctx.request.body.user.email = ctx.request.body.user.email.toLowerCase();
+  ctx.request.body.user.lastSeen = await lastSeen();
+
 
   const invitedBy = ctx.request.body.user.invitedBy;
   delete ctx.request.body.user.invitedBy;
@@ -234,8 +237,7 @@ router.get('/:id', permController.requireAuth, async ctx => {
  * @apiHeader (Header) {String} authorization Bearer <<YOUR_API_KEY_HERE>>
  *
  */
-// router.get('/', permController.requireAuth, permController.grantAccess('readAny', 'profile'), async ctx => {
-router.get('/', async ctx => {
+router.get('/', permController.requireAuth, permController.grantAccess('readAny', 'profile'), async ctx => {
   let user = User.query();
 
   if (ctx.query.username) {
@@ -271,6 +273,8 @@ router.get('/', async ctx => {
  */
 
 router.put('/:id', jwt.authenticate, permController.requireAuth, permController.grantAccess('updateOwn', 'profile'), async ctx => {
+
+  ctx.request.body.user.updatedAt = await updatedAt();
 
   let user;
   try {
