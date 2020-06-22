@@ -1,9 +1,17 @@
 <div class="padded">
-  {{#unless me.isAuthenticated}}
+  {{#if me.isAuthenticated}}
+
+    <BsForm @model={{commentModel}} @onSubmit={{action "saveComment"}} as |form|>
+      <form.element @controlType="textarea" @label="Comment" @property="comment" />
+      <input type="hidden" value={{@id}} name="chapter_id" id="chapter_id">
+      <BsButton @type="primary" @defaultText="Comment" @buttonType="submit" />
+
+
+    </BsForm>
 
 
 
-
+  {{else}}
     <div class="padded">
       <BsAlert @type="error">
         <strong>
@@ -16,19 +24,12 @@
         </strong>
       </BsAlert>
     </div>
-  {{else}}
-    <BsForm @model={{comment}} @onSubmit={{action "saveComment"}} as |form|>
-      <form.element @controlType="textarea" @label="Comment" @property="comment" />
-      <BsButton @type="primary" @defaultText="Comment" @buttonType="submit" />
-
-
-    </BsForm>
-  {{/unless}}
+  {{/if}}
 
 </div>
 <hr>
 <div class="media padded">
-  <img class="mr-3 rounded-circle" src="https://placehold.co/80">
+  <img alt="profile image" class="mr-3 rounded-circle" src="https://placehold.co/80">
   <div class="media-body">
     <h5 class="mt-0">Media heading</h5>
     Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio,
@@ -39,7 +40,7 @@
 <br>
 <hr>
 <div class="media padded">
-  <img class="mr-3 rounded-circle" src="https://placehold.co/80">
+  <img alt=" profile image" class="mr-3 rounded-circle" src="https://placehold.co/80">
   <div class="media-body">
     <h5 class="mt-0">Media heading</h5>
     Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio,

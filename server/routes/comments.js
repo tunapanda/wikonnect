@@ -1,7 +1,7 @@
 const Router = require('koa-router');
 
 const Comment = require('../models/comment');
-const { requireAuth, grantAccess} = require('../middleware/permController');
+const { requireAuth, grantAccess } = require('../middleware/permController');
 
 
 const router = new Router({
@@ -27,10 +27,10 @@ const router = new Router({
  *    }
  *
  */
-router.post('/:id', requireAuth, grantAccess('createAny', 'path'), async ctx => {
+router.post('/', requireAuth, grantAccess('createAny', 'path'), async ctx => {
   let stateUserId = ctx.state.user.id == undefined ? ctx.state.user.data.id : ctx.state.user.id;
   let newChapterComment = ctx.request.body.comment;
-  newChapterComment.chapterId = ctx.params.id;
+  newChapterComment.chapterId = ctx.request.body.chapterId;
   newChapterComment.creatorId = stateUserId;
 
   let comment;
