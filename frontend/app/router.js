@@ -128,7 +128,7 @@ Router.map(function () {
 
     );
   });
-  this.route('upload'); 09011252525
+  this.route('upload');
   this.route('manage');
   this.route('redeem', function () {
     this.route('moja');
