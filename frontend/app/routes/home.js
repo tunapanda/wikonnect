@@ -11,7 +11,7 @@ export default class HomeRoute extends Route {
 
 
 
-    var approved = await this.store.query('chapter', { "approved": true })
+    let approved = await this.store.query('chapter', { "approved": true });
     return approved;
   }
 }

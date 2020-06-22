@@ -15,7 +15,7 @@ export default class ChapterIndexController extends Controller {
 
         chap.set('approved', false);
         chap.set('contentType', "false");
-        chap.save()
+        chap.save();
       });
     } else {
       this.store.findRecord('chapter', chapter_id).then(function (chap) {
@@ -23,7 +23,7 @@ export default class ChapterIndexController extends Controller {
         chap.set('approved', true);
         chap.set('contentType', "false");
 
-        chap.save()
+        chap.save();
 
       });
 
