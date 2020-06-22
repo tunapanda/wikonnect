@@ -129,7 +129,8 @@ Router.map(function () {
     );
   });
   this.route('upload');
-  this.route('redeem', function(){
+  this.route('manage');
+  this.route('redeem', function () {
     this.route('moja');
   });
 }
