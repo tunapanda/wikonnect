@@ -128,14 +128,11 @@ Router.map(function () {
 
     );
   });
-  this.route('upload');
-<<<<<<< HEAD
+  this.route('upload'); 09011252525
   this.route('manage');
-=======
-  this.route('redeem', function(){
+  this.route('redeem', function () {
     this.route('moja');
   });
->>>>>>> 9c88297fa8559d98087bb13db2e94586ce469cd2
 }
 
 );
