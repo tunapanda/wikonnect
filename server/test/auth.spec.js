@@ -14,7 +14,7 @@ const userId = 'user99';
 const registerUser = {
   'user': {
     'id': userId,
-    'username': 'user99',
+    'username': userId,
     'password': 'tunapanda',
     'email': 'user99@wikonnect.com',
   }
@@ -27,14 +27,6 @@ const loginUserData = {
   role: 'admin'
 };
 
-const badUserData = {
-  'user': {
-    'id': userId,
-    'username': 'user99',
-    'password': 'tunapanda'
-  }
-};
-
 describe('AUTHENTICATION ROUTES', () => {
 
   before(async () => {
@@ -43,7 +35,11 @@ describe('AUTHENTICATION ROUTES', () => {
     return knex.seed.run();
   });
   describe('Auth routes tests: /api/v1/users/', () => {
-
+    before(async () => {
+      await knex.migrate.rollback();
+      await knex.migrate.latest();
+      return knex.seed.run();
+    });
     it('Should create user on POST requests', done => {
       chai
         .request(server)
@@ -57,19 +53,6 @@ describe('AUTHENTICATION ROUTES', () => {
           done();
         });
     });
-    it('Should throw an ERROR for POST requests with bad/malformed data', done => {
-      chai
-        .request(server)
-        .post(usersRoute)
-        .send(badUserData)
-        .set('Content-Type', 'application/json')
-        .end((err, res) => {
-          res.should.have.status(400);
-          res.body.errors.should.be.a('object');
-          done();
-        });
-    });
-
     it('Should throw an ERROR on POST data if user already exists', done => {
       chai
         .request(server)

@@ -37,8 +37,12 @@ async function validateNewUser(ctx, next) {
         }
       }
     });
-  } catch (errors) {
-    return ctx.throw(400, { errors });
+  } catch (e) {
+    if (e['username']) {
+      e['constraint'] = 'wrong_wrong';
+      console.log(e);
+      return ctx.throw(400, { errors: [e] });
+    }
   }
   await next();
 }
@@ -59,7 +63,7 @@ async function validateUserLogin(ctx, next) {
       }
     });
   } catch (e) {
-    ctx.throw(400, null, { errors: ['Bad Request'] });
+    ctx.throw(400, null, { errors: [e] });
   }
   await next();
 }
