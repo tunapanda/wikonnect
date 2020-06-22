@@ -1,0 +1,41 @@
+<div id="home">
+
+  <div class="heading bg-orange">
+    <div class="row">
+      <div class="col">
+        <h2>Accounts</h2>
+        <p>User Accounts.</p>
+      </div>
+    </div>
+  </div>
+  {{#if this.session.isAuthenticated}}
+  <div class="container">
+    <div class="row">
+      <div class="col">
+        <div class="card">
+          <div class="card-body">
+            <Admin::Accounts @account={{this.accountMetric.total}} />
+          </div>
+        </div>
+      </div>
+      </div>
+    <div class="row">
+      <div class="col">
+        <div class="card">
+          <div class="card-body">
+            {{!-- <Admin::Accounts @data={{model}} /> --}}
+            {{ember-chart type="line" data=this.accountMetric.lineData width=600 height=500}}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div>
+    {{!-- {{ log model.user }} --}}
+  </div>
+  {{else}}
+  {{#link-to 'login'}}Login{{/link-to}}
+  {{/if}}
+
+
+</div>
