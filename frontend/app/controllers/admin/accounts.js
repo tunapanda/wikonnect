@@ -7,11 +7,11 @@ import moment from 'moment';
 export default class AdminAccountsController extends Controller {
   editing = false;
 
-  @inject
-  me;
+  // @inject
+  // me;
 
-  @inject
-  session
+  // @inject
+  // session
 
 
 
