@@ -10,11 +10,4 @@ export default class AdminAccountsComponent extends Component {
   @inject
   session
 
-  // isExpanded = false
-
-  // @action
-  // toggleBody() {
-  //   this.toggleProperty('isExpanded');
-  // }
-
 }
