@@ -120,26 +120,13 @@ async function createPasswordHash(ctx, next) {
 router.post('/', validateAuthRoutes.validateNewUser, createPasswordHash, async ctx => {
   ctx.request.body.user.username = ctx.request.body.user.username.toLowerCase();
   ctx.request.body.user.email = ctx.request.body.user.email.toLowerCase();
-  ctx.request.body.user.lastSeen = await lastSeen();
-
-
-  console.log('--------------------------------------------------------');
-  console.log(ctx.request.body.user);
-  console.log('--------------------------------------------------------');
+  ctx.request.body.user.lastSeen = await updatedAt();
 
   const inviteInsert = await knex('user_invite').insert([{ 'invited_by': ctx.request.body.user.inviteCode }], ['id', 'invited_by']);
 
   let newUser = ctx.request.body.user;
   newUser.inviteCode = shortid.generate();
   newUser.lastSeen = await updatedAt();
-
-  console.log('--------------------------------------------------------');
-  console.log(inviteInsert[0].id);
-  console.log(inviteInsert[0].invited_by);
-  console.log(inviteInsert[0].invitedBy);
-  console.log(inviteInsert);
-  console.log(newUser);
-  console.log('--------------------------------------------------------');
 
   const firstUserCheck = await User.query();
   let role = !firstUserCheck.length ? 'groupSuperAdmin' : 'groupBasic';
