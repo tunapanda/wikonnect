@@ -120,6 +120,8 @@ async function createPasswordHash(ctx, next) {
 router.post('/', validateAuthRoutes.validateNewUser, createPasswordHash, async ctx => {
   ctx.request.body.user.username = ctx.request.body.user.username.toLowerCase();
   ctx.request.body.user.email = ctx.request.body.user.email.toLowerCase();
+  ctx.request.body.user.lastSeen = await lastSeen();
+
 
   console.log('--------------------------------------------------------');
   console.log(ctx.request.body.user);
