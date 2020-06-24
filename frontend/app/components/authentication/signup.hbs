@@ -10,21 +10,21 @@
     <form.element id="username" class="inputs" @controlType="text" @label="Username" @placeholder="Username"
       @property="username" @autocomplete="username" />
     {{#each newUser.errors as |err| }}
-    {{#if (eq err.key 'username')}}
-    <BsAlert @type="danger" @fade={{true}}>
-      {{err.validation}}
-    </BsAlert>
-    {{/if}}
+      {{#if (eq err.key "username")}}
+        <BsAlert @type="danger" @fade={{true}}>
+          {{err.validation}}
+        </BsAlert>
+      {{/if}}
     {{/each}}
 
     <form.element id="email" class="inputs" @controlType="text" @label="Email address" @placeholder="example@mail.com"
       @property="email" @autocomplete="email" />
     {{#each newUser.errors as |err| }}
-    {{#if (eq err.key 'email')}}
-    <BsAlert @type="danger" @fade={{true}}>
-      {{err.validation}} 
-    </BsAlert>
-    {{/if}}
+      {{#if (eq err.key "email")}}
+        <BsAlert @type="danger" @fade={{true}}>
+          {{err.validation}}
+        </BsAlert>
+      {{/if}}
     {{/each}}
 
     <form.element id="password" class="inputs" @controlType="password" @label="Password" @placeholder="Enter Password"

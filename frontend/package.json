@@ -81,6 +81,7 @@
     "ember-drag-drop-polyfill": "^1.0.0",
     "ember-line-clamp": "^1.0.1",
     "ember-power-select": "3.0.4",
-    "ember-truth-helpers": "^2.1.0"
+    "ember-truth-helpers": "^2.1.0",
+    "moment": "^2.27.0"
   }
 }

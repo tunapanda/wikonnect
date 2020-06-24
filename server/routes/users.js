@@ -6,6 +6,7 @@ const busboy = require('async-busboy');
 const shortid = require('shortid');
 const sharp = require('sharp');
 const s3 = require('../utils/s3Util');
+const { lastSeen, updatedAt } = require('../utils/timestamp');
 
 const User = require('../models/user');
 const log = require('../utils/logger');
@@ -34,6 +35,24 @@ async function returnType(parent) {
       parent.forEach(mod => {
         mod.achievementAwards.forEach(lesson => {
           return lesson.type = 'achievementAwards';
+        });
+      });
+    }
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+async function userRoles(parent) {
+  try {
+    if (parent.length == undefined) {
+      parent.userRoles.forEach(role => {
+        return role.type = 'userRoles';
+      });
+    } else {
+      parent.forEach(roles => {
+        roles.userRoles.forEach(role => {
+          return role.type = 'userRoles';
         });
       });
     }
@@ -101,6 +120,8 @@ async function createPasswordHash(ctx, next) {
 router.post('/', validateAuthRoutes.validateNewUser, createPasswordHash, async ctx => {
   ctx.request.body.user.username = ctx.request.body.user.username.toLowerCase();
   ctx.request.body.user.email = ctx.request.body.user.email.toLowerCase();
+  ctx.request.body.user.lastSeen = await lastSeen();
+
 
   const invitedBy = ctx.request.body.user.invitedBy;
   delete ctx.request.body.user.invitedBy;
@@ -213,6 +234,7 @@ router.get('/:id', permController.requireAuth, async ctx => {
 
   returnType(user);
   enrolledCoursesType(user);
+  userRoles(user);
   // get all verification data
   const userVerification = await knex('user_verification').where({ 'user_id': userId });
   user.userVerification = userVerification;
@@ -253,6 +275,7 @@ router.get('/', permController.requireAuth, permController.grantAccess('readAny'
 
   enrolledCoursesType(user);
   returnType(user);
+  userRoles(user);
 
   ctx.body = { user };
 });
@@ -270,6 +293,8 @@ router.get('/', permController.requireAuth, permController.grantAccess('readAny'
  */
 
 router.put('/:id', jwt.authenticate, permController.requireAuth, permController.grantAccess('updateOwn', 'profile'), async ctx => {
+
+  ctx.request.body.user.updatedAt = await updatedAt();
 
   let user;
   try {

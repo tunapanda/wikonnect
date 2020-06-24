@@ -236,7 +236,10 @@ router.post('/', async ctx => {
   ctx.body = { chapter };
 
 });
-router.put('/:id', permController.requireAuth, permController.grantAccess('updateOwn', 'path'), async ctx => {
+
+
+router.put('/:id', permController.requireAuth, async ctx => {
+  //router.put('/:id', async ctx => {
   const chapter_record = await Chapter.query().findById(ctx.params.id);
   let chapterData = ctx.request.body.chapter;
 
@@ -254,14 +257,19 @@ router.put('/:id', permController.requireAuth, permController.grantAccess('updat
   try {
     chapter = await Chapter.query().patchAndFetchById(ctx.params.id, chapterData);
   } catch (e) {
+    console.log('cant save');
+    console.log(e);
     if (e.statusCode) {
       ctx.throw(e.statusCode, null, { errors: [e.message] });
-    } else { ctx.throw(400, null, { errors: ['Bad Request'] }); }
+    } else { ctx.throw(400, null, { errors: [e.message] }); }
     throw e;
   }
   ctx.status = 201;
   ctx.body = { chapter };
 });
+
+
+
 router.delete('/:id', permController.requireAuth, permController.grantAccess('deleteAny', 'path'), async ctx => {
   const chapter = await Chapter.query().findById(ctx.params.id);
 
