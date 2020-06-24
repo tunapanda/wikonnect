@@ -6,7 +6,7 @@ const busboy = require('async-busboy');
 const shortid = require('shortid');
 const sharp = require('sharp');
 const s3 = require('../utils/s3Util');
-const { lastSeen, updatedAt } = require('../utils/timestamp');
+const { updatedAt } = require('../utils/timestamp');
 
 const User = require('../models/user');
 const log = require('../utils/logger');
@@ -143,26 +143,27 @@ async function createPasswordHash(ctx, next) {
 router.post('/', validateAuthRoutes.validateNewUser, createPasswordHash, async ctx => {
   ctx.request.body.user.username = ctx.request.body.user.username.toLowerCase();
   ctx.request.body.user.email = ctx.request.body.user.email.toLowerCase();
-  ctx.request.body.user.lastSeen = await lastSeen();
+  ctx.request.body.user.lastSeen = await updatedAt();
 
-
-  const invitedBy = ctx.request.body.user.invitedBy;
-  delete ctx.request.body.user.invitedBy;
+  const inviteInsert = await knex('user_invite').insert([{ 'invited_by': ctx.request.body.user.inviteCode }], ['id', 'invited_by']);
 
   let newUser = ctx.request.body.user;
-  // generate personal invite code for use when inviting others
   newUser.inviteCode = shortid.generate();
+  newUser.lastSeen = await updatedAt();
 
   const firstUserCheck = await User.query();
   let role = !firstUserCheck.length ? 'groupSuperAdmin' : 'groupBasic';
 
-
   try {
     const user = await User.query().insertAndFetch(newUser);
     await knex('group_members').insert({ 'user_id': user.id, 'group_id': role });
-    await knex('user_invite').insert({ 'user_id': user.id, 'invited_by': invitedBy });
+    let data = await knex('user_invite').where({ id: inviteInsert[0].id }).update({ user_id: user.id }, ['id', 'invited_by', 'user_id']);
 
-    log.info('Created a user with id %s with username %s with the invite code %s', user.id, user.username, user.invite_code);
+    console.log('--------------------------------------------------------');
+    console.log(data);
+    console.log('--------------------------------------------------------');
+
+    log.info('Created a user with id %s with username %s with the invite code %s', user.id, user.username, user.inviteCode);
 
     ctx.status = 201;
     ctx.body = { user };

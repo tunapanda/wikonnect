@@ -10,9 +10,9 @@ exports.seed = function (knex) {
           username: 'user1',
           email: 'user1@wikonnect.org',
           hash: '$2b$10$a.r.mPrpHxwlGh/6jd.RG.QhHu2xHAY3/EzclbPFduSDTnAtV3feu',
-          metadata: '{ "customer": "Lily Bush", "items": {"product": "Diaper","qty": 24}}',
           last_ip: '245.19.225.55',
           private: true,
+          invite_code: 'user2',
           last_seen: '2017-12-20 19:17:10',
           created_at: '2017-12-20 19:17:10',
           updated_at: '2017-12-20 19:17:10'
@@ -24,6 +24,7 @@ exports.seed = function (knex) {
           hash: '$2b$10$a.r.mPrpHxwlGh/6jd.RG.QhHu2xHAY3/EzclbPFduSDTnAtV3feu',
           last_ip: '245.19.225.55',
           private: false,
+          invite_code: 'user3',
           last_seen: '2017-12-20 19:17:10',
           created_at: '2017-12-20 19:17:10',
           updated_at: '2017-12-20 19:17:10'
