@@ -1,14 +1,12 @@
 <div id="home">
 
+  {{#if this.session.isAuthenticated}}
   <div class="heading bg-orange">
     <div class="row">
       <div class="col">
-        <h2>Accounts</h2>
-        <p>User Accounts.</p>
-      </div>
+        <h2>Analytics</h2>      </div>
     </div>
   </div>
-  {{#if this.session.isAuthenticated}}
   <div class="container">
     <div class="row">
       <div class="col">
@@ -18,7 +16,7 @@
           </div>
         </div>
       </div>
-      </div>
+    </div>
     <div class="row">
       <div class="col">
         <div class="card">
@@ -30,12 +28,7 @@
       </div>
     </div>
   </div>
-  <div>
-    {{!-- {{ log model.user }} --}}
-  </div>
   {{else}}
-  {{#link-to 'login'}}Login{{/link-to}}
+  <Warning @message="You do not have permission to view this page" />
   {{/if}}
-
-
 </div>

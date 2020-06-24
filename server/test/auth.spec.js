@@ -35,11 +35,6 @@ describe('AUTHENTICATION ROUTES', () => {
     return knex.seed.run();
   });
   describe('Auth routes tests: /api/v1/users/', () => {
-    before(async () => {
-      await knex.migrate.rollback();
-      await knex.migrate.latest();
-      return knex.seed.run();
-    });
     it('Should create user on POST requests', done => {
       chai
         .request(server)
