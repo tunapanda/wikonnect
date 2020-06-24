@@ -21,8 +21,6 @@ export default class UploadController extends Controller {
 
   @computed('me.user.profileUri')
   get profileImage() {
-    console.log(this.me.user.profileUri);
-
     return this.me.user.profileUri;
   }
 
