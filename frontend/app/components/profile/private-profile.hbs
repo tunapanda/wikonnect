@@ -1,8 +1,7 @@
 <div class="profile">
   <div class="profile-head">
     {{#link-to "upload"}}
-      <img class="profile-picture" alt="" src="/images/profile-placeholder.gif">
-
+      <img class="profile-picture" alt="" src="{{profileUri}}">
     {{/link-to}}
     <h2 class="profile-name">{{name}}</h2>
   </div>
@@ -27,11 +26,11 @@
       <div class="profile-title">
         <h4>Details</h4>
         {{#if viewOnly}}
-          <button class="header-hamburger profile-edit btn padded btn-primary btn-small " {{action editProfile}}>
+          <button class="profile-edit btn padded btn-primary btn-small " {{action editProfile}}>
             Edit
           </button>
         {{else}}
-          <button class="header-hamburger profile-edit" {{action editProfile}}>
+          <button class="profile-edit btn padded btn-primary btn-small" {{action editProfile}}>
             X
           </button>
         {{/if}}
