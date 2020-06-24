@@ -80,6 +80,25 @@ async function enrolledCoursesType(parent) {
 }
 
 
+function encode(data) {
+  let buf = Buffer.from(data);
+  let base64 = buf.toString('base64');
+  return base64;
+}
+
+async function getProfileImage(id) {
+  if (s3.config) {
+
+    const params = {
+      Bucket: s3.config.bucket, // pass your bucket name
+      Key: `uploads/profiles/${id}.jpg`, // key for saving filename
+    };
+
+    const getImage = await s3.s3.getObject(params).promise();
+    let image = 'data:image/(png|jpg);base64,' + encode(getImage.Body);
+    return image;
+  }
+}
 async function createPasswordHash(ctx, next) {
   if (ctx.request.body.user.password) {
     const hash = await bcrypt.hash(ctx.request.body.user.password, 10);
@@ -240,6 +259,9 @@ router.get('/:id', permController.requireAuth, async ctx => {
   user.userVerification = userVerification;
 
   log.info('Got a request from %s for %s', ctx.request.ip, ctx.path);
+
+  user.profileUri = await getProfileImage(user.profileUri);
+
   ctx.status = 200;
   ctx.body = { user };
 
@@ -342,13 +364,19 @@ router.post('/invite/:id', async ctx => {
  * @apiError {String} errors Bad Request.
  */
 
-router.post('/:id/profile-image', async (ctx, next) => {
+router.post('/:id/profile-image', permController.requireAuth, async (ctx, next) => {
   if ('POST' != ctx.method) return await next();
 
   const { files } = await busboy(ctx.req);
   const fileNameBase = shortid.generate();
   const uploadPath = 'uploads/images/profile';
   const uploadDir = path.resolve(__dirname, '../public/' + uploadPath);
+
+  try {
+    await User.query().patchAndFetchById(ctx.params.id, { profileUri: fileNameBase });
+  } catch (e) {
+    console.log(e);
+  }
 
   // const sizes = [
   //   70,
