@@ -21,6 +21,8 @@ export default class UploadController extends Controller {
 
   @computed('me.user.profileUri')
   get profileImage() {
+    console.log(this.me.user.profileUri);
+
     return this.me.user.profileUri;
   }
 
@@ -44,12 +46,10 @@ export default class UploadController extends Controller {
     this.set("profileImage", "http://localhost:3000/" + uploadRes.path);
     this.set("complete", true);
 
-    //upload
-  }
-
-  afterLoading() {
     if (this.complete === true) {
       this.transitionToRoute('profile');
     }
+
+    //upload
   }
 }

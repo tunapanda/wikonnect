@@ -87,16 +87,20 @@ function encode(data) {
 }
 
 async function getProfileImage(id) {
-  if (s3.config) {
 
-    const params = {
-      Bucket: s3.config.bucket, // pass your bucket name
-      Key: `uploads/profiles/${id}.jpg`, // key for saving filename
-    };
+  try {
+    if (s3.config) {
+      const params = {
+        Bucket: s3.config.bucket, // pass your bucket name
+        Key: `uploads/profiles/${id}.jpg`, // key for saving filename
+      };
 
-    const getImage = await s3.s3.getObject(params).promise();
-    let image = 'data:image/(png|jpg);base64,' + encode(getImage.Body);
-    return image;
+      const getImage = await s3.s3.getObject(params).promise();
+      let image = 'data:image/(png|jpg);base64,' + encode(getImage.Body);
+      return image;
+    }
+  } catch (e) {
+    return 'images/profile-placeholder.gif';
   }
 }
 async function createPasswordHash(ctx, next) {
