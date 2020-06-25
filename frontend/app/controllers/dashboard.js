@@ -3,23 +3,23 @@ import { computed } from '@ember/object';
 
 export default class CoursesController extends Controller {
 
-  // options = {
-  //   //
-  //   scales: {
-  //     xAxes: [{
-  //       barPercentage: 0.7,
-  //       categoryPercentage: 0.7
-  //     }],
-  //     yAxes: [{
-  //       ticks: {
-  //         beginAtZero: false
-  //       }
-  //     }]
-  //   },
-  //   legend: {
-  //     display: false
-  //   }
-  // }
+  options = {
+    //
+    scales: {
+      xAxes: [{
+        barPercentage: 0.7,
+        categoryPercentage: 0.7
+      }],
+      yAxes: [{
+        ticks: {
+          beginAtZero: false
+        }
+      }]
+    },
+    legend: {
+      display: false
+    }
+  }
   @computed('model.[]')
   get dataS() {
     return this.model.map((dashboard) => {
@@ -35,11 +35,9 @@ export default class CoursesController extends Controller {
       return this.model.map((dashboard) => {
         let dataNum = "";
         dataNum.append(dashboard.get('achieved'));
-        console.log(dashboard.get('achieved'));
         return dataNum;
       });
     }
-    console.log(this.dataS);
     return {
 
       labels: ["Q1 20", "Q2 20", "Q3 20", "Q4 20", "Q1 21", "Q2 21", "Q3 21",],
