@@ -10,9 +10,6 @@ async function validateChapter(ctx, next) {
       description: {
         presence: true,
       },
-      lessonId: {
-        presence: true,
-      },
       creatorId: {
         presence: true,
       },
@@ -21,6 +18,13 @@ async function validateChapter(ctx, next) {
         inclusion: {
           within: ['published', 'draft', 'archived'],
           message: '\'%{value}\' is not allowed in status, try [published, draft, archived]'
+        }
+      },
+      approved: {
+        presence: true,
+        inclusion: {
+          within: [true, false],
+          message: '\'%{value}\' is not allowed in approved field, try a boolean'
         }
       }
     });

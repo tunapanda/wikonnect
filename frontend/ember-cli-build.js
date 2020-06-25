@@ -43,5 +43,7 @@ module.exports = function (defaults) {
   // please specify an object with the list of modules as keys
   // along with the exports of each module as its value.
 
+  app.import('node_modules/h5p-standalone/dist/styles/h5p.css');
+
   return app.toTree();
 };

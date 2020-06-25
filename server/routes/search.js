@@ -15,7 +15,7 @@ const router = new Router({
 
 
 /**
- * @api {get} /search?q={query string goes here} GET result search query.
+ * @api {get} /search?q={query-string-goes-here} GET result search query.
  * @apiName GetSearch
  * @apiGroup Search
  * @apiPermission none
@@ -32,15 +32,13 @@ const router = new Router({
 
 router.get('/', async ctx => {
   const queryText = ctx.query.q;
-  console.log(queryText);
-
   try {
     const elasticResponse = await search.search({
       index: search.indexName,
       body: {
         query: {
           query_string: {
-            fields: ['name^2', 'description'],
+            fields: ['name^2', 'description', 'tags'],
             query: queryText
           }
         },
@@ -56,6 +54,9 @@ router.get('/', async ctx => {
 
     const grouped = _.groupBy(elasticResponse.body.hits.hits, hit => hit._source.model);
 
+    if (grouped.length == undefined) {
+      console.log(ctx.query.q);
+    }
     // const results = Object.keys(grouped).map(async modelName => ({ [modelName]: await models[modelName].query().hydrateSearch(grouped[modelName]) }));
 
     ctx.body = grouped;

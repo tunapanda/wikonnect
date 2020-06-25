@@ -5,6 +5,8 @@ const permController = require('../middleware/permController');
 const { validateLessons } = require('../middleware/validation/validatePostData');
 const achievementPercentage = require('../utils/achievementPercentage');
 
+const slugGen = require('../utils/slugGen');
+
 const router = new Router({
   prefix: '/lessons'
 });
@@ -179,10 +181,7 @@ router.get('/', permController.requireAuth, async ctx => {
 
 router.post('/', permController.requireAuth, permController.grantAccess('createAny', 'path'), validateLessons, async ctx => {
   let newLesson = ctx.request.body.lesson;
-
-  newLesson.slug = newLesson.name.replace(/[^a-z0-9]+/gi, '-')
-    .replace(/^-*|-*$/g, '')
-    .toLowerCase();
+  newLesson.slug = await slugGen(newLesson.name);
 
   let lesson;
   try {

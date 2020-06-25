@@ -7,7 +7,11 @@ export default class HomeRoute extends Route {
   @inject
   me;
 
-  model() {
-    return this.me.user;
+  async model() {
+
+
+
+    let approved = await this.store.query('chapter', { "approved": true });
+    return approved;
   }
 }

@@ -6,6 +6,7 @@ const busboy = require('async-busboy');
 const shortid = require('shortid');
 const sharp = require('sharp');
 const s3 = require('../utils/s3Util');
+const { lastSeen, updatedAt } = require('../utils/timestamp');
 
 const User = require('../models/user');
 const log = require('../utils/logger');
@@ -35,6 +36,24 @@ async function returnType(parent) {
       parent.forEach(mod => {
         mod.achievementAwards.forEach(lesson => {
           return lesson.type = 'achievementAwards';
+        });
+      });
+    }
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+async function userRoles(parent) {
+  try {
+    if (parent.length == undefined) {
+      parent.userRoles.forEach(role => {
+        return role.type = 'userRoles';
+      });
+    } else {
+      parent.forEach(roles => {
+        roles.userRoles.forEach(role => {
+          return role.type = 'userRoles';
         });
       });
     }
@@ -100,9 +119,10 @@ async function createPasswordHash(ctx, next) {
  */
 
 router.post('/', validateAuthRoutes.validateNewUser, createPasswordHash, async ctx => {
-  console.log(ctx.req.body);
   ctx.request.body.user.username = ctx.request.body.user.username.toLowerCase();
   ctx.request.body.user.email = ctx.request.body.user.email.toLowerCase();
+  ctx.request.body.user.lastSeen = await lastSeen();
+
 
   const invitedBy = ctx.request.body.user.invitedBy;
   delete ctx.request.body.user.invitedBy;
@@ -118,21 +138,15 @@ router.post('/', validateAuthRoutes.validateNewUser, createPasswordHash, async c
   try {
     const user = await User.query().insertAndFetch(newUser);
     await knex('group_members').insert({ 'user_id': user.id, 'group_id': role });
-    await knex('user_invite').insert({ 'user_id' : user.id, 'invited_by': invitedBy });
+    await knex('user_invite').insert({ 'user_id': user.id, 'invited_by': invitedBy });
 
     log.info('Created a user with id %s with username %s with the invite code %s', user.id, user.username, user.invite_code);
 
     ctx.status = 201;
     ctx.body = { user };
   } catch (e) {
-    ctx.log.info('Failed for user - %s, with error %s', ctx.request.body.user.email, e.message);
-    if (e.constraint === 'users_email_unique') {
-      ctx.throw(422, 'email is not unique', { message: 'email' });
-    }
-    if (e.constraint === 'users_username_unique'){
-      ctx.throw(422, 'username is not unique', { message: 'username' });
-    }
-    ctx.throw(400, null, { errors: ['Bad Request'] });
+    ctx.log.info('Failed for user - %s, with error %s', ctx.request.body.user.email, e.message, e.detail);
+    ctx.throw(400, null, { errors: [e] });
   }
 
 
@@ -158,6 +172,7 @@ router.post('/', validateAuthRoutes.validateNewUser, createPasswordHash, async c
  *       "createdAt": "2017-12-20T16:17:10.000Z",
  *       "updatedAt": "2017-12-20T16:17:10.000Z",
  *       "profileUri": "uploads/profiles/user1.jpg",
+ *       "private": boolean,
  *       "inviteCode": "DTrbi6aLj",
  *       "achievementAwards": [
  *         {
@@ -204,22 +219,25 @@ router.post('/', validateAuthRoutes.validateNewUser, createPasswordHash, async c
 
 router.get('/:id', permController.requireAuth, async ctx => {
 
-  const user = await User.query().findById(ctx.params.id).mergeJoinEager('[achievementAwards(selectBadgeNameAndId), userRoles(selectName), enrolledCourses(selectNameAndId)]');
-  returnType(user);
-  enrolledCoursesType(user);
+  let stateUserId = ctx.state.user.id == undefined ? ctx.state.user.data.id : ctx.state.user.id;
 
+  let userId = ctx.params.id != 'current' ? ctx.params.id : stateUserId;
+  const user = await User.query().findById(userId).mergeJoinEager('[achievementAwards(selectBadgeNameAndId), userRoles(selectName), enrolledCourses(selectNameAndId)]');
 
   if (!user) {
     ctx.throw(404, 'No User With that Id');
   }
 
-  if (user.id !== ctx.state.user.data.id) {
+  if (user.id != stateUserId || stateUserId === 'anonymous') {
     log.info('Error logging  %s for %s', ctx.request.ip, ctx.path);
     ctx.throw(401, 'You do not have permissions to view that user');
   }
 
+  returnType(user);
+  enrolledCoursesType(user);
+  userRoles(user);
   // get all verification data
-  const userVerification = await knex('user_verification').where({ 'user_id': ctx.params.id });
+  const userVerification = await knex('user_verification').where({ 'user_id': userId });
   user.userVerification = userVerification;
 
   log.info('Got a request from %s for %s', ctx.request.ip, ctx.path);
@@ -258,6 +276,7 @@ router.get('/', permController.requireAuth, permController.grantAccess('readAny'
 
   enrolledCoursesType(user);
   returnType(user);
+  userRoles(user);
 
   ctx.body = { user };
 });
@@ -275,6 +294,8 @@ router.get('/', permController.requireAuth, permController.grantAccess('readAny'
  */
 
 router.put('/:id', jwt.authenticate, permController.requireAuth, permController.grantAccess('updateOwn', 'profile'), async ctx => {
+
+  ctx.request.body.user.updatedAt = await updatedAt();
 
   let user;
   try {

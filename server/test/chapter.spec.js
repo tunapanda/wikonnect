@@ -6,7 +6,6 @@ const server = require('../index');
 const tokens = require('./_tokens');
 const knex = require('../db/db');
 
-
 chai.use(chaiHttp);
 chai.use(chaiJSON);
 chai.should();
@@ -14,20 +13,27 @@ chai.should();
 const route = '/api/v1/chapters/';
 const itemID = 'chapter19';
 const data = {
-  chapter:{
+  chapter: {
     'id': itemID,
     'name': 'Testing chapter Path',
-    'slug': 'testing-chapter-path',
     'description': 'Testing chapter route',
     'status': 'published',
-    'lessonId': 'lesson1',
-    'creatorId': 'user3'
+    'creatorId': 'user3',
+    'tags': '{"H5P","user1"}',
+    'createdAt': '2017-12-20T16:17:10.000Z',
+    'updatedAt': '2017-12-20T16:17:10.000Z',
+    'contentType': 'h5p',
+    'contentUri': '/uploads/h5p/chapter1',
+    'imageUrl': null,
+    'contentId': null,
+    'approved': false
   }
 };
 
 const putData = {
-  chapter:{
+  chapter: {
     'name': 'PUT update works',
+    'approved': true
   }
 };
 
@@ -37,13 +43,12 @@ const invalidData = {
     'name': 'Testing Chapter Route',
     'slug': 'testing-chapter-route',
     'description': 'Testing chapter route',
-    'status': 'draft'
+    'status': 'draft',
+    'approved': true
   }
 };
 
-
 describe('CHAPTER ROUTE', () => {
-
   before(async () => {
     await knex.migrate.rollback();
     await knex.migrate.latest();
@@ -57,10 +62,8 @@ describe('CHAPTER ROUTE', () => {
       .post(route)
       .set(tokens.headersSuperAdmin1)
       .set('Content-Type', 'application/json')
-      .set(tokens.headersSuperAdmin1)
       .send(data)
       .end((err, res) => {
-
         res.status.should.eql(201);
         res.should.be.json;
         res.body.should.have.property('chapter');
@@ -79,11 +82,10 @@ describe('CHAPTER ROUTE', () => {
         res.body.chapter[0].should.have.property('name');
         res.body.chapter[0].should.have.property('slug');
         res.body.chapter[0].should.have.property('creatorId');
-        res.body.chapter[0].should.have.property('lessonId');
         done();
       });
   });
-  it('Should list ONE chapter item on GET', done => {
+  it('Should list ONE chapter item on GET with id query', done => {
     chai
       .request(server)
       .get(route + itemID)
@@ -91,15 +93,39 @@ describe('CHAPTER ROUTE', () => {
       .end((err, res) => {
         res.should.have.status(200);
         res.should.be.json;
-        res.body.chapter.should.have.property('id');
-        res.body.chapter.should.have.property('name');
-        res.body.chapter.should.have.property('slug');
-        res.body.chapter.should.have.property('creatorId');
+        res.body.chapter[0].should.have.property('id');
+        res.body.chapter[0].should.have.property('name');
+        res.body.chapter[0].should.have.property('slug');
+        res.body.chapter[0].should.have.property('creatorId');
+        done();
+      });
+  });
+  it('Should list ONE chapter item on GET using id', done => {
+    chai
+      .request(server)
+      .get(route + itemID)
+      .set(tokens.headersSuperAdmin1)
+      .end((err, res) => {
+        res.should.have.status(200);
+        res.should.be.json;
+        done();
+      });
+  });
+  it('Should have tags object in ONE chapter item on GET', done => {
+    chai
+      .request(server)
+      .get(route + itemID)
+      .set(tokens.headersSuperAdmin1)
+      .end((err, res) => {
+        res.should.have.status(200);
+        res.should.be.json;
+        res.body.chapter[0].should.have.property('tags');
+        res.body.chapter[0].tags.should.eql('{"H5P","user1"}');
         done();
       });
   });
 
-  it('Should list ONE chapter item on GET', done => {
+  it('Should list ONE chapter item on GET with slug query', done => {
     chai
       .request(server)
       .get(route + '?slug=testing-chapter-path')
