@@ -35,7 +35,7 @@ class Chapter extends Model {
         modelClass: __dirname + '/flag',
         join: {
           from: 'chapters.id',
-          to: 'flag.chapterId'
+          to: 'flags.chapterId'
         }
       }
     };
