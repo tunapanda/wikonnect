@@ -35,17 +35,8 @@ const router = new Router({
  */
 router.post('/', validateAuthRoutes.validateUserLogin, async ctx => {
   const username = ctx.request.body.username.toLowerCase();
-
   let user = await User.query().where('username', username);
-  if (!user.length) {
-    ctx.throw(404, null, {
-      errors: [{
-        'name': 'Wrong username or password',
-        'constraint': 'errors',
-      }]
-    });
-  }
-
+  if (!user.length) ctx.throw(404, null, { errors: ['wrong_email_or_password'] });
 
   let { hash: hashPassword, ...userInfoWithoutPassword } = user[0];
   user = user[0];
