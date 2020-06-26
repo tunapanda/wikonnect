@@ -1,6 +1,8 @@
 import Component from '@glimmer/component';
 import { inject as service } from '@ember/service';
 import { action } from '@ember/object';
+import { computed } from '@ember/object';
+import { tracked } from '@glimmer/tracking';
 
 export default class CommentSectionComponent extends Component {
 
@@ -11,6 +13,8 @@ export default class CommentSectionComponent extends Component {
   @service
   session;
 
+
+
   @service
   store;
 
@@ -20,14 +24,20 @@ export default class CommentSectionComponent extends Component {
       creator: this.me.get('user')
     });
   }
+  @computed
+  get chapterComments() {
+
+    return this.store.query('comment', { "chapterId": this.args.selectedChapter });
+  }
 
   @action
-  saveComment(model) {
+  async saveComment(model) {
+    let chap = await this.store.findRecord('chapter', this.args.selectedChapter);
     console.log(model)
-    // model.setProperties({
-    //   chapter_id: "1"
-    // });
-    // model.save();
+    model.setProperties({
+      chapter: chap
+    });
+    model.save();
   }
 }
 

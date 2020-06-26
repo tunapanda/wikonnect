@@ -6,7 +6,7 @@ const commentSchema = {
     'creatorId': { 'type': 'string' },
     'comment': { 'type': 'string' }
   },
-  'required': ['chapterId', 'creatorId', 'comment'],
+  'required': ['creatorId', 'comment'],
 };
 
 module.exports = commentSchema;
