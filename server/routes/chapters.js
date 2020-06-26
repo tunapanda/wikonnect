@@ -104,7 +104,7 @@ router.get('/', permController.requireAuth, async ctx => {
     chapter = await Chapter.query().where(ctx.query).where({ status: 'published' }).eager('[comment(selectComment), flag(selectFlag)]');
     break;
   default:
-    chapter = await Chapter.query().where(ctx.query).eager('comment(selectComment)');
+    chapter = await Chapter.query().where(ctx.query).eager('[comment(selectComment), flag(selectFlag)]');
   }
 
   // const achievement = await Achievement.query().where('user_id', ctx.state.user.data.id);
