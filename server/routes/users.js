@@ -385,6 +385,13 @@ router.post('/:id/profile-image', async (ctx, next) => {
 
     await resizer.toFile(`${uploadDir}/${fileNameBase}.jpg`);
 
+
+    await User.query()
+      .findById(ctx.params.id)
+      .patch({
+        profile_uri: `${uploadPath}/${fileNameBase}.jpg`
+      });
+
     ctx.body = {
       host: ctx.host,
       path: `${uploadPath}/${fileNameBase}.jpg`

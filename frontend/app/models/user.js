@@ -15,6 +15,7 @@ export default class UserModel extends Model {
   @attr() lastName;
   @attr() aboutMe;
   @attr() profileUri;
+  @attr() inviteCode;
 
   @hasMany('group') groups;
   @hasMany('activity') activities;

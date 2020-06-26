@@ -9,6 +9,8 @@ export default class CommentSectionComponent extends Component {
   @service
   me
 
+  profileImage = "/images/profile-placeholder.gif"
+
 
   @service
   session;

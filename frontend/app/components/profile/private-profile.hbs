@@ -1,7 +1,7 @@
 <div class="profile">
   <div class="profile-head">
     {{#link-to "upload"}}
-      <img class="profile-picture" alt="" src="/images/profile-placeholder.gif">
+      <img class="profile-picture" alt="" src="{{this.me.user.profileUri}}">
 
     {{/link-to}}
     <h2 class="profile-name">{{name}}</h2>
