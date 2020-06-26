@@ -1,6 +1,5 @@
 <div id="mySidenav" class="sidenav">
   <button class="closebtn" {{action "closenav"}}>&times;</button>
-
   {{#if me.user.id}}
     {{#link-to "index" invokeAction=(action "closenav")  }}
       Home
@@ -20,6 +19,10 @@
 
     {{/link-to}}
     <a href="https://wikonnect.org">About</a>
+    <a
+      href="https://community.wikonnect.org/new-topic?title=[FEEDBACK] Title&body=Explain the feedback in detail&category=Site Feedback">
+      Feedback
+    </a>
 
 
   {{else}}

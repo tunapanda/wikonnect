@@ -19,6 +19,8 @@
     <p> {{model.description}}</p>
   </div>
 
+  <SocialShareLinks />
+
   <div class="text-center">
     {{#if (eq me.user.username "daph")}}
       {{#if (eq model.approved "true")}}

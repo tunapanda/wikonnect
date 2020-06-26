@@ -10,7 +10,7 @@ const s3 = require('../utils/s3Util');
 
 const Chapter = require('../models/chapter');
 const permController = require('../middleware/permController');
-const validateChapter = require('../middleware/validation/validateChapter');
+//const validateChapter = require('../middleware/validation/validateChapter');
 
 const slugGen = require('../utils/slugGen');
 
@@ -213,7 +213,8 @@ router.get('/:id', permController.requireAuth, async ctx => {
  *
  * @apiError {String} errors Bad Request.
  */
-router.post('/', permController.requireAuth, permController.grantAccess('createAny', 'path'), validateChapter, async ctx => {
+//router.post('/', permController.requireAuth, permController.grantAccess('createAny', 'path'), validateChapter, async ctx => {
+router.post('/', async ctx => {
   let newChapter = ctx.request.body.chapter;
 
   // slug generation automated
@@ -308,6 +309,7 @@ router.post('/:id/chapter-image', async (ctx, next) => {
   const fileNameBase = shortid.generate();
   const uploadPath = 'uploads/images/content/chapters';
   const uploadDir = path.resolve(__dirname, '../public/' + uploadPath);
+  console.log('dsfsd');
 
   // const sizes = [
   //   70,
@@ -333,6 +335,7 @@ router.post('/:id/chapter-image', async (ctx, next) => {
 
   files[0].pipe(resizer);
 
+  console.log('cccc');
 
   if (s3.config) {
 
@@ -345,6 +348,7 @@ router.post('/:id/chapter-image', async (ctx, next) => {
       Body: buffer, //image to be uploaded
     };
 
+    console.log('asd');
 
     try {
       //Upload image to AWS S3 bucket
@@ -359,6 +363,7 @@ router.post('/:id/chapter-image', async (ctx, next) => {
 
     catch (e) {
       console.log(e);
+      console.log('error above');
       ctx.throw(e.statusCode, null, { message: e.message });
     }
 
@@ -370,9 +375,9 @@ router.post('/:id/chapter-image', async (ctx, next) => {
     await Chapter.query()
       .findById(chapter_id)
       .patch({
-        imageUrl: uploadPath
+        image_url: `${uploadPath}/${fileNameBase}.jpg`
       });
-
+    console.log('db updated');
 
 
     ctx.body = {
@@ -398,7 +403,7 @@ router.post('/:id/upload', async ctx => {
   await Chapter.query()
     .findById(dirName)
     .patch({
-      content_uri: uploadPath
+      content_uri: '/' + uploadPath
     });
 
 

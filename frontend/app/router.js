@@ -95,7 +95,7 @@ Router.map(function () {
   this.route('reward', function () {
     this.route('moja');
   });
-
+  this.route('dashboard');
   this.route('admin', function () {
     this.route('accounts');
   });
