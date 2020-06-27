@@ -17,7 +17,8 @@ export default class AuthenticationSignupComponent extends Component {
 
   @action
   createUser(model) {
-    let fields = model.getProperties('username', 'email', 'password');
+    let fields = model.getProperties('username', 'email', 'password', 'inviteCode');
+
 
     this.me.register(fields).then(() => this.me.authenticate(model.get('username'), model.get('password')).then(() => this.success()), err => {
       if (err && err.errors) {
