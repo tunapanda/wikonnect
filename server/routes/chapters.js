@@ -95,24 +95,24 @@ router.get('/', permController.requireAuth, async ctx => {
 
   let chapter;
   switch (stateUserId) {
-    case 'anonymous':
-      if (ctx.query.q) {
-        chapter = await Chapter.query()
-          .where('name', 'ILIKE', `%${ctx.query.q}%`)
-          .orWhere('description', 'ILIKE', `%${ctx.query.q}%`)
-          .where({ status: 'published' }).eager('comment(selectComment)');
-      }
-      else {
-        chapter = await Chapter.query().where(ctx.query).where({ status: 'published' }).eager('comment(selectComment)');
-      }
-      ctx.status = 401;
-      ctx.body = { message: 'un published chapter' };
-      break;
-    case 'basic':
+  case 'anonymous':
+    if (ctx.query.q) {
+      chapter = await Chapter.query()
+        .where('name', 'ILIKE', `%${ctx.query.q}%`)
+        .orWhere('description', 'ILIKE', `%${ctx.query.q}%`)
+        .where({ status: 'published' }).eager('comment(selectComment)');
+    }
+    else {
       chapter = await Chapter.query().where(ctx.query).where({ status: 'published' }).eager('comment(selectComment)');
-      break;
-    default:
-      chapter = await Chapter.query().where(ctx.query).eager('comment(selectComment)');
+    }
+    ctx.status = 401;
+    ctx.body = { message: 'un published chapter' };
+    break;
+  case 'basic':
+    chapter = await Chapter.query().where(ctx.query).where({ status: 'published' }).eager('comment(selectComment)');
+    break;
+  default:
+    chapter = await Chapter.query().where(ctx.query).eager('comment(selectComment)');
   }
 
 
@@ -160,16 +160,16 @@ router.get('/:id', permController.requireAuth, async ctx => {
 
   let chapter;
   switch (stateUserRole) {
-    case 'anonymous':
-      chapter = await Chapter.query().where({ id: ctx.params.id, status: 'published' }).eager('comment(selectComment)');
-      ctx.status = 401;
-      ctx.body = { message: 'un published chapter' };
-      break;
-    case 'basic':
-      chapter = await Chapter.query().where({ id: ctx.params.id, status: 'published' }).eager('comment(selectComment)');
-      break;
-    default:
-      chapter = await Chapter.query().where({ id: ctx.params.id });
+  case 'anonymous':
+    chapter = await Chapter.query().where({ id: ctx.params.id, status: 'published' }).eager('comment(selectComment)');
+    ctx.status = 401;
+    ctx.body = { message: 'un published chapter' };
+    break;
+  case 'basic':
+    chapter = await Chapter.query().where({ id: ctx.params.id, status: 'published' }).eager('comment(selectComment)');
+    break;
+  default:
+    chapter = await Chapter.query().where({ id: ctx.params.id });
   }
 
 
