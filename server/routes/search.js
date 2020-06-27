@@ -54,6 +54,9 @@ router.get('/', async ctx => {
 
     const grouped = _.groupBy(elasticResponse.body.hits.hits, hit => hit._source.model);
 
+    if (grouped.length == undefined) {
+      console.log(ctx.query.q);
+    }
     // const results = Object.keys(grouped).map(async modelName => ({ [modelName]: await models[modelName].query().hydrateSearch(grouped[modelName]) }));
 
     ctx.body = grouped;

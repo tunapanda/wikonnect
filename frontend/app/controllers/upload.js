@@ -1,6 +1,6 @@
 import Controller from '@ember/controller';
 import { inject } from '@ember/service';
-import { action } from '@ember/object';
+import { computed, action } from '@ember/object';
 //import { tracked } from '@glimmer/tracking';
 import Uploader from '../utils/uploader';
 
@@ -17,12 +17,12 @@ export default class UploadController extends Controller {
   queryParams = ['signup'];
   signup = false;
 
-  profileImage = "/images/profile-placeholder.gif"
   complete = false;
 
-
-
-
+  @computed('me.user.profileUri')
+  get profileImage() {
+    return this.me.user.profileUri;
+  }
 
   @action
   async uploadPic(files) {
@@ -40,14 +40,14 @@ export default class UploadController extends Controller {
     console.log(host);
 
     const uploadRes = await uploader.startUpload([host, 'users', this.me.user.id, 'profile-image'].join('/'));
-    console.log("uploadRes");
-    console.log(uploadRes.path);
-    console.log("http://localhost:3000/" + uploadRes.path);
 
     this.set("profileImage", "http://localhost:3000/" + uploadRes.path);
     this.set("complete", true);
 
+    if (this.complete === true) {
+      this.transitionToRoute('profile');
+    }
 
     //upload
   }
-} 
+}

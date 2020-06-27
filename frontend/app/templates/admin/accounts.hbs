@@ -1,0 +1,34 @@
+<div id="home">
+
+  {{#if this.session.isAuthenticated}}
+  <div class="heading bg-orange">
+    <div class="row">
+      <div class="col">
+        <h2>Analytics</h2>      </div>
+    </div>
+  </div>
+  <div class="container">
+    <div class="row">
+      <div class="col">
+        <div class="card">
+          <div class="card-body">
+            <Admin::Accounts @account={{this.accountMetric.total}} />
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <div class="card">
+          <div class="card-body">
+            {{!-- <Admin::Accounts @data={{model}} /> --}}
+            {{ember-chart type="line" data=this.accountMetric.lineData width=600 height=500}}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  {{else}}
+  <Warning @message="You do not have permission to view this page" />
+  {{/if}}
+</div>
