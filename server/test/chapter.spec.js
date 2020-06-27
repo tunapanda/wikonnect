@@ -167,7 +167,7 @@ describe('CHAPTER ROUTE', () => {
         res.should.be.json;
         res.body.should.be.a('object');
         res.body.should.have.property('errors');
-        res.body.errors[0].should.eql('Bad Request');
+        res.body.errors[0].should.eql('creatorId: is a required property');
         done();
       });
   });
