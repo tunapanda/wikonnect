@@ -14,55 +14,35 @@ Router.map(function () {
   this.route('course', function () {
     this.route('index', {
       path: '/:course_slug'
-    }
-
-    );
+    });
 
     this.route('module', function () {
       this.route('index', {
         path: '/:module_slug'
-      }
-
-      );
+      });
 
       this.route('lesson', function () {
         this.route('index', {
           path: '/:lesson_slug'
-        }
-
-        );
+        });
 
         this.route('chapter', function () {
           this.route('index', {
             path: '/:chapter_slug'
-          }
-
-          );
-        }
-
-        );
-      }
-
-      );
+          });
+        });
+      });
 
       this.route('edit', {
         path: '/edit/:module_slug'
-      }
-
-      );
-    }
-
-    );
+      });
+    });
     this.route('create');
 
     this.route('edit', {
       path: '/edit/:course_slug'
-    }
-
-    );
-  }
-
-  );
+    });
+  });
 
   this.route('profile');
   this.route('search');
@@ -74,64 +54,49 @@ Router.map(function () {
 
       this.route('edit', {
         path: '/:lesson_slug'
-      }
-
-      );
-    }
-
-    );
+      });
+    });
 
     this.route('course', function () {
       this.route('create');
       this.route('edit', {
         path: '/:course_slug'
-      }
-
-      );
+      });
     });
 
     this.route('module', function () {
       this.route('edit', {
         path: '/:module_slug'
-      }
-
-      );
+      });
       this.route('create');
     });
-  }
-
-  );
+  });
 
   this.route('module', function () {
     this.route('create');
     this.route('index', {
       path: '/:module_slug'
-    }
-
-    );
-  }
-
-  );
+    });
+  });
   this.route('courses');
   this.route('cms-desktop');
   this.route('lesson', function () {
     this.route('index', {
       path: '/:lesson_slug'
-    }
-
-    );
+    });
   });
   this.route('chapter', function () {
     this.route('index', {
       path: '/:chapter_slug'
-    }
-
-    );
+    });
   });
   this.route('upload');
-  this.route('redeem', function(){
+  this.route('manage');
+  this.route('reward', function () {
     this.route('moja');
   });
-}
 
-);
+  this.route('admin', function () {
+    this.route('accounts');
+  });
+});

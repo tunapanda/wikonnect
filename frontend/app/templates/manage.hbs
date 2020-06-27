@@ -1,0 +1,25 @@
+{{#if (eq me.user.username "daph")}}
+  <ul class="list-group">
+    {{#each chapters as |item|}}
+      {{#link-to "chapter" item.id }}
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+          {{item.name}}
+          {{#if (eq item.approved "true")}}
+            <span class="badge badge-success badge-pill"> Approved</span>
+
+          {{else}}
+            <span class="badge badge-warning badge-pill">Not Approved</span>
+
+          {{/if}}
+
+        </li>
+      {{/link-to}}
+
+
+    {{/each}}
+  </ul>
+{{else}}
+
+  <Warning @message="You do not have permission to view this page" />
+
+{{/if}}

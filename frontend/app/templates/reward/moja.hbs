@@ -1,0 +1,26 @@
+<div class="home">
+  {{#if this.me.isAuthenticated }}
+  <div id="home" class="text-center">
+    <div class="heading bg-orange">
+
+      <p>Points can only be redeemed once</p>
+    </div>
+  </div>
+
+  <div class="container pt-4">
+    <div class="row">
+      <div class="col">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Redeem Onboarding points here</h5>
+            <iframe id="moja-hazina" src="https://hazina.brck.io?quest=a1246bd6-9d0f-4901-9116-ef86621e027d" name="moja-hazina"
+              sandbox="allow-forms allow-modals allow-scripts allow-popups" loading="eager"></iframe>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  {{else}}
+  <Warning @message="You must be logged in to view this account to view this page" />
+  {{/if}}
+</div>

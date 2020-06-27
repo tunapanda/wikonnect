@@ -5,6 +5,7 @@ const jsonwebtoken = require('jsonwebtoken');
 const User = require('../models/user');
 const sendMAil = require('../utils/sendMail');
 const { secret } = require('../middleware/jwt');
+const { lastSeen } = require('../utils/timestamp');
 const redisClient = require('../utils/redisConfig');
 const UserVerification = require('../models/user_verification');
 const validateAuthRoutes = require('../middleware/validation/validateAuthRoutes');
@@ -57,6 +58,7 @@ router.post('/', validateAuthRoutes.validateUserLogin, async ctx => {
 
   if (await bcrypt.compare(ctx.request.body.password, hashPassword)) {
     // eslint-disable-next-line require-atomic-updates
+    await lastSeen(user.id);
     ctx.body = {
       token: jsonwebtoken.sign({
         data: userInfoWithoutPassword,

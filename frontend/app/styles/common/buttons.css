@@ -1,1 +1,32 @@
-/* No CSS *//*# sourceMappingURL=buttons.css.map */
+.voting button {
+  border-block-start-width: 0.25rem;
+  border-radius: 0.25rem;
+  color: #fff;
+  text-align: center;
+  border: 0;
+  margin-bottom: 30px;
+}
+
+.voting .votes {
+  display: inline-block;
+  margin-right: 20px;
+}
+
+.voting .upvote {
+  background-color: #32a583;
+  border-color: #32a583;
+}
+
+.voting .upvote:hover {
+  background: #267e64;
+}
+
+.voting .downvote {
+  background-color: #ff6b6b;
+  border-color: #ff6b6b;
+}
+
+.voting .downvote:hover {
+  background: #ff3838;
+}
+/*# sourceMappingURL=buttons.css.map */

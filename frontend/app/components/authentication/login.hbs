@@ -1,13 +1,12 @@
 <div class="form-title">Log In</div>
 
-<BsForm @class="form" @formLayout="vertical" @model={{registeredUser}} @onSubmit={{action "login"}} as
-  |form|>
+<BsForm @class="form" @formLayout="vertical" @model={{registeredUser}} @onSubmit={{action "login"}} as |form|>
   {{#each registeredUser.errors as |err| }}
-  {{#if (eq err.key 'errors')}}
-  <BsAlert @type="danger" @fade={{true}}>
-    {{err.validation}}
-  </BsAlert>
-  {{/if}}
+    {{#if (eq err.key "errors")}}
+      <BsAlert @type="danger" @fade={{true}}>
+        {{err.validation}}
+      </BsAlert>
+    {{/if}}
   {{/each}}
 
   <div class="login-form-fields">
