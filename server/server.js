@@ -57,6 +57,8 @@ router.use(jwt.authenticate, require('./routes/enrollments'));
 
 router.use(jwt.authenticate, require('./routes/achievements'));
 
+router.use(jwt.authenticate, require('./routes/flags'));
+
 router.use(jwt.authenticate, require('./routes/dashboard'));
 
 router.use(jwt.authenticate, require('./routes/admin'));
