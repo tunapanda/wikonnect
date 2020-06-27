@@ -72,14 +72,8 @@ export default class SearchBarComponent extends Component {
    * @param {string} q
    */
   @task(function* (q) {
-    try {
-      yield timeout(600);
-      return this.store.query('chapter', { 'q': q });
-
-    } catch (e) {
-      throw e;
-    }
-
+    yield timeout(600);
+    return this.store.query('chapter', { 'q': q });
   }) query;
 
 
