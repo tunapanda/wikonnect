@@ -95,17 +95,26 @@ router.get('/', permController.requireAuth, async ctx => {
 
   let chapter;
   switch (stateUserId) {
-  case 'anonymous':
-    chapter = await Chapter.query().where(ctx.query).where({ status: 'published' }).eager('comment(selectComment)');
-    ctx.status = 401;
-    ctx.body = { message: 'un published chapter' };
-    break;
-  case 'basic':
-    chapter = await Chapter.query().where(ctx.query).where({ status: 'published' }).eager('comment(selectComment)');
-    break;
-  default:
-    chapter = await Chapter.query().where(ctx.query).eager('comment(selectComment)');
+    case 'anonymous':
+      if (ctx.query.q) {
+        chapter = await Chapter.query()
+          .where('name', 'ILIKE', `%${ctx.query.q}%`)
+          .orWhere('description', 'ILIKE', `%${ctx.query.q}%`)
+          .where({ status: 'published' }).eager('comment(selectComment)');
+      }
+      else {
+        chapter = await Chapter.query().where(ctx.query).where({ status: 'published' }).eager('comment(selectComment)');
+      }
+      ctx.status = 401;
+      ctx.body = { message: 'un published chapter' };
+      break;
+    case 'basic':
+      chapter = await Chapter.query().where(ctx.query).where({ status: 'published' }).eager('comment(selectComment)');
+      break;
+    default:
+      chapter = await Chapter.query().where(ctx.query).eager('comment(selectComment)');
   }
+
 
   // const achievement = await Achievement.query().where('user_id', ctx.state.user.data.id);
   // await returnChapterStatus(chapter, achievement);
@@ -151,16 +160,16 @@ router.get('/:id', permController.requireAuth, async ctx => {
 
   let chapter;
   switch (stateUserRole) {
-  case 'anonymous':
-    chapter = await Chapter.query().where({ id: ctx.params.id, status: 'published' }).eager('comment(selectComment)');
-    ctx.status = 401;
-    ctx.body = { message: 'un published chapter' };
-    break;
-  case 'basic':
-    chapter = await Chapter.query().where({ id: ctx.params.id, status: 'published' }).eager('comment(selectComment)');
-    break;
-  default:
-    chapter = await Chapter.query().where({ id: ctx.params.id });
+    case 'anonymous':
+      chapter = await Chapter.query().where({ id: ctx.params.id, status: 'published' }).eager('comment(selectComment)');
+      ctx.status = 401;
+      ctx.body = { message: 'un published chapter' };
+      break;
+    case 'basic':
+      chapter = await Chapter.query().where({ id: ctx.params.id, status: 'published' }).eager('comment(selectComment)');
+      break;
+    default:
+      chapter = await Chapter.query().where({ id: ctx.params.id });
   }
 
 
@@ -322,7 +331,7 @@ router.post('/:id/chapter-image', async (ctx, next) => {
   //   const resize = sharp()
   //     .resize(size, size)
   //     .jpeg({ quality: 70 })
-  //     .toFile(`public/uploads/images/profile/${fileNameBase}_${size}.jpg`);
+  //     .toFile(`public / uploads / images / profile / ${ fileNameBase }_${ size }.jpg`);
   //   files[0].pipe(resize);
   //   return resize;
   // }));
@@ -341,7 +350,7 @@ router.post('/:id/chapter-image', async (ctx, next) => {
 
     const params = {
       Bucket: s3.config.bucket, // pass your bucket name
-      Key: `uploads/profiles/${fileNameBase}.jpg`, // key for saving filename
+      Key: `uploads / profiles / ${fileNameBase}.jpg`, // key for saving filename
       Body: buffer, //image to be uploaded
     };
 
@@ -352,7 +361,7 @@ router.post('/:id/chapter-image', async (ctx, next) => {
 
       console.log('Uploaded in:', uploaded.Location);
       ctx.body = {
-        host: `${params.Bucket}.s3.amazonaws.com/uploads/chapters`,
+        host: `${params.Bucket}.s3.amazonaws.com / uploads / chapters`,
         path: `${fileNameBase}.jpg`
       };
     }
@@ -364,7 +373,7 @@ router.post('/:id/chapter-image', async (ctx, next) => {
 
   } else {
 
-    await resizer.toFile(`${uploadDir}/${fileNameBase}.jpg`);
+    await resizer.toFile(`${uploadDir} / ${fileNameBase}.jpg`);
 
 
     await Chapter.query()
@@ -377,14 +386,14 @@ router.post('/:id/chapter-image', async (ctx, next) => {
 
     ctx.body = {
       host: ctx.host,
-      path: `${uploadPath}/${fileNameBase}.jpg`
+      path: `${uploadPath} / ${fileNameBase}.jpg`
     };
   }
 });
 
 router.post('/:id/upload', async ctx => {
   const dirName = ctx.params.id;
-  const uploadPath = `uploads/h5p/${dirName}`;
+  const uploadPath = `uploads / h5p / ${dirName}`;
   const uploadDir = path.resolve(__dirname, '../public/' + uploadPath);
 
   await busboy(ctx.req, {
