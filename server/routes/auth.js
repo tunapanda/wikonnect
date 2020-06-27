@@ -5,6 +5,7 @@ const jsonwebtoken = require('jsonwebtoken');
 const User = require('../models/user');
 const sendMAil = require('../utils/sendMail');
 const { secret } = require('../middleware/jwt');
+const { lastSeen } = require('../utils/timestamp');
 const redisClient = require('../utils/redisConfig');
 const UserVerification = require('../models/user_verification');
 const validateAuthRoutes = require('../middleware/validation/validateAuthRoutes');
@@ -34,8 +35,18 @@ const router = new Router({
  * @apiError {String} errors Bad Request.
  */
 router.post('/', validateAuthRoutes.validateUserLogin, async ctx => {
-  let user = await User.query().where('username', ctx.request.body.username);
-  if (!user.length) ctx.throw(404, null, 'wrong_email_or_password');
+  const username = ctx.request.body.username.toLowerCase();
+
+  let user = await User.query().where('username', username);
+  if (!user.length) {
+    ctx.throw(404, null, {
+      errors: [{
+        'name': 'Wrong username or password',
+        'constraint': 'errors',
+      }]
+    });
+  }
+
 
   let { hash: hashPassword, ...userInfoWithoutPassword } = user[0];
   user = user[0];
@@ -47,6 +58,7 @@ router.post('/', validateAuthRoutes.validateUserLogin, async ctx => {
 
   if (await bcrypt.compare(ctx.request.body.password, hashPassword)) {
     // eslint-disable-next-line require-atomic-updates
+    await lastSeen(user.id);
     ctx.body = {
       token: jsonwebtoken.sign({
         data: userInfoWithoutPassword,
@@ -55,7 +67,12 @@ router.post('/', validateAuthRoutes.validateUserLogin, async ctx => {
     };
   } else {
     ctx.log.error('Wrong email or password from %s for %s', ctx.request.ip, ctx.path);
-    ctx.throw(406, null, 'email_or_password_is_wrong');
+    ctx.throw(404, null, {
+      errors: [{
+        'name': 'Wrong username or password',
+        'constraint': 'errors',
+      }]
+    });
   }
 });
 

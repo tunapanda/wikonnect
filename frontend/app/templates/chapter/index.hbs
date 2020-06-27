@@ -19,4 +19,21 @@
     <p> {{model.description}}</p>
   </div>
 
+  <div class="text-center">
+    {{#if (eq me.user.username "daph")}}
+      {{#if (eq model.approved "true")}}
+
+        <button {{on "click" (fn this.toggleApproval model.id "true")}} type="button"
+          class="btn form-controll btn-danger">
+          Un Approve This
+        </button>
+      {{else}}
+        <button {{on "click" (fn this.toggleApproval model.id "false")}} type="button"
+          class="btn form-controll btn-success">
+          Approve This
+        </button>
+      {{/if}}
+
+    {{/if}}
+  </div>
 </div>

@@ -1,52 +1,48 @@
 <div id="mySidenav" class="sidenav">
   <button class="closebtn" {{action "closenav"}}>&times;</button>
-  {{!-- {{#link-to class="closebtn" invokeAction=(action "closenav") }}
-    &times;
-  {{/link-to}} --}}
+
   {{#if me.user.id}}
-  {{#link-to "index" invokeAction=(action "closenav")  }}
-  Home
-  {{/link-to}}
-  <a href="https://teach.wikonnect.org/api/auth?token={{token}}&user={{me.user.username}}">Teach</a>
-  {{!-- 
-  {{#link-to "courses" invokeAction=(action "closenav")  }}
-  Explore Courses
+    {{#link-to "index" invokeAction=(action "closenav")  }}
+      Home
+    {{/link-to}}
+    <a href="https://teach.wikonnect.org/api/auth?token={{token}}&user={{me.user.username}}">
+      Teach
+    </a>
 
-  {{/link-to}} --}}
-  {{#link-to "profile" invokeAction=(action "closenav")  }}
-  Profile
+    {{#link-to "profile" invokeAction=(action "closenav")  }}
+      Profile
 
-  {{/link-to}}
-  <a href="#" {{ action "logout" }}>Logout</a>
-  {{#link-to "profile"  (query-params view="Settings")
+    {{/link-to}}
+    <a href="#" {{ action "logout" }}>Logout</a>
+    {{#link-to "profile"  (query-params view="Settings")
   invokeAction=(action "closenav")  }}
-  Settings
+      Settings
 
-  {{/link-to}}
-  <a href="https://wikonnect.org">About</a>
+    {{/link-to}}
+    <a href="https://wikonnect.org">About</a>
 
 
   {{else}}
 
 
-  {{#link-to "home" invokeAction=(action "closenav")  }}
-  Home
-  {{/link-to}}
-  {{!-- {{#link-to "courses" invokeAction=(action "closenav")  }}
+    {{#link-to "home" invokeAction=(action "closenav")  }}
+      Home
+    {{/link-to}}
+    {{!-- {{#link-to "courses" invokeAction=(action "closenav")  }}
   Explore Courses
 
   {{/link-to}} --}}
-  {{#link-to "login" invokeAction=(action "closenav")  }}
-  Login
+    {{#link-to "login" invokeAction=(action "closenav")  }}
+      Login
 
-  {{/link-to}}
-  {{#link-to "signup" invokeAction=(action "closenav")  }}
-  Signup
+    {{/link-to}}
+    {{#link-to "signup" invokeAction=(action "closenav")  }}
+      Signup
 
-  {{/link-to}}
+    {{/link-to}}
 
 
-  <a href="https://wikonnect.org">About</a>
+    <a href="https://wikonnect.org">About</a>
 
 
 
