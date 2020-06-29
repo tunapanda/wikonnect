@@ -34,7 +34,7 @@
       @placeholder="Repeat Password" @property="passwordConfirmation" />
 
 
-    {{#form.element label="Invite Code" id="invite_code" class="inputs" placeholder="Invite Code" property="invite_code" as |el|}}
+    {{#form.element label="Invite Code" id="invite_code" class="inputs" placeholder="Invite Code" property="inviteCode" as |el|}}
       <div class="input-group">
         <input value={{inviteCode}} class={{el.class}} placeholder="Invite Code"
           oninput={{action (mut el.value) value="target.value"}} onchange={{action (mut el.value) value="target.value"}}

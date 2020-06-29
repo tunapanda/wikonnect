@@ -1,0 +1,20 @@
+<div class="form-title">Reset Password</div>
+
+<BsForm @class="form" @formLayout="vertical" as |form|>
+  {{#each registeredUser.errors as |err| }}
+  {{#if (eq err.key "errors")}}
+  <BsAlert @type="danger" @fade={{true}}>
+    {{err.validation}}
+  </BsAlert>
+  {{/if}}
+  {{/each}}
+
+  <div class="login-form-fields">
+    <form.element class="inputs" id="email" @controlType="email"
+      @label=" Enter your email address to reset your password" @placeholder="Email address" @property="email"
+      @autocomplete="email" />
+
+  </div>
+
+  <BsButton class="submit" @type="primary" @defaultText="Reset Password" @buttonType="submit" />
+</BsForm>

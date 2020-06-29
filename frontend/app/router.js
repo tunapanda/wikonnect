@@ -92,11 +92,13 @@ Router.map(function () {
   });
   this.route('upload');
   this.route('manage');
-  this.route('redeem', function () {
+  this.route('reward', function () {
     this.route('moja');
   });
 
   this.route('admin', function () {
     this.route('accounts');
   });
+  this.route('email-validation');
+  this.route('password-reset');
 });
