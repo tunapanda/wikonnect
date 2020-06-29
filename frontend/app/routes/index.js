@@ -11,8 +11,8 @@ export default class IndexRoute extends Route {
     headData;
 
     async afterModel() {
-        set(this, 'headData.title', 'Wikonnect - Home');
-        set(this, 'headData.theme', '#534897');
+      set(this, 'headData.title', 'Wikonnect - Home');
+      set(this, 'headData.theme', '#534897');
     }
 
 }
