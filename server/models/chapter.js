@@ -29,6 +29,14 @@ class Chapter extends Model {
           from: 'chapters.id',
           to: 'comments.chapterId'
         }
+      },
+      flag: {
+        relation: Model.HasManyRelation,
+        modelClass: __dirname + '/flag',
+        join: {
+          from: 'chapters.id',
+          to: 'flags.chapterId'
+        }
       }
     };
   }
