@@ -6,9 +6,8 @@ exports.up = knex =>
     .createTable('rating', table => {
       table.text('id').primary().notNullable().defaultTo(knex.raw('next_id()'));
       table.text('chapter_id');
-      table.integer('count');
-      table.integer('positive');
-      table.integer('negative');
+      table.integer('rating');
+      table.integer('voters');
       table.jsonb('metadata');
       table.timestamps();
     });
