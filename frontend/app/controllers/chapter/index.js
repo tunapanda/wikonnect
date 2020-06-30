@@ -1,11 +1,64 @@
 import Controller from '@ember/controller';
-import { inject } from '@ember/service';
 import { action } from '@ember/object';
+
+import { inject } from '@ember/service';
+
 
 
 export default class ChapterIndexController extends Controller {
+
+
+
+
   @inject
   me
+
+
+
+  flaggingModal = false
+  ratingModal = false
+
+  @action
+  ratingSubmit() {
+
+  }
+
+
+  @action
+  reportSubmit() {
+
+  }
+
+  @action
+  toggleFlaggingModal() {
+    this.toggleProperty('flaggingModal');
+  }
+
+
+  @action
+  toggleRatingModal() {
+    this.toggleProperty('ratingModal');
+  }
+  get flagModel() {
+    return this.store.createRecord('flag', {
+      creator: this.me.get('user')
+    });
+  }
+
+  @action
+  async saveFlag(model) {
+
+
+    let slug = this.target.currentRoute.params.chapter_slug;
+
+    // console.log(this.params['chapter_slug'])
+    let chap = await this.store.findRecord('chapter', slug);
+    model.setProperties({
+      chapter: chap,
+    });
+    model.save();
+
+  }
 
   @action
   toggleApproval(chapter_id, a) {
