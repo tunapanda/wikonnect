@@ -92,7 +92,7 @@ Router.map(function () {
   });
   this.route('upload');
   this.route('manage');
-  this.route('reward', function () {
+  this.route('redeem', function () {
     this.route('moja');
   });
 
