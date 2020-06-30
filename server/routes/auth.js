@@ -4,7 +4,9 @@ const jsonwebtoken = require('jsonwebtoken');
 
 const User = require('../models/user');
 const sendMAil = require('../utils/sendMail');
+const log = require('../utils/logger');
 const { secret } = require('../middleware/jwt');
+const { lastSeen } = require('../utils/timestamp');
 const redisClient = require('../utils/redisConfig');
 const UserVerification = require('../models/user_verification');
 const validateAuthRoutes = require('../middleware/validation/validateAuthRoutes');
@@ -35,8 +37,17 @@ const router = new Router({
  */
 router.post('/', validateAuthRoutes.validateUserLogin, async ctx => {
   const username = ctx.request.body.username.toLowerCase();
+
   let user = await User.query().where('username', username);
-  if (!user.length) ctx.throw(404, null, { errors: ['wrong_email_or_password'] });
+  if (!user.length) {
+    ctx.throw(404, null, {
+      errors: [{
+        'name': 'Wrong username or password',
+        'constraint': 'errors',
+      }]
+    });
+  }
+
 
   let { hash: hashPassword, ...userInfoWithoutPassword } = user[0];
   user = user[0];
@@ -48,6 +59,7 @@ router.post('/', validateAuthRoutes.validateUserLogin, async ctx => {
 
   if (await bcrypt.compare(ctx.request.body.password, hashPassword)) {
     // eslint-disable-next-line require-atomic-updates
+    await lastSeen(user.id);
     ctx.body = {
       token: jsonwebtoken.sign({
         data: userInfoWithoutPassword,
@@ -86,7 +98,7 @@ router.get('/reset/:mail', async ctx => {
   confirmEmail = confirmEmail[0];
 
   if (confirmEmail == undefined) {
-    console.log('criminal', { error: { errors: ['User email not found'] } });
+    log.info('criminal', { error: { errors: ['User email not found'] } });
     throw new Error({ error: { errors: ['User email not found'] } });
   }
 

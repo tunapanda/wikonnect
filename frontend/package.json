@@ -36,9 +36,11 @@
     "ember-cli": "~3.14.0",
     "ember-cli-app-version": "^3.2.0",
     "ember-cli-babel": "^7.11.1",
+    "ember-cli-chart": "^3.6.0",
     "ember-cli-clipboard": "^0.14.0",
     "ember-cli-code-coverage": "^0.4.2",
     "ember-cli-dependency-checker": "^3.1.0",
+    "ember-cli-head": "^1.0.0",
     "ember-cli-htmlbars": "^4.0.5",
     "ember-cli-inject-live-reload": "^2.0.1",
     "ember-cli-sass": "^10.0.1",
@@ -76,10 +78,12 @@
   },
   "dependencies": {
     "@types/ember": "^3.1.1",
+    "chart.js": "^2.9.3",
     "ember-drag-drop": "^0.7.0",
     "ember-drag-drop-polyfill": "^1.0.0",
     "ember-line-clamp": "^1.0.1",
     "ember-power-select": "3.0.4",
-    "ember-truth-helpers": "^2.1.0"
+    "ember-truth-helpers": "^2.1.0",
+    "moment": "^2.27.0"
   }
 }

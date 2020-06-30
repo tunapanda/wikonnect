@@ -1,0 +1,16 @@
+$breakpoint-tablet: 768px;
+@media (min-width: $breakpoint-tablet) {
+  .card {
+    width: 29rem;
+  }
+  iframe {
+    width: 26rem;
+    height: 12rem;
+  }
+}
+
+iframe {
+    height: 12rem;
+    border-width: 0px;
+  }
+

@@ -4,3 +4,5 @@ config/db.js
 email.js
 examples
 coverage/*
+cypress/videos
+cypress/screenshots

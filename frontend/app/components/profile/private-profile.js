@@ -28,6 +28,11 @@ export default class ProfilePrivateProfileComponent extends Component {
     }
   }
 
+  @computed('me.user.profileUri')
+  get profileUri() {
+    return this.me.user.profileUri;
+  }
+
   // @computed('me.user.{firstName,lastName}')
   // @get achievements(){
 
