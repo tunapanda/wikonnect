@@ -9,6 +9,7 @@ const s3 = require('../utils/s3Util');
 
 
 const Chapter = require('../models/chapter');
+const Achievement = require('../models/achievement');
 const permController = require('../middleware/permController');
 const validateChapter = require('../middleware/validation/validateChapter');
 
@@ -45,12 +46,12 @@ const router = new Router({
 async function returnType(parent) {
   if (parent.length == undefined) {
     parent.comment.forEach(comment => {
-      return comment.type = 'comments';
+      return comment.type = 'comment';
     });
   } else {
     parent.forEach(mod => {
       mod.comment.forEach(comment => {
-        return comment.type = 'comments';
+        return comment.type = 'comment';
       });
     });
   }
@@ -107,8 +108,6 @@ router.get('/', permController.requireAuth, async ctx => {
     chapter = await Chapter.query().where(ctx.query).eager('[comment(selectComment), flag(selectFlag)]');
   }
 
-  // const achievement = await Achievement.query().where('user_id', ctx.state.user.data.id);
-  // await returnChapterStatus(chapter, achievement);
   await returnType(chapter);
 
   ctx.status = 200;
@@ -152,12 +151,12 @@ router.get('/:id', permController.requireAuth, async ctx => {
   let chapter;
   switch (stateUserRole) {
   case 'anonymous':
-    chapter = await Chapter.query().where({ id: ctx.params.id, status: 'published' }).eager('comment(selectComment)');
+      chapter = await Chapter.query().where({ id: ctx.params.id, status: 'published' }).eager('[comment(selectComment), achievement(selectAchievement)]');
     ctx.status = 401;
     ctx.body = { message: 'un published chapter' };
     break;
   case 'basic':
-    chapter = await Chapter.query().where({ id: ctx.params.id, status: 'published' }).eager('comment(selectComment)');
+      chapter = await Chapter.query().where({ id: ctx.params.id, status: 'published' }).eager('[comment(selectComment), achievement(selectAchievement)]');
     break;
   default:
     chapter = await Chapter.query().where({ id: ctx.params.id });
@@ -165,9 +164,7 @@ router.get('/:id', permController.requireAuth, async ctx => {
 
 
   ctx.assert(chapter, 404, 'no lesson by that ID');
-
-  // const achievement = await Achievement.query().where('user_id', ctx.state.user.data.id);
-  // returnChapterStatus(chapter, achievement);
+  await returnType(chapter);
 
   ctx.status = 200;
   ctx.body = { chapter };
