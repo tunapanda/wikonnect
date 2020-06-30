@@ -75,7 +75,16 @@ router.get('/', permController.requireAuth, async ctx => {
 
   let chapter;
   switch (stateUserId) {
-    case 'anonymous': chapter = await Chapter.query().where(ctx.query).where({ status: 'published', approved: 'true' }).eager('comment(selectComment)'); ctx.status = 401; ctx.body = { message: 'un published chapter' }; break; case 'basic': chapter = await Chapter.query().where(ctx.query).where({ status: 'published', approved: 'true' }).eager('comment(selectComment)'); break; default: chapter = await Chapter.query().where(ctx.query).eager('comment(selectComment)');
+    case 'anonymous':
+      chapter = await Chapter.query().where(ctx.query).where({ status: 'published' }).eager('comment(selectComment)');
+      ctx.status = 401;
+      ctx.body = { message: 'un published chapter' };
+      break;
+    case 'basic':
+      chapter = await Chapter.query().where(ctx.query).where({ status: 'published' }).eager('[comment(selectComment), flag(selectFlag)]');
+      break;
+    default:
+      chapter = await Chapter.query().where(ctx.query).eager('[comment(selectComment), flag(selectFlag)]');
   }
 
   // const achievement = await Achievement.query().where('user_id', ctx.state.user.data.id);
