@@ -4,7 +4,12 @@
 
   <div class="text-center">
     <br>
-    <img class="rounded-circle" width="300px" alt="" src={{profileImage}}>
+    {{#if this.me.user.profileUri}}
+      <img class="rounded-circle" width="300px" alt="" src={{this.me.user.profileUri}}>
+    {{else}}
+      <img class="rounded-circle" width="300px" alt="" src={{profileImage}}>
+
+    {{/if}}
 
     <br>
 

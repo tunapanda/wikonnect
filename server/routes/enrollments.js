@@ -3,6 +3,8 @@ const User = require('../models/user');
 const Enrollments = require('../models/enrollment');
 const { requireAuth } = require('../middleware/permController');
 
+const log = require('../utils/logger');
+
 const router = new Router({
   prefix: '/enrollments'
 });
@@ -22,7 +24,7 @@ async function enrolledCoursesType(parent) {
       });
     }
   } catch (e) {
-    console.log({ errors: ['No enrolled courses type'] });
+    log.error({ errors: ['No enrolled courses type'] });
   }
 }
 
