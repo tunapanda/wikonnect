@@ -6827,6 +6827,14 @@ ember-source@~3.14.1:
     semver "^6.1.1"
     silent-error "^1.1.1"
 
+ember-star-rating@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/ember-star-rating/-/ember-star-rating-3.0.0.tgz#ec5f426d0b0aa8b4506059c98cbfd20d47e4c10b"
+  integrity sha512-ydde+PiRmxl+FESYodHimRnmNM7ONRsA8VkIrhSK2hWx/NSBw2tJ0oG7NFUkm8e+HnGtI0HfV5GpLN5gRwC7yw==
+  dependencies:
+    ember-cli-babel "^7.11.1"
+    ember-cli-htmlbars "^4.0.0"
+
 ember-svg-jar@^2.2.3:
   version "2.2.3"
   resolved "https://registry.yarnpkg.com/ember-svg-jar/-/ember-svg-jar-2.2.3.tgz#632f8d6a999ceb1c815a135fbc2bd681b856330b"

@@ -21,6 +21,7 @@ export default class CommentSectionComponent extends Component {
   store;
 
 
+
   get commentModel() {
     return this.store.createRecord('comment', {
       creator: this.me.get('user')
@@ -30,6 +31,7 @@ export default class CommentSectionComponent extends Component {
   get chapterComments() {
 
     return this.store.query('comment', { "chapterId": this.args.selectedChapter });
+
   }
 
   @action
@@ -41,5 +43,12 @@ export default class CommentSectionComponent extends Component {
     });
     model.save();
   }
+
+
+
 }
+
+
+
+
 

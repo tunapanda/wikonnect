@@ -16,13 +16,48 @@ export default class ChapterIndexController extends Controller {
 
 
   flaggingModal = false
+  ratingModal = false
 
   @action
-  submit() { }
+  ratingSubmit() {
+
+  }
+
+
+  @action
+  reportSubmit() {
+
+  }
 
   @action
   toggleFlaggingModal() {
-    this.toggleProperty('ratingsModal');
+    this.toggleProperty('flaggingModal');
+  }
+
+
+  @action
+  toggleRatingModal() {
+    this.toggleProperty('ratingModal');
+  }
+  get flagModel() {
+    return this.store.createRecord('flag', {
+      creator: this.me.get('user')
+    });
+  }
+
+  @action
+  async saveFlag(model) {
+
+
+    let slug = this.target.currentRoute.params.chapter_slug
+
+    // console.log(this.params['chapter_slug'])
+    let chap = await this.store.findRecord('chapter', slug);
+    model.setProperties({
+      chapter: chap,
+    });
+    model.save();
+
   }
 
   @action

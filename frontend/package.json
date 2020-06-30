@@ -61,6 +61,7 @@
     "ember-simple-auth": "^1.9.2",
     "ember-simple-auth-token": "^4.0.7",
     "ember-source": "~3.14.1",
+    "ember-star-rating": "^3.0.0",
     "ember-svg-jar": "^2.2.3",
     "ember-template-lint": "^1.5.0",
     "ember-truth-helpers": "^2.1.0",
