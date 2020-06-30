@@ -71,25 +71,24 @@ router.get('/', permController.requireAuth, async ctx => {
 
   let stateUserId = ctx.state.user.role == undefined ? ctx.state.user.data.role : ctx.state.user.role;
 
-  //let roleNameList = ['basic', 'superadmin', 'tunapanda'];
+  let roleNameList = ['basic', 'superadmin', 'tunapanda'];
 
   let chapter;
-  switch (stateUserId) {
-  case 'anonymous':
-    chapter = await Chapter.query().where(ctx.query).where({ status: 'published' }).eager('comment(selectComment)');
-    ctx.status = 401;
-    ctx.body = { message: 'un published chapter' };
-    break;
-  case 'basic':
-    chapter = await Chapter.query().where(ctx.query).where({ status: 'published' }).eager('[comment(selectComment), flag(selectFlag)]');
-    break;
-  default:
-    chapter = await Chapter.query().where(ctx.query).eager('[comment(selectComment), flag(selectFlag)]');
+
+  if (roleNameList.includes(stateUserId)) {
+    if (ctx.query.q ) {
+      chapter = await Chapter.query()
+        .where('name', 'ILIKE', `%${ctx.query.q}%`)
+        .orWhere('description', 'ILIKE', `%${ctx.query.q}%`)
+        .where({ status: 'published' }).eager('comment(selectComment)');
+    } else {
+      chapter = await Chapter.query().where(ctx.query).where({ status: 'published' }).eager('comment(selectComment)');
+    }
+    await returnType(chapter);
+  }else {
+    chapter = await Chapter.query().where({ status: 'published' });
   }
 
-  // const achievement = await Achievement.query().where('user_id', ctx.state.user.data.id);
-  // await returnChapterStatus(chapter, achievement);
-  await returnType(chapter);
 
   ctx.status = 200;
   ctx.body = { chapter };
