@@ -6,6 +6,8 @@ const busboy = require('async-busboy');
 const shortid = require('shortid');
 const sharp = require('sharp');
 const s3 = require('../utils/s3Util');
+const log = require('../utils/logger');
+
 
 
 const Chapter = require('../models/chapter');
@@ -80,7 +82,7 @@ router.get('/', permController.requireAuth, async ctx => {
         .orWhere('description', 'ILIKE', `%${ctx.query.q}%`)
         .where({ status: 'published' }).eager('comment(selectComment)');
     } else {
-      chapter = await Chapter.query().where({ status: 'published' }).eager('comment(selectComment)');
+      chapter = await Chapter.query().where(ctx.query).where({ status: 'published' }).eager('comment(selectComment)');
     }
     await returnType(chapter);
   }else {
@@ -225,16 +227,15 @@ router.put('/:id', permController.requireAuth, async ctx => {
 
   if (chapterData.imageUrl === null || chapterData.contentUri === null) {
     chapterData.status = 'draft';
-    console.log(chapterData.status);
-
+    log.info(chapterData.status);
   }
 
   let chapter;
   try {
     chapter = await Chapter.query().patchAndFetchById(ctx.params.id, chapterData);
   } catch (e) {
-    console.log('cant save');
-    console.log(e);
+    log.error('cant save');
+    log.error(e);
     if (e.statusCode) {
       ctx.throw(e.statusCode, null, { errors: [e.message] });
     } else { ctx.throw(400, null, { errors: [e.message] }); }
@@ -327,7 +328,7 @@ router.post('/:id/chapter-image', async (ctx, next) => {
       //Upload image to AWS S3 bucket
       const uploaded = await s3.s3.upload(params).promise();
 
-      console.log('Uploaded in:', uploaded.Location);
+      log.info('Uploaded in:', uploaded.Location);
       ctx.body = {
         host: `${params.Bucket}.s3.amazonaws.com / uploads / chapters`,
         path: `${fileNameBase}.jpg`
@@ -335,7 +336,7 @@ router.post('/:id/chapter-image', async (ctx, next) => {
     }
 
     catch (e) {
-      console.log(e);
+      log.error(e);
       ctx.throw(e.statusCode, null, { message: e.message });
     }
 

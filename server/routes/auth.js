@@ -4,6 +4,7 @@ const jsonwebtoken = require('jsonwebtoken');
 
 const User = require('../models/user');
 const sendMAil = require('../utils/sendMail');
+const log = require('../utils/logger');
 const { secret } = require('../middleware/jwt');
 const { lastSeen } = require('../utils/timestamp');
 const redisClient = require('../utils/redisConfig');
@@ -97,7 +98,7 @@ router.get('/reset/:mail', async ctx => {
   confirmEmail = confirmEmail[0];
 
   if (confirmEmail == undefined) {
-    console.log('criminal', { error: { errors: ['User email not found'] } });
+    log.info('criminal', { error: { errors: ['User email not found'] } });
     throw new Error({ error: { errors: ['User email not found'] } });
   }
 
