@@ -15,7 +15,6 @@ export default class H5pComponent extends Component {
       frameCss: '/h5p/h5p.css'
     };
 
-    console.log(H5PxAPI, H5P);
     await new H5P(el, h5pLocation, options);
   }
 

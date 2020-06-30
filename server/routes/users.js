@@ -247,10 +247,10 @@ router.get('/:id', permController.requireAuth, async ctx => {
     ctx.throw(404, 'No User With that Id');
   }
 
-  if (user.id != stateUserId || stateUserId === 'anonymous') {
-    log.info('Error logging  %s for %s', ctx.request.ip, ctx.path);
-    ctx.throw(401, 'You do not have permissions to view that user');
-  }
+  // if (user.id != stateUserId || stateUserId === 'anonymous') {
+  //   log.info('Error logging  %s for %s', ctx.request.ip, ctx.path);
+  //   ctx.throw(401, 'You do not have permissions to view that user');
+  // }
 
   returnType(user);
   enrolledCoursesType(user);

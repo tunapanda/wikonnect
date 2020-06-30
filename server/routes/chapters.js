@@ -96,19 +96,19 @@ router.get('/', permController.requireAuth, async ctx => {
       chapter = await Chapter.query()
         .where('name', 'ILIKE', `%${ctx.query.q}%`)
         .orWhere('description', 'ILIKE', `%${ctx.query.q}%`)
-        .where({ status: 'published' }).eager('comment(selectComment)');
+        .where({ status: 'published' }).eager('[comment(selectComment), achievement(selectAchievement)]');
     } else {
       chapter = await Chapter.query().where(ctx.query).where({ status: 'published' }).eager('[comment(selectComment), achievement(selectAchievement)]');
     }
     await returnType(chapter);
     await achievementType(chapter);
   }else {
-    chapter = await Chapter.query().where(ctx.query).where({ status: 'published' });
+    chapter = await Chapter.query().where(ctx.query).where({ status: 'published' }).eager('[comment(selectComment), achievement(selectAchievement)]');
   }
 
 
   ctx.status = 200;
-  ctx.body = { chapter };
+  ctx.body = { 'chapter': chapter };
 });
 
 /**
