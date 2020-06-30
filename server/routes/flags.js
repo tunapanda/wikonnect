@@ -4,7 +4,7 @@ const Flag = require('../models/flag');
 const { requireAuth, grantAccess } = require('../middleware/permController');
 
 const router = new Router({
-  prefix: '/flag'
+  prefix: '/flags'
 });
 
 
@@ -39,7 +39,8 @@ router.get('/', requireAuth, grantAccess('readAny', 'path'), async ctx => {
 
 });
 
-router.post('/', requireAuth, grantAccess('createAny', 'path'), async ctx => {
+//router.post('/', requireAuth, grantAccess('createAny', 'path'), async ctx => {
+router.post('/', async ctx => {
 
   let newFLag = ctx.request.body.flag;
 
@@ -53,7 +54,7 @@ router.post('/', requireAuth, grantAccess('createAny', 'path'), async ctx => {
   } catch (e) {
     if (e.statusCode) {
       ctx.throw(e.statusCode, null, { errors: [e.message] });
-    } else { ctx.throw(400, null, { errors: ['Bad Request'] }); }
+    } else { ctx.throw(400, null, { errors: [e.message] }); }
     throw e;
   }
 });
@@ -63,7 +64,7 @@ router.put('/:id', requireAuth, grantAccess('updateOwn', 'path'), async ctx => {
   let newFlag = ctx.request.body.flag;
   const checkFlag = await Flag.query().findById(ctx.params.id);
 
-  if (!checkFlag){
+  if (!checkFlag) {
     ctx.log.info('Error, path does not exists  %s for %s', ctx.request.ip, ctx.path);
     ctx.throw(400, 'That lesson path does not exist');
   }
