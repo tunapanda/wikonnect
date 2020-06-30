@@ -79,10 +79,10 @@ describe('CHAPTER ROUTE', () => {
       });
   });
   // comments tests
-  it('Should POST a chapter on POST /comments/:id/ and return a JSON object', done => {
+  it('Should POST a chapter on POST /comments/ and return a JSON object', done => {
     chai
       .request(server)
-      .post('/api/v1/comments/chapter19')
+      .post('/api/v1/comments')
       .set('Content-Type', 'application/json')
       .set(tokens.headersSuperAdmin1)
       .send(userComment)
