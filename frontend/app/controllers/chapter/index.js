@@ -49,7 +49,7 @@ export default class ChapterIndexController extends Controller {
   async saveFlag(model) {
 
 
-    let slug = this.target.currentRoute.params.chapter_slug
+    let slug = this.target.currentRoute.params.chapter_slug;
 
     // console.log(this.params['chapter_slug'])
     let chap = await this.store.findRecord('chapter', slug);

@@ -2,7 +2,6 @@ import Component from '@glimmer/component';
 import { inject as service } from '@ember/service';
 import { action } from '@ember/object';
 import { computed } from '@ember/object';
-import { tracked } from '@glimmer/tracking';
 
 export default class CommentSectionComponent extends Component {
 
@@ -37,7 +36,6 @@ export default class CommentSectionComponent extends Component {
   @action
   async saveComment(model) {
     let chap = await this.store.findRecord('chapter', this.args.selectedChapter);
-    console.log(model)
     model.setProperties({
       chapter: chap
     });
