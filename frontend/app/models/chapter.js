@@ -13,4 +13,6 @@ export default class ChapterModel extends Model {
 
   @belongsTo('user') creator;
   @belongsTo('lesson') lesson;
+
+
 }

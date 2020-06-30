@@ -130,16 +130,7 @@ router.get('/:id', permController.requireAuth, async ctx => {
 
   let chapter;
   switch (stateUserRole) {
-  case 'anonymous':
-    chapter = await Chapter.query().where({ id: ctx.params.id, status: 'published' }).eager('comment(selectComment)');
-    ctx.status = 401;
-    ctx.body = { message: 'un published chapter' };
-    break;
-  case 'basic':
-    chapter = await Chapter.query().where({ id: ctx.params.id, status: 'published' }).eager('comment(selectComment)');
-    break;
-  default:
-    chapter = await Chapter.query().where({ id: ctx.params.id });
+  case 'anonymous': chapter = await Chapter.query().where({ id: ctx.params.id, status: 'published' }).eager('comment(selectComment)'); ctx.status = 401; ctx.body = { message: 'un published chapter' }; break; case 'basic': chapter = await Chapter.query().where({ id: ctx.params.id, status: 'published' }).eager('comment(selectComment)'); break; default: chapter = await Chapter.query().where({ id: ctx.params.id });
   }
 
 
