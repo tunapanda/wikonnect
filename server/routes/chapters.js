@@ -18,30 +18,6 @@ const router = new Router({
   prefix: '/chapters'
 });
 
-// async function returnChapterStatus(chapter, achievement) {
-//   if (chapter.length === undefined) {
-//     achievement.forEach(ach => {
-//       if (chapter.id === ach.target) {
-//         // console.log(ach.target_status);
-//         return chapter.targetStatus = ach.target_status;
-//       }
-//     });
-//   } else {
-//     chapter.forEach(chap => {
-
-//       achievement.forEach(ach => {
-//         console.log(chap.id, ach.id);
-//         if (chap.id === ach.target) {
-//           console.log(ach.target_status);
-
-//           return chap.targetStatus = ach.target_status;
-//         }
-//       });
-//     });
-//   }
-// }
-
-
 async function returnType(parent) {
   if (parent.length == undefined) {
     parent.comment.forEach(comment => {
@@ -93,32 +69,24 @@ router.get('/', permController.requireAuth, async ctx => {
 
   let stateUserId = ctx.state.user.role == undefined ? ctx.state.user.data.role : ctx.state.user.role;
 
+  let roleNameList = ['basic', 'superadmin', 'tunapanda'];
+
   let chapter;
-  switch (stateUserId) {
-  case 'anonymous':
-    if (ctx.query.q) {
+
+  if (roleNameList.includes(stateUserId)) {
+    if (ctx.query.q ) {
       chapter = await Chapter.query()
         .where('name', 'ILIKE', `%${ctx.query.q}%`)
         .orWhere('description', 'ILIKE', `%${ctx.query.q}%`)
         .where({ status: 'published' }).eager('comment(selectComment)');
+    } else {
+      chapter = await Chapter.query().where({ status: 'published' }).eager('comment(selectComment)');
     }
-    else {
-      chapter = await Chapter.query().where(ctx.query).where({ status: 'published' }).eager('comment(selectComment)');
-    }
-    ctx.status = 401;
-    ctx.body = { message: 'un published chapter' };
-    break;
-  case 'basic':
-    chapter = await Chapter.query().where(ctx.query).where({ status: 'published' }).eager('comment(selectComment)');
-    break;
-  default:
-    chapter = await Chapter.query().where(ctx.query).eager('comment(selectComment)');
+    await returnType(chapter);
+  }else {
+    chapter = await Chapter.query().where({ status: 'published' });
   }
 
-
-  // const achievement = await Achievement.query().where('user_id', ctx.state.user.data.id);
-  // await returnChapterStatus(chapter, achievement);
-  await returnType(chapter);
 
   ctx.status = 200;
   ctx.body = { chapter };
