@@ -3,13 +3,13 @@ import { action } from '@ember/object';
 
 export default class ChapterIndexController extends Controller {
 
-  ratingsModal = false
+  flaggingModal = false
 
   @action
   submit() { }
 
   @action
-  toggleRatingsModal() {
+  toggleFlaggingModal() {
     this.toggleProperty('ratingsModal');
 
   }
