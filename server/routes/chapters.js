@@ -6,6 +6,8 @@ const busboy = require('async-busboy');
 const shortid = require('shortid');
 const sharp = require('sharp');
 const s3 = require('../utils/s3Util');
+const log = require('../utils/logger');
+
 
 
 const Chapter = require('../models/chapter');
@@ -17,30 +19,6 @@ const slugGen = require('../utils/slugGen');
 const router = new Router({
   prefix: '/chapters'
 });
-
-// async function returnChapterStatus(chapter, achievement) {
-//   if (chapter.length === undefined) {
-//     achievement.forEach(ach => {
-//       if (chapter.id === ach.target) {
-//         // console.log(ach.target_status);
-//         return chapter.targetStatus = ach.target_status;
-//       }
-//     });
-//   } else {
-//     chapter.forEach(chap => {
-
-//       achievement.forEach(ach => {
-//         console.log(chap.id, ach.id);
-//         if (chap.id === ach.target) {
-//           console.log(ach.target_status);
-
-//           return chap.targetStatus = ach.target_status;
-//         }
-//       });
-//     });
-//   }
-// }
-
 
 async function returnType(parent) {
   if (parent.length == undefined) {
@@ -93,23 +71,24 @@ router.get('/', permController.requireAuth, async ctx => {
 
   let stateUserId = ctx.state.user.role == undefined ? ctx.state.user.data.role : ctx.state.user.role;
 
+  let roleNameList = ['basic', 'superadmin', 'tunapanda'];
+
   let chapter;
-  switch (stateUserId) {
-  case 'anonymous':
-    chapter = await Chapter.query().where(ctx.query).where({ status: 'published' }).eager('comment(selectComment)');
-    ctx.status = 401;
-    ctx.body = { message: 'un published chapter' };
-    break;
-  case 'basic':
-    chapter = await Chapter.query().where(ctx.query).where({ status: 'published' }).eager('comment(selectComment)');
-    break;
-  default:
-    chapter = await Chapter.query().where(ctx.query).eager('comment(selectComment)');
+
+  if (roleNameList.includes(stateUserId)) {
+    if (ctx.query.q ) {
+      chapter = await Chapter.query()
+        .where('name', 'ILIKE', `%${ctx.query.q}%`)
+        .orWhere('description', 'ILIKE', `%${ctx.query.q}%`)
+        .where({ status: 'published' }).eager('comment(selectComment)');
+    } else {
+      chapter = await Chapter.query().where(ctx.query).where({ status: 'published' }).eager('comment(selectComment)');
+    }
+    await returnType(chapter);
+  }else {
+    chapter = await Chapter.query().where({ status: 'published' });
   }
 
-  // const achievement = await Achievement.query().where('user_id', ctx.state.user.data.id);
-  // await returnChapterStatus(chapter, achievement);
-  await returnType(chapter);
 
   ctx.status = 200;
   ctx.body = { chapter };
@@ -248,16 +227,15 @@ router.put('/:id', permController.requireAuth, async ctx => {
 
   if (chapterData.imageUrl === null || chapterData.contentUri === null) {
     chapterData.status = 'draft';
-    console.log(chapterData.status);
-
+    log.info(chapterData.status);
   }
 
   let chapter;
   try {
     chapter = await Chapter.query().patchAndFetchById(ctx.params.id, chapterData);
   } catch (e) {
-    console.log('cant save');
-    console.log(e);
+    log.error('cant save');
+    log.error(e);
     if (e.statusCode) {
       ctx.throw(e.statusCode, null, { errors: [e.message] });
     } else { ctx.throw(400, null, { errors: [e.message] }); }
@@ -322,7 +300,7 @@ router.post('/:id/chapter-image', async (ctx, next) => {
   //   const resize = sharp()
   //     .resize(size, size)
   //     .jpeg({ quality: 70 })
-  //     .toFile(`public/uploads/images/profile/${fileNameBase}_${size}.jpg`);
+  //     .toFile(`public / uploads / images / profile / ${ fileNameBase }_${ size }.jpg`);
   //   files[0].pipe(resize);
   //   return resize;
   // }));
@@ -341,7 +319,7 @@ router.post('/:id/chapter-image', async (ctx, next) => {
 
     const params = {
       Bucket: s3.config.bucket, // pass your bucket name
-      Key: `uploads/profiles/${fileNameBase}.jpg`, // key for saving filename
+      Key: `uploads / profiles / ${fileNameBase}.jpg`, // key for saving filename
       Body: buffer, //image to be uploaded
     };
 
@@ -350,21 +328,21 @@ router.post('/:id/chapter-image', async (ctx, next) => {
       //Upload image to AWS S3 bucket
       const uploaded = await s3.s3.upload(params).promise();
 
-      console.log('Uploaded in:', uploaded.Location);
+      log.info('Uploaded in:', uploaded.Location);
       ctx.body = {
-        host: `${params.Bucket}.s3.amazonaws.com/uploads/chapters`,
+        host: `${params.Bucket}.s3.amazonaws.com / uploads / chapters`,
         path: `${fileNameBase}.jpg`
       };
     }
 
     catch (e) {
-      console.log(e);
+      log.error(e);
       ctx.throw(e.statusCode, null, { message: e.message });
     }
 
   } else {
 
-    await resizer.toFile(`${uploadDir}/${fileNameBase}.jpg`);
+    await resizer.toFile(`${uploadDir} / ${fileNameBase}.jpg`);
 
 
     await Chapter.query()
@@ -377,14 +355,14 @@ router.post('/:id/chapter-image', async (ctx, next) => {
 
     ctx.body = {
       host: ctx.host,
-      path: `${uploadPath}/${fileNameBase}.jpg`
+      path: `${uploadPath} / ${fileNameBase}.jpg`
     };
   }
 });
 
 router.post('/:id/upload', async ctx => {
   const dirName = ctx.params.id;
-  const uploadPath = `uploads/h5p/${dirName}`;
+  const uploadPath = `uploads / h5p / ${dirName}`;
   const uploadDir = path.resolve(__dirname, '../public/' + uploadPath);
 
   await busboy(ctx.req, {
