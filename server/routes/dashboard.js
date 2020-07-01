@@ -1,14 +1,16 @@
 const Router = require('koa-router');
-const Dashboard = require('../models/dashboard');
-// const { requireAuth, grantAccess } = require('../middleware/permController');
+const Questionnaire = require('../models/questionnaire');
+const { requireAuth } = require('../middleware/permController');
+
+const knex = require('../utils/knexUtil');
 
 const router = new Router({
-  prefix: '/dashboards'
+  prefix: '/dashboard'
 });
 
 
 /**
- * @api {get} /dashboard GET all M&E data.
+ * @api {get} /dashboard/mande GET all M&E data.
  * @apiName GetM&E
  * @apiGroup Dashboard
  * @apiPermission superadmin
@@ -24,16 +26,16 @@ const router = new Router({
  */
 
 
-router.get('/', async ctx => {
+router.get('/mande', requireAuth, async ctx => {
   try {
-    const dashboard = await Dashboard.query();
+    const postQ = await Questionnaire.query();
 
     ctx.status = 200;
-    ctx.body = { dashboard };
+    ctx.body = { postQ };
 
   } catch (e) {
     if (e.statusCode) {
-      ctx.throw(e.statusCode, { message: 'No data found' });
+      ctx.throw(e.statusCode, { message: 'The query key does not exist' });
       ctx.throw(e.statusCode, null, { errors: [e.message] });
     } else { ctx.throw(400, null, { errors: [e.message] }); }
     throw e;
@@ -69,5 +71,35 @@ router.get('/', async ctx => {
 //     throw e;
 //   }
 // });
+
+
+
+
+/**
+   * return the count of completed chapter
+   * @param {object[]} dataRange
+   * @return {Integer}
+   */
+
+router.get('/achievement/:startDate/:endDate', requireAuth, async ctx => {
+
+  // const from = '2017-12-20';
+  // const to = '2018-12-20';
+  const from = ctx.params.startDate;
+  const to = ctx.params.endDate;
+
+  let achievement;
+  try {
+    achievement = await knex('achievements')
+      .select()
+      .where({ target_status: 'completed' })
+      .whereBetween('created_at', [from, to]);
+  } catch (e) {
+    ctx.throw(400, null, { errors: [e.message] });
+  }
+
+  ctx.status = 200;
+  ctx.body = { achievement: achievement.length };
+});
 
 module.exports = router.routes();
