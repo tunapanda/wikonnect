@@ -2,6 +2,7 @@ const Router = require('koa-router');
 const log = require('../utils/logger');
 const Rating = require('../models/rating');
 const { requireAuth, grantAccess } = require('../middleware/permController');
+const validateRating = require('../middleware/validation/validateRating');
 
 const router = new Router({
   prefix: '/ratings'
@@ -50,13 +51,16 @@ router.get('/', requireAuth, grantAccess('readAny', 'path'), async ctx => {
 });
 
 /**
+ *
+ * @param {object[]} rating
  * @param id
  * @param chapterId
  * @param userId
  * @param rating
+ * @return {object}
  */
 
-router.post('/', requireAuth, grantAccess('createAny', 'path'), async ctx => {
+router.post('/', requireAuth, validateRating, grantAccess('createAny', 'path'), async ctx => {
 
   let newFLag = ctx.request.body.rating;
   const maxPoints = 5;

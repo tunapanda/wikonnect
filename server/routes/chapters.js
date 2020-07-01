@@ -16,6 +16,10 @@ const validateChapter = require('../middleware/validation/validateChapter');
 
 const slugGen = require('../utils/slugGen');
 
+const environment = process.env.NODE_ENV;
+const config = require('../knexfile.js')[environment];
+const knex = require('knex')(config);
+
 const router = new Router({
   prefix: '/chapters'
 });
@@ -106,7 +110,6 @@ router.get('/', permController.requireAuth, async ctx => {
     chapter = await Chapter.query().where(ctx.query).where({ status: 'published' }).eager('[comment(selectComment), achievement(selectAchievement)]');
   }
 
-
   ctx.status = 200;
   ctx.body = { 'chapter': chapter };
 });
@@ -159,13 +162,15 @@ router.get('/:id', permController.requireAuth, async ctx => {
     chapter = await Chapter.query().where({ id: ctx.params.id });
   }
 
+  const rating = await knex('ratings').where({ 'chapter_id': ctx.params.id }).select('rating');
+
 
   ctx.assert(chapter, 404, 'no lesson by that ID');
   await returnType(chapter);
   await achievementType(chapter);
 
   ctx.status = 200;
-  ctx.body = { chapter };
+  ctx.body = { chapter, rating };
 });
 
 
