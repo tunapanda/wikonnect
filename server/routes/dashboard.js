@@ -1,5 +1,6 @@
 const Router = require('koa-router');
 const Questionnaire = require('../models/questionnaire');
+const User = require('../models/user');
 const { requireAuth } = require('../middleware/permController');
 
 const knex = require('../utils/knexUtil');
@@ -81,7 +82,7 @@ router.get('/mande', requireAuth, async ctx => {
    * @return {Integer}
    */
 
-router.get('/achievement/:startDate/:endDate', requireAuth, async ctx => {
+router.get('/achievements/:startDate/:endDate', requireAuth, async ctx => {
 
   // const from = '2017-12-20';
   // const to = '2018-12-20';
@@ -96,10 +97,39 @@ router.get('/achievement/:startDate/:endDate', requireAuth, async ctx => {
       .whereBetween('created_at', [from, to]);
   } catch (e) {
     ctx.throw(400, null, { errors: [e.message] });
+    throw e;
   }
 
   ctx.status = 200;
   ctx.body = { achievement: achievement.length };
+});
+
+
+router.get('/users', requireAuth, async ctx => {
+  let user;
+  try {
+    user = await User.query();
+  } catch (e) {
+    ctx.throw(406, null, { errors: [e.message] });
+    throw e;
+  }
+
+  ctx.body = { user: user.length };
+});
+
+router.get('/users/completed', requireAuth, async ctx => {
+  let user;
+  try {
+    // user = await User.query().joinRelated('achievements', { alias: 'p' }).where('p.userId', 'userId');
+    user = await knex('users')
+      .join('achievements', 'users.id', 'achievements.user_id')
+      .select('users.id', 'achievements.target_status');
+  } catch (e) {
+    ctx.throw(406, null, { errors: [e.message] });
+    throw e;
+  }
+
+  ctx.body = { user };
 });
 
 module.exports = router.routes();
