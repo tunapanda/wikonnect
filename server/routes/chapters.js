@@ -162,15 +162,15 @@ router.get('/:id', permController.requireAuth, async ctx => {
     chapter = await Chapter.query().where({ id: ctx.params.id });
   }
 
-  const rating = await knex('ratings').where({ 'chapter_id': ctx.params.id }).select('rating');
-
+  const rating = await knex('ratings').where({ 'chapter_id': ctx.params.id }).avg('rating');
 
   ctx.assert(chapter, 404, 'no lesson by that ID');
   await returnType(chapter);
   await achievementType(chapter);
 
+
   ctx.status = 200;
-  ctx.body = { chapter, rating };
+  ctx.body = { chapter, rating};
 });
 
 
