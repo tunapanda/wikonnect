@@ -49,12 +49,19 @@ router.get('/', requireAuth, grantAccess('readAny', 'path'), async ctx => {
 
 });
 
+/**
+ * @param id
+ * @param chapterId
+ * @param userId
+ * @param rating
+ */
+
 router.post('/', requireAuth, grantAccess('createAny', 'path'), async ctx => {
 
   let newFLag = ctx.request.body.rating;
   const maxPoints = 5;
 
-  if (newFLag > maxPoints) {
+  if (newFLag.rating > maxPoints) {
     ctx.throw(400, 'Rating cannot be greater than 5');
   }
 
