@@ -20,9 +20,21 @@ const environment = process.env.NODE_ENV;
 const config = require('../knexfile.js')[environment];
 const knex = require('knex')(config);
 
+const { raw } = require('objection');
+
 const router = new Router({
   prefix: '/chapters'
 });
+
+async function ratingVal(parent, avg) {
+  if (parent.length == undefined) {
+    return parent.rating = avg;
+  } else {
+    parent.forEach(mod => {
+      return mod.rating = avg;
+    });
+  }
+}
 
 async function returnType(parent) {
   if (parent.length == undefined) {
@@ -102,12 +114,12 @@ router.get('/', permController.requireAuth, async ctx => {
         .orWhere('description', 'ILIKE', `%${ctx.query.q}%`)
         .where({ status: 'published' }).eager('[comment(selectComment), achievement(selectAchievement)]');
     } else {
-      chapter = await Chapter.query().where(ctx.query).where({ status: 'published' }).eager('[comment(selectComment), achievement(selectAchievement)]');
+      chapter = await Chapter.query().where(ctx.query).where({ status: 'published' }).eager('[comment(selectComment), achievement(selectAchievement)');
     }
     await returnType(chapter);
     await achievementType(chapter);
   }else {
-    chapter = await Chapter.query().where(ctx.query).where({ status: 'published' }).eager('[comment(selectComment), achievement(selectAchievement)]');
+    chapter = await Chapter.query().where(ctx.query).where({ status: 'published' });
   }
 
   ctx.status = 200;
@@ -165,12 +177,14 @@ router.get('/:id', permController.requireAuth, async ctx => {
   const rating = await knex('ratings').where({ 'chapter_id': ctx.params.id }).avg('rating');
 
   ctx.assert(chapter, 404, 'no lesson by that ID');
+
+  await ratingVal(chapter, rating[0].avg);
   await returnType(chapter);
   await achievementType(chapter);
 
 
   ctx.status = 200;
-  ctx.body = { chapter, rating};
+  ctx.body = { chapter };
 });
 
 
