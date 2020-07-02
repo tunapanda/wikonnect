@@ -75,8 +75,6 @@ router.get('/', permController.requireAuth, async ctx => {
   let roleNameList = ['basic', 'superadmin', 'tunapanda'];
   let anonymous = 'anonymous';
 
-  console.log(stateUserRole);
-
   let chapter;
 
   try {
@@ -91,7 +89,7 @@ router.get('/', permController.requireAuth, async ctx => {
       }
       await returnType(chapter);
     } else if (stateUserRole === anonymous) {
-      chapter = await Chapter.query().where({ status: 'published', approved: 'true' });
+      chapter = await Chapter.query().where({ status: 'published' });
     } else {
       chapter = await Chapter.query().where(ctx.query);
     }
