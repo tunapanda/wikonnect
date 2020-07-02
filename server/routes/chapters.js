@@ -20,8 +20,6 @@ const environment = process.env.NODE_ENV;
 const config = require('../knexfile.js')[environment];
 const knex = require('knex')(config);
 
-const { raw } = require('objection');
-
 const router = new Router({
   prefix: '/chapters'
 });
