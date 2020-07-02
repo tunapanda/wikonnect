@@ -94,6 +94,23 @@ router.get('/', permController.requireAuth, async ctx => {
   ctx.body = { chapter };
 });
 
+router.get('/teach', permController.requireAuth, async ctx => {
+  let stateUserId = ctx.state.user.id == undefined ? ctx.state.user.data.id : ctx.state.user.id;
+
+  let chapter = await Chapter.query().where({ 'creator_id': stateUserId });
+
+  // let chapter;
+  // try {
+  //   chapter = await Chapter.query().where({ creatorId: stateUserId });
+  // } catch (e) {
+  //   ctx.throw(400, null, { errors: [e.message] });
+  // }
+
+  ctx.status = 200;
+  ctx.body = { chapter };
+});
+
+
 /**
  * @api {get} /chapters/:id GET single chapter.
  * @apiName GetAChapter
@@ -384,20 +401,5 @@ router.post('/:id/upload', async ctx => {
     host: ctx.host,
     path: uploadPath
   };
-});
-
-router.get('/all', permController.requireAuth, async ctx => {
-  let stateUserId = ctx.state.user.id == undefined ? ctx.state.user.data.id : ctx.state.user.id;
-
-  let chapter;
-  try {
-    chapter = await Chapter.query().where(ctx.query).where({ creatorId: stateUserId });
-  } catch (e) {
-    ctx.throw(400, null, { errors: [e.message] });
-  }
-
-  ctx.status = 200;
-  ctx.body = { chapter };
-
 });
 module.exports = router.routes();
