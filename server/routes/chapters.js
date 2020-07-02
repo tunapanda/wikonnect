@@ -67,34 +67,27 @@ async function returnType(parent) {
  * @apiError {String} errors Bad Request.
  */
 
+
+
 router.get('/', permController.requireAuth, async ctx => {
 
   let stateUserRole = ctx.state.user.role == undefined ? ctx.state.user.data.role : ctx.state.user.role;
-  let stateUserId = ctx.state.user.id == undefined ? ctx.state.user.data.id : ctx.state.user.id;
-
   let roleNameList = ['basic', 'superadmin', 'tunapanda'];
-  let anonymous = 'anonymous';
 
   let chapter;
-
-  try {
-    if (roleNameList.includes(stateUserRole)) {
-      if (ctx.query.q) {
-        chapter = await Chapter.query()
-          .where('name', 'ILIKE', `%${ctx.query.q}%`)
-          .orWhere('description', 'ILIKE', `%${ctx.query.q}%`)
-          .where({ status: 'published' }).eager('comment(selectComment)');
-      } else {
-        chapter = await Chapter.query().where(ctx.query).orWhere({ creatorId: stateUserId }).where({ status: 'published' }).eager('comment(selectComment)');
-      }
-      await returnType(chapter);
-    } else if (stateUserRole === anonymous) {
-      chapter = await Chapter.query().where({ status: 'published' });
+  if (roleNameList.includes(stateUserRole)) {
+    if (ctx.query.q) {
+      chapter = await Chapter.query()
+        .where('name', 'ILIKE', `%${ctx.query.q}%`)
+        .orWhere('description', 'ILIKE', `%${ctx.query.q}%`)
+        .where({ status: 'published' })
+        .eager('comment(selectComment)');
     } else {
-      chapter = await Chapter.query().where(ctx.query);
+      chapter = await Chapter.query().where(ctx.query).where({ status: 'published' }).eager('comment(selectComment)');
     }
-  } catch (e) {
-    ctx.throw(400, null, { errors: [e.message]});
+    await returnType(chapter);
+  } else {
+    chapter = await Chapter.query().where(ctx.query);
   }
 
   ctx.status = 200;
@@ -391,7 +384,20 @@ router.post('/:id/upload', async ctx => {
     host: ctx.host,
     path: uploadPath
   };
+});
 
+router.get('/all', permController.requireAuth, async ctx => {
+  let stateUserId = ctx.state.user.id == undefined ? ctx.state.user.data.id : ctx.state.user.id;
+
+  let chapter;
+  try {
+    chapter = await Chapter.query().where(ctx.query).where({ creatorId: stateUserId });
+  } catch (e) {
+    ctx.throw(400, null, { errors: [e.message] });
+  }
+
+  ctx.status = 200;
+  ctx.body = { chapter };
 
 });
 module.exports = router.routes();
