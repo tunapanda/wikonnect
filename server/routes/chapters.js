@@ -75,24 +75,29 @@ router.get('/', permController.requireAuth, async ctx => {
   let roleNameList = ['basic', 'superadmin', 'tunapanda'];
   let anonymous = 'anonymous';
 
+  console.log(stateUserRole);
+
   let chapter;
 
-  if (roleNameList.includes(stateUserRole)) {
-    if (ctx.query.q) {
-      chapter = await Chapter.query()
-        .where('name', 'ILIKE', `%${ctx.query.q}%`)
-        .orWhere('description', 'ILIKE', `%${ctx.query.q}%`)
-        .where({ status: 'published' }).eager('comment(selectComment)');
+  try {
+    if (roleNameList.includes(stateUserRole)) {
+      if (ctx.query.q) {
+        chapter = await Chapter.query()
+          .where('name', 'ILIKE', `%${ctx.query.q}%`)
+          .orWhere('description', 'ILIKE', `%${ctx.query.q}%`)
+          .where({ status: 'published' }).eager('comment(selectComment)');
+      } else {
+        chapter = await Chapter.query().where(ctx.query).orWhere({ creatorId: stateUserId }).where({ status: 'published' }).eager('comment(selectComment)');
+      }
+      await returnType(chapter);
+    } else if (stateUserRole === anonymous) {
+      chapter = await Chapter.query().where({ status: 'published', approved: 'true' });
     } else {
-      chapter = await Chapter.query().where(ctx.query).where({ status: 'published' }).eager('comment(selectComment)');
+      chapter = await Chapter.query().where(ctx.query);
     }
-    await returnType(chapter);
-  } else if (stateUserRole == anonymous) {
-    chapter = await Chapter.query().where(ctx.query).where({ status: 'published' });
-  } else {
-    chapter = await Chapter.query().where(ctx.query).where({ creatorId: stateUserId });
+  } catch (e) {
+    ctx.throw(400, null, { errors: [e.message]});
   }
-
 
   ctx.status = 200;
   ctx.body = { chapter };
