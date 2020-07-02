@@ -1,12 +1,14 @@
 import { action, computed } from '@ember/object';
 import { inject } from '@ember/service';
 import Component from '@ember/component';
+// import { tagName } from '@ember-decorators/component';
 import LoginValidations from '../../validations/login';
-import { tagName } from '@ember-decorators/component';
 
 export default
-@tagName('')
+// @tagName('')
 class LoginComponent extends Component {
+  LoginValidations = LoginValidations;
+
   @inject
   me;
 
@@ -18,7 +20,6 @@ class LoginComponent extends Component {
     return this.store.createRecord('user');
   }
 
-  LoginValidations = LoginValidations;
 
   @action
   login(model) {
@@ -27,7 +28,7 @@ class LoginComponent extends Component {
     }).catch(err => {
       if (err.json && err.json.errors) {
         Object.keys(err.json.errors).forEach(field => {
-          model.addError(field, err.json.errors[field]);
+          model.addError(err.json.errors[field].constraint, err.json.errors[field].name);
         });
       }
     });

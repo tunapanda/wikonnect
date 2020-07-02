@@ -5,3 +5,5 @@ email.js
 server/public
 examples
 coverage/*
+cypress/videos
+cypress/screenshots

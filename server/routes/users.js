@@ -6,6 +6,7 @@ const busboy = require('async-busboy');
 const shortid = require('shortid');
 const sharp = require('sharp');
 const s3 = require('../utils/s3Util');
+const { updatedAt } = require('../utils/timestamp');
 
 const User = require('../models/user');
 const log = require('../utils/logger');
@@ -38,7 +39,25 @@ async function returnType(parent) {
       });
     }
   } catch (error) {
-    console.log(error);
+    log.error(error);
+  }
+}
+
+async function userRoles(parent) {
+  try {
+    if (parent.length == undefined) {
+      parent.userRoles.forEach(role => {
+        return role.type = 'userRoles';
+      });
+    } else {
+      parent.forEach(roles => {
+        roles.userRoles.forEach(role => {
+          return role.type = 'userRoles';
+        });
+      });
+    }
+  } catch (error) {
+    log.error(error);
   }
 }
 
@@ -56,11 +75,34 @@ async function enrolledCoursesType(parent) {
       });
     }
   } catch (error) {
-    console.log(error);
+    log.error(error);
   }
 }
 
 
+function encode(data) {
+  let buf = Buffer.from(data);
+  let base64 = buf.toString('base64');
+  return base64;
+}
+
+async function getProfileImage(id) {
+
+  try {
+    if (s3.config) {
+      const params = {
+        Bucket: s3.config.bucket, // pass your bucket name
+        Key: `uploads/profiles/${id}.jpg`, // key for saving filename
+      };
+
+      const getImage = await s3.s3.getObject(params).promise();
+      let image = 'data:image/(png|jpg);base64,' + encode(getImage.Body);
+      return image;
+    }
+  } catch (e) {
+    return 'images/profile-placeholder.gif';
+  }
+}
 async function createPasswordHash(ctx, next) {
   if (ctx.request.body.user.password) {
     const hash = await bcrypt.hash(ctx.request.body.user.password, 10);
@@ -99,27 +141,25 @@ async function createPasswordHash(ctx, next) {
  */
 
 router.post('/', validateAuthRoutes.validateNewUser, createPasswordHash, async ctx => {
-  console.log(ctx.req.body);
   ctx.request.body.user.username = ctx.request.body.user.username.toLowerCase();
   ctx.request.body.user.email = ctx.request.body.user.email.toLowerCase();
+  ctx.request.body.user.lastSeen = await updatedAt();
 
-  const invitedBy = ctx.request.body.user.invitedBy;
-  delete ctx.request.body.user.invitedBy;
+  const inviteInsert = await knex('user_invite').insert([{ 'invited_by': ctx.request.body.user.inviteCode }], ['id', 'invited_by']);
 
   let newUser = ctx.request.body.user;
-  // generate personal invite code for use when inviting others
   newUser.inviteCode = shortid.generate();
+  newUser.lastSeen = await updatedAt();
 
   const firstUserCheck = await User.query();
   let role = !firstUserCheck.length ? 'groupSuperAdmin' : 'groupBasic';
 
-
   try {
     const user = await User.query().insertAndFetch(newUser);
     await knex('group_members').insert({ 'user_id': user.id, 'group_id': role });
-    await knex('user_invite').insert({ 'user_id': user.id, 'invited_by': invitedBy });
+    await knex('user_invite').where({ id: inviteInsert[0].id }).update({ user_id: user.id }, ['id', 'invited_by', 'user_id']);
 
-    log.info('Created a user with id %s with username %s with the invite code %s', user.id, user.username, user.invite_code);
+    log.info('Created a user with id %s with username %s with the invite code %s', user.id, user.username, user.inviteCode);
 
     ctx.status = 201;
     ctx.body = { user };
@@ -214,11 +254,15 @@ router.get('/:id', permController.requireAuth, async ctx => {
 
   returnType(user);
   enrolledCoursesType(user);
+  userRoles(user);
   // get all verification data
   const userVerification = await knex('user_verification').where({ 'user_id': userId });
   user.userVerification = userVerification;
 
   log.info('Got a request from %s for %s', ctx.request.ip, ctx.path);
+
+  user.profileUri = await getProfileImage(user.profileUri);
+
   ctx.status = 200;
   ctx.body = { user };
 
@@ -254,6 +298,7 @@ router.get('/', permController.requireAuth, permController.grantAccess('readAny'
 
   enrolledCoursesType(user);
   returnType(user);
+  userRoles(user);
 
   ctx.body = { user };
 });
@@ -271,6 +316,8 @@ router.get('/', permController.requireAuth, permController.grantAccess('readAny'
  */
 
 router.put('/:id', jwt.authenticate, permController.requireAuth, permController.grantAccess('updateOwn', 'profile'), async ctx => {
+
+  ctx.request.body.user.updatedAt = await updatedAt();
 
   let user;
   try {
@@ -318,13 +365,19 @@ router.post('/invite/:id', async ctx => {
  * @apiError {String} errors Bad Request.
  */
 
-router.post('/:id/profile-image', async (ctx, next) => {
+router.post('/:id/profile-image', permController.requireAuth, async (ctx, next) => {
   if ('POST' != ctx.method) return await next();
 
   const { files } = await busboy(ctx.req);
   const fileNameBase = shortid.generate();
   const uploadPath = 'uploads/images/profile';
   const uploadDir = path.resolve(__dirname, '../public/' + uploadPath);
+
+  try {
+    await User.query().patchAndFetchById(ctx.params.id, { profileUri: fileNameBase });
+  } catch (e) {
+    log.error(e);
+  }
 
   // const sizes = [
   //   70,
@@ -367,7 +420,7 @@ router.post('/:id/profile-image', async (ctx, next) => {
       //Upload image to AWS S3 bucket
       const uploaded = await s3.s3.upload(params).promise();
 
-      console.log('Uploaded in:', uploaded.Location);
+      log.info('Uploaded in:', uploaded.Location);
       ctx.body = {
         host: `${params.Bucket}.s3.amazonaws.com/uploads/profiles`,
         path: `${fileNameBase}.jpg`
@@ -375,7 +428,7 @@ router.post('/:id/profile-image', async (ctx, next) => {
     }
 
     catch (e) {
-      console.log(e);
+      log.error(e);
       ctx.throw(e.statusCode, null, { message: e.message });
     }
 
@@ -385,6 +438,13 @@ router.post('/:id/profile-image', async (ctx, next) => {
 
 
     await resizer.toFile(`${uploadDir}/${fileNameBase}.jpg`);
+
+
+    await User.query()
+      .findById(ctx.params.id)
+      .patch({
+        profile_uri: `${uploadPath}/${fileNameBase}.jpg`
+      });
 
     ctx.body = {
       host: ctx.host,
