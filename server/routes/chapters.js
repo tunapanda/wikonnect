@@ -69,14 +69,16 @@ async function returnType(parent) {
 
 router.get('/', permController.requireAuth, async ctx => {
 
-  let stateUserId = ctx.state.user.role == undefined ? ctx.state.user.data.role : ctx.state.user.role;
+  let stateUserRole = ctx.state.user.role == undefined ? ctx.state.user.data.role : ctx.state.user.role;
+  let stateUserId = ctx.state.user.id == undefined ? ctx.state.user.data.id : ctx.state.user.id;
 
   let roleNameList = ['basic', 'superadmin', 'tunapanda'];
+  let anonymous = 'anonymous';
 
   let chapter;
 
-  if (roleNameList.includes(stateUserId)) {
-    if (ctx.query.q ) {
+  if (roleNameList.includes(stateUserRole)) {
+    if (ctx.query.q) {
       chapter = await Chapter.query()
         .where('name', 'ILIKE', `%${ctx.query.q}%`)
         .orWhere('description', 'ILIKE', `%${ctx.query.q}%`)
@@ -85,8 +87,10 @@ router.get('/', permController.requireAuth, async ctx => {
       chapter = await Chapter.query().where(ctx.query).where({ status: 'published' }).eager('comment(selectComment)');
     }
     await returnType(chapter);
-  }else {
+  } else if (stateUserRole == anonymous) {
     chapter = await Chapter.query().where(ctx.query).where({ status: 'published' });
+  } else {
+    chapter = await Chapter.query().where(ctx.query).where({ creatorId: stateUserId });
   }
 
 
@@ -127,18 +131,19 @@ router.get('/', permController.requireAuth, async ctx => {
  */
 router.get('/:id', permController.requireAuth, async ctx => {
   let stateUserRole = ctx.state.user.role == undefined ? ctx.state.user.data.role : ctx.state.user.role;
+  let stateUserId = ctx.state.user.id == undefined ? ctx.state.user.data.id : ctx.state.user.id;
+
+  let roleNameList = ['basic', 'superadmin', 'tunapanda'];
+  let anonymous = 'anonymous';
 
   let chapter;
-  switch (stateUserRole) {
-  case 'anonymous': chapter = await Chapter.query().where({ id: ctx.params.id, status: 'published' }).eager('comment(selectComment)');
-    ctx.status = 401;
-    ctx.body = { message: 'un published chapter' };
-    break;
-  case 'basic':
+
+  if (roleNameList.includes(stateUserRole)) {
     chapter = await Chapter.query().where({ id: ctx.params.id, status: 'published' }).eager('comment(selectComment)');
-    break;
-  default:
-    chapter = await Chapter.query().where({ id: ctx.params.id });
+  } else if (stateUserRole == anonymous) {
+    chapter = await Chapter.query().where(ctx.query).where({ id: ctx.params.id, status: 'published' });
+  } else {
+    chapter = await Chapter.query().where(ctx.query).where({ id: ctx.params.id, creatorId: stateUserId });
   }
 
 
