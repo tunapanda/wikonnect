@@ -237,10 +237,12 @@ router.get('/:id', permController.requireAuth, async ctx => {
  * @apiError {String} errors Bad Request.
  */
 router.post('/', permController.requireAuth, permController.grantAccess('createAny', 'path'), validateChapter, async ctx => {
+  let stateUserId = ctx.state.user.id == undefined ? ctx.state.user.data.id : ctx.state.user.id;
   let newChapter = ctx.request.body.chapter;
 
   // slug generation automated
   newChapter.slug = await slugGen(newChapter.name);
+  newChapter.creatorId = stateUserId;
 
   let chapter;
   try {
