@@ -4,7 +4,6 @@ const server = require('../index');
 const tokens = require('./_tokens');
 const knex = require('../db/db');
 
-
 chai.should();
 chai.use(chaiHttp);
 
@@ -16,7 +15,6 @@ describe('Achievement Awards route and function test', () => {
     await knex.migrate.latest();
     return knex.seed.run();
   });
-
   it('Should GET all Achievement Awards with valid token', done => {
     chai
       .request(server)

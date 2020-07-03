@@ -1,4 +1,3 @@
-
 exports.seed = function (knex) {
   // Deletes ALL existing entries
   return knex('chapters').del()
@@ -17,7 +16,8 @@ exports.seed = function (knex) {
           content_type: 'h5p',
           content_uri: '/uploads/h5p/chapter1',
           created_at: '2017-12-20 19:17:10',
-          updated_at: '2017-12-20 19:17:10'
+          updated_at: '2017-12-20 19:17:10',
+          approved: true
         },
         {
           id: 'chapter2',
@@ -30,7 +30,8 @@ exports.seed = function (knex) {
           content_type: 'h5p',
           content_uri: '/uploads/h5p/chapter2',
           created_at: '2017-12-20 19:17:10',
-          updated_at: '2017-12-20 19:17:10'
+          updated_at: '2017-12-20 19:17:10',
+          approved: true
         },
         {
           id: 'chapter3',
@@ -43,7 +44,8 @@ exports.seed = function (knex) {
           content_type: 'h5p',
           content_uri: '/uploads/h5p/chapter3',
           created_at: '2017-12-20 19:17:10',
-          updated_at: '2017-12-20 19:17:10'
+          updated_at: '2017-12-20 19:17:10',
+          approved: true
         },
         {
           id: 'chapter4',
@@ -56,7 +58,8 @@ exports.seed = function (knex) {
           content_type: 'h5p',
           content_uri: '/uploads/h5p/chapter4',
           created_at: '2017-12-20 19:17:10',
-          updated_at: '2017-12-20 19:17:10'
+          updated_at: '2017-12-20 19:17:10',
+          approved: false
         },
         {
           'id': 'chapter5',
@@ -68,7 +71,8 @@ exports.seed = function (knex) {
           'content_type': 'h5p',
           'content_uri': '/uploads/h5p/chapter5',
           'created_at': '2017-12-20 19:17:10',
-          'updated_at': '2017-12-20 19:17:10'
+          'updated_at': '2017-12-20 19:17:10',
+          approved: false
         },
         {
           'id': 'chapter6',
@@ -80,7 +84,8 @@ exports.seed = function (knex) {
           'content_type': 'h5p',
           'content_uri': '/uploads/h5p/chapter6',
           'created_at': '2017-12-20 19:17:10',
-          'updated_at': '2017-12-20 19:17:10'
+          'updated_at': '2017-12-20 19:17:10',
+          approved: false
         },
         {
           'id': 'chapter7',
@@ -92,7 +97,8 @@ exports.seed = function (knex) {
           'content_type': 'h5p',
           'content_uri': '/uploads/h5p/chapter7',
           'created_at': '2017-12-20 19:17:10',
-          'updated_at': '2017-12-20 19:17:10'
+          'updated_at': '2017-12-20 19:17:10',
+          approved: false
         },
         {
           'id': 'chapter8',
@@ -116,7 +122,8 @@ exports.seed = function (knex) {
           'content_type': 'h5p',
           'content_uri': '/uploads/h5p/chapter9',
           'created_at': '2017-12-20 19:17:10',
-          'updated_at': '2017-12-20 19:17:10'
+          'updated_at': '2017-12-20 19:17:10',
+          approved: false
         },
         {
           'id': 'chapter10',
@@ -128,7 +135,8 @@ exports.seed = function (knex) {
           'content_type': 'h5p',
           'content_uri': '/uploads/h5p/chapter10',
           'created_at': '2017-12-20 19:17:10',
-          'updated_at': '2017-12-20 19:17:10'
+          'updated_at': '2017-12-20 19:17:10',
+          approved: false
         },
         {
           'id': 'chapter11',
@@ -140,7 +148,8 @@ exports.seed = function (knex) {
           'content_type': 'h5p',
           'content_uri': '/uploads/h5p/chapter11',
           'created_at': '2017-12-20 19:17:10',
-          'updated_at': '2017-12-20 19:17:10'
+          'updated_at': '2017-12-20 19:17:10',
+          approved: false
         }
 
       ]);

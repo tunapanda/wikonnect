@@ -21,6 +21,22 @@ class Chapter extends Model {
           from: 'chapters.lesson_id',
           to: 'lessons.id'
         }
+      },
+      comment: {
+        relation: Model.HasManyRelation,
+        modelClass: __dirname + '/comment',
+        join: {
+          from: 'chapters.id',
+          to: 'comments.chapterId'
+        }
+      },
+      flag: {
+        relation: Model.HasManyRelation,
+        modelClass: __dirname + '/flag',
+        join: {
+          from: 'chapters.id',
+          to: 'flags.chapterId'
+        }
       }
     };
   }
@@ -34,6 +50,7 @@ class Chapter extends Model {
         name: this.name,
         description: this.description,
         content: '',
+        tags: this.tags,
         status: this.status,
         created_at: this.createdAt,
         modified_at: this.modifiedAt

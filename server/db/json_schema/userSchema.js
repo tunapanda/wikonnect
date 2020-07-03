@@ -8,6 +8,7 @@ const userSchema = {
     'email': { 'type': 'string' },
     'aboutMe': { 'type': 'string' },
     'status': { 'type': 'string' },
+    'profile_uri': { 'type': 'string' },
     'creatorId': { 'type': 'string' },
   },
   'required': ['username', 'hash', 'email'],
