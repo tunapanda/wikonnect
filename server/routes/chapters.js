@@ -254,7 +254,7 @@ router.post('/', permController.requireAuth, permController.grantAccess('createA
     throw e;
   }
   if (!chapter) {
-    ctx.assert(module, 401, 'Something went wrong');
+    ctx.assert(chapter, 401, 'Something went wrong');
   }
   ctx.status = 201;
   ctx.body = { chapter };
