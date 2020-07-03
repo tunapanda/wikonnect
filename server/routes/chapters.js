@@ -412,6 +412,25 @@ router.post('/:id/chapter-image', async (ctx, next) => {
   }
 });
 
+
+
+/**
+ * @api {post} /chapters/:id/upload upload H5P chapter
+ * @apiName PostAH5PChapter
+ * @apiGroup Chapters
+ * @apiPermission none
+ * @apiVersion 0.4.0
+ * @apiSampleRequest off
+ * @apiSampleRequest off
+ * @apiSuccessExample {json} Success-Response:
+ *     HTTP/1.1 200 OK
+ *     {
+ *        host: ctx.host,
+ *        path: uploadPath
+ *      }
+ * @apiError {String} errors Bad Request.
+ */
+
 router.post('/:id/upload', async ctx => {
   const dirName = ctx.params.id;
   const uploadPath = `uploads/h5p/${dirName}`;
