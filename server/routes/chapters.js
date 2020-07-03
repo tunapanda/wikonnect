@@ -34,6 +34,31 @@ async function returnType(parent) {
   }
 }
 
+
+function encode(data) {
+  let buf = Buffer.from(data);
+  let base64 = buf.toString('base64');
+  return base64;
+}
+
+async function getChapterImage(id) {
+
+  try {
+    if (s3.config) {
+      const params = {
+        Bucket: s3.config.bucket, // pass your bucket name
+        Key: `uploads/chapters/${id}.jpg`, // key for saving filename
+      };
+
+      const getImage = await s3.s3.getObject(params).promise();
+      let image = 'data:image/(png|jpg);base64,' + encode(getImage.Body);
+      return image;
+    }
+  } catch (e) {
+    return 'images/profile-placeholder.gif';
+  }
+}
+
 /**
  * @api {get} /chapters/ GET all chapters.
  * @apiName GetChapters
@@ -161,6 +186,8 @@ router.get('/:id', permController.requireAuth, async ctx => {
 
 
   ctx.assert(chapter, 404, 'no lesson by that ID');
+
+  chapter.profileUri = await getChapterImage(chapter.imageUrl);
 
   // const achievement = await Achievement.query().where('user_id', ctx.state.user.data.id);
   // returnChapterStatus(chapter, achievement);
@@ -304,6 +331,12 @@ router.post('/:id/chapter-image', async (ctx, next) => {
   const uploadPath = 'uploads/images/content/chapters';
   const uploadDir = path.resolve(__dirname, '../public/' + uploadPath);
 
+  try {
+    await Chapter.query().patchAndFetchById(chapter_id, { imageUrl: fileNameBase });
+  } catch (e) {
+    log.error(e);
+  }
+
   // const sizes = [
   //   70,
   //   320,
@@ -336,7 +369,7 @@ router.post('/:id/chapter-image', async (ctx, next) => {
 
     const params = {
       Bucket: s3.config.bucket, // pass your bucket name
-      Key: `uploads / profiles / ${fileNameBase}.jpg`, // key for saving filename
+      Key: `uploads/chapters/${fileNameBase}.jpg`, // key for saving filename
       Body: buffer, //image to be uploaded
     };
 
@@ -347,7 +380,7 @@ router.post('/:id/chapter-image', async (ctx, next) => {
 
       log.info('Uploaded in:', uploaded.Location);
       ctx.body = {
-        host: `${params.Bucket}.s3.amazonaws.com / uploads / chapters`,
+        host: `${params.Bucket}.s3.amazonaws.com/uploads/chapters`,
         path: `${fileNameBase}.jpg`
       };
     }
@@ -365,7 +398,7 @@ router.post('/:id/chapter-image', async (ctx, next) => {
     await Chapter.query()
       .findById(chapter_id)
       .patch({
-        imageUrl: uploadPath
+        imageUrl: `${uploadPath}/${fileNameBase}.jpg`
       });
 
 
