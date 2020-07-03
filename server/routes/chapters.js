@@ -394,7 +394,7 @@ router.post('/:id/chapter-image', async (ctx, next) => {
 
   } else {
 
-    await resizer.toFile(`${uploadDir} / ${fileNameBase}.jpg`);
+    await resizer.toFile(`${uploadDir}/${fileNameBase}.jpg`);
 
 
     await Chapter.query()
@@ -407,14 +407,14 @@ router.post('/:id/chapter-image', async (ctx, next) => {
 
     ctx.body = {
       host: ctx.host,
-      path: `${uploadPath} / ${fileNameBase}.jpg`
+      path: `${uploadPath}/${fileNameBase}.jpg`
     };
   }
 });
 
 router.post('/:id/upload', async ctx => {
   const dirName = ctx.params.id;
-  const uploadPath = `uploads / h5p / ${dirName}`;
+  const uploadPath = `uploads/h5p/${dirName}`;
   const uploadDir = path.resolve(__dirname, '../public/' + uploadPath);
 
   await busboy(ctx.req, {
