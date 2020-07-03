@@ -10,37 +10,24 @@ exports.seed = function (knex) {
           name: 'admin',
           slug: 'role-admin',
           description: '',
-          created_at: '2017-12-20 19:17:10',
-          updated_at: '2017-12-20 19:17:10'
+          created_at: '2019-12-20 19:17:10',
+          updated_at: '2019-12-20 19:17:10'
         }, {
           id: 'groupSuperAdmin',
           name: 'superadmin',
           slug: 'role-superadmin',
           description: '',
-          created_at: '2017-12-20 19:17:10',
-          updated_at: '2017-12-20 19:17:10'
+          created_at: '2019-12-20 19:17:10',
+          updated_at: '2019-12-20 19:17:10'
         }, {
           id: 'groupBasic',
           name: 'basic',
           slug: 'role-basic',
           description: '',
-          created_at: '2017-12-20 19:17:10',
-          updated_at: '2017-12-20 19:17:10'
+          created_at: '2019-12-20 19:17:10',
+          updated_at: '2019-12-20 19:17:10'
         },
-      ]).then(() => knex('group_members').insert([
-        {
-          user_id: 'user1',
-          group_id: 'groupAdmin'
-        },
-        {
-          user_id: 'user2',
-          group_id: 'groupSuperAdmin'
-        },
-        {
-          user_id: 'user3',
-          group_id: 'groupBasic'
-        }
-      ])).then(() => knex('group_permissions').insert([
+      ]).then(() => knex('group_permissions').insert([
         {
           id: 'groupAdmin1',
           group_id: 'groupAdmin',

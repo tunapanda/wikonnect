@@ -46,6 +46,7 @@ const brokenToken = {
   'Authorization': 'Bearer ' + jsonwebtoken.sign({ data: adminUser.user }, 'f', { expiresIn: '1d' })
 };
 
+
 module.exports = {
   headersSuperAdmin1,
   headerBasicUser2,

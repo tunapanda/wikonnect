@@ -6,7 +6,6 @@ const server = require('../index');
 const tokens = require('./_tokens');
 const knex = require('../db/db');
 
-
 chai.use(chaiHttp);
 chai.use(chaiJSON);
 chai.should();
@@ -27,28 +26,38 @@ const data = {
     'contentUri': '/uploads/h5p/chapter1',
     'imageUrl': null,
     'contentId': null,
+    'approved': false
   }
 };
 
 const putData = {
   chapter: {
     'name': 'PUT update works',
+    'approved': true
   }
 };
 
 const invalidData = {
-  chapter: {
+  'chapter': {
     'id': 'chapter778',
     'name': 'Testing Chapter Route',
     'slug': 'testing-chapter-route',
     'description': 'Testing chapter route',
-    'status': 'draft'
+    'status': 'draft',
+    'approved': true
   }
 };
 
+const userComment = {
+  'comment': {
+    'creatorId': 'user3',
+    'chapterId': 'chapter778',
+    'comment': 'testing comment',
+    'metadata': ''
+  }
+};
 
 describe('CHAPTER ROUTE', () => {
-
   before(async () => {
     await knex.migrate.rollback();
     await knex.migrate.latest();
@@ -62,13 +71,25 @@ describe('CHAPTER ROUTE', () => {
       .post(route)
       .set(tokens.headersSuperAdmin1)
       .set('Content-Type', 'application/json')
-      .set(tokens.headersSuperAdmin1)
       .send(data)
       .end((err, res) => {
-
         res.status.should.eql(201);
         res.should.be.json;
         res.body.should.have.property('chapter');
+        done();
+      });
+  });
+  // comments tests
+  it('Should POST a chapter on POST /comments/ and return a JSON object', done => {
+    chai
+      .request(server)
+      .post('/api/v1/comments')
+      .set('Content-Type', 'application/json')
+      .set(tokens.headersSuperAdmin1)
+      .send(userComment)
+      .end((err, res) => {
+        res.status.should.eql(201);
+        res.should.be.json;
         done();
       });
   });
@@ -102,7 +123,17 @@ describe('CHAPTER ROUTE', () => {
         done();
       });
   });
-  
+  it('Should list ONE chapter item on GET using id', done => {
+    chai
+      .request(server)
+      .get(route + itemID)
+      .set(tokens.headersSuperAdmin1)
+      .end((err, res) => {
+        res.should.have.status(200);
+        res.should.be.json;
+        done();
+      });
+  });
   it('Should have tags object in ONE chapter item on GET', done => {
     chai
       .request(server)

@@ -10,7 +10,7 @@ export default class ProfilePrivateProfileComponent extends Component {
   profileView = 'Profile';
   viewOnly = true;
 
-  inviteCode = location.protocol + '//' + location.host + '/signup?invite_code=' + this.me.user.username;
+  inviteCode = location.protocol + '//' + location.host + '/signup?invite_code=' + this.me.user.inviteCode;
 
   @computed('me.user.{firstName,lastName}')
   get name() {
@@ -26,6 +26,11 @@ export default class ProfilePrivateProfileComponent extends Component {
     else {
       return this.me.user.username;
     }
+  }
+
+  @computed('me.user.profileUri')
+  get profileUri() {
+    return this.me.user.profileUri;
   }
 
   // @computed('me.user.{firstName,lastName}')

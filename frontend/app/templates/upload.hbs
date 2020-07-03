@@ -4,14 +4,17 @@
 
   <div class="text-center">
     <br>
-    <img class="rounded-circle" width="300px" alt="" src={{profileImage}}>
+    {{#if this.me.user.profileUri}}
+      <img class="rounded-circle" width="300px" alt="" src={{this.me.user.profileUri}}>
+    {{else}}
+      <img class="rounded-circle" width="300px" alt="" src={{profileImage}}>
+
+    {{/if}}
 
     <br>
 
     <br>
     {{#unless complete}}
-
-
       <Forms::Upload @multiple="false" @accept="image/*" @filesSelected={{action "uploadPic"}}
         @disabled={{uploader.uploading}}>
         {{#if uploader.uploading}}
@@ -32,20 +35,13 @@
         {{/if}}
 
       {{/link-to}}
-    {{else}}
-      {{#if complete}}
-        {{#link-to "profile"}}
-          <br>
-          <button type="button" class="btn btn-success">Back to profile</button>
-        {{/link-to}}
 
-      {{/if}}
     {{/if}}
   </div>
 
 
 {{else}}
 
-  <Warning @message="You do not have  permission to view this page" />
+  <Warning @message="You do not have permission to view this page" />
 
 {{/if}}
