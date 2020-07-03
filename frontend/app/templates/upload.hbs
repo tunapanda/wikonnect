@@ -4,7 +4,12 @@
 
   <div class="text-center">
     <br>
-    <img class="rounded-circle" width="300px" alt="" src={{profileImage}}>
+    {{#if this.me.user.profileUri}}
+      <img class="rounded-circle" width="300px" alt="" src={{this.me.user.profileUri}}>
+    {{else}}
+      <img class="rounded-circle" width="300px" alt="" src={{profileImage}}>
+
+    {{/if}}
 
     <br>
 
@@ -30,14 +35,7 @@
         {{/if}}
 
       {{/link-to}}
-    {{!-- {{else}}
-      {{#if complete}}
-        {{#link-to "profile"}}
-          <br>
-          <button type="button" class="btn btn-success">Back to profile</button>
-        {{/link-to}}
 
-      {{/if}} --}}
     {{/if}}
   </div>
 

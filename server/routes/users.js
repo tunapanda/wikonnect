@@ -39,7 +39,7 @@ async function returnType(parent) {
       });
     }
   } catch (error) {
-    console.log(error);
+    log.error(error);
   }
 }
 
@@ -57,7 +57,7 @@ async function userRoles(parent) {
       });
     }
   } catch (error) {
-    console.log(error);
+    log.error(error);
   }
 }
 
@@ -75,7 +75,7 @@ async function enrolledCoursesType(parent) {
       });
     }
   } catch (error) {
-    console.log(error);
+    log.error(error);
   }
 }
 
@@ -157,11 +157,7 @@ router.post('/', validateAuthRoutes.validateNewUser, createPasswordHash, async c
   try {
     const user = await User.query().insertAndFetch(newUser);
     await knex('group_members').insert({ 'user_id': user.id, 'group_id': role });
-    let data = await knex('user_invite').where({ id: inviteInsert[0].id }).update({ user_id: user.id }, ['id', 'invited_by', 'user_id']);
-
-    console.log('--------------------------------------------------------');
-    console.log(data);
-    console.log('--------------------------------------------------------');
+    await knex('user_invite').where({ id: inviteInsert[0].id }).update({ user_id: user.id }, ['id', 'invited_by', 'user_id']);
 
     log.info('Created a user with id %s with username %s with the invite code %s', user.id, user.username, user.inviteCode);
 
@@ -380,7 +376,7 @@ router.post('/:id/profile-image', permController.requireAuth, async (ctx, next) 
   try {
     await User.query().patchAndFetchById(ctx.params.id, { profileUri: fileNameBase });
   } catch (e) {
-    console.log(e);
+    log.error(e);
   }
 
   // const sizes = [
@@ -424,7 +420,7 @@ router.post('/:id/profile-image', permController.requireAuth, async (ctx, next) 
       //Upload image to AWS S3 bucket
       const uploaded = await s3.s3.upload(params).promise();
 
-      console.log('Uploaded in:', uploaded.Location);
+      log.info('Uploaded in:', uploaded.Location);
       ctx.body = {
         host: `${params.Bucket}.s3.amazonaws.com/uploads/profiles`,
         path: `${fileNameBase}.jpg`
@@ -432,7 +428,7 @@ router.post('/:id/profile-image', permController.requireAuth, async (ctx, next) 
     }
 
     catch (e) {
-      console.log(e);
+      log.error(e);
       ctx.throw(e.statusCode, null, { message: e.message });
     }
 
@@ -442,6 +438,13 @@ router.post('/:id/profile-image', permController.requireAuth, async (ctx, next) 
 
 
     await resizer.toFile(`${uploadDir}/${fileNameBase}.jpg`);
+
+
+    await User.query()
+      .findById(ctx.params.id)
+      .patch({
+        profile_uri: `${uploadPath}/${fileNameBase}.jpg`
+      });
 
     ctx.body = {
       host: ctx.host,
