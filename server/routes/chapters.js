@@ -34,6 +34,31 @@ async function returnType(parent) {
   }
 }
 
+
+function encode(data) {
+  let buf = Buffer.from(data);
+  let base64 = buf.toString('base64');
+  return base64;
+}
+
+async function getChapterImage(id) {
+
+  try {
+    if (s3.config) {
+      const params = {
+        Bucket: s3.config.bucket, // pass your bucket name
+        Key: `uploads/chapters/${id}.jpg`, // key for saving filename
+      };
+
+      const getImage = await s3.s3.getObject(params).promise();
+      let image = 'data:image/(png|jpg);base64,' + encode(getImage.Body);
+      return image;
+    }
+  } catch (e) {
+    return 'images/profile-placeholder.gif';
+  }
+}
+
 /**
  * @api {get} /chapters/ GET all chapters.
  * @apiName GetChapters
@@ -67,32 +92,49 @@ async function returnType(parent) {
  * @apiError {String} errors Bad Request.
  */
 
+
+
 router.get('/', permController.requireAuth, async ctx => {
 
-  let stateUserId = ctx.state.user.role == undefined ? ctx.state.user.data.role : ctx.state.user.role;
-
+  let stateUserRole = ctx.state.user.role == undefined ? ctx.state.user.data.role : ctx.state.user.role;
   let roleNameList = ['basic', 'superadmin', 'tunapanda'];
 
   let chapter;
-
-  if (roleNameList.includes(stateUserId)) {
-    if (ctx.query.q ) {
+  if (roleNameList.includes(stateUserRole)) {
+    if (ctx.query.q) {
       chapter = await Chapter.query()
         .where('name', 'ILIKE', `%${ctx.query.q}%`)
         .orWhere('description', 'ILIKE', `%${ctx.query.q}%`)
-        .where({ status: 'published' }).eager('comment(selectComment)');
+        .where({ status: 'published' })
+        .eager('comment(selectComment)');
     } else {
       chapter = await Chapter.query().where(ctx.query).where({ status: 'published' }).eager('comment(selectComment)');
     }
     await returnType(chapter);
-  }else {
-    chapter = await Chapter.query().where(ctx.query).where({ status: 'published' });
+  } else {
+    chapter = await Chapter.query().where(ctx.query);
   }
-
 
   ctx.status = 200;
   ctx.body = { chapter };
 });
+
+router.get('/teach', permController.requireAuth, async ctx => {
+  let stateUserId = ctx.state.user.id == undefined ? ctx.state.user.data.id : ctx.state.user.id;
+
+  let chapter = await Chapter.query().where({ 'creator_id': stateUserId });
+
+  // let chapter;
+  // try {
+  //   chapter = await Chapter.query().where({ creatorId: stateUserId });
+  // } catch (e) {
+  //   ctx.throw(400, null, { errors: [e.message] });
+  // }
+
+  ctx.status = 200;
+  ctx.body = { chapter };
+});
+
 
 /**
  * @api {get} /chapters/:id GET single chapter.
@@ -127,22 +169,25 @@ router.get('/', permController.requireAuth, async ctx => {
  */
 router.get('/:id', permController.requireAuth, async ctx => {
   let stateUserRole = ctx.state.user.role == undefined ? ctx.state.user.data.role : ctx.state.user.role;
+  let stateUserId = ctx.state.user.id == undefined ? ctx.state.user.data.id : ctx.state.user.id;
+
+  let roleNameList = ['basic', 'superadmin', 'tunapanda'];
+  let anonymous = 'anonymous';
 
   let chapter;
-  switch (stateUserRole) {
-  case 'anonymous': chapter = await Chapter.query().where({ id: ctx.params.id, status: 'published' }).eager('comment(selectComment)');
-    ctx.status = 401;
-    ctx.body = { message: 'un published chapter' };
-    break;
-  case 'basic':
+
+  if (roleNameList.includes(stateUserRole)) {
     chapter = await Chapter.query().where({ id: ctx.params.id, status: 'published' }).eager('comment(selectComment)');
-    break;
-  default:
-    chapter = await Chapter.query().where({ id: ctx.params.id });
+  } else if (stateUserRole == anonymous) {
+    chapter = await Chapter.query().where(ctx.query).where({ id: ctx.params.id, status: 'published' });
+  } else {
+    chapter = await Chapter.query().where(ctx.query).where({ id: ctx.params.id, creatorId: stateUserId });
   }
 
 
   ctx.assert(chapter, 404, 'no lesson by that ID');
+
+  chapter.profileUri = await getChapterImage(chapter.imageUrl);
 
   // const achievement = await Achievement.query().where('user_id', ctx.state.user.data.id);
   // returnChapterStatus(chapter, achievement);
@@ -286,6 +331,12 @@ router.post('/:id/chapter-image', async (ctx, next) => {
   const uploadPath = 'uploads/images/content/chapters';
   const uploadDir = path.resolve(__dirname, '../public/' + uploadPath);
 
+  try {
+    await Chapter.query().patchAndFetchById(chapter_id, { imageUrl: fileNameBase });
+  } catch (e) {
+    log.error(e);
+  }
+
   // const sizes = [
   //   70,
   //   320,
@@ -318,7 +369,7 @@ router.post('/:id/chapter-image', async (ctx, next) => {
 
     const params = {
       Bucket: s3.config.bucket, // pass your bucket name
-      Key: `uploads / profiles / ${fileNameBase}.jpg`, // key for saving filename
+      Key: `uploads/chapters/${fileNameBase}.jpg`, // key for saving filename
       Body: buffer, //image to be uploaded
     };
 
@@ -329,7 +380,7 @@ router.post('/:id/chapter-image', async (ctx, next) => {
 
       log.info('Uploaded in:', uploaded.Location);
       ctx.body = {
-        host: `${params.Bucket}.s3.amazonaws.com / uploads / chapters`,
+        host: `${params.Bucket}.s3.amazonaws.com/uploads/chapters`,
         path: `${fileNameBase}.jpg`
       };
     }
@@ -347,7 +398,7 @@ router.post('/:id/chapter-image', async (ctx, next) => {
     await Chapter.query()
       .findById(chapter_id)
       .patch({
-        imageUrl: uploadPath
+        imageUrl: `${uploadPath}/${fileNameBase}.jpg`
       });
 
 
@@ -383,7 +434,5 @@ router.post('/:id/upload', async ctx => {
     host: ctx.host,
     path: uploadPath
   };
-
-
 });
 module.exports = router.routes();
