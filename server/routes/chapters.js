@@ -237,10 +237,12 @@ router.get('/:id', permController.requireAuth, async ctx => {
  * @apiError {String} errors Bad Request.
  */
 router.post('/', permController.requireAuth, permController.grantAccess('createAny', 'path'), validateChapter, async ctx => {
+  let stateUserId = ctx.state.user.id == undefined ? ctx.state.user.data.id : ctx.state.user.id;
   let newChapter = ctx.request.body.chapter;
 
   // slug generation automated
   newChapter.slug = await slugGen(newChapter.name);
+  newChapter.creatorId = stateUserId;
 
   let chapter;
   try {
@@ -252,7 +254,7 @@ router.post('/', permController.requireAuth, permController.grantAccess('createA
     throw e;
   }
   if (!chapter) {
-    ctx.assert(module, 401, 'Something went wrong');
+    ctx.assert(chapter, 401, 'Something went wrong');
   }
   ctx.status = 201;
   ctx.body = { chapter };
