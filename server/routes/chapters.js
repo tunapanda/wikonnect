@@ -442,8 +442,6 @@ router.post('/:id/upload', async ctx => {
         Chapter.query().findById(dirName).patch({ content_uri: uploadPath, ContentType: 'h5p' });
       }
     });
-
-
   } catch (e) {
     if (e.statusCode) {
       ctx.throw(e.statusCode, null, { errors: [e.message] });
