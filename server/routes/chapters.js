@@ -15,6 +15,7 @@ const permController = require('../middleware/permController');
 const validateChapter = require('../middleware/validation/validateChapter');
 
 const slugGen = require('../utils/slugGen');
+const { updatedAt } = require('../utils/timestamp');
 
 const router = new Router({
   prefix: '/chapters'
@@ -55,8 +56,8 @@ async function getChapterImage(id) {
       return image;
     }
   } catch (e) {
-    console.log(e);
-    // return 'images/profile-placeholder.gif';
+    // console.log(e);
+    return 'images/profile-placeholder.gif';
   }
 }
 
@@ -182,6 +183,8 @@ router.get('/:id', permController.requireAuth, async ctx => {
   } else {
     chapter = await Chapter.query().where(ctx.query).where({ id: ctx.params.id, creatorId: stateUserId });
   }
+  console.log(chapter.imageUrl);
+  console.log(chapter[0].imageUrl);
 
   ctx.assert(chapter, 404, 'no lesson by that ID');
   chapter.imageUrl = await getChapterImage(chapter[0].imageUrl);
@@ -263,15 +266,16 @@ router.put('/:id', permController.requireAuth, async ctx => {
   //router.put('/:id', async ctx => {
   const chapter_record = await Chapter.query().findById(ctx.params.id);
   let chapterData = ctx.request.body.chapter;
+  chapterData.approved = true;
 
   if (!chapter_record) {
     ctx.throw(400, 'No chapter with that ID');
   }
 
-  if (chapterData.imageUrl === null || chapterData.contentUri === null) {
-    chapterData.status = 'draft';
-    log.info(chapterData.status);
-  }
+  // if (chapter_record.imageUrl === null || chapter_record.contentUri === null) {
+  //   chapterData.status = 'draft';
+  //   log.info(chapterData.status);
+  // }
 
   let chapter;
   try {
@@ -399,8 +403,6 @@ async function uploadToBucket(file, dirName) {
     ContentType: 'h5p' // required
   };
 
-  console.log('Bucket Upload: ' + new Date());
-  console.log('--------------------------------------------------------------------------');
   //Upload image to AWS S3 bucket
   const data = await s3.s3.upload(params).promise();
   return data;
@@ -415,20 +417,6 @@ router.post('/:id/upload', async ctx => {
   ctx.assert(files.length, 400, 'No files sent.');
   ctx.assert(files.length === 1, 400, 'Too many files sent.');
 
-  // await busboy(ctx.req, {
-  //   onFile: function (fieldname, file) {
-  //     console.log('File [' + fieldname + ']' + ' file' + file);
-  //     // let unzipped = file.pipe(unzipper.Extract({ path: uploadDir }));
-  //     // // let unzipped = file.pipe(unzipper.Parse({ forceStream: true }));
-  //     // console.log(file);
-  //     // console.log('--------------------------------------------------------------------------');
-  //     const data = uploadToBucket(file, dirName);
-  //     console.log(data);
-  //     console.log('--------------------------------------------------------------------------');
-  //   }
-  // });
-
-  // }
   try {
     await busboy(ctx.req, {
       onFile: function (fieldname, file) {

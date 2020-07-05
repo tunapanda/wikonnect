@@ -15,13 +15,6 @@ export default class HomeController extends Controller {
     return this.store.query('chapter', { "approved": true });
   }
 
-
-  @computed('model.[].chapters.imageUrl')
-  get chapterImage() {
-    console.log(this.model.chapters.imageUrl);
-
-    return this.model.chapters.imageUrl;
-  }
   // get courseList() {
   //   return this.model.enrolledCourses.map((course, index) => {
   //     let colorIndex = index % 3;

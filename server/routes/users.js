@@ -242,30 +242,37 @@ router.get('/:id', permController.requireAuth, async ctx => {
 
   let userId = ctx.params.id != 'current' ? ctx.params.id : stateUserId;
   const user = await User.query().findById(userId).mergeJoinEager('[achievementAwards(selectBadgeNameAndId), userRoles(selectName), enrolledCourses(selectNameAndId)]');
+  user.profileUri = await getProfileImage(user.profileUri);
+
 
   if (!user) {
     ctx.throw(404, 'No User With that Id');
   }
 
   if (user.id != stateUserId || stateUserId === 'anonymous') {
-    log.info('Error logging  %s for %s', ctx.request.ip, ctx.path);
-    ctx.throw(401, 'You do not have permissions to view that user');
+    const publicData ={
+      'username': user.username,
+      'profileUri': user.profileUri,
+    };
+
+    ctx.status = 200;
+    ctx.body = { user: publicData };
+  } else {
+
+
+    returnType(user);
+    enrolledCoursesType(user);
+    userRoles(user);
+    // get all verification data
+    const userVerification = await knex('user_verification').where({ 'user_id': userId });
+    user.userVerification = userVerification;
+
+    log.info('Got a request from %s for %s', ctx.request.ip, ctx.path);
+
+    ctx.status = 200;
+    ctx.body = { user };
+
   }
-
-  returnType(user);
-  enrolledCoursesType(user);
-  userRoles(user);
-  // get all verification data
-  const userVerification = await knex('user_verification').where({ 'user_id': userId });
-  user.userVerification = userVerification;
-
-  log.info('Got a request from %s for %s', ctx.request.ip, ctx.path);
-
-  user.profileUri = await getProfileImage(user.profileUri);
-
-  ctx.status = 200;
-  ctx.body = { user };
-
 });
 
 /**
