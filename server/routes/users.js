@@ -254,12 +254,9 @@ router.get('/:id', permController.requireAuth, async ctx => {
       'username': user.username,
       'profileUri': user.profileUri,
     };
-
     ctx.status = 200;
     ctx.body = { user: publicData };
   } else {
-
-
     returnType(user);
     enrolledCoursesType(user);
     userRoles(user);
@@ -271,7 +268,6 @@ router.get('/:id', permController.requireAuth, async ctx => {
 
     ctx.status = 200;
     ctx.body = { user };
-
   }
 });
 
