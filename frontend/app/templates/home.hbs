@@ -2,9 +2,10 @@
 
 
   <div class="row mt-5">
-    {{#each model as |chapter|}}
+    {{#each this.allChapters as |chapter|}}
+    {{ log chapter}}
 
-      <H5pListItem @chapter={{chapter}} />
+      <H5pListItem @chapter={{chapter}} @image={{chapterImage}} />
     {{/each}}
   </div>
 </div>

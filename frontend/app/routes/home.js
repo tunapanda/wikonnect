@@ -12,10 +12,10 @@ export default class HomeRoute extends Route {
 
 
 
-  async model() {
-    let approved = await this.store.query('chapter', { "approved": true });
-    return approved;
-  }
+  // async model() {
+  //   let approved = await this.store.query('chapter', { "approved": true });
+  //   return approved;
+  // }
 
   async afterModel() {
     set(this, 'headData.title', 'Wikonnect - Chapters');
