@@ -15,7 +15,6 @@ const permController = require('../middleware/permController');
 const validateChapter = require('../middleware/validation/validateChapter');
 
 const slugGen = require('../utils/slugGen');
-const { updatedAt } = require('../utils/timestamp');
 
 const router = new Router({
   prefix: '/chapters'
@@ -394,49 +393,24 @@ router.post('/:id/chapter-image', async (ctx, next) => {
  * @apiError {String} errors Bad Request.
  */
 
-
-async function uploadToBucket(file, dirName) {
-  const params = {
-    Bucket: s3.config.bucket, // pass your bucket name
-    Key: `uploads/h5p/${dirName}`, // key for saving filename
-    Body: file, //image to be uploaded
-    ContentType: 'h5p' // required
-  };
-
-  //Upload image to AWS S3 bucket
-  const data = await s3.s3.upload(params).promise();
-  return data;
-}
 router.post('/:id/upload', async ctx => {
-
-  const { files } = await busboy(ctx.req);
   const dirName = ctx.params.id;
   const uploadPath = `uploads/h5p/${dirName}`;
   const uploadDir = path.resolve(__dirname, '../public/' + uploadPath);
 
-  ctx.assert(files.length, 400, 'No files sent.');
-  ctx.assert(files.length === 1, 400, 'Too many files sent.');
+  await busboy(ctx.req, {
+    onFile: function (fieldname, file) {
+      file.pipe(unzipper.Extract({ path: uploadDir }));
+    }
+  });
+  // ctx.assert(files.length, 400, 'No files sent.');
+  // ctx.assert(files.length === 1, 400, 'Too many files sent.');
 
-  try {
-    await busboy(ctx.req, {
-      onFile: function (fieldname, file) {
-        console.log('File [' + fieldname + ']' + ' file' + file);
-        // file.pipe(unzipper.Extract({ path: uploadDir }));
-        // let unzipped = file.pipe(unzipper.Parse({ forceStream: true }));
-        //Upload image to AWS S3 bucket
-        uploadToBucket(file, dirName);
-      },
-      onEnd: function () {
-        Chapter.query().findById(dirName).patch({ content_uri: uploadPath, ContentType: 'h5p' });
-      }
+  await Chapter.query()
+    .findById(dirName)
+    .patch({
+      content_uri: uploadPath
     });
-  } catch (e) {
-    if (e.statusCode) {
-      ctx.throw(e.statusCode, null, { errors: [e.message] });
-    } else { ctx.throw(400, null, { errors: ['Bad Request', e.message] }); }
-    throw e;
-  }
-
 
 
   ctx.body = {
