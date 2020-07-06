@@ -8,7 +8,7 @@ export default class HomeController extends Controller {
 
   colorList = ['54378B', 'F57010', '32A583']
 
-    // { { log chapter.imageUrl } }
+  // { { log chapter.imageUrl } }
 
   @computed('model.[]')
   get allChapters(){
