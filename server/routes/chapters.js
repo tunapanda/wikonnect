@@ -414,8 +414,15 @@ router.post('/:id/chapter-image', async (ctx, next) => {
 
 router.post('/:id/upload', async ctx => {
   const dirName = ctx.params.id;
-  const uploadPath = `uploads/h5p/${dirName}`;
-  const uploadDir = path.resolve(__dirname, '../public/' + uploadPath);
+  const uploadPath = `/uploads/h5p/${dirName}`;
+  const uploadDir = path.resolve(__dirname, '../public' + uploadPath);
+
+  await Chapter.query()
+    .findById(dirName)
+    .patch({
+      content_uri: uploadPath
+    });
+
 
   await busboy(ctx.req, {
     onFile: function (fieldname, file) {
@@ -425,12 +432,13 @@ router.post('/:id/upload', async ctx => {
   // ctx.assert(files.length, 400, 'No files sent.');
   // ctx.assert(files.length === 1, 400, 'Too many files sent.');
 
-  const chapter = await Chapter.query()
-    .patchAndFetchById(dirName, {
-      content_uri: '/' + uploadPath
-    });
 
-  console.log(chapter);
+  console.log(dirName);
+  console.log(uploadPath);
+  console.log('--------------------------------------------------');
+
+
+
 
   ctx.body = {
     host: ctx.host,
