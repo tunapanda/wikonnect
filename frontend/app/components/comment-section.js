@@ -33,13 +33,6 @@ export default class CommentSectionComponent extends Component {
 
   }
 
-
-  @computed('me.user.profileUri')
-  get profileUri() {
-    return this.me.user.profileUri;
-  }
-
-
   @action
   async saveComment(model) {
     let chap = await this.store.findRecord('chapter', this.args.selectedChapter);
