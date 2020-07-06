@@ -252,6 +252,7 @@ router.get('/:id', permController.requireAuth, async ctx => {
     const publicData ={
       'username': user.username,
       'profileUri': user.profileUri,
+      'id': user.id,
     };
     ctx.status = 200;
     ctx.body = { user: publicData };

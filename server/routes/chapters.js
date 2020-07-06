@@ -138,12 +138,14 @@ router.get('/teach', permController.requireAuth, async ctx => {
 
   let chapter = await Chapter.query().where({ 'creator_id': stateUserId });
 
-  // let chapter;
-  // try {
-  //   chapter = await Chapter.query().where({ creatorId: stateUserId });
-  // } catch (e) {
-  //   ctx.throw(400, null, { errors: [e.message] });
-  // }
+  ctx.status = 200;
+  ctx.body = { 'chapter': chapter };
+});
+
+router.get('/teach/:id', permController.requireAuth, async ctx => {
+  let stateUserId = ctx.state.user.id == undefined ? ctx.state.user.data.id : ctx.state.user.id;
+
+  let chapter = await Chapter.query().where(ctx.query).where({ id: ctx.params.id, creatorId: stateUserId });
 
   ctx.status = 200;
   ctx.body = { 'chapter': chapter };
@@ -199,8 +201,9 @@ router.get('/:id', permController.requireAuth, async ctx => {
   }
 
   // get chapter image from s3 bucket
-  chapter[0].imageUrl = await getChapterImage(chapter[0].imageUrl);
-
+  if (chapter.length) {
+    chapter[0].imageUrl = await getChapterImage(chapter[0].imageUrl);
+  }
 
   ctx.assert(chapter, 404, 'no lesson by that ID');
   // const achievement = await Achievement.query().where('user_id', ctx.state.user.data.id);
@@ -282,7 +285,6 @@ router.put('/:id', permController.requireAuth, async ctx => {
   //router.put('/:id', async ctx => {
   const chapter_record = await Chapter.query().findById(ctx.params.id);
   let chapterData = ctx.request.body.chapter;
-  chapterData.approved = true;
 
   if (!chapter_record) {
     ctx.throw(400, 'No chapter with that ID');
@@ -423,12 +425,12 @@ router.post('/:id/upload', async ctx => {
   // ctx.assert(files.length, 400, 'No files sent.');
   // ctx.assert(files.length === 1, 400, 'Too many files sent.');
 
-  await Chapter.query()
-    .findById(dirName)
-    .patch({
-      content_uri: uploadPath
+  const chapter = await Chapter.query()
+    .patchAndFetchById(dirName, {
+      content_uri: '/' + uploadPath
     });
 
+  console.log(chapter);
 
   ctx.body = {
     host: ctx.host,
