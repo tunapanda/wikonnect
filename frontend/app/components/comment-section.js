@@ -8,24 +8,24 @@ export default class CommentSectionComponent extends Component {
   @service
   me
 
-  profileImage = "/images/profile-placeholder.gif"
-
-
   @service
   session;
 
-
-
   @service
   store;
-
-
 
   get commentModel() {
     return this.store.createRecord('comment', {
       creator: this.me.get('user')
     });
   }
+
+  @computed('me.user.profileUri')
+  get profileUri() {
+    return this.me.user.profileUri;
+  }
+
+
   @computed
   get chapterComments() {
 

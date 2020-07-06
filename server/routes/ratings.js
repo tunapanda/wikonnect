@@ -4,12 +4,22 @@ const Rating = require('../models/rating');
 const { requireAuth, grantAccess } = require('../middleware/permController');
 
 const router = new Router({
-  prefix: '/rating'
+  prefix: '/ratings'
 });
 
 
-router.get('/:id', requireAuth, grantAccess('readAny', 'path'), async ctx => {
-  const rating = await Rating.query().findById(ctx.params.id);
+router.get('/:id', requireAuth, grantAccess('readOwn', 'path'), async ctx => {
+
+  let stateUserId = ctx.state.user.id == undefined ? ctx.state.user.data.id : ctx.state.user.id;
+
+  let ratingId = ctx.params.id != 'current' ? ctx.params.id : stateUserId;
+  const rating = await Rating.query().findById(ratingId);
+
+
+  if (rating.userId != stateUserId || stateUserId === 'anonymous') {
+    log.info('Error logging  %s for %s', ctx.request.ip, ctx.path);
+    ctx.throw(401, 'You do not have permissions to view that user');
+  }
 
   ctx.assert(rating, 404, 'no lesson by that ID');
   log.error('The user path accessed does not exist');
