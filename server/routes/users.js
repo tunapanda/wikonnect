@@ -260,6 +260,7 @@ router.get('/:id', permController.requireAuth, async ctx => {
     enrolledCoursesType(user);
     userRoles(user);
     // get all verification data
+    achievementAwardsType(user);
     const userVerification = await knex('user_verification').where({ 'user_id': userId });
     user.userVerification = userVerification;
 
