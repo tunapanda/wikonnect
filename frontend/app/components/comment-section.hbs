@@ -1,15 +1,11 @@
 <div class="padded">
   {{#if me.isAuthenticated}}
 
-  <BsForm @model={{commentModel}} @onSubmit={{action "saveComment"}} as |form|>
-    <form.element @controlType="textarea" @label="Comment" @property="comment" />
-    <input type="hidden" value={{@id}} name="chapter_id" id="chapter_id">
-    <BsButton @type="primary" @defaultText="Comment" @buttonType="submit" />
-
-
-  </BsForm>
-
-
+    <BsForm @model={{commentModel}} @onSubmit={{action "saveComment"}} as |form|>
+      <form.element @controlType="textarea" @label="Comment" @property="comment" />
+      <input type="hidden" value={{@id}} name="chapter_id" id="chapter_id">
+      <BsButton @type="primary" @defaultText="Comment" @buttonType="submit" />
+    </BsForm>
 
   {{else}}
   <div class="padded">

@@ -112,12 +112,12 @@ router.get('/:id', requireAuth, grantAccess('readAny', 'path'), async ctx => {
 router.post('/', async ctx => {
   let stateUserId = ctx.state.user.id == undefined ? ctx.state.user.data.id : ctx.state.user.id;
 
-  let newChap = ctx.request.body.comment;
-  newChap.creatorId = stateUserId;
+  let newComment = ctx.request.body.comment;
+  newComment.creatorId = stateUserId;
 
   let comment;
   try {
-    comment = await Comment.query().insertAndFetch(newChap);
+    comment = await Comment.query().insertAndFetch(newComment);
   } catch (e) {
     if (e.statusCode) {
       ctx.throw(e.statusCode, null, { errors: [e] });

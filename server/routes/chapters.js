@@ -23,12 +23,12 @@ const router = new Router({
 async function returnType(parent) {
   if (parent.length == undefined) {
     parent.comment.forEach(comment => {
-      return comment.type = 'comments';
+      return comment.type = 'comment';
     });
   } else {
     parent.forEach(mod => {
       mod.comment.forEach(comment => {
-        return comment.type = 'comments';
+        return comment.type = 'comment';
       });
     });
   }
@@ -59,6 +59,21 @@ async function getChapterImage(id) {
     return 'images/profile-placeholder.gif';
   }
 }
+
+async function achievementType(parent) {
+  if (parent.length == undefined) {
+    parent.achievement.forEach(data => {
+      return data.type = 'achievement';
+    });
+  } else {
+    parent.forEach(mod => {
+      mod.achievement.forEach(data => {
+        return data.type = 'achievement';
+      });
+    });
+  }
+}
+
 
 /**
  * @api {get} /chapters/ GET all chapters.
@@ -107,7 +122,7 @@ router.get('/', permController.requireAuth, async ctx => {
         .where({ status: 'published' })
         .eager('comment(selectComment)');
     } else {
-      chapter = await Chapter.query().where(ctx.query).where({ status: 'published' }).eager('comment(selectComment)');
+      chapter = await Chapter.query().where(ctx.query).where({ status: 'published' }).eager('[comment(selectComment), achievement(selectAchievement)]');
     }
     await returnType(chapter);
   } else {
@@ -131,7 +146,7 @@ router.get('/teach', permController.requireAuth, async ctx => {
   // }
 
   ctx.status = 200;
-  ctx.body = { chapter };
+  ctx.body = { 'chapter': chapter };
 });
 
 
@@ -186,10 +201,11 @@ router.get('/:id', permController.requireAuth, async ctx => {
   console.log(chapter[0].imageUrl);
 
   ctx.assert(chapter, 404, 'no lesson by that ID');
-  chapter.imageUrl = await getChapterImage(chapter[0].imageUrl);
-
   // const achievement = await Achievement.query().where('user_id', ctx.state.user.data.id);
   // returnChapterStatus(chapter, achievement);
+  await returnType(chapter);
+  await achievementType(chapter);
+  chapter.imageUrl = await getChapterImage(chapter[0].imageUrl);
 
   ctx.status = 200;
   ctx.body = { chapter };

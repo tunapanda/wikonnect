@@ -37,6 +37,14 @@ class Chapter extends Model {
           from: 'chapters.id',
           to: 'flags.chapterId'
         }
+      },
+      achievement: {
+        relation: Model.HasManyRelation,
+        modelClass: __dirname + '/achievement',
+        join: {
+          from: 'chapters.id',
+          to: 'achievements.target'
+        }
       }
     };
   }

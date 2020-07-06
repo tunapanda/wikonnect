@@ -24,17 +24,16 @@ const router = new Router({
   prefix: '/users'
 });
 
-
-async function returnType(parent) {
+async function achievementAwardsType(parent) {
   try {
     if (parent.length == undefined) {
-      parent.achievementAwards.forEach(lesson => {
-        return lesson.type = 'achievementAwards';
+      parent.achievementAwards.forEach(award => {
+        return award.type = 'achievementAward';
       });
     } else {
       parent.forEach(mod => {
-        mod.achievementAwards.forEach(lesson => {
-          return lesson.type = 'achievementAwards';
+        mod.achievementAwards.forEach(award => {
+          return award.type = 'achievementAward';
         });
       });
     }
@@ -257,7 +256,6 @@ router.get('/:id', permController.requireAuth, async ctx => {
     ctx.status = 200;
     ctx.body = { user: publicData };
   } else {
-    returnType(user);
     enrolledCoursesType(user);
     userRoles(user);
     // get all verification data
@@ -300,7 +298,7 @@ router.get('/', permController.requireAuth, permController.grantAccess('readAny'
   }
 
   enrolledCoursesType(user);
-  returnType(user);
+  achievementAwardsType(user);
   userRoles(user);
 
   ctx.body = { user };
