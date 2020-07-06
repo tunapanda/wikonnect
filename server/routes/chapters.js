@@ -197,15 +197,16 @@ router.get('/:id', permController.requireAuth, async ctx => {
   } else {
     chapter = await Chapter.query().where(ctx.query).where({ id: ctx.params.id, creatorId: stateUserId });
   }
-  console.log(chapter.imageUrl);
-  console.log(chapter[0].imageUrl);
+
+  // get chapter image from s3 bucket
+  chapter[0].imageUrl = await getChapterImage(chapter[0].imageUrl);
+
 
   ctx.assert(chapter, 404, 'no lesson by that ID');
   // const achievement = await Achievement.query().where('user_id', ctx.state.user.data.id);
   // returnChapterStatus(chapter, achievement);
   await returnType(chapter);
-  await achievementType(chapter);
-  chapter.imageUrl = await getChapterImage(chapter[0].imageUrl);
+  // await achievementType(chapter);
 
   ctx.status = 200;
   ctx.body = { chapter };
