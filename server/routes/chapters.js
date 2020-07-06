@@ -193,7 +193,7 @@ router.get('/:id', permController.requireAuth, async ctx => {
   let chapter;
 
   if (roleNameList.includes(stateUserRole)) {
-    chapter = await Chapter.query().where({ id: ctx.params.id, status: 'published' }).eager('comment(selectComment)');
+    chapter = await Chapter.query().where({ id: ctx.params.id, status: 'published' }).eager('[comment(selectComment), achievement(selectAchievement)]');
   } else if (stateUserRole == anonymous) {
     chapter = await Chapter.query().where(ctx.query).where({ id: ctx.params.id, status: 'published' });
   } else {
@@ -209,7 +209,7 @@ router.get('/:id', permController.requireAuth, async ctx => {
   // const achievement = await Achievement.query().where('user_id', ctx.state.user.data.id);
   // returnChapterStatus(chapter, achievement);
   await returnType(chapter);
-  // await achievementType(chapter);
+  await achievementType(chapter);
 
   ctx.status = 200;
   ctx.body = { chapter };
