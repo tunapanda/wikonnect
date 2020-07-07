@@ -11,10 +11,6 @@ class Comment extends Model {
     return commentSchema;
   }
 
-  static get relationMappings() {
-    return { };
-  }
-
   static get modifiers() {
     return {
       selectComment: (builder) => {
