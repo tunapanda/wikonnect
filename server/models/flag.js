@@ -25,7 +25,7 @@ class Flag extends Model {
   static get modifiers() {
     return {
       selectFlag: (builder) => {
-        builder.select('id', 'user_id', 'chapter_id', 'comment');
+        builder.select('id', 'user_id','chapter_id', 'comment');
       }
     };
   }

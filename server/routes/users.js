@@ -45,13 +45,13 @@ async function achievementAwardsType(parent) {
 async function returnType(parent) {
   try {
     if (parent.length == undefined) {
-      parent.achievementAwards.forEach(lesson => {
-        return lesson.type = 'achievementAwards';
+      parent.achievementAwards.forEach(award => {
+        return award.type = 'achievementAward';
       });
     } else {
       parent.forEach(mod => {
-        mod.achievementAwards.forEach(lesson => {
-          return lesson.type = 'achievementAwards';
+        mod.achievementAwards.forEach(award => {
+          return award.type = 'achievementAward';
         });
       });
     }
@@ -259,6 +259,8 @@ router.get('/:id', permController.requireAuth, async ctx => {
 
   let userId = ctx.params.id != 'current' ? ctx.params.id : stateUserId;
   const user = await User.query().findById(userId).mergeJoinEager('[achievementAwards(selectBadgeNameAndId), userRoles(selectName), enrolledCourses(selectNameAndId)]');
+  user.profileUri = await getProfileImage(user.profileUri);
+
 
   if (!user) {
     ctx.throw(404, 'No User With that Id');
@@ -315,7 +317,7 @@ router.get('/', permController.requireAuth, permController.grantAccess('readAny'
   }
 
   enrolledCoursesType(user);
-  returnType(user);
+  achievementAwardsType(user);
   userRoles(user);
 
   ctx.body = { user };
@@ -391,79 +393,40 @@ router.post('/:id/profile-image', permController.requireAuth, async (ctx, next) 
   const uploadPath = 'uploads/images/profile';
   const uploadDir = path.resolve(__dirname, '../public/' + uploadPath);
 
-  try {
-    await User.query().patchAndFetchById(ctx.params.id, { profileUri: fileNameBase });
-  } catch (e) {
-    log.error(e);
-  }
-
-  // const sizes = [
-  //   70,
-  //   320,
-  //   640
-  // ];
-
   ctx.assert(files.length, 400, 'No files sent.');
   ctx.assert(files.length === 1, 400, 'Too many files sent.');
 
-  // const resizedFiles = Promise.all(sizes.map((size) => {
-  //   const resize = sharp()
-  //     .resize(size, size)
-  //     .jpeg({ quality: 70 })
-  //     .toFile(`public/uploads/images/profile/${fileNameBase}_${size}.jpg`);
-  //   files[0].pipe(resize);
-  //   return resize;
-  // }));
-
-  const resizer = sharp()
-    .resize(500, 500)
-    .jpeg({ quality: 70 });
+  const resizer = sharp().resize(500, 500).jpeg({ quality: 70 });
 
   files[0].pipe(resizer);
 
-
   if (s3.config) {
-
-
     let buffer = await resizer.toBuffer();
-
     const params = {
       Bucket: s3.config.bucket, // pass your bucket name
       Key: `uploads/profiles/${fileNameBase}.jpg`, // key for saving filename
       Body: buffer, //image to be uploaded
     };
 
-
     try {
       //Upload image to AWS S3 bucket
       const uploaded = await s3.s3.upload(params).promise();
-
       log.info('Uploaded in:', uploaded.Location);
+      await User.query().patchAndFetchById(ctx.params.id, { profileUri: fileNameBase });
+
       ctx.body = {
         host: `${params.Bucket}.s3.amazonaws.com/uploads/profiles`,
         path: `${fileNameBase}.jpg`
       };
-    }
-
-    catch (e) {
+    } catch (e) {
       log.error(e);
       ctx.throw(e.statusCode, null, { message: e.message });
     }
-
   }
 
   else {
-
-
     await resizer.toFile(`${uploadDir}/${fileNameBase}.jpg`);
-
-
-    await User.query()
-      .findById(ctx.params.id)
-      .patch({
-        profile_uri: `${uploadPath}/${fileNameBase}.jpg`
-      });
-
+    await User.query().findById(ctx.params.id).patchAndFetchById({ profile_uri: `${uploadPath}/${fileNameBase}.jpg` });
     ctx.body = {
       host: ctx.host,
       path: `${uploadPath}/${fileNameBase}.jpg`

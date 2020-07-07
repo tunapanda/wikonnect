@@ -1,5 +1,5 @@
 import Component from '@glimmer/component';
-import { H5P, H5PxAPI } from 'h5p-standalone'; // ES6
+import { H5P } from 'h5p-standalone'; // ES6
 import { action } from '@ember/object';
 import { inject, inject as service } from '@ember/service';
 
@@ -19,7 +19,6 @@ export default class H5pComponent extends Component {
       frameCss: '/h5p/h5p.css'
     };
 
-    console.log(H5PxAPI, H5P);
     await new H5P(el, h5pLocation, options);
   }
 

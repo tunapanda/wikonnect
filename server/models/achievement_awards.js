@@ -13,7 +13,7 @@ class AchievementAwards extends Model {
   static get modifiers() {
     return {
       selectBadgeNameAndId: (builder) => {
-        builder.select('id', 'name');
+        builder.select('id', 'name', 'achievementId', 'userId');
       }
     };
   }
