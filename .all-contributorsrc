@@ -21,6 +21,16 @@
       ]
     },
     {
+      "login": "proverbial-ninja",
+      "name": "Kiki",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/2375904?v=4",
+      "profile": "https://github.com/proverbial-ninja",
+      "contributions": [
+        "code",
+        "design"
+      ]
+    },
+    {
       "login": "mrlarso",
       "name": "mrlarso",
       "avatar_url": "https://avatars1.githubusercontent.com/u/5390448?v=4",
@@ -36,16 +46,6 @@
       "profile": "https://github.com/Jakeii",
       "contributions": [
         "code"
-      ]
-    },
-    {
-      "login": "proverbial-ninja",
-      "name": "Kiki",
-      "avatar_url": "https://avatars3.githubusercontent.com/u/2375904?v=4",
-      "profile": "https://github.com/proverbial-ninja",
-      "contributions": [
-        "code",
-        "design"
       ]
     },
     {
