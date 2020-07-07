@@ -24,6 +24,23 @@ const router = new Router({
   prefix: '/users'
 });
 
+async function achievementAwardsType(parent) {
+  try {
+    if (parent.length == undefined) {
+      parent.achievementAwards.forEach(award => {
+        return award.type = 'achievementAward';
+      });
+    } else {
+      parent.forEach(mod => {
+        mod.achievementAwards.forEach(award => {
+          return award.type = 'achievementAward';
+        });
+      });
+    }
+  } catch (error) {
+    log.error(error);
+  }
+}
 
 async function returnType(parent) {
   try {
@@ -248,26 +265,27 @@ router.get('/:id', permController.requireAuth, async ctx => {
   }
 
   if (user.id != stateUserId || stateUserId === 'anonymous') {
-    log.info('Error logging  %s for %s', ctx.request.ip, ctx.path);
-    ctx.throw(401, 'You do not have permissions to view that user');
+    const publicData = {
+      'username': user.username,
+      'profileUri': user.profileUri,
+      'id': user.id,
+    };
+    ctx.status = 200;
+    ctx.body = { user: publicData };
+  } else {
+    enrolledCoursesType(user);
+    userRoles(user);
+    // get all verification data
+    achievementAwardsType(user);
+    const userVerification = await knex('user_verification').where({ 'user_id': userId });
+    user.userVerification = userVerification;
+
+    log.info('Got a request from %s for %s', ctx.request.ip, ctx.path);
+
+    ctx.status = 200;
+    ctx.body = { user };
   }
-
-  returnType(user);
-  enrolledCoursesType(user);
-  userRoles(user);
-  // get all verification data
-  const userVerification = await knex('user_verification').where({ 'user_id': userId });
-  user.userVerification = userVerification;
-
-  log.info('Got a request from %s for %s', ctx.request.ip, ctx.path);
-
-  user.profileUri = await getProfileImage(user.profileUri);
-
-  ctx.status = 200;
-  ctx.body = { user };
-
 });
-
 /**
  * @api {get} /users GET all users.
  * @apiName GetUsers
