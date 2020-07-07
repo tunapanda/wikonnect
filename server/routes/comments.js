@@ -34,7 +34,7 @@ router.get('/', requireAuth, grantAccess('readAny', 'path'), async ctx => {
 
   let comment;
   try {
-    comment = await Comment.query();
+    comment = await Comment.query().where(ctx.query);
   } catch (e) {
     if (e.statusCode) {
       ctx.throw(e.statusCode, null, { errors: [e] });
@@ -109,17 +109,6 @@ router.get('/:id', requireAuth, grantAccess('readAny', 'path'), async ctx => {
  *    }
  *
  */
-<<<<<<< HEAD
-router.post('/', async ctx => {
-  let stateUserId = ctx.state.user.id == undefined ? ctx.state.user.data.id : ctx.state.user.id;
-
-  let newChap = ctx.request.body.comment;
-  newChap.creatorId = stateUserId;
-
-  let comment;
-  try {
-    comment = await Comment.query().insertAndFetch(newChap);
-=======
 router.post('/:id', requireAuth, grantAccess('createAny', 'path'), async ctx => {
   let stateUserId = ctx.state.user.id == undefined ? ctx.state.user.data.id : ctx.state.user.id;
   let newChapterComment = ctx.request.body.comment;
@@ -129,7 +118,6 @@ router.post('/:id', requireAuth, grantAccess('createAny', 'path'), async ctx => 
   let comment;
   try {
     comment = await Comment.query().insertAndFetch(newChapterComment);
->>>>>>> feature/comment
   } catch (e) {
     if (e.statusCode) {
       ctx.throw(e.statusCode, null, { errors: [e] });
