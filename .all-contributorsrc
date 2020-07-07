@@ -7,7 +7,7 @@
     "README.md"
   ],
   "imageSize": 100,
-  "commit": true,
+  "commit": false,
   "commitConvention": "ember",
   "contributors": [
     {
@@ -16,7 +16,8 @@
       "avatar_url": "https://avatars0.githubusercontent.com/u/13944912?v=4",
       "profile": "https://github.com/mosesokemwa",
       "contributions": [
-        "code"
+        "code",
+        "design"
       ]
     },
     {
@@ -42,6 +43,52 @@
       "name": "Kiki",
       "avatar_url": "https://avatars3.githubusercontent.com/u/2375904?v=4",
       "profile": "https://github.com/proverbial-ninja",
+      "contributions": [
+        "code",
+        "design"
+      ]
+    },
+    {
+      "login": "bkmgit",
+      "name": "Benson Muite",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/1679477?v=4",
+      "profile": "https://github.com/bkmgit",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "colleowino",
+      "name": "Cliff Owino",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/2420182?v=4",
+      "profile": "http://colleowino.github.io/",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "Mutugiii",
+      "name": "Mutugi",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/48474421?v=4",
+      "profile": "https://github.com/Mutugiii",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "avicndugu",
+      "name": "Avic Ndugu",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/37213663?v=4",
+      "profile": "https://github.com/avicndugu",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "BonfaceKilz",
+      "name": "BonfaceKilz",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/11820306?v=4",
+      "profile": "https://bonfacemunyoki.com/",
       "contributions": [
         "code"
       ]

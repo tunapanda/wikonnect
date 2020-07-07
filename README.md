@@ -1,6 +1,6 @@
 <p align="center">
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-4-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-9-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
   <img  height="200" src="https://app.wikonnect.org/images/icons/wikonnect-primary.svg">
 </p>
@@ -202,10 +202,17 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 <!-- markdownlint-disable -->
 <table>
   <tr>
-    <td align="center"><a href="https://github.com/mosesokemwa"><img src="https://avatars0.githubusercontent.com/u/13944912?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Moses Okemwa</b></sub></a><br /><a href="https://github.com/tunapanda/wikonnect/commits?author=mosesokemwa" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/mosesokemwa"><img src="https://avatars0.githubusercontent.com/u/13944912?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Moses Okemwa</b></sub></a><br /><a href="https://github.com/tunapanda/wikonnect/commits?author=mosesokemwa" title="Code">💻</a> <a href="#design-mosesokemwa" title="Design">🎨</a></td>
     <td align="center"><a href="https://github.com/mrlarso"><img src="https://avatars1.githubusercontent.com/u/5390448?v=4?s=100" width="100px;" alt=""/><br /><sub><b>mrlarso</b></sub></a><br /><a href="https://github.com/tunapanda/wikonnect/commits?author=mrlarso" title="Code">💻</a></td>
     <td align="center"><a href="https://github.com/Jakeii"><img src="https://avatars2.githubusercontent.com/u/1731150?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Jake Lee Kennedy</b></sub></a><br /><a href="https://github.com/tunapanda/wikonnect/commits?author=Jakeii" title="Code">💻</a></td>
-    <td align="center"><a href="https://github.com/proverbial-ninja"><img src="https://avatars3.githubusercontent.com/u/2375904?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Kiki</b></sub></a><br /><a href="https://github.com/tunapanda/wikonnect/commits?author=proverbial-ninja" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/proverbial-ninja"><img src="https://avatars3.githubusercontent.com/u/2375904?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Kiki</b></sub></a><br /><a href="https://github.com/tunapanda/wikonnect/commits?author=proverbial-ninja" title="Code">💻</a> <a href="#design-proverbial-ninja" title="Design">🎨</a></td>
+    <td align="center"><a href="https://github.com/bkmgit"><img src="https://avatars1.githubusercontent.com/u/1679477?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Benson Muite</b></sub></a><br /><a href="https://github.com/tunapanda/wikonnect/commits?author=bkmgit" title="Code">💻</a></td>
+    <td align="center"><a href="http://colleowino.github.io/"><img src="https://avatars3.githubusercontent.com/u/2420182?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Cliff Owino</b></sub></a><br /><a href="https://github.com/tunapanda/wikonnect/commits?author=colleowino" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/Mutugiii"><img src="https://avatars3.githubusercontent.com/u/48474421?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Mutugi</b></sub></a><br /><a href="https://github.com/tunapanda/wikonnect/commits?author=Mutugiii" title="Code">💻</a></td>
+  </tr>
+  <tr>
+    <td align="center"><a href="https://github.com/avicndugu"><img src="https://avatars1.githubusercontent.com/u/37213663?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Avic Ndugu</b></sub></a><br /><a href="https://github.com/tunapanda/wikonnect/commits?author=avicndugu" title="Code">💻</a></td>
+    <td align="center"><a href="https://bonfacemunyoki.com/"><img src="https://avatars0.githubusercontent.com/u/11820306?v=4?s=100" width="100px;" alt=""/><br /><sub><b>BonfaceKilz</b></sub></a><br /><a href="https://github.com/tunapanda/wikonnect/commits?author=BonfaceKilz" title="Code">💻</a></td>
   </tr>
 </table>
 
