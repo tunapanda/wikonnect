@@ -9,6 +9,14 @@ class Achievement extends Model {
   static get relationMappings() {
     return {};
   }
+
+  static get modifiers() {
+    return {
+      selectAchievement: (builder) => {
+        builder.select('id', 'target', 'target_status');
+      }
+    };
+  }
 }
 
 Achievement.knex(knex);

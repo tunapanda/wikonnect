@@ -29,7 +29,7 @@ const router = new Router({
  *      }
  *
  */
-router.get('/', requireAuth, grantAccess('readAny', 'path'), async ctx => {
+router.get('/', async ctx => {
   // let stateUserId = ctx.state.user.id == undefined ? ctx.state.user.data.id : ctx.state.user.id;
 
   let comment;
@@ -109,15 +109,15 @@ router.get('/:id', requireAuth, grantAccess('readAny', 'path'), async ctx => {
  *    }
  *
  */
-router.post('/:id', requireAuth, grantAccess('createAny', 'path'), async ctx => {
+router.post('/', async ctx => {
   let stateUserId = ctx.state.user.id == undefined ? ctx.state.user.data.id : ctx.state.user.id;
-  let newChapterComment = ctx.request.body.comment;
-  newChapterComment.chapterId = ctx.params.id;
-  newChapterComment.creatorId = stateUserId;
+
+  let newComment = ctx.request.body.comment;
+  newComment.creatorId = stateUserId;
 
   let comment;
   try {
-    comment = await Comment.query().insertAndFetch(newChapterComment);
+    comment = await Comment.query().insertAndFetch(newComment);
   } catch (e) {
     if (e.statusCode) {
       ctx.throw(e.statusCode, null, { errors: [e] });
@@ -126,6 +126,37 @@ router.post('/:id', requireAuth, grantAccess('createAny', 'path'), async ctx => 
   }
   if (!comment) {
     ctx.assert(comment, 401, 'Something went wrong');
+  }
+  ctx.status = 201;
+  ctx.body = { comment };
+
+});
+
+
+/**
+ * @api {put} /:chapterId PUT comment
+ * @apiName PutAChapterComment
+ * @apiGroup ChapterComments
+ * @apiPermission authenticated user
+ *
+ */
+
+router.put('/:id', requireAuth, grantAccess('updateOwn', 'path'), async ctx => {
+  const comment_record = await Comment.query().findById(ctx.params.id);
+  let commentData = ctx.request.body.comment;
+
+  if (!comment_record) {
+    ctx.throw(400, 'No chapter with that ID');
+  }
+
+  let comment;
+  try {
+    comment = await Comment.query().patchAndFetchById(ctx.params.id, commentData);
+  } catch (e) {
+    if (e.statusCode) {
+      ctx.throw(e.statusCode, null, { errors: [e.message] });
+    } else { ctx.throw(400, null, { errors: ['Bad Request'] }); }
+    throw e;
   }
   ctx.status = 201;
   ctx.body = { comment };

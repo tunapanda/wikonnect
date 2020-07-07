@@ -2,6 +2,7 @@ const Router = require('koa-router');
 const Achievement = require('../models/achievement');
 const validateAchievement = require('../middleware/validation/validateAchievement');
 const fetch = require('node-fetch');
+const log = require('../utils/logger');
 
 const lrsDomain = ' http://www.example.org';
 const lrsPrefix = 'data/xAPI/statements';
@@ -83,12 +84,12 @@ router.post('/', validateAchievement, async ctx => {
       },
       method: 'POST'
     });
-    console.log(`Connection to Learning Locker on ${lrsDomain} successfully`);
+    log.info(`Connection to Learning Locker on ${lrsDomain} successfully`);
   } catch (e) {
     if (e.name !== 'ConnectionError') {
-      console.log(e);
+      log.error(e);
     } else {
-      console.log(`Connection to Learning Locker on ${lrsDomain} failed`);
+      log.info(`Connection to Learning Locker on ${lrsDomain} failed`);
     }
   }
   const achievement = await Achievement.query().insertAndFetch(xAPIRecord);

@@ -38,13 +38,22 @@ const putData = {
 };
 
 const invalidData = {
-  chapter: {
+  'chapter': {
     'id': 'chapter778',
     'name': 'Testing Chapter Route',
     'slug': 'testing-chapter-route',
     'description': 'Testing chapter route',
     'status': 'draft',
     'approved': true
+  }
+};
+
+const userComment = {
+  'comment': {
+    'creatorId': 'user3',
+    'chapterId': 'chapter778',
+    'comment': 'testing comment',
+    'metadata': ''
   }
 };
 
@@ -67,6 +76,20 @@ describe('CHAPTER ROUTE', () => {
         res.status.should.eql(201);
         res.should.be.json;
         res.body.should.have.property('chapter');
+        done();
+      });
+  });
+  // comments tests
+  it('Should POST a chapter on POST /comments/ and return a JSON object', done => {
+    chai
+      .request(server)
+      .post('/api/v1/comments')
+      .set('Content-Type', 'application/json')
+      .set(tokens.headersSuperAdmin1)
+      .send(userComment)
+      .end((err, res) => {
+        res.status.should.eql(201);
+        res.should.be.json;
         done();
       });
   });
