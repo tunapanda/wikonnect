@@ -22,7 +22,7 @@
 
   <a href="#" target="_blank">
     <img alt="Forks" src="https://img.shields.io/github/forks/tunapanda/wikonnect" />
-  </a> 
+  </a>
   <a href="#" target="_blank">
     <img alt="Stars" src="https://img.shields.io/github/stars/tunapanda/wikonnect" />
   </a>
@@ -162,7 +162,7 @@ If you see an Elasticsearch error, don't worry, you don't need Elasticsearch to 
 
 
 <table>
- 
+
   <tr>
     <td><img src="screenshots/1.png" width=270 height=480></td>
     <td><img src="screenshots/2.png" width=270 height=480></td>
@@ -192,6 +192,13 @@ Now point your favorite browser to http://localhost:4200/ and you will be able t
 
 - You should join our [Discourse](https://discord.gg/tT9Ug6D) server to get connected with people interested in this project and to be aware of our future announcements.
 - Please read the suggested [steps to contribute code to the Wikonnect project](https://github.com/tunapanda/wikonnect/blob/master/CONTRIBUTING.md) before creating issues, forking, or submitting any pull requests.
+
+## Authors 🧙
+
+### Lead Developers
+
+- **[Moses Okemwa](https://github.com/mosesokemwa)** - _Lead developer and maintainer_
+- **[Proverbial Ninja](https://github.com/proverbial-ninja)** - _Lead developer and maintainer_
 
 ## Contributors ✨
 
