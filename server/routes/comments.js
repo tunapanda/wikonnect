@@ -29,7 +29,7 @@ const router = new Router({
  *      }
  *
  */
-router.get('/', async ctx => {
+router.get('/', requireAuth, grantAccess('readAny', 'path'), async ctx => {
   // let stateUserId = ctx.state.user.id == undefined ? ctx.state.user.data.id : ctx.state.user.id;
 
   let comment;
@@ -109,6 +109,7 @@ router.get('/:id', requireAuth, grantAccess('readAny', 'path'), async ctx => {
  *    }
  *
  */
+<<<<<<< HEAD
 router.post('/', async ctx => {
   let stateUserId = ctx.state.user.id == undefined ? ctx.state.user.data.id : ctx.state.user.id;
 
@@ -118,6 +119,17 @@ router.post('/', async ctx => {
   let comment;
   try {
     comment = await Comment.query().insertAndFetch(newChap);
+=======
+router.post('/:id', requireAuth, grantAccess('createAny', 'path'), async ctx => {
+  let stateUserId = ctx.state.user.id == undefined ? ctx.state.user.data.id : ctx.state.user.id;
+  let newChapterComment = ctx.request.body.comment;
+  newChapterComment.chapterId = ctx.params.id;
+  newChapterComment.creatorId = stateUserId;
+
+  let comment;
+  try {
+    comment = await Comment.query().insertAndFetch(newChapterComment);
+>>>>>>> feature/comment
   } catch (e) {
     if (e.statusCode) {
       ctx.throw(e.statusCode, null, { errors: [e] });

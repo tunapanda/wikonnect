@@ -20,6 +20,33 @@ const router = new Router({
   prefix: '/chapters'
 });
 
+<<<<<<< HEAD
+=======
+// async function returnChapterStatus(chapter, achievement) {
+//   if (chapter.length === undefined) {
+//     achievement.forEach(ach => {
+//       if (chapter.id === ach.target) {
+//         // console.log(ach.target_status);
+//         return chapter.targetStatus = ach.target_status;
+//       }
+//     });
+//   } else {
+//     chapter.forEach(chap => {
+
+//       achievement.forEach(ach => {
+//         console.log(chap.id, ach.id);
+//         if (chap.id === ach.target) {
+//           console.log(ach.target_status);
+
+//           return chap.targetStatus = ach.target_status;
+//         }
+//       });
+//     });
+//   }
+// }
+
+
+>>>>>>> feature/comment
 async function returnType(parent) {
   if (parent.length == undefined) {
     parent.comment.forEach(comment => {
@@ -34,6 +61,7 @@ async function returnType(parent) {
   }
 }
 
+<<<<<<< HEAD
 
 function encode(data) {
   let buf = Buffer.from(data);
@@ -59,6 +87,8 @@ async function getChapterImage(id) {
   }
 }
 
+=======
+>>>>>>> feature/comment
 /**
  * @api {get} /chapters/ GET all chapters.
  * @apiName GetChapters
@@ -100,6 +130,7 @@ router.get('/', permController.requireAuth, async ctx => {
   let roleNameList = ['basic', 'superadmin', 'tunapanda'];
 
   let chapter;
+<<<<<<< HEAD
   if (roleNameList.includes(stateUserRole)) {
     if (ctx.query.q) {
       chapter = await Chapter.query()
@@ -115,10 +146,30 @@ router.get('/', permController.requireAuth, async ctx => {
     chapter = await Chapter.query().where(ctx.query).eager('[comment(selectComment), flag(selectFlag)]');
   }
 
+=======
+  switch (stateUserId) {
+  case 'anonymous':
+    chapter = await Chapter.query().where(ctx.query).where({ status: 'published', approved: 'true' }).eager('comment(selectComment)');
+    ctx.status = 401;
+    ctx.body = { message: 'un published chapter' };
+    break;
+  case 'basic':
+    chapter = await Chapter.query().where(ctx.query).where({ status: 'published', approved: 'true' }).eager('comment(selectComment)');
+    break;
+  default:
+    chapter = await Chapter.query().where(ctx.query).eager('comment(selectComment)');
+  }
+
+  // const achievement = await Achievement.query().where('user_id', ctx.state.user.data.id);
+  // await returnChapterStatus(chapter, achievement);
+  await returnType(chapter);
+
+>>>>>>> feature/comment
   ctx.status = 200;
   ctx.body = { chapter };
 });
 
+<<<<<<< HEAD
 router.get('/teach', permController.requireAuth, async ctx => {
   let stateUserId = ctx.state.user.id == undefined ? ctx.state.user.data.id : ctx.state.user.id;
 
@@ -136,6 +187,8 @@ router.get('/teach', permController.requireAuth, async ctx => {
 });
 
 
+=======
+>>>>>>> feature/comment
 /**
  * @api {get} /chapters/:id GET single chapter.
  * @apiName GetAChapter
@@ -169,6 +222,7 @@ router.get('/teach', permController.requireAuth, async ctx => {
  */
 router.get('/:id', permController.requireAuth, async ctx => {
   let stateUserRole = ctx.state.user.role == undefined ? ctx.state.user.data.role : ctx.state.user.role;
+<<<<<<< HEAD
   let stateUserId = ctx.state.user.id == undefined ? ctx.state.user.data.id : ctx.state.user.id;
 
   let roleNameList = ['basic', 'superadmin', 'tunapanda'];
@@ -182,13 +236,31 @@ router.get('/:id', permController.requireAuth, async ctx => {
     chapter = await Chapter.query().where(ctx.query).where({ id: ctx.params.id, status: 'published' });
   } else {
     chapter = await Chapter.query().where(ctx.query).where({ id: ctx.params.id, creatorId: stateUserId });
+=======
+
+  let chapter;
+  switch (stateUserRole) {
+  case 'anonymous':
+    chapter = await Chapter.query().where({ id: ctx.params.id, status: 'published', approved: 'true' }).eager('comment(selectComment)');
+    ctx.status = 401;
+    ctx.body = { message: 'un published chapter' };
+    break;
+  case 'basic':
+    chapter = await Chapter.query().where({ id: ctx.params.id, status: 'published', approved: 'true' }).eager('comment(selectComment)');
+    break;
+  default:
+    chapter = await Chapter.query().where({ id: ctx.params.id });
+>>>>>>> feature/comment
   }
 
 
   ctx.assert(chapter, 404, 'no lesson by that ID');
 
+<<<<<<< HEAD
   chapter.profileUri = await getChapterImage(chapter.imageUrl);
 
+=======
+>>>>>>> feature/comment
   // const achievement = await Achievement.query().where('user_id', ctx.state.user.data.id);
   // returnChapterStatus(chapter, achievement);
 
