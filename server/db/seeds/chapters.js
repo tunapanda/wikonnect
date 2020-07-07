@@ -20,43 +20,14 @@ exports.seed = function (knex) {
           approved: true
         },
         {
-          id: 'chapter2',
-          name: 'A Chapter 2',
-          slug: 'a-chapter-2',
-          description: 'An H5P Chapter.',
+          id: 'coronavirus',
+          name: 'How Much Do You Really Know About Coronavirus?',
+          slug: 'coronavirus',
+          description: 'Should you wear a face mask? Can you catch the virus from your dog? Put your Covid-19 knowledge to the test. By Jason Gale',
           status: 'published',
-          lesson_id: 'lesson1',
           creator_id: 'user1',
           content_type: 'h5p',
-          content_uri: '/uploads/h5p/chapter2',
-          created_at: '2017-12-20 19:17:10',
-          updated_at: '2017-12-20 19:17:10',
-          approved: true
-        },
-        {
-          id: 'chapter3',
-          name: 'A Chapter3',
-          slug: 'a-chapter3',
-          description: 'An H5P Chapter.',
-          status: 'published',
-          lesson_id: 'lesson1',
-          creator_id: 'user1',
-          content_type: 'h5p',
-          content_uri: '/uploads/h5p/chapter3',
-          created_at: '2017-12-20 19:17:10',
-          updated_at: '2017-12-20 19:17:10',
-          approved: true
-        },
-        {
-          id: 'chapter4',
-          name: 'A Chapter4',
-          slug: 'a-chapter4',
-          description: 'An H5P Chapter.',
-          status: 'published',
-          lesson_id: 'lesson2',
-          creator_id: 'user1',
-          content_type: 'h5p',
-          content_uri: '/uploads/h5p/chapter4',
+          content_uri: '/uploads/h5p/coronavirus',
           created_at: '2017-12-20 19:17:10',
           updated_at: '2017-12-20 19:17:10',
           approved: false
@@ -151,7 +122,6 @@ exports.seed = function (knex) {
           'updated_at': '2017-12-20 19:17:10',
           approved: false
         }
-
       ]);
     });
 };
