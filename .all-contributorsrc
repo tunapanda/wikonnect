@@ -1,0 +1,24 @@
+{
+  "projectName": "wikonnect",
+  "projectOwner": "tunapanda",
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": true,
+  "commitConvention": "ember",
+  "contributors": [
+    {
+      "login": "mosesokemwa",
+      "name": "Moses Okemwa",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/13944912?v=4",
+      "profile": "https://github.com/mosesokemwa",
+      "contributions": [
+        "code"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7
+}

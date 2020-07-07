@@ -1,4 +1,7 @@
 <p align="center">
+<!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
+[![All Contributors](https://img.shields.io/badge/all_contributors-1-orange.svg?style=flat-square)](#contributors-)
+<!-- ALL-CONTRIBUTORS-BADGE:END -->
   <img  height="200" src="https://app.wikonnect.org/images/icons/wikonnect-primary.svg">
 </p>
 
@@ -189,3 +192,22 @@ Now point your favorite browser to http://localhost:4200/ and you will be able t
 
 - You should join our [Discourse](https://discord.gg/tT9Ug6D) server to get connected with people interested in this project and to be aware of our future announcements.
 - Please read the suggested [steps to contribute code to the Wikonnect project](https://github.com/tunapanda/wikonnect/blob/master/CONTRIBUTING.md) before creating issues, forking, or submitting any pull requests.
+
+## Contributors ✨
+
+Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
+
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
+<table>
+  <tr>
+    <td align="center"><a href="https://github.com/mosesokemwa"><img src="https://avatars0.githubusercontent.com/u/13944912?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Moses Okemwa</b></sub></a><br /><a href="https://github.com/tunapanda/wikonnect/commits?author=mosesokemwa" title="Code">💻</a></td>
+  </tr>
+</table>
+
+<!-- markdownlint-enable -->
+<!-- prettier-ignore-end -->
+<!-- ALL-CONTRIBUTORS-LIST:END -->
+
+This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
