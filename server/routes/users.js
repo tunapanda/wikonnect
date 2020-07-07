@@ -42,24 +42,6 @@ async function achievementAwardsType(parent) {
   }
 }
 
-async function returnType(parent) {
-  try {
-    if (parent.length == undefined) {
-      parent.achievementAwards.forEach(award => {
-        return award.type = 'achievementAward';
-      });
-    } else {
-      parent.forEach(mod => {
-        mod.achievementAwards.forEach(award => {
-          return award.type = 'achievementAward';
-        });
-      });
-    }
-  } catch (error) {
-    log.error(error);
-  }
-}
-
 async function userRoles(parent) {
   try {
     if (parent.length == undefined) {
