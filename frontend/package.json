@@ -22,6 +22,7 @@
     "@ember/edition-utils": "^1.1.1",
     "@ember/optional-features": "^1.0.0",
     "@ember/render-modifiers": "^1.0.2",
+    "@fortawesome/free-solid-svg-icons": "^5.13.1",
     "@glimmer/component": "^1.0.0",
     "@types/ember": "^3.1.1",
     "babel-eslint": "^10.0.2",

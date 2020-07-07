@@ -15,12 +15,6 @@ class LoginComponent extends Component {
   @inject
   store;
 
-  @computed()
-  get user() {
-    return this.store.createRecord('user');
-  }
-
-
   @action
   login(model) {
     this.me.authenticate(model.get('username'), model.get('password')).then(() => {
