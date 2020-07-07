@@ -50,8 +50,6 @@ const invalidData = {
 
 const userComment = {
   'comment': {
-    'creatorId': 'user3',
-    'chapterId': 'chapter778',
     'comment': 'testing comment',
     'metadata': ''
   }
@@ -83,7 +81,7 @@ describe('CHAPTER ROUTE', () => {
   it('Should POST a chapter on POST /comments/ and return a JSON object', done => {
     chai
       .request(server)
-      .post('/api/v1/comments')
+      .post('/api/v1/comments/chapter778')
       .set('Content-Type', 'application/json')
       .set(tokens.headersSuperAdmin1)
       .send(userComment)
@@ -190,7 +188,7 @@ describe('CHAPTER ROUTE', () => {
         res.should.be.json;
         res.body.should.be.a('object');
         res.body.should.have.property('errors');
-        res.body.errors[0].should.eql('creatorId: is a required property');
+        res.body.errors[0].should.eql('Bad Request');
         done();
       });
   });
