@@ -5,6 +5,11 @@ const { secret } = require('../middleware/jwt');
 const log = require('../utils/logger');
 
 
+/**
+ *
+ * @param {*} ctx
+ * @param {*} next
+ */
 exports.requireAuth = async function (ctx, next) {
   try {
     if (ctx.request.header.authorization === undefined || ctx.request.header.authorization.split(' ')[1] === 'undefined') {
@@ -39,7 +44,11 @@ exports.requireAuth = async function (ctx, next) {
   }
 };
 
-
+/**
+ * 
+ * @param {*} action 
+ * @param {*} resource 
+ */
 exports.grantAccess = function (action, resource) {
 
   return async (ctx, next) => {
