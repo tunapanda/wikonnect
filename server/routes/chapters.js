@@ -34,32 +34,6 @@ async function returnType(parent) {
   }
 }
 
-
-function encode(data) {
-  let buf = Buffer.from(data);
-  let base64 = buf.toString('base64');
-  return base64;
-}
-
-async function getChapterImage(id) {
-
-  try {
-    if (s3.config) {
-      const params = {
-        Bucket: s3.config.bucket, // pass your bucket name
-        Key: `uploads/chapters/${id}.jpg`, // key for saving filename
-      };
-
-      const getImage = await s3.s3.getObject(params).promise();
-      let image = 'data:image/(png|jpg);base64,' + encode(getImage.Body);
-      return image;
-    }
-  } catch (e) {
-    // console.log(e);
-    return 'images/profile-placeholder.gif';
-  }
-}
-
 async function achievementType(parent) {
   if (parent.length == undefined) {
     parent.achievement.forEach(data => {
@@ -200,10 +174,6 @@ router.get('/:id', permController.requireAuth, async ctx => {
     chapter = await Chapter.query().where(ctx.query).where({ id: ctx.params.id, creatorId: stateUserId });
   }
 
-  // get chapter image from s3 bucket
-  if (chapter.length) {
-    chapter[0].imageUrl = await getChapterImage(chapter[0].imageUrl);
-  }
 
   ctx.assert(chapter, 404, 'no lesson by that ID');
   // const achievement = await Achievement.query().where('user_id', ctx.state.user.data.id);
@@ -365,13 +335,14 @@ router.post('/:id/chapter-image', async (ctx, next) => {
       Bucket: s3.config.bucket, // pass your bucket name
       Key: `uploads/chapters/${fileNameBase}.jpg`, // key for saving filename
       Body: buffer, //image to be uploaded
+      ACL: 'public-read'
     };
 
     try {
       //Upload image to AWS S3 bucket
       const uploaded = await s3.s3.upload(params).promise();
       log.info('Uploaded in:', uploaded.Location);
-      await Chapter.query().patchAndFetchById(chapter_id, { imageUrl: fileNameBase });
+      await Chapter.query().patchAndFetchById(chapter_id, { imageUrl: uploaded.Location });
 
       ctx.body = {
         host: `${params.Bucket}.s3.amazonaws.com/uploads/chapters`,
