@@ -325,7 +325,7 @@ router.post('/:id/chapter-image', async (ctx, next) => {
   ctx.assert(files.length, 400, 'No files sent.');
   ctx.assert(files.length === 1, 400, 'Too many files sent.');
 
-  const resizer = sharp().resize(500, 500).jpeg({ quality: 70 });
+  const resizer = sharp().resize(328, 200).jpeg({ quality: 70 });
 
   files[0].pipe(resizer);
 
