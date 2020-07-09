@@ -34,7 +34,7 @@ router.get('/', async ctx => {
 
   let comment;
   try {
-    comment = await Comment.query();
+    comment = await Comment.query().where(ctx.query);
   } catch (e) {
     if (e.statusCode) {
       ctx.throw(e.statusCode, null, { errors: [e] });
