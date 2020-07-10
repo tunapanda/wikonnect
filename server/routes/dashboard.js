@@ -1,11 +1,11 @@
 const Router = require('koa-router');
-const User = require('../models/user');
 const { requireAuth } = require('../middleware/permController');
 const moment = require('moment');
-const compareAsc = require('date-fns/compareAsc');
 const getQuarter = require('date-fns/getQuarter');
-const startOfQuarter = require('date-fns/startOfQuarter');
 const knex = require('../utils/knexUtil');
+// const compareAsc = require('date-fns/compareAsc');
+// const startOfQuarter = require('date-fns/startOfQuarter');
+// const User = require('../models/user');
 
 const router = new Router({
   prefix: '/dashboard'
@@ -67,6 +67,7 @@ router.get('/completed', requireAuth, async ctx => {
       .count()
       .select('achievements.target_status')
       .groupBy('users.id', 'achievements.target_status').having(knex.raw('count(achievements.target_status) > 1'));
+    // eslint-disable-next-line quotes
     users = await knex.raw(`select 'Q' || extract(quarter from created_at) as quarter, count(*) from users group by users.id, extract(quarter from created_at) order by extract(quarter from created_at) asc`);
 
   } catch (e) {
