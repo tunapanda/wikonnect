@@ -38,7 +38,7 @@
       <div class="input-group">
         <input value={{inviteCode}} class={{el.class}} placeholder="Invite Code"
           oninput={{action (mut el.value) value="target.value"}} onchange={{action (mut el.value) value="target.value"}}
-          id={{el.id}} type="text">
+          id={{el.id}} name={{el.id}} type="text">
       </div>
     {{/form.element}}
   </div>

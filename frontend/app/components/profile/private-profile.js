@@ -33,11 +33,6 @@ export default class ProfilePrivateProfileComponent extends Component {
     return this.me.user.profileUri;
   }
 
-  // @computed('me.user.{firstName,lastName}')
-  // @get achievements(){
-
-  // }
-
   @action
   onSuccess() {
     console.log("copied");

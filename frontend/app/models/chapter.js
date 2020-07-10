@@ -10,6 +10,7 @@ export default class ChapterModel extends Model {
   @attr contentUri;
   @attr approved;
   @attr targetStatus;
+  @attr imageUrl;
 
   @belongsTo('user') creator;
   @belongsTo('lesson') lesson;
