@@ -87,8 +87,6 @@ describe('CHAPTER ROUTE', () => {
       .set(tokens.headersSuperAdmin1)
       .send(userComment)
       .end((err, res) => {
-        console.log(err);
-
         res.status.should.eql(201);
         res.should.be.json;
         done();

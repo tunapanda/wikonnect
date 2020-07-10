@@ -18,7 +18,6 @@ export default class CoursesController extends Controller {
         'modules': course.get('modules'),
         'description': course.get('description')
       };
-
     });
   }
 }

@@ -1,6 +1,8 @@
 import Component from '@ember/component';
 import { inject as service } from '@ember/service';
 import { action } from '@ember/object';
+import { tracked } from '@glimmer/tracking';
+
 export default class NavigationComponent extends Component {
 
   @service
@@ -12,6 +14,9 @@ export default class NavigationComponent extends Component {
   @service router;
   @service session;
   token = this.session.data.authenticated.token
+
+
+  @tracked token = this.session.data.authenticated.token
 
   @action
   closenav() {

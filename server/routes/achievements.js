@@ -2,6 +2,9 @@ const Router = require('koa-router');
 const Achievement = require('../models/achievement');
 const validateAchievement = require('../middleware/validation/validateAchievement');
 const fetch = require('node-fetch');
+const log = require('../utils/logger');
+const knex = require('../utils/knexUtil');
+const { requireAuth } = require('../middleware/permController');
 
 const lrsDomain = ' http://www.example.org';
 const lrsPrefix = 'data/xAPI/statements';
@@ -20,6 +23,36 @@ router.get('/', async ctx => {
     ctx.status = 400;
     ctx.body = { message: 'The query key does not exist' };
   }
+});
+
+
+/**
+   * return the count of completed chapter
+   * @param {object[]} dataRange
+   * @return {Integer}
+   */
+
+router.get('/date/:startDate/:endDate', requireAuth, async ctx => {
+
+  // const from = '2017-12-20';
+  // const to = '2018-12-20';
+  const from = ctx.params.startDate;
+  const to = ctx.params.endDate;
+
+  let achievement;
+  try {
+    achievement = await knex('achievements')
+      .select()
+      .where({ target_status: 'completed' })
+      .whereBetween('created_at', [from, to]);
+  } catch (e) {
+    ctx.throw(400, null, { errors: [e.message] });
+  }
+
+
+
+  ctx.status = 200;
+  ctx.body = { achievement: achievement.length };
 });
 
 router.get('/:id', async ctx => {
@@ -83,12 +116,12 @@ router.post('/', validateAchievement, async ctx => {
       },
       method: 'POST'
     });
-    console.log(`Connection to Learning Locker on ${lrsDomain} successfully`);
+    log.info(`Connection to Learning Locker on ${lrsDomain} successfully`);
   } catch (e) {
     if (e.name !== 'ConnectionError') {
-      console.log(e);
+      log.error(e);
     } else {
-      console.log(`Connection to Learning Locker on ${lrsDomain} failed`);
+      log.info(`Connection to Learning Locker on ${lrsDomain} failed`);
     }
   }
   const achievement = await Achievement.query().insertAndFetch(xAPIRecord);

@@ -34,7 +34,7 @@ router.get('/', requireAuth, grantAccess('readAny', 'path'), async ctx => {
 
   let comment;
   try {
-    comment = await Comment.query();
+    comment = await Comment.query().where(ctx.query);
   } catch (e) {
     if (e.statusCode) {
       ctx.throw(e.statusCode, null, { errors: [e] });
@@ -126,6 +126,37 @@ router.post('/:id', requireAuth, grantAccess('createAny', 'path'), async ctx => 
   }
   if (!comment) {
     ctx.assert(comment, 401, 'Something went wrong');
+  }
+  ctx.status = 201;
+  ctx.body = { comment };
+
+});
+
+
+/**
+ * @api {put} /:chapterId PUT comment
+ * @apiName PutAChapterComment
+ * @apiGroup ChapterComments
+ * @apiPermission authenticated user
+ *
+ */
+
+router.put('/:id', requireAuth, grantAccess('updateOwn', 'path'), async ctx => {
+  const comment_record = await Comment.query().findById(ctx.params.id);
+  let commentData = ctx.request.body.comment;
+
+  if (!comment_record) {
+    ctx.throw(400, 'No chapter with that ID');
+  }
+
+  let comment;
+  try {
+    comment = await Comment.query().patchAndFetchById(ctx.params.id, commentData);
+  } catch (e) {
+    if (e.statusCode) {
+      ctx.throw(e.statusCode, null, { errors: [e.message] });
+    } else { ctx.throw(400, null, { errors: ['Bad Request'] }); }
+    throw e;
   }
   ctx.status = 201;
   ctx.body = { comment };

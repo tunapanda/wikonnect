@@ -1,5 +1,6 @@
 const Router = require('koa-router');
 const search = require('../utils/search');
+const log = require('../utils/logger');
 const _ = require('lodash');
 
 // const models = {
@@ -55,7 +56,7 @@ router.get('/', async ctx => {
     const grouped = _.groupBy(elasticResponse.body.hits.hits, hit => hit._source.model);
 
     if (grouped.length == undefined) {
-      console.log(ctx.query.q);
+      log.info(ctx.query.q);
     }
     // const results = Object.keys(grouped).map(async modelName => ({ [modelName]: await models[modelName].query().hydrateSearch(grouped[modelName]) }));
 
