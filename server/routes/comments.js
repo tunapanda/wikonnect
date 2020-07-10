@@ -29,7 +29,7 @@ const router = new Router({
  *      }
  *
  */
-router.get('/', async ctx => {
+router.get('/', requireAuth, grantAccess('readAny', 'path'), async ctx => {
   // let stateUserId = ctx.state.user.id == undefined ? ctx.state.user.data.id : ctx.state.user.id;
 
   let comment;
@@ -109,15 +109,15 @@ router.get('/:id', requireAuth, grantAccess('readAny', 'path'), async ctx => {
  *    }
  *
  */
-router.post('/', async ctx => {
+router.post('/:id', requireAuth, grantAccess('createAny', 'path'), async ctx => {
   let stateUserId = ctx.state.user.id == undefined ? ctx.state.user.data.id : ctx.state.user.id;
-
-  let newComment = ctx.request.body.comment;
-  newComment.creatorId = stateUserId;
+  let newChapterComment = ctx.request.body.comment;
+  newChapterComment.chapterId = ctx.params.id;
+  newChapterComment.creatorId = stateUserId;
 
   let comment;
   try {
-    comment = await Comment.query().insertAndFetch(newComment);
+    comment = await Comment.query().insertAndFetch(newChapterComment);
   } catch (e) {
     if (e.statusCode) {
       ctx.throw(e.statusCode, null, { errors: [e] });

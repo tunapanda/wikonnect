@@ -1840,6 +1840,18 @@
     resolve "^1.8.1"
     semver "^5.6.0"
 
+"@fortawesome/fontawesome-common-types@^0.2.29":
+  version "0.2.29"
+  resolved "https://registry.yarnpkg.com/@fortawesome/fontawesome-common-types/-/fontawesome-common-types-0.2.29.tgz#e1a456b643237462d390304cab6975ff3fd68397"
+  integrity sha512-cY+QfDTbZ7XVxzx7jxbC98Oxr/zc7R2QpTLqTxqlfyXDrAJjzi/xUIqAUsygELB62JIrbsWxtSRhayKFkGI7MA==
+
+"@fortawesome/free-solid-svg-icons@^5.13.1":
+  version "5.13.1"
+  resolved "https://registry.yarnpkg.com/@fortawesome/free-solid-svg-icons/-/free-solid-svg-icons-5.13.1.tgz#010a846b718a0f110b3cd137d072639b4e8bd41a"
+  integrity sha512-LQH/0L1p4+rqtoSHa9qFYR84hpuRZKqaQ41cfBQx8b68p21zoWSekTAeA54I/2x9VlCHDLFlG74Nmdg4iTPQOg==
+  dependencies:
+    "@fortawesome/fontawesome-common-types" "^0.2.29"
+
 "@glimmer/component@^0.14.0-alpha.13":
   version "0.14.0-alpha.13"
   resolved "https://registry.yarnpkg.com/@glimmer/component/-/component-0.14.0-alpha.13.tgz#5e1912bee8a00504e8ea20cc59600956a9c435ee"
@@ -6632,6 +6644,14 @@ ember-named-arguments-polyfill@^1.0.0:
   dependencies:
     ember-cli-babel "^6.6.0"
     ember-cli-version-checker "^2.1.2"
+
+ember-notify@^6.0.0:
+  version "6.0.0"
+  resolved "https://registry.yarnpkg.com/ember-notify/-/ember-notify-6.0.0.tgz#f92978e3452934f7c9b70d76ad2ec62bf072495a"
+  integrity sha512-2ewX5xwkGyZtkRRlgT/Tam5PaxGy78IoXltwt4s8roEam1esXNHfafzycvJwcuX7Hgrwr7LlTpmKP+81vWT3QQ==
+  dependencies:
+    ember-cli-babel "^7.7.3"
+    ember-cli-htmlbars "^3.0.1"
 
 ember-on-helper@^0.1.0:
   version "0.1.0"
