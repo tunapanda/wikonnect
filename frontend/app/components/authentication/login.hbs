@@ -20,6 +20,5 @@
   </div>
 
   <BsButton class="submit" @type="primary" @defaultText="Login" @buttonType="submit" @disabled={{form.isSubmitting}} @type={{if form.isRejected "danger" "primary"}}>
-    {{#if form.isSubmitting}} {{fa-icon "spinner"}} {{/if}}
   </BsButton>
 </BsForm>

@@ -14,7 +14,7 @@ class Comment extends Model {
   static get modifiers() {
     return {
       selectComment: (builder) => {
-        builder.select('id', 'creator_id', 'comment');
+        builder.select('id', 'creator_id', 'chapter_id', 'comment');
       }
     };
   }
