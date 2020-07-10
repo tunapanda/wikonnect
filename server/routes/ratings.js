@@ -30,7 +30,7 @@ router.get('/:id', requireAuth, grantAccess('readOwn', 'path'), async ctx => {
 });
 
 
-router.get('/', requireAuth, grantAccess('readAny', 'path'), async ctx => {
+router.get('/', async ctx => {
 
   let ratings;
   try {
