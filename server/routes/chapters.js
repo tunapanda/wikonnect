@@ -15,6 +15,7 @@ const permController = require('../middleware/permController');
 const validateChapter = require('../middleware/validation/validateChapter');
 
 const slugGen = require('../utils/slugGen');
+const Rating = require('../models/rating');
 
 const environment = process.env.NODE_ENV;
 const config = require('../knexfile.js')[environment];
@@ -115,7 +116,14 @@ router.get('/', permController.requireAuth, async ctx => {
     await returnType(chapter);
     await achievementType(chapter);
   } else {
-    chapter = await Chapter.query().where(ctx.query).where({ status: 'published' }).eager('rating(selectRating)]');
+    chapter = await Chapter.query().where(ctx.query).where({ status: 'published' }).eager('rating(selectRating)');
+    // chapter = await Chapter.query()
+    //   .select('chapters.*', 'rate.rating')
+    //   .from('chapters')
+    //   .avg('rate.rating as rating')
+    //   .where({ status: 'published' })
+    //   .innerJoin('ratings as rate', 'chapters.id', 'rate.chapter_id')
+    //   .groupBy('chapters.id', 'rate.rating');
   }
 
   ctx.status = 200;
