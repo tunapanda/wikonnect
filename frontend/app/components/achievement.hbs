@@ -1,11 +1,15 @@
 <div class="achievement">
   <div>
     {{!-- <img src="/badges/{{@badge}}.svg" height="40px" alt=""> --}}
-
   </div>
-  <div>
-    <p>{{@name}}</p>
-    <p>{{@achievementId}}</p>
-    <p>{{@description}}</p>
+  <div class="row">
+    <div class="col-2">
+      <img src="{{@badge}}" alt="">
+    </div>
+    <div class="col">
+      <p class="badgeName">{{@name}}</p>
+      <p class="description">{{@description}}</p>
+      <p class="created">{{@created}}</p>
+    </div>
   </div>
 </div>

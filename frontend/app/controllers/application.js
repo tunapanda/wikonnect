@@ -9,6 +9,7 @@ export default class ApplicationController extends Controller {
     'default': 'white-header',
     'home': 'orange-header',
     'cms.index': 'green-header',
+    'profile': 'yellow-header'
   }
 
   @inject

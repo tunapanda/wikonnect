@@ -7,7 +7,7 @@ exports.seed = function (knex) {
           user_id: 'user1',
           achievement_id: 'achievements1',
           name: 'longest streak',
-          image_url: '',
+          image_url: '/badges/badge1.png',
           created_at: '2017-12-20 19:17:10',
           updated_at: '2017-12-20 19:17:10'
         },
@@ -15,7 +15,7 @@ exports.seed = function (knex) {
           user_id: 'user2',
           achievement_id: 'achievements2',
           name: 'completed courses',
-          image_url: '',
+          image_url: '/badges/badge1.png',
           created_at: '2017-12-20 19:17:10',
           updated_at: '2017-12-20 19:17:10'
         },
@@ -23,7 +23,7 @@ exports.seed = function (knex) {
           user_id: 'user1',
           achievement_id: 'achievements3',
           name: 'design apprentice',
-          image_url: '',
+          image_url: '/badges/badge1.png',
           created_at: '2017-12-20 19:17:10',
           updated_at: '2017-12-20 19:17:10'
         },
@@ -31,7 +31,7 @@ exports.seed = function (knex) {
           user_id: 'user2',
           achievement_id: 'achievements4',
           name: 'young padawan',
-          image_url: '',
+          image_url: '/badges/badge1.png',
           created_at: '2017-12-20 19:17:10',
           updated_at: '2017-12-20 19:17:10'
         },
@@ -39,7 +39,7 @@ exports.seed = function (knex) {
           user_id: 'usernew',
           achievement_id: 'achievements5',
           name: 'master yoda',
-          image_url: '',
+          image_url: 'badges/badge1.png',
           created_at: '2017-12-20 19:17:10',
           updated_at: '2017-12-20 19:17:10'
         },
@@ -47,7 +47,7 @@ exports.seed = function (knex) {
           user_id: 'usernew',
           achievement_id: 'achievements6',
           name: 'coding master',
-          image_url: '',
+          image_url: '/badges/badge1.png',
           created_at: '2017-12-20 19:17:10',
           updated_at: '2017-12-20 19:17:10'
         }
