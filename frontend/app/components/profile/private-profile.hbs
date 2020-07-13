@@ -1,7 +1,7 @@
 <div class="profile">
   <div class="profile-head">
     {{#link-to "upload"}}
-      <img class="profile-picture" alt="" src={{profileUri}}>
+    <img class="profile-picture" alt="" src={{profileUri}}>
     {{/link-to}}
     <h2 class="profile-name">{{name}}</h2>
   </div>
@@ -13,7 +13,7 @@
       <br><br>
       <BsButtonGroup @value={{profileView}} @type="radio" @onChange={{action (mut profileView)}} as |bg|>
         {{#each viewOptions as |view|}}
-          <bg.button @type="default" @value={{view}}>{{view}}</bg.button>
+        <bg.button @type="default" @value={{view}}>{{view}}</bg.button>
         {{/each}}
 
       </BsButtonGroup>
@@ -23,54 +23,53 @@
     <hr>
 
     {{#if (eq profileView "Profile")}}
-      <div class="profile-title">
-        <h4>Details</h4>
-        {{#if viewOnly}}
-          <button class="profile-edit btn padded btn-primary btn-small " {{action editProfile}}>
-            Edit
-          </button>
-        {{else}}
-          <button class="profile-edit btn padded btn-primary btn-small" {{action editProfile}}>
-            X
-          </button>
-        {{/if}}
+    <div class="profile-title">
+      <h4>Details</h4>
+      {{#if viewOnly}}
+      <button class="profile-edit btn padded btn-primary btn-small " {{action editProfile}}>
+        Edit
+      </button>
+      {{else}}
+      <button class="profile-edit btn padded btn-primary btn-small" {{action editProfile}}>
+        X
+      </button>
+      {{/if}}
 
-      </div>
-      <BsForm class="profile-data" @model={{model}} @onSubmit={{action save}} @disabled={{viewOnly}} as |form|>
-        <form.element class="inputs" @property="firstName" @label="First Name"
-          @placeholder="What is your first name?" />
-        <form.element class="inputs" @property="lastName" @label="last Name" @placeholder="What is your second name?" />
-        <form.element class="inputs" @property="aboutMe" @label="About Me" @placeholder="Describe yourself" />
-        {{#unless viewOnly}}
-          <BsButton @defaultText="Save Changes" class="profile-submit" @buttonType="submit" />
-        {{/unless}}
-      </BsForm>
+    </div>
+    <BsForm class="profile-data" @model={{model}} @onSubmit={{action save}} @disabled={{viewOnly}} as |form|>
+      <form.element class="inputs" @property="firstName" @label="First Name" @placeholder="What is your first name?" />
+      <form.element class="inputs" @property="lastName" @label="last Name" @placeholder="What is your second name?" />
+      <form.element class="inputs" @property="aboutMe" @label="About Me" @placeholder="Describe yourself" />
+      {{#unless viewOnly}}
+      <BsButton @defaultText="Save Changes" class="profile-submit" @buttonType="submit" />
+      {{/unless}}
+    </BsForm>
 
     {{/if}}
 
     {{#if (eq profileView "Learning")}}
-      <h5>My Achievements</h5>
+    <h5>My Achievements</h5>
 
 
+    <div class="row">
       {{#each model.achievementAwards as  |achievement|}}
-        <Achievement @name={{achievement.name}} @description="You have completed your profile" @created={{achievement.createdAt}} @badge={{achievement.imageUrl}} />
+      <div class="col-md-6">
+        <Achievement @name={{achievement.name}} @description="You have completed your profile"
+          @created={{achievement.createdAt}} @badge={{achievement.imageUrl}} />
+      </div>
       {{/each}}
-
-
-
-
-
+    </div>
 
     {{/if}}
 
     {{#if (eq profileView "Settings")}}
-      Invite Link : <br>
-      <code>{{inviteCode}}</code>
+    Invite Link : <br>
+    <code>{{inviteCode}}</code>
 
-      <CopyButton @clipboardText={{inviteCode}} @success={{this.onSuccess}} @error={{this.onError}}
-        title="copy to clipboard">
-        <span>copy</span>
-      </CopyButton>
+    <CopyButton @clipboardText={{inviteCode}} @success={{this.onSuccess}} @error={{this.onError}}
+      title="copy to clipboard">
+      <span>copy</span>
+    </CopyButton>
     {{/if}}
   </div>
 </div>

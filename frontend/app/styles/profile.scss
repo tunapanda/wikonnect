@@ -16,16 +16,19 @@
 
 }
 
-.achievement {
-  // display: flex;
-  // flex-direction: row;
-  // padding-top: 7px;
+.achievement .card{
   margin: 15px 0;
-  // height: 84px;
   background: #FAFAF5 0% 0% no-repeat padding-box;
   border-radius: 11px;
   opacity: 1;
+  flex-direction: row;
+  border: 1px solid #FAFAF5;
 
+  .card-header{
+    display: unset;
+    border-bottom: unset;
+    background: #FAFAF5 0% 0% no-repeat padding-box;
+  }
   img {
     margin: 10px 0 0 10px;
   }
@@ -52,6 +55,12 @@
     letter-spacing: 0px;
     color: #9DA3A2;
     opacity: 1;
+  }
+  .fa-share-square {
+    opacity: 1;
+    color: #F57010;
+    font-size: 1rem;
+    margin-left: 0;
   }
 }
 
