@@ -1,6 +1,6 @@
 import Component from '@glimmer/component';
 import { H5P } from 'h5p-standalone'; // ES6
-import { action, computed } from '@ember/object';
+import { action } from '@ember/object';
 import { inject, inject as service } from '@ember/service';
 
 

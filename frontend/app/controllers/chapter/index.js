@@ -95,7 +95,7 @@ export default class ChapterIndexController extends Controller {
   @action
   async dataLoad() {
     window.H5P.externalDispatcher.on('xAPI', function (event) {
-      console.log('INITIAL STATEMENT ON externalDispatcher')
+      console.log('INITIAL STATEMENT ON externalDispatcher');
       // console.log(event.data.statement)
       // console.log(event.data.statement.result)
       if (event.getScore() === event.getMaxScore() && event.getMaxScore() > 0) {
@@ -112,7 +112,7 @@ export default class ChapterIndexController extends Controller {
           target: "moses"
         });
       }
-    })
+    });
   //   return this.store.createRecord('achievement', {
   //     id: 'achieve3',
   //     userId: 'user1',
