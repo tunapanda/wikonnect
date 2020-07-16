@@ -82,4 +82,45 @@ export default class ChapterIndexController extends Controller {
 
     }
   }
+
+
+  // return await this.store.createRecord('achievement', {
+  //   userId: "user1",
+  //   name: "moses",
+  //   slug: "moses",
+  //   description: "moses",
+  //   targetStatus: "moses",
+  //   target: "moses"
+  // });
+  @action
+  async dataLoad() {
+    window.H5P.externalDispatcher.on('xAPI', function (event) {
+      console.log('INITIAL STATEMENT ON externalDispatcher')
+      // console.log(event.data.statement)
+      // console.log(event.data.statement.result)
+      if (event.getScore() === event.getMaxScore() && event.getMaxScore() > 0) {
+        console.log('do something useful here');
+        console.log(event.getScore());
+        console.log(event.getMaxScore());
+        return this.store.createRecord('achievement', {
+          id: 'achieve4',
+          userId: 'user1',
+          name: "moses",
+          slug: "moses",
+          description: "moses",
+          targetStatus: "moses",
+          target: "moses"
+        });
+      }
+    })
+  //   return this.store.createRecord('achievement', {
+  //     id: 'achieve3',
+  //     userId: 'user1',
+  //     name: "moses",
+  //     slug: "moses",
+  //     description: "moses",
+  //     targetStatus: "moses",
+  //     target: "moses"
+  //   });
+  }
 }

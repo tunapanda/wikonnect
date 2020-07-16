@@ -192,16 +192,15 @@ router.get('/:id', permController.requireAuth, async ctx => {
 
   if (roleNameList.includes(stateUserRole)) {
     chapter = await Chapter.query().where({ id: ctx.params.id, status: 'published' }).eager('[comment(selectComment), flag(selectFlag), achievement(selectAchievement)]');
+    await returnType(chapter);
+    await achievementType(chapter);
   } else if (stateUserRole == anonymous) {
     chapter = await Chapter.query().where({ id: ctx.params.id, status: 'published' }).eager('comment(selectComment)');
   } else {
     chapter = await Chapter.query().where({ id: ctx.params.id, creatorId: stateUserId });
   }
 
-
   ctx.assert(chapter, 404, 'no lesson by that ID');
-  await returnType(chapter);
-  await achievementType(chapter);
 
   ctx.status = 200;
   ctx.body = { chapter };
