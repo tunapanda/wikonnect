@@ -17,6 +17,9 @@ module.exports = function (defaults) {
     babel: {
       sourceMaps: 'both'
     },
+    fontawesome: {
+      defaultPrefix: 'fal' // light icons
+    },
     'ember-bootstrap': {
       bootstrapVersion: 4,
       importBootstrapFont: false,

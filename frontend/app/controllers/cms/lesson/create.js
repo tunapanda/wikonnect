@@ -47,7 +47,7 @@ export default class CmsLessonCreateController extends Controller {
 
     const uploadRes = await uploader.startUpload([host, 'chapters', chapter.id, 'upload'].join('/'));
 
-    const url = ['//', uploadRes.host, uploadRes.path].join('/');
+    const url = ['/', uploadRes.host, uploadRes.path].join('/');
 
     chapter.set('contentType', 'h5p');
     chapter.set('contentUri', url);
