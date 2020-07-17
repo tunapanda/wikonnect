@@ -1,5 +1,7 @@
 import Controller from '@ember/controller';
-import { inject, computed } from '@ember/service';
+import { inject } from '@ember/service';
+import { computed } from '@ember/object';
+
 
 export default class ManageController extends Controller {
   @inject
