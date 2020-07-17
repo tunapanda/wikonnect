@@ -1,5 +1,6 @@
 import Controller from '@ember/controller';
 import { action } from '@ember/object';
+import { tracked } from '@glimmer/tracking';
 
 import { inject } from '@ember/service';
 
@@ -18,10 +19,14 @@ export default class ChapterIndexController extends Controller {
 
   flaggingModal = false
   ratingModal = false
+  @tracked enabled = false
 
   @action
   ratingSubmit(val) {
-    this.notify.info('Submitted your ' + val + ' star rating');
+    if (!this.enabled) {
+      this.notify.info('Submitted your ' + val + ' star rating');
+      this.enabled = true;
+    }
   }
 
 
