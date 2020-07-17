@@ -7,6 +7,7 @@ import { inject } from '@ember/service';
 
 export default class ChapterIndexController extends Controller {
 
+  @inject notify;
 
 
 
@@ -19,8 +20,8 @@ export default class ChapterIndexController extends Controller {
   ratingModal = false
 
   @action
-  ratingSubmit() {
-
+  ratingSubmit(val) {
+    this.notify.info('Submitted your ' + val + ' star rating');
   }
 
 
