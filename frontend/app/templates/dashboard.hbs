@@ -23,19 +23,22 @@
 
     <div class="col-sm-6">
       <div class="card">
-        <h5 class="card-header">Number of learners self-reporting improved knowledge and skills through learning from
-          the platform<< /h5>
-            <div class="card-body">
-              {{ember-chart
+        <h5 class="card-header">
+          Number of learners self-reporting improved knowledge and skills through learning fromthe platform
+        </h5>
+        <div class="card-body">
+          {{ember-chart
               type="bar"
               data=this.k2Data
               width=600
               height=400
               options=this.options
             }}
-              <footer class="text-right blockquote-footer">Updated: <cite title="Source Title">Source Title</cite>
-              </footer>
-            </div>
+          <footer class="text-right blockquote-footer">
+            Updated:
+            <cite title="Source Title">Source Title</cite>
+          </footer>
+        </div>
       </div>
     </div>
   </div>
@@ -46,7 +49,8 @@
   <div class="row">
     <div class="col-sm-6">
       <div class="card">
-        <h5 class="card-header">Number of learners (signups) that successfully enrol and complete at least 2 modules
+        <h5 class="card-header">
+          Number of learners (signups) that successfully enrol and complete at least 2 modules
         </h5>
         <div class="card-body">
           {{ember-chart
@@ -132,6 +136,6 @@
                 options=options
               }}
     </div> --}}
-    {{!-- {{outlet}} --}}
+  {{!-- {{outlet}} --}}
   {{!-- </div> --}}
 </div>
