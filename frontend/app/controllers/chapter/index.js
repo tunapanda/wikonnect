@@ -109,12 +109,12 @@ export default class ChapterIndexController extends Controller {
         console.log(err);
       });
     window.H5P.externalDispatcher.on('xAPI', function (event) {
-      console.log('INITIAL STATEMENT ON externalDispatcher')
+      console.log('INITIAL STATEMENT ON externalDispatcher');
       if (event.getScore() === event.getMaxScore() && event.getMaxScore() > 0) {
         console.log(event.getScore());
         console.log(event.getMaxScore());
         this.notify.info('chapter completed');
       }
-    })
+    });
   }
 }
