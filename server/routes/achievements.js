@@ -58,13 +58,13 @@ router.get('/:id', async ctx => {
 });
 
 
-router.post('/', async ctx => {
+router.post('/', requireAuth, async ctx => {
   const newAchievement = ctx.request.body.achievement;
-  // const achievement = await Achievement.query().insertAndFetch(newAchievement);
+  newAchievement.userId = ctx.state.user.id == undefined ? ctx.state.user.data.id : ctx.state.user.id;
+  const achievement = await Achievement.query().insertAndFetch(newAchievement);
 
-  console.log(newAchievement);
   ctx.status = 201;
-  ctx.body = { newAchievement };
+  ctx.body = { achievement };
 });
 router.put('/:id', async ctx => {
   let putAchievement = ctx.request.body.achievement;
