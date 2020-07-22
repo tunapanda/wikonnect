@@ -1,5 +1,12 @@
 <div class="form-title">Log In</div>
 
+{{#if session.isWorking}}
+  One sec while we get you signed in...
+{{else}}
+  {{error}}
+<a {{action 'authenticateWithFacebook'}} class="btn btn-primary" href="#" role="button">Login with Facebook</a>
+{{/if}}
+
 <BsForm @class="form" @formLayout="vertical" @model={{registeredUser}} @onSubmit={{action "login"}} as |form|>
   {{#each registeredUser.errors as |err| }}
     {{#if (eq err.key "errors")}}

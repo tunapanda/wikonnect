@@ -20,6 +20,7 @@
   },
   "devDependencies": {
     "@ember/edition-utils": "^1.1.1",
+    "@ember/jquery": "^1.1.0",
     "@ember/optional-features": "^1.0.0",
     "@ember/render-modifiers": "^1.0.2",
     "@fortawesome/free-solid-svg-icons": "^5.13.1",
@@ -29,6 +30,7 @@
     "bootstrap": "^4.3.1",
     "broccoli-asset-rev": "^3.0.0",
     "cross-env": "^7.0.0",
+    "ember-ajax": "^5.0.0",
     "ember-auto-import": "^1.5.2",
     "ember-bootstrap": "^3.0.1",
     "ember-bootstrap-changeset-validations": "~2.0.0",
@@ -41,6 +43,7 @@
     "ember-cli-clipboard": "^0.14.0",
     "ember-cli-code-coverage": "^0.4.2",
     "ember-cli-dependency-checker": "^3.1.0",
+    "ember-cli-dotenv": "^3.1.0",
     "ember-cli-head": "^1.0.0",
     "ember-cli-htmlbars": "^4.0.5",
     "ember-cli-inject-live-reload": "^2.0.1",
@@ -74,7 +77,8 @@
     "loader.js": "^4.7.0",
     "qunit-dom": "^0.9.0",
     "rsvp": "^4.8.5",
-    "sass": "^1.23.0"
+    "sass": "^1.23.0",
+    "torii": "^0.10.1"
   },
   "engines": {
     "node": "8.* || >= 10.*"
