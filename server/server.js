@@ -7,6 +7,7 @@ const koaBunyanLogger = require('koa-bunyan-logger');
 const errorHandler = require('./middleware/error');
 const logger = require('./middleware/logger');
 const jwt = require('./middleware/jwt');
+const cors = require('@koa/cors');
 const app = new Koa();
 
 const router = new Router({
@@ -15,6 +16,15 @@ const router = new Router({
 
 koaQs(app);
 
+
+
+app.use(cors({
+  origin: '*',
+  maxAge: 5,
+  credentials: true,
+  allowMethods: ['GET', 'POST', 'DELETE'],
+  allowHeaders: ['Content-Type', 'Authorization', 'Accept'],
+}));
 app.use(errorHandler);
 
 app.use(koaBunyanLogger());

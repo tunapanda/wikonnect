@@ -283,6 +283,93 @@ define({ "api": [
   },
   {
     "type": "get",
+    "url": "/:chapterId",
+    "title": "GET a comment",
+    "name": "GetAChapterComment",
+    "group": "ChapterComments",
+    "permission": [
+      {
+        "name": "authenticated user"
+      }
+    ],
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 201 OK\n{\"comment\": [{\n     \"id\": String,\n     \"chapterId\": String,\n     \"creatorId\": String,\n     \"comment\": String,\n     \"createdAt\": DateTime,\n     \"updatedAt\": DateTime\n   }]\n }",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "./server/routes/comments.js",
+    "groupTitle": "ChapterComments"
+  },
+  {
+    "type": "get",
+    "url": "/",
+    "title": "GET a comment",
+    "name": "GetChapterComment",
+    "group": "ChapterComments",
+    "permission": [
+      {
+        "name": "authenticated user"
+      }
+    ],
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 201 OK\n{\n \"comment\": [{\n    \"id\": String,\n    \"comment\": String,\n    \"chapterId\": String,\n    \"creatorId\": String,\n    \"createdAt\": DateTime,\n    \"updatedAt\": DateTime\n   }]\n }",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "./server/routes/comments.js",
+    "groupTitle": "ChapterComments"
+  },
+  {
+    "type": "post",
+    "url": "/:chapterId",
+    "title": "POST comment",
+    "name": "PostAChapterComment",
+    "group": "ChapterComments",
+    "permission": [
+      {
+        "name": "authenticated user"
+      }
+    ],
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": " HTTP/1.1 201 OK\n {\n  \"comment\": {\n    \"creatorId\": { type: String },\n    \"comment\": { type: String },\n    \"metadata\": { type: JSON },\n    \"chapterId\": { type: String }\n  }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "./server/routes/comments.js",
+    "groupTitle": "ChapterComments"
+  },
+  {
+    "type": "put",
+    "url": "/:chapterId",
+    "title": "PUT comment",
+    "name": "PutAChapterComment",
+    "group": "ChapterComments",
+    "permission": [
+      {
+        "name": "authenticated user"
+      }
+    ],
+    "version": "0.0.0",
+    "filename": "./server/routes/comments.js",
+    "groupTitle": "ChapterComments"
+  },
+  {
+    "type": "get",
     "url": "/chapters/:id",
     "title": "GET single chapter.",
     "name": "GetAChapter",
@@ -428,25 +515,38 @@ define({ "api": [
   },
   {
     "type": "post",
-    "url": "/:chapterId/comments",
-    "title": "POST comment",
-    "name": "PostAChapterComment",
+    "url": "/chapters/:id/upload",
+    "title": "upload H5P chapter",
+    "name": "PostAH5PChapter",
     "group": "Chapters",
     "permission": [
       {
-        "name": "authenticated user"
+        "name": "none"
       }
     ],
+    "version": "0.4.0",
     "success": {
       "examples": [
         {
           "title": "Success-Response:",
-          "content": " HTTP/1.1 201 OK\n {\n  \"comment\": {\n    \"creatorId\": { type: String },\n    \"comment\": { type: String },\n    \"metadata\": { type: JSON }\n  }\n}",
+          "content": "HTTP/1.1 200 OK\n{\n   host: ctx.host,\n   path: uploadPath\n }",
           "type": "json"
         }
       ]
     },
-    "version": "0.0.0",
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "errors",
+            "description": "<p>Bad Request.</p>"
+          }
+        ]
+      }
+    },
     "filename": "./server/routes/chapters.js",
     "groupTitle": "Chapters"
   },

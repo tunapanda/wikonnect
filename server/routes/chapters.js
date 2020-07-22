@@ -20,44 +20,58 @@ const router = new Router({
   prefix: '/chapters'
 });
 
+// async function returnChapterStatus(chapter, achievement) {
+//   if (chapter.length === undefined) {
+//     achievement.forEach(ach => {
+//       if (chapter.id === ach.target) {
+//         // console.log(ach.target_status);
+//         return chapter.targetStatus = ach.target_status;
+//       }
+//     });
+//   } else {
+//     chapter.forEach(chap => {
+
+//       achievement.forEach(ach => {
+//         console.log(chap.id, ach.id);
+//         if (chap.id === ach.target) {
+//           console.log(ach.target_status);
+
+//           return chap.targetStatus = ach.target_status;
+//         }
+//       });
+//     });
+//   }
+// }
+
+
 async function returnType(parent) {
   if (parent.length == undefined) {
     parent.comment.forEach(comment => {
-      return comment.type = 'comments';
+      return comment.type = 'comment';
     });
   } else {
     parent.forEach(mod => {
       mod.comment.forEach(comment => {
-        return comment.type = 'comments';
+        return comment.type = 'comment';
       });
     });
   }
 }
 
-
-function encode(data) {
-  let buf = Buffer.from(data);
-  let base64 = buf.toString('base64');
-  return base64;
-}
-
-async function getChapterImage(id) {
-
-  try {
-    if (s3.config) {
-      const params = {
-        Bucket: s3.config.bucket, // pass your bucket name
-        Key: `uploads/chapters/${id}.jpg`, // key for saving filename
-      };
-
-      const getImage = await s3.s3.getObject(params).promise();
-      let image = 'data:image/(png|jpg);base64,' + encode(getImage.Body);
-      return image;
-    }
-  } catch (e) {
-    return 'images/profile-placeholder.gif';
+async function achievementType(parent) {
+  if (parent.length == undefined) {
+    parent.achievement.forEach(data => {
+      return data.type = 'achievement';
+    });
+  } else {
+    parent.forEach(mod => {
+      mod.achievement.forEach(data => {
+        return data.type = 'achievement';
+      });
+    });
   }
 }
+
 
 /**
  * @api {get} /chapters/ GET all chapters.
@@ -92,8 +106,6 @@ async function getChapterImage(id) {
  * @apiError {String} errors Bad Request.
  */
 
-
-
 router.get('/', permController.requireAuth, async ctx => {
 
   let stateUserRole = ctx.state.user.role == undefined ? ctx.state.user.data.role : ctx.state.user.role;
@@ -108,11 +120,11 @@ router.get('/', permController.requireAuth, async ctx => {
         .where({ status: 'published' })
         .eager('comment(selectComment)');
     } else {
-      chapter = await Chapter.query().where(ctx.query).where({ status: 'published' }).eager('comment(selectComment)');
+      chapter = await Chapter.query().where(ctx.query).where({ status: 'published' }).eager('[comment(selectComment), achievement(selectAchievement), flag(selectFlag)]');
     }
     await returnType(chapter);
   } else {
-    chapter = await Chapter.query().where(ctx.query);
+    chapter = await Chapter.query().where(ctx.query).eager('[comment(selectComment), flag(selectFlag)]');
   }
 
   ctx.status = 200;
@@ -124,15 +136,17 @@ router.get('/teach', permController.requireAuth, async ctx => {
 
   let chapter = await Chapter.query().where({ 'creator_id': stateUserId });
 
-  // let chapter;
-  // try {
-  //   chapter = await Chapter.query().where({ creatorId: stateUserId });
-  // } catch (e) {
-  //   ctx.throw(400, null, { errors: [e.message] });
-  // }
+  ctx.status = 200;
+  ctx.body = { 'chapter': chapter };
+});
+
+router.get('/teach/:id', permController.requireAuth, async ctx => {
+  let stateUserId = ctx.state.user.id == undefined ? ctx.state.user.data.id : ctx.state.user.id;
+
+  let chapter = await Chapter.query().where(ctx.query).where({ id: ctx.params.id, creatorId: stateUserId });
 
   ctx.status = 200;
-  ctx.body = { chapter };
+  ctx.body = { 'chapter': chapter };
 });
 
 
@@ -177,20 +191,19 @@ router.get('/:id', permController.requireAuth, async ctx => {
   let chapter;
 
   if (roleNameList.includes(stateUserRole)) {
-    chapter = await Chapter.query().where({ id: ctx.params.id, status: 'published' }).eager('comment(selectComment)');
+    chapter = await Chapter.query().where({ id: ctx.params.id, status: 'published' }).eager('[comment(selectComment), flag(selectFlag), achievement(selectAchievement)]');
   } else if (stateUserRole == anonymous) {
-    chapter = await Chapter.query().where(ctx.query).where({ id: ctx.params.id, status: 'published' });
+    chapter = await Chapter.query().where({ id: ctx.params.id, status: 'published' }).eager('comment(selectComment)');
   } else {
-    chapter = await Chapter.query().where(ctx.query).where({ id: ctx.params.id, creatorId: stateUserId });
+    chapter = await Chapter.query().where({ id: ctx.params.id, creatorId: stateUserId });
   }
 
 
   ctx.assert(chapter, 404, 'no lesson by that ID');
-
-  chapter.profileUri = await getChapterImage(chapter.imageUrl);
-
   // const achievement = await Achievement.query().where('user_id', ctx.state.user.data.id);
   // returnChapterStatus(chapter, achievement);
+  await returnType(chapter);
+  await achievementType(chapter);
 
   ctx.status = 200;
   ctx.body = { chapter };
@@ -236,11 +249,13 @@ router.get('/:id', permController.requireAuth, async ctx => {
  *
  * @apiError {String} errors Bad Request.
  */
-router.post('/', permController.requireAuth, permController.grantAccess('createAny', 'path'), validateChapter, async ctx => {
+router.post('/', permController.requireAuth, validateChapter, async ctx => {
+  let stateUserId = ctx.state.user.id == undefined ? ctx.state.user.data.id : ctx.state.user.id;
   let newChapter = ctx.request.body.chapter;
 
   // slug generation automated
   newChapter.slug = await slugGen(newChapter.name);
+  newChapter.creatorId = stateUserId;
 
   let chapter;
   try {
@@ -252,7 +267,7 @@ router.post('/', permController.requireAuth, permController.grantAccess('createA
     throw e;
   }
   if (!chapter) {
-    ctx.assert(module, 401, 'Something went wrong');
+    ctx.assert(chapter, 401, 'Something went wrong');
   }
   ctx.status = 201;
   ctx.body = { chapter };
@@ -269,10 +284,10 @@ router.put('/:id', permController.requireAuth, async ctx => {
     ctx.throw(400, 'No chapter with that ID');
   }
 
-  if (chapterData.imageUrl === null || chapterData.contentUri === null) {
-    chapterData.status = 'draft';
-    log.info(chapterData.status);
-  }
+  // if (chapter_record.imageUrl === null || chapter_record.contentUri === null) {
+  //   chapterData.status = 'draft';
+  //   log.info(chapterData.status);
+  // }
 
   let chapter;
   try {
@@ -328,71 +343,44 @@ router.post('/:id/chapter-image', async (ctx, next) => {
 
   const { files } = await busboy(ctx.req);
   const fileNameBase = shortid.generate();
-  const uploadPath = 'uploads/images/content/chapters';
+  const uploadPath = 'uploads/chapters';
   const uploadDir = path.resolve(__dirname, '../public/' + uploadPath);
-
-  try {
-    await Chapter.query().patchAndFetchById(chapter_id, { imageUrl: fileNameBase });
-  } catch (e) {
-    log.error(e);
-  }
-
-  // const sizes = [
-  //   70,
-  //   320,
-  //   640
-  // ];
+  console.log('dsfsd');
 
   ctx.assert(files.length, 400, 'No files sent.');
   ctx.assert(files.length === 1, 400, 'Too many files sent.');
 
-  // const resizedFiles = Promise.all(sizes.map((size) => {
-  //   const resize = sharp()
-  //     .resize(size, size)
-  //     .jpeg({ quality: 70 })
-  //     .toFile(`public / uploads / images / profile / ${ fileNameBase }_${ size }.jpg`);
-  //   files[0].pipe(resize);
-  //   return resize;
-  // }));
-
-  const resizer = sharp()
-    .resize(500, 500)
-    .jpeg({ quality: 70 });
+  const resizer = sharp().resize(328, 200).jpeg({ quality: 70 });
 
   files[0].pipe(resizer);
 
-
   if (s3.config) {
-
-
     let buffer = await resizer.toBuffer();
-
     const params = {
       Bucket: s3.config.bucket, // pass your bucket name
       Key: `uploads/chapters/${fileNameBase}.jpg`, // key for saving filename
       Body: buffer, //image to be uploaded
+      ACL: 'public-read'
     };
-
 
     try {
       //Upload image to AWS S3 bucket
       const uploaded = await s3.s3.upload(params).promise();
-
       log.info('Uploaded in:', uploaded.Location);
+      await Chapter.query().patchAndFetchById(chapter_id, { imageUrl: uploaded.Location });
+
       ctx.body = {
         host: `${params.Bucket}.s3.amazonaws.com/uploads/chapters`,
         path: `${fileNameBase}.jpg`
       };
-    }
-
-    catch (e) {
+    } catch (e) {
       log.error(e);
       ctx.throw(e.statusCode, null, { message: e.message });
     }
 
   } else {
 
-    await resizer.toFile(`${uploadDir} / ${fileNameBase}.jpg`);
+    await resizer.toFile(`${uploadDir}/${fileNameBase}.jpg`);
 
 
     await Chapter.query()
@@ -400,20 +388,46 @@ router.post('/:id/chapter-image', async (ctx, next) => {
       .patch({
         imageUrl: `${uploadPath}/${fileNameBase}.jpg`
       });
-
+    console.log('db updated');
 
 
     ctx.body = {
       host: ctx.host,
-      path: `${uploadPath} / ${fileNameBase}.jpg`
+      path: `${uploadPath}/${fileNameBase}.jpg`
     };
   }
 });
 
+
+
+/**
+ * @api {post} /chapters/:id/upload upload H5P chapter
+ * @apiName PostAH5PChapter
+ * @apiGroup Chapters
+ * @apiPermission none
+ * @apiVersion 0.4.0
+ * @apiSampleRequest off
+ * @apiSampleRequest off
+ * @apiSuccessExample {json} Success-Response:
+ *     HTTP/1.1 200 OK
+ *     {
+ *        host: ctx.host,
+ *        path: uploadPath
+ *      }
+ * @apiError {String} errors Bad Request.
+ */
+
 router.post('/:id/upload', async ctx => {
   const dirName = ctx.params.id;
-  const uploadPath = `uploads / h5p / ${dirName}`;
-  const uploadDir = path.resolve(__dirname, '../public/' + uploadPath);
+  const uploadPath = `/uploads/h5p/${dirName}`;
+  const uploadDir = path.resolve(__dirname, '../public' + uploadPath);
+
+  await Chapter.query()
+    .findById(dirName)
+    .patch({
+      content_uri: uploadPath
+    });
+
 
   await busboy(ctx.req, {
     onFile: function (fieldname, file) {
@@ -422,13 +436,6 @@ router.post('/:id/upload', async ctx => {
   });
   // ctx.assert(files.length, 400, 'No files sent.');
   // ctx.assert(files.length === 1, 400, 'Too many files sent.');
-
-  await Chapter.query()
-    .findById(dirName)
-    .patch({
-      content_uri: uploadPath
-    });
-
 
   ctx.body = {
     host: ctx.host,
