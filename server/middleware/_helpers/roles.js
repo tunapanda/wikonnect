@@ -12,8 +12,6 @@ const AccessControl = require('accesscontrol');
  * eventually needs to be queried form the database
  */
 let grantList = [
-  { role: 'anonymous', resource: 'path', action: 'read:own', attributes: '*' },
-
   { role: 'basic', resource: 'profile', action: 'create:own', attributes: '*' },
   { role: 'basic', resource: 'profile', action: 'read:own', attributes: '*' },
   { role: 'basic', resource: 'profile', action: 'update:own', attributes: '*' },
