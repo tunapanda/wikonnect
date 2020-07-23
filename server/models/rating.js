@@ -7,8 +7,8 @@ class Rating extends Model {
   }
   static get modifiers() {
     return {
-      selectFlag: (builder) => {
-        builder.select('id', 'user_id','chapter_id', 'comment');
+      selectRating: (builder) => {
+        builder.select('id', 'rating', 'chapter_id');
       }
     };
   }
