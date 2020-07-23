@@ -34,6 +34,29 @@ async function ratingVal(parent, avg) {
     });
   }
 }
+// async function returnChapterStatus(chapter, achievement) {
+//   if (chapter.length === undefined) {
+//     achievement.forEach(ach => {
+//       if (chapter.id === ach.target) {
+//         // console.log(ach.target_status);
+//         return chapter.targetStatus = ach.target_status;
+//       }
+//     });
+//   } else {
+//     chapter.forEach(chap => {
+
+//       achievement.forEach(ach => {
+//         console.log(chap.id, ach.id);
+//         if (chap.id === ach.target) {
+//           console.log(ach.target_status);
+
+//           return chap.targetStatus = ach.target_status;
+//         }
+//       });
+//     });
+//   }
+// }
+
 
 async function returnType(parent) {
   if (parent.length == undefined) {
@@ -111,12 +134,12 @@ router.get('/', permController.requireAuth, async ctx => {
         .where({ status: 'published' })
         .eager('comment(selectComment)');
     } else {
-      chapter = await Chapter.query().where(ctx.query).where({ status: 'published' }).eager('[comment(selectComment), achievement(selectAchievement), rating(selectRating)]');
+      chapter = await Chapter.query().where(ctx.query).where({ status: 'published' }).eager('[comment(selectComment), achievement(selectAchievement),rating(selectRating), flag(selectFlag)]');
     }
     await returnType(chapter);
     await achievementType(chapter);
   } else {
-    chapter = await Chapter.query().where(ctx.query).where({ status: 'published' }).eager('rating(selectRating)');
+    chapter = await Chapter.query().where(ctx.query).eager('[comment(selectComment), flag(selectFlag), rating(selectRating)]');
     // chapter = await Chapter.query()
     //   .select('chapters.*', 'rate.rating')
     //   .from('chapters')
@@ -190,11 +213,11 @@ router.get('/:id', permController.requireAuth, async ctx => {
   let chapter;
 
   if (roleNameList.includes(stateUserRole)) {
-    chapter = await Chapter.query().where({ id: ctx.params.id, status: 'published' }).eager('[comment(selectComment), achievement(selectAchievement)]');
+    chapter = await Chapter.query().where({ id: ctx.params.id, status: 'published' }).eager('[comment(selectComment), flag(selectFlag), achievement(selectAchievement)]');
   } else if (stateUserRole == anonymous) {
-    chapter = await Chapter.query().where(ctx.query).where({ id: ctx.params.id, status: 'published' });
+    chapter = await Chapter.query().where({ id: ctx.params.id, status: 'published' }).eager('comment(selectComment)');
   } else {
-    chapter = await Chapter.query().where(ctx.query).where({ id: ctx.params.id, creatorId: stateUserId });
+    chapter = await Chapter.query().where({ id: ctx.params.id, creatorId: stateUserId });
   }
 
   const rating = await knex('ratings').where({ 'chapter_id': ctx.params.id }).avg('rating');
@@ -346,6 +369,7 @@ router.post('/:id/chapter-image', async (ctx, next) => {
   const fileNameBase = shortid.generate();
   const uploadPath = 'uploads/chapters';
   const uploadDir = path.resolve(__dirname, '../public/' + uploadPath);
+  console.log('dsfsd');
 
   ctx.assert(files.length, 400, 'No files sent.');
   ctx.assert(files.length === 1, 400, 'Too many files sent.');
@@ -379,8 +403,17 @@ router.post('/:id/chapter-image', async (ctx, next) => {
     }
 
   } else {
+
     await resizer.toFile(`${uploadDir}/${fileNameBase}.jpg`);
-    await Chapter.query().findById(chapter_id).patchAndFetchById({ imageUrl: `${uploadPath}/${fileNameBase}.jpg` });
+
+
+    await Chapter.query()
+      .findById(chapter_id)
+      .patch({
+        imageUrl: `${uploadPath}/${fileNameBase}.jpg`
+      });
+    console.log('db updated');
+
 
     ctx.body = {
       host: ctx.host,
@@ -427,14 +460,6 @@ router.post('/:id/upload', async ctx => {
   });
   // ctx.assert(files.length, 400, 'No files sent.');
   // ctx.assert(files.length === 1, 400, 'Too many files sent.');
-
-
-  console.log(dirName);
-  console.log(uploadPath);
-  console.log('--------------------------------------------------');
-
-
-
 
   ctx.body = {
     host: ctx.host,

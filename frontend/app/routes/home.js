@@ -10,13 +10,6 @@ export default class HomeRoute extends Route {
   @service
   headData;
 
-
-
-  // async model() {
-  //   let approved = await this.store.query('chapter', { "approved": true });
-  //   return approved;
-  // }
-
   async afterModel() {
     set(this, 'headData.title', 'Wikonnect - Chapters');
     set(this, 'headData.theme', '#FF5722');

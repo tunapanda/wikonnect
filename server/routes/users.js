@@ -249,7 +249,7 @@ router.get('/:id', permController.requireAuth, async ctx => {
   }
 
   if (user.id != stateUserId || stateUserId === 'anonymous') {
-    const publicData ={
+    const publicData = {
       'username': user.username,
       'profileUri': user.profileUri,
       'id': user.id,
@@ -270,7 +270,6 @@ router.get('/:id', permController.requireAuth, async ctx => {
     ctx.body = { user };
   }
 });
-
 /**
  * @api {get} /users GET all users.
  * @apiName GetUsers

@@ -18,5 +18,7 @@
 
   </div>
 
-  <BsButton class="submit" @type="primary" @defaultText="Login" @buttonType="submit" />
+  <BsButton class="submit" @defaultText="Login" @buttonType="submit" @disabled={{form.isSubmitting}}
+    @type={{if form.isRejected "danger" "primary"}}>
+  </BsButton>
 </BsForm>
