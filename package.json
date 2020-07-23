@@ -17,12 +17,12 @@
     "all-contributors-cli": "^6.16.1",
     "apidocs": "^2017.3.9",
     "babel-plugin-istanbul": "^6.0.0",
-    "cypress": "^4.9.0",
+    "cypress": "^4.11.0",
     "eslint-plugin-cypress": "^2.6.1",
     "istanbul-lib-coverage": "^3.0.0",
-    "knex": "^0.21.0",
+    "knex": "^0.21.2",
     "nyc": "^15.0.0",
-    "pg": "^8.0.3"
+    "pg": "^8.3.0"
   },
   "dependencies": {
     "eslint-plugin-ember": "^7.6.0",
