@@ -437,13 +437,6 @@ router.post('/:id/upload', async ctx => {
   // ctx.assert(files.length, 400, 'No files sent.');
   // ctx.assert(files.length === 1, 400, 'Too many files sent.');
 
-  await Chapter.query()
-    .findById(dirName)
-    .patch({
-      content_uri: '/' + uploadPath
-    });
-
-
   ctx.body = {
     host: ctx.host,
     path: uploadPath
