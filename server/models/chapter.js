@@ -27,7 +27,7 @@ class Chapter extends Model {
         modelClass: __dirname + '/comment',
         join: {
           from: 'chapters.id',
-          to: 'comments.chapterId'
+          to: 'comments.chapter_id'
         }
       },
       flag: {
@@ -36,6 +36,22 @@ class Chapter extends Model {
         join: {
           from: 'chapters.id',
           to: 'flags.chapterId'
+        }
+      },
+      achievement: {
+        relation: Model.HasManyRelation,
+        modelClass: __dirname + '/achievement',
+        join: {
+          from: 'chapters.id',
+          to: 'achievements.target'
+        }
+      },
+      rating: {
+        relation: Model.HasManyRelation,
+        modelClass: __dirname + '/rating',
+        join: {
+          from: 'chapters.id',
+          to: 'ratings.chapterId'
         }
       }
     };

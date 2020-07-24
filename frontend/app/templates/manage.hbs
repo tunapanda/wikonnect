@@ -1,25 +1,47 @@
-{{#if (eq me.user.username "daph")}}
-  <ul class="list-group">
-    {{#each chapters as |item|}}
-      {{#link-to "chapter" item.id }}
-        <li class="list-group-item d-flex justify-content-between align-items-center">
-          {{item.name}}
-          {{#if (eq item.approved "true")}}
-            <span class="badge badge-success badge-pill"> Approved</span>
+<div class="container">
+  {{#if (eq me.user.username "daph")}}
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">image</th>
+          <th scope="col">Name</th>
+          <th scope="col">Description</th>
+          <th scope="col">Status</th>
+          <th scope="col">Approved</th>
 
-          {{else}}
-            <span class="badge badge-warning badge-pill">Not Approved</span>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each chapters as |item index|}}
+          <tr>
+            <th scope="row">{{index}}</th>
+            <td><img src={{ item.imageUrl}} class="mr-3 rounded-circle" width="80px" alt="chapter image"></td>
+            <td>{{item.name}}</td>
+            <td>{{item.description}}</td>
+            <td>{{item.status}}</td>
+            {{#link-to "chapter" item.id }}
+              {{#if (eq item.approved "true")}}
+                {{!-- <td><span class="badge badge-success badge-pill">Approved</span></td> --}}
+                <td>
+                  <BsButton @type="success" @defaultText="Approved" />
+                </td>
 
-          {{/if}}
+              {{else}}
+                <td>
+                  {{!-- <span class="badge badge-warning badge-pill"></span> --}}
+                  <BsButton @type="primary" @defaultText="Not Approved" />
+                </td>
+              {{/if}}
+            {{/link-to}}
+          </tr>
+        {{/each}}
+      </tbody>
+    </table>
+  {{else}}
 
-        </li>
-      {{/link-to}}
+    <Warning @message="You do not have permission to view this page" />
 
+  {{/if}}
 
-    {{/each}}
-  </ul>
-{{else}}
-
-  <Warning @message="You do not have permission to view this page" />
-
-{{/if}}
+</div>
