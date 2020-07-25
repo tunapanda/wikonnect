@@ -76,16 +76,16 @@ router.get('/', permController.requireAuth, async ctx => {
 
   let chapter;
   switch (stateUserId) {
-    case 'anonymous':
-      chapter = await Chapter.query().where(ctx.query).where('status', 'published');
-      ctx.status = 401;
-      ctx.body = { message: 'un published chapter' };
-      break;
-    case 'basic':
-      chapter = await Chapter.query().where(ctx.query).where('status', 'published');
-      break;
-    default:
-      chapter = await Chapter.query().where(ctx.query);
+  case 'anonymous':
+    chapter = await Chapter.query().where(ctx.query).where('status', 'published');
+    ctx.status = 401;
+    ctx.body = { message: 'un published chapter' };
+    break;
+  case 'basic':
+    chapter = await Chapter.query().where(ctx.query).where('status', 'published');
+    break;
+  default:
+    chapter = await Chapter.query().where(ctx.query);
   }
 
   // const chapter = await Chapter.query().where(ctx.query).where('status', 'published');
@@ -136,16 +136,16 @@ router.get('/:id', permController.requireAuth, async ctx => {
 
   let chapter;
   switch (stateUserId) {
-    case 'anonymous':
-      chapter = await Chapter.query().where({ id: ctx.params.id, status: 'published' });
-      ctx.status = 401;
-      ctx.body = { message: 'un published chapter' };
-      break;
-    case 'basic':
-      chapter = await Chapter.query().where({ id: ctx.params.id, status: 'published' });
-      break;
-    default:
-      chapter = await Chapter.query().where({ id: ctx.params.id });
+  case 'anonymous':
+    chapter = await Chapter.query().where({ id: ctx.params.id, status: 'published' });
+    ctx.status = 401;
+    ctx.body = { message: 'un published chapter' };
+    break;
+  case 'basic':
+    chapter = await Chapter.query().where({ id: ctx.params.id, status: 'published' });
+    break;
+  default:
+    chapter = await Chapter.query().where({ id: ctx.params.id });
   }
 
   ctx.assert(chapter, 404, 'no lesson by that ID');
