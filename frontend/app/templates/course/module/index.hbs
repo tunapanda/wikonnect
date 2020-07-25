@@ -1,37 +1,24 @@
 {{outlet}}
 {{!-- {{outlet}} --}}
 <div id="courses">
-    <div class="heading bg-yellow">
-
+  <div class="heading bg-yellow">
     <h2>{{model.name}}</h2>
-
     <p> {{model.description}}</p>
   </div>
-
-
   <div class="padded modules">
     <div class="sub-header">
       <h2>Lessons</h2>
       {{#if (eq model.permissions.update "true")}}
-
-
-        {{#link-to "cms.module.edit" @model.slug class="btn padded btn-primary btn-small"}}
-          <h2>Edit</h2>
-        {{/link-to}}
+      {{#link-to "cms.module.edit" @model.slug class="btn padded btn-primary btn-small"}}
+      <h2>Edit</h2>
+      {{/link-to}}
       {{/if}}
     </div>
-
     <hr>
-
-<div class="modules-list">
-    {{#each model.lessons as |lesson|}}
-
+    <div class="modules-list">
+      {{#each model.lessons as |lesson|}}
       <LessonItem @lesson={{lesson}} />
-    {{/each}}
-
-
+      {{/each}}
     </div>
   </div>
-  </div>
-
 </div>
