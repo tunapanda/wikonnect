@@ -5,35 +5,20 @@
     <img class="module-image" src="http://placehold.jp/20/{{@module.color}}/ffffff/200x140.png?text={{@lesson.name}}"
       alt="">
 
-    <div class="module-description">
+    <div>{{@lesson.description}}</div>
+    <br>
 
-      <h2>{{@lesson.name}}</h2>
-
-      <div>{{@lesson.description}}</div>
-      <br>
-
-      <hr>
-    </div>
-
-    {{#if me.isAuthenticated}}
-
-      {{#if @lesson.percentage.percent}}
-
-
-        <BsProgress as |pg|>
-          <pg.bar @showLabel={{true}} @roundDigits={{0}} @type="success" @value={{@lesson.percentage.percent}} />
-        </BsProgress>
-      {{else}}
-        <BsProgress as |pg|>
-          <pg.bar @showLabel={{true}} @roundDigits={{0}} @type="success" @value={{0}} />
-        </BsProgress>
-      {{/if}}
-    {{else}}
-    {{/if}}
-
+    <hr>
   </div>
 
+  {{#if me.isAuthenticated}}
+
+  <BsProgress as |pg|>
+    <pg.bar @showLabel={{true}} @roundDigits={{0}} @type="success" @value={{@module.progress}} />
+  </BsProgress>
+  {{/if}}
+  <p>~ 5 Minutes</p>
 
 
-
+</div>
 {{/link-to}}
