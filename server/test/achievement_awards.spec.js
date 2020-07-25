@@ -4,7 +4,6 @@ const server = require('../index');
 const tokens = require('./_tokens');
 const knex = require('../db/db');
 
-
 chai.should();
 chai.use(chaiHttp);
 
@@ -16,7 +15,6 @@ describe('Achievement Awards route and function test', () => {
     await knex.migrate.latest();
     return knex.seed.run();
   });
-
   it('Should GET all Achievement Awards with valid token', done => {
     chai
       .request(server)
@@ -25,10 +23,10 @@ describe('Achievement Awards route and function test', () => {
       .set(tokens.headersSuperAdmin1)
       .end((err, res) => {
         res.should.be.json;
-        res.body.achievementAward[0].should.have.property('userId');
-        res.body.achievementAward[0].should.have.property('id');
-        res.body.achievementAward[0].should.have.property('name');
-        res.body.achievementAward[0].should.have.property('imageUrl');
+        res.body.achievementAwards[0].should.have.property('userId');
+        res.body.achievementAwards[0].should.have.property('id');
+        res.body.achievementAwards[0].should.have.property('name');
+        res.body.achievementAwards[0].should.have.property('imageUrl');
         done();
       });
   });

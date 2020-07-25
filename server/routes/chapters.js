@@ -6,37 +6,84 @@ const busboy = require('async-busboy');
 const shortid = require('shortid');
 const sharp = require('sharp');
 const s3 = require('../utils/s3Util');
+const log = require('../utils/logger');
+
 
 
 const Chapter = require('../models/chapter');
-const Achievement = require('../models/achievement');
 const permController = require('../middleware/permController');
-//const validateChapter = require('../middleware/validation/validateChapter');
+const validateChapter = require('../middleware/validation/validateChapter');
 
 const slugGen = require('../utils/slugGen');
+
+const environment = process.env.NODE_ENV;
+const config = require('../knexfile.js')[environment];
+const knex = require('knex')(config);
 
 const router = new Router({
   prefix: '/chapters'
 });
 
-async function returnChapterStatus(chapter, achievement) {
-  if (chapter.length === undefined) {
-    achievement.forEach(ach => {
-      if (chapter.id === ach.target) {
-        return chapter.targetStatus = ach.target_status;
-      }
+async function ratingVal(parent, avg) {
+  if (parent.length == undefined) {
+    return parent.rating = avg;
+  } else {
+    parent.forEach(mod => {
+      return mod.rating = avg;
+    });
+  }
+}
+// async function returnChapterStatus(chapter, achievement) {
+//   if (chapter.length === undefined) {
+//     achievement.forEach(ach => {
+//       if (chapter.id === ach.target) {
+//         // console.log(ach.target_status);
+//         return chapter.targetStatus = ach.target_status;
+//       }
+//     });
+//   } else {
+//     chapter.forEach(chap => {
+
+//       achievement.forEach(ach => {
+//         console.log(chap.id, ach.id);
+//         if (chap.id === ach.target) {
+//           console.log(ach.target_status);
+
+//           return chap.targetStatus = ach.target_status;
+//         }
+//       });
+//     });
+//   }
+// }
+
+
+async function returnType(parent) {
+  if (parent.length == undefined) {
+    parent.comment.forEach(comment => {
+      return comment.type = 'comment';
     });
   } else {
-    chapter.forEach(chap => {
-      achievement.forEach(ach => {
-        if (chap.id === ach.target) {
-          return chap.targetStatus = ach.target_status;
-        }
+    parent.forEach(mod => {
+      mod.comment.forEach(comment => {
+        return comment.type = 'comment';
       });
     });
   }
 }
 
+async function achievementType(parent) {
+  if (parent.length == undefined) {
+    parent.achievement.forEach(data => {
+      return data.type = 'achievement';
+    });
+  } else {
+    parent.forEach(mod => {
+      mod.achievement.forEach(data => {
+        return data.type = 'achievement';
+      });
+    });
+  }
+}
 
 
 /**
@@ -64,7 +111,9 @@ async function returnChapterStatus(chapter, achievement) {
  *            "contentUri": "/uploads/h5p/chapter1",
  *            "imageUrl": "/uploads/images/content/chapters/chapter1.jpeg",
  *            "contentId": null,
- *            "tags": []
+ *            "tags": [],
+ *            "comment": [{
+ *            }]
  *         }]
  *      }
  * @apiError {String} errors Bad Request.
@@ -72,32 +121,55 @@ async function returnChapterStatus(chapter, achievement) {
 
 router.get('/', permController.requireAuth, async ctx => {
 
-  let stateUserId = ctx.state.user.role == undefined ? ctx.state.user.data.role : ctx.state.user.role;
+  let stateUserRole = ctx.state.user.role == undefined ? ctx.state.user.data.role : ctx.state.user.role;
+  let roleNameList = ['basic', 'superadmin', 'tunapanda'];
 
   let chapter;
-  switch (stateUserId) {
-  case 'anonymous':
-    chapter = await Chapter.query().where(ctx.query).where('status', 'published');
-    ctx.status = 401;
-    ctx.body = { message: 'un published chapter' };
-    break;
-  case 'basic':
-    chapter = await Chapter.query().where(ctx.query).where('status', 'published');
-    break;
-  default:
-    chapter = await Chapter.query().where(ctx.query);
+  if (roleNameList.includes(stateUserRole)) {
+    if (ctx.query.q) {
+      chapter = await Chapter.query()
+        .where('name', 'ILIKE', `%${ctx.query.q}%`)
+        .orWhere('description', 'ILIKE', `%${ctx.query.q}%`)
+        .where({ status: 'published' })
+        .eager('comment(selectComment)');
+    } else {
+      chapter = await Chapter.query().where(ctx.query).where({ status: 'published' }).eager('[comment(selectComment), achievement(selectAchievement), rating(selectRating), flag(selectFlag)]');
+    }
+    await returnType(chapter);
+    await achievementType(chapter);
+    await ratingVal(chapter);
+  } else {
+    chapter = await Chapter.query().where(ctx.query).eager('[comment(selectComment), flag(selectFlag), rating(selectRating)]');
+    // chapter = await Chapter.query()
+    //   .select('chapters.*', 'rate.rating')
+    //   .from('chapters')
+    //   .avg('rate.rating as rating')
+    //   .where({ status: 'published' })
+    //   .innerJoin('ratings as rate', 'chapters.id', 'rate.chapter_id')
+    //   .groupBy('chapters.id', 'rate.rating');
   }
 
-  // const chapter = await Chapter.query().where(ctx.query).where('status', 'published');
-  const achievement = await Achievement.query().where('user_id', ctx.state.user.data.id);
-
-  returnChapterStatus(chapter, achievement);
-
   ctx.status = 200;
-  ctx.body = { chapter };
+  ctx.body = { 'chapter': chapter };
 });
 
+router.get('/teach', permController.requireAuth, async ctx => {
+  let stateUserId = ctx.state.user.id == undefined ? ctx.state.user.data.id : ctx.state.user.id;
 
+  let chapter = await Chapter.query().where({ 'creator_id': stateUserId });
+
+  ctx.status = 200;
+  ctx.body = { 'chapter': chapter };
+});
+
+router.get('/teach/:id', permController.requireAuth, async ctx => {
+  let stateUserId = ctx.state.user.id == undefined ? ctx.state.user.data.id : ctx.state.user.id;
+
+  let chapter = await Chapter.query().where(ctx.query).where({ id: ctx.params.id, creatorId: stateUserId });
+
+  ctx.status = 200;
+  ctx.body = { 'chapter': chapter };
+});
 
 
 /**
@@ -132,26 +204,30 @@ router.get('/', permController.requireAuth, async ctx => {
 * @apiError {String} errors Bad Request.
  */
 router.get('/:id', permController.requireAuth, async ctx => {
-  let stateUserId = ctx.state.user.role == undefined ? ctx.state.user.data.role : ctx.state.user.role;
+  let stateUserRole = ctx.state.user.role == undefined ? ctx.state.user.data.role : ctx.state.user.role;
+  let stateUserId = ctx.state.user.id == undefined ? ctx.state.user.data.id : ctx.state.user.id;
+
+  let roleNameList = ['basic', 'superadmin', 'tunapanda'];
+  let anonymous = 'anonymous';
 
   let chapter;
-  switch (stateUserId) {
-  case 'anonymous':
-    chapter = await Chapter.query().where({ id: ctx.params.id, status: 'published' });
-    ctx.status = 401;
-    ctx.body = { message: 'un published chapter' };
-    break;
-  case 'basic':
-    chapter = await Chapter.query().where({ id: ctx.params.id, status: 'published' });
-    break;
-  default:
-    chapter = await Chapter.query().where({ id: ctx.params.id });
+
+  if (roleNameList.includes(stateUserRole)) {
+    chapter = await Chapter.query().where({ id: ctx.params.id, status: 'published' }).eager('[comment(selectComment), flag(selectFlag), achievement(selectAchievement)]');
+  } else if (stateUserRole == anonymous) {
+    chapter = await Chapter.query().where({ id: ctx.params.id, status: 'published' }).eager('comment(selectComment)');
+  } else {
+    chapter = await Chapter.query().where({ id: ctx.params.id, creatorId: stateUserId });
   }
+
+  const rating = await knex('ratings').where({ 'chapter_id': ctx.params.id }).avg('rating');
 
   ctx.assert(chapter, 404, 'no lesson by that ID');
 
-  const achievement = await Achievement.query().where('user_id', ctx.state.user.data.id);
-  returnChapterStatus(chapter, achievement);
+  await ratingVal(chapter, rating[0].avg);
+  await returnType(chapter);
+  await achievementType(chapter);
+
 
   ctx.status = 200;
   ctx.body = { chapter };
@@ -191,17 +267,19 @@ router.get('/:id', permController.requireAuth, async ctx => {
  *        "contentUri": "/uploads/h5p/chapter4",
  *        "imageUrl": null,
  *        "contentId": null,
- *        "tags": []
+ *        "tags": [],
+ *        "approved": false
  *      }
  *
  * @apiError {String} errors Bad Request.
  */
-//router.post('/', permController.requireAuth, permController.grantAccess('createAny', 'path'), validateChapter, async ctx => {
-router.post('/', async ctx => {
+router.post('/', permController.requireAuth, validateChapter, async ctx => {
+  let stateUserId = ctx.state.user.id == undefined ? ctx.state.user.data.id : ctx.state.user.id;
   let newChapter = ctx.request.body.chapter;
 
   // slug generation automated
   newChapter.slug = await slugGen(newChapter.name);
+  newChapter.creatorId = stateUserId;
 
   let chapter;
   try {
@@ -213,30 +291,45 @@ router.post('/', async ctx => {
     throw e;
   }
   if (!chapter) {
-    ctx.assert(module, 401, 'Something went wrong');
+    ctx.assert(chapter, 401, 'Something went wrong');
   }
   ctx.status = 201;
   ctx.body = { chapter };
 
 });
-router.put('/:id', permController.requireAuth, permController.grantAccess('updateOwn', 'path'), async ctx => {
+
+
+router.put('/:id', permController.requireAuth, async ctx => {
+  //router.put('/:id', async ctx => {
   const chapter_record = await Chapter.query().findById(ctx.params.id);
+  let chapterData = ctx.request.body.chapter;
 
   if (!chapter_record) {
     ctx.throw(400, 'No chapter with that ID');
   }
+
+  // if (chapter_record.imageUrl === null || chapter_record.contentUri === null) {
+  //   chapterData.status = 'draft';
+  //   log.info(chapterData.status);
+  // }
+
   let chapter;
   try {
-    chapter = await Chapter.query().patchAndFetchById(ctx.params.id, ctx.request.body.chapter);
+    chapter = await Chapter.query().patchAndFetchById(ctx.params.id, chapterData);
   } catch (e) {
+    log.error('cant save');
+    log.error(e);
     if (e.statusCode) {
       ctx.throw(e.statusCode, null, { errors: [e.message] });
-    } else { ctx.throw(400, null, { errors: ['Bad Request'] }); }
+    } else { ctx.throw(400, null, { errors: [e.message] }); }
     throw e;
   }
   ctx.status = 201;
   ctx.body = { chapter };
 });
+
+
+
 router.delete('/:id', permController.requireAuth, permController.grantAccess('deleteAny', 'path'), async ctx => {
   const chapter = await Chapter.query().findById(ctx.params.id);
 
@@ -274,63 +367,38 @@ router.post('/:id/chapter-image', async (ctx, next) => {
 
   const { files } = await busboy(ctx.req);
   const fileNameBase = shortid.generate();
-  const uploadPath = 'uploads/images/content/chapters';
+  const uploadPath = 'uploads/chapters';
   const uploadDir = path.resolve(__dirname, '../public/' + uploadPath);
   console.log('dsfsd');
-
-  // const sizes = [
-  //   70,
-  //   320,
-  //   640
-  // ];
 
   ctx.assert(files.length, 400, 'No files sent.');
   ctx.assert(files.length === 1, 400, 'Too many files sent.');
 
-  // const resizedFiles = Promise.all(sizes.map((size) => {
-  //   const resize = sharp()
-  //     .resize(size, size)
-  //     .jpeg({ quality: 70 })
-  //     .toFile(`public/uploads/images/profile/${fileNameBase}_${size}.jpg`);
-  //   files[0].pipe(resize);
-  //   return resize;
-  // }));
-
-  const resizer = sharp()
-    .resize(500, 500)
-    .jpeg({ quality: 70 });
+  const resizer = sharp().resize(328, 200).jpeg({ quality: 70 });
 
   files[0].pipe(resizer);
 
-  console.log('cccc');
-
   if (s3.config) {
-
-
     let buffer = await resizer.toBuffer();
-
     const params = {
       Bucket: s3.config.bucket, // pass your bucket name
-      Key: `uploads/profiles/${fileNameBase}.jpg`, // key for saving filename
+      Key: `uploads/chapters/${fileNameBase}.jpg`, // key for saving filename
       Body: buffer, //image to be uploaded
+      ACL: 'public-read'
     };
-
-    console.log('asd');
 
     try {
       //Upload image to AWS S3 bucket
       const uploaded = await s3.s3.upload(params).promise();
+      log.info('Uploaded in:', uploaded.Location);
+      await Chapter.query().patchAndFetchById(chapter_id, { imageUrl: uploaded.Location });
 
-      console.log('Uploaded in:', uploaded.Location);
       ctx.body = {
         host: `${params.Bucket}.s3.amazonaws.com/uploads/chapters`,
         path: `${fileNameBase}.jpg`
       };
-    }
-
-    catch (e) {
-      console.log(e);
-      console.log('error above');
+    } catch (e) {
+      log.error(e);
       ctx.throw(e.statusCode, null, { message: e.message });
     }
 
@@ -342,7 +410,7 @@ router.post('/:id/chapter-image', async (ctx, next) => {
     await Chapter.query()
       .findById(chapter_id)
       .patch({
-        image_url: `${uploadPath}/${fileNameBase}.jpg`
+        imageUrl: `${uploadPath}/${fileNameBase}.jpg`
       });
     console.log('db updated');
 
@@ -354,10 +422,36 @@ router.post('/:id/chapter-image', async (ctx, next) => {
   }
 });
 
+
+
+/**
+ * @api {post} /chapters/:id/upload upload H5P chapter
+ * @apiName PostAH5PChapter
+ * @apiGroup Chapters
+ * @apiPermission none
+ * @apiVersion 0.4.0
+ * @apiSampleRequest off
+ * @apiSampleRequest off
+ * @apiSuccessExample {json} Success-Response:
+ *     HTTP/1.1 200 OK
+ *     {
+ *        host: ctx.host,
+ *        path: uploadPath
+ *      }
+ * @apiError {String} errors Bad Request.
+ */
+
 router.post('/:id/upload', async ctx => {
   const dirName = ctx.params.id;
-  const uploadPath = `uploads/h5p/${dirName}`;
-  const uploadDir = path.resolve(__dirname, '../public/' + uploadPath);
+  const uploadPath = `/uploads/h5p/${dirName}`;
+  const uploadDir = path.resolve(__dirname, '../public' + uploadPath);
+
+  await Chapter.query()
+    .findById(dirName)
+    .patch({
+      content_uri: uploadPath
+    });
+
 
   await busboy(ctx.req, {
     onFile: function (fieldname, file) {
@@ -367,19 +461,9 @@ router.post('/:id/upload', async ctx => {
   // ctx.assert(files.length, 400, 'No files sent.');
   // ctx.assert(files.length === 1, 400, 'Too many files sent.');
 
-  await Chapter.query()
-    .findById(dirName)
-    .patch({
-      content_uri: '/' + uploadPath
-    });
-
-
   ctx.body = {
     host: ctx.host,
     path: uploadPath
   };
-
-
 });
-
 module.exports = router.routes();

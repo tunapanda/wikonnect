@@ -6,6 +6,9 @@ module.exports = function (environment) {
     environment,
     rootURL: '/',
     locationType: 'auto',
+    disqus: {
+      shortname: 'kmarima'
+    },
     EmberENV: {
       FEATURES: {
         // Here you can enable experimental features on an ember canary build

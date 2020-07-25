@@ -21,6 +21,38 @@ class Chapter extends Model {
           from: 'chapters.lesson_id',
           to: 'lessons.id'
         }
+      },
+      comment: {
+        relation: Model.HasManyRelation,
+        modelClass: __dirname + '/comment',
+        join: {
+          from: 'chapters.id',
+          to: 'comments.chapter_id'
+        }
+      },
+      flag: {
+        relation: Model.HasManyRelation,
+        modelClass: __dirname + '/flag',
+        join: {
+          from: 'chapters.id',
+          to: 'flags.chapterId'
+        }
+      },
+      achievement: {
+        relation: Model.HasManyRelation,
+        modelClass: __dirname + '/achievement',
+        join: {
+          from: 'chapters.id',
+          to: 'achievements.target'
+        }
+      },
+      rating: {
+        relation: Model.HasManyRelation,
+        modelClass: __dirname + '/rating',
+        join: {
+          from: 'chapters.id',
+          to: 'ratings.chapterId'
+        }
       }
     };
   }

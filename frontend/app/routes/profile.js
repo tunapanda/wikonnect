@@ -6,10 +6,13 @@ export default class ProfileRoute extends Route {
   @inject
   me;
 
-  model() {
-    //console.log(this.store.findByUsername(params.username));
-    console.log(this.me);
-    //return me;
+  async beforeModel() {
+    return await this.store.findRecord('user', this.me.user.id);
   }
+
+  async model() {
+    return await this.me.user;
+  }
+
 
 }

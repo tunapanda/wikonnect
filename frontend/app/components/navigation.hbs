@@ -1,13 +1,10 @@
 <div id="mySidenav" class="sidenav">
   <button class="closebtn" {{action "closenav"}}>&times;</button>
-  {{!-- {{#link-to class="closebtn" invokeAction=(action "closenav") }}
-    &times;
-  {{/link-to}} --}}
   {{#if me.user.id}}
-    {{#link-to "index" invokeAction=(action "closenav")  }}
-      Home
+    {{#link-to "home" invokeAction=(action "closenav")  }}
+      Learn
     {{/link-to}}
-    <a href="http://localhost:8080/api/auth?token={{token}}&user={{me.user.username}}">
+    <a href="https://teach.wikonnect.org/api/auth?token={{token}}&user={{me.user.username}}">
       Teach
     </a>
 
@@ -27,9 +24,12 @@
       Feedback
     </a>
 
+    <a
+      href="https://community.wikonnect.org/new-topic?title=[REQUESTING CONTENT]&body=Explain the request&category=Learning">
+      Request Content
+    </a>
 
   {{else}}
-
 
     {{#link-to "home" invokeAction=(action "closenav")  }}
       Home
