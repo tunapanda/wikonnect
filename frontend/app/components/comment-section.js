@@ -16,7 +16,7 @@ export default class CommentSectionComponent extends Component {
 
   get commentModel() {
     return this.store.createRecord('comment', {
-      creator: this.me.get('user')
+      creator: this.me.user.id
     });
   }
 
@@ -39,7 +39,11 @@ export default class CommentSectionComponent extends Component {
     model.setProperties({
       chapter: chap
     });
-    model.save();
+    model.save().then(null, function () {
+      if (model.get('isError')) {
+        return alert(`review you message ${model.comment}`);
+      }
+    });
   }
 
 

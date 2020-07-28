@@ -111,10 +111,9 @@ router.get('/:id', requireAuth, grantAccess('readAny', 'path'), async ctx => {
  */
 
 
-router.post('/:id', async ctx => {
+router.post('/', requireAuth, grantAccess('createAny', 'path'), async ctx => {
   let stateUserId = ctx.state.user.id == undefined ? ctx.state.user.data.id : ctx.state.user.id;
   let newChapterComment = ctx.request.body.comment;
-  newChapterComment.chapterId = ctx.params.id;
   newChapterComment.creatorId = stateUserId;
 
   const checked = await profaneCheck(newChapterComment.comment);

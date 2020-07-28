@@ -5,7 +5,24 @@
       <form.element @controlType="textarea" @label="Comment" @property="comment" />
       <input type="hidden" value={{@id}} name="chapter_id" id="chapter_id">
       <BsButton @type="primary" @defaultText="Comment" @buttonType="submit" />
+
+
     </BsForm>
+    {{#each commentModel.errors as |err| }}
+    <BsAlert @type="danger" @fade={{true}}>
+      {{err.message}}
+      <p>commentModel</p>
+    </BsAlert>
+    {{/each}}
+
+    {{#each model.errors as |err| }}
+    <BsAlert @type="danger" @fade={{true}}>
+      {{err.message}}
+      <p>model</p>
+    </BsAlert>
+    {{/each}}
+
+
 
   {{else}}
   {{/if}}
