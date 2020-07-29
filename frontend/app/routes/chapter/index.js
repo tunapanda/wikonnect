@@ -6,7 +6,7 @@ export default class ChapterIndexRoute extends Route {
   @inject
   me
 
-  beforeModel(params) {
+  beforeModel() {
     return this.store.findAll('chapter');
   }
 
