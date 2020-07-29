@@ -14,6 +14,9 @@ export default class CommentSectionComponent extends Component {
   @service
   store;
 
+  @service
+  notify
+
   get commentModel() {
     return this.store.createRecord('comment', {
       creator: this.me.user.id
@@ -35,16 +38,14 @@ export default class CommentSectionComponent extends Component {
 
   @action
   async saveComment(model) {
+    let notice = this.notify.alert('Be mindful of your comments', { closeAfter: 10000 });
     let chap = await this.store.findRecord('chapter', this.args.selectedChapter);
     model.setProperties({
       chapter: chap
     });
     model.save().catch(function () {
       if (model.get('isError')) {
-        model.get('errors').add('comment', 'Be mindful of your comments');
-        let errors = model.get('errors').errorsFor('comment')
-        console.log(errors[0]);
-        return errors[0];
+        return notice;
       }
     });
   }
