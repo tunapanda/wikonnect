@@ -39,15 +39,15 @@ export default class CommentSectionComponent extends Component {
     model.setProperties({
       chapter: chap
     });
-    model.save().then(null, function () {
+    model.save().catch(function () {
       if (model.get('isError')) {
-        return alert(`review you message ${model.comment}`);
+        model.get('errors').add('comment', 'Be mindful of your comments');
+        let errors = model.get('errors').errorsFor('comment')
+        console.log(errors[0]);
+        return errors[0];
       }
     });
   }
-
-
-
 }
 
 
