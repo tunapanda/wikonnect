@@ -13,6 +13,4 @@ export default class ProfileRoute extends Route {
   async model() {
     return await this.me.user;
   }
-
-
 }
