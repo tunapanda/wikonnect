@@ -4,4 +4,7 @@ import { inject } from '@ember/service';
 export default class RewardRoute extends Route {
   @inject
   me;
+
+  @inject
+  session;
 }
