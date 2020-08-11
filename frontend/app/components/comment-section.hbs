@@ -1,13 +1,19 @@
 <div class="padded">
   {{#if me.isAuthenticated}}
 
-    <BsForm @model={{commentModel}} @onSubmit={{action "saveComment"}} as |form|>
-      <form.element @controlType="textarea" @label="Comment" @property="comment" />
-      <input type="hidden" value={{@id}} name="chapter_id" id="chapter_id">
-      <BsButton @type="primary" @defaultText="Comment" @buttonType="submit" />
-    </BsForm>
+  <BsForm @model={{commentModel}} @onSubmit={{action "saveComment"}} as |form|>
+    <form.element @controlType="textarea" @label="Comment" @property="comment" />
+    {{#each commentModel.errors as |err| }}
+    {{#if (eq err.key "comment")}}
+    <BsAlert @type="danger" @fade={{true}}>
+      {{err.message}}
+    </BsAlert>
+    {{/if}}
+    {{/each}}
 
-  {{else}}
+    <input type="hidden" value={{@id}} name="chapter_id" id="chapter_id">
+    <BsButton @type="primary" @defaultText="Comment" @buttonType="submit" />
+  </BsForm>
   {{/if}}
 
 </div>
@@ -17,16 +23,15 @@
   <div class="media padded">
     {{!-- <img alt="profile image" class="mr-3 rounded-circle" src="https://placehold.co/80"> --}}
 
-    {{#if this.me.user.profileUri}}
-      <img alt="profile image" class="mr-3 rounded-circle" width="80px" src={{item.creator.profileUri}}>
-    {{else}}
-      <img alt="profile image" class="mr-3 rounded-circle" width="80px"
-        src="http://localhost:4200/images/profile-placeholder.gif">
-    {{/if}}
-    <div class="media-body">
-      <h5 class="mt-0">{{item.creator.username}}</h5>
-      {{item.comment}}
-    </div>
+  {{#if this.me.user.profileUri}}
+  <img alt="profile image" class="mr-3 rounded-circle" width="80px" src={{item.creator.profileUri}}>
+  {{else}}
+  <img alt="profile image" class="mr-3 rounded-circle" width="80px"
+    src="http://localhost:4200/images/profile-placeholder.gif">
+  {{/if}}
+  <div class="media-body">
+    <h5 class="mt-0">{{item.creator.username}}</h5>
+    {{item.comment}}
   </div>
   <br>
   <hr>
