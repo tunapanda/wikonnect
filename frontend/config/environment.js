@@ -30,7 +30,8 @@ module.exports = function (environment) {
     },
 
     'ember-simple-auth': {
-      authorizer: 'authorizer:token'
+      authorizer: 'authorizer:token',
+      authenticationRoute: 'login',
     },
 
     'ember-simple-auth-token': {

@@ -1,5 +1,6 @@
 import Controller from '@ember/controller';
 import EmberObject, { action } from '@ember/object';
+
 import { inject } from '@ember/service';
 
 const achievementData = EmberObject.extend({
@@ -13,6 +14,10 @@ const achievementData = EmberObject.extend({
 
 export default class ChapterIndexController extends Controller {
 
+  @inject notify;
+
+
+
   @inject
   me
 
@@ -24,10 +29,14 @@ export default class ChapterIndexController extends Controller {
 
   flaggingModal = false
   ratingModal = false
+  @tracked enabled = false
 
   @action
-  ratingSubmit() {
-
+  ratingSubmit(val) {
+    if (!this.enabled) {
+      this.notify.info('Submitted your ' + val + ' star rating');
+      this.enabled = true;
+    }
   }
 
 

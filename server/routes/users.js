@@ -97,6 +97,8 @@ async function getProfileImage(id) {
       const getImage = await s3.s3.getObject(params).promise();
       let image = 'data:image/(png|jpg);base64,' + encode(getImage.Body);
       return image;
+    } else {
+      return 'images/profile-placeholder.gif';
     }
   } catch (e) {
     return 'images/profile-placeholder.gif';

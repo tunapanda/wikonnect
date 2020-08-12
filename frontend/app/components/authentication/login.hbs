@@ -13,12 +13,12 @@
     <form.element class="inputs" id="username" @controlType="text" @label="Username" @placeholder="Username"
       @property="username" @autocomplete="username" />
 
-    <form.element id="password" class="inputs" @controlType="password"
-    @label="Password" @placeholder="Enter Password"
+    <form.element id="password" class="inputs" @controlType="password" @label="Password" @placeholder="Enter Password"
       @property="password" @autocomplete="new-password" />
 
   </div>
 
-  <BsButton class="submit" @type="primary" @defaultText="Login" @buttonType="submit" @disabled={{form.isSubmitting}} @type={{if form.isRejected "danger" "primary"}}>
+  <BsButton class="submit" @defaultText="Login" @buttonType="submit" @disabled={{form.isSubmitting}}
+    @type={{if form.isRejected "danger" "primary"}}>
   </BsButton>
 </BsForm>

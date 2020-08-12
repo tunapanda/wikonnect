@@ -16,10 +16,23 @@ const validateChapter = require('../middleware/validation/validateChapter');
 
 const slugGen = require('../utils/slugGen');
 
+const environment = process.env.NODE_ENV;
+const config = require('../knexfile.js')[environment];
+const knex = require('knex')(config);
+
 const router = new Router({
   prefix: '/chapters'
 });
 
+async function ratingVal(parent, avg) {
+  if (parent.length == undefined) {
+    return parent.rating = avg;
+  } else {
+    parent.forEach(mod => {
+      return mod.rating = avg;
+    });
+  }
+}
 // async function returnChapterStatus(chapter, achievement) {
 //   if (chapter.length === undefined) {
 //     achievement.forEach(ach => {
@@ -120,11 +133,20 @@ router.get('/', permController.requireAuth, async ctx => {
         .where({ status: 'published' })
         .eager('comment(selectComment)');
     } else {
-      chapter = await Chapter.query().where(ctx.query).where({ status: 'published' }).eager('[comment(selectComment), achievement(selectAchievement), flag(selectFlag)]');
+      chapter = await Chapter.query().where(ctx.query).where({ status: 'published' }).eager('[comment(selectComment), achievement(selectAchievement), rating(selectRating), flag(selectFlag)]');
     }
     await returnType(chapter);
+    await achievementType(chapter);
+    await ratingVal(chapter);
   } else {
-    chapter = await Chapter.query().where(ctx.query).eager('[comment(selectComment), flag(selectFlag)]');
+    chapter = await Chapter.query().where(ctx.query).eager('[comment(selectComment), flag(selectFlag), rating(selectRating)]');
+    // chapter = await Chapter.query()
+    //   .select('chapters.*', 'rate.rating')
+    //   .from('chapters')
+    //   .avg('rate.rating as rating')
+    //   .where({ status: 'published' })
+    //   .innerJoin('ratings as rate', 'chapters.id', 'rate.chapter_id')
+    //   .groupBy('chapters.id', 'rate.rating');
   }
 
   ctx.status = 200;
@@ -200,7 +222,14 @@ router.get('/:id', permController.requireAuth, async ctx => {
     chapter = await Chapter.query().where({ id: ctx.params.id, creatorId: stateUserId });
   }
 
+  const rating = await knex('ratings').where({ 'chapter_id': ctx.params.id }).avg('rating');
+
   ctx.assert(chapter, 404, 'no lesson by that ID');
+
+  await ratingVal(chapter, rating[0].avg);
+  await returnType(chapter);
+  await achievementType(chapter);
+
 
   ctx.status = 200;
   ctx.body = { chapter };
@@ -433,13 +462,6 @@ router.post('/:id/upload', async ctx => {
   });
   // ctx.assert(files.length, 400, 'No files sent.');
   // ctx.assert(files.length === 1, 400, 'Too many files sent.');
-
-  await Chapter.query()
-    .findById(dirName)
-    .patch({
-      content_uri: '/' + uploadPath
-    });
-
 
   ctx.body = {
     host: ctx.host,

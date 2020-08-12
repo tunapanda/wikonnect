@@ -1,0 +1,16 @@
+  <div id="home">
+    <div class="heading bg-orange">
+    </div>
+</div>
+{{#if this.session.isAuthenticated}}
+  <div class="text-center padded">
+    <iframe id='moja-hazina' src='https://hazina.brck.io?quest=4fec75f5-822b-4e52-99ab-c3c1f10d7eb9' name='moja-hazina'
+      sandbox='allow-forms allow-modals allow-scripts allow-popups' loading='eager'
+      style='border:none; height:180px; overflow:hidden; width: 350px; background-color:white;'> </iframe>
+  </div>
+  {{else}}
+  <div class="text-center padded mt-5 mb-5">
+    You must be logged in to redeem points
+  </div>
+
+{{/if}}
