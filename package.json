@@ -20,7 +20,7 @@
     "cypress": "^4.12.1",
     "eslint-plugin-cypress": "^2.6.1",
     "istanbul-lib-coverage": "^3.0.0",
-    "knex": "^0.21.2",
+    "knex": "^0.21.4",
     "nyc": "^15.0.0",
     "pg": "^8.3.0"
   },
