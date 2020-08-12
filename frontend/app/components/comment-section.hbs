@@ -20,8 +20,8 @@
 <hr>
 {{#each chapterComments as |item|}}
 
-  <div class="media padded">
-    {{!-- <img alt="profile image" class="mr-3 rounded-circle" src="https://placehold.co/80"> --}}
+<div class="media padded">
+  {{!-- <img alt="profile image" class="mr-3 rounded-circle" src="https://placehold.co/80"> --}}
 
   {{#if this.me.user.profileUri}}
   <img alt="profile image" class="mr-3 rounded-circle" width="80px" src={{item.creator.profileUri}}>
@@ -35,4 +35,5 @@
   </div>
   <br>
   <hr>
+</div>
 {{/each}}
