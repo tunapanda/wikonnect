@@ -1,5 +1,6 @@
 import Controller from '@ember/controller';
 import EmberObject, { action } from '@ember/object';
+import { tracked } from '@glimmer/tracking';
 
 import { inject } from '@ember/service';
 
