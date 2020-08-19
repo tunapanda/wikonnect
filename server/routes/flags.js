@@ -39,8 +39,7 @@ router.get('/', requireAuth, grantAccess('readAny', 'path'), async ctx => {
 
 });
 
-//router.post('/', requireAuth, grantAccess('createAny', 'path'), async ctx => {
-router.post('/', async ctx => {
+router.post('/', requireAuth, grantAccess('createAny', 'path'), async ctx => {
 
   let newFLag = ctx.request.body.flag;
 
