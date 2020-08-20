@@ -7,12 +7,13 @@ export default class ProfileRoute extends Route {
   me;
 
   async beforeModel() {
+    if (!this.me.isAuthenticated) {
+      this.transitionTo('login');
+    }
     return await this.store.findRecord('user', this.me.user.id);
   }
 
   async model() {
     return await this.me.user;
   }
-
-
 }
