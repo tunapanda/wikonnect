@@ -10,9 +10,9 @@
 
   <div>
     {{#link-to "home"}}
-    <div class="learn">
-      Learn
-    </div>
+      <div class="learn">
+        Learn
+      </div>
     {{/link-to}}
 
     <a href="https://teach.wikonnect.org">
@@ -32,14 +32,14 @@
 
 
     {{#unless me.isAuthenticated}}
-    <div class="centered">
-      Have a Wikonnect account?
-    </div>
-    {{#link-to "login"}}
-    <button class="login">
-      Log In
-    </button>
-    {{/link-to}}
+      <div class="centered">
+        Have a Wikonnect account?
+      </div>
+      {{#link-to "login"}}
+        <button class="login">
+          Log In
+        </button>
+      {{/link-to}}
     {{/unless}}
   </div>
 

@@ -6,6 +6,9 @@ module.exports = function (environment) {
     environment,
     rootURL: '/',
     locationType: 'auto',
+    disqus: {
+      shortname: 'kmarima'
+    },
     EmberENV: {
       FEATURES: {
         // Here you can enable experimental features on an ember canary build
@@ -24,7 +27,8 @@ module.exports = function (environment) {
     },
 
     'ember-simple-auth': {
-      authorizer: 'authorizer:token'
+      authorizer: 'authorizer:token',
+      authenticationRoute: 'login',
     },
 
     'ember-simple-auth-token': {

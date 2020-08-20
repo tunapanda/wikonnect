@@ -1,7 +1,8 @@
+<HeadLayout />
 <MainHeader @style={{headerStyle}} @logout={{action "logout"}} />
 <Navigation />
 <div class="page-content">
   {{outlet}}
   <AuthPrompt />
-
 </div>
+<EmberNotify />

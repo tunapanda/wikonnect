@@ -1,16 +1,23 @@
 const Router = require('koa-router');
 const AchievementAward = require('../models/achievement_awards');
-const permController = require('../middleware/permController');
+const { requireAuth } = require('../middleware/permController');
 
 
 const router = new Router({
   prefix: '/achievementAwards'
 });
-router.get('/', permController.requireAuth, permController.grantAccess('readAny', 'profile'), async ctx => {
-  const achievementAward = await AchievementAward.query();
-  ctx.assert(achievementAward, 404, 'No matching record found');
+router.get('/', requireAuth, async ctx => {
+  const achievementAwards = await AchievementAward.query().where(ctx.query);
+  ctx.assert(achievementAwards, 404, 'No matching record found');
   ctx.status = 200;
-  ctx.body = { achievementAward };
+  ctx.body = { achievementAwards };
+});
+
+router.get('/:id', requireAuth, async ctx => {
+  const achievementAwards = await AchievementAward.query().findById(ctx.params.id);
+  ctx.assert(achievementAwards, 404, 'No matching record found');
+  ctx.status = 200;
+  ctx.body = { achievementAwards };
 });
 
 module.exports = router.routes();
