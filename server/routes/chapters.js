@@ -24,6 +24,8 @@ const router = new Router({
   prefix: '/chapters'
 });
 
+<<<<<<< HEAD
+=======
 async function ratingVal(parent, avg) {
   if (parent.length == undefined) {
     return parent.rating = avg;
@@ -33,6 +35,7 @@ async function ratingVal(parent, avg) {
     });
   }
 }
+>>>>>>> master
 // async function returnChapterStatus(chapter, achievement) {
 //   if (chapter.length === undefined) {
 //     achievement.forEach(ach => {
@@ -60,17 +63,27 @@ async function ratingVal(parent, avg) {
 async function returnType(parent) {
   if (parent.length == undefined) {
     parent.comment.forEach(comment => {
+<<<<<<< HEAD
+      return comment.type = 'comments';
+=======
       return comment.type = 'comment';
+>>>>>>> master
     });
   } else {
     parent.forEach(mod => {
       mod.comment.forEach(comment => {
+<<<<<<< HEAD
+        return comment.type = 'comments';
+=======
         return comment.type = 'comment';
+>>>>>>> master
       });
     });
   }
 }
 
+<<<<<<< HEAD
+=======
 async function achievementType(parent) {
   if (parent.length == undefined) {
     parent.achievement.forEach(data => {
@@ -86,6 +99,7 @@ async function achievementType(parent) {
 }
 
 
+>>>>>>> master
 /**
  * @api {get} /chapters/ GET all chapters.
  * @apiName GetChapters
@@ -125,6 +139,24 @@ router.get('/', permController.requireAuth, async ctx => {
   let roleNameList = ['basic', 'superadmin', 'tunapanda'];
 
   let chapter;
+<<<<<<< HEAD
+  switch (stateUserId) {
+  case 'anonymous':
+    chapter = await Chapter.query().where(ctx.query).where({ status: 'published', approved: 'true' }).eager('comment(selectComment)');
+    ctx.status = 401;
+    ctx.body = { message: 'un published chapter' };
+    break;
+  case 'basic':
+    chapter = await Chapter.query().where(ctx.query).where({ status: 'published', approved: 'true' }).eager('comment(selectComment)');
+    break;
+  default:
+    chapter = await Chapter.query().where(ctx.query).eager('comment(selectComment)');
+  }
+
+  // const achievement = await Achievement.query().where('user_id', ctx.state.user.data.id);
+  // await returnChapterStatus(chapter, achievement);
+  await returnType(chapter);
+=======
   if (roleNameList.includes(stateUserRole)) {
     if (ctx.query.q) {
       chapter = await Chapter.query()
@@ -157,11 +189,14 @@ router.get('/teach', permController.requireAuth, async ctx => {
   let stateUserId = ctx.state.user.id == undefined ? ctx.state.user.data.id : ctx.state.user.id;
 
   let chapter = await Chapter.query().where({ 'creator_id': stateUserId });
+>>>>>>> master
 
   ctx.status = 200;
   ctx.body = { 'chapter': chapter };
 });
 
+<<<<<<< HEAD
+=======
 router.get('/teach/:id', permController.requireAuth, async ctx => {
   let stateUserId = ctx.state.user.id == undefined ? ctx.state.user.data.id : ctx.state.user.id;
 
@@ -172,6 +207,7 @@ router.get('/teach/:id', permController.requireAuth, async ctx => {
 });
 
 
+>>>>>>> master
 /**
  * @api {get} /chapters/:id GET single chapter.
  * @apiName GetAChapter
@@ -310,10 +346,18 @@ router.put('/:id', permController.requireAuth, async ctx => {
     ctx.throw(400, 'No chapter with that ID');
   }
 
+<<<<<<< HEAD
+  if (chapterData.imageUrl === null || chapterData.contentUri === null) {
+    chapterData.status = 'draft';
+    console.log(chapterData.status);
+
+  }
+=======
   // if (chapter_record.imageUrl === null || chapter_record.contentUri === null) {
   //   chapterData.status = 'draft';
   //   log.info(chapterData.status);
   // }
+>>>>>>> master
 
   let chapter;
   try {
