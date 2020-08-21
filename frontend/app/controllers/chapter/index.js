@@ -30,10 +30,10 @@ export default class ChapterIndexController extends Controller {
       let slug = await this.target.currentRoute.params.chapter_slug;
       let chap = await this.store.findRecord('chapter', slug);
 
-      console.log("slug " + slug)
-      console.log("ssuser : " + this.me.user.id)
+      console.log("slug " + slug);
+      console.log("ssuser : " + this.me.user.id);
 
-      var rating = await this.store.createRecord('rating', {
+      let rating = await this.store.createRecord('rating', {
         rating: val,
         user: this.me.get('user'),
         chapter: chap,
