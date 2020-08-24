@@ -1,0 +1,90 @@
+{
+  "achievements": {
+    "profile": {
+      "user_id": "",
+      "target": "",
+      "target_status": "",
+      "description": ""
+    },
+    "chapters": {
+      "user_id": "",
+      "target": "",
+      "target_status": "",
+      "description": ""
+    },
+    "questionnaire": {
+      "user_id": "",
+      "target": "",
+      "target_status": "",
+      "description": ""
+    },
+    "approved": {
+      "user_id": "",
+      "target": "",
+      "target_status": "",
+      "description": ""
+    },
+    "review": {
+      "user_id": "",
+      "target": "",
+      "target_status": "",
+      "description": ""
+    },
+    "flagging": {
+      "user_id": "",
+      "target": "",
+      "target_status": "",
+      "description": ""
+    }
+  },
+  "awards": {
+    "profile": {
+      "badge_user_id":"",
+      "badge_achievement_id":"",
+      "badge_name": "",
+      "badge_slug": "",
+      "badge_image_url": "",
+      "badge_metadata": ""
+    },
+    "chapters": {
+      "badge_user_id": "",
+      "badge_achievement_id": "",
+      "badge_name": "",
+      "badge_slug": "",
+      "badge_image_url": "",
+      "badge_metadata": ""
+    },
+    "questionnaire": {
+      "badge_user_id": "",
+      "badge_achievement_id": "",
+      "badge_name": "",
+      "badge_slug": "",
+      "badge_image_url": "",
+      "badge_metadata": ""
+    },
+    "approved": {
+      "badge_user_id": "",
+      "badge_achievement_id": "",
+      "badge_name": "",
+      "badge_slug": "",
+      "badge_image_url": "",
+      "badge_metadata": ""
+    },
+    "review": {
+      "badge_user_id": "",
+      "badge_achievement_id": "",
+      "badge_name": "",
+      "badge_slug": "",
+      "badge_image_url": "",
+      "badge_metadata": ""
+    },
+    "flagging": {
+      "badge_user_id": "",
+      "badge_achievement_id": "",
+      "badge_name": "",
+      "badge_slug": "",
+      "badge_image_url": "",
+      "badge_metadata": ""
+    }
+  }
+}
