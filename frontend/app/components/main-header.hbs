@@ -1,23 +1,107 @@
 <!--Navbar -->
 <nav class="mb-1 navbar navbar-expand-lg navbar-dark secondary-color bg-orange lighten-1">
-  <a class="navbar-brand" href="#">Navbar</a>
+  {{#link-to "home" class="navbar-brand"}}
+    wikonnect
+  {{/link-to}}
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent-555"
     aria-controls="navbarSupportedContent-555" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
   <div class="collapse navbar-collapse" id="navbarSupportedContent-555">
-    <ul class="navbar-nav mr-0 ml-0">
-      <li class="nav-item active">
-        <a class="nav-link" href="#">Home
-          <span class="sr-only">(current)</span>
-        </a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="#">Teach </a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="#">Forum</a>
-      </li>
+    <ul class="navbar-nav ml-auto">
+
+
+
+
+
+
+
+
+      {{#if me.user.id}}
+
+        <li class="nav-item">
+
+          {{#link-to "home" invokeAction=(action "closenav") class="nav-link" }}
+            Learn
+          {{/link-to}}
+        </li>
+
+        <li class="nav-item">
+
+          <a class="nav-link" href="https://teach.wikonnect.org/api/auth?token={{token}}&user={{me.user.username}}">
+            Teach
+          </a>
+        </li>
+        <li class="nav-item">
+
+          {{#link-to "profile" invokeAction=(action "closenav") class="nav-link" }}
+            Profile
+
+          {{/link-to}}
+        </li>
+        <li class="nav-item">
+
+          <a class="nav-link" href="#" {{ action "logout" }}>Logout</a>
+        </li>
+        <li class="nav-item">
+
+          {{#link-to "profile"  (query-params view="Settings")
+  invokeAction=(action "closenav") class="nav-link"  }}
+            Settings
+
+          {{/link-to}}
+        </li>
+        <li class="nav-item">
+
+          <a class="nav-link" href="https://wikonnect.org">About</a>
+        </li>
+        <li class="nav-item">
+
+          <a class="nav-link"
+            href="https://community.wikonnect.org/new-topic?title=[FEEDBACK] Title&body=Explain the feedback in detail&category=Site Feedback">
+            Feedback
+          </a>
+        </li>
+        <li class="nav-item">
+
+          <a class="nav-link"
+            href="https://community.wikonnect.org/new-topic?title=[REQUESTING CONTENT]&body=Explain the request&category=Learning">
+            Request Content
+          </a>
+        </li>
+
+      {{else}}
+        <li class="nav-item">
+
+          {{#link-to "home" invokeAction=(action "closenav") class="nav-link" }}
+            Home
+          {{/link-to}}
+        </li>
+        <li class="nav-item">
+
+          {{#link-to "login" invokeAction=(action "closenav") class="nav-link" }}
+            Login
+
+          {{/link-to}}
+        </li>
+        <li class="nav-item">
+
+          {{#link-to "signup" invokeAction=(action "closenav") class="nav-link" }}
+            Signup
+
+          {{/link-to}}
+
+        </li>
+        <li class="nav-item">
+
+          <a class="nav-link" href="https://wikonnect.org">About</a>
+
+        </li>
+
+
+      {{/if}}
+
+
       {{!-- <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink-555" data-toggle="dropdown" aria-haspopup="true"
           aria-expanded="false">Dropdown
@@ -51,4 +135,3 @@
     </ul> --}}
   </div>
 </nav>
-<!--/.Navbar -->

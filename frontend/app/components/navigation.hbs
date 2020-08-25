@@ -1,0 +1,66 @@
+<div id="mySidenav" class="sidenav">
+  <div class="pt-3 pb-5 nav-x">
+    <button class="closebtn" {{action "closenav"}}>&times;</button>
+  </div>
+  <div class=" nav-head d-flex justify-content-between p-3 align-items-end">
+    Hi {{me.user.username}}
+    <img class="nav-picture" alt="" src="https://placekitten.com/g/200/300">
+
+  </div>
+  {{#if me.user.id}}
+    {{#link-to "home" invokeAction=(action "closenav") class="nav-item" }}
+      Learn
+    {{/link-to}}
+    <a class="nav-item" href="https://teach.wikonnect.org/api/auth?token={{token}}&user={{me.user.username}}">
+      Teach
+    </a>
+
+    {{#link-to "profile" invokeAction=(action "closenav") class="nav-item" }}
+      Profile
+
+    {{/link-to}}
+    <a class="nav-item" href="#" {{ action "logout" }}>Logout</a>
+    {{#link-to "profile"  (query-params view="Settings")
+  invokeAction=(action "closenav") class="nav-item"  }}
+      Settings
+
+    {{/link-to}}
+    <a class="nav-item" href="https://wikonnect.org">About</a>
+    <a class="nav-item"
+      href="https://community.wikonnect.org/new-topic?title=[FEEDBACK] Title&body=Explain the feedback in detail&category=Site Feedback">
+      Feedback
+    </a>
+
+    <a class="nav-item"
+      href="https://community.wikonnect.org/new-topic?title=[REQUESTING CONTENT]&body=Explain the request&category=Learning">
+      Request Content
+    </a>
+
+  {{else}}
+
+    {{#link-to "home" invokeAction=(action "closenav") class="nav-item" }}
+      Home
+    {{/link-to}}
+    {{!-- {{#link-to "courses" invokeAction=(action "closenav")  }}
+  Explore Courses
+
+  {{/link-to}} --}}
+    {{#link-to "login" invokeAction=(action "closenav") class="nav-item" }}
+      Login
+
+    {{/link-to}}
+    {{#link-to "signup" invokeAction=(action "closenav") class="nav-item" }}
+      Signup
+
+    {{/link-to}}
+
+
+    <a href="https://wikonnect.org">About</a>
+
+
+
+
+  {{/if}}
+
+
+</div>
