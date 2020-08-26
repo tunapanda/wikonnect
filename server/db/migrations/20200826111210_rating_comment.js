@@ -9,6 +9,6 @@ exports.up = function (knex) {
 exports.down = function (knex) {
   return knex.schema
     .table('ratings', table => {
-      table.dropColumn('comments');
+      table.dropColumn('comment');
     });
 };
