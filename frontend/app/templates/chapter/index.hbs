@@ -13,11 +13,13 @@
 
     <p> {{model.description}}</p>
   </div>
+  {{#if me.user.id}}
 
-  <div class="d-flex justify-content-between mr-2">
-    <a name="" id="" class="btn btn-primary" href="#" {{action "toggleFlaggingModal"}} role="button">Report </a>
-    {{!-- <a name="" id="" class="btn btn-primary ml-3" href="#" {{action "toggleRatingModal"}} role="button">Rate </a> --}}
-    {{!-- <BsDropdown as |dd|>
+    <div class="d-flex justify-content-between mr-2">
+
+      <a name="" id="" class="btn btn-primary" href="#" {{action "toggleFlaggingModal"}} role="button">Report </a>
+      {{!-- <a name="" id="" class="btn btn-primary ml-3" href="#" {{action "toggleRatingModal"}} role="button">Rate </a> --}}
+      {{!-- <BsDropdown as |dd|>
       <dd.button>&#x22EE; <span class="caret"></span></dd.button>
       <dd.menu as |ddm|>
         <ddm.item>
@@ -28,10 +30,11 @@
         </ddm.item>
       </dd.menu>
     </BsDropdown> --}}
-    {{star-rating readOnly=enabled rating=5 onClick=(action "ratingSubmit")}}
+      {{star-rating readOnly=enabled rating=5 onClick=(action "ratingSubmit")}}
 
 
-  </div>
+    </div>
+  {{/if}}
 
 
 
