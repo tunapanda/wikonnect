@@ -7,7 +7,7 @@ const router = new Router({
 });
 
 
-router.get('/', permController.requireAuth, async ctx =>{
+router.get('/', permController.requireAuth, async ctx => {
   try {
     const postQ = await Questionnaire.query();
 
@@ -22,3 +22,56 @@ router.get('/', permController.requireAuth, async ctx =>{
     throw e;
   }
 });
+
+
+
+router.post('/', permController.requireAuth, async ctx => {
+  try {
+    const postQ = await Questionnaire.query();
+
+    ctx.status = 200;
+    ctx.body = { postQ };
+
+  } catch (e) {
+    if (e.statusCode) {
+      ctx.throw(e.statusCode, { message: 'The query key does not exist' });
+      ctx.throw(e.statusCode, null, { errors: [e.message] });
+    } else { ctx.throw(400, null, { errors: [e.message] }); }
+    throw e;
+  }
+});
+
+
+router.put('/', permController.requireAuth, async ctx => {
+  try {
+    const postQ = await Questionnaire.query();
+
+    ctx.status = 200;
+    ctx.body = { postQ };
+
+  } catch (e) {
+    if (e.statusCode) {
+      ctx.throw(e.statusCode, { message: 'The query key does not exist' });
+      ctx.throw(e.statusCode, null, { errors: [e.message] });
+    } else { ctx.throw(400, null, { errors: [e.message] }); }
+    throw e;
+  }
+});
+
+router.delete('/', permController.requireAuth, async ctx => {
+  try {
+    const postQ = await Questionnaire.query();
+
+    ctx.status = 200;
+    ctx.body = { postQ };
+
+  } catch (e) {
+    if (e.statusCode) {
+      ctx.throw(e.statusCode, { message: 'The query key does not exist' });
+      ctx.throw(e.statusCode, null, { errors: [e.message] });
+    } else { ctx.throw(400, null, { errors: [e.message] }); }
+    throw e;
+  }
+});
+
+module.exports = router.routes();

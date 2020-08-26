@@ -99,4 +99,5 @@ Router.map(function () {
     this.route('dashboard');
     this.route('accounts');
   });
+  this.route('survey');
 });

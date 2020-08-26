@@ -1,0 +1,17 @@
+<BsForm @class="form" @formLayout="vertical" @model={{ surveymodel }} @onSubmit={{action "createSurvey"}} as |form|>
+    <form.element @controlType="ok1" @label="ok1" @placeholder="ok1" @property="checkbox" />
+    <form.element @controlType="checkbox" @label="Checkbox" @property="checkbox" />
+    <form.element @controlType="radio" @label="Radio" @property="radio" @options={{radioOptions}}
+        @optionLabelPath="label" />
+    <form.element @controlType="textarea" @label="Textarea" @property="textarea" />
+
+    {{#form.element label="Invite Code" id="invite_code" class="inputs" placeholder="Invite Code" property="inviteCode" as |el|}}
+    <div class="input-group">
+        <input value={{inviteCode}} class={{el.class}} placeholder="Invite Code"
+            oninput={{action (mut el.value) value="target.value"}} onchange={{action (mut el.value) value="target.value"}}
+            id={{el.id}} name={{el.id}} type="text">
+    </div>
+    {{/form.element}}
+    
+    <BsButton @defaultText="Submit" @type="primary" @buttonType="submit" />
+</BsForm>

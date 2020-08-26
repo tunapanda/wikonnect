@@ -3,10 +3,7 @@ const knex = require('../db/db');
 
 class Questionnaire extends Model {
   static get tableName() {
-    return 'questionnaire';
-  }
-  static get relationMappings() {
-    return {};
+    return 'questionnaires';
   }
 }
 
