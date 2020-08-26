@@ -13,7 +13,7 @@ export default class ChapterModel extends Model {
   @attr imageUrl;
 
   @belongsTo('user') creator;
-  @belongsTo('lesson') lesson;
+  // @belongsTo('lesson') lesson;
 
 
 }

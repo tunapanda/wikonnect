@@ -15,6 +15,7 @@
     "lint:hbs": "ember-template-lint .",
     "lint:js": "eslint .",
     "start": "ember serve --proxy https://app.wikonnect.org/",
+    "start:local": "ember serve  --proxy http://localhost:3000",
     "ci:start": "ember serve --path dist --proxy http://localhost:3000",
     "test": "COVERAGE=true ember test"
   },
@@ -22,7 +23,8 @@
     "@ember/edition-utils": "^1.1.1",
     "@ember/optional-features": "^1.0.0",
     "@ember/render-modifiers": "^1.0.2",
-    "@fortawesome/free-solid-svg-icons": "^5.13.1",
+    "@fortawesome/ember-fontawesome": "^0.2.1",
+    "@fortawesome/free-solid-svg-icons": "^5.14.0",
     "@glimmer/component": "^1.0.0",
     "@types/ember": "^3.1.1",
     "babel-eslint": "^10.0.2",
