@@ -1,16 +1,7 @@
 import Controller from '@ember/controller';
-import EmberObject, { action } from '@ember/object';
 import { tracked } from '@glimmer/tracking';
-
+import { action } from '@ember/object';
 import { inject } from '@ember/service';
-
-const achievementData = EmberObject.extend({
-  achievement: {
-    description: "",
-    targetStatus: "",
-    target: ""
-  }
-});
 
 
 export default class ChapterIndexController extends Controller {
@@ -100,14 +91,6 @@ export default class ChapterIndexController extends Controller {
     }
   }
 
-  createAchievement(fields) {
-    this.XapiRecord.achievementCreate(fields)
-      .then(() => console.log('data sent successfully'))
-      .catch(err => {
-        console.log(err);
-      });
-  }
-
   @action
   async dataLoad() {
     this.notify.info('chapter completed');
@@ -116,15 +99,16 @@ export default class ChapterIndexController extends Controller {
     window.H5P.externalDispatcher.on('xAPI', function (event) {
       console.log('INITIAL STATEMENT ON externalDispatcher');
       if (event.getScore() === event.getMaxScore() && event.getMaxScore() > 0) {
-        let data = achievementData.create()
-        data.set('achievement.targetStatus', 'completed')
-        data.set('achievement.description', 'not set')
-        data.set('achievement.target', chapter_id)
-
+        let body = {
+          achievement: {
+            description: 'not set',
+            targetStatus: 'completed',
+            target: chapter_id
+          }
+        };
         console.log(event.getScore());
         console.log(event.getMaxScore());
-        console.log(data.achievement);
-        this.createAchievement(data.achievement);
+        console.log(body);
       }
     });
   }
