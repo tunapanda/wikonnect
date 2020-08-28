@@ -122,7 +122,7 @@ async function achievementType(parent) {
 router.get('/', permController.requireAuth, async ctx => {
 
   let stateUserRole = ctx.state.user.role == undefined ? ctx.state.user.data.role : ctx.state.user.role;
-  let roleNameList = ['basic', 'superadmin', 'tunapanda'];
+  let roleNameList = ['basic', 'superadmin', 'tunapanda', 'admin'];
 
   let chapter;
   if (roleNameList.includes(stateUserRole)) {

@@ -13,8 +13,6 @@ export default class ChapterIndexController extends Controller {
   @inject
   me
 
-  @inject
-  XapiRecord;
 
   @inject
   notify;
@@ -89,27 +87,5 @@ export default class ChapterIndexController extends Controller {
       });
 
     }
-  }
-
-  @action
-  async dataLoad() {
-    this.notify.info('chapter completed');
-    let chapter_id = this.get('model').id;
-
-    window.H5P.externalDispatcher.on('xAPI', function (event) {
-      console.log('INITIAL STATEMENT ON externalDispatcher');
-      if (event.getScore() === event.getMaxScore() && event.getMaxScore() > 0) {
-        let body = {
-          achievement: {
-            description: 'not set',
-            targetStatus: 'completed',
-            target: chapter_id
-          }
-        };
-        console.log(event.getScore());
-        console.log(event.getMaxScore());
-        console.log(body);
-      }
-    });
   }
 }
