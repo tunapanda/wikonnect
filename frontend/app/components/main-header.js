@@ -1,23 +1,36 @@
 import Component from '@ember/component';
-import { inject } from '@ember/service';
+import { inject as service } from '@ember/service';
 import { action } from '@ember/object';
+import { tracked } from '@glimmer/tracking';
 
 
 
 
 export default class MainHeaderComponent extends Component {
 
-  @inject
+  @service
   me;
 
-  @action
-  opennav() {
-    document.getElementById("mySidenav").style.width = "100%";
-  }
+
+  @service router;
+  @service session;
+  token = this.session.data.authenticated.token
+
+
+  @tracked token = this.session.data.authenticated.token
+
+
+
 
   @action
-  closenav() {
-    document.getElementById("mySidenav").style.width = "0";
+  logoutuser() {
+
+    this.me.logout();
+    document.location.reload();
+
+    this.router.transitionTo('home');
+
+
   }
 
 

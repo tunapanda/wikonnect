@@ -44,6 +44,7 @@ module.exports = function (defaults) {
   // along with the exports of each module as its value.
 
   app.import('node_modules/h5p-standalone/dist/styles/h5p.css');
+  app.import('public/bootstrap.css');
 
   return app.toTree();
 };

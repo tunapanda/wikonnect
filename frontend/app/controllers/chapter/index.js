@@ -8,7 +8,8 @@ export default class ChapterIndexController extends Controller {
 
   @inject notify;
 
-
+  @inject
+  store;
 
   @inject
   me
@@ -20,11 +21,30 @@ export default class ChapterIndexController extends Controller {
   flaggingModal = false
   ratingModal = false
   @tracked enabled = false
+  @tracked rates = 0;
 
   @action
-  ratingSubmit(val) {
+  async ratingSubmit(val) {
     if (!this.enabled) {
-      this.notify.info('Submitted your ' + val + ' star rating');
+      let slug = await this.target.currentRoute.params.chapter_slug;
+      let chap = await this.store.findRecord('chapter', slug);
+
+      console.log("slug " + slug);
+      console.log("ssuser : " + this.me.user.id);
+
+      let rating = await this.store.createRecord('rating', {
+        rating: val,
+        user: this.me.get('user'),
+        chapter: chap,
+      });
+      await rating.save();
+
+      this.rates = val;
+      // this.notify.info('Submitted your ' + val + ' star rating');
+      this.notify.info('Submitted your ' + val + ' star rating ' + val);
+      this.toggleProperty('ratingModal');
+
+
       this.enabled = true;
     }
   }

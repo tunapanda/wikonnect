@@ -12,8 +12,6 @@ export default class H5pComponent extends Component {
 
   @action
   async renderH5P(el) {
-
-    this.notify.info('Log in to track progress');
     const h5pLocation = this.args.location;
 
     const options = {
