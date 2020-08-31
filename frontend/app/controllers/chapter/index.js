@@ -31,7 +31,7 @@ export default class ChapterIndexController extends Controller {
   async ratingComment() {
     // console.log(this.remark);
     // let chap = await this.store.findRecord('rating', this.theRating);
-    let theComment = this.remark
+    let theComment = this.remark;
 
     this.store.findRecord('rating', this.theRating).then(function (r) {
 
@@ -86,7 +86,7 @@ export default class ChapterIndexController extends Controller {
 
   @action
   reportSubmit() {
-    console.log("lol")
+    console.log("lol");
   }
 
   @computed('model.rating')
@@ -101,8 +101,8 @@ export default class ChapterIndexController extends Controller {
     //   total += element.rating;
     // });
 
-    console.log(mdl.name)
-    console.log(mdl.rating)
+    // console.log(mdl.name)
+    // console.log(mdl.rating)
 
     // this.average = total / rated.get("length")
     return mdl;
@@ -157,7 +157,7 @@ export default class ChapterIndexController extends Controller {
   get remarks() {
     let slug = this.target.currentRoute.params.chapter_slug;
 
-    let ratings = this.store.query('rating', { "chapterId": slug })
+    let ratings = this.store.query('rating', { "chapterId": slug });
     return ratings;
   }
 
