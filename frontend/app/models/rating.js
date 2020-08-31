@@ -3,7 +3,7 @@ const { Model, attr, belongsTo } = DS;
 
 export default class RatingModel extends Model {
   @attr rating;
-  //@attr remark;
+  @attr comment;
   @belongsTo('chapter') chapter;
   @belongsTo('user') user;
 }

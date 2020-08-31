@@ -9,7 +9,7 @@
 
 
   <div class="chapter-content ">
-    <H5p @location={{model.contentUri}} />
+    {{!-- <H5p @location={{model.contentUri}} /> --}}
 
     <p> {{model.description}}</p>
   </div>
@@ -30,7 +30,8 @@
         </ddm.item>
       </dd.menu>
     </BsDropdown> --}}
-      {{star-rating readOnly=enabled rating=5 onClick=(action "ratingSubmit")}}
+
+      {{star-rating readOnly=enabled rating=5 onClick=(action "ratingSubmit") useHalfStars=false fillColor="orange"}}
 
 
     </div>
@@ -47,6 +48,29 @@
 
 <div class="text-center">
   {{#if (eq me.user.username "daph")}}
+
+    <ul class="list-group">
+      {{#each remarks as |item|}}
+        {{#unless item.comment}}
+
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            {{#if item.comment}}
+              {{item.comment}}
+            {{else}}
+              N/A
+            {{/if}}
+            <span class="badge badge-primary badge-pill">
+              {{item.rating}}
+            </span>
+          </li>
+        {{/unless}}
+
+      {{/each}}
+
+    </ul>
+
+
+
     {{#if (eq model.approved "true")}}
 
       <button {{on "click" (fn this.toggleApproval model.id "true")}} type="button"
@@ -79,11 +103,12 @@
 
 
 <BsModalSimple @open={{ratingModal}} @title="Rate Chapter" @closeTitle="Close" @submitTitle="Submit Rating" @size=""
-  @closeButton={{true}} @fade={{true}} @backdrop={{true}} @backdropClose={{true}} @onSubmit={{action "ratingSubmit"}}
+  @closeButton={{true}} @fade={{true}} @backdrop={{true}} @backdropClose={{true}} @onSubmit={{action "ratingComment"}}
   @onHidden={{action "toggleRatingModal"}} @renderInPlace={{true}}>
 
-  <BsForm @onSubmit={{action "ratingSubmit"}} as |form|>
-    <form.element @controlType="textarea" @label="Optional reason for your {{rates}} star" @property="comment" />
+  <BsForm @onSubmit={{action "ratingComment"}} as |form|>
+    <form.element @controlType="textarea" @onChange={{action "changer"}}
+      @label="Optional reason for your {{rates}} star" @property="comment" />
 
 
   </BsForm>

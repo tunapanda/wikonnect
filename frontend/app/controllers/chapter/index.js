@@ -2,6 +2,7 @@ import Controller from '@ember/controller';
 import { action } from '@ember/object';
 import { tracked } from '@glimmer/tracking';
 import { inject as service } from '@ember/service';
+import { computed } from '@ember/object';
 
 import { inject } from '@ember/service';
 
@@ -23,9 +24,27 @@ export default class ChapterIndexController extends Controller {
   ratingModal = false
   @tracked enabled = false
   @tracked rates = 0;
+  @tracked remark;
+
+  @action
+  async ratingComment() {
+    console.log(this.remark)
+    let slug = await this.target.currentRoute.params.chapter_slug;
+
+    let ratings = this.store.query('rating', { "chapterId": slug, user: this.me.get('user') })
+    console.log(ratings[0])
+    console.log(ratings)
+
+
+
+  }
+
 
   @action
   async ratingSubmit(val) {
+
+
+
     if (!this.enabled) {
       let slug = await this.target.currentRoute.params.chapter_slug;
       let chap = await this.store.findRecord('chapter', slug);
@@ -35,6 +54,7 @@ export default class ChapterIndexController extends Controller {
 
       let rating = await this.store.createRecord('rating', {
         rating: val,
+        comment: "N/A",
         user: this.me.get('user'),
         chapter: chap,
       });
@@ -42,7 +62,7 @@ export default class ChapterIndexController extends Controller {
 
       this.rates = val;
       // this.notify.info('Submitted your ' + val + ' star rating');
-      this.notify.info('Submitted your ' + val + ' star rating ' + val);
+      this.notify.info('Submitted your ' + val + ' star rating ');
       this.toggleProperty('ratingModal');
 
 
@@ -53,7 +73,26 @@ export default class ChapterIndexController extends Controller {
 
   @action
   reportSubmit() {
+    console.log("lol")
+  }
 
+  @computed('model.rating')
+  get averageRating() {
+    // let slug = this.target.currentRoute.params.chapter_slug;
+    let mdl = this.get("model");
+
+    // let rated = this.store.query('rating', { "chapterId": slug });
+    // let total = 0;
+    // rated.forEach(element => {
+    //   console.log(element.rating)
+    //   total += element.rating;
+    // });
+
+    console.log(mdl.name)
+    console.log(mdl.rating)
+
+    // this.average = total / rated.get("length")
+    return mdl;
   }
 
   @action
@@ -66,10 +105,23 @@ export default class ChapterIndexController extends Controller {
   toggleRatingModal() {
     this.toggleProperty('ratingModal');
   }
+
+
   get flagModel() {
     return this.store.createRecord('flag', {
       creator: this.me.get('user')
     });
+  }
+
+  @action
+  changer(val) {
+    console.log(val)
+    this.remark = val;
+  }
+  get ratingModel() {
+    let slug = this.target.currentRoute.params.chapter_slug;
+
+    return this.store.query('rating', { "chapterId": slug })[0];
   }
 
   @action
@@ -85,6 +137,15 @@ export default class ChapterIndexController extends Controller {
     });
     model.save();
 
+  }
+
+
+  @computed
+  get remarks() {
+    let slug = this.target.currentRoute.params.chapter_slug;
+
+    let ratings = this.store.query('rating', { "chapterId": slug })
+    return ratings;
   }
 
   @action

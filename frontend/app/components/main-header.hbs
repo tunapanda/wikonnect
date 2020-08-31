@@ -71,17 +71,16 @@
       {{#if me.user.id}}
 
 
-        <li class="nav-item">
+        {{!-- <li class="nav-item">
           <a class="nav-link waves-effect waves-light">
             1
             <FaIcon @icon="envelope" />
           </a>
-        </li>
+        </li> --}}
         <li class="nav-item avatar dropdown">
           <a class="nav-link dropdown-toggle mh-50" id="navbarDropdownMenuLink-55" data-toggle="dropdown"
             aria-haspopup="true" aria-expanded="false">
-            <img src="https://mdbootstrap.com/img/Photos/Avatars/avatar-2.jpg" class="rounded-circle h40"
-              alt="avatar image">
+            <img src={{me.user.profileUri}} class="rounded-circle h40" alt="avatar image">
           </a>
           <div class="dropdown-menu dropdown-menu-lg-right dropdown-secondary"
             aria-labelledby="navbarDropdownMenuLink-55">

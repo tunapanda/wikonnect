@@ -10,7 +10,21 @@ export default class ChapterIndexRoute extends Route {
     return this.store.findAll('chapter');
   }
 
-  model(params) {
-    return this.store.findRecord('chapter', params.chapter_slug);
+  async model(params) {
+
+    // let rated = await this.store.query('rating', { "chapterId": params.chapter_slug });
+    // let total = 0;
+    // rated.forEach(element => {
+    //   console.log(element.rating)
+    //   total += element.rating;
+    // });
+
+
+    // let average = total / rated.get("length")
+    let res = this.store.findRecord('chapter', params.chapter_slug);
+    // res.average = average;
+    // res.numberOf = rated.get("length");
+
+    return res;
   }
 }
