@@ -24,16 +24,22 @@ export default class ChapterIndexController extends Controller {
   ratingModal = false
   @tracked enabled = false
   @tracked rates = 0;
+  @tracked theRating;
   @tracked remark;
 
   @action
   async ratingComment() {
-    console.log(this.remark)
-    let slug = await this.target.currentRoute.params.chapter_slug;
+    // console.log(this.remark);
+    // let chap = await this.store.findRecord('rating', this.theRating);
+    let theComment = this.remark
 
-    let ratings = this.store.query('rating', { "chapterId": slug, user: this.me.get('user') })
-    console.log(ratings[0])
-    console.log(ratings)
+    this.store.findRecord('rating', this.theRating).then(function (r) {
+
+      r.comment = theComment;
+
+      r.save(); // => PATCH to '/posts/1'
+    });
+
 
 
 
@@ -58,7 +64,14 @@ export default class ChapterIndexController extends Controller {
         user: this.me.get('user'),
         chapter: chap,
       });
+      console.log("b4 rating");
+      console.log(rating);
       await rating.save();
+      console.log("rating");
+      console.log(rating);
+      console.log(rating.id);
+
+      this.theRating = rating.id;
 
       this.rates = val;
       // this.notify.info('Submitted your ' + val + ' star rating');
@@ -115,7 +128,7 @@ export default class ChapterIndexController extends Controller {
 
   @action
   changer(val) {
-    console.log(val)
+    // console.log(val)
     this.remark = val;
   }
   get ratingModel() {
