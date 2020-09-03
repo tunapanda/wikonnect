@@ -87,17 +87,20 @@ router.post('/', requireAuth, validateRating, grantAccess('createAny', 'path'), 
 
 router.put('/:id', requireAuth, grantAccess('updateOwn', 'path'), async ctx => {
   let newRating = ctx.request.body.rating;
+
+  // { id: ISgkfBaAABg, rating: 2, comment: 'dope', chapterId: 'chapter2', userId: 'user1' }
   const checkRating = await Rating.query().findById(ctx.params.id);
 
   if (!checkRating) {
-    ctx.log.info('Error, path does not exists  %s for %s', ctx.request.ip, ctx.path);
-    ctx.throw(400, 'That lesson path does not exist');
+    ctx.log.info('Error, PUT for the following does not work -  %s for %s', ctx.request.ip, ctx.request.body.rating);
+    ctx.throw(400, 'Ratings cannot be updated');
+  } else {
+    const rating = await Rating.query().patchAndFetchById(ctx.params.id, newRating);
+    console.log(rating);
+    console.log('------------------------------');
+    ctx.status = 201;
+    ctx.body = { rating };
   }
-
-  const lesson = await Rating.query().patchAndFetchById(ctx.params.id, newRating);
-
-  ctx.status = 201;
-  ctx.body = { lesson };
 
 });
 
