@@ -16,10 +16,6 @@ const validateChapter = require('../middleware/validation/validateChapter');
 
 const slugGen = require('../utils/slugGen');
 
-const environment = process.env.NODE_ENV;
-const config = require('../knexfile.js')[environment];
-const knex = require('knex')(config);
-
 const router = new Router({
   prefix: '/chapters'
 });
@@ -189,24 +185,26 @@ router.get('/:id', permController.requireAuth, async ctx => {
   let roleNameList = ['basic', 'superadmin', 'tunapanda'];
   let anonymous = 'anonymous';
 
-  let chapter;
+  let chapter = Chapter.query()
+    .select('chapters.*')
+    .avg('rate.rating as rating')
+    .from('chapters')
+    .where({ 'chapters.id': ctx.params.id, status: 'published' })
+    .leftJoin('ratings as rate', 'chapters.id', 'rate.chapter_id')
+    .groupBy('chapters.id', 'rate.chapter_id');
 
   if (roleNameList.includes(stateUserRole)) {
-    chapter = await Chapter.query().where({ id: ctx.params.id, status: 'published' }).eager('[comment(selectComment), flag(selectFlag), achievement(selectAchievement)]');
+    chapter = await chapter.eager('[comment(selectComment), flag(selectFlag), achievement(selectAchievement)]');
+    await achievementType(chapter);
   } else if (stateUserRole == anonymous) {
-    chapter = await Chapter.query().where({ id: ctx.params.id, status: 'published' }).eager('comment(selectComment)');
+    chapter = await chapter.eager('comment(selectComment)');
   } else {
-    chapter = await Chapter.query().where({ id: ctx.params.id, creatorId: stateUserId });
+    chapter = await Chapter.query()
+      .where({ id: ctx.params.id, creatorId: stateUserId });
   }
 
-  const rating = await knex('ratings').where({ 'chapter_id': ctx.params.id }).avg('rating');
-
   ctx.assert(chapter, 404, 'no lesson by that ID');
-
-  await ratingVal(chapter, rating[0].avg);
   await returnType(chapter);
-  await achievementType(chapter);
-
 
   ctx.status = 200;
   ctx.body = { chapter };
