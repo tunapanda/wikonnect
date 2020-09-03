@@ -24,39 +24,6 @@ const router = new Router({
   prefix: '/chapters'
 });
 
-async function ratingVal(parent, avg) {
-  if (parent.length == undefined) {
-    return parent.rating = avg;
-  } else {
-    parent.forEach(mod => {
-      return mod.rating = avg;
-    });
-  }
-}
-// async function returnChapterStatus(chapter, achievement) {
-//   if (chapter.length === undefined) {
-//     achievement.forEach(ach => {
-//       if (chapter.id === ach.target) {
-//         // console.log(ach.target_status);
-//         return chapter.targetStatus = ach.target_status;
-//       }
-//     });
-//   } else {
-//     chapter.forEach(chap => {
-
-//       achievement.forEach(ach => {
-//         console.log(chap.id, ach.id);
-//         if (chap.id === ach.target) {
-//           console.log(ach.target_status);
-
-//           return chap.targetStatus = ach.target_status;
-//         }
-//       });
-//     });
-//   }
-// }
-
-
 async function returnType(parent) {
   if (parent.length == undefined) {
     parent.comment.forEach(comment => {
@@ -128,25 +95,37 @@ router.get('/', permController.requireAuth, async ctx => {
   if (roleNameList.includes(stateUserRole)) {
     if (ctx.query.q) {
       chapter = await Chapter.query()
+        .select('chapters.*')
+        .avg('rate.rating as rating')
+        .from('chapters')
         .where('name', 'ILIKE', `%${ctx.query.q}%`)
         .orWhere('description', 'ILIKE', `%${ctx.query.q}%`)
         .where({ status: 'published' })
-        .eager('comment(selectComment)');
+        .leftJoin('ratings as rate', 'chapters.id', 'rate.chapter_id')
+        .groupBy('chapters.id', 'rate.chapter_id')
+        .eager('[comment(selectComment), achievement(selectAchievement), flag(selectFlag)]');
     } else {
-      chapter = await Chapter.query().where(ctx.query).where({ status: 'published' }).eager('[comment(selectComment), achievement(selectAchievement), rating(selectRating), flag(selectFlag)]');
+      chapter = await Chapter.query()
+        .select('chapters.*')
+        .avg('rate.rating as rating')
+        .from('chapters')
+        .where(ctx.query, { status: 'published' })
+        .leftJoin('ratings as rate', 'chapters.id', 'rate.chapter_id')
+        .groupBy('chapters.id', 'rate.chapter_id')
+        .eager('[comment(selectComment), achievement(selectAchievement), flag(selectFlag)]');
     }
     await returnType(chapter);
     await achievementType(chapter);
-    await ratingVal(chapter);
   } else {
-    chapter = await Chapter.query().where(ctx.query).eager('[comment(selectComment), flag(selectFlag), rating(selectRating)]');
-    // chapter = await Chapter.query()
-    //   .select('chapters.*', 'rate.rating')
-    //   .from('chapters')
-    //   .avg('rate.rating as rating')
-    //   .where({ status: 'published' })
-    //   .innerJoin('ratings as rate', 'chapters.id', 'rate.chapter_id')
-    //   .groupBy('chapters.id', 'rate.rating');
+    // chapter = await Chapter.query().where(ctx.query).eager('[comment(selectComment), flag(selectFlag), rating(selectRating)]');
+    chapter = await Chapter.query()
+      .select('chapters.*')
+      .avg('rate.rating as rating')
+      .from('chapters')
+      .where(ctx.query, { status: 'published' })
+      .leftJoin('ratings as rate', 'chapters.id', 'rate.chapter_id')
+      .groupBy('chapters.id', 'rate.chapter_id')
+      .eager('[comment(selectComment), flag(selectFlag)]');
   }
 
   ctx.status = 200;
