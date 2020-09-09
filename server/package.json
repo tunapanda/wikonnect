@@ -23,7 +23,7 @@
     "async-busboy": "^1.0.1",
     "aws-sdk": "^2.643.0",
     "badwords": "^1.0.0",
-    "bcrypt": "^3.0.6",
+    "bcrypt": "^5.0.0",
     "busboy": "^0.3.1",
     "chai-json-schema": "^1.5.1",
     "cors": "^2.8.5",
