@@ -1,22 +1,40 @@
 @import "variables";
 
+.auth-btn {
+  background-color: bisque;
+}
 
-
+.auth-title {
+  font-size: 30px;
+  color: black;
+  background-color: #FAF1DB;
+  text-align: left;
+  font-weight: bold;
+  padding: 0 1.6rem 0.8rem 1.6rem;
+}
 
 .inputs {
   input {
     outline: 0;
     border-width: 0 0 2px;
-    border-color: $primary-purple;
+    border-color: grey;
     padding-left: 0px;
     border-radius: 0px;
   }
 
   input:focus {
-    border-color: green
+    border-color: coral
   }
 }
 
+.auth-title {
+  font-size: 30px;
+  color: white;
+  background-color: #FAF1DB;
+  text-align: left;
+  font-weight: bold;
+  padding: 0 1.6rem 0.8rem 1.6rem;
+}
 
 .sort-list {
   display: flex;

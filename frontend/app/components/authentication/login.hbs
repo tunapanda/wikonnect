@@ -1,5 +1,3 @@
-<div class="form-title">Log In</div>
-
 <BsForm @class="form" @formLayout="vertical" @model={{registeredUser}} @onSubmit={{action "login"}} as |form|>
   {{#each registeredUser.errors as |err| }}
     {{#if (eq err.key "errors")}}
@@ -10,15 +8,15 @@
   {{/each}}
 
   <div class="login-form-fields">
-    <form.element class="inputs" id="username" @controlType="text" @label="Username" @placeholder="Username"
-      @property="username" @autocomplete="username" />
+    <form.element id="username" @controlType="text" @label="Username" @placeholder="Username" @property="username"
+      @autocomplete="username" />
 
-    <form.element id="password" class="inputs" @controlType="password" @label="Password" @placeholder="Enter Password"
+    <form.element id="password" @controlType="password" @label="Password" @placeholder="Enter Password"
       @property="password" @autocomplete="new-password" />
 
   </div>
 
-  <BsButton class="submit" @defaultText="Login" @buttonType="submit" @disabled={{form.isSubmitting}}
+  <BsButton class="bg-primary form-control" @defaultText="Login" @buttonType="submit" @disabled={{form.isSubmitting}}
     @type={{if form.isRejected "danger" "primary"}}>
   </BsButton>
 </BsForm>

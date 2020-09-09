@@ -19,7 +19,8 @@ export default class CommentSectionComponent extends Component {
 
   get commentModel() {
     return this.store.createRecord('comment', {
-      creator: this.me.user.id
+      user: this.me.user.id,
+      chapter: this.me.user.id
     });
   }
 
