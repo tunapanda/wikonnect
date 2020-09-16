@@ -1,9 +1,7 @@
-<p align="center">
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
 [![All Contributors](https://img.shields.io/badge/all_contributors-9-orange.svg?style=flat-square)](#contributors)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
   <img  height="200" src="https://app.wikonnect.org/images/icons/wikonnect-primary.svg">
-</p>
 
 
 <h1 align="center">Welcome to wikonnect 👋</h1>
@@ -94,7 +92,7 @@ cd wikonnect/
 yarn
 ```
 
-### Server(API) setup
+### Server (API) setup
 
 ---
 
@@ -120,7 +118,7 @@ development: {
 
 Ensure that you have redis-server running locally in your pc.
 
-For Macos and Windows systems, check out the [Download page](https://redis.io/download) to download redis-server
+For Macos and Windows systems, check out the [Download page](https://redis.io/download) to download redis-server.
 
 To install it in a linux system, run the command below:
 ```
@@ -226,8 +224,6 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 <!-- markdownlint-enable -->
 <!-- prettier-ignore-end -->
 <!-- ALL-CONTRIBUTORS-LIST:END -->
-
-See the list of [contributors](https://github.com/all-contributors/all-contributors) who participated in this project.
 
 <div align="center">
   <br>

@@ -1,0 +1,15 @@
+@media (min-width: 768px) {
+  .moja-card {
+    width: 29rem;
+  }
+  iframe {
+    width: 26rem;
+    height: 12rem;
+  }
+}
+
+iframe {
+  height: 12rem;
+  border-width: 0px;
+}
+/*# sourceMappingURL=moja.css.map */

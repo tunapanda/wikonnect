@@ -1,6 +1,8 @@
 # unconventional js
 /blueprints/*/files/
 /vendor/
+/public/
+/app/components/main-header.hbs
 
 # compiled output
 /dist/

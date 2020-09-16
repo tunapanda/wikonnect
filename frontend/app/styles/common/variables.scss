@@ -1,27 +1,7 @@
 @import url('https://fonts.googleapis.com/css?family=Karla&display=swap');
 $karla: 'Karla',
 sans-serif;
-
-$primary-purple:#534897;
-$primary-orange:#FF5722;
-$primary-blue: #2C41B1;
-$light-blue: #24BDD1;
-$primary-dark : #1C4255;
+$primary-purple: rgb(145, 12, 127);
+$primary-dark:$primary-purple;
 $font-family-form: 'Inter',
 sans-serif;
-
-
-$primary: #2C41B1;
-$dark-blue: #240862;
-$light-grey : #989898;
-$lightest-grey : #F8F8F8;
-
-@mixin pages-main {
-  font-family: $karla;
-  color: $light-grey
-}
-
-.padded {
-  padding-left: 1em;
-  padding-right: 1em;
-}
