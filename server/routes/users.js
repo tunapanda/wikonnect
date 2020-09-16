@@ -114,6 +114,14 @@ async function createPasswordHash(ctx, next) {
   await next();
 }
 
+async function profileCompleteBoolean(params) {
+  Object.values(params).forEach(val => {
+    if (val === null || val == ''){
+      return params.profileComplete = false;
+    }
+  });
+}
+
 /**
  * @api {post} /users POST create a new user.
  * @apiName PostAUser
@@ -244,6 +252,7 @@ router.get('/:id', permController.requireAuth, async ctx => {
   let userId = ctx.params.id != 'current' ? ctx.params.id : stateUserId;
   const user = await User.query().findById(userId).mergeJoinEager('[achievementAwards(selectBadgeNameAndId), userRoles(selectName), enrolledCourses(selectNameAndId)]');
   user.profileUri = await getProfileImage(user.profileUri);
+  user.profileComplete = await profileCompleteBoolean(user);
 
 
   if (!user) {

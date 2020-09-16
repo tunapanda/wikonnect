@@ -8,8 +8,14 @@ export default class LoginController extends Controller {
 
   LoginValidations = LoginValidations;
 
+  profileComplete = this.me.user.profileComplete;
+
   @action
   login() {
-    this.transitionToRoute('/home');
+    if (this.profileComplete) {
+      this.transitionToRoute('/profilecomplete')
+    } else {
+      this.transitionToRoute('/home')
+    }
   }
 }
