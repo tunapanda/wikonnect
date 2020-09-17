@@ -15,3 +15,11 @@
       style='border:none; overflow:hidden; background-color:white;'> </iframe>
   </BsModalSimple>
 {{/if}}
+
+{{#if (eq me.user.metadata.oneUserInviteComplete "true") }}
+<BsModalSimple @open={{this.toggleMojaModal}} @title="Redeem Profile Completion Points">
+  <iframe id='moja-hazina' src='https://hazina.brck.io?quest=186625a1-56ac-40fc-ad91-0f5f8639ad6e' name='moja-hazina'
+    sandbox='allow-forms allow-modals allow-scripts allow-popups' loading='eager'
+    style='border:none; overflow:hidden; background-color:white;'> </iframe>
+</BsModalSimple>
+{{/if}}

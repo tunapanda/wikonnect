@@ -132,7 +132,7 @@ async function inviteUserAward(params){
   let completed = await knex('user_invite')
     .count('invited_by')
     .select('invited_by')
-    .where({ 'invited_by': params })
+    .where({ 'invited_by': params.invited_by })
     .groupBy('invited_by')
     .having(knex.raw('count(invited_by) > 2'));
 
@@ -141,6 +141,7 @@ async function inviteUserAward(params){
     'achievementId': 'achievements12',
     'userId': completed[0].invited_by
   });
+  await User.query().patchAndFetchById(params.id, { 'metadata': { 'oneInviteComplete': 'true' } });
 }
 
 /**
@@ -305,6 +306,15 @@ router.get('/:id', permController.requireAuth, async ctx => {
     const userVerification = await knex('user_verification').where({ 'user_id': userId });
     user.userVerification = userVerification;
 
+    if (profileCompleteBoolean(user)) {
+      await User.query().patchAndFetchById(ctx.params.id, { 'metadata': { 'profileComplete': 'true' } });
+      await AchievementAward.query().insert({
+        'name': 'profile completed',
+        'achievementId': 'achievements11',
+        'userId': ctx.params.id
+      });
+    }
+
     log.info('Got a request from %s for %s', ctx.request.ip, ctx.path);
 
     ctx.status = 200;
@@ -399,7 +409,7 @@ router.post('/invite/:id', async ctx => {
     } else { ctx.throw(400, null, { errors: ['Bad Request', e.message] }); }
   }
 
-  inviteUserAward(ctx.request.body.user.inviteBy);
+  inviteUserAward(ctx.request.body.user);
 
 
   ctx.status = 200;
