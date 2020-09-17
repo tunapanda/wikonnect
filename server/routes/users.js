@@ -120,6 +120,7 @@ async function profileCompleteBoolean(params) {
   const keys = ['profileUri', 'email'];
   keys.forEach((key, index) => {
     if (params[key] != null) {
+      log.info(index);
       return 'false';
     } else {
       return 'true';

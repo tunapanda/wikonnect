@@ -10,6 +10,6 @@ export default class LoginController extends Controller {
 
   @action
   login() {
-    this.transitionToRoute('/home')
+    this.transitionToRoute('/home');
   }
 }
