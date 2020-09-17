@@ -11,8 +11,8 @@ export default class ApplicationController extends Controller {
     'login': 'auth-header',
     'signup': 'auth-header',
     'upload': 'auth-header',
-    'profile': 'auth-header',
     'cms.index': 'green-header',
+    'profile': 'yellow-header'
   }
 
   @inject

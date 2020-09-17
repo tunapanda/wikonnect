@@ -32,9 +32,7 @@ export default class CommentSectionComponent extends Component {
 
   @computed
   get chapterComments() {
-
     return this.store.query('comment', { "chapterId": this.args.selectedChapter });
-
   }
 
   @action

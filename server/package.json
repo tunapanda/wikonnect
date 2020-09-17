@@ -46,7 +46,6 @@
     "node-fetch": "^2.6.1",
     "nodemailer": "^6.3.0",
     "nodemailer-mailgun-transport": "^1.4.0",
-    "nodemon": "^2.0.3",
     "objection": "1.6.11",
     "pg": "^8.0.3",
     "pino": "^5.17.0",
@@ -64,6 +63,7 @@
     "chai-json-schema-ajv": "^5.0.0",
     "eslint": "^6.4.0",
     "mocha": "^7.1.0",
+    "nodemon": "^2.0.4",
     "nyc": "^14.1.1"
   }
 }

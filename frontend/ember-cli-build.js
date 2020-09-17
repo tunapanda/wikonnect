@@ -17,7 +17,6 @@ module.exports = function (defaults) {
     babel: {
       sourceMaps: 'both'
     },
-    
     'ember-bootstrap': {
       bootstrapVersion: 4,
       importBootstrapFont: false,
