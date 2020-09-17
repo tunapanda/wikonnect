@@ -132,7 +132,7 @@ async function inviteUserAward(params){
   let completed = await knex('user_invite')
     .count('invited_by')
     .select('invited_by')
-    .where({ 'invited_by': params.invited_by })
+    .where({ 'invited_by': params.invitedBy })
     .groupBy('invited_by')
     .having(knex.raw('count(invited_by) > 2'));
 
