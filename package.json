@@ -14,7 +14,7 @@
   },
   "devDependencies": {
     "@cypress/code-coverage": "^3.8.1",
-    "all-contributors-cli": "^6.17.2",
+    "all-contributors-cli": "^6.17.3",
     "apidocs": "^2017.3.9",
     "babel-plugin-istanbul": "^6.0.0",
     "cypress": "^5.2.0",
