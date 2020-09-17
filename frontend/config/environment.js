@@ -9,6 +9,10 @@ module.exports = function (environment) {
     disqus: {
       shortname: 'kmarima'
     },
+    fontawesome: {
+      warnIfNoIconsIncluded: false,
+      defaultPrefix: 'fal' // light icons
+    },
     EmberENV: {
       FEATURES: {
         // Here you can enable experimental features on an ember canary build
