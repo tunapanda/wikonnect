@@ -176,7 +176,9 @@ router.post('/', validateAuthRoutes.validateNewUser, createPasswordHash, async c
   ctx.request.body.user.lastSeen = await updatedAt();
 
   const inviteInsert = await knex('user_invite').insert([{ 'invited_by': ctx.request.body.user.inviteCode }], ['id', 'invited_by']);
-  await inviteUserAward(ctx.request.body.user.inviteCode);
+  if (ctx.request.body.user.inviteCode != null){
+    await inviteUserAward(ctx.request.body.user.inviteCode);
+  }
 
   let newUser = ctx.request.body.user;
   newUser.inviteCode = shortid.generate();

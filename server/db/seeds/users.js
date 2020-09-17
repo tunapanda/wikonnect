@@ -9,7 +9,7 @@ exports.seed = function (knex) {
         {
           id: 'user1',
           username: 'user1',
-          // email: 'user1@wikonnect.org',
+          email: 'user1@wikonnect.org',
           hash: '$2b$10$a.r.mPrpHxwlGh/6jd.RG.QhHu2xHAY3/EzclbPFduSDTnAtV3feu',
           last_ip: '245.19.225.55',
           private: true,
