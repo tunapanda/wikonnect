@@ -111,6 +111,7 @@ export default class ChapterIndexController extends Controller {
 
   @action
   async dataLoad(el) {
+    console.log(el);
     // this.notify.info('chapter completed');
     let chapter_id = await this.target.currentRoute.params.chapter_slug;
     let score;
