@@ -6,13 +6,24 @@ export default class HomeController extends Controller {
   @service
   me
 
-  mojaModal = false
+  mojaModalProfile = false
+  mojaModalInvite = false
+  mojaModalChapter = false
 
   @action
-  toggleMojaModal() {
-    this.toggleProperty('mojaModal');
+  toggleMojaModalProfile() {
+    this.toggleProperty('mojaModalProfile');
   }
 
+  @action
+  toggleMojaModalInvite() {
+    this.toggleProperty('mojaModalInvite');
+  }
+
+  @action
+  toggleMojaModalChapter() {
+    this.toggleProperty('mojaModalChapter');
+  }
   @computed('model.[]')
   get allChapters(){
     return this.store.query('chapter', { "approved": true });

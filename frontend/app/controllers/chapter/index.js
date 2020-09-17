@@ -108,4 +108,27 @@ export default class ChapterIndexController extends Controller {
 
     }
   }
+
+  @action
+  async dataLoad(el) {
+    // this.notify.info('chapter completed');
+    let chapter_id = await this.target.currentRoute.params.chapter_slug;
+    let score;
+    window.H5P.externalDispatcher.on('xAPI', function (event) {
+      if (event.getScore() === event.getMaxScore() && event.getMaxScore() > 0) {
+        console.log(event.data.statement.result.duration);
+        score = event.data.statement.result.duration;
+      }
+    });
+    console.log(score);
+
+    if(score != 'undefined'){
+      let achievement = await this.store.createRecord('achievement', {
+        description: 'new achievement',
+        targetStatus: 'completed',
+        target: chapter_id
+      });
+      await achievement.save();
+    }
+  }
 }

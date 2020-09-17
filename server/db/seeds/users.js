@@ -17,7 +17,7 @@ exports.seed = function (knex) {
           last_seen: '2017-12-20 19:17:10',
           created_at: '2017-12-20 19:17:10',
           updated_at: '2017-12-20 19:17:10',
-          metadata: { profileComplete: 'false' }
+          metadata: { profileComplete: 'false', oneInviteComplete: 'false', oneChapterCompletion: 'false' }
         },
         {
           id: 'user2',
@@ -29,7 +29,8 @@ exports.seed = function (knex) {
           invite_code: 'user2',
           last_seen: '2017-12-20 19:17:10',
           created_at: '2017-12-20 19:17:10',
-          updated_at: '2017-12-20 19:17:10'
+          updated_at: '2017-12-20 19:17:10',
+          metadata: { profileComplete: 'false', oneInviteComplete: 'false', oneChapterCompletion: 'false' }
         },
         {
           id: 'user3',
@@ -41,7 +42,8 @@ exports.seed = function (knex) {
           invite_code: 'user3',
           last_seen: '2017-12-20 19:17:10',
           created_at: '2017-12-20 19:17:10',
-          updated_at: '2017-12-20 19:17:10'
+          updated_at: '2017-12-20 19:17:10',
+          metadata: { profileComplete: 'true', oneInviteComplete: 'true', oneChapterCompletion: 'true' }
         }
       ]);
     });
