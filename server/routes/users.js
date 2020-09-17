@@ -134,18 +134,14 @@ async function inviteUserAward(params) {
     .select('invited_by')
     .where({ 'invited_by': params.invitedBy })
     .groupBy('invited_by')
-    .having(knex.raw('count(invited_by) > 2'));
+    .having(knex.raw('count(invited_by) > 0'));
 
-  console.log('------------------------');
-  console.log(params);
-  console.log(completed);
+  await AchievementAward.query().insert({
+    'name': 'invited 1 users',
+    'achievementId': 'achievements12',
+    'userId': completed[0].invited_by
+  });
 
-
-  // await AchievementAward.query().insert({
-  //   'name': 'invited 1 users',
-  //   'achievementId': 'achievements12',
-  //   'userId': completed[0].invited_by
-  // });
   if (params.metadata.oneInviteComplete == 'false' && completed > 0) {
     await User.query().patchAndFetchById(params.id, { 'metadata:oneInviteComplete': 'true' });
   }
