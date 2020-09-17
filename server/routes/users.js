@@ -128,19 +128,23 @@ async function profileCompleteBoolean(params) {
   });
 }
 
-async function inviteUserAward(params){
+async function inviteUserAward(params) {
   let completed = await knex('user_invite')
     .count('invited_by')
     .select('invited_by')
-    .where({ 'invited_by': params })
+    .where({ 'invited_by': params.invitedBy })
     .groupBy('invited_by')
-    .having(knex.raw('count(invited_by) > 2'));
+    .having(knex.raw('count(invited_by) > 0'));
 
   await AchievementAward.query().insert({
-    'name': 'invited 3 users',
+    'name': 'invited 1 users',
     'achievementId': 'achievements12',
     'userId': completed[0].invited_by
   });
+
+  if (params.metadata.oneInviteComplete == 'false' && completed > 0) {
+    await User.query().patchAndFetchById(params.id, { 'metadata:oneInviteComplete': 'true' });
+  }
 }
 
 /**
@@ -174,11 +178,12 @@ router.post('/', validateAuthRoutes.validateNewUser, createPasswordHash, async c
   ctx.request.body.user.username = ctx.request.body.user.username.toLowerCase();
   ctx.request.body.user.email = ctx.request.body.user.email.toLowerCase();
   ctx.request.body.user.lastSeen = await updatedAt();
+  ctx.request.body.user.metadata = { 'profileComplete': 'false', 'oneInviteComplete': 'false' };
 
   const inviteInsert = await knex('user_invite').insert([{ 'invited_by': ctx.request.body.user.inviteCode }], ['id', 'invited_by']);
-  if (ctx.request.body.user.inviteCode != null){
-    await inviteUserAward(ctx.request.body.user.inviteCode);
-  }
+  // if (ctx.request.body.user.inviteCode != null) {
+  //   await inviteUserAward(ctx.request.body.user);
+  // }
 
   let newUser = ctx.request.body.user;
   newUser.inviteCode = shortid.generate();
@@ -305,6 +310,15 @@ router.get('/:id', permController.requireAuth, async ctx => {
     const userVerification = await knex('user_verification').where({ 'user_id': userId });
     user.userVerification = userVerification;
 
+    if (profileCompleteBoolean(user) && user.metadata.profileComplete === 'false') {
+      await User.query().patchAndFetchById(ctx.params.id, { 'metadata:profileComplete': 'true' });
+      await AchievementAward.query().insert({
+        'name': 'profile completed',
+        'achievementId': ctx.params.id,
+        'userId': ctx.params.id
+      });
+    }
+
     log.info('Got a request from %s for %s', ctx.request.ip, ctx.path);
 
     ctx.status = 200;
@@ -373,11 +387,11 @@ router.put('/:id', jwt.authenticate, permController.requireAuth, async ctx => {
     throw e;
   }
 
-  if (profileCompleteBoolean(user)) {
-    await User.query().patchAndFetchById(ctx.params.id, { 'metadata': { 'profileComplete': 'true' } });
+  if (profileCompleteBoolean(user) && user.metadata.profileComplete === 'false') {
+    await User.query().patchAndFetchById(ctx.params.id, { 'metadata:profileComplete': 'true' });
     await AchievementAward.query().insert({
       'name': 'profile completed',
-      'achievementId': 'achievements11',
+      'achievementId': ctx.params.id,
       'userId': ctx.params.id
     });
   }
@@ -399,7 +413,7 @@ router.post('/invite/:id', async ctx => {
     } else { ctx.throw(400, null, { errors: ['Bad Request', e.message] }); }
   }
 
-  inviteUserAward(ctx.request.body.user.inviteBy);
+  inviteUserAward(ctx.request.body.user);
 
 
   ctx.status = 200;
