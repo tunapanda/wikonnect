@@ -9,6 +9,8 @@ const s3 = require('../utils/s3Util');
 const { updatedAt } = require('../utils/timestamp');
 
 const User = require('../models/user');
+const AchievementAward = require('../models/achievement_awards');
+
 const log = require('../utils/logger');
 const jwt = require('../middleware/jwt');
 const permController = require('../middleware/permController');
@@ -114,6 +116,37 @@ async function createPasswordHash(ctx, next) {
   await next();
 }
 
+async function profileCompleteBoolean(params) {
+  const keys = ['profileUri', 'email'];
+  keys.forEach((key, index) => {
+    if (params[key] != null) {
+      log.info(index);
+      return 'false';
+    } else {
+      return 'true';
+    }
+  });
+}
+
+async function inviteUserAward(params) {
+  let completed = await knex('user_invite')
+    .count('invited_by')
+    .select('invited_by')
+    .where({ 'invited_by': params.invitedBy })
+    .groupBy('invited_by')
+    .having(knex.raw('count(invited_by) > 0'));
+
+  await AchievementAward.query().insert({
+    'name': 'invited 1 users',
+    'achievementId': 'achievements12',
+    'userId': completed[0].invited_by
+  });
+
+  if (params.metadata.oneInviteComplete == 'false' && completed > 0) {
+    await User.query().patchAndFetchById(params.id, { 'metadata:oneInviteComplete': 'true' });
+  }
+}
+
 /**
  * @api {post} /users POST create a new user.
  * @apiName PostAUser
@@ -145,8 +178,12 @@ router.post('/', validateAuthRoutes.validateNewUser, createPasswordHash, async c
   ctx.request.body.user.username = ctx.request.body.user.username.toLowerCase();
   ctx.request.body.user.email = ctx.request.body.user.email.toLowerCase();
   ctx.request.body.user.lastSeen = await updatedAt();
+  ctx.request.body.user.metadata = { 'profileComplete': 'false', 'oneInviteComplete': 'false' };
 
   const inviteInsert = await knex('user_invite').insert([{ 'invited_by': ctx.request.body.user.inviteCode }], ['id', 'invited_by']);
+  // if (ctx.request.body.user.inviteCode != null) {
+  //   await inviteUserAward(ctx.request.body.user);
+  // }
 
   let newUser = ctx.request.body.user;
   newUser.inviteCode = shortid.generate();
@@ -251,11 +288,18 @@ router.get('/:id', permController.requireAuth, async ctx => {
   }
 
   if (user.id != stateUserId || stateUserId === 'anonymous') {
-    const publicData = {
-      'username': user.username,
-      'profileUri': user.profileUri,
+    // return specific data for all profiles incase it's private
+    let publicData = {
+      'username': 'private',
+      'profileUri': 'images/profile-placeholder.gif',
       'id': user.id,
+      'private': user.private
     };
+    // return data if profile is not private
+    if (user.private === 'false') {
+      publicData.username = user.username;
+      publicData.profileUri = user.profileUri;
+    }
     ctx.status = 200;
     ctx.body = { user: publicData };
   } else {
@@ -265,6 +309,15 @@ router.get('/:id', permController.requireAuth, async ctx => {
     achievementAwardsType(user);
     const userVerification = await knex('user_verification').where({ 'user_id': userId });
     user.userVerification = userVerification;
+
+    if (profileCompleteBoolean(user) && user.metadata.profileComplete === 'false') {
+      await User.query().patchAndFetchById(ctx.params.id, { 'metadata:profileComplete': 'true' });
+      await AchievementAward.query().insert({
+        'name': 'profile completed',
+        'achievementId': ctx.params.id,
+        'userId': ctx.params.id
+      });
+    }
 
     log.info('Got a request from %s for %s', ctx.request.ip, ctx.path);
 
@@ -319,7 +372,7 @@ router.get('/', permController.requireAuth, permController.grantAccess('readAny'
  *
  */
 
-router.put('/:id', jwt.authenticate, permController.requireAuth, permController.grantAccess('updateOwn', 'profile'), async ctx => {
+router.put('/:id', jwt.authenticate, permController.requireAuth, async ctx => {
 
   ctx.request.body.user.updatedAt = await updatedAt();
 
@@ -334,6 +387,15 @@ router.put('/:id', jwt.authenticate, permController.requireAuth, permController.
     throw e;
   }
 
+  if (profileCompleteBoolean(user) && user.metadata.profileComplete === 'false') {
+    await User.query().patchAndFetchById(ctx.params.id, { 'metadata:profileComplete': 'true' });
+    await AchievementAward.query().insert({
+      'name': 'profile completed',
+      'achievementId': ctx.params.id,
+      'userId': ctx.params.id
+    });
+  }
+
   ctx.status = 200;
   ctx.body = { user };
 
@@ -342,13 +404,17 @@ router.put('/:id', jwt.authenticate, permController.requireAuth, permController.
 router.post('/invite/:id', async ctx => {
   let invite;
   try {
-    invite = await User.query().patchAndFetchById(ctx.params.id, ctx.request.body.user);
+    // invite = await User.query().patchAndFetchById(ctx.params.id, ctx.request.body.user);
+    invite = await knex('user_invite').insert([{ user_id: ctx.params.id, 'invited_by': ctx.request.body.user.inviteBy }], ['id', 'invited_by', 'user_id']);
     ctx.assert(invite, 404, 'That user does not exist.');
   } catch (e) {
     if (e.statusCode) {
       ctx.throw(e.statusCode, null, { errors: [e.message] });
     } else { ctx.throw(400, null, { errors: ['Bad Request', e.message] }); }
   }
+
+  inviteUserAward(ctx.request.body.user);
+
 
   ctx.status = 200;
   ctx.body = { invite };

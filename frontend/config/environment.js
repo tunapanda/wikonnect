@@ -10,6 +10,7 @@ module.exports = function (environment) {
       shortname: 'kmarima'
     },
     fontawesome: {
+      warnIfNoIconsIncluded: false,
       defaultPrefix: 'fal' // light icons
     },
     EmberENV: {
