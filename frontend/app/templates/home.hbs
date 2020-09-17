@@ -3,7 +3,15 @@
   <div class="row mt-5">
     {{#each this.allChapters as |chapter|}}
 
-      <H5pListItem @chapter={{chapter}} />
+    <H5pListItem @chapter={{chapter}} />
     {{/each}}
   </div>
 </div>
+
+{{#if (eq me.user.metadata.profileComplete "true") }}
+  <BsModalSimple @open={{this.toggleMojaModal}} @title="Redeem Profile Completion Points">
+    <iframe id='moja-hazina' src='https://hazina.brck.io?quest=93b6b764-fa2f-4d59-92d0-a028af8c1da8' name='moja-hazina'
+      sandbox='allow-forms allow-modals allow-scripts allow-popups' loading='eager'
+      style='border:none; overflow:hidden; background-color:white;'> </iframe>
+  </BsModalSimple>
+{{/if}}
