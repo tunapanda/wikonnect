@@ -5,8 +5,8 @@ import Component from '@ember/component';
 import LoginValidations from '../../validations/login';
 
 export default
-  // @tagName('')
-  class LoginComponent extends Component {
+// @tagName('')
+class LoginComponent extends Component {
   LoginValidations = LoginValidations;
 
   @inject

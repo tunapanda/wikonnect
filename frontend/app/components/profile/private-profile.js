@@ -54,8 +54,8 @@ export default class ProfilePrivateProfileComponent extends Component {
   @action
   updateEmail() {
     this.notify.info('Updating Email', { closeAfter: 10000 });
-    console.log(this.email)
-    console.log(this.me.user.id)
+    console.log(this.email);
+    console.log(this.me.user.id);
     let theEmail = this.email;
     // ...after the record has loaded
 
@@ -64,19 +64,19 @@ export default class ProfilePrivateProfileComponent extends Component {
       user.save();
 
     });
-    this.hideEmailModal()
+    this.hideEmailModal();
 
   }
 
 
   @action
   showEmailModal() {
-    this.emailModalVisible = true
+    this.emailModalVisible = true;
   }
 
   @action
   hideEmailModal() {
-    this.emailModalVisible = false
+    this.emailModalVisible = false;
   }
 
   @action
