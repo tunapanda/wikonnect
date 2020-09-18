@@ -5,8 +5,8 @@ import Component from '@ember/component';
 import LoginValidations from '../../validations/login';
 
 export default
-// @tagName('')
-class LoginComponent extends Component {
+  // @tagName('')
+  class LoginComponent extends Component {
   LoginValidations = LoginValidations;
 
   @inject
@@ -15,11 +15,19 @@ class LoginComponent extends Component {
   @inject
   store;
 
+  @inject
+  notify;
+
   @action
   login(model) {
+    this.notify.info('Logging in ...', { closeAfter: 10000 });
     this.me.authenticate(model.get('username'), model.get('password')).then(() => {
+      this.notify.info('Login successful. Redirecting', { closeAfter: 10000 });
+
       this.authenticationSuccessful();
     }).catch(err => {
+      this.notify.alert('failed', { closeAfter: 10000 });
+
       if (err.json && err.json.errors) {
         Object.keys(err.json.errors).forEach(field => {
           model.addError(err.json.errors[field].constraint, err.json.errors[field].name);

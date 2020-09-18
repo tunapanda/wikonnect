@@ -1,18 +1,35 @@
 <div class="container">
 
-  {{#link-to "upload"}}
-    <img class="rounded-circle h-25" alt="" src={{profileUri}}>
-  {{/link-to}}
+  <div class="row">
+    {{#link-to "upload"}}
+      <img class="h80 mt-3  rounded-circle" alt="" src={{profileUri}}>
+    {{/link-to}}
+    <div class="mt-4 ml-3">
+      <b>Userame:</b> {{me.user.username}} <br>
+      <b>Email:</b>
+      {{#if me.user.email}}
+
+
+        <a href="#" {{action showEmailModal}}>{{me.user.email}}</a>
+      {{else}}
+        <a name="" id="" class=" btn-primary btn-sm" href="#" {{action showEmailModal}} role="button">
+          Update Email
+        </a>
+      {{/if}}
+
+
+    </div>
+
+  </div>
 
 
 
-
-  <div class="profile-body padded">
+  <div class="profile-body ">
     <div class="profile-options">
       <br><br>
       <BsButtonGroup @value={{profileView}} @type="radio" @onChange={{action (mut profileView)}} as |bg|>
         {{#each viewOptions as |view|}}
-        <bg.button @type="default" @value={{view}}>{{view}}</bg.button>
+          <bg.button @type="default" @value={{view}}>{{view}}</bg.button>
         {{/each}}
 
       </BsButtonGroup>
@@ -22,53 +39,75 @@
     <hr>
 
     {{#if (eq profileView "Profile")}}
-    <div class="profile-title">
-      <h4>Details</h4>
-      {{#if viewOnly}}
-      <button class="profile-edit btn padded btn-primary btn-small " {{action editProfile}}>
-        Edit
-      </button>
-      {{else}}
-      <button class="profile-edit btn padded btn-primary btn-small" {{action editProfile}}>
-        X
-      </button>
-      {{/if}}
+      <div class="profile-title">
+        <h4>Details</h4>
+        {{#if viewOnly}}
+          <button class="profile-edit btn padded btn-primary btn-small " {{action editProfile}}>
+            Edit
+          </button>
+        {{else}}
+          <button class="profile-edit btn padded btn-primary btn-small" {{action editProfile}}>
+            X
+          </button>
+        {{/if}}
 
-    </div>
-    <BsForm class="profile-data" @model={{model}} @onSubmit={{action save}} @disabled={{viewOnly}} as |form|>
-      <form.element class="inputs" @property="firstName" @label="First Name" @placeholder="What is your first name?" />
-      <form.element class="inputs" @property="lastName" @label="last Name" @placeholder="What is your second name?" />
-      <form.element class="inputs" @property="aboutMe" @label="About Me" @placeholder="Describe yourself" />
-      {{#unless viewOnly}}
-      <BsButton @defaultText="Save Changes" class="profile-submit" @buttonType="submit" />
-      {{/unless}}
-    </BsForm>
+      </div>
+      <BsForm class="profile-data" @model={{model}} @onSubmit={{action save}} @disabled={{viewOnly}} as |form|>
+        <form.element class="inputs" @property="firstName" @label="First Name"
+          @placeholder="What is your first name?" />
+        <form.element class="inputs" @property="lastName" @label="last Name" @placeholder="What is your second name?" />
+        <form.element class="inputs" @property="aboutMe" @label="About Me" @placeholder="Describe yourself" />
+        {{#unless viewOnly}}
+          <BsButton @defaultText="Save Changes" class="profile-submit" @buttonType="submit" />
+        {{/unless}}
+      </BsForm>
 
     {{/if}}
 
     {{#if (eq profileView "Learning")}}
-    <h5>My Achievements</h5>
+      <h5>My Achievements</h5>
 
 
-    <div class="row">
-      {{#each model.achievementAwards as |achievement|}}
-      <div class="col-md-6">
-        <Achievement @name={{achievement.name}} @description="You have completed your profile"
-          @created={{achievement.createdAt}} @badge={{achievement.imageUrl}} />
+      <div class="row">
+        {{#each model.achievementAwards as |achievement|}}
+          <div class="col-md-6">
+            <Achievement @name={{achievement.name}} @description="You have completed your profile"
+              @created={{achievement.createdAt}} @badge={{achievement.imageUrl}} />
+          </div>
+        {{/each}}
       </div>
-      {{/each}}
-    </div>
 
     {{/if}}
 
     {{#if (eq profileView "Settings")}}
-    Invite Link : <br>
-    <code>{{inviteCode}}</code>
+      Invite Link : <br>
+      <code>{{inviteCode}}</code>
 
-    <CopyButton @clipboardText={{inviteCode}} @success={{this.onSuccess}} @error={{this.onError}}
-      title="copy to clipboard">
-      <span>copy</span>
-    </CopyButton>
+      <CopyButton @clipboardText={{inviteCode}} @success={{this.onSuccess}} @error={{this.onError}}
+        title="copy to clipboard">
+        <span>copy</span>
+      </CopyButton>
     {{/if}}
   </div>
+
+
+
+  {{!-- <BsModal @open={{false}} @onSubmit={{action "submit"}} @onHidden={{action (mut modal3) false}} as |modal|> --}}
+  <BsModal @open={{emailModalVisible}} @onHide={{action hideEmailModal}} as |modal|>
+    <modal.header>
+      <h4 class="modal-title">
+        Update Email
+      </h4>
+    </modal.header>
+    <modal.body>
+      {{input type="text" class="form-control" value=email placeholder="Price"}}
+      {{!-- <input type="text" class="form-control input-lg" value={{me.user.email}} autofocus="autofocus"> --}}
+    </modal.body>
+    <modal.footer>
+      <BsButton @onClick={{action modal.close}}>Cancel</BsButton>
+      <BsButton @type="success" @onClick={{action updateEmail}}>Save</BsButton>
+    </modal.footer>
+  </BsModal>
+
+
 </div>

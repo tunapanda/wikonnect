@@ -417,6 +417,7 @@ body {
   padding: 1em;
   z-index: 999;
   background-color: #fecf00;
+  background-image: "/public/assets/profile.svg";
 }
 
 .green-header {
@@ -820,20 +821,60 @@ body {
   margin-top: 25px;
 }
 
-.achievement {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
+.achievement .card {
+  margin: 15px 0;
+  background: #FAFAF5 0% 0% no-repeat padding-box;
+  border-radius: 11px;
+  opacity: 1;
   -webkit-box-orient: horizontal;
   -webkit-box-direction: normal;
       -ms-flex-direction: row;
           flex-direction: row;
-  padding-top: 7px;
+  border: 1px solid #FAFAF5;
 }
 
-.achievement img {
-  margin-top: 6px;
-  padding-right: 8px;
+.achievement .card .card-header {
+  display: unset;
+  border-bottom: unset;
+  background: #FAFAF5 0% 0% no-repeat padding-box;
+}
+
+.achievement .card img {
+  margin: 10px 0 0 10px;
+}
+
+.achievement .card p {
+  margin-bottom: 3px;
+}
+
+.achievement .card .badgeName {
+  text-align: left;
+  font: "Semi Bold 10px/16px Inter";
+  letter-spacing: 0px;
+  color: #08BC87;
+  opacity: 1;
+}
+
+.achievement .card .description {
+  text-align: left;
+  font: "Semi Bold 15px/16px Inter";
+  letter-spacing: 0px;
+  color: #201C2F;
+  opacity: 1;
+}
+
+.achievement .card .created {
+  font: "Regular 14px/18px Inter";
+  letter-spacing: 0px;
+  color: #9DA3A2;
+  opacity: 1;
+}
+
+.achievement .card .fa-share-square {
+  opacity: 1;
+  color: #F57010;
+  font-size: 1rem;
+  margin-left: 0;
 }
 
 .profile-acheivements {
@@ -1047,6 +1088,10 @@ html {
 
 .h40 {
   height: 40px;
+}
+
+.h80 {
+  height: 80px;
 }
 
 body {
