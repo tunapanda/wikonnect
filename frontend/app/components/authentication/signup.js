@@ -10,6 +10,9 @@ export default class AuthenticationSignupComponent extends Component {
   me;
 
   @inject
+  notify;
+
+  @inject
   session;
 
   @inject
@@ -18,6 +21,7 @@ export default class AuthenticationSignupComponent extends Component {
   @action
   createUser(model) {
     let fields = model.getProperties('username', 'email', 'password', 'inviteCode');
+    this.notify.info('Signing up...', { closeAfter: 5000 });
 
 
     this.me.register(fields).then(() => this.me.authenticate(model.get('username'), model.get('password')).then(() => this.success()), err => {
