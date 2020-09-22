@@ -18,6 +18,12 @@ export default class ProfilePrivateProfileComponent extends Component {
   profileView = 'Profile';
   viewOnly = true;
   email = this.me.user.email;
+
+  fname = this.me.user.metadata.firstName;
+  lname = this.me.user.metadata.lastName;
+  about = this.me.user.metadata.aboutMe;
+
+
   @tracked emailModalVisible = false;
 
   inviteCode = location.protocol + '//' + location.host + '/signup?invite_code=' + this.me.user.inviteCode;
@@ -92,5 +98,26 @@ export default class ProfilePrivateProfileComponent extends Component {
   @action
   editProfile() {
     this.toggleProperty('viewOnly');
+  }
+
+
+  @action
+  saveProfile() {
+    this.toggleProperty('viewOnly');
+    let first_name = this.fname;
+    let last_name = this.lname;
+    let about_me = this.about;
+    let notifyer = this.notify;
+    this.store.findRecord('user', this.me.user.id).then(function (user) {
+      user.firstName = first_name; // => "Rails is Omakase"
+      user.lastName = last_name; // => "Rails is Omakase"
+
+      user.aboutMe = about_me;
+
+      user.save(); // => PATCH to '/posts/1'
+      notifyer.info('Profile Updated', { closeAfter: 10000 });
+
+    });
+
   }
 }
