@@ -346,7 +346,6 @@ router.post('/:id/chapter-image', async (ctx, next) => {
   const fileNameBase = shortid.generate();
   const uploadPath = 'uploads/chapters';
   const uploadDir = path.resolve(__dirname, '../public/' + uploadPath);
-  console.log('dsfsd');
 
   ctx.assert(files.length, 400, 'No files sent.');
   ctx.assert(files.length === 1, 400, 'Too many files sent.');
@@ -389,8 +388,6 @@ router.post('/:id/chapter-image', async (ctx, next) => {
       .patch({
         imageUrl: `${uploadPath}/${fileNameBase}.jpg`
       });
-    console.log('db updated');
-
 
     ctx.body = {
       host: ctx.host,

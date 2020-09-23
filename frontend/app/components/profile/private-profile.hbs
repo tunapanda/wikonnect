@@ -68,7 +68,7 @@
       <div class="row">
         {{#each model.achievementAwards as |achievement|}}
           <div class="col-md-6">
-            <Achievement @name={{achievement.name}} @description="You have completed your profile"
+            <Achievement @name={{achievement.name}}
               @created={{achievement.createdAt}} @badge={{achievement.imageUrl}} />
           </div>
         {{/each}}
