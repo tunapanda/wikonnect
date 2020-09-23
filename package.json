@@ -10,6 +10,9 @@
     "test:server": "cd server && yarn test",
     "test:frontend": "cd frontend && yarn test",
     "test:all": "concurrently yarn:test yarn:test:frontend yarn:test:server",
+    "start:frontend": "cd frontend && yarn start:local",
+    "start:server": "cd server && nodemon index.js",
+    "start:all": "concurrently yarn:start:frontend yarn:start:server",
     "docs": "apidoc -e node_modules -e docs -o docs/"
   },
   "devDependencies": {
@@ -25,8 +28,9 @@
     "pg": "^8.3.3"
   },
   "dependencies": {
-    "eslint-plugin-node": "^11.1.0",
+    "concurrently": "^5.3.0",
     "eslint-plugin-ember": "^8.10.1",
+    "eslint-plugin-node": "^11.1.0",
     "redis": "^3.0.2"
   }
 }

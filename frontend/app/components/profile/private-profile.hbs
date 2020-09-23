@@ -29,7 +29,7 @@
       <br><br>
       <BsButtonGroup @value={{profileView}} @type="radio" @onChange={{action (mut profileView)}} as |bg|>
         {{#each viewOptions as |view|}}
-          <bg.button @type="default" @value={{view}}>{{view}}</bg.button>
+        <bg.button @type="default" @value={{view}}>{{view}}</bg.button>
         {{/each}}
 
       </BsButtonGroup>
@@ -67,23 +67,22 @@
 
       <div class="row">
         {{#each model.achievementAwards as |achievement|}}
-          <div class="col-md-6">
-            <Achievement @name={{achievement.name}} @description="You have completed your profile"
-              @created={{achievement.createdAt}} @badge={{achievement.imageUrl}} />
-          </div>
+        <div class="col-md-6">
+          <Achievement @name={{achievement.name}} @created={{achievement.createdAt}} @badge={{achievement.imageUrl}} />
+        </div>
         {{/each}}
       </div>
 
     {{/if}}
 
     {{#if (eq profileView "Settings")}}
-      Invite Link : <br>
-      <code>{{inviteCode}}</code>
+    Invite Link : <br>
+    <code>{{inviteCode}}</code>
 
-      <CopyButton @clipboardText={{inviteCode}} @success={{this.onSuccess}} @error={{this.onError}}
-        title="copy to clipboard">
-        <span>copy</span>
-      </CopyButton>
+    <CopyButton @clipboardText={{inviteCode}} @success={{this.onSuccess}} @error={{this.onError}}
+      title="copy to clipboard">
+      <span>copy</span>
+    </CopyButton>
     {{/if}}
   </div>
 
