@@ -38,7 +38,8 @@ async function chapterCompletionAward(params) {
 
 router.get('/', async ctx => {
   try {
-    const achievement = await Achievement.query().where(ctx.query);
+    let achievement = await Achievement.query().where(ctx.query);
+    achievement.imageUrl = 'images/profile-placeholder.gif';
     ctx.status = 200;
     ctx.body = { achievement };
   } catch (error) {
