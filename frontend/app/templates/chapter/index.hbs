@@ -62,12 +62,12 @@
 </BsModalSimple>
 
 
-<BsModalSimple @open={{ratingModal}} @title="Rate Chapter" @closeTitle="Close" @submitTitle="Submit Rating" @size=""
+<BsModalSimple @open={{ratingModal}} @title="Rate This Module " @closeTitle="Close" @submitTitle="Submit Optional Remark" @size=""
   @closeButton={{true}} @fade={{true}} @backdrop={{true}} @backdropClose={{true}} @onSubmit={{action "ratingSubmit"}}
   @onHidden={{action "toggleRatingModal"}} @renderInPlace={{true}}>
 
   <BsForm @onSubmit={{action "ratingSubmit"}} as |form|>
-    <form.element @controlType="textarea" @label="Optional reason for your {{rates}} star" @property="comment" />
+    <form.element @controlType="textarea" @label="Optional reason/remark for your {{rates}} star rating" @property="comment" />
 
 
   </BsForm>
