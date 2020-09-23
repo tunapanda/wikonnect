@@ -33,4 +33,12 @@
 </BsModalSimple>
 {{/if}}
 
+{{#if (eq me.user.metadata.threeChapterCompletion "true") }}
+<BsModalSimple @open={{this.toggleMojaModalChapter}} @title="Redeem point(s) for completing a chapter">
+  <iframe id='moja-hazina' src='https://hazina.brck.io?quest=8cc5ff7d-7beb-465b-8105-8e4407a8f269' name='moja-hazina'
+    sandbox='allow-forms allow-modals allow-scripts allow-popups' loading='eager'
+    style='border:none; overflow:hidden; background-color:white;'> </iframe>
+</BsModalSimple>
+{{/if}}
+
 {{!-- {{/if}} --}}
