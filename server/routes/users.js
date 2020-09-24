@@ -137,7 +137,7 @@ async function inviteUserAward(params) {
     .having(knex.raw('count(invited_by) > 0'));
 
   await AchievementAward.query().insert({
-    'name': 'invited 1 users',
+    'name': 'Invited 1 users',
     'achievementId': 'achievements12',
     'userId': completed[0].invited_by
   });

@@ -125,7 +125,7 @@ export default class ChapterIndexController extends Controller {
 
     if(score != 'undefined'){
       let achievement = await this.store.createRecord('achievement', {
-        description: 'new achievement',
+        description: 'completed' + chapter_id,
         targetStatus: 'completed',
         target: chapter_id
       });

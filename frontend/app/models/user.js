@@ -5,9 +5,6 @@ import { hasMany } from 'ember-data/relationships';
 
 export default class UserModel extends Model {
 
-
-
-
   @attr() username;
   @attr() email;
   @attr() password;
