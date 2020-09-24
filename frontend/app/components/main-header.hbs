@@ -73,7 +73,13 @@
         <li class="nav-item avatar dropdown">
           <a class="nav-link dropdown-toggle mh-50" id="navbarDropdownMenuLink-55" data-toggle="dropdown"
             aria-haspopup="true" aria-expanded="false">
-            <img src={{me.user.profileUri}} class="rounded-circle h40" alt="avatar image">
+            {{#if me.user.profileUri}}
+              <img src={{me.user.profileUri}} class="rounded-circle h40" alt="avatar image">
+            {{else}}
+              <img src="/images/profile-placeholder.gif" class="rounded-circle h40" alt="avatar image">
+
+
+            {{/if}}
           </a>
           <div class="dropdown-menu dropdown-menu-lg-right dropdown-secondary"
             aria-labelledby="navbarDropdownMenuLink-55">
