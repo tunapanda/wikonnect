@@ -7,8 +7,8 @@ import { tracked } from '@glimmer/tracking';
 import LoginValidations from '../../validations/login';
 
 export default
-  // @tagName('')
-  class LoginComponent extends Component {
+// @tagName('')
+class LoginComponent extends Component {
   LoginValidations = LoginValidations;
 
   @inject
@@ -28,7 +28,7 @@ export default
     this.me.authenticate(model.get('username'), model.get('password')).then(() => {
 
       this.authenticationSuccessful();
-    }).catch(err => {
+    }).catch(() => {
       this.loading = false;
       this.notify.alert('Login failed, Check your username and password and try again', { closeAfter: 6000 });
       // if (err.json && err.json.errors) {

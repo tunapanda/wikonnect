@@ -26,9 +26,7 @@ export default class CommentSectionComponent extends Component {
     });
   }
 
-  init() {
-    console.log("init")
-  }
+
 
   @computed('me.user.profileUri')
   get profileUri() {
@@ -44,16 +42,15 @@ export default class CommentSectionComponent extends Component {
   @action
   async saveComment(model) {
     let notice = this.notify;
-    let allComments = this.chapterComments;
     let chap = await this.store.findRecord('chapter', this.args.selectedChapter);
     model.setProperties({
       chapter: chap
     });
-    model.save().then(function (model) {
+    model.save().then(function () {
       // save worked
-    }, function (error) {
-      notice.alert("Be mindful of your comments")
-    })
+    }, function () {
+      notice.alert("Be mindful of your comments");
+    });
 
   }
 }
