@@ -19,17 +19,16 @@
 <hr>
 {{#each chapterComments as |item|}}
 
-  <div class="media padded">
+  <div id="comments" class="media mt-4">
     {{!-- <img alt="profile image" class="mr-3 rounded-circle" src="https://placehold.co/80"> --}}
 
-    {{#if this.me.user.profileUri}}
+    {{#if item.creator.profileUri}}
       <img alt="profile image" class="mr-3 rounded-circle" width="80px" src={{item.creator.profileUri}}>
     {{else}}
-      <img alt="profile image" class="mr-3 rounded-circle" width="80px"
-        src="http://localhost:4200/images/profile-placeholder.gif">
+      <img alt="profile image" class="mr-3 rounded-circle" width="80px" src="/images/profile-placeholder.gif">
     {{/if}}
     <div class="media-body">
-      <h5 class="mt-0">{{item.creator.username}}</h5>
+      <h5 class="mt-2">{{item.creator.username}}</h5>
       {{item.comment}}
     </div>
     <br>
