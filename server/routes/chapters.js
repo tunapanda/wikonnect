@@ -11,7 +11,6 @@ const log = require('../utils/logger');
 
 
 const Chapter = require('../models/chapter');
-const Rating = require('../models/rating');
 const User = require('../models/user');
 const permController = require('../middleware/permController');
 const validateChapter = require('../middleware/validation/validateChapter');
