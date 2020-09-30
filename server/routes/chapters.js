@@ -67,17 +67,15 @@ router.get('/', permController.requireAuth, async ctx => {
   let stateUserId = ctx.state.user.id == undefined ? ctx.state.user.data.id : ctx.state.user.id;
 
   let roleNameList = ['basic', 'superadmin', 'tunapanda', 'admin'];
-  let user = await User.query().where('id', stateUserId).returning('*');
-
+  let user = await User.query().findById(stateUserId);
 
   let chapter;
   if (roleNameList.includes(stateUserRole)) {
     if (ctx.query.q) {
-      chapter = await Chapter.query()
-        .select('chapters.*')
-        .avg('rate.rating as rating')
-        .from('chapters')
+      chapter = await chapter
         .where('name', 'ILIKE', `%${ctx.query.q}%`)
+        .where(ctx.query, { status: 'published' })
+        .whereIn('topics', user.topics)
         .orWhere('description', 'ILIKE', `%${ctx.query.q}%`)
         .where({ status: 'published' })
         .leftJoin('ratings as rate', 'chapters.id', 'rate.chapter_id')
@@ -89,7 +87,7 @@ router.get('/', permController.requireAuth, async ctx => {
         .avg('rate.rating as rating')
         .from('chapters')
         .where(ctx.query, { status: 'published' })
-        .whereIn('topics', user[0].topics)
+        .whereIn('topics', user.topics)
         .leftJoin('ratings as rate', 'chapters.id', 'rate.chapter_id')
         .groupBy('chapters.id', 'rate.chapter_id')
         .eager('[comment(selectComment), achievement(selectAchievement), flag(selectFlag)]');
@@ -109,7 +107,7 @@ router.get('/', permController.requireAuth, async ctx => {
   }
 
   ctx.status = 200;
-  ctx.body = { 'chapter': chapter };
+  ctx.body = { chapter };
 });
 
 router.get('/teach', permController.requireAuth, async ctx => {
@@ -168,17 +166,19 @@ router.get('/:id', permController.requireAuth, async ctx => {
 
   let roleNameList = ['basic', 'superadmin', 'tunapanda'];
   let anonymous = 'anonymous';
+  let user = await User.query().findById(stateUserId);
+  // let chapter = Chapter.query().where({ 'chapters.id': ctx.params.id, status: 'published' });
 
-
-  // const chapterStuff = await Chapter.query().where({ 'chapters.id': ctx.params.id, status: 'published' }).whereIn('topics', ['primary', 'highschool']).eager('[comment(selectComment), flag(selectFlag), achievement(selectAchievement)]');
-
-  let ratingVal = await Rating.query().where('chapter_id', ctx.params.id).avg('rating');
-  let user = await User.query().where('id', stateUserId).returning('*');
-  let chapter = Chapter.query().where({ 'chapters.id': ctx.params.id, status: 'published' });
+  let chapter = Chapter.query()
+    .select('chapters.*')
+    .avg('rate.rating as rating')
+    .from('chapters')
+    .where({ 'chapters.id': ctx.params.id, status: 'published' })
+    .leftJoin('ratings as rate', 'chapters.id', 'rate.chapter_id')
+    .groupBy('chapters.id', 'rate.chapter_id');
 
   if (roleNameList.includes(stateUserRole)) {
-    chapter = await chapter.whereIn('topics', user[0].topics).eager('[comment(selectComment), flag(selectFlag), achievement(selectAchievement)]');
-    chapter[0]['rating'] = ratingVal[0].avg;
+    chapter = await chapter.whereIn('topics', user.topics).eager('[comment(selectComment), flag(selectFlag), achievement(selectAchievement)]');
     await achievementType(chapter);
   } else if (stateUserRole == anonymous) {
     chapter = await chapter.eager('comment(selectComment)');
