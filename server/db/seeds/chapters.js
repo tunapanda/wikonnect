@@ -45,7 +45,7 @@ exports.seed = function (knex) {
           'content_uri': '/uploads/h5p/chapter3',
           'created_at': '2017-12-20 19:17:10',
           'updated_at': '2017-12-20 19:17:10',
-          approved: false,
+          approved: true,
           topics: 'highschool'
         },
         {
@@ -59,7 +59,7 @@ exports.seed = function (knex) {
           'content_uri': '/uploads/h5p/chapter4',
           'created_at': '2017-12-20 19:17:10',
           'updated_at': '2017-12-20 19:17:10',
-          approved: false,
+          approved: true,
           topics: 'university'
         }
       ]);

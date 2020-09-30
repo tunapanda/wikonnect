@@ -11,6 +11,8 @@ const log = require('../utils/logger');
 
 
 const Chapter = require('../models/chapter');
+const Rating = require('../models/rating');
+const User = require('../models/user');
 const permController = require('../middleware/permController');
 const validateChapter = require('../middleware/validation/validateChapter');
 
@@ -20,34 +22,10 @@ const router = new Router({
   prefix: '/chapters'
 });
 
-async function returnType(parent) {
-  if (parent.length == undefined) {
-    parent.comment.forEach(comment => {
-      return comment.type = 'comment';
-    });
-  } else {
-    parent.forEach(mod => {
-      mod.comment.forEach(comment => {
-        return comment.type = 'comment';
-      });
-    });
-  }
-}
-
-async function achievementType(parent) {
-  if (parent.length == undefined) {
-    parent.achievement.forEach(data => {
-      return data.type = 'achievement';
-    });
-  } else {
-    parent.forEach(mod => {
-      mod.achievement.forEach(data => {
-        return data.type = 'achievement';
-      });
-    });
-  }
-}
-
+const {
+  returnType,
+  achievementType
+} = require('../utils/routesUtils/chaptersRouteUtils');
 
 /**
  * @api {get} /chapters/ GET all chapters.
@@ -75,6 +53,7 @@ async function achievementType(parent) {
  *            "imageUrl": "/uploads/images/content/chapters/chapter1.jpeg",
  *            "contentId": null,
  *            "tags": [],
+ *            topic: ''
  *            "comment": [{
  *            }]
  *         }]
@@ -85,7 +64,11 @@ async function achievementType(parent) {
 router.get('/', permController.requireAuth, async ctx => {
 
   let stateUserRole = ctx.state.user.role == undefined ? ctx.state.user.data.role : ctx.state.user.role;
+  let stateUserId = ctx.state.user.id == undefined ? ctx.state.user.data.id : ctx.state.user.id;
+
   let roleNameList = ['basic', 'superadmin', 'tunapanda', 'admin'];
+  let user = await User.query().where('id', stateUserId).returning('*');
+
 
   let chapter;
   if (roleNameList.includes(stateUserRole)) {
@@ -106,6 +89,7 @@ router.get('/', permController.requireAuth, async ctx => {
         .avg('rate.rating as rating')
         .from('chapters')
         .where(ctx.query, { status: 'published' })
+        .whereIn('topics', user[0].topics)
         .leftJoin('ratings as rate', 'chapters.id', 'rate.chapter_id')
         .groupBy('chapters.id', 'rate.chapter_id')
         .eager('[comment(selectComment), achievement(selectAchievement), flag(selectFlag)]');
@@ -185,24 +169,21 @@ router.get('/:id', permController.requireAuth, async ctx => {
   let roleNameList = ['basic', 'superadmin', 'tunapanda'];
   let anonymous = 'anonymous';
 
-  let chapter = Chapter.query()
-    .select('chapters.*')
-    .avg('rate.rating as rating')
-    .from('chapters')
-    .where({ 'chapters.id': ctx.params.id, status: 'published' })
-    .leftJoin('ratings as rate', 'chapters.id', 'rate.chapter_id')
-    .groupBy('chapters.id', 'rate.chapter_id');
+
+  // const chapterStuff = await Chapter.query().where({ 'chapters.id': ctx.params.id, status: 'published' }).whereIn('topics', ['primary', 'highschool']).eager('[comment(selectComment), flag(selectFlag), achievement(selectAchievement)]');
+
+  let ratingVal = await Rating.query().where('chapter_id', ctx.params.id).avg('rating');
+  let user = await User.query().where('id', stateUserId).returning('*');
+  let chapter = Chapter.query().where({ 'chapters.id': ctx.params.id, status: 'published' });
 
   if (roleNameList.includes(stateUserRole)) {
-    
-    chapter = await chapter.whereIn('topics', ['Arnold', 'Jennifer']).eager('[comment(selectComment), flag(selectFlag), achievement(selectAchievement)]');
-
+    chapter = await chapter.whereIn('topics', user[0].topics).eager('[comment(selectComment), flag(selectFlag), achievement(selectAchievement)]');
+    chapter[0]['rating'] = ratingVal[0].avg;
     await achievementType(chapter);
   } else if (stateUserRole == anonymous) {
     chapter = await chapter.eager('comment(selectComment)');
   } else {
-    chapter = await Chapter.query()
-      .where({ id: ctx.params.id, creatorId: stateUserId });
+    chapter = await Chapter.query().where({ id: ctx.params.id, creatorId: stateUserId });
   }
 
   ctx.assert(chapter, 404, 'no lesson by that ID');

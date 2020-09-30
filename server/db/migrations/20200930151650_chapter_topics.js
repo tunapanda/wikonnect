@@ -2,7 +2,7 @@
 exports.up = function (knex) {
   return knex.schema
     .table('users', table => {
-      table.text('topics');
+      table.specificType('topics', 'text ARRAY');
     })
     .table('chapters', table => {
       table.text('topics');
