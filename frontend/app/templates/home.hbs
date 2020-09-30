@@ -7,38 +7,3 @@
     {{/each}}
   </div>
 </div>
-{{!-- {{#if this.session.isAuthenticated}} --}}
-
-{{#if (eq me.user.metadata.profileComplete "true") }}
-<BsModalSimple @open={{this.toggleMojaModalProfile}} @title="Redeem Profile Completion Points">
-  <iframe id='moja-hazina' src='https://hazina.brck.io?quest=93b6b764-fa2f-4d59-92d0-a028af8c1da8' name='moja-hazina'
-    sandbox='allow-forms allow-modals allow-scripts allow-popups' loading='eager'
-    style='border:none; overflow:hidden; background-color:white;'> </iframe>
-</BsModalSimple>
-{{/if}}
-
-{{#if (eq me.user.metadata.oneInviteComplete "true") }}
-<BsModalSimple @open={{this.toggleMojaModalInvite}} @title="Redeem User Invite Points">
-  <iframe id='moja-hazina' src='https://hazina.brck.io?quest=186625a1-56ac-40fc-ad91-0f5f8639ad6e' name='moja-hazina'
-    sandbox='allow-forms allow-modals allow-scripts allow-popups' loading='eager'
-    style='border:none; overflow:hidden; background-color:white;'> </iframe>
-</BsModalSimple>
-{{/if}}
-
-{{#if (eq me.user.metadata.oneChapterCompletion "true") }}
-<BsModalSimple @open={{this.toggleMojaModalChapter}} @title="Redeem point(s) for completing a chapter">
-  <iframe id='moja-hazina' src='https://hazina.brck.io?quest=8cc5ff7d-7beb-465b-8105-8e4407a8f269' name='moja-hazina'
-    sandbox='allow-forms allow-modals allow-scripts allow-popups' loading='eager'
-    style='border:none; overflow:hidden; background-color:white;'> </iframe>
-</BsModalSimple>
-{{/if}}
-
-{{#if (eq me.user.metadata.threeChapterCompletion "true") }}
-<BsModalSimple @open={{this.toggleMojaModalChapter}} @title="Redeem point(s) for completing a chapter">
-  <iframe id='moja-hazina' src='https://hazina.brck.io?quest=8cc5ff7d-7beb-465b-8105-8e4407a8f269' name='moja-hazina'
-    sandbox='allow-forms allow-modals allow-scripts allow-popups' loading='eager'
-    style='border:none; overflow:hidden; background-color:white;'> </iframe>
-</BsModalSimple>
-{{/if}}
-
-{{!-- {{/if}} --}}
