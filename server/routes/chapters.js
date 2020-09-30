@@ -194,7 +194,9 @@ router.get('/:id', permController.requireAuth, async ctx => {
     .groupBy('chapters.id', 'rate.chapter_id');
 
   if (roleNameList.includes(stateUserRole)) {
-    chapter = await chapter.eager('[comment(selectComment), flag(selectFlag), achievement(selectAchievement)]');
+    
+    chapter = await chapter.whereIn('topics', ['Arnold', 'Jennifer']).eager('[comment(selectComment), flag(selectFlag), achievement(selectAchievement)]');
+
     await achievementType(chapter);
   } else if (stateUserRole == anonymous) {
     chapter = await chapter.eager('comment(selectComment)');
