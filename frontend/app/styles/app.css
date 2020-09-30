@@ -471,14 +471,6 @@ body {
   padding: 1.3em;
 }
 
-.moja-hazina {
-  border: none;
-  height: 180px;
-  overflow: hidden;
-  width: 350px;
-  background-color: white;
-}
-
 .alert {
   margin-top: 1em;
   display: -webkit-box;
@@ -1061,10 +1053,6 @@ body {
 }
 
 @media (min-width: 768px) {
-  .moja-card {
-    width: 29rem;
-  }
-
   iframe {
     width: 26rem;
     height: 12rem;

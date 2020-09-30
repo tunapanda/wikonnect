@@ -92,9 +92,6 @@ Router.map(function () {
   });
   this.route('upload');
   this.route('manage');
-  this.route('reward', function () {
-    this.route('moja');
-  });
   this.route('admin', function () {
     this.route('dashboard');
     this.route('accounts');
