@@ -28,8 +28,6 @@ jobs:
       # Install project dependencies, test and build
       - name: Install dependencies
         run: npm install
-      - name: Run build
-        run: npm run build
 
       # Install project dependencies, test and build
       - name: Install dependencies
@@ -66,7 +64,6 @@ jobs:
       # Install project dependencies and build
       - name: Install dependencies
         run: yarn install
-
 
       # Install project dependencies, test and build
       - name: Install dependencies
