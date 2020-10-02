@@ -1,0 +1,5 @@
+#!/bin/bash
+isExistApp = `pgrep httpd`
+if [[ -n  $isExistApp ]]; then
+    pm2 stop ecosystem.config.js
+fi
