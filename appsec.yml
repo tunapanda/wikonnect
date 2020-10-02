@@ -2,7 +2,14 @@ version: 0.0
 os: linux
 files:
   - source: /
-    destination: /var/www/wikonnect
+    destination: /var/www/kkl
+permissions:
+  - object: /home/ubuntu
+    owner: ubuntu
+    group: ubuntu
+    type:
+      - directory
+      - file
 hooks:
   BeforeInstall:
     - location: scripts/install_dependencies
