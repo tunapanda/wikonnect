@@ -25,6 +25,7 @@ without_db: &without_db
   working_directory: ~/ember-circleci
 orbs:
   cypress: cypress-io/cypress@1
+  aws-code-deploy: circleci/aws-code-deploy@x.y
 jobs:
   install_dependencies:
     <<: *without_db
@@ -154,3 +155,11 @@ workflows:
       - integration_test:
           requires:
             - build
+  deploy_application:
+    jobs:
+      - aws-code-deploy/deploy:
+          application-name: myApplication
+          bundle-bucket: myApplicationS3Bucket
+          bundle-key: myS3BucketKey
+          deployment-group: myDeploymentGroup
+          service-role-arn: myDeploymentGroupRoleARN
