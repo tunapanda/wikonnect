@@ -132,6 +132,15 @@ jobs:
           path: cypress/screenshots
       - store_artifacts:
           path: cypress/videos
+  deploy_application:
+    <<: *without_db
+    steps:
+      - aws-code-deploy/deploy:
+          application-name: myApplication
+          bundle-bucket: myApplicationS3Bucket
+          bundle-key: myS3BucketKey
+          deployment-group: myDeploymentGroup
+          service-role-arn: myDeploymentGroupRoleARN
 workflows:
   version: 2
   build_and_test:
@@ -155,11 +164,7 @@ workflows:
       - integration_test:
           requires:
             - build
-  deploy_application:
-    jobs:
-      - aws-code-deploy/deploy:
-          application-name: myApplication
-          bundle-bucket: myApplicationS3Bucket
-          bundle-key: myS3BucketKey
-          deployment-group: myDeploymentGroup
-          service-role-arn: myDeploymentGroupRoleARN
+      - deploy_application:
+          requires:
+            - integration_test
+            - test_server
