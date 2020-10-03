@@ -155,8 +155,6 @@ workflows:
       - integration_test:
           requires:
             - build
-  deploy_application:
-    jobs:
       - aws-code-deploy/deploy:
           requires:
             - integration_test
