@@ -4,7 +4,7 @@ files:
   - source: /
     destination: /var/www/kkl
 permissions:
-  - object: /home/ubuntu
+  - object: /var/www
     owner: ubuntu
     group: ubuntu
     type:
