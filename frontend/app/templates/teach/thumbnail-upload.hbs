@@ -1,0 +1,47 @@
+{{outlet}}
+
+{{#if me.isAuthenticated}}
+
+  <div class="text-center">
+    <br>
+    {{!-- {{#if this.me.user.profileUri}}
+      <img class="rounded-circle" width="300px" alt="" src={{this.me.user.profileUri}}>
+    {{else}}
+      <img class="rounded-circle" width="300px" alt="" src={{profileImage}}>
+
+    {{/if}} --}}
+
+    <br>
+
+    <br>
+    <Forms::Upload @multiple="false" @accept="image/*" @filesSelected={{action "uploadPic"}}
+      @disabled={{uploader.uploading}}>
+      {{#if uploader.uploading}}
+        Uploading... <span class="loading-spinner"></span> {{uploader.progress}}% <br>
+        <small class="text-muted">You will be redirected once upload is complete</small>
+
+      {{else}}
+        Upload Thumnail for {{model.name}}
+      {{/if}}
+    </Forms::Upload>
+    {{#if signup}}
+
+      <br><br>
+      {{#link-to "profile"}}
+        {{#if complete}}
+          <button type="button" class="btn btn-success">Proceed to profile</button>
+        {{else}}
+          Skip to profile
+        {{/if}}
+
+      {{/link-to}}
+
+    {{/if}}
+  </div>
+
+
+{{else}}
+
+  <Warning @message="You do not have permission to view this page" />
+
+{{/if}}
