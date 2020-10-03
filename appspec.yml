@@ -2,9 +2,9 @@ version: 0.0
 os: linux
 files:
   - source: /
-    destination: /var/www/kkl
+    destination: /home/ubuntu/kkl
 permissions:
-  - object: /var/www
+  - object: /home/ubuntu
     owner: ubuntu
     group: ubuntu
     type:
