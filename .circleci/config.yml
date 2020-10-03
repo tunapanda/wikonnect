@@ -159,8 +159,8 @@ workflows:
           requires:
             - integration_test
             - test_server
-          application-name: myApplication
-          bundle-bucket: myApplicationS3Bucket
+          application-name: aws-codedeploy
+          bundle-bucket: wikonnect-codedeploy-deployments
           bundle-key: myS3BucketKey
           deployment-group: myDeploymentGroup
           service-role-arn: myDeploymentGroupRoleARN
