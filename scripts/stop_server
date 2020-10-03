@@ -1,5 +1,0 @@
-#!/bin/bash
-isExistApp = `pgrep nginx`
-if [[ -n  $isExistApp ]]; then
-    pm2 stop ecosystem.config.js
-fi

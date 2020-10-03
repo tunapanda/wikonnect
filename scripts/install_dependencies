@@ -1,4 +1,0 @@
-#!/bin/bash
-yarn
-yarn build:server
-yarn build:frontend
