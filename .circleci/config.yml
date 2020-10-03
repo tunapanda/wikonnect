@@ -25,7 +25,7 @@ without_db: &without_db
   working_directory: ~/ember-circleci
 orbs:
   cypress: cypress-io/cypress@1
-  aws-code-deploy: circleci/aws-code-deploy@x.y
+  aws-code-deploy: circleci/aws-code-deploy@1.0.1
 jobs:
   install_dependencies:
     <<: *without_db
