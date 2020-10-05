@@ -1,0 +1,33 @@
+<div class="col-lg-4 col-md-6 mb-4">
+  <div class="card h-100">
+    {{#link-to "teach.preview" @chapter.id }}
+      {{#if (eq @chapter.imageUrl null)}}
+        <img class="card-img-top" src="http://placehold.jp/20/{{color}}/ffffff/328x200.png?text={{@chapter.name}}"
+          alt="">
+      {{else}}
+        <img class="card-img-top" alt="" src={{@chapter.imageUrl}}>
+      {{/if}}
+    {{/link-to}}
+    <div class="card-body">
+      <h5 class="card-title">
+
+        {{#link-to "teach.preview" @chapter.id }}
+
+          {{@chapter.name}}
+        {{/link-to}}
+      </h5>
+      {{#if (eq chapter.approved "true")}}
+
+        <span class="badge badge-pill badge-success float right">Approved</span>
+      {{else}}
+        <span class="badge badge-pill badge-danger float right">Not Yet Approved</span>
+
+      {{/if}}
+
+      <p class="card-text">{{@chapter.description}}</p>
+
+
+    </div>
+
+  </div>
+</div>
