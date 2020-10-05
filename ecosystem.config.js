@@ -5,7 +5,7 @@ module.exports = {
     "watch": true,
     "watch": ['frontend'],
     "watch_delay": 10000,
-    "ignore_watch": ['server/public', 'node_modules', 'docs'],
+    "ignore_watch": ['server/public', 'server/node_modules', 'frontend/node_modules', 'node_modules', 'docs'],
     "instances": 1,
     "autorestart": true,
     "max_memory_restart": '1G',
