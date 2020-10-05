@@ -9,9 +9,9 @@ export default class TeachH5pUploadRoute extends Route {
 
 
     let p = params;
-    console.log(p)
-    console.log(this.router)
-    console.log("this")
+    console.log(p);
+    console.log(this.router);
+    console.log("this");
     const response = await fetch('https://app.wikonnect.org/api/v1/chapters/teach/' + params.id, {
       // const response = await fetch('https://app.wikonnect.org/api/v1/chapters/teach/' + params.chapter_id, {
       method: 'get',
@@ -20,21 +20,16 @@ export default class TeachH5pUploadRoute extends Route {
       }),
 
     });
-
     this.set('chapter_id', params.id);
-
     const chapters = await response.json();
-    console.log(chapters.chapter[0])
-
     return chapters.chapter[0];
-
 
   }
 
 
   setupController(controller, model) {
     // Call _super for default behavior
-    this._super(controller, model);
+    super.setupController(controller, model);
     // Implement your custom setup after
     controller.set('chapter_id', this.get('chapter_id'));
   }

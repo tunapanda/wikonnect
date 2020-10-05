@@ -17,9 +17,9 @@ export default class TeachPreviewRoute extends Route {
 
 
     let p = params;
-    console.log(p)
-    console.log(this.router)
-    console.log("this")
+    console.log(p);
+    console.log(this.router);
+    console.log("this");
     const response = await fetch('https://app.wikonnect.org/api/v1/chapters/teach/' + params.id, {
       // const response = await fetch('https://app.wikonnect.org/api/v1/chapters/teach/' + params.chapter_id, {
       method: 'get',
@@ -30,7 +30,7 @@ export default class TeachPreviewRoute extends Route {
     });
 
     const chapters = await response.json();
-    console.log(chapters.chapter[0])
+    console.log(chapters.chapter[0]);
     return chapters.chapter[0];
 
 

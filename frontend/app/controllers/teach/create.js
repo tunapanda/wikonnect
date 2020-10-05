@@ -1,7 +1,6 @@
 import Controller from '@ember/controller';
 import { inject as service } from '@ember/service';
 import { action } from '@ember/object';
-import { tracked } from '@glimmer/tracking';
 
 export default class TeachCreateController extends Controller {
   @service router;
@@ -13,9 +12,8 @@ export default class TeachCreateController extends Controller {
       status: "draft",
       approved: false
     });
-    let chapter = model.save().then((x) => {
-      console.log(x.id)
-      this.transitionToRoute('chapter', x.id);
+    model.save().then((x) => {
+      this.transitionToRoute('teach.preview', x.id);
 
     });
 

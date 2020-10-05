@@ -12,7 +12,7 @@ export default class TeachIndexRoute extends Route {
     //const response = await fetch('/chapters/teach');
 
 
-    console.log(this.token)
+    console.log(this.token);
     const response = await fetch('https://app.wikonnect.org/api/v1/chapters/teach', {
       method: 'get',
       headers: new Headers({

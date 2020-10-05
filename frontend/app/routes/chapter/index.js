@@ -10,7 +10,7 @@ export default class ChapterIndexRoute extends Route {
     return this.store.findAll('chapter');
   }
 
-  model(params) {
+  model() {
     // return this.store.findRecord('chapter', params.chapter_slug);
   }
 }

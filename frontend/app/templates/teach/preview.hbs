@@ -1,7 +1,19 @@
 {{!-- {{outlet}} --}}
 {{outlet}}
 <div id="chapter">
-  <h4><b>Chapter Name: </b>{{model.name}} </h4>
+  <div class="row">
+    <h4><b>Chapter Name: </b>{{model.name}} </h4>
+
+
+  </div>
+  {{#if (eq model.approved "true")}}
+
+    <span class="badge badge-pill badge-success float right">Approved</span>
+  {{else}}
+    <span class="badge badge-pill badge-danger float right">Not Yet Approved</span>
+
+  {{/if}}
+
   <div class="chapter-content mt-2">
     {{#if model.contentUri}}
       <H5p @location={{model.contentUri}} />
@@ -55,12 +67,11 @@
 
     {{#if (eq model.status "published")}}
 
-      <button {{on "click" (fn this.togglePublish model.id "true")}} type="button" class="btn form-control btn-danger">
+      <button {{on "click" (fn this.unpublish model.id "true")}} type="button" class="btn form-control btn-danger">
         UnPublish {{model.name}}
       </button>
     {{else}}
-      <button {{on "click" (fn this.togglePublish model.id "false")}} type="button"
-        class="btn form-control btn-success">
+      <button {{on "click" (fn this.publish model.id "false")}} type="button" class="btn form-control btn-success">
         Publish {{model.name}}
       </button>
     {{/if}}

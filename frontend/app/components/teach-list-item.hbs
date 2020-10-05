@@ -16,8 +16,17 @@
           {{@chapter.name}}
         {{/link-to}}
       </h5>
+      {{#if (eq chapter.approved "true")}}
+
+        <span class="badge badge-pill badge-success float right">Approved</span>
+      {{else}}
+        <span class="badge badge-pill badge-danger float right">Not Yet Approved</span>
+
+      {{/if}}
 
       <p class="card-text">{{@chapter.description}}</p>
+
+
     </div>
 
   </div>
