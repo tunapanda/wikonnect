@@ -1,7 +1,7 @@
 const Router = require('koa-router');
 const log = require('../utils/logger');
 const Activity = require('../models/activity');
-const validateActivity = require('../middleware/validationPost/validateActivity');
+const validateActivity = require('../middleware/validateRoutePostSchema/validateActivity');
 
 
 const router = new Router({

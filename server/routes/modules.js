@@ -2,7 +2,7 @@ const Router = require('koa-router');
 const Module = require('../models/module');
 const permController = require('../middleware/permController');
 const { userPermissions } = require('../middleware/_helpers/roles');
-const { validateModules } = require('../middleware/validationPost/validatePostData');
+const { validateModules } = require('../middleware/validateRoutePostSchema/validatePostData');
 const { anonymousUser, returnType, insertType, permissionsType } = require('../utils/userProgress/moduleRouteUtils');
 
 const environment = process.env.NODE_ENV;

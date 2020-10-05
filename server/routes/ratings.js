@@ -2,7 +2,7 @@ const Router = require('koa-router');
 const log = require('../utils/logger');
 const Rating = require('../models/rating');
 const { requireAuth, grantAccess } = require('../middleware/permController');
-const validateRating = require('../middleware/validationPost/validateRating');
+const validateRating = require('../middleware/validateRoutePostSchema/validateRating');
 
 const router = new Router({
   prefix: '/ratings'

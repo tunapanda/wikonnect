@@ -11,8 +11,8 @@ const slugGen = require('../utils/slugGen');
 
 const Chapter = require('../models/chapter');
 const permController = require('../middleware/permController');
-const validateChapter = require('../middleware/validationPost/validateChapter');
-const routeQueryParamsValidation = require('../middleware/routeQueryParamsValidation/queryValidation');
+const validateChapter = require('../middleware/validateRoutePostSchema/validateChapter');
+const validateRouteQueryParams = require('../middleware/validateRouteQueryParams/queryValidation');
 
 
 const router = new Router({
@@ -81,7 +81,7 @@ async function achievementType(parent) {
  * @apiError {String} errors Bad Request.
  */
 
-router.get('/', permController.requireAuth, routeQueryParamsValidation, async ctx => {
+router.get('/', permController.requireAuth, validateRouteQueryParams, async ctx => {
 
   let stateUserRole = ctx.state.user.role == undefined ? ctx.state.user.data.role : ctx.state.user.role;
   let roleNameList = ['basic', 'superadmin', 'tunapanda', 'admin'];

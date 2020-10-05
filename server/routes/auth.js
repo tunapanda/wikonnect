@@ -9,7 +9,7 @@ const { secret } = require('../middleware/jwt');
 const { lastSeen } = require('../utils/timestamp');
 const redisClient = require('../utils/redisConfig');
 const UserVerification = require('../models/user_verification');
-const validateAuthRoutes = require('../middleware/validationPost/validateAuthRoutes');
+const validateAuthRoutes = require('../middleware/validateRoutePostSchema/validateAuthRoutes');
 
 
 const router = new Router({
