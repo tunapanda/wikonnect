@@ -2,7 +2,7 @@ const Router = require('koa-router');
 const Module = require('../models/module');
 const permController = require('../middleware/permController');
 const { userPermissions } = require('../middleware/_helpers/roles');
-const { validateModules } = require('../middleware/validation/validatePostData');
+const { validateModules } = require('../middleware/validationPost/validatePostData');
 const { anonymousUser, returnType, insertType, permissionsType } = require('../utils/userProgress/moduleRouteUtils');
 
 const environment = process.env.NODE_ENV;
@@ -221,7 +221,7 @@ router.post('/', permController.requireAuth, permController.grantAccess('createA
 
   let newModule = ctx.request.body.module;
   newModule.slug = await slugGen(newModule.name);
-  
+
   let modules;
   try {
     modules = await Module.query().insertAndFetch(newModule);

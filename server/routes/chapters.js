@@ -7,14 +7,13 @@ const shortid = require('shortid');
 const sharp = require('sharp');
 const s3 = require('../utils/s3Util');
 const log = require('../utils/logger');
-
-
+const slugGen = require('../utils/slugGen');
 
 const Chapter = require('../models/chapter');
 const permController = require('../middleware/permController');
-const validateChapter = require('../middleware/validation/validateChapter');
+const validateChapter = require('../middleware/validationPost/validateChapter');
+const routeQueryParamsValidation = require('../middleware/routeQueryParamsValidation/queryValidation');
 
-const slugGen = require('../utils/slugGen');
 
 const router = new Router({
   prefix: '/chapters'
@@ -82,10 +81,18 @@ async function achievementType(parent) {
  * @apiError {String} errors Bad Request.
  */
 
-router.get('/', permController.requireAuth, async ctx => {
+router.get('/', permController.requireAuth, routeQueryParamsValidation, async ctx => {
 
   let stateUserRole = ctx.state.user.role == undefined ? ctx.state.user.data.role : ctx.state.user.role;
   let roleNameList = ['basic', 'superadmin', 'tunapanda', 'admin'];
+  // try {
+  //   await schema.validateAsync(ctx.query);
+  // } catch (e) {
+  //   if (e.statusCode) {
+  //     ctx.throw(e.statusCode, null, { errors: [e.message] });
+  //   } else { ctx.throw(400, null, { errors: [e.message] }); }
+  //   throw e;
+  // }
 
   let chapter;
   if (roleNameList.includes(stateUserRole)) {
@@ -124,7 +131,7 @@ router.get('/', permController.requireAuth, async ctx => {
   }
 
   ctx.status = 200;
-  ctx.body = { 'chapter': chapter };
+  ctx.body = { chapter };
 });
 
 /**
@@ -160,27 +167,22 @@ router.get('/', permController.requireAuth, async ctx => {
  */
 router.get('/:id', permController.requireAuth, async ctx => {
   let stateUserRole = ctx.state.user.role == undefined ? ctx.state.user.data.role : ctx.state.user.role;
-  let stateUserId = ctx.state.user.id == undefined ? ctx.state.user.data.id : ctx.state.user.id;
 
   let roleNameList = ['basic', 'superadmin', 'tunapanda'];
-  let anonymous = 'anonymous';
 
   let chapter = Chapter.query()
     .select('chapters.*')
     .avg('rate.rating as rating')
     .from('chapters')
-    .where({ 'chapters.id': ctx.params})
+    .where({ 'chapters.id': ctx.params.id })
     .leftJoin('ratings as rate', 'chapters.id', 'rate.chapter_id')
     .groupBy('chapters.id', 'rate.chapter_id');
 
   if (roleNameList.includes(stateUserRole)) {
     chapter = await chapter.eager('[comment(selectComment), flag(selectFlag), achievement(selectAchievement)]');
     await achievementType(chapter);
-  } else if (stateUserRole == anonymous) {
-    chapter = await chapter.eager('comment(selectComment)');
   } else {
-    chapter = await Chapter.query()
-      .where({ id: ctx.params.id, creatorId: stateUserId });
+    chapter = await chapter.where({ status: 'published' }).eager('comment(selectComment)');
   }
 
   ctx.assert(chapter, 404, 'no lesson by that ID');

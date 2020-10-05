@@ -14,7 +14,7 @@ const AchievementAward = require('../models/achievement_awards');
 const log = require('../utils/logger');
 const jwt = require('../middleware/jwt');
 const permController = require('../middleware/permController');
-const validateAuthRoutes = require('../middleware/validation/validateAuthRoutes');
+const validateAuthRoutes = require('../middleware/validationPost/validateAuthRoutes');
 
 const environment = process.env.NODE_ENV || 'development';
 const config = require('../knexfile.js')[environment];
