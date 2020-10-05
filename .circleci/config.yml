@@ -93,6 +93,8 @@ jobs:
       - run:
           name: Test API
           command: yarn --cwd ./server test
+      - store_test_results:
+          path: test-results
   lint_frontend_js:
     <<: *without_db
     steps:
