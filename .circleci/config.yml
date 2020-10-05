@@ -162,5 +162,5 @@ workflows:
           application-name: aws-codedeploy
           bundle-bucket: wikonnect-codedeploy-deployments
           bundle-key: myS3BucketKey
-          deployment-group: myDeploymentGroup
-          service-role-arn: myDeploymentGroupRoleARN
+          deployment-group: wikonnect-staging
+          service-role-arn: CodeDeployServiceRole
