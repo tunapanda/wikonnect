@@ -2,7 +2,7 @@ const Router = require('koa-router');
 const Course = require('../models/course');
 const permController = require('../middleware/permController');
 const { userPermissions } = require('../middleware/_helpers/roles');
-const { validateCourses } = require('../middleware/validation/validatePostData');
+const { validateCourses } = require('../middleware/validateRoutePostSchema/validatePostData');
 const { userProgress, returnType, insertType, userEnrollmentType } = require('../utils/userProgress/coursesPogress');
 
 const environment = process.env.NODE_ENV;

@@ -20,14 +20,9 @@ export default class TeachH5pUploadRoute extends Route {
       }),
 
     });
-
     this.set('chapter_id', params.id);
-
     const chapters = await response.json();
-    console.log(chapters.chapter[0]);
-
     return chapters.chapter[0];
-
 
   }
 
