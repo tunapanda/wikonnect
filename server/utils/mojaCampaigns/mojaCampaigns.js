@@ -19,17 +19,17 @@ async function mojaCampaigns(ctx, userId) {
   let moja_query_params = {
     userId: userId,
     campaignId: ctx.request.body.user.campaign_id,
-    points: ctx.request.body.user.points || 1,
+    points: ctx.request.body.user.points,
     enduserId: ctx.request.body.user.enduser_id,
     partnerId: ctx.request.body.user.partner_id
   };
-
-  await CampaignMain.query.insertAndFetch(moja_query_params);
+  let campaign = await CampaignMain.query.insertAndFetch(moja_query_params);
+  return campaign;
 }
 
 
 /**
- * Linking Wikonnect account to moja account using a link button
+ TODO: Linking Wikonnect account to moja account using a link button
  * @param {*} ctx
  * @param {*} next
  */
