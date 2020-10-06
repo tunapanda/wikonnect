@@ -1,3 +1,4 @@
+const log = require('../utils/logger');
 const CampaignMain = require('../../models/campaign_main');
 
 
@@ -16,15 +17,19 @@ const CampaignMain = require('../../models/campaign_main');
  */
 
 async function mojaCampaigns(ctx, userId) {
-  let moja_query_params = {
-    userId: userId,
-    campaignId: ctx.request.body.user.campaign_id,
-    points: ctx.request.body.user.points,
-    enduserId: ctx.request.body.user.enduser_id,
-    partnerId: ctx.request.body.user.partner_id
-  };
-  let campaign = await CampaignMain.query.insertAndFetch(moja_query_params);
-  return campaign;
+  try {
+    let moja_query_params = {
+      userId: userId,
+      campaignId: ctx.request.body.user.campaign_id,
+      points: ctx.request.body.user.points,
+      enduserId: ctx.request.body.user.enduser_id,
+      partnerId: ctx.request.body.user.partner_id
+    };
+    let campaign = await CampaignMain.query.insertAndFetch(moja_query_params);
+    return campaign;
+  } catch (error) {
+    log.info('No extra params passed for users %s', userId);
+  }
 }
 
 

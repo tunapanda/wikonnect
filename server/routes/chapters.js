@@ -13,7 +13,7 @@ const Chapter = require('../models/chapter');
 const permController = require('../middleware/permController');
 const validateChapter = require('../middleware/validateRoutePostSchema/validateChapter');
 const validateRouteQueryParams = require('../middleware/validateRouteQueryParams/queryValidation');
-
+const { mojaCampaigns } = require('../utils/mojaCampaigns/mojaCampaigns');
 
 const router = new Router({
   prefix: '/chapters'
@@ -187,6 +187,9 @@ router.get('/:id', permController.requireAuth, async ctx => {
 
   ctx.assert(chapter, 404, 'no lesson by that ID');
   await returnType(chapter);
+
+  await mojaCampaigns(ctx, user.id);
+
 
   ctx.status = 200;
   ctx.body = { chapter };
