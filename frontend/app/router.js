@@ -92,11 +92,18 @@ Router.map(function () {
   });
   this.route('upload');
   this.route('manage');
-  this.route('reward', function () {
-    this.route('moja');
-  });
   this.route('admin', function () {
     this.route('dashboard');
     this.route('accounts');
+  });
+  this.route('teach', function () {
+
+    this.route('preview', { path: '/preview/:id' });
+    this.route('create');
+    this.route('h5p-upload', { path: '/h5p-upload/:id' });
+    this.route('thumbnail-upload', { path: '/thumbnail-upload/:id' });
+    this.route('index', { path: '/' });
+
+
   });
 });
