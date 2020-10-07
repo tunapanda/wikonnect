@@ -7,11 +7,13 @@ export default class TeachPreviewController extends Controller {
 
   @inject notify;
   @inject session;
+  @inject
+  me
   token = this.session.data.authenticated.token
 
 
   @action
-  async publish(chapter_id) {
+  publish(chapter_id) {
     this.store.findRecord('chapter', chapter_id).then(function (chap) {
       // ...after the record has loaded
 
@@ -24,7 +26,7 @@ export default class TeachPreviewController extends Controller {
 
 
   @action
-  async unpublish(chapter_id) {
+  unpublish(chapter_id) {
     this.store.findRecord('chapter', chapter_id).then(function (chap) {
       // ...after the record has loaded
 
@@ -33,10 +35,8 @@ export default class TeachPreviewController extends Controller {
       chap.save();
     });
 
-    console.log(response);
 
   }
 
-  @inject
-  me
+
 }

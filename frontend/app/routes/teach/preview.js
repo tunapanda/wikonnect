@@ -1,6 +1,6 @@
 import Route from '@ember/routing/route';
 import { inject } from '@ember/service';
-import { tracked } from '@glimmer/tracking';
+// import { tracked } from '@glimmer/tracking';
 
 export default class TeachPreviewRoute extends Route {
 
