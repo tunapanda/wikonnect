@@ -29,7 +29,7 @@ const router = new Router({
  *      }
  *
  */
-router.get('/', requireAuth, grantAccess('readAny', 'path'), async ctx => {
+router.get('/', requireAuth, async ctx => {
   // let stateUserId = ctx.state.user.id == undefined ? ctx.state.user.data.id : ctx.state.user.id;
 
   let comment;
