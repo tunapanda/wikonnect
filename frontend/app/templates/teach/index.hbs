@@ -17,9 +17,9 @@
 
     <div class="row mt-3">
 
-      {{#if @model.chapter}}
+      {{#if @model}}
 
-        {{#each @model.chapter as |chapter|}}
+        {{#each @model as |chapter|}}
           <TeachListItem @chapter={{chapter}} />
         {{/each}}
       {{else}}

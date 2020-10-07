@@ -12,18 +12,8 @@ export default class TeachIndexRoute extends Route {
     //const response = await fetch('/chapters/teach');
 
 
-    console.log(this.token);
-    const response = await fetch('https://app.wikonnect.org/api/v1/chapters/teach', {
-      method: 'get',
-      headers: new Headers({
-        'Authorization': 'Bearer ' + this.token,
-      }),
+    return this.store.query('chapter', { "creator_id": this.me.user.id });
 
-    });
-
-    const chapters = await response.json();
-
-    return chapters;
 
 
   }
