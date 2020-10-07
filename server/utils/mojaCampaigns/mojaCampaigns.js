@@ -1,5 +1,6 @@
 const log = require('../utils/logger');
 const CampaignMain = require('../../models/campaign_main');
+const postData = require('./mojaEndpoint');
 
 
 
@@ -17,8 +18,9 @@ const CampaignMain = require('../../models/campaign_main');
  */
 
 async function mojaCampaigns(ctx, userId) {
+  let moja_query_params;
   try {
-    let moja_query_params = {
+    moja_query_params = {
       userId: userId,
       campaignId: ctx.request.body.user.campaign_id,
       points: ctx.request.body.user.points,
@@ -30,6 +32,12 @@ async function mojaCampaigns(ctx, userId) {
   } catch (error) {
     log.info('No extra params passed for users %s', userId);
   }
+
+
+  postData(moja_query_params)
+    .then(data => {
+      console.log(data); // JSON data parsed by `data.json()` call
+    });
 }
 
 
@@ -45,5 +53,15 @@ async function mojaCampaigns(ctx, userId) {
  * POST request accepting -> (campaign_id, points, enduser_id, partner_id, userId)
  *
  * */
+
+// const data = {
+//   'enduser_id': '3ffcaa53-c5e6-4273-868c-f8d398e6602d',
+//   'partner_id': 'adfc0e69-4fe0-4708-85e6-0ba40f901261',
+//   'campaign_id': '2b40b903-fbe1-4f4d-b2dd-f707fb7d6edb',
+//   'points': 5
+// };
+
+
+
 
 module.exports = { mojaCampaigns };
