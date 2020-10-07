@@ -45,9 +45,9 @@ exports.requireAuth = async function (ctx, next) {
 };
 
 /**
- * 
- * @param {*} action 
- * @param {*} resource 
+ *
+ * @param {*} action
+ * @param {*} resource
  */
 exports.grantAccess = function (action, resource) {
 

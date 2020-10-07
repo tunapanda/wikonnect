@@ -1,13 +1,13 @@
-const s3 = require('../utils/s3Util');
+const s3 = require('../s3Util');
 const bcrypt = require('bcrypt');
 
-const User = require('../models/user');
-const AchievementAward = require('../models/achievement_awards');
+const User = require('../../models/user');
+const AchievementAward = require('../../models/achievement_awards');
 
-const log = require('../utils/logger');
+const log = require('../logger');
 
 const environment = process.env.NODE_ENV || 'development';
-const config = require('../knexfile.js')[environment];
+const config = require('../../knexfile.js')[environment];
 const knex = require('knex')(config);
 
 async function achievementAwardsType(parent) {

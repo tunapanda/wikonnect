@@ -27,9 +27,9 @@ const {
   profileCompleteBoolean,
   inviteUserAward,
   getProfileImage
-} = require('../utils/routesUtils/routesUtils');
+} = require('../utils/routesUtils/userRouteUtils');
 
-const { mojaCampaigns } = require('../utils/mojaCampaigns/mojaCampaigns');
+const { mojaCampaignsMiddleware } = require('../utils/mojaCampaigns/mojaCampaignsMiddleware');
 
 const router = new Router({
   prefix: '/users'
@@ -86,7 +86,7 @@ router.post('/', validateAuthRoutes.validateNewUser, createPasswordHash, async c
     await knex('group_members').insert({ 'user_id': user.id, 'group_id': role });
     await knex('user_invite').where({ id: inviteInsert[0].id }).update({ user_id: user.id }, ['id', 'invited_by', 'user_id']);
 
-    await mojaCampaigns(ctx, user.id);
+    await mojaCampaignsMiddleware(ctx, user.id);
 
     log.info('Created a user with id %s with username %s with the invite code %s', user.id, user.username, user.inviteCode);
 

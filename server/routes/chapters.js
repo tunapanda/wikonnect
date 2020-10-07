@@ -13,7 +13,7 @@ const Chapter = require('../models/chapter');
 const permController = require('../middleware/permController');
 const validateChapter = require('../middleware/validateRoutePostSchema/validateChapter');
 const validateRouteQueryParams = require('../middleware/validateRouteQueryParams/queryValidation');
-const { mojaCampaigns } = require('../utils/mojaCampaigns/mojaCampaigns');
+const { mojaCampaignsMiddleware } = require('../utils/mojaCampaigns/mojaCampaignsMiddleware');
 
 const router = new Router({
   prefix: '/chapters'
@@ -167,6 +167,10 @@ router.get('/', permController.requireAuth, validateRouteQueryParams, async ctx 
  */
 router.get('/:id', permController.requireAuth, async ctx => {
   let stateUserRole = ctx.state.user.role == undefined ? ctx.state.user.data.role : ctx.state.user.role;
+  let userId = ctx.state.user.id == undefined ? ctx.state.user.data.id : ctx.state.user.id;
+
+
+  await mojaCampaignsMiddleware(ctx.query, userId);
 
   let roleNameList = ['basic', 'superadmin', 'tunapanda'];
 
@@ -188,7 +192,6 @@ router.get('/:id', permController.requireAuth, async ctx => {
   ctx.assert(chapter, 404, 'no lesson by that ID');
   await returnType(chapter);
 
-  await mojaCampaigns(ctx, user.id);
 
 
   ctx.status = 200;
