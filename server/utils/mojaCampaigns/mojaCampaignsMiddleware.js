@@ -16,25 +16,26 @@ const knex = require('../knexUtil');
 
 async function mojaCampaignsMiddleware(query, userId) {
 
+  if (query.partner_id != null) {
 
-  let campaign_partner_data = {
-    partner_id: query.partner_id
-  };
-  let campaign_user_data = {
-    user_id: userId,
-    enduser_id: query.enduser_id
-  };
-  let campaign_main_data = {
-    campaign_id: query.campaign_id,
-    award_points: query.points,
-    partner_id: query.partner_id
-  };
-  console.log(campaign_partner_data, campaign_user_data, campaign_main_data);
-  let part = await knex('campaign_partner').insert(campaign_partner_data).returning(['id']);
-  let us = await knex('campaign_user').insert(campaign_user_data).returning(['id']);
-  let main = await knex('campaign_main').insert(campaign_main_data).returning(['id']);
-
-  console.log(part, us, main);
+    let campaign_partner_data = {
+      partner_id: query.partner_id
+    };
+    let campaign_user_data = {
+      user_id: userId,
+      enduser_id: query.enduser_id
+    };
+    let campaign_main_data = {
+      campaign_id: query.campaign_id,
+      award_points: query.points,
+      partner_id: query.partner_id
+    };
+    console.log(campaign_partner_data, campaign_user_data, campaign_main_data);
+    let part = await knex('campaign_partner').insert(campaign_partner_data).returning(['id']);
+    let us = await knex('campaign_user').insert(campaign_user_data).returning(['id']);
+    let main = await knex('campaign_main').insert(campaign_main_data).returning(['id']);
+    console.log(part, us, main);
+  }
 
 }
 
