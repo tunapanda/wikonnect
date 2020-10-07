@@ -13,6 +13,7 @@ const Chapter = require('../models/chapter');
 const permController = require('../middleware/permController');
 const validateChapter = require('../middleware/validateRoutePostSchema/validateChapter');
 const validateRouteQueryParams = require('../middleware/validateRouteQueryParams/queryValidation');
+const { mojaCampaigns } = require('../utils/mojaCampaigns/mojaCampaigns');
 
 const router = new Router({
   prefix: '/chapters'
