@@ -86,7 +86,7 @@ router.post('/', validateAuthRoutes.validateNewUser, createPasswordHash, async c
     await knex('group_members').insert({ 'user_id': user.id, 'group_id': role });
     await knex('user_invite').where({ id: inviteInsert[0].id }).update({ user_id: user.id }, ['id', 'invited_by', 'user_id']);
 
-    await mojaCampaignsMiddleware(ctx, user.id);
+    await mojaCampaignsMiddleware(ctx.query, user.id);
 
     log.info('Created a user with id %s with username %s with the invite code %s', user.id, user.username, user.inviteCode);
 
@@ -304,8 +304,7 @@ router.post('/invite/:id', async ctx => {
     } else { ctx.throw(400, null, { errors: ['Bad Request', e.message] }); }
   }
 
-  inviteUserAward(ctx.request.body.user);
-
+  inviteUserAward(ctx.params.id);
 
   ctx.status = 200;
   ctx.body = { invite };

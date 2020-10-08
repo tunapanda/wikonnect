@@ -170,7 +170,6 @@ router.get('/:id', permController.requireAuth, async ctx => {
   let userId = ctx.state.user.id == undefined ? ctx.state.user.data.id : ctx.state.user.id;
 
 
-  await mojaCampaignsMiddleware(ctx.query, userId);
 
   let roleNameList = ['basic', 'superadmin', 'tunapanda'];
 
@@ -191,8 +190,7 @@ router.get('/:id', permController.requireAuth, async ctx => {
 
   ctx.assert(chapter, 404, 'no lesson by that ID');
   await returnType(chapter);
-
-
+  await mojaCampaignsMiddleware(ctx.query, userId);
 
   ctx.status = 200;
   ctx.body = { chapter };

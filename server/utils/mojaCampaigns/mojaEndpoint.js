@@ -1,7 +1,7 @@
 const fetch = require('node-fetch');
+const log = require('../logger');
 const environment = process.env.NODE_ENV || 'development';
-
-
+const knex = require('../knexUtil');
 
 
 /**
@@ -27,12 +27,17 @@ const environment = process.env.NODE_ENV || 'development';
 
 let moja;
 try {
-  moja = require('./config/moja')[environment];
+  moja = require('../../config/moja')[environment];
 } catch (e) {
-  moja = require('./config/moja.example')[environment];
+  moja = require('../../config/moja.example')[environment];
 }
 
-async function postData(url = moja.url, data = {}) {
+/**
+ * Post data gotten from the query params
+ * @param {*} url
+ * @param {*} data
+ */
+async function mojaEndpoint(url = moja.url, data = {}) {
   // Default options are marked with *
   const response = await fetch(url, {
     method: 'POST', // *GET, POST, PUT, DELETE, etc.
@@ -48,7 +53,29 @@ async function postData(url = moja.url, data = {}) {
     referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
     body: JSON.stringify(data) // body data type must match "Content-Type" header
   });
+  console.log(moja.url);
+  console.log(data);
+  console.log(response.json());
   return response.json(); // parses JSON response into native JavaScript objects
 }
 
-module.exports = postData;
+
+async function wikonnectUser(userId) {
+
+  let store_partner_id = await knex.select('partner_id').from('campaign_partner');
+  let stored_user_data = knex('users').where({ user_id: userId }).select('enduser_id');
+  let main = await knex('campaign_main').where({ partner_id: store_partner_id }).select('campaign_id', 'award_points');
+
+  let campaign_data = {
+    partner_id: store_partner_id,
+    enduser_id: stored_user_data.enduser_id,
+    campaign_id: main.campaign_id,
+    points: main.award_points,
+  };
+  await mojaEndpoint(campaign_data);
+}
+
+module.exports = {
+  mojaEndpoint,
+  wikonnectUser
+};
