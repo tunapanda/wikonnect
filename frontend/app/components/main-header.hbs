@@ -21,9 +21,13 @@
 
         <li class="nav-item">
 
-          <a class="nav-link" href="https://teach.wikonnect.org/api/auth?token={{token}}&user={{me.user.username}}">
+          {{#link-to "teach" class="nav-link" }}
             Teach
-          </a>
+          {{/link-to}}
+
+          {{!-- <a class="nav-link" href="https://teach.wikonnect.org/api/auth?token={{token}}&user={{me.user.username}}">
+            Teach
+          </a> --}}
         </li>
 
 
