@@ -130,7 +130,7 @@ async function inviteUserAward(params) {
 
   if (params.metadata.oneInviteComplete == 'false' && completed > 0) {
     await User.query().patchAndFetchById(params.id, { 'metadata:oneInviteComplete': 'true' });
-    await wikonnectUser(userId);
+    await wikonnectUser(params.id);
   }
 }
 

@@ -1,5 +1,4 @@
 const fetch = require('node-fetch');
-const log = require('../logger');
 const environment = process.env.NODE_ENV || 'development';
 const knex = require('../knexUtil');
 
