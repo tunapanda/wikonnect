@@ -103,6 +103,7 @@ router.get('/', permController.requireAuth, validateRouteQueryParams, async ctx 
         .from('chapters')
         .where('name', 'ILIKE', `%${ctx.query.q}%`)
         .orWhere('description', 'ILIKE', `%${ctx.query.q}%`)
+        .orWhere('tags', 'ILIKE', `%${ctx.query.q}%`)
         .leftJoin('ratings as rate', 'chapters.id', 'rate.chapter_id')
         .groupBy('chapters.id', 'rate.chapter_id')
         .eager('[comment(selectComment), achievement(selectAchievement), flag(selectFlag)]');
