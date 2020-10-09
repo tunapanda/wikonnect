@@ -8,8 +8,9 @@ export default class ApplicationEmberObject extends RESTAdapter.extend(TokenAuth
     const hash = super.ajaxOptions(...args);
 
     let token = this.get('session.data.authenticated.token');
+    let User = window.localStorage.getItem('test');;
     hash.headers['Authorization'] = `Bearer ${token}`;
-
+    hash.headers['moja'] = `${User}`;
     return hash;
   }
 }

@@ -9,6 +9,13 @@ export default class ApplicationRoute extends Route {
   @inject
   me;
 
+  queryParams = { test: '' };
+
+  model(params) {
+    window.localStorage.setItem('test', params.test);
+    console.log(params.test);
+  }
+
   beforeModel() {
     return this._loadMe();
   }

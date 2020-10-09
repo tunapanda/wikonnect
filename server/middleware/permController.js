@@ -11,6 +11,7 @@ const log = require('../utils/logger');
  * @param {*} next
  */
 exports.requireAuth = async function (ctx, next) {
+  console.log(ctx.request.header);
   try {
     if (ctx.request.header.authorization === undefined || ctx.request.header.authorization.split(' ')[1] === 'undefined') {
       const data = {
