@@ -97,8 +97,9 @@ Router.map(function () {
     this.route('accounts');
   });
   this.route('teach', function () {
-
     this.route('preview', { path: '/preview/:id' });
+    this.route('tag', { path: '/tag/:id' });
+
     this.route('create');
     this.route('h5p-upload', { path: '/h5p-upload/:id' });
     this.route('thumbnail-upload', { path: '/thumbnail-upload/:id' });
@@ -106,4 +107,5 @@ Router.map(function () {
 
 
   });
+  this.route('topics');
 });

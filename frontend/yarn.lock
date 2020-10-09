@@ -4099,6 +4099,11 @@ babel-plugin-filter-imports@^3.0.0:
     "@babel/types" "^7.4.0"
     lodash "^4.17.11"
 
+babel-plugin-htmlbars-inline-precompile@^0.2.5:
+  version "0.2.6"
+  resolved "https://registry.yarnpkg.com/babel-plugin-htmlbars-inline-precompile/-/babel-plugin-htmlbars-inline-precompile-0.2.6.tgz#c00b8a3f4b32ca04bf0f0d5169fcef3b5a66d69d"
+  integrity sha512-H4H75TKGUFij8ukwEYWEERAgrUf16R8NSK1uDPe3QwxT8mnE1K8+/s6DVjUqbM5Pv6lSIcE4XufXdlSX+DTB6g==
+
 babel-plugin-htmlbars-inline-precompile@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/babel-plugin-htmlbars-inline-precompile/-/babel-plugin-htmlbars-inline-precompile-1.0.0.tgz#a9d2f6eaad8a3f3d361602de593a8cbef8179c22"
@@ -6880,6 +6885,38 @@ ember-cli-babel@^7.1.0, ember-cli-babel@^7.1.2, ember-cli-babel@^7.1.3, ember-cl
     rimraf "^3.0.1"
     semver "^5.5.0"
 
+ember-cli-babel@^7.13.2, ember-cli-babel@^7.5.0:
+  version "7.22.1"
+  resolved "https://registry.yarnpkg.com/ember-cli-babel/-/ember-cli-babel-7.22.1.tgz#cad28b89cf0e184c93b863d09bc5ba4ce1d2e453"
+  integrity sha512-kCT8WbC1AYFtyOpU23ESm22a+gL6fWv8Nzwe8QFQ5u0piJzM9MEudfbjADEaoyKTrjMQTDsrWwEf3yjggDsOng==
+  dependencies:
+    "@babel/core" "^7.11.0"
+    "@babel/helper-compilation-targets" "^7.10.4"
+    "@babel/plugin-proposal-class-properties" "^7.10.4"
+    "@babel/plugin-proposal-decorators" "^7.10.5"
+    "@babel/plugin-transform-modules-amd" "^7.10.5"
+    "@babel/plugin-transform-runtime" "^7.11.0"
+    "@babel/plugin-transform-typescript" "^7.11.0"
+    "@babel/polyfill" "^7.10.4"
+    "@babel/preset-env" "^7.11.0"
+    "@babel/runtime" "^7.11.0"
+    amd-name-resolver "^1.2.1"
+    babel-plugin-debug-macros "^0.3.3"
+    babel-plugin-ember-data-packages-polyfill "^0.1.2"
+    babel-plugin-ember-modules-api-polyfill "^3.1.1"
+    babel-plugin-module-resolver "^3.1.1"
+    broccoli-babel-transpiler "^7.7.0"
+    broccoli-debug "^0.6.4"
+    broccoli-funnel "^2.0.1"
+    broccoli-source "^1.1.0"
+    clone "^2.1.2"
+    ember-cli-babel-plugin-helpers "^1.1.0"
+    ember-cli-version-checker "^4.1.0"
+    ensure-posix-path "^1.0.2"
+    fixturify-project "^1.10.0"
+    rimraf "^3.0.1"
+    semver "^5.5.0"
+
 ember-cli-babel@^7.19.0:
   version "7.21.0"
   resolved "https://registry.yarnpkg.com/ember-cli-babel/-/ember-cli-babel-7.21.0.tgz#c79e888876aee87dfc3260aee7cb580b74264bbc"
@@ -6901,38 +6938,6 @@ ember-cli-babel@^7.19.0:
     babel-plugin-ember-modules-api-polyfill "^2.13.4"
     babel-plugin-module-resolver "^3.1.1"
     broccoli-babel-transpiler "^7.5.0"
-    broccoli-debug "^0.6.4"
-    broccoli-funnel "^2.0.1"
-    broccoli-source "^1.1.0"
-    clone "^2.1.2"
-    ember-cli-babel-plugin-helpers "^1.1.0"
-    ember-cli-version-checker "^4.1.0"
-    ensure-posix-path "^1.0.2"
-    fixturify-project "^1.10.0"
-    rimraf "^3.0.1"
-    semver "^5.5.0"
-
-ember-cli-babel@^7.5.0:
-  version "7.22.1"
-  resolved "https://registry.yarnpkg.com/ember-cli-babel/-/ember-cli-babel-7.22.1.tgz#cad28b89cf0e184c93b863d09bc5ba4ce1d2e453"
-  integrity sha512-kCT8WbC1AYFtyOpU23ESm22a+gL6fWv8Nzwe8QFQ5u0piJzM9MEudfbjADEaoyKTrjMQTDsrWwEf3yjggDsOng==
-  dependencies:
-    "@babel/core" "^7.11.0"
-    "@babel/helper-compilation-targets" "^7.10.4"
-    "@babel/plugin-proposal-class-properties" "^7.10.4"
-    "@babel/plugin-proposal-decorators" "^7.10.5"
-    "@babel/plugin-transform-modules-amd" "^7.10.5"
-    "@babel/plugin-transform-runtime" "^7.11.0"
-    "@babel/plugin-transform-typescript" "^7.11.0"
-    "@babel/polyfill" "^7.10.4"
-    "@babel/preset-env" "^7.11.0"
-    "@babel/runtime" "^7.11.0"
-    amd-name-resolver "^1.2.1"
-    babel-plugin-debug-macros "^0.3.3"
-    babel-plugin-ember-data-packages-polyfill "^0.1.2"
-    babel-plugin-ember-modules-api-polyfill "^3.1.1"
-    babel-plugin-module-resolver "^3.1.1"
-    broccoli-babel-transpiler "^7.7.0"
     broccoli-debug "^0.6.4"
     broccoli-funnel "^2.0.1"
     broccoli-source "^1.1.0"
@@ -7032,6 +7037,17 @@ ember-cli-head@^1.0.0:
     ember-cli-babel "^7.19.0"
     ember-cli-htmlbars "^4.3.1"
     ember-in-element-polyfill "^1.0.0"
+
+ember-cli-htmlbars-inline-precompile@^1.0.0:
+  version "1.0.5"
+  resolved "https://registry.yarnpkg.com/ember-cli-htmlbars-inline-precompile/-/ember-cli-htmlbars-inline-precompile-1.0.5.tgz#312e050c9e3dd301c55fb399fd706296cd0b1d6a"
+  integrity sha512-/CNEqPxroIcbY6qejrt704ZaghHLCntZKYLizFfJ2esirXoJx6fuYKBY1YyJ8GOgjfbHHKjBZuK4vFFJpkGqkQ==
+  dependencies:
+    babel-plugin-htmlbars-inline-precompile "^0.2.5"
+    ember-cli-version-checker "^2.1.2"
+    hash-for-dep "^1.2.3"
+    heimdalljs-logger "^0.1.9"
+    silent-error "^1.1.0"
 
 ember-cli-htmlbars-inline-precompile@^2.1.0:
   version "2.1.0"
@@ -7858,6 +7874,24 @@ ember-svg-jar@^2.2.3:
     mkdirp "^0.5.1"
     path-posix "^1.0.0"
 
+ember-tag-input@^2.0.2:
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/ember-tag-input/-/ember-tag-input-2.0.2.tgz#60154249f9b8950d3fcac45987c224588d74e8c2"
+  integrity sha512-7t2M2DD/USkN/wTy82hZhwW2nUTnaOPqJRAO0WUTN3Fwv1PQ+ycZEsEPnAIpyxcJmd5h80b8ZzlCxum7twFbRw==
+  dependencies:
+    ember-cli-babel "^7.13.2"
+    ember-cli-htmlbars "^4.2.0"
+
+ember-tags-input@^0.3.0:
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/ember-tags-input/-/ember-tags-input-0.3.0.tgz#0151356805a1743925e6faeae6cbaf1d7aa87635"
+  integrity sha512-hMK5axBt3XHAo0oX6fRckQ7az7YiNLm8okPPl4+FFltjJW82X0zp+E+/VsshXfjs5EkS1QyRh37f5TT1hEcWHA==
+  dependencies:
+    ember-cli-babel "^6.6.0"
+    ember-cli-htmlbars "^2.0.1"
+    ember-cli-htmlbars-inline-precompile "^1.0.0"
+    ember-truth-helpers "^2.0.0"
+
 ember-template-lint@^1.5.0:
   version "1.14.0"
   resolved "https://registry.yarnpkg.com/ember-template-lint/-/ember-template-lint-1.14.0.tgz#fd3e8ec600b0b3de16b5701bf02acc99d192008e"
@@ -7885,7 +7919,7 @@ ember-text-measurer@^0.5.0:
   dependencies:
     ember-cli-babel "^7.1.0"
 
-ember-truth-helpers@2.1.0, ember-truth-helpers@^2.1.0:
+ember-truth-helpers@2.1.0, ember-truth-helpers@^2.0.0, ember-truth-helpers@^2.1.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/ember-truth-helpers/-/ember-truth-helpers-2.1.0.tgz#d4dab4eee7945aa2388126485977baeb33ca0798"
   integrity sha512-BQlU8aTNl1XHKTYZ243r66yqtR9JU7XKWQcmMA+vkqfkE/c9WWQ9hQZM8YABihCmbyxzzZsngvldokmeX5GhAw==

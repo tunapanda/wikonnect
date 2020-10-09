@@ -58,6 +58,15 @@
     {{/if}}
 
     <p> <b>Description: </b>{{model.description}}</p>
+    <p> <b>tags: </b></p>
+    {{model.tags}}
+    {{#each model.tags as |tag|}}
+      <span class="badge badge-pill badge-primary btn-lg">
+        {{tag}}
+      </span>
+    {{/each}}
+
+
   </div>
 </div>
 

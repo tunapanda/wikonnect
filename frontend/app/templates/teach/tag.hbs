@@ -1,0 +1,25 @@
+{{outlet}}
+<form method="post" {{ action "addtag" on="submit"}}>
+  {{input id="tag" type="text" value=tag aria-controls="existing-user-table" placeholder="Add tag" class="form-control"}}
+  <button type="submit" class="btn btn-primary mt-2 float-right">Submit</button>
+</form>
+<hr>
+{{#each tags as |tag|}}
+  <span class="badge badge-pill badge-primary btn-lg">
+    {{tag}}
+  </span>
+  <br>
+{{/each}}
+
+<nav class="navbar fixed-bottom float-right bg-light justify-content-end">
+  {{#if tags}}
+    <button type="button" class="btn btn-primary form-control float-right" {{action updateTags}}>Continue</button>
+
+  {{else}}
+    {{#link-to "teach.preview" model.id}}
+      <button type="button" class="btn btn-primary form-control float-right">Skip</button>
+
+    {{/link-to}}
+
+  {{/if}}
+</nav>

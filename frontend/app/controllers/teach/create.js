@@ -6,6 +6,35 @@ export default class TeachCreateController extends Controller {
   @service router;
 
 
+  tag = [];
+
+
+  @action
+  addTag(tag) {
+    this.tag.pushObject(tag);
+    console.log(this.tag);
+  }
+  @action
+  removeTagAtIndex(index) {
+    this.tag.removeAt(index);
+  }
+
+  @action
+  addTags(newTags) {
+    this.get('tags').addObject(newTags);
+  }
+
+  @action
+  replaceTagAtIndex(tag, index) {
+    this.get('tags').replace(index, 1, [tag]);
+  }
+
+  @action
+  replaceTagWithTagsAtIndex(tags, index) {
+    this.get('tags').replace(index, 1, tags);
+  }
+
+
   @action
   saveChapter(model) {
     model.setProperties({
@@ -13,7 +42,7 @@ export default class TeachCreateController extends Controller {
       approved: false
     });
     model.save().then((x) => {
-      this.transitionToRoute('teach.preview', x.id);
+      this.transitionToRoute('teach.tag', x.id);
 
     });
 
