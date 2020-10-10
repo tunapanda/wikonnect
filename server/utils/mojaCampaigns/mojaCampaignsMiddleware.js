@@ -24,12 +24,12 @@ async function mojaCampaignsMiddleware(query, userId) {
       points: query.points,
     };
 
-    let part = await knex('campaign_partner').insert({ partner_id: query.partner_id }).returning(['id']);
-    let us = await knex('campaign_user').insert({ user_id: userId, enduser_id: query.enduser_id }).returning(['id']);
-    let main = await knex('campaign_main').insert({ campaign_id: query.campaign_id, award_points: query.points, partner_id: query.partner_id }).returning(['id']);
+    let campaign_partner = await knex('campaign_partner').insert({ partner_id: query.partner_id }).returning(['id']);
+    let campaign_user = await knex('campaign_user').insert({ user_id: userId, enduser_id: query.enduser_id }).returning(['id']);
+    let campaign_main = await knex('campaign_main').insert({ campaign_id: query.campaign_id, award_points: query.points, partner_id: query.partner_id }).returning(['id']);
 
-    log.info(part, us, main);
-    log.info(campaign_data);
+    log.info(`User ${userId} campaign data ${campaign_data}`);
+    log.info(`Successful insert of campaign data ${campaign_partner}, ${campaign_user}, ${campaign_main}`);
 
     await mojaEndpoint(campaign_data);
   }

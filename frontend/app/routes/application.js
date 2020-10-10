@@ -9,11 +9,13 @@ export default class ApplicationRoute extends Route {
   @inject
   me;
 
-  queryParams = { test: '' };
+  queryParams = { campaign_id: '', points: '', enduser_id: '', partner_id: '' };
 
   model(params) {
-    window.localStorage.setItem('test', params.test);
-    console.log(params.test);
+    window.localStorage.setItem('campaign_id', params.campaign_id);
+    window.localStorage.setItem('points', params.points);
+    window.localStorage.setItem('enduser_id', params.enduser_id);
+    window.localStorage.setItem('partner_id', params.partner_id);
   }
 
   beforeModel() {
