@@ -63,6 +63,7 @@ router.get('/', permController.requireAuth, validateRouteQueryParams, async ctx 
 
   let stateUserRole = ctx.state.user.role == undefined ? ctx.state.user.data.role : ctx.state.user.role;
   let stateUserId = ctx.state.user.id == undefined ? ctx.state.user.data.id : ctx.state.user.id;
+  let user = await User.query().findById(stateUserId);
 
   let roleNameList = ['basic', 'superadmin', 'tunapanda', 'admin'];
   // try {
@@ -147,8 +148,11 @@ router.get('/', permController.requireAuth, validateRouteQueryParams, async ctx 
  */
 router.get('/:id', permController.requireAuth, async ctx => {
   let stateUserRole = ctx.state.user.role == undefined ? ctx.state.user.data.role : ctx.state.user.role;
+  let stateUserId = ctx.state.user.id == undefined ? ctx.state.user.data.id : ctx.state.user.id;
 
   let roleNameList = ['basic', 'superadmin', 'tunapanda'];
+  let anonymous = 'anonymous';
+  let user = await User.query().findById(stateUserId);
 
   let chapter = Chapter.query()
     .select('chapters.*')
@@ -161,8 +165,10 @@ router.get('/:id', permController.requireAuth, async ctx => {
   if (roleNameList.includes(stateUserRole)) {
     chapter = await chapter.whereIn('topics', user.topics).eager('[comment(selectComment), flag(selectFlag), achievement(selectAchievement)]');
     await achievementType(chapter);
-  } else {
+  } else if (stateUserRole == anonymous) {
     chapter = await chapter.where({ status: 'published' }).eager('comment(selectComment)');
+  } else {
+    chapter = await Chapter.query().where({ id: ctx.params.id, creatorId: stateUserId });
   }
 
   ctx.assert(chapter, 404, 'no lesson by that ID');
