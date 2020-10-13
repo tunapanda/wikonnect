@@ -67,11 +67,11 @@
 
     {{#if (eq model.status "published")}}
 
-      <button {{on "click" (fn this.unpublish model.id "true")}} type="button" class="btn form-control btn-danger">
+      <button {{on "click" (fn this.unpublish model.id )}} type="button" class="btn form-control btn-danger">
         UnPublish {{model.name}}
       </button>
     {{else}}
-      <button {{on "click" (fn this.publish model.id "false")}} type="button" class="btn form-control btn-success">
+      <button {{on "click" (fn this.publish model.id )}} type="button" class="btn form-control btn-success">
         Publish {{model.name}}
       </button>
     {{/if}}
