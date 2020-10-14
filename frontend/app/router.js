@@ -108,4 +108,10 @@ Router.map(function () {
 
   });
   this.route('topics');
+  this.route('tags');
+  this.route('tag', function () {
+    this.route('index', {
+      path: '/:id'
+    });
+  });
 });

@@ -1,25 +1,50 @@
 {{outlet}}
-<form method="post" {{ action "addtag" on="submit"}}>
-  {{input id="tag" type="text" value=tag aria-controls="existing-user-table" placeholder="Add tag" class="form-control"}}
-  <button type="submit" class="btn btn-primary mt-2 float-right">Submit</button>
-</form>
-<hr>
-{{#each tags as |tag|}}
-  <span class="badge badge-pill badge-primary btn-lg">
-    {{tag}}
-  </span>
+{{#if me.isAuthenticated}}
+
+
+
+  <h5>Select Tags</h5>
+  <hr>
+
+  {{#each list as |item|}}
+    <button type="button" class="btn btn-outline-primary m-1" {{action addme item}}>{{item}}
+    </button>
+  {{/each}}
   <br>
-{{/each}}
+  <br>
+  <h5>Or add a custom tag</h5>
+  <form method="post" {{ action "addtag" on="submit"}}>
+    {{input id="tag" type="text" value=tag aria-controls="existing-user-table" placeholder="Add Custom Tag" class="form-control"}}
+    <button type="submit" class="btn btn-primary mt-2 ">Submit</button>
+  </form>
+  <hr>
+  {{#each mylist as |item|}}
+    <button type="button" class="btn btn-primary m-1" {{action removeme item}}>
+      {{item}}
+      <span aria-hidden="true">&times;</span>
+    </button>
+  {{/each}}
+  {{#each tags as |tag|}}
+    <button type="button" class="btn btn-primary m-1" {{action removetag tag}}>
+      {{tag}}
+      <span aria-hidden="true">&times;</span>
+    </button>
 
-<nav class="navbar fixed-bottom float-right bg-light justify-content-end">
-  {{#if tags}}
-    <button type="button" class="btn btn-primary form-control float-right" {{action updateTags}}>Continue</button>
+  {{/each}}
 
-  {{else}}
-    {{#link-to "teach.preview" model.id}}
-      <button type="button" class="btn btn-primary form-control float-right">Skip</button>
+  <nav class="navbar fixed-bottom float-right bg-light justify-content-end">
+    {{#if (or tags mylist)}}
+      <button type="button" class="btn btn-primary form-control float-right" {{action updateTags}}>Continue</button>
 
-    {{/link-to}}
+    {{else}}
+      {{#link-to "teach.preview" model.id}}
+        <button type="button" class="btn btn-primary form-control float-right">Skip</button>
 
-  {{/if}}
-</nav>
+      {{/link-to}}
+
+    {{/if}}
+  </nav>
+{{else}}
+  <Warning @message="You do not have permission to view this page" />
+
+{{/if}}

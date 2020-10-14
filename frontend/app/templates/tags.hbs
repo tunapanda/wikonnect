@@ -1,0 +1,29 @@
+{{outlet}}
+<h3>Select areas of interest</h3>
+{{#each list as |item|}}
+  <button type="button" class="btn btn-outline-primary m-2" {{action addme item}}>{{item}}</button>
+{{/each}}
+
+
+
+
+{{#each mylist as |item|}}
+  <button type="button" class="btn btn-primary m-2" {{action removeme item}}>
+    {{item}}
+    <span aria-hidden="true">&times;</span>
+
+  </button>
+{{/each}}
+
+<nav class="navbar fixed-bottom float-right bg-light justify-content-end">
+  {{#if mylist}}
+    <button type="button" class="btn btn-primary form-control float-right" {{action updateTags}}>Done</button>
+
+  {{else}}
+    {{#link-to "teach.preview" model.id}}
+      <button type="button" class="btn btn-primary form-control float-right">Skip</button>
+
+    {{/link-to}}
+
+  {{/if}}
+</nav>

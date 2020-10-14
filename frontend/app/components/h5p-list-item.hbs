@@ -16,6 +16,16 @@
           {{@chapter.name}}
         {{/link-to}}
       </h5>
+      {{#each @chapter.tags as |tag|}}
+        {{#link-to "tag" tag}}
+
+          <span class="badge badge-pill badge-primary btn-lg">
+            {{tag}}
+          </span>
+        {{/link-to}}
+
+      {{/each}}
+
 
       <p class="card-text">{{@chapter.description}}</p>
     </div>

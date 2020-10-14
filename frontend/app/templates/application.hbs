@@ -2,6 +2,6 @@
 <MainHeader @style={{headerStyle}} @logout={{action "logout"}} />
 <div class="container">
   {{outlet}}
-  <AuthPrompt />
 </div>
 <EmberNotify @closeAfter={{4000}} />
+<AuthPrompt />

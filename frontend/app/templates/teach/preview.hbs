@@ -59,12 +59,20 @@
 
     <p> <b>Description: </b>{{model.description}}</p>
     <p> <b>tags: </b></p>
-    {{model.tags}}
     {{#each model.tags as |tag|}}
-      <span class="badge badge-pill badge-primary btn-lg">
-        {{tag}}
-      </span>
+      {{#link-to "tag" tag}}
+
+        <span class="badge badge-pill badge-primary btn-lg">
+          {{tag}}
+        </span>
+      {{/link-to}}
+
     {{/each}}
+
+    {{#link-to "teach.tag" model.id}}
+      <button type="button" class="btn btn-primary">Modify Tags</button>
+
+    {{/link-to}}
 
 
   </div>
