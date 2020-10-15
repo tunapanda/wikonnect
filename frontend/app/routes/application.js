@@ -12,10 +12,14 @@ export default class ApplicationRoute extends Route {
   queryParams = { campaign_id: '', points: '', enduser_id: '', partner_id: '' };
 
   model(params) {
-    window.localStorage.setItem('campaign_id', params.campaign_id);
-    window.localStorage.setItem('points', params.points);
-    window.localStorage.setItem('enduser_id', params.enduser_id);
-    window.localStorage.setItem('partner_id', params.partner_id);
+    let mojaLocalStorage = {
+      partner_id: params.campaign_id,
+      enduser_id: params.points,
+      campaign_id: params.enduser_id,
+      points: params.partner_id
+    }
+
+    window.localStorage.setItem('moja_campaign', JSON.stringify(mojaLocalStorage));
   }
 
   beforeModel() {

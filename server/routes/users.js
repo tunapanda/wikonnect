@@ -29,8 +29,6 @@ const {
   getProfileImage
 } = require('../utils/routesUtils/userRouteUtils');
 
-const { mojaCampaignsMiddleware } = require('../utils/mojaCampaigns/mojaCampaignsMiddleware');
-
 const router = new Router({
   prefix: '/users'
 });
@@ -70,9 +68,6 @@ router.post('/', validateAuthRoutes.validateNewUser, createPasswordHash, async c
   ctx.request.body.user.metadata = { 'profileComplete': 'false', 'oneInviteComplete': 'false' };
 
   const inviteInsert = await knex('user_invite').insert([{ 'invited_by': ctx.request.body.user.inviteCode }], ['id', 'invited_by']);
-  // if (ctx.request.body.user.inviteCode != null) {
-  //   await inviteUserAward(ctx.request.body.user);
-  // }
 
   let newUser = ctx.request.body.user;
   newUser.inviteCode = shortid.generate();
@@ -85,8 +80,6 @@ router.post('/', validateAuthRoutes.validateNewUser, createPasswordHash, async c
     const user = await User.query().insertAndFetch(newUser);
     await knex('group_members').insert({ 'user_id': user.id, 'group_id': role });
     await knex('user_invite').where({ id: inviteInsert[0].id }).update({ user_id: user.id }, ['id', 'invited_by', 'user_id']);
-
-    await mojaCampaignsMiddleware(ctx.query, user.id);
 
     log.info('Created a user with id %s with username %s with the invite code %s', user.id, user.username, user.inviteCode);
 

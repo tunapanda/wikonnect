@@ -3,7 +3,6 @@ const path = require('path');
 const koaQs = require('koa-qs');
 const Router = require('koa-router');
 const bodyParser = require('koa-bodyparser');
-const koaBunyanLogger = require('koa-bunyan-logger');
 const errorHandler = require('./middleware/error');
 const logger = require('./middleware/logger');
 const jwt = require('./middleware/jwt');
@@ -22,12 +21,10 @@ app.use(cors({
   origin: '*',
   maxAge: 5,
   credentials: true,
-  allowMethods: ['GET', 'POST', 'DELETE'],
-  allowHeaders: ['Content-Type', 'Authorization', 'Accept'],
+  allowMethods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowHeaders: ['Content-Type', 'Authorization', 'Accept', 'mojaHeaders'],
 }));
 app.use(errorHandler);
-
-app.use(koaBunyanLogger());
 
 app.use(logger);
 

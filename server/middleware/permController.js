@@ -11,7 +11,6 @@ const log = require('../utils/logger');
  * @param {*} next
  */
 exports.requireAuth = async function (ctx, next) {
-  console.log(ctx.request.header);
   try {
     if (ctx.request.header.authorization === undefined || ctx.request.header.authorization.split(' ')[1] === 'undefined') {
       const data = {
@@ -37,7 +36,7 @@ exports.requireAuth = async function (ctx, next) {
       await next();
     }
   } catch (error) {
-    log.error('Token has expired with error - %s', error);
+    log.error(`The following error ${error} with message ${error.message}`);
     if (process.env.NODE_ENV === 'development') {
       ctx.throw(400, error);
     }

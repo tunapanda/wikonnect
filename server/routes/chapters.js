@@ -11,9 +11,10 @@ const slugGen = require('../utils/slugGen');
 
 const Chapter = require('../models/chapter');
 const permController = require('../middleware/permController');
+const mojaCampaignMiddleware = require('../middleware/mojaCampaignMiddleware');
 const validateChapter = require('../middleware/validateRoutePostSchema/validateChapter');
 const validateRouteQueryParams = require('../middleware/validateRouteQueryParams/queryValidation');
-const { mojaCampaignsMiddleware } = require('../utils/mojaCampaigns/mojaCampaignsMiddleware');
+
 
 const router = new Router({
   prefix: '/chapters'
@@ -81,18 +82,10 @@ async function achievementType(parent) {
  * @apiError {String} errors Bad Request.
  */
 
-router.get('/', permController.requireAuth, validateRouteQueryParams, async ctx => {
+router.get('/', permController.requireAuth, mojaCampaignMiddleware, validateRouteQueryParams, async ctx => {
 
   let stateUserRole = ctx.state.user.role == undefined ? ctx.state.user.data.role : ctx.state.user.role;
   let roleNameList = ['basic', 'superadmin', 'tunapanda', 'admin'];
-  // try {
-  //   await schema.validateAsync(ctx.query);
-  // } catch (e) {
-  //   if (e.statusCode) {
-  //     ctx.throw(e.statusCode, null, { errors: [e.message] });
-  //   } else { ctx.throw(400, null, { errors: [e.message] }); }
-  //   throw e;
-  // }
 
   let chapter;
   if (roleNameList.includes(stateUserRole)) {
@@ -131,7 +124,7 @@ router.get('/', permController.requireAuth, validateRouteQueryParams, async ctx 
   }
 
   ctx.status = 200;
-  ctx.body = { chapter };
+  ctx.body = { 'chapter' : chapter };
 });
 
 /**

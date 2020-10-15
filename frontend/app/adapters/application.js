@@ -8,15 +8,10 @@ export default class ApplicationEmberObject extends RESTAdapter.extend(TokenAuth
     const hash = super.ajaxOptions(...args);
 
     let token = this.get('session.data.authenticated.token');
-    let mojaLocalStorage = {
-      partner_id: window.localStorage.getItem('partner_id'),
-      enduser_id: window.localStorage.getItem('enduser_id'),
-      campaign_id: window.localStorage.getItem('campaign_id'),
-      points: window.localStorage.getItem('points')
-    }
 
     hash.headers['Authorization'] = `Bearer ${token}`;
-    hash.headers['MojaHeader'] = `${mojaLocalStorage}`
+    hash.headers['mojaHeader'] = window.localStorage.getItem('moja_campaign');
+
     return hash;
   }
 }
