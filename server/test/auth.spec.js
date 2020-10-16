@@ -10,21 +10,21 @@ chai.use(chaiHttp);
 
 const usersRoute = '/api/v1/users/';
 const authRoute = '/api/v1/auth/';
-const userId = 'user99';
+const userId = 'user9';
 const registerUser = {
   'user': {
     'id': userId,
     'username': userId,
     'password': 'tunapanda',
-    'email': 'user99@wikonnect.com',
+    'email': 'user1@wikonnect.com'
   }
 };
 
 const loginUserData = {
   'username': userId,
-  'email': 'user99@wikonnect.com',
+  'email': 'user9@wikonnect.com',
   'password': 'tunapanda',
-  role: 'admin'
+  'role': 'admin'
 };
 
 describe('AUTHENTICATION ROUTES', () => {
@@ -32,7 +32,7 @@ describe('AUTHENTICATION ROUTES', () => {
   before(async () => {
     await knex.migrate.rollback();
     await knex.migrate.latest();
-    return knex.seed.run();
+    return await knex.seed.run();
   });
   describe('Auth routes tests: /api/v1/users/', () => {
     it('Should create user on POST requests', done => {
@@ -128,9 +128,6 @@ describe('AUTHENTICATION ROUTES', () => {
           expect(res.body.user).not.have.property('password');
           expect(res.body.user).not.have.property('hash');
           expect(res.body.user).to.have.property('id');
-          expect(res.body.user).to.have.property('achievementAwards');
-          expect(res.body.user).to.have.property('enrolledCourses');
-          expect(res.body.user).to.have.property('userVerification');
           done();
         });
     });
