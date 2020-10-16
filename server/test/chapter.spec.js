@@ -26,7 +26,8 @@ const data = {
     'contentUri': '/uploads/h5p/chapter1',
     'imageUrl': null,
     'contentId': null,
-    'approved': false
+    'approved': false,
+    'topics': 'primary'
   }
 };
 
@@ -61,7 +62,7 @@ describe('CHAPTER ROUTE', () => {
   before(async () => {
     await knex.migrate.rollback();
     await knex.migrate.latest();
-    return knex.seed.run();
+    return await knex.seed.run();
   });
 
   // Passing tests
