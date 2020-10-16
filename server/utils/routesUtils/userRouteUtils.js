@@ -4,12 +4,9 @@ const bcrypt = require('bcrypt');
 const User = require('../../models/user');
 const AchievementAward = require('../../models/achievement_awards');
 
-
-
 const log = require('../logger');
 const knex = require('../knexUtil');
 const { wikonnectUser } = require('../mojaCampaigns/mojaEndpoint');
-
 
 
 async function achievementAwardsType(parent) {
