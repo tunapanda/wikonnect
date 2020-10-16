@@ -415,7 +415,7 @@ body {
   padding: 1em;
   z-index: 999;
   background-color: #fecf00;
-  background-image: "/public/assets/profile.svg";
+  background-image: "/public/assets/profile.png";
 }
 
 .green-header {

@@ -8,7 +8,7 @@
   {{/each}}
 
   <div class="login-form-fields">
-    <form.element id="username" @controlType="text" @label="Username" @placeholder="Username" @property="username"
+    <form.element @autocomplete="on" id="username" @controlType="text" @label="Username" @placeholder="Username" @property="username"
       @autocomplete="username" />
 
     <form.element id="password" @controlType="password" @label="Password" @placeholder="Enter Password"

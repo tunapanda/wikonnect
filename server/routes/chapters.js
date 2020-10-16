@@ -12,6 +12,7 @@ const slugGen = require('../utils/slugGen');
 const Chapter = require('../models/chapter');
 const User = require('../models/user');
 const permController = require('../middleware/permController');
+const mojaCampaignMiddleware = require('../middleware/mojaCampaignMiddleware');
 const validateChapter = require('../middleware/validateRoutePostSchema/validateChapter');
 const validateRouteQueryParams = require('../middleware/validateRouteQueryParams/queryValidation');
 
@@ -59,7 +60,7 @@ const {
  * @apiError {String} errors Bad Request.
  */
 
-router.get('/', permController.requireAuth, validateRouteQueryParams, async ctx => {
+router.get('/', permController.requireAuth, mojaCampaignMiddleware, validateRouteQueryParams, async ctx => {
 
   let stateUserRole = ctx.state.user.role == undefined ? ctx.state.user.data.role : ctx.state.user.role;
   let stateUserId = ctx.state.user.id == undefined ? ctx.state.user.data.id : ctx.state.user.id;
@@ -100,7 +101,6 @@ router.get('/', permController.requireAuth, validateRouteQueryParams, async ctx 
         .groupBy('chapters.id', 'rate.chapter_id')
         .eager('[comment(selectComment), achievement(selectAchievement), flag(selectFlag)]');
     }
-    await returnType(chapter);
     await achievementType(chapter);
   } else {
     // chapter = await Chapter.query().where(ctx.query).eager('[comment(selectComment), flag(selectFlag), rating(selectRating)]');
@@ -113,9 +113,10 @@ router.get('/', permController.requireAuth, validateRouteQueryParams, async ctx 
       .groupBy('chapters.id', 'rate.chapter_id')
       .eager('[comment(selectComment), flag(selectFlag)]');
   }
+  await returnType(chapter);
 
   ctx.status = 200;
-  ctx.body = { chapter };
+  ctx.body = { 'chapter' : chapter };
 });
 
 /**
@@ -166,7 +167,7 @@ router.get('/:id', permController.requireAuth, async ctx => {
     .groupBy('chapters.id', 'rate.chapter_id');
 
   if (roleNameList.includes(stateUserRole)) {
-    if (user.topics === null){
+    if (user.topics === null) {
       chapter = await chapter.eager('[comment(selectComment), flag(selectFlag), achievement(selectAchievement)]');
     } else if (user.topics != null) {
       chapter = await chapter.whereIn('topics', user.topics).orWhereIn('tags', user.topics).eager('[comment(selectComment), flag(selectFlag), achievement(selectAchievement)]');

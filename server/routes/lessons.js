@@ -222,7 +222,7 @@ router.put('/:id', permController.requireAuth, permController.grantAccess('updat
   const checkLesson = await Lesson.query().findById(ctx.params.id);
 
   if (!checkLesson) {
-    ctx.log.info('Error, path does not exists  %s for %s', ctx.request.ip, ctx.path);
+    log.info('Error, path does not exists  %s for %s', ctx.request.ip, ctx.path);
     ctx.throw(400, 'That lesson path does not exist');
   }
 
