@@ -79,6 +79,15 @@ router.get('/', permController.requireAuth, validateRouteQueryParams, async ctx 
         .leftJoin('ratings as rate', 'chapters.id', 'rate.chapter_id')
         .groupBy('chapters.id', 'rate.chapter_id')
         .eager('[comment(selectComment), achievement(selectAchievement), flag(selectFlag)]');
+    } else if (user.topics === null) {
+      chapter = await Chapter.query()
+        .select('chapters.*')
+        .avg('rate.rating as rating')
+        .from('chapters')
+        .where(ctx.query, { status: 'published' })
+        .leftJoin('ratings as rate', 'chapters.id', 'rate.chapter_id')
+        .groupBy('chapters.id', 'rate.chapter_id')
+        .eager('[comment(selectComment), achievement(selectAchievement), flag(selectFlag)]');
     } else {
       chapter = await Chapter.query()
         .select('chapters.*')
@@ -155,7 +164,10 @@ router.get('/:id', permController.requireAuth, async ctx => {
     .leftJoin('ratings as rate', 'chapters.id', 'rate.chapter_id')
     .groupBy('chapters.id', 'rate.chapter_id');
 
-  if (roleNameList.includes(stateUserRole)) {
+  if (roleNameList.includes(stateUserRole) && user.topics === null) {
+    chapter = await chapter.eager('[comment(selectComment), flag(selectFlag), achievement(selectAchievement)]');
+    await achievementType(chapter);
+  } else if (roleNameList.includes(stateUserRole) && user.topics != null) {
     chapter = await chapter.whereIn('topics', user.topics).eager('[comment(selectComment), flag(selectFlag), achievement(selectAchievement)]');
     await achievementType(chapter);
   } else {
