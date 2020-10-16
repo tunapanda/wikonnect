@@ -66,14 +66,7 @@ router.get('/', permController.requireAuth, validateRouteQueryParams, async ctx 
   let user = await User.query().findById(stateUserId);
 
   let roleNameList = ['basic', 'superadmin', 'tunapanda', 'admin'];
-  // try {
-  //   await schema.validateAsync(ctx.query);
-  // } catch (e) {
-  //   if (e.statusCode) {
-  //     ctx.throw(e.statusCode, null, { errors: [e.message] });
-  //   } else { ctx.throw(400, null, { errors: [e.message] }); }
-  //   throw e;
-  // }
+  let user = await User.query().findById(stateUserId);
 
   let chapter;
   if (roleNameList.includes(stateUserRole)) {
@@ -408,4 +401,5 @@ router.post('/:id/upload', async ctx => {
     path: uploadPath
   };
 });
+
 module.exports = router.routes();
