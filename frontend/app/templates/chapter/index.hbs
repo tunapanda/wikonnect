@@ -15,13 +15,13 @@
   </div>
   {{#if me.user.id}}
 
-  <div class="d-flex justify-content-between mr-2">
+    <div class="d-flex justify-content-between mr-2">
 
-    <a name="" id="" class="btn btn-primary" href="#" {{action "toggleFlaggingModal"}} role="button">Report </a>
-    {{star-rating readOnly=enabled rating=5 onClick=(action "ratingSubmit")}}
+      <a name="" id="" class="btn btn-primary" href="#" {{action "toggleFlaggingModal"}} role="button">Report </a>
+      {{star-rating readOnly=enabled rating=5 onClick=(action "ratingSubmit")}}
 
 
-  </div>
+    </div>
   {{/if}}
 
 
@@ -31,16 +31,18 @@
 
 <div class="text-center">
   {{#if (eq me.user.username "daph")}}
-  {{#if (eq model.approved "true")}}
+    {{#if (eq model.approved "true")}}
 
-  <button {{on "click" (fn this.toggleApproval model.id "true")}} type="button" class="btn form-controll btn-danger">
-    Un Approve This
-  </button>
-  {{else}}
-  <button {{on "click" (fn this.toggleApproval model.id "false")}} type="button" class="btn form-controll btn-success">
-    Approve This
-  </button>
-  {{/if}}
+      <button {{on "click" (fn this.toggleApproval model.id "true")}} type="button"
+        class="btn form-controll btn-danger">
+        Un Approve This
+      </button>
+    {{else}}
+      <button {{on "click" (fn this.toggleApproval model.id "false")}} type="button"
+        class="btn form-controll btn-success">
+        Approve This
+      </button>
+    {{/if}}
 
   {{/if}}
 </div>
@@ -60,12 +62,14 @@
 </BsModalSimple>
 
 
-<BsModalSimple @open={{ratingModal}} @title="Rate This Module " @closeTitle="Close" @submitTitle="Submit Optional Remark" @size=""
-  @closeButton={{true}} @fade={{true}} @backdrop={{true}} @backdropClose={{true}} @onSubmit={{action "ratingSubmit"}}
-  @onHidden={{action "toggleRatingModal"}} @renderInPlace={{true}}>
+<BsModalSimple @open={{ratingModal}} @title="Rate This Module " @closeTitle="Close"
+  @submitTitle="Submit Optional Remark" @size="" @closeButton={{true}} @fade={{true}} @backdrop={{true}}
+  @backdropClose={{true}} @onSubmit={{action "ratingSubmit"}} @onHidden={{action "toggleRatingModal"}}
+  @renderInPlace={{true}}>
 
   <BsForm @onSubmit={{action "ratingSubmit"}} as |form|>
-    <form.element @controlType="textarea" @label="Optional reason/remark for your {{rates}} star rating" @property="comment" />
+    <form.element @controlType="textarea" @label="Optional reason/remark for your {{rates}} star rating"
+      @property="comment" />
 
 
   </BsForm>

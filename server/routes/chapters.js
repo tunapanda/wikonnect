@@ -7,15 +7,14 @@ const shortid = require('shortid');
 const sharp = require('sharp');
 const s3 = require('../utils/s3Util');
 const log = require('../utils/logger');
-
-
+const slugGen = require('../utils/slugGen');
 
 const Chapter = require('../models/chapter');
 const User = require('../models/user');
 const permController = require('../middleware/permController');
-const validateChapter = require('../middleware/validation/validateChapter');
+const validateChapter = require('../middleware/validateRoutePostSchema/validateChapter');
+const validateRouteQueryParams = require('../middleware/validateRouteQueryParams/queryValidation');
 
-const slugGen = require('../utils/slugGen');
 
 const router = new Router({
   prefix: '/chapters'
@@ -60,7 +59,7 @@ const {
  * @apiError {String} errors Bad Request.
  */
 
-router.get('/', permController.requireAuth, async ctx => {
+router.get('/', permController.requireAuth, validateRouteQueryParams, async ctx => {
 
   let stateUserRole = ctx.state.user.role == undefined ? ctx.state.user.data.role : ctx.state.user.role;
   let stateUserId = ctx.state.user.id == undefined ? ctx.state.user.data.id : ctx.state.user.id;
@@ -76,7 +75,6 @@ router.get('/', permController.requireAuth, async ctx => {
         .where(ctx.query, { status: 'published' })
         .whereIn('topics', user.topics)
         .orWhere('description', 'ILIKE', `%${ctx.query.q}%`)
-        .where({ status: 'published' })
         .leftJoin('ratings as rate', 'chapters.id', 'rate.chapter_id')
         .groupBy('chapters.id', 'rate.chapter_id')
         .eager('[comment(selectComment), achievement(selectAchievement), flag(selectFlag)]');
@@ -99,7 +97,7 @@ router.get('/', permController.requireAuth, async ctx => {
       .select('chapters.*')
       .avg('rate.rating as rating')
       .from('chapters')
-      .where(ctx.query, { status: 'published' })
+      .where(ctx.query)
       .leftJoin('ratings as rate', 'chapters.id', 'rate.chapter_id')
       .groupBy('chapters.id', 'rate.chapter_id')
       .eager('[comment(selectComment), flag(selectFlag)]');
@@ -108,25 +106,6 @@ router.get('/', permController.requireAuth, async ctx => {
   ctx.status = 200;
   ctx.body = { chapter };
 });
-
-router.get('/teach', permController.requireAuth, async ctx => {
-  let stateUserId = ctx.state.user.id == undefined ? ctx.state.user.data.id : ctx.state.user.id;
-
-  let chapter = await Chapter.query().where({ 'creator_id': stateUserId });
-
-  ctx.status = 200;
-  ctx.body = { 'chapter': chapter };
-});
-
-router.get('/teach/:id', permController.requireAuth, async ctx => {
-  let stateUserId = ctx.state.user.id == undefined ? ctx.state.user.data.id : ctx.state.user.id;
-
-  let chapter = await Chapter.query().where(ctx.query).where({ id: ctx.params.id, creatorId: stateUserId });
-
-  ctx.status = 200;
-  ctx.body = { 'chapter': chapter };
-});
-
 
 /**
  * @api {get} /chapters/:id GET single chapter.
@@ -161,7 +140,6 @@ router.get('/teach/:id', permController.requireAuth, async ctx => {
  */
 router.get('/:id', permController.requireAuth, async ctx => {
   let stateUserRole = ctx.state.user.role == undefined ? ctx.state.user.data.role : ctx.state.user.role;
-  let stateUserId = ctx.state.user.id == undefined ? ctx.state.user.data.id : ctx.state.user.id;
 
   let roleNameList = ['basic', 'superadmin', 'tunapanda'];
   let anonymous = 'anonymous';
@@ -172,15 +150,13 @@ router.get('/:id', permController.requireAuth, async ctx => {
     .select('chapters.*')
     .avg('rate.rating as rating')
     .from('chapters')
-    .where({ 'chapters.id': ctx.params.id, status: 'published' })
+    .where({ 'chapters.id': ctx.params.id })
     .leftJoin('ratings as rate', 'chapters.id', 'rate.chapter_id')
     .groupBy('chapters.id', 'rate.chapter_id');
 
   if (roleNameList.includes(stateUserRole)) {
     chapter = await chapter.whereIn('topics', user.topics).eager('[comment(selectComment), flag(selectFlag), achievement(selectAchievement)]');
     await achievementType(chapter);
-  } else if (stateUserRole == anonymous) {
-    chapter = await chapter.eager('comment(selectComment)');
   } else {
     chapter = await Chapter.query().where({ id: ctx.params.id, creatorId: stateUserId });
   }

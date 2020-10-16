@@ -2,7 +2,7 @@ const Router = require('koa-router');
 const log = require('../utils/logger');
 const Lesson = require('../models/lesson');
 const permController = require('../middleware/permController');
-const { validateLessons } = require('../middleware/validation/validatePostData');
+const { validateLessons } = require('../middleware/validateRoutePostSchema/validatePostData');
 const achievementPercentage = require('../utils/achievementPercentage');
 
 const slugGen = require('../utils/slugGen');

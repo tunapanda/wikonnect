@@ -37,7 +37,8 @@ module.exports = function (environment) {
 
     'ember-simple-auth-token': {
       refreshTokenPropertyName: 'token',
-      serverTokenEndpoint: '/api/v1/auth/'
+      serverTokenEndpoint: '/api/v1/auth/',
+      serverTokenRefreshEndpoint: '/api/v1/auth/token-refresh/',
     },
     "ember-drag-drop-polyfill": {
       enableEnterLeave: true,
