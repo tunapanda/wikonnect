@@ -5,7 +5,7 @@ const schema = Joi.object({
   approved: Joi.boolean(),
   id: Joi.string(),
   slug: Joi.string(),
-  q: Joi.string(),
+  q: Joi.string()
 });
 
 module.exports = async (ctx, next) => {

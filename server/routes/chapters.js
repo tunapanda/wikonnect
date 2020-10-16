@@ -76,6 +76,16 @@ router.get('/', permController.requireAuth, mojaCampaignMiddleware, validateRout
         .where(ctx.query, { status: 'published' })
         .whereIn('topics', user.topics)
         .orWhere('description', 'ILIKE', `%${ctx.query.q}%`)
+        .orWhere('tags', 'ILIKE', `%${ctx.query.q}%`)
+        .leftJoin('ratings as rate', 'chapters.id', 'rate.chapter_id')
+        .groupBy('chapters.id', 'rate.chapter_id')
+        .eager('[comment(selectComment), achievement(selectAchievement), flag(selectFlag)]');
+    } else if (user.topics === null) {
+      chapter = await Chapter.query()
+        .select('chapters.*')
+        .avg('rate.rating as rating')
+        .from('chapters')
+        .where(ctx.query, { status: 'published' })
         .leftJoin('ratings as rate', 'chapters.id', 'rate.chapter_id')
         .groupBy('chapters.id', 'rate.chapter_id')
         .eager('[comment(selectComment), achievement(selectAchievement), flag(selectFlag)]');
@@ -86,6 +96,7 @@ router.get('/', permController.requireAuth, mojaCampaignMiddleware, validateRout
         .from('chapters')
         .where(ctx.query, { status: 'published' })
         .whereIn('topics', user.topics)
+        .orWhereIn('tags', user.topics)
         .leftJoin('ratings as rate', 'chapters.id', 'rate.chapter_id')
         .groupBy('chapters.id', 'rate.chapter_id')
         .eager('[comment(selectComment), achievement(selectAchievement), flag(selectFlag)]');
@@ -156,7 +167,11 @@ router.get('/:id', permController.requireAuth, async ctx => {
     .groupBy('chapters.id', 'rate.chapter_id');
 
   if (roleNameList.includes(stateUserRole)) {
-    chapter = await chapter.whereIn('topics', user.topics).eager('[comment(selectComment), flag(selectFlag), achievement(selectAchievement)]');
+    if (user.topics === null){
+      chapter = await chapter.eager('[comment(selectComment), flag(selectFlag), achievement(selectAchievement)]');
+    } else if (user.topics != null) {
+      chapter = await chapter.whereIn('topics', user.topics).orWhereIn('tags', user.topics).eager('[comment(selectComment), flag(selectFlag), achievement(selectAchievement)]');
+    }
     await achievementType(chapter);
   } else {
     chapter = await Chapter.query().where({ id: ctx.params.id, creatorId: stateUserId });
