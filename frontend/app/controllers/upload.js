@@ -43,7 +43,7 @@ export default class UploadController extends Controller {
 
     const uploadRes = await uploader.startUpload([host, 'users', this.me.user.id, 'profile-image'].join('/'));
 
-    this.set("profileImage", "http://localhost:3000/" + uploadRes.path);
+    this.set("profileImage", "https://localhost:3000/" + uploadRes.path);
     this.set("complete", true);
 
     if (this.complete === true) {
