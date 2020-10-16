@@ -160,9 +160,6 @@ router.get('/', permController.requireAuth, mojaCampaignMiddleware, validateRout
  */
 router.get('/:id', permController.requireAuth, async ctx => {
   let stateUserRole = ctx.state.user.role == undefined ? ctx.state.user.data.role : ctx.state.user.role;
-  let userId = ctx.state.user.id == undefined ? ctx.state.user.data.id : ctx.state.user.id;
-
-
 
   let roleNameList = ['basic', 'superadmin', 'tunapanda'];
 
@@ -183,7 +180,6 @@ router.get('/:id', permController.requireAuth, async ctx => {
 
   ctx.assert(chapter, 404, 'no lesson by that ID');
   await returnType(chapter);
-  await mojaCampaignsMiddleware(ctx.query, userId);
 
   ctx.status = 200;
   ctx.body = { chapter };

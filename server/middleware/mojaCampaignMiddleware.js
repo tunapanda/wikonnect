@@ -13,13 +13,6 @@ const mojaEndpoint = require('../utils/mojaCampaigns/mojaEndpoint');
  * @param {*} tableName
  * @param {*} data
  */
-async function insertOrUpdate(tableName, data){
-  const firstData = data[0] ? data[0] : data;
-  return knex().raw(
-    knex(tableName).insert(data).toQuery() + ' ON CONFLICT ("enduser_id") DO UPDATE SET ' +
-    Object.keys(firstData).map((field) => `${field}=EXCLUDED.${field}`).join(', ')
-  );
-}
 
 
 /**
