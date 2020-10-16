@@ -8,6 +8,7 @@ const logger = require('./middleware/logger');
 const jwt = require('./middleware/jwt');
 const cors = require('@koa/cors');
 const app = new Koa();
+const log = require('../utils/logger');
 
 const router = new Router({
   prefix: '/api/v1'
