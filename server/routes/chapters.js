@@ -164,11 +164,12 @@ router.get('/:id', permController.requireAuth, async ctx => {
     .leftJoin('ratings as rate', 'chapters.id', 'rate.chapter_id')
     .groupBy('chapters.id', 'rate.chapter_id');
 
-  if (roleNameList.includes(stateUserRole) && user.topics === null) {
-    chapter = await chapter.eager('[comment(selectComment), flag(selectFlag), achievement(selectAchievement)]');
-    await achievementType(chapter);
-  } else if (roleNameList.includes(stateUserRole) && user.topics != null) {
-    chapter = await chapter.whereIn('topics', user.topics).eager('[comment(selectComment), flag(selectFlag), achievement(selectAchievement)]');
+  if (roleNameList.includes(stateUserRole)) {
+    if (user.topics === null){
+      chapter = await chapter.eager('[comment(selectComment), flag(selectFlag), achievement(selectAchievement)]');
+    } else if (user.topics != null) {
+      chapter = await chapter.whereIn('topics', user.topics).eager('[comment(selectComment), flag(selectFlag), achievement(selectAchievement)]');
+    }
     await achievementType(chapter);
   } else {
     chapter = await Chapter.query().where({ id: ctx.params.id, creatorId: stateUserId });
