@@ -52,7 +52,7 @@ const userComment = {
   'comment': {
     'creatorId': 'user3',
     'comment': 'testing comment',
-    'metadata': ''
+    'metadata': '',
     'chapterId': 'chapter778'
   }
 };
