@@ -17,7 +17,7 @@ export default class ApplicationRoute extends Route {
       enduser_id: params.points,
       campaign_id: params.enduser_id,
       points: params.partner_id
-    }
+    };
 
     window.localStorage.setItem('moja_campaign', JSON.stringify(mojaLocalStorage));
   }
