@@ -51,8 +51,10 @@ const invalidData = {
 
 const userComment = {
   'comment': {
-    'chapterId': 'chapter778',
-    'comment': 'testing comment'
+    'creatorId': 'user3',
+    'comment': 'testing comment',
+    'metadata': '',
+    'chapterId': 'chapter778'
   }
 };
 
