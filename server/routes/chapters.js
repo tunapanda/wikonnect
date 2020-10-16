@@ -414,4 +414,5 @@ router.post('/:id/upload', async ctx => {
     path: uploadPath
   };
 });
+
 module.exports = router.routes();
