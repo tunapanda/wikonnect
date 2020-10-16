@@ -64,7 +64,6 @@ exports.seed = function (knex) {
           'updated_at': '2017-12-20 19:17:10',
           tags: ['highschool', 'university'],
           approved: false,
-          approved: true,
           topics: 'university'
         }
       ]);
