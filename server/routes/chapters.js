@@ -140,9 +140,9 @@ router.get('/', permController.requireAuth, validateRouteQueryParams, async ctx 
  */
 router.get('/:id', permController.requireAuth, async ctx => {
   let stateUserRole = ctx.state.user.role == undefined ? ctx.state.user.data.role : ctx.state.user.role;
+  let stateUserId = ctx.state.user.id == undefined ? ctx.state.user.data.id : ctx.state.user.id;
 
   let roleNameList = ['basic', 'superadmin', 'tunapanda'];
-  let anonymous = 'anonymous';
   let user = await User.query().findById(stateUserId);
   // let chapter = Chapter.query().where({ 'chapters.id': ctx.params.id, status: 'published' });
 
