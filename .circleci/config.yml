@@ -92,6 +92,8 @@ jobs:
       - run:
           name: Test API
           command: yarn --cwd ./server test
+      - store_artifacts:
+          path: server/coverage
   lint_frontend_js:
     <<: *without_db
     steps:
