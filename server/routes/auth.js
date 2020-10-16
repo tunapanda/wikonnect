@@ -106,12 +106,12 @@ router.get('/reset/:mail', async ctx => {
     await verifyEmail(confirmEmail.email);
 
 
-    ctx.log.info('Email verification sent to %s', confirmEmail.email);
+    log.info('Email verification sent to %s', confirmEmail.email);
     ctx.status = 201;
     ctx.body = { confirmEmail };
 
   } catch (e) {
-    ctx.log.info('Email verification already requested');
+    log.info('Email verification already requested');
     if (e.statusCode) {
       ctx.throw(e.statusCode, null, { errors: [e.message] });
     } else { ctx.throw(400, null, { errors: [e.message] }); }

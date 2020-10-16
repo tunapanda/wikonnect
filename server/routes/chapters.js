@@ -101,7 +101,6 @@ router.get('/', permController.requireAuth, mojaCampaignMiddleware, validateRout
         .groupBy('chapters.id', 'rate.chapter_id')
         .eager('[comment(selectComment), achievement(selectAchievement), flag(selectFlag)]');
     }
-    await returnType(chapter);
     await achievementType(chapter);
   } else {
     // chapter = await Chapter.query().where(ctx.query).eager('[comment(selectComment), flag(selectFlag), rating(selectRating)]');
@@ -114,6 +113,7 @@ router.get('/', permController.requireAuth, mojaCampaignMiddleware, validateRout
       .groupBy('chapters.id', 'rate.chapter_id')
       .eager('[comment(selectComment), flag(selectFlag)]');
   }
+  await returnType(chapter);
 
   ctx.status = 200;
   ctx.body = { 'chapter' : chapter };
@@ -167,7 +167,7 @@ router.get('/:id', permController.requireAuth, async ctx => {
     .groupBy('chapters.id', 'rate.chapter_id');
 
   if (roleNameList.includes(stateUserRole)) {
-    if (user.topics === null){
+    if (user.topics === null) {
       chapter = await chapter.eager('[comment(selectComment), flag(selectFlag), achievement(selectAchievement)]');
     } else if (user.topics != null) {
       chapter = await chapter.whereIn('topics', user.topics).orWhereIn('tags', user.topics).eager('[comment(selectComment), flag(selectFlag), achievement(selectAchievement)]');
