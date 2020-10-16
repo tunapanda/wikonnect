@@ -2,7 +2,7 @@ const Router = require('koa-router');
 
 const Comment = require('../models/comment');
 const { requireAuth, grantAccess } = require('../middleware/permController');
-
+const profaneCheck = require('../utils/profaneCheck');
 
 const router = new Router({
   prefix: '/comments'
@@ -29,7 +29,7 @@ const router = new Router({
  *      }
  *
  */
-router.get('/', requireAuth, grantAccess('readAny', 'path'), async ctx => {
+router.get('/', requireAuth, async ctx => {
   // let stateUserId = ctx.state.user.id == undefined ? ctx.state.user.data.id : ctx.state.user.id;
 
   let comment;
@@ -109,11 +109,18 @@ router.get('/:id', requireAuth, grantAccess('readAny', 'path'), async ctx => {
  *    }
  *
  */
-router.post('/:id', requireAuth, grantAccess('createAny', 'path'), async ctx => {
+
+
+router.post('/', requireAuth, grantAccess('createAny', 'path'), async ctx => {
   let stateUserId = ctx.state.user.id == undefined ? ctx.state.user.data.id : ctx.state.user.id;
   let newChapterComment = ctx.request.body.comment;
-  newChapterComment.chapterId = ctx.params.id;
   newChapterComment.creatorId = stateUserId;
+
+  const checked = await profaneCheck(newChapterComment.comment);
+
+  if (checked !== null) {
+    ctx.throw(400, null, { errors: [checked] });
+  }
 
   let comment;
   try {

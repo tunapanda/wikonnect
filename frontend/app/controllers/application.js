@@ -8,7 +8,11 @@ export default class ApplicationController extends Controller {
   headerStyles = {
     'default': 'white-header',
     'home': 'orange-header',
+    'login': 'auth-header',
+    'signup': 'auth-header',
+    'upload': 'auth-header',
     'cms.index': 'green-header',
+    'profile': 'yellow-header'
   }
 
   @inject

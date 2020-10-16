@@ -17,9 +17,6 @@ module.exports = function (defaults) {
     babel: {
       sourceMaps: 'both'
     },
-    fontawesome: {
-      defaultPrefix: 'fal' // light icons
-    },
     'ember-bootstrap': {
       bootstrapVersion: 4,
       importBootstrapFont: false,
@@ -47,6 +44,7 @@ module.exports = function (defaults) {
   // along with the exports of each module as its value.
 
   app.import('node_modules/h5p-standalone/dist/styles/h5p.css');
+  app.import('public/bootstrap.css');
 
   return app.toTree();
 };

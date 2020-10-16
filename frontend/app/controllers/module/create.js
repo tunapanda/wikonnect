@@ -23,6 +23,8 @@ export default class ModuleCreateController extends Controller {
 
   @action
   addLesson(lesson) {
+
+
     this.model.get('lessons').pushObject(lesson);
     this.set('selectedLesson', null);
   }

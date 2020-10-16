@@ -1,0 +1,34 @@
+{{#if me.isAuthenticated}}
+
+
+  {{outlet}}
+
+  <div class="container">
+    <div class="d-flex justify-content-between mt-3">
+
+      <h3>My H5P Chapters</h3>
+      {{#link-to "teach.create"}}
+        <a name="" id="" class="btn bg-green" href="#" role="button">Create H5P Chapter </a>
+
+      {{/link-to}}
+
+    </div>
+
+
+    <div class="row mt-3">
+
+      {{#if @model}}
+
+        {{#each @model as |chapter|}}
+          <TeachListItem @chapter={{chapter}} />
+        {{/each}}
+      {{else}}
+
+      {{/if}}
+    </div>
+  </div>
+{{else}}
+
+  <Warning @message="You do not have permission to view this page" />
+
+{{/if}}
