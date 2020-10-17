@@ -90,7 +90,7 @@ router.put('/:id', requireAuth, grantAccess('updateOwn', 'path'), async ctx => {
   const checkRating = await Rating.query().findById(ctx.params.id);
 
   if (!checkRating) {
-    ctx.log.info('Error, path does not exists  %s for %s', ctx.request.ip, ctx.path);
+    log.info('Error, path does not exists  %s for %s', ctx.request.ip, ctx.path);
     ctx.throw(400, 'That lesson path does not exist');
   }
 
