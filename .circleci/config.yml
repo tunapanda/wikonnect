@@ -158,11 +158,28 @@ workflows:
           requires:
             - build
       - aws-code-deploy/deploy:
+          # Deployment steps to staging
           requires:
             - integration_test
             - test_server
+          filters:
+            branches:
+              only: kkl_automated
           application-name: aws-codedeploy
           bundle-bucket: wikonnect-codedeploy-deployments
-          bundle-key: '${CIRCLE_SHA1}-service'
+          bundle-key: 'staging-wikonnect-${CIRCLE_SHA1}'
           deployment-group: wikonnect-staging
           service-role-arn: CodeDeployServiceRole
+      # - aws-code-deploy/deploy:
+      #     # Deployment to kkl.wikonnect.org using custom branch
+      #     requires:
+      #       - integration_test
+      #       - test_server
+      #     filters:
+      #       branches:
+      #         only: kkl_automated
+      #     application-name: aws-codedeploy
+      #     bundle-bucket: wikonnect-codedeploy-deployments
+      #     bundle-key: 'kkl-deployment-${CIRCLE_SHA1}'
+      #     deployment-group: staging
+      #     service-role-arn: CodeDeployServiceRole

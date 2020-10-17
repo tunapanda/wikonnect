@@ -1,3 +1,3 @@
 #!/bin/bash
-cd ~/home/ubuntu/wikonnect/
+cd ~/wikonnect/
 pm2 startOrReload ecosystem.config.js
