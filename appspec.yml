@@ -2,9 +2,16 @@ version: 0.0
 os: linux
 files:
   - source: /
-    destination: /var/www/wikonnect/
+    destination: /home/ubuntu/wikonnect
+permissions:
+  - object: /home/ubuntu
+    owner: ubuntu
+    group: ubuntu
+    type:
+      - directory
+      - file
 hooks:
   ApplicationStart:
     - location: scripts/start_server.sh
       timeout: 300
-      runas: root
+      runas: ubuntu
