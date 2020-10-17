@@ -5,11 +5,16 @@ const User = require('../../models/user');
 const AchievementAward = require('../../models/achievement_awards');
 
 const log = require('../logger');
+<<<<<<< HEAD
 
 const environment = process.env.NODE_ENV || 'development';
 const config = require('../../knexfile.js')[environment];
 const knex = require('knex')(config);
 
+=======
+const knex = require('../knexUtil');
+const { wikonnectUser } = require('../mojaCampaigns/mojaEndpoint');
+>>>>>>> master
 
 
 async function achievementAwardsType(parent) {
@@ -130,6 +135,10 @@ async function inviteUserAward(params) {
 
   if (params.metadata.oneInviteComplete == 'false' && completed > 0) {
     await User.query().patchAndFetchById(params.id, { 'metadata:oneInviteComplete': 'true' });
+<<<<<<< HEAD
+=======
+    await wikonnectUser(params.id);
+>>>>>>> master
   }
 }
 

@@ -10,7 +10,9 @@ const log = require('../utils/logger');
 const slugGen = require('../utils/slugGen');
 
 const Chapter = require('../models/chapter');
+const User = require('../models/user');
 const permController = require('../middleware/permController');
+const mojaCampaignMiddleware = require('../middleware/mojaCampaignMiddleware');
 const validateChapter = require('../middleware/validateRoutePostSchema/validateChapter');
 const validateRouteQueryParams = require('../middleware/validateRouteQueryParams/queryValidation');
 
@@ -19,34 +21,10 @@ const router = new Router({
   prefix: '/chapters'
 });
 
-async function returnType(parent) {
-  if (parent.length == undefined) {
-    parent.comment.forEach(comment => {
-      return comment.type = 'comment';
-    });
-  } else {
-    parent.forEach(mod => {
-      mod.comment.forEach(comment => {
-        return comment.type = 'comment';
-      });
-    });
-  }
-}
-
-async function achievementType(parent) {
-  if (parent.length == undefined) {
-    parent.achievement.forEach(data => {
-      return data.type = 'achievement';
-    });
-  } else {
-    parent.forEach(mod => {
-      mod.achievement.forEach(data => {
-        return data.type = 'achievement';
-      });
-    });
-  }
-}
-
+const {
+  returnType,
+  achievementType
+} = require('../utils/routesUtils/chaptersRouteUtils');
 
 /**
  * @api {get} /chapters/ GET all chapters.
@@ -74,6 +52,7 @@ async function achievementType(parent) {
  *            "imageUrl": "/uploads/images/content/chapters/chapter1.jpeg",
  *            "contentId": null,
  *            "tags": [],
+ *            topic: ''
  *            "comment": [{
  *            }]
  *         }]
@@ -81,28 +60,32 @@ async function achievementType(parent) {
  * @apiError {String} errors Bad Request.
  */
 
-router.get('/', permController.requireAuth, validateRouteQueryParams, async ctx => {
+router.get('/', permController.requireAuth, mojaCampaignMiddleware, validateRouteQueryParams, async ctx => {
 
   let stateUserRole = ctx.state.user.role == undefined ? ctx.state.user.data.role : ctx.state.user.role;
+  let stateUserId = ctx.state.user.id == undefined ? ctx.state.user.data.id : ctx.state.user.id;
+
   let roleNameList = ['basic', 'superadmin', 'tunapanda', 'admin'];
-  // try {
-  //   await schema.validateAsync(ctx.query);
-  // } catch (e) {
-  //   if (e.statusCode) {
-  //     ctx.throw(e.statusCode, null, { errors: [e.message] });
-  //   } else { ctx.throw(400, null, { errors: [e.message] }); }
-  //   throw e;
-  // }
+  let user = await User.query().findById(stateUserId);
 
   let chapter;
   if (roleNameList.includes(stateUserRole)) {
     if (ctx.query.q) {
+      chapter = await chapter
+        .where('name', 'ILIKE', `%${ctx.query.q}%`)
+        .where(ctx.query, { status: 'published' })
+        .whereIn('topics', user.topics)
+        .orWhere('description', 'ILIKE', `%${ctx.query.q}%`)
+        .orWhere('tags', 'ILIKE', `%${ctx.query.q}%`)
+        .leftJoin('ratings as rate', 'chapters.id', 'rate.chapter_id')
+        .groupBy('chapters.id', 'rate.chapter_id')
+        .eager('[comment(selectComment), achievement(selectAchievement), flag(selectFlag)]');
+    } else if (user.topics === null) {
       chapter = await Chapter.query()
         .select('chapters.*')
         .avg('rate.rating as rating')
         .from('chapters')
-        .where('name', 'ILIKE', `%${ctx.query.q}%`)
-        .orWhere('description', 'ILIKE', `%${ctx.query.q}%`)
+        .where(ctx.query, { status: 'published' })
         .leftJoin('ratings as rate', 'chapters.id', 'rate.chapter_id')
         .groupBy('chapters.id', 'rate.chapter_id')
         .eager('[comment(selectComment), achievement(selectAchievement), flag(selectFlag)]');
@@ -111,12 +94,13 @@ router.get('/', permController.requireAuth, validateRouteQueryParams, async ctx 
         .select('chapters.*')
         .avg('rate.rating as rating')
         .from('chapters')
-        .where(ctx.query)
+        .where(ctx.query, { status: 'published' })
+        .whereIn('topics', user.topics)
+        .orWhereIn('tags', user.topics)
         .leftJoin('ratings as rate', 'chapters.id', 'rate.chapter_id')
         .groupBy('chapters.id', 'rate.chapter_id')
         .eager('[comment(selectComment), achievement(selectAchievement), flag(selectFlag)]');
     }
-    await returnType(chapter);
     await achievementType(chapter);
   } else {
     // chapter = await Chapter.query().where(ctx.query).eager('[comment(selectComment), flag(selectFlag), rating(selectRating)]');
@@ -129,9 +113,10 @@ router.get('/', permController.requireAuth, validateRouteQueryParams, async ctx 
       .groupBy('chapters.id', 'rate.chapter_id')
       .eager('[comment(selectComment), flag(selectFlag)]');
   }
+  await returnType(chapter);
 
   ctx.status = 200;
-  ctx.body = { chapter };
+  ctx.body = { 'chapter' : chapter };
 });
 
 /**
@@ -167,8 +152,11 @@ router.get('/', permController.requireAuth, validateRouteQueryParams, async ctx 
  */
 router.get('/:id', permController.requireAuth, async ctx => {
   let stateUserRole = ctx.state.user.role == undefined ? ctx.state.user.data.role : ctx.state.user.role;
+  let stateUserId = ctx.state.user.id == undefined ? ctx.state.user.data.id : ctx.state.user.id;
 
   let roleNameList = ['basic', 'superadmin', 'tunapanda'];
+  let user = await User.query().findById(stateUserId);
+  // let chapter = Chapter.query().where({ 'chapters.id': ctx.params.id, status: 'published' });
 
   let chapter = Chapter.query()
     .select('chapters.*')
@@ -179,10 +167,14 @@ router.get('/:id', permController.requireAuth, async ctx => {
     .groupBy('chapters.id', 'rate.chapter_id');
 
   if (roleNameList.includes(stateUserRole)) {
-    chapter = await chapter.eager('[comment(selectComment), flag(selectFlag), achievement(selectAchievement)]');
+    if (user.topics === null) {
+      chapter = await chapter.eager('[comment(selectComment), flag(selectFlag), achievement(selectAchievement)]');
+    } else if (user.topics != null) {
+      chapter = await chapter.whereIn('topics', user.topics).orWhereIn('tags', user.topics).eager('[comment(selectComment), flag(selectFlag), achievement(selectAchievement)]');
+    }
     await achievementType(chapter);
   } else {
-    chapter = await chapter.where({ status: 'published' }).eager('comment(selectComment)');
+    chapter = await Chapter.query().where({ id: ctx.params.id, creatorId: stateUserId });
   }
 
   ctx.assert(chapter, 404, 'no lesson by that ID');
@@ -422,4 +414,5 @@ router.post('/:id/upload', async ctx => {
     path: uploadPath
   };
 });
+
 module.exports = router.routes();

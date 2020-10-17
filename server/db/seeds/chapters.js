@@ -18,6 +18,7 @@ exports.seed = function (knex) {
           created_at: '2017-12-20 19:17:10',
           updated_at: '2017-12-20 19:17:10',
           approved: true,
+          tags: ['highschool', 'university'],
           topics:  'primary'
         },
         {
@@ -32,9 +33,8 @@ exports.seed = function (knex) {
           'created_at': '2017-12-20 19:17:10',
           'updated_at': '2017-12-20 19:17:10',
           approved: true,
-          topics: 'primary'
+          tags: ['highschool', 'university'],
         },
-        {
           'id': 'chapter3',
           'name': 'Ethel',
           'slug': 'Tonya',
@@ -45,7 +45,8 @@ exports.seed = function (knex) {
           'content_uri': '/uploads/h5p/chapter3',
           'created_at': '2017-12-20 19:17:10',
           'updated_at': '2017-12-20 19:17:10',
-          approved: true,
+          tags: ['university'],
+          approved: false,
           topics: 'highschool'
         },
         {
@@ -59,9 +60,10 @@ exports.seed = function (knex) {
           'content_uri': '/uploads/h5p/chapter4',
           'created_at': '2017-12-20 19:17:10',
           'updated_at': '2017-12-20 19:17:10',
+<<<<<<< HEAD
           approved: true,
-          topics: 'university'
+=======
+          tags: ['highschool', 'university'],
         }
       ]);
-    });
 };

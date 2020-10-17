@@ -15,9 +15,7 @@ const jwt = require('../middleware/jwt');
 const permController = require('../middleware/permController');
 const validateAuthRoutes = require('../middleware/validateRoutePostSchema/validateAuthRoutes');
 
-const environment = process.env.NODE_ENV || 'development';
-const config = require('../knexfile.js')[environment];
-const knex = require('knex')(config);
+const knex = require('../utils/knexUtil');
 
 const {
   achievementAwardsType,
@@ -29,11 +27,9 @@ const {
   getProfileImage
 } = require('../utils/routesUtils/userRouteUtils');
 
-
 const router = new Router({
   prefix: '/users'
 });
-
 
 /**
  * @api {post} /users POST create a new user.
@@ -53,9 +49,10 @@ const router = new Router({
  *        "user": {
  *          "id": "string",
  *          "username": "string",
- *          "inviteCode": "DTrbi6aLj",
+ *          "inviteCode": "invited_by",
  *          "createdAt": "string",
- *          "updatedAt": "string"
+ *          "updatedAt": "string",
+ *          "metadata": json_array
  *        }
  *     }
  *
@@ -69,9 +66,6 @@ router.post('/', validateAuthRoutes.validateNewUser, createPasswordHash, async c
   ctx.request.body.user.metadata = { 'profileComplete': 'false', 'oneInviteComplete': 'false' };
 
   const inviteInsert = await knex('user_invite').insert([{ 'invited_by': ctx.request.body.user.inviteCode }], ['id', 'invited_by']);
-  // if (ctx.request.body.user.inviteCode != null) {
-  //   await inviteUserAward(ctx.request.body.user);
-  // }
 
   let newUser = ctx.request.body.user;
   newUser.inviteCode = shortid.generate();
@@ -90,7 +84,7 @@ router.post('/', validateAuthRoutes.validateNewUser, createPasswordHash, async c
     ctx.status = 201;
     ctx.body = { user };
   } catch (e) {
-    ctx.log.info('Failed for user - %s, with error %s', ctx.request.body.user.email, e.message, e.detail);
+    log.info('Failed for user - %s, with error %s', ctx.request.body.user.email, e.message, e.detail);
     ctx.throw(400, null, { errors: [e] });
   }
 
@@ -116,9 +110,9 @@ router.post('/', validateAuthRoutes.validateNewUser, createPasswordHash, async c
  *       "username": "user2",
  *       "createdAt": "2017-12-20T16:17:10.000Z",
  *       "updatedAt": "2017-12-20T16:17:10.000Z",
- *       "profileUri": "uploads/profiles/user1.jpg",
+ *       "profileUri": "image_url",
  *       "private": boolean,
- *       "inviteCode": "DTrbi6aLj",
+ *       "inviteCode": "invited_by",
  *       "achievementAwards": [
  *         {
  *           "id": "achievementaward1",
@@ -301,8 +295,7 @@ router.post('/invite/:id', async ctx => {
     } else { ctx.throw(400, null, { errors: ['Bad Request', e.message] }); }
   }
 
-  inviteUserAward(ctx.request.body.user);
-
+  inviteUserAward(ctx.params.id);
 
   ctx.status = 200;
   ctx.body = { invite };
