@@ -19,7 +19,7 @@ exports.seed = function (knex) {
           updated_at: '2017-12-20 19:17:10',
           approved: true,
           tags: ['highschool', 'university'],
-          topics:  'primary'
+          topics: 'primary'
         },
         {
           'id': 'chapter2',
@@ -35,6 +35,7 @@ exports.seed = function (knex) {
           approved: true,
           tags: ['highschool', 'university'],
         },
+        {
           'id': 'chapter3',
           'name': 'Ethel',
           'slug': 'Tonya',
@@ -60,10 +61,9 @@ exports.seed = function (knex) {
           'content_uri': '/uploads/h5p/chapter4',
           'created_at': '2017-12-20 19:17:10',
           'updated_at': '2017-12-20 19:17:10',
-<<<<<<< HEAD
           approved: true,
-=======
           tags: ['highschool', 'university'],
         }
       ]);
+    });
 };
