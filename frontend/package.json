@@ -82,6 +82,9 @@
   "engines": {
     "node": "8.* || >= 10.*"
   },
+  "resolutions": {
+    "whatwg-fetch": "3.3.1"
+  },
   "dependencies": {
     "@types/ember": "^3.1.1",
     "chart.js": "^2.9.3",
