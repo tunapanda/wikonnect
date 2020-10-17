@@ -163,6 +163,6 @@ workflows:
             - test_server
           application-name: aws-codedeploy
           bundle-bucket: wikonnect-codedeploy-deployments
-          bundle-key: myS3BucketKey
+          bundle-key: '${CIRCLE_SHA1}-service'
           deployment-group: wikonnect-staging
           service-role-arn: CodeDeployServiceRole
