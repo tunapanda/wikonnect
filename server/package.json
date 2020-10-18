@@ -12,7 +12,7 @@
     "db:reset": "knex migrate:rollback && knex migrate:latest",
     "db:seed": "knex seed:run",
     "db:migrate": "knex migrate:make",
-    "test": "nyc report --reporter=html --exit && nyc mocha test --reporter mocha-junit-reporter --reporter-options mochaFile=coverage/mocha/test-results.xml --exit",
+    "test": "nyc mocha test --reporter mocha-junit-reporter --reporter-options mochaFile=coverage/mocha/test-results.xml --exit && nyc report --reporter=html --exit ",
     "lint:js": "eslint .",
     "lint:fix": "eslint . --fix"
   },
