@@ -2,7 +2,7 @@ version: 0.0
 os: linux
 files:
   - source: /
-    destination: /home/ubuntu/kkl
+    destination: /home/ubuntu/wikonnect
 permissions:
   - object: /home/ubuntu
     owner: ubuntu

@@ -67,7 +67,6 @@ router.get('/', permController.requireAuth, mojaCampaignMiddleware, validateRout
   let user = await User.query().findById(stateUserId);
 
   let roleNameList = ['basic', 'superadmin', 'tunapanda', 'admin'];
-  let user = await User.query().findById(stateUserId);
 
   let chapter;
   if (roleNameList.includes(stateUserRole)) {
