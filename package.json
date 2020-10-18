@@ -10,6 +10,8 @@
     "test:server": "cd server && yarn test",
     "test:frontend": "cd frontend && yarn test",
     "test:all": "concurrently yarn:test yarn:test:frontend yarn:test:server",
+    "build:server": "cd server && yarn",
+    "build:frontend": "cd frontend && yarn && yarn build --prod",
     "start:frontend": "cd frontend && yarn start:local",
     "start:server": "cd server && nodemon index.js",
     "start:all": "concurrently yarn:start:frontend yarn:start:server",
