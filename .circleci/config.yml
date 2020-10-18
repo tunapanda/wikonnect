@@ -95,8 +95,6 @@ jobs:
           command: yarn --cwd ./server test
       - store_test_results:
           path: server/coverage
-      - store_test_results:
-          path: server/coverage
   lint_frontend_js:
     <<: *without_db
     steps:
