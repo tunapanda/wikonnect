@@ -19,7 +19,7 @@ const data = {
     'description': 'Testing chapter route',
     'status': 'published',
     'creatorId': 'user3',
-    'tags': '{"H5P","user1"}',
+    'tags': 'primary',
     'createdAt': '2017-12-20T16:17:10.000Z',
     'updatedAt': '2017-12-20T16:17:10.000Z',
     'contentType': 'h5p',
@@ -27,7 +27,6 @@ const data = {
     'imageUrl': null,
     'contentId': null,
     'approved': false,
-    'tags': 'primary'
   }
 };
 
@@ -144,7 +143,7 @@ describe('CHAPTER ROUTE', () => {
         res.should.have.status(200);
         res.should.be.json;
         res.body.chapter[0].should.have.property('tags');
-        res.body.chapter[0].tags.should.eql('{"H5P","user1"}');
+        res.body.chapter[0].tags.should.eql('primary');
         done();
       });
   });
