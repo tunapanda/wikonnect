@@ -13,14 +13,11 @@
     "build:server": "cd server && yarn",
     "build:frontend": "cd frontend && yarn && yarn build --prod",
     "start:frontend": "cd frontend && yarn start:local",
-    "start:server": "cd server && nodemon index.js",
-    "start:all": "concurrently yarn:start:frontend yarn:start:server",
-    "docs": "apidoc -e node_modules -e docs -o docs/"
+    "start:server": "cd server && nodemon index.js"
   },
   "devDependencies": {
     "@cypress/code-coverage": "^3.8.2",
     "all-contributors-cli": "^6.17.2",
-    "apidocs": "^2017.3.9",
     "babel-plugin-istanbul": "^6.0.0",
     "cypress": "^5.2.0",
     "eslint-plugin-cypress": "^2.6.1",
