@@ -34,6 +34,7 @@ const router = new Router({
 
 
 /**
+<<<<<<< HEAD
  * @swagger
  * resourcePath: /apiJs
  * description: All about API
@@ -61,6 +62,33 @@ const router = new Router({
  *          paramType: query
  *          required: true
  *          dataType: string
+=======
+ * @api {post} /users POST create a new user.
+ * @apiName PostAUser
+ * @apiGroup Authentication
+ *
+ * @apiParam (Required Params) {string} user[username] username
+ * @apiParam (Required Params) {string} user[email] Unique email
+ * @apiParam (Required Params) {string} user[password] validated password
+ * @apiParam (Optional Params) {string} user[invitedBy] auto filled on the form
+ * @apiParam (Optional Params) {string} user[tags] auto filled on the form
+ *
+ * @apiPermission none
+ *
+ * @apiSuccessExample {json} Success-Response:
+ *     HTTP/1.1 201 OK
+ *     {
+ *        "user": {
+ *          "id": "string",
+ *          "username": "string",
+ *          "inviteCode": "invited_by",
+ *          "createdAt": "string",
+ *          "updatedAt": "string",
+ *          "tags": "array",
+ *          "metadata": json_array
+ *        }
+ *     }
+>>>>>>> origin/master
  *
  */
 
@@ -264,6 +292,13 @@ router.get('/:id', permController.requireAuth, async ctx => {
  * @apiPermission [admin, superadmin]
  * @apiHeader (Header) {String} authorization Bearer <<YOUR_API_KEY_HERE>>
  *
+ * @apiParam (Required Params) {string} user[username] username
+ * @apiParam (Required Params) {string} user[email] Unique email
+ * @apiParam (Required Params) {string} user[password] validated password
+ * @apiParam (Optional Params) {string} user[invitedBy] auto filled on the form
+ * @apiParam (Optional Params) {string} user[tags] a list of String with tags a user has subscribed to
+ * @apiParam (Optional Params) {string} user[metadata] json data
+ *
  */
 router.get('/', permController.requireAuth, permController.grantAccess('readAny', 'profile'), async ctx => {
   let user = User.query();
@@ -298,6 +333,13 @@ router.get('/', permController.requireAuth, permController.grantAccess('readAny'
  * @apiDescription edit users data on the platform
  * @apiPermission [admin, superadmin]
  * @apiHeader (Header) {String} authorization Bearer <<YOUR_API_KEY_HERE>>
+ *
+ * @apiParam (PUT Params) {string} user[email] Unique email
+ * @apiParam (PUT Params) {string} user[password] validated password
+ * @apiParam (PUT Params) {string} user[tags] a list of String with tags a user has subscribed to
+ * @apiParam (PUT Params) {string} user[metadata] json data
+ *
+ * @apiSuccess {String} user[object] Object data
  *
  */
 

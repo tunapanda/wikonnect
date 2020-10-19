@@ -9,7 +9,7 @@ const superAdmin = {
     'password': 'wikonnect',
     'email': 'user1@wikonnect.com',
     'role': 'superadmin',
-    'topics': ['highschool', 'primary', 'university'],
+    'tags': ['highschool', 'primary', 'university'],
   }
 };
 
@@ -20,7 +20,7 @@ const basicUser = {
     'password': 'wikonnect',
     'email': 'user10@wikonnect.com',
     'role': 'basic',
-    'topics': ['highschool', 'primary', 'university'],
+    'tags': ['highschool', 'primary', 'university'],
   }
 };
 
@@ -31,7 +31,7 @@ const adminUser = {
     'password': 'wikonnect',
     'email': 'user44@wikonnect.com',
     'role': 'admin',
-    'topics': ['highschool', 'primary', 'university'],
+    'tags': ['highschool', 'primary', 'university'],
   }
 };
 
