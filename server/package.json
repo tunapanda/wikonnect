@@ -14,7 +14,9 @@
     "db:migrate": "knex migrate:make",
     "test": "nyc mocha test --reporter mocha-junit-reporter --reporter-options mochaFile=coverage/mocha/test-results.xml --exit && nyc report --reporter=html --exit ",
     "lint:js": "eslint .",
-    "lint:fix": "eslint . --fix"
+    "lint:fix": "eslint . --fix",
+    "docs": "apidoc -e node_modules -e docs -o public/docs",
+    "swagger": "apidoc-swagger -i server/routes -o swaggerDocs/"
   },
   "dependencies": {
     "@elastic/elasticsearch": "^7.4.0",
@@ -59,6 +61,8 @@
     "validate.js": "^0.13.1"
   },
   "devDependencies": {
+    "apidocs": "^2017.3.9",
+    "apidoc-swagger": "^0.3.2",
     "ajv": "^6.10.2",
     "chai": "^4.2.0",
     "chai-http": "2.0.1",

@@ -57,7 +57,9 @@ const {
  *            }]
  *         }]
  *      }
- * @apiError {String} errors Bad Request.
+ * @apiSuccess {Object[]} chapter[object] Object data
+ * @apiErrorExample {json} List error
+ *    HTTP/1.1 500 Internal Server Error
  */
 
 router.get('/', permController.requireAuth, mojaCampaignMiddleware, validateRouteQueryParams, async ctx => {
@@ -138,7 +140,8 @@ router.get('/', permController.requireAuth, mojaCampaignMiddleware, validateRout
  *        "tags": []
  *      }
  *
-* @apiError {String} errors Bad Request.
+ * @apiErrorExample {json} List error
+ *    HTTP/1.1 500 Internal Server Error
  */
 router.get('/:id', permController.requireAuth, async ctx => {
   let stateUserRole = ctx.state.user.role == undefined ? ctx.state.user.data.role : ctx.state.user.role;
@@ -188,8 +191,10 @@ router.get('/:id', permController.requireAuth, async ctx => {
  *
  * @apiParam {String} chapter[name] Name - Unique.
  * @apiParam {String} chapter[description] Description.
- * @apiParam {String} chapter[status] modules status - published | draft .
- * @apiParam {String} chapter[tags:[ Array ]] Array of tags.
+ * @apiParam {String} chapter[status] modules status - options[published | draft]
+ * @apiParam {Boolean} chapter[approved] defaults is false
+ * @apiParam {Object[]} chapter[tags] Tags list.
+ *
  *
  * @apiSampleRequest off
  *
@@ -214,7 +219,8 @@ router.get('/:id', permController.requireAuth, async ctx => {
  *        "approved": false
  *      }
  *
- * @apiError {String} errors Bad Request.
+ * @apiErrorExample {json} List error
+ *    HTTP/1.1 500 Internal Server Error
  */
 router.post('/', permController.requireAuth, validateChapter, async ctx => {
   let stateUserId = ctx.state.user.id == undefined ? ctx.state.user.data.id : ctx.state.user.id;
@@ -253,11 +259,13 @@ router.post('/', permController.requireAuth, validateChapter, async ctx => {
  *
  * @apiParam {String} chapter[name] Name - Unique.
  * @apiParam {String} chapter[description] Description.
- * @apiParam {String} chapter[status] modules status - published | draft .
- * @apiParam {String} chapter[tags:[ Array ]] Array of tags.
+ * @apiParam {String} chapter[status] modules status - published | draft
+ * @apiParam {Boolean} chapter[approved] defaults is false
+ * @apiParam {Object[]} chapter[tags] Tags list.
  *
- * @apiSuccess {String} chapter[object] Object data
- * @apiError {String} errors Bad Request.
+ * @apiSuccess {Object[]} chapter[object] Object data
+ * @apiErrorExample {json} List error
+ *    HTTP/1.1 500 Internal Server Error
  */
 router.put('/:id', permController.requireAuth, async ctx => {
   //router.put('/:id', async ctx => {
@@ -319,7 +327,9 @@ router.delete('/:id', permController.requireAuth, permController.grantAccess('de
  *      "path": image path
  *    }
  *
- * @apiError {String} errors Bad Request.
+ * @apiSuccess {Object[]} chapter[object] Object data
+ * @apiErrorExample {json} List error
+ *    HTTP/1.1 500 Internal Server Error
  */
 router.post('/:id/chapter-image', async (ctx, next) => {
   if ('POST' != ctx.method) return await next();
@@ -395,7 +405,9 @@ router.post('/:id/chapter-image', async (ctx, next) => {
  *        host: ctx.host,
  *        path: uploadPath
  *      }
- * @apiError {String} errors Bad Request.
+ * @apiSuccess {Object[]} chapter[object] Object data
+ * @apiErrorExample {json} List error
+ *    HTTP/1.1 500 Internal Server Error
  */
 
 router.post('/:id/upload', async ctx => {
