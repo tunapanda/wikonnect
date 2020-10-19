@@ -71,10 +71,11 @@ router.get('/', permController.requireAuth, mojaCampaignMiddleware, validateRout
   let chapter;
   if (roleNameList.includes(stateUserRole)) {
     if (ctx.query.q) {
+      console.log(ctx.query.q);
       chapter = await chapter
         .where('name', 'ILIKE', `%${ctx.query.q}%`)
-        .where(ctx.query, { status: 'published' })
-        .whereIn('topics', user.topics)
+        // .where(ctx.query, { status: 'published' })
+        // .whereIn('topics', user.topics)
         .orWhere('description', 'ILIKE', `%${ctx.query.q}%`)
         .leftJoin('ratings as rate', 'chapters.id', 'rate.chapter_id')
         .groupBy('chapters.id', 'rate.chapter_id')
@@ -241,6 +242,23 @@ router.post('/', permController.requireAuth, validateChapter, async ctx => {
 });
 
 
+/**
+ * @api {put} /chapters/:id PUT single chapter.
+ * @apiName PutAChapter
+ * @apiGroup Chapters
+ * @apiPermission none
+ * @apiVersion 0.4.0
+ *
+ * @apiSampleRequest off
+ *
+ * @apiParam {String} chapter[name] Name - Unique.
+ * @apiParam {String} chapter[description] Description.
+ * @apiParam {String} chapter[status] modules status - published | draft .
+ * @apiParam {String} chapter[tags:[ Array ]] Array of tags.
+ *
+ * @apiSuccess {String} chapter[object] Object data
+ * @apiError {String} errors Bad Request.
+ */
 router.put('/:id', permController.requireAuth, async ctx => {
   //router.put('/:id', async ctx => {
   const chapter_record = await Chapter.query().findById(ctx.params.id);

@@ -15,7 +15,8 @@
     "start:frontend": "cd frontend && yarn start:local",
     "start:server": "cd server && nodemon index.js",
     "start:all": "concurrently yarn:start:frontend yarn:start:server",
-    "docs": "apidoc -e node_modules -e docs -o docs/"
+    "docs": "apidoc -e node_modules -e docs -o docs/",
+    "swagger": "apidoc-swagger -i server/routes -o swaggerDocs/"
   },
   "devDependencies": {
     "@cypress/code-coverage": "^3.8.2",
@@ -30,6 +31,7 @@
     "pg": "^8.3.3"
   },
   "dependencies": {
+    "apidoc-swagger": "^0.3.2",
     "concurrently": "^5.3.0",
     "eslint-plugin-ember": "^8.10.1",
     "eslint-plugin-node": "^11.1.0",
