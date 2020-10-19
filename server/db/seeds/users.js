@@ -17,7 +17,7 @@ exports.seed = function (knex) {
           last_seen: '2017-12-20 19:17:10',
           created_at: '2017-12-20 19:17:10',
           updated_at: '2017-12-20 19:17:10',
-          topics: ['highschool', 'primary', 'university'],
+          tags: ['highschool', 'primary', 'university'],
           metadata: { profileComplete: 'false', oneInviteComplete: 'false', oneChapterCompletion: 'false' }
         },
         {
@@ -31,7 +31,7 @@ exports.seed = function (knex) {
           last_seen: '2017-12-20 19:17:10',
           created_at: '2017-12-20 19:17:10',
           updated_at: '2017-12-20 19:17:10',
-          topics: ['highschool', 'primary'],
+          tags: ['highschool', 'primary'],
           metadata: { profileComplete: 'false', oneInviteComplete: 'false', oneChapterCompletion: 'false' }
         },
         {
@@ -45,7 +45,7 @@ exports.seed = function (knex) {
           last_seen: '2017-12-20 19:17:10',
           created_at: '2017-12-20 19:17:10',
           updated_at: '2017-12-20 19:17:10',
-          topics: ['highschool', 'university'],
+          tags: ['highschool', 'university'],
           metadata: { profileComplete: 'true', oneInviteComplete: 'true', oneChapterCompletion: 'true' }
         }
       ]);

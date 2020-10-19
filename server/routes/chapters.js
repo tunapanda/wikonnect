@@ -52,7 +52,6 @@ const {
  *            "imageUrl": "/uploads/images/content/chapters/chapter1.jpeg",
  *            "contentId": null,
  *            "tags": [],
- *            topic: ''
  *            "comment": [{
  *            }]
  *         }]
@@ -77,7 +76,7 @@ router.get('/', permController.requireAuth, mojaCampaignMiddleware, validateRout
       chapter = await chapter
         .where('name', 'ILIKE', `%${ctx.query.q}%`)
         // .where(ctx.query, { status: 'published' })
-        // .whereIn('topics', user.topics)
+        // .whereIn('tags', user.tags)
         .orWhere('description', 'ILIKE', `%${ctx.query.q}%`)
         .leftJoin('ratings as rate', 'chapters.id', 'rate.chapter_id')
         .groupBy('chapters.id', 'rate.chapter_id')
@@ -88,7 +87,7 @@ router.get('/', permController.requireAuth, mojaCampaignMiddleware, validateRout
         .avg('rate.rating as rating')
         .from('chapters')
         .where(ctx.query, { status: 'published' })
-        .whereIn('topics', user.topics)
+        .whereIn('tags', user.tags)
         .leftJoin('ratings as rate', 'chapters.id', 'rate.chapter_id')
         .groupBy('chapters.id', 'rate.chapter_id')
         .eager('[comment(selectComment), achievement(selectAchievement), flag(selectFlag)]');
@@ -160,10 +159,10 @@ router.get('/:id', permController.requireAuth, async ctx => {
     .groupBy('chapters.id', 'rate.chapter_id');
 
   if (roleNameList.includes(stateUserRole)) {
-    if (user.topics === null) {
+    if (user.tags === null) {
       chapter = await chapter.eager('[comment(selectComment), flag(selectFlag), achievement(selectAchievement)]');
-    } else if (user.topics != null) {
-      chapter = await chapter.whereIn('topics', user.topics).orWhereIn('tags', user.topics).eager('[comment(selectComment), flag(selectFlag), achievement(selectAchievement)]');
+    } else if (user.tags != null) {
+      chapter = await chapter.whereIn('tags', user.tags).orWhereIn('tags', user.tags).eager('[comment(selectComment), flag(selectFlag), achievement(selectAchievement)]');
     }
     await achievementType(chapter);
   } else if (stateUserRole == anonymous) {

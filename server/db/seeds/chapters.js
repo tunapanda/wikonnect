@@ -19,7 +19,6 @@ exports.seed = function (knex) {
           updated_at: '2017-12-20 19:17:10',
           approved: true,
           tags: ['highschool', 'university'],
-          topics: 'primary'
         },
         {
           'id': 'chapter2',
@@ -48,7 +47,6 @@ exports.seed = function (knex) {
           'updated_at': '2017-12-20 19:17:10',
           tags: ['university'],
           approved: false,
-          topics: 'highschool'
         },
         {
           'id': 'chapter4',

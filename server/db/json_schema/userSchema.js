@@ -10,7 +10,7 @@ const userSchema = {
     'status': { 'type': 'string' },
     'profile_uri': { 'type': 'string' },
     'creatorId': { 'type': 'string' },
-    'topics': [{ 'type': 'string', }],
+    'tags': [{ 'type': 'string', }],
   },
   'required': ['username', 'hash', 'email'],
 };

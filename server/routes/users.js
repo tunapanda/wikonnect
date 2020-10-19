@@ -40,7 +40,7 @@ const router = new Router({
  * @apiParam (Required Params) {string} user[email] Unique email
  * @apiParam (Required Params) {string} user[password] validated password
  * @apiParam (Optional Params) {string} user[invitedBy] auto filled on the form
- * @apiParam (Optional Params) {string} user[topics] auto filled on the form
+ * @apiParam (Optional Params) {string} user[tags] auto filled on the form
  *
  * @apiPermission none
  *
@@ -53,7 +53,7 @@ const router = new Router({
  *          "inviteCode": "invited_by",
  *          "createdAt": "string",
  *          "updatedAt": "string",
- *          "topics": "array",
+ *          "tags": "array",
  *          "metadata": json_array
  *        }
  *     }
@@ -223,7 +223,7 @@ router.get('/:id', permController.requireAuth, async ctx => {
  * @apiParam (Required Params) {string} user[email] Unique email
  * @apiParam (Required Params) {string} user[password] validated password
  * @apiParam (Optional Params) {string} user[invitedBy] auto filled on the form
- * @apiParam (Optional Params) {string} user[topics] a list of String with tags a user has subscribed to
+ * @apiParam (Optional Params) {string} user[tags] a list of String with tags a user has subscribed to
  * @apiParam (Optional Params) {string} user[metadata] json data
  *
  */
@@ -263,7 +263,7 @@ router.get('/', permController.requireAuth, permController.grantAccess('readAny'
  *
  * @apiParam (PUT Params) {string} user[email] Unique email
  * @apiParam (PUT Params) {string} user[password] validated password
- * @apiParam (PUT Params) {string} user[topics] a list of String with tags a user has subscribed to
+ * @apiParam (PUT Params) {string} user[tags] a list of String with tags a user has subscribed to
  * @apiParam (PUT Params) {string} user[metadata] json data
  *
  * @apiSuccess {String} user[object] Object data

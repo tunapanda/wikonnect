@@ -27,7 +27,7 @@ const data = {
     'imageUrl': null,
     'contentId': null,
     'approved': false,
-    'topics': 'primary'
+    'tags': 'primary'
   }
 };
 
