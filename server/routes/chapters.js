@@ -27,20 +27,21 @@ const {
 } = require('../utils/routesUtils/chaptersRouteUtils');
 
 /**
- * @api {get} /chapters/ GET all chapters.
+ * @api {get} /api/v1/chapters/ GET all chapters.
  * @apiName GetChapters
  * @apiGroup Chapters
  * @apiPermission none
  *
- * @apiParam {String} chapter.id Chapter Id
- * @apiParam {String} chapter[name] Chapter Name.
- * @apiParam {String} chapter[description] Description.
- * @apiParam {String} chapter[status] modules status - published | draft
- * @apiParam {Boolean} chapter[approved:false] default is false
- * @apiParam {Object[]} chapter[tags] Tags list.
+ * @apiParam (Optional Params) {String} chapter.id Chapter Id
+ * @apiParam (Optional Params) {String} chapter[name] Chapter Name.
+ * @apiParam (Optional Params) {String} chapter[description] Description.
+ * @apiParam (Optional Params) {String} chapter[status] modules status - published | draft
+ * @apiParam (Optional Params) {Boolean} chapter[approved:false] default is false
+ * @apiParam (Optional Params) {Object[]} chapter[tags] Tags list.
  *
  * @apiSuccess {Object[]} chapter list
  * @apiSuccess {String} chapter.id Chapter id
+ * @apiSuccess {Object[]} Chapter[object] Object data
  *
  * @apiSuccessExample {json} Success-Response:
  *     HTTP/1.1 200 OK
@@ -64,7 +65,6 @@ const {
  *            }]
  *         }]
  *      }
- * @apiSuccess {Object[]} chapter[object] Object data
  * @apiErrorExample {json} List error
  *    HTTP/1.1 500 Internal Server Error
  */
@@ -119,31 +119,40 @@ router.get('/', permController.requireAuth, mojaCampaignMiddleware, validateRout
 });
 
 /**
- * @api {get} /chapters/:id GET single chapter.
+ * @api {get} /api/v1/chapters/:id GET single chapter.
  * @apiName GetAChapter
  * @apiGroup Chapters
  * @apiPermission none
  * @apiVersion 0.4.0
  *
  *
+ * @apiParam {String} id Chapter unique ID
+ *
+ * @apiSuccess {Object[]} chapter list
+ * @apiSuccess {String} chapter.id Chapter id
+ * @apiSuccess {Object[]} Chapter[object] Object data
+ *
  * @apiSuccessExample {json} Success-Response:
  *     HTTP/1.1 200 OK
  *     {
  *        "chapter": {
- *        "id": "chapter4",
- *        "lessonId": "lesson2",
- *        "name": "A Chapter4",
- *        "slug": "a-chapter4",
- *        "description": "An H5P Chapter.",
- *        "status": "published",
- *        "creatorId": "user1",
- *        "createdAt": "2017-12-20T16:17:10.000Z",
- *        "updatedAt": "2017-12-20T16:17:10.000Z",
- *        "contentType": "h5p",
- *        "contentUri": "/uploads/h5p/chapter4",
- *        "imageUrl": null,
- *        "contentId": null,
- *        "tags": []
+ *            "id": "chapter1",
+ *            "lessonId": "lesson1",
+ *            "name": "A Chapter",
+ *            "slug": "a-chapter",
+ *            "description": "An H5P Chapter.",
+ *            "status": "published",
+ *            "creatorId": "user1",
+ *            "createdAt": "2017-12-20T16:17:10.000Z",
+ *            "updatedAt": "2017-12-20T16:17:10.000Z",
+ *            "contentType": "h5p",
+ *            "contentUri": "/uploads/h5p/chapter1",
+ *            "imageUrl": "/uploads/images/content/chapters/chapter1.jpeg",
+ *            "contentId": null,
+ *            "tags": [],
+ *            "comment": [{
+ *            }]
+ *         }
  *      }
  *
  * @apiErrorExample {json} List error
@@ -187,7 +196,7 @@ router.get('/:id', permController.requireAuth, async ctx => {
 
 
 /**
- * @api {post} /chapters POST single chapter.
+ * @api {post} /api/v1/chapters POST single chapter.
  * @apiName PostAChapter
  * @apiGroup Chapters
  * @apiPermission none
@@ -255,7 +264,7 @@ router.post('/', permController.requireAuth, validateChapter, async ctx => {
 
 
 /**
- * @api {put} /chapters/:id PUT single chapter.
+ * @api {put} /api/v1/chapters/:id PUT single chapter.
  * @apiName PutAChapter
  * @apiGroup Chapters
  * @apiPermission none
@@ -318,7 +327,7 @@ router.delete('/:id', permController.requireAuth, permController.grantAccess('de
 
 
 /**
- * @api {post} /chapters/:id/chapter-image POST chapter banner image.
+ * @api {post} /api/v1/chapters/:id/chapter-image POST chapter banner image.
  * @apiName PostBannerImage
  * @apiGroup Chapters
  * @apiPermission none
@@ -397,7 +406,7 @@ router.post('/:id/chapter-image', async (ctx, next) => {
 
 
 /**
- * @api {post} /chapters/:id/upload upload H5P chapter
+ * @api {post} /api/v1/chapters/:id/upload upload H5P chapter
  * @apiName PostAH5PChapter
  * @apiGroup Chapters
  * @apiPermission none
