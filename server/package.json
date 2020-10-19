@@ -17,7 +17,7 @@
     "lint:js": "eslint .",
     "lint:fix": "eslint . --fix",
     "docs": "apidoc -e node_modules -e docs -o public/docs",
-    "swagger": "apidoc-swagger -i routes -o public/swaggerDocs"
+    "swagger": "apidoc-swagger -i routes -o swagger"
   },
   "dependencies": {
     "@elastic/elasticsearch": "^7.4.0",
@@ -58,13 +58,14 @@
     "redis": "^3.0.2",
     "sharp": "^0.25.1",
     "shortid": "^2.2.15",
+    "swagger-ui": "^3.35.2",
     "unzipper": "^0.10.5",
     "validate.js": "^0.13.1"
   },
   "devDependencies": {
-    "apidocs": "^2017.3.9",
-    "apidoc-swagger": "^0.3.2",
     "ajv": "^6.10.2",
+    "apidoc-swagger": "^0.3.2",
+    "apidocs": "^2017.3.9",
     "chai": "^4.2.0",
     "chai-http": "2.0.1",
     "chai-json-schema-ajv": "^5.0.0",

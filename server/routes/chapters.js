@@ -32,7 +32,15 @@ const {
  * @apiGroup Chapters
  * @apiPermission none
  *
- * @apiSampleRequest off
+ * @apiParam {String} chapter.id Chapter Id
+ * @apiParam {String} chapter[name] Chapter Name.
+ * @apiParam {String} chapter[description] Description.
+ * @apiParam {String} chapter[status] modules status - published | draft
+ * @apiParam {Boolean} chapter[approved:false] default is false
+ * @apiParam {Object[]} chapter[tags] Tags list.
+ *
+ * @apiSuccess {Object[]} chapter list
+ * @apiSuccess {String} chapter.id Chapter id
  *
  * @apiSuccessExample {json} Success-Response:
  *     HTTP/1.1 200 OK
@@ -117,7 +125,6 @@ router.get('/', permController.requireAuth, mojaCampaignMiddleware, validateRout
  * @apiPermission none
  * @apiVersion 0.4.0
  *
- * @apiSampleRequest off
  *
  * @apiSuccessExample {json} Success-Response:
  *     HTTP/1.1 200 OK
@@ -317,7 +324,6 @@ router.delete('/:id', permController.requireAuth, permController.grantAccess('de
  * @apiPermission none
  * @apiVersion 0.4.0
  *
- * @apiSampleRequest off
  *
  * @apiSuccessExample {json} Success-Response:
  *     HTTP/1.1 200 OK
@@ -396,8 +402,6 @@ router.post('/:id/chapter-image', async (ctx, next) => {
  * @apiGroup Chapters
  * @apiPermission none
  * @apiVersion 0.4.0
- * @apiSampleRequest off
- * @apiSampleRequest off
  * @apiSuccessExample {json} Success-Response:
  *     HTTP/1.1 200 OK
  *     {
