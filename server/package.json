@@ -14,7 +14,8 @@
     "db:migrate": "knex migrate:make",
     "test": "nyc mocha test --reporter mocha-junit-reporter --reporter-options mochaFile=coverage/mocha/test-results.xml --exit && nyc report --reporter=html --exit ",
     "lint:js": "eslint .",
-    "lint:fix": "eslint . --fix"
+    "lint:fix": "eslint . --fix",
+    "swagger-autogen": "node swagger.js"
   },
   "dependencies": {
     "@elastic/elasticsearch": "^7.4.0",
@@ -55,8 +56,11 @@
     "redis": "^3.0.2",
     "sharp": "^0.25.1",
     "shortid": "^2.2.15",
+    "swagger-autogen": "^1.2.5",
+    "swagger-koa": "^2.1.0",
     "unzipper": "^0.10.5",
-    "validate.js": "^0.13.1"
+    "validate.js": "^0.13.1",
+    "yaml": "^2.0.0-1"
   },
   "devDependencies": {
     "ajv": "^6.10.2",

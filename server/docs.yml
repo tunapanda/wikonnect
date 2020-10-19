@@ -1,0 +1,76 @@
+resourcePath: /apiYml
+description: All about API
+apis:
+
+- path: /login
+  operations:
+
+  - httpMethod: POST
+    summary: Login with username and password
+    notes: Returns a user based on username
+    responseClass: User
+    nickname: login
+    consumes:
+      - text/html
+    parameters:
+
+    - name: username
+      dataType: string
+      paramType: query
+      required: true
+      description: Your username
+
+    - name: password
+      dataType: string
+      paramType: query
+      required: true
+      description: Your password
+
+paths:
+  "/":
+    post:
+      tags: []
+      description: ''
+      parameters: []
+      responses: {}
+    get:
+      tags: []
+      description: ''
+      parameters: []
+      responses: {}
+  "/{id}":
+    get:
+      tags: []
+      description: ''
+      parameters:
+      - name: id
+        in: path
+        required: true
+      responses: {}
+    put:
+      tags: []
+      description: ''
+      parameters:
+      - name: id
+        in: path
+        required: true
+      responses: {}
+  "/invite/{id}":
+    post:
+      tags: []
+      description: ''
+      parameters:
+      - name: id
+        in: path
+        required: true
+      responses: {}
+  "/{id}/profile-image":
+    post:
+      tags: []
+      description: ''
+      parameters:
+      - name: id
+        in: path
+        required: true
+      responses: {}
+definitions: {}
