@@ -32,6 +32,8 @@ app.use(logger);
 app.use(bodyParser());
 
 app.use(require('koa-static')(path.resolve(__dirname, './public')));
+app.use(require('koa-static')(path.resolve(__dirname, './public/docs')));
+app.use(require('koa-static')(path.resolve(__dirname, './swagger')));
 
 router.use(require('./routes/auth'));
 
