@@ -6302,6 +6302,16 @@ ember-svg-jar@^2.2.3:
     mkdirp "^0.5.1"
     path-posix "^1.0.0"
 
+ember-swagger-ui@^2.3.0:
+  version "2.3.0"
+  resolved "https://registry.yarnpkg.com/ember-swagger-ui/-/ember-swagger-ui-2.3.0.tgz#f724415b0b60c1749c040cd5b03daa7d98c7bbee"
+  integrity sha512-/tMOF3XMmdPij6XZ2WgL7gWh1G2ggoPI91t36GPAt6V89FChmcMrV7l/P3crIswrX/WJtG+j3ZI8eCta1v718w==
+  dependencies:
+    broccoli-funnel "^2.0.1"
+    broccoli-merge-trees "^3.0.1"
+    ember-cli-babel "^7.1.2"
+    resolve "^1.8.1"
+
 ember-template-lint@^1.5.0:
   version "1.14.0"
   resolved "https://registry.yarnpkg.com/ember-template-lint/-/ember-template-lint-1.14.0.tgz#fd3e8ec600b0b3de16b5701bf02acc99d192008e"
@@ -11605,6 +11615,11 @@ svgo@1.3.0:
     stable "^0.1.8"
     unquote "~1.1.1"
     util.promisify "~1.0.0"
+
+swagger-ui-dist@^3.9.2:
+  version "3.35.2"
+  resolved "https://registry.yarnpkg.com/swagger-ui-dist/-/swagger-ui-dist-3.35.2.tgz#d251a4a3a72501f221c4ef3625f140c900542e45"
+  integrity sha512-19oRW6ZVCTY7JnaMFnIUoxkqI+xhBOGzSFVQTMLDB9KTNASP82v/0SkNpY2T4zbjwZF2Y5bcty9E6rhLGAj0Gg==
 
 symbol-tree@^3.2.2:
   version "3.2.4"
