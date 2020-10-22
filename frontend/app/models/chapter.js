@@ -10,6 +10,7 @@ export default class ChapterModel extends Model {
   @attr contentType;
   @attr contentUri;
   @attr("boolean") approved;
+  @attr tags;
   @attr targetStatus;
   @attr imageUrl;
   @hasMany('comment') comments;

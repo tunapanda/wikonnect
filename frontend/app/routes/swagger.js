@@ -9,7 +9,11 @@ export default class SwaggerRoute extends Route {
 
   async beforeModel(transition) {
     if (!this.me.isAuthenticated) {
+<<<<<<< HEAD
       var loginController = this.controllerFor('login');
+=======
+      let loginController = this.controllerFor('login');
+>>>>>>> streamlinetags
       loginController.set('previousTransition', transition);
       this.transitionTo('login');
     }

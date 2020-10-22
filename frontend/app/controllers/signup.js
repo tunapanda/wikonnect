@@ -17,7 +17,7 @@ export default class SignupController extends Controller {
   signupSuccess() {
     // this.transitionToRoute('upload');
 
-    this.transitionToRoute('upload', { queryParams: { signup: 'true' } });
+    this.transitionToRoute('tags');
   }
 
 }

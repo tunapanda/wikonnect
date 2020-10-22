@@ -45,6 +45,9 @@ module.exports = function (defaults) {
 
   app.import('node_modules/h5p-standalone/dist/styles/h5p.css');
   app.import('public/bootstrap.css');
+  app.import('node_modules/ember-tags-input/vendor/styles/eti-svg-icons.css');
+  app.import('node_modules/ember-tags-input/vendor/styles/ember-tags-input.css');
+
 
   return app.toTree();
 };

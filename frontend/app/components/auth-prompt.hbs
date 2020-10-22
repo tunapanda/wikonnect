@@ -1,14 +1,18 @@
 {{#unless me.isAuthenticated}}
-  <div class="padded">
-    <BsAlert @type="error">
-      <strong>
-        {{#link-to "login"}}
-          LOGIN
-        {{/link-to}} or
-        {{#link-to "signup"}}
-          SIGNUP
-        {{/link-to}} to keep track of your activity and to leave comments
-      </strong>
-    </BsAlert>
-  </div>
+
+
+  <nav class="navbar fixed-bottom text-white  bg-orange justify-content-between ">
+
+    For an enhanced experience please sign up or login
+    <div>
+      {{#link-to "login"}}
+        <button type="button" class="btn btn-outline-light float-right mr-2">Login</button>
+
+      {{/link-to}}
+      {{#link-to "signup"}}
+        <button type="button" class="btn btn-outline-light float-right mr-2">Signup</button>
+
+      {{/link-to}}
+    </div>
+  </nav>
 {{/unless}}

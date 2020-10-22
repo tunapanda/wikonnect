@@ -10,7 +10,11 @@ export default class LoginController extends Controller {
 
   @action
   login() {
+<<<<<<< HEAD
     var previousTransition = this.get('previousTransition');
+=======
+    let previousTransition = this.get('previousTransition');
+>>>>>>> streamlinetags
     if (previousTransition) {
       this.set('previousTransition', null);
       previousTransition.retry();

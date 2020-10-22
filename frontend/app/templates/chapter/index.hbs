@@ -1,6 +1,6 @@
 {{!-- {{outlet}} --}}
 {{outlet}}
-<div id="chapter">
+<div id="chapter" class="p-4">
 
 
 
@@ -15,15 +15,15 @@
   </div>
   {{#if me.user.id}}
 
-    <div class="d-flex justify-content-between mr-2">
+    {{!-- <div class="d-flex justify-content-between mr-2">
 
       <a name="" id="" class="btn btn-primary" href="#" {{action "toggleFlaggingModal"}} role="button">Report </a>
       {{star-rating readOnly=enabled rating=5 onClick=(action "ratingSubmit")}}
 
 
-    </div>
+    </div> --}}
   {{/if}}
-
+  <br>
 
 
   <CommentSection @selectedChapter={{model.id}} />
