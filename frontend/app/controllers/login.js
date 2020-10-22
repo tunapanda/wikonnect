@@ -10,7 +10,7 @@ export default class LoginController extends Controller {
 
   @action
   login() {
-    var previousTransition = this.get('previousTransition');
+    let previousTransition = this.get('previousTransition');
     if (previousTransition) {
       this.set('previousTransition', null);
       previousTransition.retry();
