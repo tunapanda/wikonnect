@@ -25,8 +25,7 @@ module.exports = {
     'indent': ['error', 2],
     'quotes': ['error', 'single'],
     'semi': ['error', 'always'],
-    'hbs/check-hbs-template-literals': 2,
-    'comma-dangle': ['error', 'always']
+    'hbs/check-hbs-template-literals': 2
   },
   overrides: [
     // node files
