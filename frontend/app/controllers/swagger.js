@@ -15,7 +15,7 @@ export default class SwaggerController extends Controller {
   me;
 
   swaggerConfig = {
-    url: 'http://localhost:3000/swagger.json',
+    url: 'assets/swagger.json',
     deepLinking: false,
     presets: [
       SwaggerUIStandalonePreset,

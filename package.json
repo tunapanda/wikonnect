@@ -14,7 +14,8 @@
     "build:frontend": "cd frontend && yarn && yarn build --prod",
     "start:frontend": "cd frontend && yarn start:local",
     "start:server": "cd server && nodemon index.js",
-    "docs": "apidoc -e node_modules -e docs -o docs/"
+    "docs": "apidoc -e node_modules -e docs -o docs/",
+    "swagger": "apidoc-swagger -i server/routes -o frontend/public/assets"
   },
   "devDependencies": {
     "@cypress/code-coverage": "^3.8.2",
