@@ -1,47 +1,48 @@
 {{outlet}}
+<div class="p-4">
+  {{#if me.isAuthenticated}}
 
-{{#if me.isAuthenticated}}
-
-  <div class="text-center">
-    <br>
-    {{!-- {{#if this.me.user.profileUri}}
+    <div class="text-center">
+      <br>
+      {{!-- {{#if this.me.user.profileUri}}
       <img class="rounded-circle" width="300px" alt="" src={{this.me.user.profileUri}}>
     {{else}}
       <img class="rounded-circle" width="300px" alt="" src={{profileImage}}>
 
     {{/if}} --}}
 
-    <br>
+      <br>
 
-    <br>
-    <Forms::Upload @multiple="false" @accept="image/*" @filesSelected={{action "uploadPic"}}
-      @disabled={{uploader.uploading}}>
-      {{#if uploader.uploading}}
-        Uploading... <span class="loading-spinner"></span> {{uploader.progress}}% <br>
-        <small class="text-muted">You will be redirected once upload is complete</small>
+      <br>
+      <Forms::Upload @multiple="false" @accept="image/*" @filesSelected={{action "uploadPic"}}
+        @disabled={{uploader.uploading}}>
+        {{#if uploader.uploading}}
+          Uploading... <span class="loading-spinner"></span> {{uploader.progress}}% <br>
+          <small class="text-muted">You will be redirected once upload is complete</small>
 
-      {{else}}
-        Upload Thumnail
-      {{/if}}
-    </Forms::Upload>
-    {{#if signup}}
-
-      <br><br>
-      {{#link-to "profile"}}
-        {{#if complete}}
-          <button type="button" class="btn btn-success">Proceed to profile</button>
         {{else}}
-          Skip to profile
+          Upload Thumbnail
         {{/if}}
+      </Forms::Upload>
+      {{#if signup}}
 
-      {{/link-to}}
+        <br><br>
+        {{#link-to "profile"}}
+          {{#if complete}}
+            <button type="button" class="btn btn-success">Proceed to profile</button>
+          {{else}}
+            Skip to profile
+          {{/if}}
 
-    {{/if}}
-  </div>
+        {{/link-to}}
+
+      {{/if}}
+    </div>
 
 
-{{else}}
+  {{else}}
 
-  <Warning @message="You do not have permission to view this page" />
+    <Warning @message="You do not have permission to view this page" />
 
-{{/if}}
+  {{/if}}
+</div>

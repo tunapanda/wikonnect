@@ -1,14 +1,15 @@
 <!-- template-lint disabled=true -->
-<nav class="mb-1 navbar navbar-expand-lg navbar-dark text-white secondary-color bg-orange lighten-1">
+<nav class="mb-1 navbar navbar-expand-lg navbar-light text-dark secondary-color bg-white shadow-sm  ">
   {{#link-to "home" class="navbar-brand"}}
-    {{svg-jar "wikonnect-logo-white" class="icon"   height="40"}}
+    <img src="/images/kkllogo.png" alt="">
+    {{!-- {{svg-jar "wikonnect-primary" class="icon"   height="40"}} --}}
   {{/link-to}}
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent-555"
     aria-controls="navbarSupportedContent-555" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
   <div class="collapse navbar-collapse" id="navbarSupportedContent-555">
-    <ul class="navbar-nav ml-auto">
+    <ul class="navbar-nav ml-auto text-dark">
 
       {{#if me.user.id}}
 
@@ -30,12 +31,14 @@
           </a> --}}
         </li>
 
-
         <li class="nav-item">
 
-          <a class="nav-link" href="https://wikonnect.org">About</a>
+          {{#link-to "index" class="nav-link" }}
+            About
+          {{/link-to}}
         </li>
-        <li class="nav-item">
+
+        {{!-- <li class="nav-item">
 
           <a class="nav-link"
             href="https://community.wikonnect.org/new-topic?title=[FEEDBACK] Title&body=Explain the feedback in detail&category=Site Feedback">
@@ -48,7 +51,7 @@
             href="https://community.wikonnect.org/new-topic?title=[REQUESTING CONTENT]&body=Explain the request&category=Learning">
             Request Content
           </a>
-        </li>
+        </li> --}}
 
       {{else}}
         <li class="nav-item">
@@ -80,7 +83,9 @@
             {{#if me.user.profileUri}}
               <img src={{me.user.profileUri}} class="rounded-circle h40" alt="avatar image">
             {{else}}
-              <img src="/images/profile-placeholder.gif" class="rounded-circle h40" alt="avatar image">
+              {{!-- <img src="images/profile-placeholder.gif" class="rounded-circle h40" alt="avatar image"> --}}
+
+              <span aria-hidden="true">&times;</span>
 
 
             {{/if}}
@@ -101,7 +106,7 @@
       {{else}}
         <li>
 
-          {{#link-to "login" class="text-white"  }}
+          {{#link-to "login"   }}
             Login
 
           {{/link-to}}
@@ -109,7 +114,7 @@
         &nbsp; / &nbsp;
         <li>
 
-          {{#link-to "signup" class="text-white"  }}
+          {{#link-to "signup"  }}
             Signup
 
           {{/link-to}}

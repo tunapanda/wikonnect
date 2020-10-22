@@ -1,11 +1,13 @@
 {{outlet}}
-<BsForm @model={{model}} @onSubmit={{action "saveChapter"}} as |form|>
-  <form.element @controlType="text" @label="Chapter Title" @property="name" />
-  <form.element @controlType="textarea" @label="Chapter Description" @property="description" />
+<div class="p-4">
+  <BsForm @model={{model}} @onSubmit={{action "saveChapter"}} as |form|>
+    <form.element @controlType="text" @label="Chapter Title" @property="name" />
+    <form.element @controlType="textarea" @label="Chapter Description" @property="description" />
 
 
 
-  <BsButton @type="primary" class="form-control" @defaultText="Save Chapter Details" @buttonType="submit" />
+    <BsButton @type="primary" class="form-control" @defaultText="Save Chapter Details" @buttonType="submit" />
 
 
-</BsForm>
+  </BsForm>
+</div>

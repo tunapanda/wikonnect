@@ -1,26 +1,52 @@
 {{outlet}}
-<h3>Select areas of interest</h3>
-{{#each list as |item|}}
-  <button type="button" class="btn btn-outline-primary m-2" {{action addme item}}>{{item}}</button>
-{{/each}}
+<div class="p-4">
+  <div>
+    <h5>Select areas of interest</h5>
+    {{#each topic_list as |item|}}
+      <button type="button" class="btn btn-outline-primary m-2" {{action addme item "topic"}}>{{item}}</button>
+    {{/each}}
+    {{#each topic_cart as |item|}}
+      <button type="button" class="btn btn-primary m-2" {{action removeme item "topic"}}>
+        {{item}}
+        <span aria-hidden="true">&times;</span>
+
+      </button>
+    {{/each}}
+    <hr>
+    <h5>Select competency</h5>
+    {{#each competency_list as |item|}}
+      <button type="button" class="btn btn-outline-primary m-2" {{action addme item "competency"}}>{{item}}</button>
+    {{/each}}
+    <hr>
+    {{#each competency_cart as |item|}}
+      <button type="button" class="btn btn-primary m-2" {{action removeme item "competency"}}>
+        {{item}}
+        <span aria-hidden="true">&times;</span>
+
+      </button>
+    {{/each}}
+
+    <h5>Select Level</h5>
+    {{#each level_list as |item|}}
+      <button type="button" class="btn btn-outline-primary m-2" {{action addme item "level"}}>{{item}}</button>
+    {{/each}}
+    {{#each level_cart as |item|}}
+      <button type="button" class="btn btn-primary m-2" {{action removeme item "level"}}>
+        {{item}}
+        <span aria-hidden="true">&times;</span>
+
+      </button>
+    {{/each}}
+  </div>
 
 
-
-
-{{#each mylist as |item|}}
-  <button type="button" class="btn btn-primary m-2" {{action removeme item}}>
-    {{item}}
-    <span aria-hidden="true">&times;</span>
-
-  </button>
-{{/each}}
-
-<nav class="navbar fixed-bottom float-right bg-light justify-content-end">
-  {{#if mylist}}
+</div>
+<nav class="navbar fixed-bottom float-right bg-light justify-content-end mt-4">
+  {{#if (or topic_cart custom_cart level_cart  competency_cart)}}
     <button type="button" class="btn btn-primary form-control float-right" {{action updateTags}}>Done</button>
 
   {{else}}
-    {{#link-to "teach.preview" model.id}}
+    {{#link-to "upload"}}
       <button type="button" class="btn btn-primary form-control float-right">Skip</button>
 
     {{/link-to}}

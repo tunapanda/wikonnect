@@ -1,44 +1,46 @@
 {{outlet}}
+<div class="p-4">
 
+  {{#if me.isAuthenticated}}
 
-{{#if me.isAuthenticated}}
-
-  <div class="text-center">
-    <br>
-    {{#if this.me.user.profileUri}}
-      <img class="rounded-circle" width="300px" alt="" src={{this.me.user.profileUri}}>
-    {{else}}
-      <img class="rounded-circle" width="300px" alt="" src={{profileImage}}>
-
-    {{/if}}
-
-    <br>
-
-    <br>
-    <Forms::Upload @multiple="false" @accept=".h5p" @filesSelected={{action "uploadPic"}}
-      @disabled={{uploader.uploading}}>
-      {{#if uploader.uploading}}
-        Uploading... <span class="loading-spinner"></span> {{uploader.progress}}% <br>
-        <small class="text-muted">You will be redirected once upload is complete</small>
+    <div class="text-center">
+      <br>
+      {{#if this.me.user.profileUri}}
+        <img class="rounded-circle" width="300px" alt="" src={{this.me.user.profileUri}}>
       {{else}}
-        Upload H5P
+        <img class="rounded-circle" width="300px" alt="" src={{profileImage}}>
+
       {{/if}}
-    </Forms::Upload>
-    {{#if signup}}
 
-      <br><br>
-      {{#link-to "teach.thumbnail-upload" chapter.id}}
-        <button type="button" class="btn btn-success">Add Thumbnail</button>
+      <br>
+
+      <br>
+      <Forms::Upload @multiple="false" @accept=".h5p" @filesSelected={{action "uploadPic"}}
+        @disabled={{uploader.uploading}}>
+        {{#if uploader.uploading}}
+          Uploading... <span class="loading-spinner"></span> {{uploader.progress}}% <br>
+          <small class="text-muted">You will be redirected once upload is complete</small>
+        {{else}}
+          Upload H5P
+        {{/if}}
+      </Forms::Upload>
+      {{#if signup}}
+
+        <br><br>
+        {{#link-to "teach.thumbnail-upload" chapter.id}}
+          <button type="button" class="btn btn-success">Add Thumbnail</button>
 
 
-      {{/link-to}}
+        {{/link-to}}
 
-    {{/if}}
-  </div>
+      {{/if}}
+    </div>
 
 
-{{else}}
+  {{else}}
 
-  <Warning @message="You do not have permission to view this page" />
+    <Warning @message="You do not have permission to view this page" />
 
-{{/if}}
+  {{/if}}
+
+</div>
