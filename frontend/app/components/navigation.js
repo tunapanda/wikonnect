@@ -20,12 +20,12 @@ export default class NavigationComponent extends Component {
 
   @action
   closenav() {
-    document.getElementById("mySidenav").style.width = "0";
+    document.getElementById('mySidenav').style.width = '0';
   }
 
   @action
   logout() {
-    document.getElementById("mySidenav").style.width = "0";
+    document.getElementById('mySidenav').style.width = '0';
 
     this.me.logout();
     document.location.reload();

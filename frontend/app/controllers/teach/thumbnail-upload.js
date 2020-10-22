@@ -13,7 +13,7 @@ export default class TeachH5pUploadController extends Controller {
   @action
   async uploadPic(files) {
 
-    let id = this.get("model").id;
+    let id = this.get('model').id;
     console.log(id);
     const uploader = Uploader.create({
       file: files[0],
@@ -28,7 +28,7 @@ export default class TeachH5pUploadController extends Controller {
     await uploader.startUpload([host, 'chapters', id, 'chapter-image'].join('/'));
 
     //upload
-    this.set("complete", true);
+    this.set('complete', true);
 
     if (this.complete === true) {
       this.transitionToRoute('teach.preview', id);

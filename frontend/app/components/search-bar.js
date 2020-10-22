@@ -55,7 +55,7 @@ export default class SearchBarComponent extends Component {
    * @param {string} q
    */
   @(task(function* (q) {
-    if (q === "") { return []; }
+    if (q === '') { return []; }
     yield timeout(600);
     this.loading = true;
     const res = yield this.query.perform(q);

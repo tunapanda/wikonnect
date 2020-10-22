@@ -38,7 +38,7 @@ export default class TeachCreateController extends Controller {
   @action
   saveChapter(model) {
     model.setProperties({
-      status: "draft",
+      status: 'draft',
       approved: false
     });
     model.save().then((x) => {

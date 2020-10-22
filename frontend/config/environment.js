@@ -40,7 +40,7 @@ module.exports = function (environment) {
       serverTokenEndpoint: '/api/v1/auth/',
       serverTokenRefreshEndpoint: '/api/v1/auth/token-refresh/',
     },
-    "ember-drag-drop-polyfill": {
+    'ember-drag-drop-polyfill': {
       enableEnterLeave: true,
       holdToDrag: false
     },

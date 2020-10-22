@@ -3,7 +3,7 @@ import DS from 'ember-data';
 export default DS.Store.extend({
 
   findBySlug: function () {
-    return this.query(arguments[0], { "slug": arguments[1] }).then((items) => {
+    return this.query(arguments[0], { 'slug': arguments[1] }).then((items) => {
 
       return items.get('firstObject');
     });
@@ -11,7 +11,7 @@ export default DS.Store.extend({
   },
 
   findByUsername: function () {
-    return this.query('user', { "username": arguments[0] }).then((items) => {
+    return this.query('user', { 'username': arguments[0] }).then((items) => {
       return items.get('firstObject');
     });
   }

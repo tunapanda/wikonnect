@@ -38,13 +38,13 @@ export default class UploadController extends Controller {
     this.set('uploader', uploader);
 
     const host = '/' + this.store.adapterFor('application').urlPrefix();
-    console.log("host");
+    console.log('host');
     console.log(host);
 
     const uploadRes = await uploader.startUpload([host, 'users', this.me.user.id, 'profile-image'].join('/'));
 
-    this.set("profileImage", "https://localhost:3000/" + uploadRes.path);
-    this.set("complete", true);
+    this.set('profileImage', 'https://localhost:3000/' + uploadRes.path);
+    this.set('complete', true);
 
     if (this.complete === true) {
       this.transitionToRoute('profile');

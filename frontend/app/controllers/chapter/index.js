@@ -29,8 +29,8 @@ export default class ChapterIndexController extends Controller {
       let slug = await this.target.currentRoute.params.chapter_slug;
       let chap = await this.store.findRecord('chapter', slug);
 
-      console.log("slug " + slug);
-      console.log("ssuser : " + this.me.user.id);
+      console.log('slug ' + slug);
+      console.log('ssuser : ' + this.me.user.id);
 
       let rating = await this.store.createRecord('rating', {
         rating: val,
@@ -88,19 +88,19 @@ export default class ChapterIndexController extends Controller {
 
   @action
   toggleApproval(chapter_id, a) {
-    if (a == "true") {
+    if (a == 'true') {
       this.store.findRecord('chapter', chapter_id).then(function (chap) {
         // ...after the record has loaded
 
         chap.set('approved', false);
-        chap.set('contentType', "false");
+        chap.set('contentType', 'false');
         chap.save();
       });
     } else {
       this.store.findRecord('chapter', chapter_id).then(function (chap) {
         // ...after the record has loaded
         chap.set('approved', true);
-        chap.set('contentType', "false");
+        chap.set('contentType', 'false');
 
         chap.save();
 

@@ -36,7 +36,7 @@ export default class CommentSectionComponent extends Component {
 
   @computed()
   get chapterComments() {
-    return this.store.query('comment', { "chapterId": this.args.selectedChapter });
+    return this.store.query('comment', { 'chapterId': this.args.selectedChapter });
   }
 
   @action
@@ -49,7 +49,7 @@ export default class CommentSectionComponent extends Component {
     model.save().then(function () {
       // save worked
     }, function () {
-      notice.alert("Be mindful of your comments");
+      notice.alert('Be mindful of your comments');
     });
 
   }

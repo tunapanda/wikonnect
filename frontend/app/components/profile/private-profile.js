@@ -54,7 +54,7 @@ export default class ProfilePrivateProfileComponent extends Component {
 
   @action
   onSuccess() {
-    console.log("copied");
+    console.log('copied');
   }
 
   @action
@@ -87,7 +87,7 @@ export default class ProfilePrivateProfileComponent extends Component {
 
   @action
   onError() {
-    console.log("no copy");
+    console.log('no copy');
   }
 
   @computed('model.hasDirtyAttributes')

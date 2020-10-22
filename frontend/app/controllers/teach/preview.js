@@ -17,7 +17,7 @@ export default class TeachPreviewController extends Controller {
     this.store.findRecord('chapter', chapter_id).then(function (chap) {
       // ...after the record has loaded
 
-      chap.set('status', "published");
+      chap.set('status', 'published');
       chap.save();
     });
 
@@ -30,7 +30,7 @@ export default class TeachPreviewController extends Controller {
     this.store.findRecord('chapter', chapter_id).then(function (chap) {
       // ...after the record has loaded
 
-      chap.set('status', "draft");
+      chap.set('status', 'draft');
       chap.set('approved', false);
       chap.save();
     });

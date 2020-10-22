@@ -22,7 +22,7 @@ export default class SwaggerController extends Controller {
       SwaggerUIBundle.presets.apis,
       SwaggerUIBundle.plugins.DownloadUrl
     ],
-    layout: "StandaloneLayout",
+    layout: 'StandaloneLayout',
     docExpansion: 'none',
     tagsSorter: 'alpha',
     operationsSorter: 'alpha',

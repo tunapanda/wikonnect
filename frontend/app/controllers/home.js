@@ -8,6 +8,6 @@ export default class HomeController extends Controller {
 
   @computed('model.[]')
   get allChapters(){
-    return this.store.query('chapter', { "approved": true });
+    return this.store.query('chapter', { 'approved': true });
   }
 }
