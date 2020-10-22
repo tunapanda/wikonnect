@@ -107,9 +107,7 @@ Router.map(function () {
 
 
   });
-<<<<<<< HEAD
   this.route('swagger');
-=======
   this.route('topics');
   this.route('tags');
   this.route('tag', function () {
@@ -117,5 +115,4 @@ Router.map(function () {
       path: '/:id'
     });
   });
->>>>>>> streamlinetags
 });
