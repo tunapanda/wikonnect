@@ -69,7 +69,7 @@ jobs:
           at: ~/
       - run:
           name: Build Ember
-          command: cd frontend && $(yarn bin)/ember build; cd ../
+          command: cd frontend && $(yarn bin)/ember build --prod; cd ../
       - persist_to_workspace:
           root: ~/
           paths:
