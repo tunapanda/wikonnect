@@ -1,13 +1,15 @@
 const jsonwebtoken = require('jsonwebtoken');
 const { secret } = require('../middleware/jwt');
 
+const userId = 'user1';
 const superAdmin = {
   'user': {
-    'id': 'user99',
-    'username': 'user99',
+    'id': userId,
+    'username': userId,
     'password': 'wikonnect',
-    'email': 'user99@wikonnect.com',
-    'role': 'superadmin'
+    'email': 'user1@wikonnect.com',
+    'role': 'superadmin',
+    'tags': ['highschool', 'primary', 'university'],
   }
 };
 
@@ -17,7 +19,8 @@ const basicUser = {
     'username': 'user10',
     'password': 'wikonnect',
     'email': 'user10@wikonnect.com',
-    'role': 'basic'
+    'role': 'basic',
+    'tags': ['highschool', 'primary', 'university'],
   }
 };
 
@@ -27,7 +30,8 @@ const adminUser = {
     'username': 'user44',
     'password': 'wikonnect',
     'email': 'user44@wikonnect.com',
-    'role': 'admin'
+    'role': 'admin',
+    'tags': ['highschool', 'primary', 'university'],
   }
 };
 

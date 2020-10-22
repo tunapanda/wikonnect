@@ -1,5 +1,4 @@
 const Router = require('koa-router');
-const bcrypt = require('bcrypt');
 const path = require('path');
 
 const busboy = require('async-busboy');
@@ -16,163 +15,51 @@ const jwt = require('../middleware/jwt');
 const permController = require('../middleware/permController');
 const validateAuthRoutes = require('../middleware/validateRoutePostSchema/validateAuthRoutes');
 
-const environment = process.env.NODE_ENV || 'development';
-const config = require('../knexfile.js')[environment];
-const knex = require('knex')(config);
+const knex = require('../utils/knexUtil');
 
-
+const {
+  achievementAwardsType,
+  userRoles,
+  enrolledCoursesType,
+  createPasswordHash,
+  profileCompleteBoolean,
+  inviteUserAward,
+  getProfileImage
+} = require('../utils/routesUtils/userRouteUtils');
 
 const router = new Router({
   prefix: '/users'
 });
 
-async function achievementAwardsType(parent) {
-  try {
-    if (parent.length == undefined) {
-      parent.achievementAwards.forEach(award => {
-        return award.type = 'achievementAward';
-      });
-    } else {
-      parent.forEach(mod => {
-        mod.achievementAwards.forEach(award => {
-          return award.type = 'achievementAward';
-        });
-      });
-    }
-  } catch (error) {
-    log.error(error);
-  }
-}
 
-async function userRoles(parent) {
-  try {
-    if (parent.length == undefined) {
-      parent.userRoles.forEach(role => {
-        return role.type = 'userRoles';
-      });
-    } else {
-      parent.forEach(roles => {
-        roles.userRoles.forEach(role => {
-          return role.type = 'userRoles';
-        });
-      });
-    }
-  } catch (error) {
-    log.error(error);
-  }
-}
-
-async function enrolledCoursesType(parent) {
-  try {
-    if (parent.length == undefined) {
-      parent.enrolledCourses.forEach(lesson => {
-        return lesson.type = 'course';
-      });
-    } else {
-      parent.forEach(mod => {
-        mod.enrolledCourses.forEach(lesson => {
-          return lesson.type = 'course';
-        });
-      });
-    }
-  } catch (error) {
-    log.error(error);
-  }
-}
-
-
-function encode(data) {
-  let buf = Buffer.from(data);
-  let base64 = buf.toString('base64');
-  return base64;
-}
-
-async function getProfileImage(id) {
-
-  try {
-    if (s3.config) {
-      const params = {
-        Bucket: s3.config.bucket, // pass your bucket name
-        Key: `uploads/profiles/${id}.jpg`, // key for saving filename
-      };
-
-      const getImage = await s3.s3.getObject(params).promise();
-      let image = 'data:image/(png|jpg);base64,' + encode(getImage.Body);
-      return image;
-    } else {
-      return 'images/profile-placeholder.gif';
-    }
-  } catch (e) {
-    return 'images/profile-placeholder.gif';
-  }
-}
-async function createPasswordHash(ctx, next) {
-  if (ctx.request.body.user.password) {
-    const hash = await bcrypt.hash(ctx.request.body.user.password, 10);
-
-    delete ctx.request.body.user.password;
-    ctx.request.body.user.hash = hash;
-  }
-  await next();
-}
-
-async function profileCompleteBoolean(params) {
-  const keys = ['profileUri', 'email'];
-  keys.forEach((key, index) => {
-    if (params[key] != null) {
-      log.info(index);
-      return 'false';
-    } else {
-      return 'true';
-    }
-  });
-}
-
-async function inviteUserAward(params) {
-  let completed = await knex('user_invite')
-    .count('invited_by')
-    .select('invited_by')
-    .where({ 'invited_by': params.invitedBy })
-    .groupBy('invited_by')
-    .having(knex.raw('count(invited_by) > 0'));
-
-  await AchievementAward.query().insert({
-    'name': 'Invited 1 users',
-    'achievementId': 'achievements12',
-    'userId': completed[0].invited_by
-  });
-
-  if (params.metadata.oneInviteComplete == 'false' && completed > 0) {
-    await User.query().patchAndFetchById(params.id, { 'metadata:oneInviteComplete': 'true' });
-  }
-}
 
 /**
- * @api {post} /users POST create a new user.
- * @apiName PostAUser
- * @apiGroup Authentication
- *
- * @apiParam (Required Params) {string} user[username] username
- * @apiParam (Required Params) {string} user[email] Unique email
- * @apiParam (Required Params) {string} user[password] validated password
- * @apiParam (Optional Params) {string} user[invitedBy] auto filled on the form
- *
- * @apiPermission none
- *
- * @apiSuccessExample {json} Success-Response:
- *     HTTP/1.1 201 OK
- *     {
- *        "user": {
- *          "id": "string",
- *          "username": "string",
- *          "inviteCode": "DTrbi6aLj",
- *          "createdAt": "string",
- *          "updatedAt": "string"
- *        }
- *     }
- *
- * @apiError {String} errors Bad Request.
- */
+* @api {post} /users POST create a new user.
+* @apiName PostAUser
+* @apiGroup Authentication
+*
+* @apiParam (Required Params) {string} user[username] username
+* @apiParam (Required Params) {string} user[email] Unique email
+* @apiParam (Required Params) {string} user[password] validated password
+* @apiParam (Optional Params) {string} user[invitedBy] auto filled on the form
+*
+* @apiPermission none
+*
+* @apiSuccessExample {json} Success-Response:
+*     HTTP/1.1 201 OK
+*     {
+*        "user": {
+*          "id": "string",
+*          "username": "string",
+*          "inviteCode": "invited_by",
+*          "createdAt": "string",
+*          "updatedAt": "string",
+*          "metadata": json_array
+*        }
+*     }
+*
+* @apiError {String} errors Bad Request.
+*/
 
 router.post('/', validateAuthRoutes.validateNewUser, createPasswordHash, async ctx => {
   ctx.request.body.user.username = ctx.request.body.user.username.toLowerCase();
@@ -181,9 +68,6 @@ router.post('/', validateAuthRoutes.validateNewUser, createPasswordHash, async c
   ctx.request.body.user.metadata = { 'profileComplete': 'false', 'oneInviteComplete': 'false' };
 
   const inviteInsert = await knex('user_invite').insert([{ 'invited_by': ctx.request.body.user.inviteCode }], ['id', 'invited_by']);
-  // if (ctx.request.body.user.inviteCode != null) {
-  //   await inviteUserAward(ctx.request.body.user);
-  // }
 
   let newUser = ctx.request.body.user;
   newUser.inviteCode = shortid.generate();
@@ -202,7 +86,7 @@ router.post('/', validateAuthRoutes.validateNewUser, createPasswordHash, async c
     ctx.status = 201;
     ctx.body = { user };
   } catch (e) {
-    ctx.log.info('Failed for user - %s, with error %s', ctx.request.body.user.email, e.message, e.detail);
+    log.info('Failed for user - %s, with error %s', ctx.request.body.user.email, e.message, e.detail);
     ctx.throw(400, null, { errors: [e] });
   }
 
@@ -228,9 +112,9 @@ router.post('/', validateAuthRoutes.validateNewUser, createPasswordHash, async c
  *       "username": "user2",
  *       "createdAt": "2017-12-20T16:17:10.000Z",
  *       "updatedAt": "2017-12-20T16:17:10.000Z",
- *       "profileUri": "uploads/profiles/user1.jpg",
+ *       "profileUri": "image_url",
  *       "private": boolean,
- *       "inviteCode": "DTrbi6aLj",
+ *       "inviteCode": "invited_by",
  *       "achievementAwards": [
  *         {
  *           "id": "achievementaward1",
@@ -335,6 +219,13 @@ router.get('/:id', permController.requireAuth, async ctx => {
  * @apiPermission [admin, superadmin]
  * @apiHeader (Header) {String} authorization Bearer <<YOUR_API_KEY_HERE>>
  *
+ * @apiParam (Required Params) {string} user[username] username
+ * @apiParam (Required Params) {string} user[email] Unique email
+ * @apiParam (Required Params) {string} user[password] validated password
+ * @apiParam (Optional Params) {string} user[invitedBy] auto filled on the form
+ * @apiParam (Optional Params) {string} user[tags] a list of String with tags a user has subscribed to
+ * @apiParam (Optional Params) {string} user[metadata] json data
+ *
  */
 router.get('/', permController.requireAuth, permController.grantAccess('readAny', 'profile'), async ctx => {
   let user = User.query();
@@ -369,6 +260,13 @@ router.get('/', permController.requireAuth, permController.grantAccess('readAny'
  * @apiDescription edit users data on the platform
  * @apiPermission [admin, superadmin]
  * @apiHeader (Header) {String} authorization Bearer <<YOUR_API_KEY_HERE>>
+ *
+ * @apiParam (PUT Params) {string} user[email] Unique email
+ * @apiParam (PUT Params) {string} user[password] validated password
+ * @apiParam (PUT Params) {string} user[tags] a list of String with tags a user has subscribed to
+ * @apiParam (PUT Params) {string} user[metadata] json data
+ *
+ * @apiSuccess {String} user[object] Object data
  *
  */
 
@@ -413,8 +311,7 @@ router.post('/invite/:id', async ctx => {
     } else { ctx.throw(400, null, { errors: ['Bad Request', e.message] }); }
   }
 
-  inviteUserAward(ctx.request.body.user);
-
+  inviteUserAward(ctx.params.id);
 
   ctx.status = 200;
   ctx.body = { invite };

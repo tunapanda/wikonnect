@@ -43,10 +43,10 @@
         "-w",
         "${workspaceFolder}/server",
         "--ignore",
-        "${workspaceFolder}/server/public/uploads/",
+        "${workspaceFolder}/server/public/uploads/"
       ],
       "runtimeArgs": [
-        "--exitcrash",
+        "--exitcrash"
       ]
     },
     {
@@ -67,25 +67,24 @@
         "--cypress"
       ],
       "runtimeArgs": [
-        "--exitcrash",
+        "--exitcrash"
       ]
     },
     {
       "type": "chrome",
       "request": "launch",
       "name": "Ember",
-      //   "port": 9222,
       "runtimeArgs": [
         "--remote-debugging-port=9222"
       ],
       "url": "http://localhost:4200/",
       "webRoot": "${workspaceFolder}/frontend/",
       "sourceMapPathOverrides": {
-        "wikonnect/*": "${workspaceFolder}/frontend/app/*",
+        "wikonnect/*": "${workspaceFolder}/frontend/app/*"
       },
       "smartStep": true,
       "showAsyncStacks": true,
-      "trace": true,
+      "trace": true
     }
   ]
 }

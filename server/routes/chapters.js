@@ -10,7 +10,9 @@ const log = require('../utils/logger');
 const slugGen = require('../utils/slugGen');
 
 const Chapter = require('../models/chapter');
+const User = require('../models/user');
 const permController = require('../middleware/permController');
+const mojaCampaignMiddleware = require('../middleware/mojaCampaignMiddleware');
 const validateChapter = require('../middleware/validateRoutePostSchema/validateChapter');
 const validateRouteQueryParams = require('../middleware/validateRouteQueryParams/queryValidation');
 
@@ -19,42 +21,27 @@ const router = new Router({
   prefix: '/chapters'
 });
 
-async function returnType(parent) {
-  if (parent.length == undefined) {
-    parent.comment.forEach(comment => {
-      return comment.type = 'comment';
-    });
-  } else {
-    parent.forEach(mod => {
-      mod.comment.forEach(comment => {
-        return comment.type = 'comment';
-      });
-    });
-  }
-}
-
-async function achievementType(parent) {
-  if (parent.length == undefined) {
-    parent.achievement.forEach(data => {
-      return data.type = 'achievement';
-    });
-  } else {
-    parent.forEach(mod => {
-      mod.achievement.forEach(data => {
-        return data.type = 'achievement';
-      });
-    });
-  }
-}
-
+const {
+  returnType,
+  achievementType
+} = require('../utils/routesUtils/chaptersRouteUtils');
 
 /**
- * @api {get} /chapters/ GET all chapters.
+ * @api {get} /api/v1/chapters/ GET all chapters.
  * @apiName GetChapters
  * @apiGroup Chapters
  * @apiPermission none
  *
- * @apiSampleRequest off
+ * @apiParam (Optional Params) {String} chapter.id Chapter Id
+ * @apiParam (Optional Params) {String} chapter[name] Chapter Name.
+ * @apiParam (Optional Params) {String} chapter[description] Description.
+ * @apiParam (Optional Params) {String} chapter[status] modules status - published | draft
+ * @apiParam (Optional Params) {Boolean} chapter[approved:false] default is false
+ * @apiParam (Optional Params) {Object[]} chapter[tags] Tags list.
+ *
+ * @apiSuccess {Object[]} chapter list
+ * @apiSuccess {String} chapter.id Chapter id
+ * @apiSuccess {Object[]} Chapter[object] Object data
  *
  * @apiSuccessExample {json} Success-Response:
  *     HTTP/1.1 200 OK
@@ -78,30 +65,26 @@ async function achievementType(parent) {
  *            }]
  *         }]
  *      }
- * @apiError {String} errors Bad Request.
+ * @apiErrorExample {json} List error
+ *    HTTP/1.1 500 Internal Server Error
  */
 
-router.get('/', permController.requireAuth, validateRouteQueryParams, async ctx => {
+router.get('/', permController.requireAuth, mojaCampaignMiddleware, validateRouteQueryParams, async ctx => {
 
   let stateUserRole = ctx.state.user.role == undefined ? ctx.state.user.data.role : ctx.state.user.role;
+  let stateUserId = ctx.state.user.id == undefined ? ctx.state.user.data.id : ctx.state.user.id;
+  let user = await User.query().findById(stateUserId);
+
   let roleNameList = ['basic', 'superadmin', 'tunapanda', 'admin'];
-  // try {
-  //   await schema.validateAsync(ctx.query);
-  // } catch (e) {
-  //   if (e.statusCode) {
-  //     ctx.throw(e.statusCode, null, { errors: [e.message] });
-  //   } else { ctx.throw(400, null, { errors: [e.message] }); }
-  //   throw e;
-  // }
 
   let chapter;
   if (roleNameList.includes(stateUserRole)) {
     if (ctx.query.q) {
-      chapter = await Chapter.query()
-        .select('chapters.*')
-        .avg('rate.rating as rating')
-        .from('chapters')
+      console.log(ctx.query.q);
+      chapter = await chapter
         .where('name', 'ILIKE', `%${ctx.query.q}%`)
+        // .where(ctx.query, { status: 'published' })
+        // .whereIn('tags', user.tags)
         .orWhere('description', 'ILIKE', `%${ctx.query.q}%`)
         .leftJoin('ratings as rate', 'chapters.id', 'rate.chapter_id')
         .groupBy('chapters.id', 'rate.chapter_id')
@@ -111,12 +94,12 @@ router.get('/', permController.requireAuth, validateRouteQueryParams, async ctx 
         .select('chapters.*')
         .avg('rate.rating as rating')
         .from('chapters')
-        .where(ctx.query)
+        .where(ctx.query, { status: 'published' })
+        .whereIn('tags', user.tags)
         .leftJoin('ratings as rate', 'chapters.id', 'rate.chapter_id')
         .groupBy('chapters.id', 'rate.chapter_id')
         .eager('[comment(selectComment), achievement(selectAchievement), flag(selectFlag)]');
     }
-    await returnType(chapter);
     await achievementType(chapter);
   } else {
     // chapter = await Chapter.query().where(ctx.query).eager('[comment(selectComment), flag(selectFlag), rating(selectRating)]');
@@ -129,46 +112,59 @@ router.get('/', permController.requireAuth, validateRouteQueryParams, async ctx 
       .groupBy('chapters.id', 'rate.chapter_id')
       .eager('[comment(selectComment), flag(selectFlag)]');
   }
+  await returnType(chapter);
 
   ctx.status = 200;
-  ctx.body = { chapter };
+  ctx.body = { 'chapter' : chapter };
 });
 
 /**
- * @api {get} /chapters/:id GET single chapter.
+ * @api {get} /api/v1/chapters/:id GET single chapter.
  * @apiName GetAChapter
  * @apiGroup Chapters
  * @apiPermission none
  * @apiVersion 0.4.0
  *
- * @apiSampleRequest off
+ *
+ * @apiParam {String} id Chapter unique ID
+ *
+ * @apiSuccess {Object[]} chapter list
+ * @apiSuccess {String} chapter.id Chapter id
+ * @apiSuccess {Object[]} Chapter[object] Object data
  *
  * @apiSuccessExample {json} Success-Response:
  *     HTTP/1.1 200 OK
  *     {
  *        "chapter": {
- *        "id": "chapter4",
- *        "lessonId": "lesson2",
- *        "name": "A Chapter4",
- *        "slug": "a-chapter4",
- *        "description": "An H5P Chapter.",
- *        "status": "published",
- *        "creatorId": "user1",
- *        "createdAt": "2017-12-20T16:17:10.000Z",
- *        "updatedAt": "2017-12-20T16:17:10.000Z",
- *        "contentType": "h5p",
- *        "contentUri": "/uploads/h5p/chapter4",
- *        "imageUrl": null,
- *        "contentId": null,
- *        "tags": []
+ *            "id": "chapter1",
+ *            "lessonId": "lesson1",
+ *            "name": "A Chapter",
+ *            "slug": "a-chapter",
+ *            "description": "An H5P Chapter.",
+ *            "status": "published",
+ *            "creatorId": "user1",
+ *            "createdAt": "2017-12-20T16:17:10.000Z",
+ *            "updatedAt": "2017-12-20T16:17:10.000Z",
+ *            "contentType": "h5p",
+ *            "contentUri": "/uploads/h5p/chapter1",
+ *            "imageUrl": "/uploads/images/content/chapters/chapter1.jpeg",
+ *            "contentId": null,
+ *            "tags": [],
+ *            "comment": [{
+ *            }]
+ *         }
  *      }
  *
-* @apiError {String} errors Bad Request.
+ * @apiErrorExample {json} List error
+ *    HTTP/1.1 500 Internal Server Error
  */
 router.get('/:id', permController.requireAuth, async ctx => {
   let stateUserRole = ctx.state.user.role == undefined ? ctx.state.user.data.role : ctx.state.user.role;
+  let stateUserId = ctx.state.user.id == undefined ? ctx.state.user.data.id : ctx.state.user.id;
 
   let roleNameList = ['basic', 'superadmin', 'tunapanda'];
+  let anonymous = 'anonymous';
+  let user = await User.query().findById(stateUserId);
 
   let chapter = Chapter.query()
     .select('chapters.*')
@@ -179,10 +175,16 @@ router.get('/:id', permController.requireAuth, async ctx => {
     .groupBy('chapters.id', 'rate.chapter_id');
 
   if (roleNameList.includes(stateUserRole)) {
-    chapter = await chapter.eager('[comment(selectComment), flag(selectFlag), achievement(selectAchievement)]');
+    if (user.tags === null) {
+      chapter = await chapter.eager('[comment(selectComment), flag(selectFlag), achievement(selectAchievement)]');
+    } else if (user.tags != null) {
+      chapter = await chapter.whereIn('tags', user.tags).orWhereIn('tags', user.tags).eager('[comment(selectComment), flag(selectFlag), achievement(selectAchievement)]');
+    }
     await achievementType(chapter);
-  } else {
+  } else if (stateUserRole == anonymous) {
     chapter = await chapter.where({ status: 'published' }).eager('comment(selectComment)');
+  } else {
+    chapter = await Chapter.query().where({ id: ctx.params.id, creatorId: stateUserId });
   }
 
   ctx.assert(chapter, 404, 'no lesson by that ID');
@@ -194,7 +196,7 @@ router.get('/:id', permController.requireAuth, async ctx => {
 
 
 /**
- * @api {post} /chapters POST single chapter.
+ * @api {post} /api/v1/chapters POST single chapter.
  * @apiName PostAChapter
  * @apiGroup Chapters
  * @apiPermission none
@@ -204,8 +206,10 @@ router.get('/:id', permController.requireAuth, async ctx => {
  *
  * @apiParam {String} chapter[name] Name - Unique.
  * @apiParam {String} chapter[description] Description.
- * @apiParam {String} chapter[status] modules status - published | draft .
- * @apiParam {String} chapter[tags:[ Array ]] Array of tags.
+ * @apiParam {String} chapter[status] modules status - options[published | draft]
+ * @apiParam {Boolean} chapter[approved] defaults is false
+ * @apiParam {Object[]} chapter[tags] Tags list.
+ *
  *
  * @apiSampleRequest off
  *
@@ -230,7 +234,8 @@ router.get('/:id', permController.requireAuth, async ctx => {
  *        "approved": false
  *      }
  *
- * @apiError {String} errors Bad Request.
+ * @apiErrorExample {json} List error
+ *    HTTP/1.1 500 Internal Server Error
  */
 router.post('/', permController.requireAuth, validateChapter, async ctx => {
   let stateUserId = ctx.state.user.id == undefined ? ctx.state.user.data.id : ctx.state.user.id;
@@ -258,6 +263,25 @@ router.post('/', permController.requireAuth, validateChapter, async ctx => {
 });
 
 
+/**
+ * @api {put} /api/v1/chapters/:id PUT single chapter.
+ * @apiName PutAChapter
+ * @apiGroup Chapters
+ * @apiPermission none
+ * @apiVersion 0.4.0
+ *
+ * @apiSampleRequest off
+ *
+ * @apiParam {String} chapter[name] Name - Unique.
+ * @apiParam {String} chapter[description] Description.
+ * @apiParam {String} chapter[status] modules status - published | draft
+ * @apiParam {Boolean} chapter[approved] defaults is false
+ * @apiParam {Object[]} chapter[tags] Tags list.
+ *
+ * @apiSuccess {Object[]} chapter[object] Object data
+ * @apiErrorExample {json} List error
+ *    HTTP/1.1 500 Internal Server Error
+ */
 router.put('/:id', permController.requireAuth, async ctx => {
   //router.put('/:id', async ctx => {
   const chapter_record = await Chapter.query().findById(ctx.params.id);
@@ -303,13 +327,12 @@ router.delete('/:id', permController.requireAuth, permController.grantAccess('de
 
 
 /**
- * @api {post} /chapters/:id/chapter-image POST chapter banner image.
+ * @api {post} /api/v1/chapters/:id/chapter-image POST chapter banner image.
  * @apiName PostBannerImage
  * @apiGroup Chapters
  * @apiPermission none
  * @apiVersion 0.4.0
  *
- * @apiSampleRequest off
  *
  * @apiSuccessExample {json} Success-Response:
  *     HTTP/1.1 200 OK
@@ -318,7 +341,9 @@ router.delete('/:id', permController.requireAuth, permController.grantAccess('de
  *      "path": image path
  *    }
  *
- * @apiError {String} errors Bad Request.
+ * @apiSuccess {Object[]} chapter[object] Object data
+ * @apiErrorExample {json} List error
+ *    HTTP/1.1 500 Internal Server Error
  */
 router.post('/:id/chapter-image', async (ctx, next) => {
   if ('POST' != ctx.method) return await next();
@@ -381,20 +406,20 @@ router.post('/:id/chapter-image', async (ctx, next) => {
 
 
 /**
- * @api {post} /chapters/:id/upload upload H5P chapter
+ * @api {post} /api/v1/chapters/:id/upload upload H5P chapter
  * @apiName PostAH5PChapter
  * @apiGroup Chapters
  * @apiPermission none
  * @apiVersion 0.4.0
- * @apiSampleRequest off
- * @apiSampleRequest off
  * @apiSuccessExample {json} Success-Response:
  *     HTTP/1.1 200 OK
  *     {
  *        host: ctx.host,
  *        path: uploadPath
  *      }
- * @apiError {String} errors Bad Request.
+ * @apiSuccess {Object[]} chapter[object] Object data
+ * @apiErrorExample {json} List error
+ *    HTTP/1.1 500 Internal Server Error
  */
 
 router.post('/:id/upload', async ctx => {
@@ -422,4 +447,5 @@ router.post('/:id/upload', async ctx => {
     path: uploadPath
   };
 });
+
 module.exports = router.routes();
