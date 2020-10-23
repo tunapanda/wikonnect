@@ -32,8 +32,6 @@ app.use(bodyParser());
 
 app.use(require('koa-static')(path.resolve(__dirname, './public')));
 
-app.use(require('koa-static')(path.resolve(__dirname, './public/docs')));
-
 router.use(require('./routes/auth'));
 
 router.use(require('./routes/users'));
