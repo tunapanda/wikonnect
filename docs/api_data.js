@@ -29,7 +29,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "    HTTP/1.1 201 OK\n    {\n      \"user\": {\n      \"id\": \"user2\",\n      \"username\": \"user2\",\n      \"createdAt\": \"2017-12-20T16:17:10.000Z\",\n      \"updatedAt\": \"2017-12-20T16:17:10.000Z\",\n      \"profileUri\": \"uploads/profiles/user1.jpg\",\n      \"private\": boolean,\n      \"inviteCode\": \"DTrbi6aLj\",\n      \"achievementAwards\": [\n        {\n          \"id\": \"achievementaward1\",\n          \"name\": \"completed 10 courses\",\n          \"type\": \"achievementAwards\"\n        },\n        {\n          \"id\": \"achievementaward2\",\n          \"name\": \"fully filled profile\",\n          \"type\": \"achievementAwards\"\n        }\n      ],\n      \"userRoles\": [\n        {\n          \"name\": \"basic\"\n        }\n      ],\n      \"enrolledCourses\": [\n         {\n           \"id\": \"course1\",\n           \"name\": \"A Course 1\",\n           \"type\": \"course\"\n         }\n      ],\n      \"userVerification\": []\n   }\n}",
+          "content": "    HTTP/1.1 201 OK\n    {\n      \"user\": {\n      \"id\": \"user2\",\n      \"username\": \"user2\",\n      \"createdAt\": \"2017-12-20T16:17:10.000Z\",\n      \"updatedAt\": \"2017-12-20T16:17:10.000Z\",\n      \"profileUri\": \"image_url\",\n      \"private\": boolean,\n      \"inviteCode\": \"invited_by\",\n      \"achievementAwards\": [\n        {\n          \"id\": \"achievementaward1\",\n          \"name\": \"completed 10 courses\",\n          \"type\": \"achievementAwards\"\n        },\n        {\n          \"id\": \"achievementaward2\",\n          \"name\": \"fully filled profile\",\n          \"type\": \"achievementAwards\"\n        }\n      ],\n      \"userRoles\": [\n        {\n          \"name\": \"basic\"\n        }\n      ],\n      \"enrolledCourses\": [\n         {\n           \"id\": \"course1\",\n           \"name\": \"A Course 1\",\n           \"type\": \"course\"\n         }\n      ],\n      \"userVerification\": []\n   }\n}",
           "type": "json"
         }
       ]
@@ -73,6 +73,56 @@ define({ "api": [
             "optional": false,
             "field": "authorization",
             "description": "<p>Bearer &lt;&lt;YOUR_API_KEY_HERE&gt;&gt;</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Required Params": [
+          {
+            "group": "Required Params",
+            "type": "string",
+            "optional": false,
+            "field": "user[username]",
+            "description": "<p>username</p>"
+          },
+          {
+            "group": "Required Params",
+            "type": "string",
+            "optional": false,
+            "field": "user[email]",
+            "description": "<p>Unique email</p>"
+          },
+          {
+            "group": "Required Params",
+            "type": "string",
+            "optional": false,
+            "field": "user[password]",
+            "description": "<p>validated password</p>"
+          }
+        ],
+        "Optional Params": [
+          {
+            "group": "Optional Params",
+            "type": "string",
+            "optional": false,
+            "field": "user[invitedBy]",
+            "description": "<p>auto filled on the form</p>"
+          },
+          {
+            "group": "Optional Params",
+            "type": "string",
+            "optional": false,
+            "field": "user[tags]",
+            "description": "<p>a list of String with tags a user has subscribed to</p>"
+          },
+          {
+            "group": "Optional Params",
+            "type": "string",
+            "optional": false,
+            "field": "user[metadata]",
+            "description": "<p>json data</p>"
           }
         ]
       }
@@ -160,6 +210,13 @@ define({ "api": [
             "optional": false,
             "field": "user[invitedBy]",
             "description": "<p>auto filled on the form</p>"
+          },
+          {
+            "group": "Optional Params",
+            "type": "string",
+            "optional": false,
+            "field": "user[tags]",
+            "description": "<p>auto filled on the form</p>"
           }
         ]
       }
@@ -173,7 +230,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "HTTP/1.1 201 OK\n{\n   \"user\": {\n     \"id\": \"string\",\n     \"username\": \"string\",\n     \"inviteCode\": \"DTrbi6aLj\",\n     \"createdAt\": \"string\",\n     \"updatedAt\": \"string\"\n   }\n}",
+          "content": "HTTP/1.1 201 OK\n{\n   \"user\": {\n     \"id\": \"string\",\n     \"username\": \"string\",\n     \"inviteCode\": \"invited_by\",\n     \"createdAt\": \"string\",\n     \"updatedAt\": \"string\",\n     \"tags\": \"array\",\n     \"metadata\": json_array\n   }\n}",
           "type": "json"
         }
       ]
@@ -274,6 +331,53 @@ define({ "api": [
             "optional": false,
             "field": "authorization",
             "description": "<p>Bearer &lt;&lt;YOUR_API_KEY_HERE&gt;&gt;</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "PUT Params": [
+          {
+            "group": "PUT Params",
+            "type": "string",
+            "optional": false,
+            "field": "user[email]",
+            "description": "<p>Unique email</p>"
+          },
+          {
+            "group": "PUT Params",
+            "type": "string",
+            "optional": false,
+            "field": "user[password]",
+            "description": "<p>validated password</p>"
+          },
+          {
+            "group": "PUT Params",
+            "type": "string",
+            "optional": false,
+            "field": "user[tags]",
+            "description": "<p>a list of String with tags a user has subscribed to</p>"
+          },
+          {
+            "group": "PUT Params",
+            "type": "string",
+            "optional": false,
+            "field": "user[metadata]",
+            "description": "<p>json data</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "user[object]",
+            "description": "<p>Object data</p>"
           }
         ]
       }
@@ -390,17 +494,13 @@ define({ "api": [
       ]
     },
     "error": {
-      "fields": {
-        "Error 4xx": [
-          {
-            "group": "Error 4xx",
-            "type": "String",
-            "optional": false,
-            "field": "errors",
-            "description": "<p>Bad Request.</p>"
-          }
-        ]
-      }
+      "examples": [
+        {
+          "title": "List error",
+          "content": "HTTP/1.1 500 Internal Server Error",
+          "type": "json"
+        }
+      ]
     },
     "filename": "./server/routes/chapters.js",
     "groupTitle": "Chapters"
@@ -416,27 +516,96 @@ define({ "api": [
         "name": "none"
       }
     ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "chapter.id",
+            "description": "<p>Chapter Id</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "chapter[name]",
+            "description": "<p>Chapter Name.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "chapter[description]",
+            "description": "<p>Description.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "chapter[status]",
+            "description": "<p>modules status - published | draft</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Boolean",
+            "optional": false,
+            "field": "chapter",
+            "description": "<p>[approved:false] default is false</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Object[]",
+            "optional": false,
+            "field": "chapter[tags]",
+            "description": "<p>Tags list.</p>"
+          }
+        ]
+      }
+    },
     "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Object[]",
+            "optional": false,
+            "field": "chapter",
+            "description": "<p>list</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "chapter.id",
+            "description": "<p>Chapter id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object[]",
+            "optional": false,
+            "field": "chapter[object]",
+            "description": "<p>Object data</p>"
+          }
+        ]
+      },
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "HTTP/1.1 200 OK\n {\n    \"chapter\": [{\n       \"id\": \"chapter1\",\n       \"lessonId\": \"lesson1\",\n       \"name\": \"A Chapter\",\n       \"slug\": \"a-chapter\",\n       \"description\": \"An H5P Chapter.\",\n       \"status\": \"published\",\n       \"creatorId\": \"user1\",\n       \"createdAt\": \"2017-12-20T16:17:10.000Z\",\n       \"updatedAt\": \"2017-12-20T16:17:10.000Z\",\n       \"contentType\": \"h5p\",\n       \"contentUri\": \"/uploads/h5p/chapter1\",\n       \"imageUrl\": \"/uploads/images/content/chapters/chapter1.jpeg\",\n       \"contentId\": null,\n       \"tags\": [],\n       topic: ''\n       \"comment\": [{\n       }]\n    }]\n }",
+          "content": "HTTP/1.1 200 OK\n {\n    \"chapter\": [{\n       \"id\": \"chapter1\",\n       \"lessonId\": \"lesson1\",\n       \"name\": \"A Chapter\",\n       \"slug\": \"a-chapter\",\n       \"description\": \"An H5P Chapter.\",\n       \"status\": \"published\",\n       \"creatorId\": \"user1\",\n       \"createdAt\": \"2017-12-20T16:17:10.000Z\",\n       \"updatedAt\": \"2017-12-20T16:17:10.000Z\",\n       \"contentType\": \"h5p\",\n       \"contentUri\": \"/uploads/h5p/chapter1\",\n       \"imageUrl\": \"/uploads/images/content/chapters/chapter1.jpeg\",\n       \"contentId\": null,\n       \"tags\": [],\n       \"comment\": [{\n       }]\n    }]\n }",
           "type": "json"
         }
       ]
     },
     "error": {
-      "fields": {
-        "Error 4xx": [
-          {
-            "group": "Error 4xx",
-            "type": "String",
-            "optional": false,
-            "field": "errors",
-            "description": "<p>Bad Request.</p>"
-          }
-        ]
-      }
+      "examples": [
+        {
+          "title": "List error",
+          "content": "HTTP/1.1 500 Internal Server Error",
+          "type": "json"
+        }
+      ]
     },
     "version": "0.0.0",
     "filename": "./server/routes/chapters.js",
@@ -476,14 +645,21 @@ define({ "api": [
             "type": "String",
             "optional": false,
             "field": "chapter[status]",
-            "description": "<p>modules status - published | draft .</p>"
+            "description": "<p>modules status - options[published | draft]</p>"
           },
           {
             "group": "Parameter",
-            "type": "String",
+            "type": "Boolean",
             "optional": false,
-            "field": "chapter",
-            "description": "<p>[tags:[ Array ]] Array of tags.</p>"
+            "field": "chapter[approved]",
+            "description": "<p>defaults is false</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Object[]",
+            "optional": false,
+            "field": "chapter[tags]",
+            "description": "<p>Tags list.</p>"
           }
         ]
       }
@@ -498,17 +674,13 @@ define({ "api": [
       ]
     },
     "error": {
-      "fields": {
-        "Error 4xx": [
-          {
-            "group": "Error 4xx",
-            "type": "String",
-            "optional": false,
-            "field": "errors",
-            "description": "<p>Bad Request.</p>"
-          }
-        ]
-      }
+      "examples": [
+        {
+          "title": "List error",
+          "content": "HTTP/1.1 500 Internal Server Error",
+          "type": "json"
+        }
+      ]
     },
     "filename": "./server/routes/chapters.js",
     "groupTitle": "Chapters"
@@ -532,20 +704,27 @@ define({ "api": [
           "content": "HTTP/1.1 200 OK\n{\n   host: ctx.host,\n   path: uploadPath\n }",
           "type": "json"
         }
-      ]
-    },
-    "error": {
+      ],
       "fields": {
-        "Error 4xx": [
+        "Success 200": [
           {
-            "group": "Error 4xx",
-            "type": "String",
+            "group": "Success 200",
+            "type": "Object[]",
             "optional": false,
-            "field": "errors",
-            "description": "<p>Bad Request.</p>"
+            "field": "chapter[object]",
+            "description": "<p>Object data</p>"
           }
         ]
       }
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "List error",
+          "content": "HTTP/1.1 500 Internal Server Error",
+          "type": "json"
+        }
+      ]
     },
     "filename": "./server/routes/chapters.js",
     "groupTitle": "Chapters"
@@ -569,20 +748,105 @@ define({ "api": [
           "content": " HTTP/1.1 200 OK\n {\n  \"host\": hostname of where the image has been uploaded\n  \"path\": image path\n}",
           "type": "json"
         }
-      ]
-    },
-    "error": {
+      ],
       "fields": {
-        "Error 4xx": [
+        "Success 200": [
           {
-            "group": "Error 4xx",
-            "type": "String",
+            "group": "Success 200",
+            "type": "Object[]",
             "optional": false,
-            "field": "errors",
-            "description": "<p>Bad Request.</p>"
+            "field": "chapter[object]",
+            "description": "<p>Object data</p>"
           }
         ]
       }
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "List error",
+          "content": "HTTP/1.1 500 Internal Server Error",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "./server/routes/chapters.js",
+    "groupTitle": "Chapters"
+  },
+  {
+    "type": "put",
+    "url": "/chapters/:id",
+    "title": "PUT single chapter.",
+    "name": "PutAChapter",
+    "group": "Chapters",
+    "permission": [
+      {
+        "name": "none"
+      }
+    ],
+    "version": "0.4.0",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "chapter[name]",
+            "description": "<p>Name - Unique.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "chapter[description]",
+            "description": "<p>Description.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "chapter[status]",
+            "description": "<p>modules status - published | draft</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Boolean",
+            "optional": false,
+            "field": "chapter[approved]",
+            "description": "<p>defaults is false</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Object[]",
+            "optional": false,
+            "field": "chapter[tags]",
+            "description": "<p>Tags list.</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Object[]",
+            "optional": false,
+            "field": "chapter[object]",
+            "description": "<p>Object data</p>"
+          }
+        ]
+      }
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "List error",
+          "content": "HTTP/1.1 500 Internal Server Error",
+          "type": "json"
+        }
+      ]
     },
     "filename": "./server/routes/chapters.js",
     "groupTitle": "Chapters"
