@@ -11,10 +11,6 @@ permissions:
       - directory
       - file
 hooks:
-  AfterInstall:
-    - location: scripts/generate_docs.sh
-      timeout: 300
-      runas: ubuntu
   ApplicationStart:
     - location: scripts/start_server.sh
       timeout: 300

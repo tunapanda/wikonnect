@@ -31,7 +31,38 @@ const router = new Router({
   prefix: '/users'
 });
 
+
+
 /**
+<<<<<<< HEAD
+ * @swagger
+ * resourcePath: /apiJs
+ * description: All about API
+ */
+
+/**
+ * @swagger
+ * path: /users
+ * operations:
+ *   -  httpMethod: POST
+ *      summary: Create a user
+ *      notes: Returns a user based on username
+ *      responseClass: User
+ *      nickname: login
+ *      consumes:
+ *        - text/html
+ *      parameters:
+ *        - name: username
+ *          description: Your username
+ *          paramType: query
+ *          required: true
+ *          dataType: string
+ *        - name: password
+ *          description: Your password
+ *          paramType: query
+ *          required: true
+ *          dataType: string
+=======
  * @api {post} /users POST create a new user.
  * @apiName PostAUser
  * @apiGroup Authentication
@@ -57,9 +88,51 @@ const router = new Router({
  *          "metadata": json_array
  *        }
  *     }
+>>>>>>> origin/master
  *
- * @apiError {String} errors Bad Request.
  */
+
+/**
+* @api {post} /users POST create a new user.
+* @apiName PostAUser
+* @apiGroup Authentication
+*
+* @apiParam (Required Params) {string} user[username] username
+* @apiParam (Required Params) {string} user[email] Unique email
+* @apiParam (Required Params) {string} user[password] validated password
+* @apiParam (Optional Params) {string} user[invitedBy] auto filled on the form
+*
+* @apiPermission none
+*
+* @apiSuccessExample {json} Success-Response:
+*     HTTP/1.1 201 OK
+*     {
+*        "user": {
+*          "id": "string",
+*          "username": "string",
+*          "inviteCode": "invited_by",
+*          "createdAt": "string",
+*          "updatedAt": "string",
+*          "metadata": json_array
+*        }
+*     }
+*
+* @apiError {String} errors Bad Request.
+*/
+
+
+/**
+ * @swagger
+ * models:
+ *   User:
+ *     id: User
+ *     properties:
+ *       username:
+ *         type: String
+ *       password:
+ *         type: String
+ */
+
 
 router.post('/', validateAuthRoutes.validateNewUser, createPasswordHash, async ctx => {
   ctx.request.body.user.username = ctx.request.body.user.username.toLowerCase();
