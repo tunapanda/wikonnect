@@ -9,7 +9,6 @@ const jwt = require('./middleware/jwt');
 const cors = require('@koa/cors');
 const app = new Koa();
 const log = require('./utils/logger');
-const swagger = require('swagger-koa');
 
 const router = new Router({
   prefix: '/api/v1'
@@ -29,22 +28,7 @@ app.use(errorHandler);
 app.use(logger);
 app.use(bodyParser());
 
-
-
-app.use(swagger.init({
-  apiVersion: '1.0',
-  swaggerVersion: '2.0',
-  basePath: '/api/v1',
-  swaggerURL: '/swagger',
-  swaggerJSON: '/api-docs.json',
-  swaggerUI: './swagger',
-}));
-
-
-
-app.use(require('koa-static')(path.resolve(__dirname, './swagger')));
 app.use(require('koa-static')(path.resolve(__dirname, './public')));
-app.use(require('koa-static')(path.resolve(__dirname, './public/docs')));
 
 router.use(require('./routes/auth'));
 
