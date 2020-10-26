@@ -1,20 +1,128 @@
-<div class="build {{style}}">
-  {{#link-to "index"}}
+<!-- template-lint disabled=true -->
+<nav class="mb-1 navbar navbar-expand-lg navbar-dark text-white secondary-color bg-orange lighten-1">
+  {{#link-to "home" class="navbar-brand"}}
     {{svg-jar "wikonnect-logo-white" class="icon"   height="40"}}
-
   {{/link-to}}
-  <div class="ml-auto mt-2 mt-md-0">
-    <SearchBar />
-  </div>
-
-
-  {{#link-to "search"}}
-    {{svg-jar "search" class="icon"   height="40"}}
-  {{/link-to}}
-
-  <button class="header-hamburger" {{action "opennav"}}>
-
-    {{svg-jar "ic_hamburger_white" class="icon"   height="40"}}
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent-555"
+    aria-controls="navbarSupportedContent-555" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
   </button>
+  <div class="collapse navbar-collapse" id="navbarSupportedContent-555">
+    <ul class="navbar-nav ml-auto">
 
-</div>
+      {{#if me.user.id}}
+
+        <li class="nav-item">
+
+          {{#link-to "home"  class="nav-link" }}
+            Learn
+          {{/link-to}}
+        </li>
+
+        <li class="nav-item">
+
+          {{#link-to "teach" class="nav-link" }}
+            Teach
+          {{/link-to}}
+
+          {{!-- <a class="nav-link" href="https://teach.wikonnect.org/api/auth?token={{token}}&user={{me.user.username}}">
+            Teach
+          </a> --}}
+        </li>
+
+
+        <li class="nav-item">
+
+          <a class="nav-link" href="https://wikonnect.org">About</a>
+        </li>
+        <li class="nav-item">
+
+          <a class="nav-link"
+            href="https://community.wikonnect.org/new-topic?title=[FEEDBACK] Title&body=Explain the feedback in detail&category=Site Feedback">
+            Feedback
+          </a>
+        </li>
+        <li class="nav-item">
+
+          <a class="nav-link"
+            href="https://community.wikonnect.org/new-topic?title=[REQUESTING CONTENT]&body=Explain the request&category=Learning">
+            Request Content
+          </a>
+        </li>
+
+      {{else}}
+        <li class="nav-item">
+
+          {{#link-to "home" class="nav-link" }}
+            Home
+          {{/link-to}}
+        </li>
+
+
+
+        <li class="nav-item">
+
+          <a class="nav-link" href="https://wikonnect.org">About</a>
+
+        </li>
+
+
+      {{/if}}
+
+
+    </ul>
+    <ul class="navbar-nav ml-auto nav-flex-icons">
+      {{#if me.user.id}}
+
+        <li class="nav-item avatar dropdown">
+          <a class="nav-link dropdown-toggle mh-50" id="navbarDropdownMenuLink-55" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false">
+            {{#if me.user.profileUri}}
+              <img src={{me.user.profileUri}} class="rounded-circle h40" alt="avatar image">
+            {{else}}
+              <img src="/images/profile-placeholder.gif" class="rounded-circle h40" alt="avatar image">
+
+
+            {{/if}}
+          </a>
+          <div class="dropdown-menu dropdown-menu-lg-right dropdown-secondary"
+            aria-labelledby="navbarDropdownMenuLink-55">
+
+            {{#link-to "profile" class="dropdown-item" }}
+              {{me.user.username}}'s Profile
+            {{/link-to}}
+            {{#link-to "profile"  (query-params view="Settings")
+               class="dropdown-item"  }}
+              Settings
+            {{/link-to}}
+            <a class="dropdown-item" href="#" {{action "logoutuser"}}>Logout</a>
+          </div>
+        </li>
+      {{else}}
+        <li>
+
+          {{#link-to "login" class="text-white"  }}
+            Login
+
+          {{/link-to}}
+        </li>
+        &nbsp; / &nbsp;
+        <li>
+
+          {{#link-to "signup" class="text-white"  }}
+            Signup
+
+          {{/link-to}}
+        </li>
+
+        {{!-- <li class="nav-item">
+
+          {{#link-to "login" class="nav-item"   }}
+            Login
+
+          {{/link-to}}
+        </li> --}}
+      {{/if}}
+    </ul>
+  </div>
+</nav>

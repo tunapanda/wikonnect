@@ -17,11 +17,16 @@ export default class CommentSectionComponent extends Component {
   @service
   notify
 
+
+
   get commentModel() {
     return this.store.createRecord('comment', {
-      creator: this.me.user.id
+      user: this.me.user.id,
+      chapter: this.me.user.id
     });
   }
+
+
 
   @computed('me.user.profileUri')
   get profileUri() {
@@ -29,25 +34,24 @@ export default class CommentSectionComponent extends Component {
   }
 
 
-  @computed
+  @computed()
   get chapterComments() {
-
     return this.store.query('comment', { "chapterId": this.args.selectedChapter });
-
   }
 
   @action
   async saveComment(model) {
-    let notice = this.notify.alert('Be mindful of your comments', { closeAfter: 10000 });
+    let notice = this.notify;
     let chap = await this.store.findRecord('chapter', this.args.selectedChapter);
     model.setProperties({
       chapter: chap
     });
-    model.save().catch(function () {
-      if (model.get('isError')) {
-        return notice;
-      }
+    model.save().then(function () {
+      // save worked
+    }, function () {
+      notice.alert("Be mindful of your comments");
     });
+
   }
 }
 

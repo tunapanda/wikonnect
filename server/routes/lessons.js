@@ -2,7 +2,7 @@ const Router = require('koa-router');
 const log = require('../utils/logger');
 const Lesson = require('../models/lesson');
 const permController = require('../middleware/permController');
-const { validateLessons } = require('../middleware/validation/validatePostData');
+const { validateLessons } = require('../middleware/validateRoutePostSchema/validatePostData');
 const achievementPercentage = require('../utils/achievementPercentage');
 
 const slugGen = require('../utils/slugGen');
@@ -222,7 +222,7 @@ router.put('/:id', permController.requireAuth, permController.grantAccess('updat
   const checkLesson = await Lesson.query().findById(ctx.params.id);
 
   if (!checkLesson) {
-    ctx.log.info('Error, path does not exists  %s for %s', ctx.request.ip, ctx.path);
+    log.info('Error, path does not exists  %s for %s', ctx.request.ip, ctx.path);
     ctx.throw(400, 'That lesson path does not exist');
   }
 

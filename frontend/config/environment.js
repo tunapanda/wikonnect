@@ -9,6 +9,10 @@ module.exports = function (environment) {
     disqus: {
       shortname: 'kmarima'
     },
+    fontawesome: {
+      warnIfNoIconsIncluded: false,
+      defaultPrefix: 'fal' // light icons
+    },
     EmberENV: {
       FEATURES: {
         // Here you can enable experimental features on an ember canary build
@@ -27,7 +31,8 @@ module.exports = function (environment) {
     },
 
     'ember-simple-auth': {
-      authorizer: 'authorizer:token'
+      authorizer: 'authorizer:token',
+      authenticationRoute: 'login',
     },
 
     torii: {
@@ -45,7 +50,8 @@ module.exports = function (environment) {
 
     'ember-simple-auth-token': {
       refreshTokenPropertyName: 'token',
-      serverTokenEndpoint: '/api/v1/auth/'
+      serverTokenEndpoint: '/api/v1/auth/',
+      serverTokenRefreshEndpoint: '/api/v1/auth/token-refresh/',
     },
     "ember-drag-drop-polyfill": {
       enableEnterLeave: true,

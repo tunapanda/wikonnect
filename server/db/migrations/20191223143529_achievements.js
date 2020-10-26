@@ -24,5 +24,9 @@ exports.down = knex =>
       table.dropColumn('target');
       table.dropColumn('target_status');
     })
-    .dropTableIfExists('achievement_awards');
-
+    .table('achievement_awards', table => {
+      table.dropColumn('name');
+      table.dropColumn('slug');
+      table.dropColumn('image_url');
+      table.dropColumn('metadata');
+    });
