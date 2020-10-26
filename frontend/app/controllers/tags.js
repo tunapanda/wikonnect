@@ -36,8 +36,6 @@ export default class TagsController extends Controller {
 
   @action
   addme(item, cart) {
-    console.log(item);
-    console.log(cart);
     switch (cart) {
     case 'competency':
       this.competency_list.removeObject(item);
@@ -60,15 +58,10 @@ export default class TagsController extends Controller {
     default:
       break;
     }
-
-
   }
 
   @action
   removeme(item, cart) {
-    console.log(item);
-    console.log(cart);
-
     switch (cart) {
     case 'competency':
       this.competency_cart.removeObject(item);
@@ -96,18 +89,11 @@ export default class TagsController extends Controller {
   }
 
 
-
-
-
-
-
   @action
   async updateTags() {
-    console.log('combined');
     let combined = [];
 
     combined = combined.concat(this.topic_cart, this.competency_cart, this.level_cart);
-
 
     console.log('combined');
     console.log(combined);
@@ -116,9 +102,6 @@ export default class TagsController extends Controller {
       user.save();
 
     });
-
-
-
 
     this.transitionToRoute('upload', { queryParams: { signup: 'true' } });
 
