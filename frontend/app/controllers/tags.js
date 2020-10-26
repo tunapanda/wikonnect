@@ -1,9 +1,13 @@
 import Controller from '@ember/controller';
-// import { inject } from '@ember/service';
+import { inject } from '@ember/service';
 import { action } from '@ember/object';
 import { tracked } from '@glimmer/tracking';
 
+
+
 export default class TagsController extends Controller {
+  @inject
+  me;
 
   @tracked topic_list = ['Literacy', 'STEM', 'Environmental conservation', 'Emotional well-being', 'Life skills and values',
     'Fitness and nutrition', 'Creative arts', 'Community service', 'Learners with special needs', 'Music and movement', 'Entrepreneurship',
