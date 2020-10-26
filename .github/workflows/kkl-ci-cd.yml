@@ -4,9 +4,6 @@ on:
   push:
     branches:
       - kkl_automated
-  pull_request:
-    branches:
-      - kkl_automated
 
 jobs:
   buildAndTest:
