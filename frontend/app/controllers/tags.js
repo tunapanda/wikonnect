@@ -39,26 +39,26 @@ export default class TagsController extends Controller {
     console.log(item);
     console.log(cart);
     switch (cart) {
-      case 'competency':
-        this.competency_list.removeObject(item);
-        this.competency_cart.addObject(item);
-        break;
-      case 'topic':
-        this.topic_list.removeObject(item);
-        this.topic_cart.addObject(item);
-        break;
-      case 'level':
-        this.level_list.removeObject(item);
-        this.level_cart.addObject(item);
-        break;
+    case 'competency':
+      this.competency_list.removeObject(item);
+      this.competency_cart.addObject(item);
+      break;
+    case 'topic':
+      this.topic_list.removeObject(item);
+      this.topic_cart.addObject(item);
+      break;
+    case 'level':
+      this.level_list.removeObject(item);
+      this.level_cart.addObject(item);
+      break;
 
-      case 'kicd':
-        this.kicd_list.removeObject(item);
-        this.kicd_cart.addObject(item);
-        break;
+    case 'kicd':
+      this.kicd_list.removeObject(item);
+      this.kicd_cart.addObject(item);
+      break;
 
-      default:
-        break;
+    default:
+      break;
     }
 
 
@@ -70,28 +70,28 @@ export default class TagsController extends Controller {
     console.log(cart);
 
     switch (cart) {
-      case 'competency':
-        this.competency_cart.removeObject(item);
-        this.competency_list.addObject(item);
-        break;
-      case 'topic':
-        this.topic_cart.removeObject(item);
-        this.topic_list.addObject(item);
-        break;
-      case 'level':
-        this.level_cart.removeObject(item);
-        this.level_list.addObject(item);
-        break;
-      case 'kicd':
-        this.kicd_cart.removeObject(item);
-        this.kicd_list.addObject(item);
-        break;
-      case 'custom':
-        this.custom_cart.removeObject(item);
-        break;
+    case 'competency':
+      this.competency_cart.removeObject(item);
+      this.competency_list.addObject(item);
+      break;
+    case 'topic':
+      this.topic_cart.removeObject(item);
+      this.topic_list.addObject(item);
+      break;
+    case 'level':
+      this.level_cart.removeObject(item);
+      this.level_list.addObject(item);
+      break;
+    case 'kicd':
+      this.kicd_cart.removeObject(item);
+      this.kicd_list.addObject(item);
+      break;
+    case 'custom':
+      this.custom_cart.removeObject(item);
+      break;
 
-      default:
-        break;
+    default:
+      break;
     }
   }
 
@@ -103,14 +103,14 @@ export default class TagsController extends Controller {
 
   @action
   async updateTags() {
-    console.log("combined")
+    console.log('combined');
     let combined = [];
 
     combined = combined.concat(this.topic_cart, this.competency_cart, this.level_cart);
 
 
-    console.log("combined")
-    console.log(combined)
+    console.log('combined');
+    console.log(combined);
     await this.store.findRecord('user', this.me.user.id).then(function (user) {
       user.set('tags', combined);
       user.save();
