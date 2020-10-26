@@ -15,10 +15,7 @@
     "test:local": "nyc --reporter=html mocha test --exit",
     "test": "nyc mocha test --reporter mocha-junit-reporter --reporter-options mochaFile=coverage/mocha/test-results.xml --exit",
     "lint:js": "eslint .",
-    "lint:fix": "eslint . --fix",
-    "swagger-autogen": "node swagger.js",
-    "docs": "apidoc -e node_modules -e docs -o public/docs",
-    "swagger": "apidoc-swagger -i routes -o swagger"
+    "lint:fix": "eslint . --fix"
   },
   "dependencies": {
     "@elastic/elasticsearch": "^7.4.0",
@@ -59,17 +56,12 @@
     "redis": "^3.0.2",
     "sharp": "^0.25.1",
     "shortid": "^2.2.15",
-    "swagger-autogen": "^1.2.5",
-    "swagger-koa": "^2.1.0",
-    "swagger-ui": "^3.35.2",
     "unzipper": "^0.10.5",
     "validate.js": "^0.13.1",
     "yaml": "^2.0.0-1"
   },
   "devDependencies": {
     "ajv": "^6.10.2",
-    "apidoc-swagger": "^0.3.2",
-    "apidocs": "^2017.3.9",
     "chai": "^4.2.0",
     "chai-http": "2.0.1",
     "chai-json-schema-ajv": "^5.0.0",

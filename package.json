@@ -14,7 +14,8 @@
     "build:frontend": "cd frontend && yarn && yarn build --prod",
     "start:frontend": "cd frontend && yarn start:local",
     "start:server": "cd server && nodemon index.js",
-    "docs": "apidoc -e node_modules -e docs -o docs/"
+    "docs": "apidoc -e node_modules -e docs -o docs/",
+    "swagger": "apidoc-swagger -i server/routes -o frontend/public/assets"
   },
   "devDependencies": {
     "@cypress/code-coverage": "^3.8.2",
@@ -25,7 +26,9 @@
     "istanbul-lib-coverage": "^3.0.0",
     "knex": "^0.21.5",
     "nyc": "^15.0.0",
-    "pg": "^8.3.3"
+    "pg": "^8.3.3",
+    "apidoc-swagger": "^0.3.2",
+    "apidocs": "^2017.3.9"
   },
   "dependencies": {
     "concurrently": "^5.3.0",
