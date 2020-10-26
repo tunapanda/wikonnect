@@ -1,10 +1,12 @@
 import Controller from '@ember/controller';
-// import { inject } from '@ember/service';
+import { inject } from '@ember/service';
 import { action } from '@ember/object';
 import { tracked } from '@glimmer/tracking';
 
 export default class TagsController extends Controller {
 
+
+  @inject me;
   @tracked topic_list = ['Literacy', 'STEM', 'Environmental conservation', 'Emotional well-being', 'Life skills and values',
     'Fitness and nutrition', 'Creative arts', 'Community service', 'Learners with special needs', 'Music and movement', 'Entrepreneurship',
     'Health and safety', 'Language Learning']
@@ -37,26 +39,26 @@ export default class TagsController extends Controller {
     console.log(item);
     console.log(cart);
     switch (cart) {
-    case 'competency':
-      this.competency_list.removeObject(item);
-      this.competency_cart.addObject(item);
-      break;
-    case 'topic':
-      this.topic_list.removeObject(item);
-      this.topic_cart.addObject(item);
-      break;
-    case 'level':
-      this.level_list.removeObject(item);
-      this.level_cart.addObject(item);
-      break;
+      case 'competency':
+        this.competency_list.removeObject(item);
+        this.competency_cart.addObject(item);
+        break;
+      case 'topic':
+        this.topic_list.removeObject(item);
+        this.topic_cart.addObject(item);
+        break;
+      case 'level':
+        this.level_list.removeObject(item);
+        this.level_cart.addObject(item);
+        break;
 
-    case 'kicd':
-      this.kicd_list.removeObject(item);
-      this.kicd_cart.addObject(item);
-      break;
+      case 'kicd':
+        this.kicd_list.removeObject(item);
+        this.kicd_cart.addObject(item);
+        break;
 
-    default:
-      break;
+      default:
+        break;
     }
 
 
@@ -68,28 +70,28 @@ export default class TagsController extends Controller {
     console.log(cart);
 
     switch (cart) {
-    case 'competency':
-      this.competency_cart.removeObject(item);
-      this.competency_list.addObject(item);
-      break;
-    case 'topic':
-      this.topic_cart.removeObject(item);
-      this.topic_list.addObject(item);
-      break;
-    case 'level':
-      this.level_cart.removeObject(item);
-      this.level_list.addObject(item);
-      break;
-    case 'kicd':
-      this.kicd_cart.removeObject(item);
-      this.kicd_list.addObject(item);
-      break;
-    case 'custom':
-      this.custom_cart.removeObject(item);
-      break;
+      case 'competency':
+        this.competency_cart.removeObject(item);
+        this.competency_list.addObject(item);
+        break;
+      case 'topic':
+        this.topic_cart.removeObject(item);
+        this.topic_list.addObject(item);
+        break;
+      case 'level':
+        this.level_cart.removeObject(item);
+        this.level_list.addObject(item);
+        break;
+      case 'kicd':
+        this.kicd_cart.removeObject(item);
+        this.kicd_list.addObject(item);
+        break;
+      case 'custom':
+        this.custom_cart.removeObject(item);
+        break;
 
-    default:
-      break;
+      default:
+        break;
     }
   }
 
@@ -100,16 +102,16 @@ export default class TagsController extends Controller {
 
 
   @action
-  updateTags() {
-
+  async updateTags() {
+    console.log("combined")
     let combined = [];
 
-    combined.concat(this.topic_cart);
-    combined.concat(this.competency_cart);
-    combined.concat(this.level_cart);
+    combined = combined.concat(this.topic_cart, this.competency_cart, this.level_cart);
 
 
-    this.store.findRecord('user', this.me.user.id).then(function (user) {
+    console.log("combined")
+    console.log(combined)
+    await this.store.findRecord('user', this.me.user.id).then(function (user) {
       user.set('tags', combined);
       user.save();
 
