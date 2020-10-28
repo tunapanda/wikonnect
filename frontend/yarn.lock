@@ -2573,7 +2573,7 @@ babel-plugin-ember-data-packages-polyfill@^0.1.2:
   dependencies:
     "@ember-data/rfc395-data" "^0.0.4"
 
-babel-plugin-ember-modules-api-polyfill@^2.13.0, babel-plugin-ember-modules-api-polyfill@^2.6.0:
+babel-plugin-ember-modules-api-polyfill@^2.13.0, babel-plugin-ember-modules-api-polyfill@^2.13.4, babel-plugin-ember-modules-api-polyfill@^2.6.0:
   version "2.13.4"
   resolved "https://registry.yarnpkg.com/babel-plugin-ember-modules-api-polyfill/-/babel-plugin-ember-modules-api-polyfill-2.13.4.tgz#cf62bc9bfd808c48d810d5194f4329e9453bd603"
   integrity sha512-uxQPkEQAzCYdwhZk16O9m1R4xtCRNy4oEUTBrccOPfzlIahRZJic/JeP/ZEL0BC6Mfq6r55eOg6gMF/zdFoCvA==
@@ -3236,7 +3236,7 @@ broccoli-babel-transpiler@^6.5.0:
     rsvp "^4.8.2"
     workerpool "^2.3.0"
 
-broccoli-babel-transpiler@^7.3.0, broccoli-babel-transpiler@^7.4.0, broccoli-babel-transpiler@^7.8.0:
+broccoli-babel-transpiler@^7.3.0, broccoli-babel-transpiler@^7.4.0, broccoli-babel-transpiler@^7.5.0, broccoli-babel-transpiler@^7.8.0:
   version "7.8.0"
   resolved "https://registry.yarnpkg.com/broccoli-babel-transpiler/-/broccoli-babel-transpiler-7.8.0.tgz#7e0f01fce5739f49bbadeee7f1e625ca51cad66e"
   integrity sha512-dv30Td5uL7dO3NzQUqQKQs+Iq7JGKnCNtvc6GBO76uVPqGnRlsQZcYqdBVr33JrctR+ZrpTUf7TjsFKeDRFA8Q==

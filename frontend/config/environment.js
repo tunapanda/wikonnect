@@ -41,7 +41,6 @@ module.exports = function (environment) {
       remoteServiceName: 'iframe',
       providers: {
         'facebook-oauth2': {
-          // apiKey: '275202293728439'
           apiKey: process.env.FACEBOOK_KEY,
           scope: 'email'
         }

@@ -34,35 +34,6 @@ const router = new Router({
 
 
 /**
-<<<<<<< HEAD
- * @swagger
- * resourcePath: /apiJs
- * description: All about API
- */
-
-/**
- * @swagger
- * path: /users
- * operations:
- *   -  httpMethod: POST
- *      summary: Create a user
- *      notes: Returns a user based on username
- *      responseClass: User
- *      nickname: login
- *      consumes:
- *        - text/html
- *      parameters:
- *        - name: username
- *          description: Your username
- *          paramType: query
- *          required: true
- *          dataType: string
- *        - name: password
- *          description: Your password
- *          paramType: query
- *          required: true
- *          dataType: string
-=======
  * @api {post} /users POST create a new user.
  * @apiName PostAUser
  * @apiGroup Authentication
@@ -88,7 +59,6 @@ const router = new Router({
  *          "metadata": json_array
  *        }
  *     }
->>>>>>> origin/master
  *
  */
 
