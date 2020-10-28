@@ -1,5 +1,5 @@
 import { action } from '@ember/object';
-import { inject } from '@ember/service';
+import { inject, inject as service } from '@ember/service';
 import Component from '@ember/component';
 import { tracked } from '@glimmer/tracking';
 
@@ -11,6 +11,9 @@ export default
 class LoginComponent extends Component {
   LoginValidations = LoginValidations;
 
+  @service
+  session
+
   @inject
   me;
 
@@ -21,6 +24,11 @@ class LoginComponent extends Component {
   notify;
 
   @tracked loading = false;
+
+  @action
+  authenticateWithFacebook() {
+    this.get('session').authenticate('authenticator:torii', 'facebook');
+  }
 
   @action
   login(model) {
