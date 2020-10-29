@@ -5,6 +5,7 @@ const schema = Joi.object({
   approved: Joi.boolean(),
   id: Joi.string(),
   slug: Joi.string(),
+  creatorId: Joi.string(),
   q: Joi.string()
 });
 
