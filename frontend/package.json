@@ -81,7 +81,7 @@
     "qunit-dom": "^0.9.0",
     "rsvp": "^4.8.5",
     "sass": "^1.23.0",
-    "swagger-ui-dist": "^3.9.2"
+    "swagger-ui-dist": "^3.9.2",
     "torii": "^0.10.1"
   },
   "engines": {
