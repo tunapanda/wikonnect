@@ -21,6 +21,7 @@
   },
   "devDependencies": {
     "@ember/edition-utils": "^1.1.1",
+    "@ember/jquery": "^1.1.0",
     "@ember/optional-features": "^1.0.0",
     "@ember/render-modifiers": "^1.0.2",
     "@fortawesome/ember-fontawesome": "^0.2.1",
@@ -44,6 +45,7 @@
     "ember-cli-clipboard": "^0.14.0",
     "ember-cli-code-coverage": "^0.4.2",
     "ember-cli-dependency-checker": "^3.1.0",
+    "ember-cli-dotenv": "^3.1.0",
     "ember-cli-head": "^1.0.0",
     "ember-cli-htmlbars": "^4.0.5",
     "ember-cli-inject-live-reload": "^2.0.1",
@@ -80,6 +82,7 @@
     "rsvp": "^4.8.5",
     "sass": "^1.23.0",
     "swagger-ui-dist": "^3.9.2"
+    "torii": "^0.10.1"
   },
   "engines": {
     "node": "8.* || >= 10.*"
