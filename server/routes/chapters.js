@@ -95,7 +95,7 @@ router.get('/', permController.requireAuth, mojaCampaignMiddleware, validateRout
         .avg('rate.rating as rating')
         .from('chapters')
         .where(ctx.query, { status: 'published' })
-        .whereIn('tags', user.tags)
+        // .whereIn('tags', user.tags)
         .leftJoin('ratings as rate', 'chapters.id', 'rate.chapter_id')
         .groupBy('chapters.id', 'rate.chapter_id')
         .eager('[comment(selectComment), achievement(selectAchievement), flag(selectFlag)]');
