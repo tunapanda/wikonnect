@@ -30,6 +30,7 @@ module.exports = async function (ctx, next) {
   try {
     let stateUserId = ctx.state.user.id == undefined ? ctx.state.user.data.id : ctx.state.user.id;
     let mojaHeader = JSON.parse(ctx.request.header.mojaheader);
+    mojaHeader['system_id'] = 'wikonnect@tunapanda.org';
 
     if (Object.keys(mojaHeader).length != 0) {
       let campaign_data = {
@@ -51,10 +52,10 @@ module.exports = async function (ctx, next) {
       await knex('campaign_user').insert(campaign_data.campaign_user).returning(['id']);
       await knex('campaign_main').insert(campaign_data.campaign_main).returning(['id']);
       // await insertOrUpdate('campaign_user', [campaign_data.campaign_user]);
-
-      mojaEndpoint('http://mojabank-dev.aws.brck.com/', mojaHeader);
+      console.log(mojaHeader);
+      mojaEndpoint(mojaHeader);
+      await next();
     }
-    await next();
   } catch (err) {
     log.error(`The following error ${err} with message ${err.message}`);
     await next();

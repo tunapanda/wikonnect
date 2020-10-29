@@ -16,8 +16,6 @@ const router = new Router({
 
 koaQs(app);
 
-
-
 app.use(cors({
   origin: '*',
   maxAge: 5,
@@ -28,12 +26,9 @@ app.use(cors({
 app.use(errorHandler);
 
 app.use(logger);
-
 app.use(bodyParser());
 
 app.use(require('koa-static')(path.resolve(__dirname, './public')));
-app.use(require('koa-static')(path.resolve(__dirname, './public/docs')));
-app.use(require('koa-static')(path.resolve(__dirname, './swagger')));
 
 router.use(require('./routes/auth'));
 
