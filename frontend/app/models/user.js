@@ -12,6 +12,7 @@ export default class UserModel extends Model {
   @attr() lastName;
   @attr() aboutMe;
   @attr() lastSeen;
+  @attr() tags;
   @attr() inviteCode;
   @attr() createdAt;
   @attr() profileUri;
