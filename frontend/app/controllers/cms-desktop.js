@@ -45,11 +45,7 @@ export default class CmsDesktopController extends Controller {
     this.set('selectedModule', null);
     this.set('selectedLesson', null);
 
-
-    console.log('slug');
-    console.log(course_slug);
     let _selectedCourse = await this.store.findBySlug('course', course_slug);
-    console.log(_selectedCourse);
     this.set('selectedCourse', _selectedCourse);
 
   }
@@ -90,13 +86,10 @@ export default class CmsDesktopController extends Controller {
 
   @action
   submit() {
-    console.log();
-    // this.get('Modal').open('plain');
   }
 
   @action
   close() {
-    console.log();
   }
 
 }

@@ -6,7 +6,6 @@ export default class ImageUploaderEmberObject extends Uploader {
   //   this._generateThumbnail();
   // },
   generateThumbnail() {
-    console.log('generating thumbnail');
     this.set('loading', true);
     let file = this.get('file');
     let fileReader = new FileReader();
@@ -16,7 +15,6 @@ export default class ImageUploaderEmberObject extends Uploader {
       fileReader.addEventListener('load', () => resolve());
       fileReader.readAsDataURL(file);
     }).then(() => {
-      console.log('file read');
       return new Promise((resolve, reject) => {
         img.addEventListener('load', () => resolve());
         try {
@@ -28,8 +26,6 @@ export default class ImageUploaderEmberObject extends Uploader {
     });
 
     return loadImage.then(() => {
-      console.log('img loaded');
-
       this.set('width', img.width);
       this.set('height', img.height);
 

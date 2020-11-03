@@ -14,7 +14,6 @@ export default class TeachH5pUploadController extends Controller {
   async uploadPic(files) {
 
     let id = this.get('model').id;
-    console.log(id);
     const uploader = Uploader.create({
       file: files[0],
       filename: files[0].name,

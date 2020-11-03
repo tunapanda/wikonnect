@@ -9,8 +9,6 @@ export default class EditChapterComponent extends Component {
 
   @action
   async fileAdded(chapter, files) {
-    console.log(arguments);
-
     const uploader = Uploader.create({
       file: files[0],
       filename: files[0].name,

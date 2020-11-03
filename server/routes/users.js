@@ -164,8 +164,12 @@ router.get('/:id', permController.requireAuth, async ctx => {
   let stateUserId = ctx.state.user.id == undefined ? ctx.state.user.data.id : ctx.state.user.id;
 
   let userId = ctx.params.id != 'current' ? ctx.params.id : stateUserId;
-  const user = await User.query().findById(userId).mergeJoinEager('[achievementAwards(selectBadgeNameAndId), userRoles(selectName), enrolledCourses(selectNameAndId)]');
-  user.profileUri = await getProfileImage(user.profileUri);
+  let user = await User.query().findById(userId).mergeJoinEager('[achievementAwards(selectBadgeNameAndId), userRoles(selectName), enrolledCourses(selectNameAndId)]');
+  if (s3.config) {
+    user.profileUri = await getProfileImage(user.profileUri);
+  } else if (user.profileUri == null) {
+    user.profileUri = 'images/profile-placeholder.gif';
+  }
 
 
   if (!user) {
@@ -176,7 +180,7 @@ router.get('/:id', permController.requireAuth, async ctx => {
     // return specific data for all profiles incase it's private
     let publicData = {
       'username': 'private',
-      'profileUri': 'images/profile-placeholder.gif',
+      // 'profileUri': 'images/profile-placeholder.gif',
       'id': user.id,
       'private': user.private
     };
@@ -374,7 +378,7 @@ router.post('/:id/profile-image', permController.requireAuth, async (ctx, next) 
 
   else {
     await resizer.toFile(`${uploadDir}/${fileNameBase}.jpg`);
-    await User.query().findById(ctx.params.id).patchAndFetchById({ profile_uri: `${uploadPath}/${fileNameBase}.jpg` });
+    await User.query().patchAndFetchById(ctx.params.id, { profileUri: `${uploadPath}/${fileNameBase}.jpg` });
     ctx.body = {
       host: ctx.host,
       path: `${uploadPath}/${fileNameBase}.jpg`

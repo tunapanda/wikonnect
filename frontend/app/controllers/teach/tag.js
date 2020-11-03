@@ -44,8 +44,6 @@ export default class TeachTagController extends Controller {
 
   @action
   addtag() {
-    console.log(this.tag + 'x');
-    console.log(this.custom_cart);
     if (this.tag) {
       this.custom_cart.pushObject(this.tag);
       this.set('tag', '');
@@ -79,8 +77,6 @@ export default class TeachTagController extends Controller {
 
   @action
   addme(item, cart) {
-    console.log(item);
-    console.log(cart);
     switch (cart) {
     case 'competency':
       this.competency_list.removeObject(item);
@@ -113,9 +109,6 @@ export default class TeachTagController extends Controller {
 
   @action
   removeme(item, cart) {
-    console.log(item);
-    console.log(cart);
-
     switch (cart) {
     case 'competency':
       this.competency_cart.removeObject(item);

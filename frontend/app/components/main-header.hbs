@@ -1,6 +1,7 @@
 <!-- template-lint disabled=true -->
-<nav class="mb-1 navbar navbar-expand-lg navbar-light text-dark secondary-color bg-white shadow-sm  ">
+<nav class="mb-1 navbar navbar-expand-lg navbar-light text-dark secondary-color bg-white shadow-sm " >
   {{#link-to "home" class="navbar-brand"}}
+  {{style}}
     <img src="/images/kkllogo.png" alt="">
     {{!-- {{svg-jar "wikonnect-primary" class="icon"   height="40"}} --}}
   {{/link-to}}
@@ -54,15 +55,13 @@
     </ul>
     <ul class="navbar-nav ml-auto nav-flex-icons">
       {{#if me.user.id}}
-
         <li class="nav-item avatar dropdown">
           <a class="nav-link dropdown-toggle mh-50" id="navbarDropdownMenuLink-55" data-toggle="dropdown"
             aria-haspopup="true" aria-expanded="false">
             {{#if me.user.profileUri}}
               <img src={{me.user.profileUri}} class="rounded-circle h40" alt="avatar image">
             {{else}}
-              {{!-- <img src="images/profile-placeholder.gif" class="rounded-circle h40" alt="avatar image"> --}}
-              <span aria-hidden="true">&times;</span>
+              <img src="images/profile-placeholder.gif" class="rounded-circle h40" alt="avatar image">
             {{/if}}
           </a>
           <div class="dropdown-menu dropdown-menu-lg-right dropdown-secondary"

@@ -29,9 +29,6 @@ export default class ChapterIndexController extends Controller {
       let slug = await this.target.currentRoute.params.chapter_slug;
       let chap = await this.store.findRecord('chapter', slug);
 
-      console.log('slug ' + slug);
-      console.log('ssuser : ' + this.me.user.id);
-
       let rating = await this.store.createRecord('rating', {
         rating: val,
         user: this.me.get('user'),
@@ -77,7 +74,6 @@ export default class ChapterIndexController extends Controller {
 
     let slug = this.target.currentRoute.params.chapter_slug;
 
-    // console.log(this.params['chapter_slug'])
     let chap = await this.store.findRecord('chapter', slug);
     model.setProperties({
       chapter: chap,
@@ -110,18 +106,15 @@ export default class ChapterIndexController extends Controller {
   }
 
   @action
-  async dataLoad(el) {
-    console.log(el);
+  async dataLoad(_el) {
     // this.notify.info('chapter completed');
     let chapter_id = await this.target.currentRoute.params.chapter_slug;
     let score;
     window.H5P.externalDispatcher.on('xAPI', function (event) {
       if (event.getScore() === event.getMaxScore() && event.getMaxScore() > 0) {
-        console.log(event.data.statement.result.duration);
         score = event.data.statement.result.duration;
       }
     });
-    console.log(score);
 
     if(score != 'undefined'){
       let achievement = await this.store.createRecord('achievement', {
