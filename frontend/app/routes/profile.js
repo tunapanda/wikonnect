@@ -1,7 +1,8 @@
 import Route from '@ember/routing/route';
 import { inject } from '@ember/service';
+import AuthenticatedRouteMixin from 'ember-simple-auth/mixins/authenticated-route-mixin';
 
-export default class ProfileRoute extends Route {
+export default class ProfileRoute extends Route.extend(AuthenticatedRouteMixin) {
 
   @inject
   me;

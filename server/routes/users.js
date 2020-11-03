@@ -1,6 +1,6 @@
 const Router = require('koa-router');
 const path = require('path');
-
+const fetch = require('node-fetch');
 const busboy = require('async-busboy');
 const shortid = require('shortid');
 const sharp = require('sharp');
@@ -26,11 +26,10 @@ const {
   inviteUserAward,
   getProfileImage
 } = require('../utils/routesUtils/userRouteUtils');
-
+require('../utils/oauth2/passport');
 const router = new Router({
   prefix: '/users'
 });
-
 
 
 /**
@@ -203,53 +202,56 @@ router.post('/', validateAuthRoutes.validateNewUser, createPasswordHash, async c
 
 router.get('/:id', permController.requireAuth, async ctx => {
 
-  let stateUserId = ctx.state.user.id == undefined ? ctx.state.user.data.id : ctx.state.user.id;
+  try {
+    let stateUserId = ctx.state.user.id == undefined ? ctx.state.user.data.id : ctx.state.user.id;
 
-  let userId = ctx.params.id != 'current' ? ctx.params.id : stateUserId;
-  const user = await User.query().findById(userId).mergeJoinEager('[achievementAwards(selectBadgeNameAndId), userRoles(selectName), enrolledCourses(selectNameAndId)]');
-  user.profileUri = await getProfileImage(user.profileUri);
+    let userId = ctx.params.id != 'current' ? ctx.params.id : stateUserId;
+    const user = await User.query().findById(userId).mergeJoinEager('[achievementAwards(selectBadgeNameAndId), userRoles(selectName), enrolledCourses(selectNameAndId), oauth2(selectData)]');
+    user.profileUri = await getProfileImage(user.profileUri);
 
+    if (user.id != stateUserId || stateUserId === 'anonymous') {
+      // return specific data for all profiles incase it's private
+      let publicData = {
+        'username': 'private',
+        'profileUri': 'images/profile-placeholder.gif',
+        'id': user.id,
+        'private': user.private
+      };
+      // return data if profile is not private
+      if (user.private === 'false') {
+        publicData.username = user.username;
+        publicData.profileUri = user.profileUri;
+      }
+      ctx.status = 200;
+      ctx.body = { user: publicData };
+    } else {
+      enrolledCoursesType(user);
+      userRoles(user);
+      // get all verification data
+      achievementAwardsType(user);
+      const userVerification = await knex('user_verification').where({ 'user_id': userId });
+      user.userVerification = userVerification;
 
-  if (!user) {
-    ctx.throw(404, 'No User With that Id');
-  }
+      if (profileCompleteBoolean(user) && user.metadata.profileComplete === 'false') {
+        await User.query().patchAndFetchById(ctx.params.id, { 'metadata:profileComplete': 'true' });
+        await AchievementAward.query().insert({
+          'name': 'profile completed',
+          'achievementId': ctx.params.id,
+          'userId': ctx.params.id
+        });
+      }
 
-  if (user.id != stateUserId || stateUserId === 'anonymous') {
-    // return specific data for all profiles incase it's private
-    let publicData = {
-      'username': 'private',
-      'profileUri': 'images/profile-placeholder.gif',
-      'id': user.id,
-      'private': user.private
-    };
-    // return data if profile is not private
-    if (user.private === 'false') {
-      publicData.username = user.username;
-      publicData.profileUri = user.profileUri;
+      log.info('Got a request from %s for %s', ctx.request.ip, ctx.path);
+
+      ctx.status = 200;
+      ctx.body = { user };
     }
-    ctx.status = 200;
-    ctx.body = { user: publicData };
-  } else {
-    enrolledCoursesType(user);
-    userRoles(user);
-    // get all verification data
-    achievementAwardsType(user);
-    const userVerification = await knex('user_verification').where({ 'user_id': userId });
-    user.userVerification = userVerification;
-
-    if (profileCompleteBoolean(user) && user.metadata.profileComplete === 'false') {
-      await User.query().patchAndFetchById(ctx.params.id, { 'metadata:profileComplete': 'true' });
-      await AchievementAward.query().insert({
-        'name': 'profile completed',
-        'achievementId': ctx.params.id,
-        'userId': ctx.params.id
-      });
-    }
-
-    log.info('Got a request from %s for %s', ctx.request.ip, ctx.path);
-
-    ctx.status = 200;
-    ctx.body = { user };
+  } catch (e) {
+    if (e.statusCode) {
+      ctx.throw(e.statusCode, { message: 'The query key does not exist' });
+      ctx.throw(e.statusCode, null, { errors: [e.message] });
+    } else { ctx.throw(406, null, { errors: [e.message] }); }
+    throw e;
   }
 });
 /**
@@ -421,6 +423,34 @@ router.post('/:id/profile-image', permController.requireAuth, async (ctx, next) 
       host: ctx.host,
       path: `${uploadPath}/${fileNameBase}.jpg`
     };
+  }
+});
+
+
+/**
+ *  {
+ *    grant_type: 'google-oauth2',
+ *    auth_code: '4/5wHAvpr3Vgw87k0474ZaBugG0SxLTFk9fcGEQal5xhz-QRC_E1tslqdxheSu69t8rH8TILGrMR5mt6vL-yYCIe8'
+ *  }
+ *
+ * {
+  grant_type: 'facebook-oauth2',
+  auth_code: 'AQCKVkC_vwH-lDThmkFvhSmZEzjx4RpM5DH5FCxVSCUqvyaD99Jb_0GSXRBurFyLgl674PZF929og-h3XM9Me1lMWf2b_SONPvwcE7Q5C81Ke4SqQFj-JY03BEAZyTl-y9nFWZkrNPcOgseM98wHQ3diu1BtWXqa0Lcz5FgF54hsCX4DdY2NfudI_QY0udybwVM6FgbUmDFTVuogA4UvUxJbq__BWs4b5zw7LZTROBpVfI-YAsdQmCM-bZE3G8CYObZ1lUtcoKvl1eFFGeOaTQzc1KzYI5U6B2fWiOFoxx21QE7l0quQADEI2BQESpZ6XQ2PTXP0fuf_cEHZwzns7oTw'
+}
+ */
+router.post('/token', async ctx => {
+  try {
+    const response = await fetch(`https://people.googleapis.com/v1/people/me?personFields=names,coverPhotos,emailAddresses,phoneNumbers&access_token=${ctx.request.body.auth_code}`, {
+      method: 'get',
+      headers: { 'Content-Type': 'application/json' }
+    });
+    const json = await response.json();
+    console.log(JSON.stringify(json));
+
+    ctx.status = 201;
+    ctx.body = json;
+  } catch (error) {
+    console.log(error);
   }
 });
 

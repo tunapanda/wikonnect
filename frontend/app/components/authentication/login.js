@@ -1,15 +1,18 @@
+import { A } from '@ember/array';
 import { action } from '@ember/object';
 import { inject, inject as service } from '@ember/service';
 import Component from '@ember/component';
 import { tracked } from '@glimmer/tracking';
+import config from '../../config/environment';
 
 // import { tagName } from '@ember-decorators/component';
 import LoginValidations from '../../validations/login';
 
-export default
-// @tagName('')
-class LoginComponent extends Component {
+export default class LoginComponent extends Component {
   LoginValidations = LoginValidations;
+
+  @service
+  torii
 
   @service
   session
@@ -25,9 +28,24 @@ class LoginComponent extends Component {
 
   @tracked loading = false;
 
+  get providers() {
+    return A(Object.keys(config.torii.providers));
+  }
+
   @action
-  authenticateWithFacebook() {
-    this.get('session').authenticate('authenticator:torii', 'facebook');
+  authorize(provider) {
+    // this.setProperties({
+    //   error: null,
+    //   authData: null
+    // });
+
+    this.me.authenticateGoogleCustom(provider);
+
+    // this.get('torii').open(provider).then(authData => {
+    //   this.set('authData', authData);
+    // }, (e) => {
+    //   this.set('error', e);
+    // });
   }
 
   @action
@@ -39,11 +57,6 @@ class LoginComponent extends Component {
     }).catch(() => {
       this.loading = false;
       this.notify.alert('Login failed, Check your username and password and try again', { closeAfter: 6000 });
-      // if (err.json && err.json.errors) {
-      //   Object.keys(err.json.errors).forEach(field => {
-      //     model.addError(err.json.errors[field].constraint, err.json.errors[field].name);
-      //   });
-      // }
     });
 
 

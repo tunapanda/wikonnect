@@ -130,6 +130,34 @@ export default class ChapterIndexController extends Controller {
         target: chapter_id
       });
       await achievement.save();
+
+      // if user completes chapters create record
+      // let counter = await this.store.createRecord('counter', {
+      //   counter: 1,
+      //   trigger: 'chapterCompletion'
+      // });
+      // await counter.save()
     }
+    // record every page view
+    // let counter = await this.store.createRecord('counter', {
+    //   counter: 1,
+    //   trigger: 'pageLanding'
+    // });
+    // await counter.save()
+    let data = {
+      counter: 1,
+      trigger: 'pageLanding'
+    };
+    alert(data.counter, data.trigger);
+
+    // // After 10 secs record page view
+    setTimeout(function () {
+      alert("Hello");
+      let data = {
+        counter: 1,
+        trigger: 'timerDelay'
+      };
+      alert(data.counter, data.trigger);
+    }, 10000);
   }
 }

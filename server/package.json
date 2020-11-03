@@ -51,6 +51,8 @@
     "nodemailer": "^6.3.0",
     "nodemailer-mailgun-transport": "^1.4.0",
     "objection": "1.6.11",
+    "passport": "^0.4.1",
+    "passport-google-auth": "^1.0.2",
     "pg": "^8.0.3",
     "pino": "^5.17.0",
     "rate-limiter-flexible": "^2.0.0",

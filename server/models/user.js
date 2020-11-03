@@ -58,6 +58,14 @@ class User extends Model {
           },
           to: 'groups.id'
         }
+      },
+      oauth2: {
+        relation: Model.HasManyRelation,
+        modelClass: __dirname + '/oauth2',
+        join: {
+          from: 'users.id',
+          to: 'oauth2.user_id'
+        }
       }
     };
   }
