@@ -24,10 +24,10 @@ export default class MainHeaderClassicComponent extends Component {
     @action
     logoutuser() {
 
-        this.me.logout();
-        document.location.reload();
+      this.me.logout();
+      document.location.reload();
 
-        this.router.transitionTo('home');
+      this.router.transitionTo('home');
 
 
     }

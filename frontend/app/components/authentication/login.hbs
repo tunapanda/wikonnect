@@ -30,4 +30,13 @@ One sec while we get you signed in...
   </BsButton>
   {{/if}}
 
+  <div class='providers'>
+    {{#each providers as |provider|}}
+    <div class='provider'>
+      <button {{action "authorize" provider}}>
+        {{provider}}
+      </button>
+    </div>
+    {{/each}}
+  </div>
 </BsForm>

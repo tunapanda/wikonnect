@@ -101,7 +101,6 @@ export default class ProfilePrivateProfileComponent extends Component {
     let first_name = this.fname;
     let last_name = this.lname;
     let about_me = this.about;
-    let notifyer = this.notify;
     this.store.findRecord('user', this.me.user.id).then(function (user) {
       user.firstName = first_name; // => "Rails is Omakase"
       user.lastName = last_name; // => "Rails is Omakase"
@@ -109,7 +108,7 @@ export default class ProfilePrivateProfileComponent extends Component {
       user.aboutMe = about_me;
 
       user.save(); // => PATCH to '/posts/1'
-      notify.info('Profile Updated', { closeAfter: 10000 });
+      this.notify.info('Profile Updated', { closeAfter: 10000 });
     });
 
   }

@@ -1,7 +1,6 @@
 import Controller from '@ember/controller';
 import { inject } from '@ember/service';
-import { action, computed } from '@ember/object';
-import { tracked } from '@glimmer/tracking';
+import { action } from '@ember/object';
 
 export default class ApplicationController extends Controller {
 

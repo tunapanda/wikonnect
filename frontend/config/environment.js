@@ -36,13 +36,19 @@ module.exports = function (environment) {
     },
 
     torii: {
-      allowUnsafeRedirects: true,
+      allowUnsafeRedirect: true,
       sessionServiceName: 'session',
       remoteServiceName: 'iframe',
       providers: {
         'facebook-oauth2': {
           apiKey: process.env.FACEBOOK_KEY,
-          scope: 'email'
+          scope: 'email',
+          redirectUri: 'https://54923196871a.ngrok.io/login'
+        },
+        'google-token': {
+          apiKey: process.env.GOOGLE_KEY,
+          redirectUri: 'http://localhost:4200/login',
+          scope:  'email profile'
         }
       }
     },

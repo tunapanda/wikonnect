@@ -72,8 +72,8 @@ const {
 router.get('/', permController.requireAuth, mojaCampaignMiddleware, validateRouteQueryParams, async ctx => {
 
   let stateUserRole = ctx.state.user.role == undefined ? ctx.state.user.data.role : ctx.state.user.role;
-  let stateUserId = ctx.state.user.id == undefined ? ctx.state.user.data.id : ctx.state.user.id;
-  let user = await User.query().findById(stateUserId);
+  // let stateUserId = ctx.state.user.id == undefined ? ctx.state.user.data.id : ctx.state.user.id;
+  // let user = await User.query().findById(stateUserId);
 
   let roleNameList = ['basic', 'superadmin', 'tunapanda', 'admin'];
 

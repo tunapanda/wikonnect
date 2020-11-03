@@ -1,6 +1,6 @@
 const Router = require('koa-router');
 const path = require('path');
-
+const fetch = require('node-fetch');
 const busboy = require('async-busboy');
 const shortid = require('shortid');
 const sharp = require('sharp');
@@ -26,11 +26,10 @@ const {
   inviteUserAward,
   getProfileImage
 } = require('../utils/routesUtils/userRouteUtils');
-
+require('../utils/oauth2/passport');
 const router = new Router({
   prefix: '/users'
 });
-
 
 
 /**
@@ -207,12 +206,7 @@ router.get('/:id', permController.requireAuth, async ctx => {
         'userId': ctx.params.id
       });
     }
-
-    log.info('Got a request from %s for %s', ctx.request.ip, ctx.path);
-
-    ctx.status = 200;
-    ctx.body = { user };
-  }
+  } 
 });
 /**
  * @api {get} /users GET all users.
@@ -383,6 +377,34 @@ router.post('/:id/profile-image', permController.requireAuth, async (ctx, next) 
       host: ctx.host,
       path: `${uploadPath}/${fileNameBase}.jpg`
     };
+  }
+});
+
+
+/**
+ *  {
+ *    grant_type: 'google-oauth2',
+ *    auth_code: '4/5wHAvpr3Vgw87k0474ZaBugG0SxLTFk9fcGEQal5xhz-QRC_E1tslqdxheSu69t8rH8TILGrMR5mt6vL-yYCIe8'
+ *  }
+ *
+ * {
+  grant_type: 'facebook-oauth2',
+  auth_code: 'AQCKVkC_vwH-lDThmkFvhSmZEzjx4RpM5DH5FCxVSCUqvyaD99Jb_0GSXRBurFyLgl674PZF929og-h3XM9Me1lMWf2b_SONPvwcE7Q5C81Ke4SqQFj-JY03BEAZyTl-y9nFWZkrNPcOgseM98wHQ3diu1BtWXqa0Lcz5FgF54hsCX4DdY2NfudI_QY0udybwVM6FgbUmDFTVuogA4UvUxJbq__BWs4b5zw7LZTROBpVfI-YAsdQmCM-bZE3G8CYObZ1lUtcoKvl1eFFGeOaTQzc1KzYI5U6B2fWiOFoxx21QE7l0quQADEI2BQESpZ6XQ2PTXP0fuf_cEHZwzns7oTw'
+}
+ */
+router.post('/token', async ctx => {
+  try {
+    const response = await fetch(`https://people.googleapis.com/v1/people/me?personFields=names,coverPhotos,emailAddresses,phoneNumbers&access_token=${ctx.request.body.auth_code}`, {
+      method: 'get',
+      headers: { 'Content-Type': 'application/json' }
+    });
+    const json = await response.json();
+    console.log(JSON.stringify(json));
+
+    ctx.status = 201;
+    ctx.body = json;
+  } catch (error) {
+    console.log(error);
   }
 });
 

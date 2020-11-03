@@ -53,7 +53,7 @@ export default class CourseIndexController extends Controller {
   async enroll(course_id) {
     let enrollment = this.store.createRecord('enrollment');
     enrollment.set('course_id', course_id);
-    let en = await enrollment.save();
+    await enrollment.save();
   }
 
   @action
