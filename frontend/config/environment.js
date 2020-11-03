@@ -35,6 +35,18 @@ module.exports = function (environment) {
       authenticationRoute: 'login',
     },
 
+    torii: {
+      allowUnsafeRedirects: true,
+      sessionServiceName: 'session',
+      remoteServiceName: 'iframe',
+      providers: {
+        'facebook-oauth2': {
+          apiKey: process.env.FACEBOOK_KEY,
+          scope: 'email'
+        }
+      }
+    },
+
     'ember-simple-auth-token': {
       refreshTokenPropertyName: 'token',
       serverTokenEndpoint: '/api/v1/auth/',

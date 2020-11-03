@@ -34,32 +34,33 @@ const router = new Router({
 
 
 /**
-* @api {post} /users POST create a new user.
-* @apiName PostAUser
-* @apiGroup Authentication
-*
-* @apiParam (Required Params) {string} user[username] username
-* @apiParam (Required Params) {string} user[email] Unique email
-* @apiParam (Required Params) {string} user[password] validated password
-* @apiParam (Optional Params) {string} user[invitedBy] auto filled on the form
-*
-* @apiPermission none
-*
-* @apiSuccessExample {json} Success-Response:
-*     HTTP/1.1 201 OK
-*     {
-*        "user": {
-*          "id": "string",
-*          "username": "string",
-*          "inviteCode": "invited_by",
-*          "createdAt": "string",
-*          "updatedAt": "string",
-*          "metadata": json_array
-*        }
-*     }
-*
-* @apiError {String} errors Bad Request.
-*/
+ * @api {post} /users POST create a new user.
+ * @apiName PostAUser
+ * @apiGroup Authentication
+ *
+ * @apiParam (Required Params) {string} user[username] username
+ * @apiParam (Required Params) {string} user[email] Unique email
+ * @apiParam (Required Params) {string} user[password] validated password
+ * @apiParam (Optional Params) {string} user[invitedBy] auto filled on the form
+ * @apiParam (Optional Params) {string} user[tags] auto filled on the form
+ *
+ * @apiPermission none
+ *
+ * @apiSuccessExample {json} Success-Response:
+ *     HTTP/1.1 201 OK
+ *     {
+ *        "user": {
+ *          "id": "string",
+ *          "username": "string",
+ *          "inviteCode": "invited_by",
+ *          "createdAt": "string",
+ *          "updatedAt": "string",
+ *          "tags": "array",
+ *          "metadata": json_array
+ *        }
+ *     }
+ *
+ */
 
 router.post('/', validateAuthRoutes.validateNewUser, createPasswordHash, async ctx => {
   ctx.request.body.user.username = ctx.request.body.user.username.toLowerCase();

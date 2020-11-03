@@ -10,34 +10,23 @@
   </button>
   <div class="collapse navbar-collapse" id="navbarSupportedContent-555">
     <ul class="navbar-nav ml-auto text-dark">
-
       {{#if me.user.id}}
-
         <li class="nav-item">
-
           {{#link-to "home"  class="nav-link" }}
             Learn
           {{/link-to}}
         </li>
-
         <li class="nav-item">
-
           {{#link-to "teach" class="nav-link" }}
             Teach
           {{/link-to}}
-
-          {{!-- <a class="nav-link" href="https://teach.wikonnect.org/api/auth?token={{token}}&user={{me.user.username}}">
-            Teach
-          </a> --}}
         </li>
-
         <li class="nav-item">
 
           {{#link-to "index" class="nav-link" }}
             About
           {{/link-to}}
         </li>
-
         {{!-- <li class="nav-item">
 
           <a class="nav-link"
@@ -52,27 +41,16 @@
             Request Content
           </a>
         </li> --}}
-
       {{else}}
         <li class="nav-item">
-
           {{#link-to "home" class="nav-link" }}
             Home
           {{/link-to}}
         </li>
-
-
-
         <li class="nav-item">
-
           <a class="nav-link" href="https://wikonnect.org">About</a>
-
         </li>
-
-
       {{/if}}
-
-
     </ul>
     <ul class="navbar-nav ml-auto nav-flex-icons">
       {{#if me.user.id}}
@@ -84,15 +62,11 @@
               <img src={{me.user.profileUri}} class="rounded-circle h40" alt="avatar image">
             {{else}}
               {{!-- <img src="images/profile-placeholder.gif" class="rounded-circle h40" alt="avatar image"> --}}
-
               <span aria-hidden="true">&times;</span>
-
-
             {{/if}}
           </a>
           <div class="dropdown-menu dropdown-menu-lg-right dropdown-secondary"
             aria-labelledby="navbarDropdownMenuLink-55">
-
             {{#link-to "profile" class="dropdown-item" }}
               {{me.user.username}}'s Profile
             {{/link-to}}
@@ -105,28 +79,16 @@
         </li>
       {{else}}
         <li>
-
           {{#link-to "login"   }}
             Login
-
           {{/link-to}}
         </li>
         &nbsp; / &nbsp;
         <li>
-
           {{#link-to "signup"  }}
             Signup
-
           {{/link-to}}
         </li>
-
-        {{!-- <li class="nav-item">
-
-          {{#link-to "login" class="nav-item"   }}
-            Login
-
-          {{/link-to}}
-        </li> --}}
       {{/if}}
     </ul>
   </div>

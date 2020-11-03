@@ -5,21 +5,21 @@
       <form.element id="username" class="" @controlType="text" @label="Username" @placeholder="Username"
         @property="username" @autocomplete="username" />
       {{#each newUser.errors as |err| }}
-        {{#if (eq err.key "username")}}
-          <BsAlert @type="danger" @fade={{true}}>
-            {{err.validation}}
-          </BsAlert>
-        {{/if}}
+      {{#if (eq err.key "username")}}
+      <BsAlert @type="danger" @fade={{true}}>
+        {{err.validation}}
+      </BsAlert>
+      {{/if}}
       {{/each}}
 
       <form.element id="email" class="" @controlType="text" @label="Email address" @placeholder="example@mail.com"
         @property="email" @autocomplete="email" />
       {{#each newUser.errors as |err| }}
-        {{#if (eq err.key "email")}}
-          <BsAlert @type="danger" @fade={{true}}>
-            {{err.validation}}
-          </BsAlert>
-        {{/if}}
+      {{#if (eq err.key "email")}}
+      <BsAlert @type="danger" @fade={{true}}>
+        {{err.validation}}
+      </BsAlert>
+      {{/if}}
       {{/each}}
 
       <form.element id="password" class="" @controlType="password" @label="Password" @placeholder="Enter Password"
@@ -31,7 +31,20 @@
       <form.element id="invite-code" class="" @controlType="text" @label="Invite Code" @placeholder="Invite Code"
         @property="inviteCode" />
     </div>
-
     <BsButton class="btn btn-primary form-control" @type="submit" @defaultText="Sign Up" @buttonType="submit" />
   </BsForm>
+
+  <a href="https://www.iubenda.com/privacy-policy/77256861" class="iubenda-white iubenda-embed"
+    title="Privacy Policy ">Privacy Policy</a>
+  <script type="text/javascript">(function (w, d) {
+      var loader = function () {
+        var s = d.createElement("script"),
+          tag = d.getElementsByTagName("script")[0]; s.src = "https://cdn.iubenda.com/iubenda.js";
+        tag.parentNode.insertBefore(s, tag);
+      };
+      if (w.addEventListener) { w.addEventListener("load", loader, false); }
+      else if (w.attachEvent) { w.attachEvent("onload", loader); }
+      else { w.onload = loader; }
+    })(window, document);
+  </script>
 </div>
