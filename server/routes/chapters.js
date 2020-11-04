@@ -8,13 +8,11 @@ const sharp = require('sharp');
 const s3 = require('../utils/s3Util');
 const log = require('../utils/logger');
 const slugGen = require('../utils/slugGen');
-const knex  = require('../utils/knexUtil');
 
 const Chapter = require('../models/chapter');
 const User = require('../models/user');
 const permController = require('../middleware/permController');
-const validateChapter = require('../middleware/validateRoutePostSchema/validateChapter');
-const validateRouteQueryParams = require('../middleware/validateRouteQueryParams/queryValidation');
+const validateGetChapter = require('../middleware/validateRequests/chapterGetValidation');
 
 
 const router = new Router({
@@ -54,7 +52,7 @@ const {
  *
  */
 
-router.get('/', permController.requireAuth, validateRouteQueryParams, async ctx => {
+router.get('/', permController.requireAuth, validateGetChapter, async ctx => {
 
   let stateUserRole = ctx.state.user.role == undefined ? ctx.state.user.data.role : ctx.state.user.role;
   let stateUserId = ctx.state.user.id == undefined ? ctx.state.user.data.id : ctx.state.user.id;
@@ -211,7 +209,7 @@ router.get('/:id', permController.requireAuth, async ctx => {
  * @apiErrorExample {json} List error
  *    HTTP/1.1 500 Internal Server Error
  */
-router.post('/', permController.requireAuth, validateChapter, async ctx => {
+router.post('/', permController.requireAuth, async ctx => {
   let stateUserId = ctx.state.user.id == undefined ? ctx.state.user.data.id : ctx.state.user.id;
   let newChapter = ctx.request.body.chapter;
 
@@ -260,11 +258,18 @@ router.post('/', permController.requireAuth, validateChapter, async ctx => {
  *    HTTP/1.1 500 Internal Server Error
  */
 router.put('/:id', permController.requireAuth, async ctx => {
+  let chapterData = ctx.request.body.chapter;
+  let chapter = Chapter.query();
+  let chapterRed = await chapter.findById(ctx.params.id);
+
+  if (!chapterRed || chapterData.id ) {
+    ctx.throw(400, 'Body contains id, remove it');
+  }
+
   try {
-    let chapterData = ctx.request.body.chapter;
     const chapter = await Chapter.query().patchAndFetchById(ctx.params.id, chapterData);
     ctx.status = 201;
-    ctx.body = { chapter };
+    ctx.body = { chapter, chapterData };
   } catch (e) {
     if (e.statusCode) {
       ctx.throw(e.statusCode, null, { errors: [e.message] });

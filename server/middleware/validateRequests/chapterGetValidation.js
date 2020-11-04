@@ -1,6 +1,7 @@
+
 const Joi = require('joi');
 
-const schema = Joi.object({
+const schemaGet = Joi.object({
   status: Joi.string(),
   approved: Joi.boolean(),
   id: Joi.string(),
@@ -11,10 +12,9 @@ const schema = Joi.object({
   tags: Joi.string()
 });
 
-module.exports = async (ctx, next) => {
-
+module.exports =  async (ctx, next) => {
   try {
-    await schema.validateAsync(ctx.query);
+    await schemaGet.validateAsync(ctx.query);
   } catch (e) {
     if (e.statusCode) {
       ctx.throw(e.statusCode, null, { errors: [e.message] });
