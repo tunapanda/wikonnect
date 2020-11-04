@@ -5,7 +5,7 @@ exports.up = function (knex) {
       table.specificType('topics', 'text ARRAY');
     })
     .table('chapters', table => {
-      table.text('topics');
+      table.specificType('topics', 'text ARRAY');
     });
 };
 

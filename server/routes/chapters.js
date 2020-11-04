@@ -8,6 +8,7 @@ const sharp = require('sharp');
 const s3 = require('../utils/s3Util');
 const log = require('../utils/logger');
 const slugGen = require('../utils/slugGen');
+const knex  = require('../utils/knexUtil');
 
 const Chapter = require('../models/chapter');
 const User = require('../models/user');
@@ -66,13 +67,16 @@ router.get('/', permController.requireAuth, validateRouteQueryParams, async ctx 
       .select('chapters.*')
       .avg('rate.rating as rating')
       .from('chapters')
-      .skipUndefined()
-      .whereIn(ctx.query.tags, user.tags)
+      // .whereRaw(`ARRAY[chapters.tags] && aray_to_string(${user.tags}, ',')`)
+      .where('tags', '&&', `${user.tags}`)
       .where(ctx.query)
       .leftJoin('ratings as rate', 'chapters.id', 'rate.chapter_id')
       .groupBy('chapters.id', 'rate.chapter_id')
       .eager('[comment(selectComment), achievement(selectAchievement), flag(selectFlag)]');
-    await achievementType(chapter);
+    // chapter = await Chapter.query().whereRaw(`ARRAY[chapters.tags] && ${stateUserTags}]`);
+    // chapter = await knex.raw('select * from chapters where ARRAY[chapters.tags] && [$s, $s, $s]', user.tags);
+    // .throwIfNotFound();
+    // await achievementType(chapter);
   }
   else {
     chapter = await Chapter.query()
@@ -84,7 +88,7 @@ router.get('/', permController.requireAuth, validateRouteQueryParams, async ctx 
       .groupBy('chapters.id', 'rate.chapter_id')
       .eager('[comment(selectComment), flag(selectFlag)]');
   }
-  await returnType(chapter);
+  // await returnType(chapter);
 
   ctx.status = 200;
   ctx.body = { 'chapter': chapter };
@@ -256,18 +260,17 @@ router.post('/', permController.requireAuth, validateChapter, async ctx => {
  *    HTTP/1.1 500 Internal Server Error
  */
 router.put('/:id', permController.requireAuth, async ctx => {
-  let chapterData = ctx.request.body.chapter;
-  let chapter;
   try {
-    chapter = await Chapter.query().patchAndFetchById(ctx.params.id, chapterData);
+    let chapterData = ctx.request.body.chapter;
+    const chapter = await Chapter.query().patchAndFetchById(ctx.params.id, chapterData);
+    ctx.status = 201;
+    ctx.body = { chapter };
   } catch (e) {
     if (e.statusCode) {
       ctx.throw(e.statusCode, null, { errors: [e.message] });
     } else { ctx.throw(400, null, { errors: [e.message] }); }
     throw e;
   }
-  ctx.status = 201;
-  ctx.body = { chapter };
 });
 
 
