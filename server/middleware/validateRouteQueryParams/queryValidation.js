@@ -6,7 +6,9 @@ const schema = Joi.object({
   id: Joi.string(),
   slug: Joi.string(),
   creatorId: Joi.string(),
-  q: Joi.string()
+  q: Joi.string(),
+  name: Joi.string(),
+  tags: Joi.string()
 });
 
 module.exports = async (ctx, next) => {

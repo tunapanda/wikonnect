@@ -34,14 +34,14 @@ const router = new Router({
 
 
 /**
-* @api {post} /users POST create a new user.
+* @api {post} /api/v1/users POST create a new user.
 * @apiName PostAUser
 * @apiGroup Authentication
 *
-* @apiParam (Required Params) {string} user[username] username
-* @apiParam (Required Params) {string} user[email] Unique email
-* @apiParam (Required Params) {string} user[password] validated password
-* @apiParam (Optional Params) {string} user[invitedBy] auto filled on the form
+* @apiParam {string} user[username] username
+* @apiParam {string} user[email] Unique email
+* @apiParam {string} user[password] validated password
+* @apiParam {string} user[invitedBy] optional auto filled on the form
 *
 * @apiPermission none
 *
@@ -95,14 +95,20 @@ router.post('/', validateAuthRoutes.validateNewUser, createPasswordHash, async c
 
 
 /**
- * @api {get} /users/:id GET a single user using id.
+ * @api {get} /api/v1/users/:id GET a single user using id.
  * @apiName GetAUser
  * @apiGroup Authentication
  *
  * @apiVersion 0.4.0
  * @apiDescription list a single user on the platform
  * @apiPermission [admin, superadmin]
- * @apiHeader (Header) {String} authorization Bearer <<YOUR_API_KEY_HERE>>
+ * @apiHeader {String} authorization Users unique JWT
+ *
+ * @apiParam {string} id The users id
+ *
+ * @apiSampleRequest https://localhost:3000/api/v1/users
+ *
+ * @apiSuccess {String} id Unique user id
  *
  * @apiSuccessExample {json} Success-Response:
  *     HTTP/1.1 201 OK
