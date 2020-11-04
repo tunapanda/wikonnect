@@ -287,7 +287,7 @@ router.put('/:id', jwt.authenticate, permController.requireAuth, async ctx => {
   } catch (e) {
     if (e.statusCode) {
       ctx.throw(e.statusCode, null, { errors: [e.message] });
-    } else { ctx.throw(400, null, { errors: ['Bad Request', e.message] }); }
+    } else { ctx.throw(400, null, { errors: [e.message, e.message] }); }
     throw e;
   }
 
@@ -314,7 +314,7 @@ router.post('/invite/:id', async ctx => {
   } catch (e) {
     if (e.statusCode) {
       ctx.throw(e.statusCode, null, { errors: [e.message] });
-    } else { ctx.throw(400, null, { errors: ['Bad Request', e.message] }); }
+    } else { ctx.throw(400, null, { errors: [e.message] }); }
   }
 
   inviteUserAward(ctx.params.id);

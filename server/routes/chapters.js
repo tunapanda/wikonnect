@@ -65,18 +65,13 @@ router.get('/', permController.requireAuth, validateGetChapter, async ctx => {
       .select('chapters.*')
       .avg('rate.rating as rating')
       .from('chapters')
-      // .whereRaw(`ARRAY[chapters.tags] && aray_to_string(${user.tags}, ',')`)
       .where('tags', '&&', `${user.tags}`)
       .where(ctx.query)
       .leftJoin('ratings as rate', 'chapters.id', 'rate.chapter_id')
       .groupBy('chapters.id', 'rate.chapter_id')
       .eager('[comment(selectComment), achievement(selectAchievement), flag(selectFlag)]');
-    // chapter = await Chapter.query().whereRaw(`ARRAY[chapters.tags] && ${stateUserTags}]`);
-    // chapter = await knex.raw('select * from chapters where ARRAY[chapters.tags] && [$s, $s, $s]', user.tags);
-    // .throwIfNotFound();
-    // await achievementType(chapter);
-  }
-  else {
+    await achievementType(chapter);
+  } else {
     chapter = await Chapter.query()
       .select('chapters.*')
       .avg('rate.rating as rating')
@@ -86,7 +81,7 @@ router.get('/', permController.requireAuth, validateGetChapter, async ctx => {
       .groupBy('chapters.id', 'rate.chapter_id')
       .eager('[comment(selectComment), flag(selectFlag)]');
   }
-  // await returnType(chapter);
+  await returnType(chapter);
 
   ctx.status = 200;
   ctx.body = { 'chapter': chapter };
@@ -132,11 +127,11 @@ router.get('/', permController.requireAuth, validateGetChapter, async ctx => {
  */
 router.get('/:id', permController.requireAuth, async ctx => {
   let stateUserRole = ctx.state.user.role == undefined ? ctx.state.user.data.role : ctx.state.user.role;
-  let stateUserId = ctx.state.user.id == undefined ? ctx.state.user.data.id : ctx.state.user.id;
+  // let stateUserId = ctx.state.user.id == undefined ? ctx.state.user.data.id : ctx.state.user.id;
 
   let roleNameList = ['basic', 'superadmin', 'tunapanda'];
   let anonymous = 'anonymous';
-  let user = await User.query().findById(stateUserId);
+  // let user = await User.query().findById(stateUserId);
 
   let chapter = Chapter.query()
     .select('chapters.*')
@@ -147,16 +142,15 @@ router.get('/:id', permController.requireAuth, async ctx => {
     .groupBy('chapters.id', 'rate.chapter_id');
 
   if (roleNameList.includes(stateUserRole)) {
-    if (user.tags === null) {
-      chapter = await chapter.eager('[comment(selectComment), flag(selectFlag), achievement(selectAchievement)]');
-    } else if (user.tags != null) {
-      chapter = await chapter.whereIn('tags', user.tags).orWhereIn('tags', user.tags).eager('[comment(selectComment), flag(selectFlag), achievement(selectAchievement)]');
-    }
+    // if (user.tags === null) {
+    //   chapter = await chapter.eager('[comment(selectComment), flag(selectFlag), achievement(selectAchievement)]');
+    // } else if (user.tags != null) {
+    //   chapter = await chapter.where('tags', '&&', `${user.tags}`).eager('[comment(selectComment), flag(selectFlag), achievement(selectAchievement)]');
+    // }
+    chapter = await chapter.eager('[comment(selectComment), flag(selectFlag), achievement(selectAchievement)]');
     await achievementType(chapter);
   } else if (stateUserRole == anonymous) {
     chapter = await chapter.where({ status: 'published' }).eager('comment(selectComment)');
-  } else {
-    chapter = await Chapter.query().where({ id: ctx.params.id, creatorId: stateUserId });
   }
 
   ctx.assert(chapter, 404, 'no lesson by that ID');
@@ -259,17 +253,16 @@ router.post('/', permController.requireAuth, async ctx => {
  */
 router.put('/:id', permController.requireAuth, async ctx => {
   let chapterData = ctx.request.body.chapter;
-  let chapter = Chapter.query();
-  let chapterRed = await chapter.findById(ctx.params.id);
+  let chapterRed = await Chapter.query().findById(ctx.params.id);
 
-  if (!chapterRed || chapterData.id ) {
+  if (!chapterRed || chapterData.id) {
     ctx.throw(400, 'Body contains id, remove it');
   }
 
   try {
     const chapter = await Chapter.query().patchAndFetchById(ctx.params.id, chapterData);
     ctx.status = 201;
-    ctx.body = { chapter, chapterData };
+    ctx.body = { chapter };
   } catch (e) {
     if (e.statusCode) {
       ctx.throw(e.statusCode, null, { errors: [e.message] });
