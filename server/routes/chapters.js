@@ -211,7 +211,7 @@ router.post('/', permController.requireAuth, validateChapter, async ctx => {
   let stateUserId = ctx.state.user.id == undefined ? ctx.state.user.data.id : ctx.state.user.id;
   let newChapter = ctx.request.body.chapter;
 
-  // slug generation automated
+  // Server side slug generator
   newChapter.slug = await slugGen(newChapter.name);
   newChapter.creatorId = stateUserId;
 
