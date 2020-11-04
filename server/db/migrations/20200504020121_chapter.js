@@ -2,7 +2,7 @@
 exports.up = function (knex) {
   return knex.schema
     .table('chapters', table => {
-      table.text('tags');
+      table.specificType('tags', 'text ARRAY');
     });
 
 };

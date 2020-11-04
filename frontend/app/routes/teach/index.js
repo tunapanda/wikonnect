@@ -8,15 +8,6 @@ export default class TeachIndexRoute extends Route {
 
   @service me
   async model() {
-    //   const response = await fetch('https://app.wikonnect.org/api/v1/chapters/teach');
-    //const response = await fetch('/chapters/teach');
-
-
-    return this.store.query('chapter', { 'creator_id': this.me.user.id });
-    //return this.store.findAll('chapter');
-
-
-
-
+    return this.store.query('chapter', { 'creatorId': this.me.user.id });
   }
 }

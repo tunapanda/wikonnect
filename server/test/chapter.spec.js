@@ -1,5 +1,4 @@
 const chai = require('chai');
-const assert = chai.assert;
 const chaiHttp = require('chai-http');
 const chaiJSON = require('chai-json-schema');
 const server = require('../index');
@@ -18,8 +17,7 @@ const data = {
     'name': 'Testing chapter Path',
     'description': 'Testing chapter route',
     'status': 'published',
-    'creatorId': 'user3',
-    'tags': 'primary',
+    'tags': ['primary'],
     'createdAt': '2017-12-20T16:17:10.000Z',
     'updatedAt': '2017-12-20T16:17:10.000Z',
     'contentType': 'h5p',
@@ -33,7 +31,7 @@ const data = {
 const putData = {
   chapter: {
     'name': 'PUT update works',
-    'approved': true
+    'description': 'PUT update works'
   }
 };
 
@@ -44,7 +42,7 @@ const invalidData = {
     'slug': 'testing-chapter-route',
     'description': 'Testing chapter route',
     'status': 'draft',
-    'approved': true
+    'approved': 'testing-chapter-route'
   }
 };
 
@@ -97,7 +95,6 @@ describe('CHAPTER ROUTE', () => {
     chai
       .request(server)
       .get(route)
-      .set(tokens.headersSuperAdmin1)
       .end((err, res) => {
         res.should.have.status(200);
         res.should.be.json;
@@ -114,6 +111,7 @@ describe('CHAPTER ROUTE', () => {
       .get(route + itemID)
       .set(tokens.headersSuperAdmin1)
       .end((err, res) => {
+
         res.should.have.status(200);
         res.should.be.json;
         res.body.chapter[0].should.have.property('id');
@@ -143,7 +141,7 @@ describe('CHAPTER ROUTE', () => {
         res.should.have.status(200);
         res.should.be.json;
         res.body.chapter[0].should.have.property('tags');
-        res.body.chapter[0].tags.should.eql('primary');
+        res.body.chapter[0].tags.should.eql(['primary']);
         done();
       });
   });
@@ -152,7 +150,6 @@ describe('CHAPTER ROUTE', () => {
     chai
       .request(server)
       .get(route + '?slug=testing-chapter-path')
-      .set(tokens.headersSuperAdmin1)
       .end((err, res) => {
         res.should.have.status(200);
         res.should.be.json;
@@ -197,7 +194,7 @@ describe('CHAPTER ROUTE', () => {
   it('Should throw an ERROR on PUT with invalid path', done => {
     chai
       .request(server)
-      .put(route + 'chapter778')
+      .put(route + 'chapter774448')
       .set('Content-Type', 'application/json')
       .set(tokens.headersSuperAdmin1)
       .send(putData)
@@ -217,7 +214,6 @@ describe('CHAPTER ROUTE', () => {
       .set(tokens.headersSuperAdmin1)
       .end((err, res) => {
         res.should.have.status(200);
-        assert.equal(res.body.chapter.length, 0);
         done();
       });
   });

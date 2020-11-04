@@ -31,7 +31,7 @@ exports.seed = function (knex) {
           last_seen: '2017-12-20 19:17:10',
           created_at: '2017-12-20 19:17:10',
           updated_at: '2017-12-20 19:17:10',
-          tags: ['highschool', 'primary'],
+          tags: ['primary'],
           metadata: { profileComplete: 'false', oneInviteComplete: 'false', oneChapterCompletion: 'false' }
         },
         {
