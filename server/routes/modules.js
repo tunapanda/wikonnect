@@ -325,7 +325,7 @@ router.delete('/:id', permController.requireAuth, permController.grantAccess('de
   let modules = await Module.query().findById(ctx.params.id);
 
   if (modules === undefined) {
-    ctx.throw(400, null, { errors: [e.message] });
+    ctx.throw(400, null, 'Bad Request');
   }
 
   await Module.query().delete().where({ id: ctx.params.id });
