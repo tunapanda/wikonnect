@@ -12,8 +12,8 @@ export default class TeachIndexRoute extends Route {
     //const response = await fetch('/chapters/teach');
 
 
-    // return this.store.query('chapter', { "creator_id": this.me.user.id });
-    return this.store.findAll('chapter');
+    return this.store.query('chapter', { "creator_id": this.me.user.id });
+    //return this.store.findAll('chapter');
 
 
 
