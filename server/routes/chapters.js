@@ -255,7 +255,7 @@ router.post('/', permController.requireAuth, validateChapter, async ctx => {
  * @apiErrorExample {json} List error
  *    HTTP/1.1 500 Internal Server Error
  */
-router.put('/:id', async ctx => {
+router.put('/:id', permController.requireAuth, async ctx => {
   let chapterData = ctx.request.body.chapter;
   let chapter;
   try {
