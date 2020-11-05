@@ -69,53 +69,49 @@ const {
  *    HTTP/1.1 500 Internal Server Error
  */
 
-router.get('/', permController.requireAuth, mojaCampaignMiddleware, validateRouteQueryParams, async ctx => {
+router.get('/', permController.requireAuth, validateRouteQueryParams, async ctx => {
+
+
 
   let stateUserRole = ctx.state.user.role == undefined ? ctx.state.user.data.role : ctx.state.user.role;
-  // let stateUserId = ctx.state.user.id == undefined ? ctx.state.user.data.id : ctx.state.user.id;
-  // let user = await User.query().findById(stateUserId);
+  let stateUserId = ctx.state.user.id == undefined ? ctx.state.user.data.id : ctx.state.user.id;
+  let user = await User.query().findById(stateUserId);
 
   let roleNameList = ['basic', 'superadmin', 'tunapanda', 'admin'];
 
-  let chapter;
+  let chapter = Chapter.query()
+    .select('chapters.*')
+    .avg('rate.rating as rating')
+    .from('chapters');
+
+
   if (roleNameList.includes(stateUserRole)) {
-    if (ctx.query.q) {
-      console.log(ctx.query.q);
-      chapter = await chapter
-        .where('name', 'ILIKE', `%${ctx.query.q}%`)
-        // .where(ctx.query, { status: 'published' })
-        // .whereIn('tags', user.tags)
-        .orWhere('description', 'ILIKE', `%${ctx.query.q}%`)
+    if (user.tags === null || user.tags === undefined) {
+      chapter = await chapter.where(ctx.query)
         .leftJoin('ratings as rate', 'chapters.id', 'rate.chapter_id')
         .groupBy('chapters.id', 'rate.chapter_id')
-        .eager('[comment(selectComment), achievement(selectAchievement), flag(selectFlag)]');
-    } else {
-      chapter = await Chapter.query()
-        .select('chapters.*')
-        .avg('rate.rating as rating')
-        .from('chapters')
-        .where(ctx.query, { status: 'published' })
-        // .whereIn('tags', user.tags)
+        .eager('[comment(selectComment), achievement(selectAchievement), flag(selectFlag)]')
+        .skipUndefined();
+    } else if (user.tags != null && user.tags != undefined) {
+      chapter = await chapter.where(ctx.query).where('tags', '&&', `${user.tags}`)
         .leftJoin('ratings as rate', 'chapters.id', 'rate.chapter_id')
         .groupBy('chapters.id', 'rate.chapter_id')
-        .eager('[comment(selectComment), achievement(selectAchievement), flag(selectFlag)]');
+        .eager('[comment(selectComment), achievement(selectAchievement), flag(selectFlag)]')
+        .skipUndefined();
     }
-    await achievementType(chapter);
+    // await achievementType(chapter);
   } else {
-    // chapter = await Chapter.query().where(ctx.query).eager('[comment(selectComment), flag(selectFlag), rating(selectRating)]');
-    chapter = await Chapter.query()
-      .select('chapters.*')
-      .avg('rate.rating as rating')
-      .from('chapters')
+    chapter = await chapter
       .where(ctx.query)
       .leftJoin('ratings as rate', 'chapters.id', 'rate.chapter_id')
       .groupBy('chapters.id', 'rate.chapter_id')
       .eager('[comment(selectComment), flag(selectFlag)]');
   }
-  await returnType(chapter);
+  // await returnType(chapter);
 
   ctx.status = 200;
-  ctx.body = { 'chapter' : chapter };
+  ctx.body = { 'chapter': chapter };
+
 });
 
 /**
@@ -160,11 +156,9 @@ router.get('/', permController.requireAuth, mojaCampaignMiddleware, validateRout
  */
 router.get('/:id', permController.requireAuth, async ctx => {
   let stateUserRole = ctx.state.user.role == undefined ? ctx.state.user.data.role : ctx.state.user.role;
-  let stateUserId = ctx.state.user.id == undefined ? ctx.state.user.data.id : ctx.state.user.id;
 
   let roleNameList = ['basic', 'superadmin', 'tunapanda'];
   let anonymous = 'anonymous';
-  let user = await User.query().findById(stateUserId);
 
   let chapter = Chapter.query()
     .select('chapters.*')
@@ -175,16 +169,10 @@ router.get('/:id', permController.requireAuth, async ctx => {
     .groupBy('chapters.id', 'rate.chapter_id');
 
   if (roleNameList.includes(stateUserRole)) {
-    if (user.tags === null) {
-      chapter = await chapter.eager('[comment(selectComment), flag(selectFlag), achievement(selectAchievement)]');
-    } else if (user.tags != null) {
-      chapter = await chapter.whereIn('tags', user.tags).orWhereIn('tags', user.tags).eager('[comment(selectComment), flag(selectFlag), achievement(selectAchievement)]');
-    }
+    chapter = await chapter.eager('[comment(selectComment), flag(selectFlag), achievement(selectAchievement)]');
     await achievementType(chapter);
   } else if (stateUserRole == anonymous) {
     chapter = await chapter.where({ status: 'published' }).eager('comment(selectComment)');
-  } else {
-    chapter = await Chapter.query().where({ id: ctx.params.id, creatorId: stateUserId });
   }
 
   ctx.assert(chapter, 404, 'no lesson by that ID');

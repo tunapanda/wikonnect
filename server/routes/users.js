@@ -26,7 +26,8 @@ const {
   inviteUserAward,
   getProfileImage
 } = require('../utils/routesUtils/userRouteUtils');
-require('../utils/oauth2/passport');
+const googleToken = require('../utils/oauth2/googleToken');
+// require('../utils/oauth2/passport');
 const router = new Router({
   prefix: '/users'
 });
@@ -446,7 +447,7 @@ router.post('/token', async ctx => {
     });
     const json = await response.json();
     console.log(JSON.stringify(json));
-
+    googleToken(ctx.request.body.auth_code);
     ctx.status = 201;
     ctx.body = json;
   } catch (error) {
