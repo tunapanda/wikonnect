@@ -34,18 +34,12 @@ export default class LoginComponent extends Component {
 
   @action
   authorize(provider) {
-    // this.setProperties({
-    //   error: null,
-    //   authData: null
-    // });
-
-    this.me.authenticateGoogleCustom(provider);
-
-    // this.get('torii').open(provider).then(authData => {
-    //   this.set('authData', authData);
-    // }, (e) => {
-    //   this.set('error', e);
-    // });
+    this.me.authenticateGoogleCustom(provider).then(() => {
+      this.authenticationSuccessful();
+    }).catch(() => {
+      this.loading = false;
+      this.notify.alert('Login failed, Check your username and password and try again', { closeAfter: 6000 });
+    });
   }
 
   @action

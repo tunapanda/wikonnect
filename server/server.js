@@ -18,7 +18,7 @@ koaQs(app);
 
 app.use(cors({
   origin: '*',
-  maxAge: 5,
+  maxAge: 20,
   credentials: true,
   allowMethods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowHeaders: ['Content-Type', 'Authorization', 'Accept', 'mojaHeaders'],

@@ -1,22 +1,22 @@
-const Router = require('koa-router');
 const path = require('path');
-const fetch = require('node-fetch');
-const busboy = require('async-busboy');
-const shortid = require('shortid');
 const sharp = require('sharp');
-const s3 = require('../utils/s3Util');
-const { updatedAt } = require('../utils/timestamp');
+const shortid = require('shortid');
+const Router = require('koa-router');
+const busboy = require('async-busboy');
+const jsonwebtoken = require('jsonwebtoken');
 
 const User = require('../models/user');
 const AchievementAward = require('../models/achievement_awards');
 
-const log = require('../utils/logger');
-const jwt = require('../middleware/jwt');
+const { authenticate, secret} = require('../middleware/jwt');
 const permController = require('../middleware/permController');
 const validateAuthRoutes = require('../middleware/validateRoutePostSchema/validateAuthRoutes');
 
-const knex = require('../utils/knexUtil');
 
+const s3 = require('../utils/s3Util');
+const log = require('../utils/logger');
+const knex = require('../utils/knexUtil');
+const { updatedAt } = require('../utils/timestamp');
 const {
   achievementAwardsType,
   userRoles,
@@ -27,7 +27,8 @@ const {
   getProfileImage
 } = require('../utils/routesUtils/userRouteUtils');
 const googleToken = require('../utils/oauth2/googleToken');
-// require('../utils/oauth2/passport');
+
+
 const router = new Router({
   prefix: '/users'
 });
@@ -316,7 +317,7 @@ router.get('/', permController.requireAuth, permController.grantAccess('readAny'
  *
  */
 
-router.put('/:id', jwt.authenticate, permController.requireAuth, async ctx => {
+router.put('/:id', authenticate, permController.requireAuth, async ctx => {
 
   ctx.request.body.user.updatedAt = await updatedAt();
 
@@ -430,28 +431,39 @@ router.post('/:id/profile-image', permController.requireAuth, async (ctx, next) 
 
 /**
  *  {
- *    grant_type: 'google-oauth2',
- *    auth_code: '4/5wHAvpr3Vgw87k0474ZaBugG0SxLTFk9fcGEQal5xhz-QRC_E1tslqdxheSu69t8rH8TILGrMR5mt6vL-yYCIe8'
+ *    grant_type: 'google-token',
+ *    auth_code: 'long token string'
+ *  }
+ *  {
+ *    grant_type: 'facebook-oauth2',
+ *    auth_code: 'long token string'
  *  }
  *
- * {
-  grant_type: 'facebook-oauth2',
-  auth_code: 'AQCKVkC_vwH-lDThmkFvhSmZEzjx4RpM5DH5FCxVSCUqvyaD99Jb_0GSXRBurFyLgl674PZF929og-h3XM9Me1lMWf2b_SONPvwcE7Q5C81Ke4SqQFj-JY03BEAZyTl-y9nFWZkrNPcOgseM98wHQ3diu1BtWXqa0Lcz5FgF54hsCX4DdY2NfudI_QY0udybwVM6FgbUmDFTVuogA4UvUxJbq__BWs4b5zw7LZTROBpVfI-YAsdQmCM-bZE3G8CYObZ1lUtcoKvl1eFFGeOaTQzc1KzYI5U6B2fWiOFoxx21QE7l0quQADEI2BQESpZ6XQ2PTXP0fuf_cEHZwzns7oTw'
-}
+ * connect account if teh user with that email exists
+ * create a new user account if the user with that email does not exists
  */
-router.post('/token', async ctx => {
+
+router.post('/token', async (ctx, next) => {
+  if ('POST' != ctx.method) return await next();
+
   try {
-    const response = await fetch(`https://people.googleapis.com/v1/people/me?personFields=names,coverPhotos,emailAddresses,phoneNumbers&access_token=${ctx.request.body.auth_code}`, {
-      method: 'get',
-      headers: { 'Content-Type': 'application/json' }
-    });
-    const json = await response.json();
-    console.log(JSON.stringify(json));
-    googleToken(ctx.request.body.auth_code);
-    ctx.status = 201;
-    ctx.body = json;
-  } catch (error) {
-    console.log(error);
+    const token = await googleToken(ctx.request.body.auth_code);
+    ctx.body = {
+      token: jsonwebtoken.sign({
+        data: token,
+        exp: Math.floor(Date.now() / 1000 + 604800) // 60 seconds * 60 minutes * 24 hours * 7 days = 1 week
+      }, secret)
+    };
+  } catch (e) {
+    if (e.name === 'FetchError') {
+      ctx.status = 502;
+      ctx.body = {
+        error: 'You have a slow network'
+      };
+    } else if (e.statusCode) {
+      ctx.throw(e.statusCode, null, { errors: [e.message] });
+    } else { ctx.throw(400, null, { errors: [e.message] }); }
+    throw e;
   }
 });
 

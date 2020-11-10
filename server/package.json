@@ -24,6 +24,7 @@
     "accesscontrol": "^2.2.1",
     "async-busboy": "^1.0.1",
     "aws-sdk": "^2.643.0",
+    "axios": "^0.21.0",
     "badwords": "^1.0.0",
     "bcrypt": "^5.0.0",
     "busboy": "^0.3.1",

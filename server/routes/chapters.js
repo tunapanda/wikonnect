@@ -12,7 +12,7 @@ const slugGen = require('../utils/slugGen');
 const Chapter = require('../models/chapter');
 const User = require('../models/user');
 const permController = require('../middleware/permController');
-const mojaCampaignMiddleware = require('../middleware/mojaCampaignMiddleware');
+// const mojaCampaignMiddleware = require('../middleware/mojaCampaignMiddleware');
 const validateChapter = require('../middleware/validateRoutePostSchema/validateChapter');
 const validateRouteQueryParams = require('../middleware/validateRouteQueryParams/queryValidation');
 
@@ -92,7 +92,7 @@ router.get('/', permController.requireAuth, validateRouteQueryParams, async ctx 
         .groupBy('chapters.id', 'rate.chapter_id')
         .eager('[comment(selectComment), achievement(selectAchievement), flag(selectFlag)]')
         .skipUndefined();
-    } else if (user.tags != null && user.tags != undefined) {
+    } else if (user.tags != null || user.tags != undefined || user.tags === 'all') {
       chapter = await chapter.where(ctx.query).where('tags', '&&', `${user.tags}`)
         .leftJoin('ratings as rate', 'chapters.id', 'rate.chapter_id')
         .groupBy('chapters.id', 'rate.chapter_id')
@@ -271,7 +271,6 @@ router.post('/', permController.requireAuth, validateChapter, async ctx => {
  *    HTTP/1.1 500 Internal Server Error
  */
 router.put('/:id', permController.requireAuth, async ctx => {
-  //router.put('/:id', async ctx => {
   const chapter_record = await Chapter.query().findById(ctx.params.id);
   let chapterData = ctx.request.body.chapter;
 
@@ -418,7 +417,8 @@ router.post('/:id/upload', async ctx => {
   await Chapter.query()
     .findById(dirName)
     .patch({
-      content_uri: uploadPath
+      content_uri: uploadPath,
+      content_type: 'h5p'
     });
 
 

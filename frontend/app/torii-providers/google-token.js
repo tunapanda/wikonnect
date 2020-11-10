@@ -71,8 +71,6 @@ let GoogleToken = Oauth2Bearer.extend({
         'provider': authData.provider,
         'authorizationCode': authData.token
       };
-      console.log('google token ciustom');
-    console.log(data);
       return data;
     });
   }

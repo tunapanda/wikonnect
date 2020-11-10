@@ -40,16 +40,16 @@ module.exports = function (environment) {
       sessionServiceName: 'session',
       remoteServiceName: 'iframe',
       providers: {
-        'facebook-oauth2': {
-          apiKey: process.env.FACEBOOK_KEY,
-          scope: 'email',
-          redirectUri: 'https://54923196871a.ngrok.io/login'
-        },
-        'google-token': {
-          apiKey: process.env.GOOGLE_KEY,
-          redirectUri: 'http://localhost:4200/login',
-          scope:  'email profile'
-        }
+        // 'facebook-oauth2': {
+        //   apiKey: process.env.FACEBOOK_KEY,
+        //   scope: 'email',
+        //   redirectUri: 'https://54923196871a.ngrok.io/login'
+        // },
+      //   'google-token': {
+      //     apiKey: process.env.GOOGLE_KEY,
+      //     redirectUri: process.env.GOOGLE_REDIRECT,
+      //     scope:  'email profile'
+      //   }
       }
     },
 
