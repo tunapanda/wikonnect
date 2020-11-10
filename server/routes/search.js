@@ -1,14 +1,13 @@
-const Router = require('koa-router');
-const search = require('../utils/search');
-const log = require('../utils/logger');
 const _ = require('lodash');
+const Router = require('koa-router');
+const log = require('../utils/logger');
+const search = require('../utils/search');
+const { requireAuth } = require('../middleware/permController');
 
-// const models = {
-//   learning_path: require('../models/learning_path'),
-//   course: require('../models/course'),
-//   module: require('../models/module'),
-//   lesson: require('../models/lesson')
-// };
+const models = {
+  chapter: require('../models/chapter'),
+  user: require('../models/user')
+};
 
 const router = new Router({
   prefix: '/search'
@@ -30,8 +29,25 @@ const router = new Router({
  *        "error": "Search Unavailable"
  *     }]
  */
+router.get('/chapter', requireAuth, async ctx => {
 
-router.get('/', async ctx => {
+  let stateUserId = ctx.state.user.id == undefined ? ctx.state.user.data.id : ctx.state.user.id;
+  let user = await models.user.query().findById(stateUserId);
+  let chapter = models.chapter.query();
+  if (ctx.query.q) {
+    chapter = await chapter
+      .where('name', 'ILIKE', `%${ctx.query.q}%`)
+      .where(ctx.query, { status: 'published' })
+      .whereIn('tags', user.tags)
+      .orWhere('description', 'ILIKE', `%${ctx.query.q}%`)
+      .leftJoin('ratings as rate', 'chapters.id', 'rate.chapter_id')
+      .groupBy('chapters.id', 'rate.chapter_id')
+      .eager('[comment(selectComment), achievement(selectAchievement), flag(selectFlag)]');
+  }
+  ctx.status = 200;
+  ctx.body = { 'search': chapter };
+});
+router.get('/elastic', async ctx => {
   const queryText = ctx.query.q;
   try {
     const elasticResponse = await search.search({

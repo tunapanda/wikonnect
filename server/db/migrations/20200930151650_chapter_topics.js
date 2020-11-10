@@ -2,10 +2,10 @@
 exports.up = function (knex) {
   return knex.schema
     .table('users', table => {
-      table.specificType('topics', 'text ARRAY');
+      table.text('topics');
     })
     .table('chapters', table => {
-      table.text('topics');
+      table.specificType('topics', 'text ARRAY');
     });
 };
 
