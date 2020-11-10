@@ -31,6 +31,7 @@
 
 <div class="text-center">
   {{#if (eq me.user.username "daph")}}
+
     {{#if (eq model.approved "true")}}
 
       <button {{on "click" (fn this.toggleApproval model.id "true")}} type="button"
@@ -43,6 +44,8 @@
         Approve This
       </button>
     {{/if}}
+
+
 
   {{/if}}
 </div>

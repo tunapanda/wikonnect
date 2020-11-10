@@ -16,6 +16,11 @@
           {{@chapter.name}}
         {{/link-to}}
       </h5>
+
+
+
+      <p class="card-text">{{@chapter.description}}</p>
+      <br>
       {{#each @chapter.tags as |tag|}}
         {{#link-to "tag" tag}}
 
@@ -25,9 +30,6 @@
         {{/link-to}}
 
       {{/each}}
-
-
-      <p class="card-text">{{@chapter.description}}</p>
     </div>
 
   </div>
