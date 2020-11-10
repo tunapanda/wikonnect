@@ -12,6 +12,9 @@ export default class ChapterIndexController extends Controller {
   store;
 
   @inject
+  router;
+
+  @inject
   me
 
 
@@ -87,6 +90,15 @@ export default class ChapterIndexController extends Controller {
   }
 
   @action
+  deleteChapter(chapter_id) {
+    let chapter = this.store.peekRecord('chapter', chapter_id);
+    chapter.destroyRecord();
+    this.router.transitionTo('manage');
+
+  }
+
+
+  @action
   toggleApproval(chapter_id, a) {
     if (a == 'true') {
       this.store.findRecord('chapter', chapter_id).then(function (chap) {
@@ -123,7 +135,7 @@ export default class ChapterIndexController extends Controller {
     });
     console.log(score);
 
-    if(score != 'undefined'){
+    if (score != 'undefined') {
       let achievement = await this.store.createRecord('achievement', {
         description: 'completed' + chapter_id,
         targetStatus: 'completed',
