@@ -3,6 +3,7 @@ const Router = require('koa-router');
 const log = require('../utils/logger');
 const search = require('../utils/search');
 const { requireAuth } = require('../middleware/permController');
+const { array } = require('joi');
 
 const models = {
   chapter: require('../models/chapter'),
@@ -21,7 +22,13 @@ const router = new Router({
  * @apiPermission none
  * @apiVersion 0.4.0
  *
- * @apiSampleRequest off
+ * @apiSampleRequest on
+ *
+ * @apiSuccessExample {json} Error-Response:
+ *     HTTP/1.1 200
+ *     {
+ *        "search": [{}]
+ *     }
  *
  * @apiErrorExample {json} Error-Response:
  *     HTTP/1.1 404 Not Found
@@ -43,7 +50,7 @@ router.get('/chapter', requireAuth, async ctx => {
   } else if (ctx.query.tags) {
     chapter = await chapter
       .where({ approved: 'true' })
-      .where('tags', '&&', `${ctx.query.tags}`);
+      .whereRaw('? = ANY(tags)', `${ctx.query.tags}`);
   }
   ctx.status = 200;
   ctx.body = { 'search': chapter };
