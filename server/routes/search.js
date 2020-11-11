@@ -3,7 +3,6 @@ const Router = require('koa-router');
 const log = require('../utils/logger');
 const search = require('../utils/search');
 const { requireAuth } = require('../middleware/permController');
-const { array } = require('joi');
 
 const models = {
   chapter: require('../models/chapter'),
