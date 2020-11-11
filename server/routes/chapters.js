@@ -59,23 +59,30 @@ router.get('/', permController.requireAuth, validateGetChapter, async ctx => {
   let user = await User.query().findById(stateUserId);
 
   let roleNameList = ['basic', 'superadmin', 'tunapanda', 'admin'];
-  let chapter;
+
+  let chapter = Chapter.query()
+    .select('chapters.*')
+    .avg('rate.rating as rating')
+    .from('chapters');
+
+
   if (roleNameList.includes(stateUserRole)) {
-    chapter = await Chapter.query()
-      .select('chapters.*')
-      .avg('rate.rating as rating')
-      .from('chapters')
-      .where('tags', '&&', `${user.tags}`)
-      .where(ctx.query)
-      .leftJoin('ratings as rate', 'chapters.id', 'rate.chapter_id')
-      .groupBy('chapters.id', 'rate.chapter_id')
-      .eager('[comment(selectComment), achievement(selectAchievement), flag(selectFlag)]');
+    if (user.tags === null || user.tags === undefined) {
+      chapter = await chapter.where(ctx.query)
+        .leftJoin('ratings as rate', 'chapters.id', 'rate.chapter_id')
+        .groupBy('chapters.id', 'rate.chapter_id')
+        .eager('[comment(selectComment), achievement(selectAchievement), flag(selectFlag)]')
+        .skipUndefined();
+    } else if (user.tags != null || user.tags != undefined || user.tags === 'all') {
+      chapter = await chapter.where(ctx.query).where('tags', '&&', `${user.tags}`)
+        .leftJoin('ratings as rate', 'chapters.id', 'rate.chapter_id')
+        .groupBy('chapters.id', 'rate.chapter_id')
+        .eager('[comment(selectComment), achievement(selectAchievement), flag(selectFlag)]')
+        .skipUndefined();
+    }
     await achievementType(chapter);
   } else {
-    chapter = await Chapter.query()
-      .select('chapters.*')
-      .avg('rate.rating as rating')
-      .from('chapters')
+    chapter = await chapter
       .where(ctx.query)
       .leftJoin('ratings as rate', 'chapters.id', 'rate.chapter_id')
       .groupBy('chapters.id', 'rate.chapter_id')
@@ -103,6 +110,8 @@ router.get('/', permController.requireAuth, validateGetChapter, async ctx => {
  * @apiSuccess {Object[]} Chapter[object] Object data
  *
  * @apiSuccessExample {json} Success-Response:
+ *     HTTP/1.1 200 OK
+ *     {
  *        "chapter": {
  *            "id": "chapter1",
  *            "lessonId": "lesson1",
@@ -120,6 +129,7 @@ router.get('/', permController.requireAuth, validateGetChapter, async ctx => {
  *            "tags": [],
  *            "comment": [{
  *            }]
+ *         }
  *      }
  *
  * @apiErrorExample {json} List error
@@ -127,11 +137,9 @@ router.get('/', permController.requireAuth, validateGetChapter, async ctx => {
  */
 router.get('/:id', permController.requireAuth, async ctx => {
   let stateUserRole = ctx.state.user.role == undefined ? ctx.state.user.data.role : ctx.state.user.role;
-  // let stateUserId = ctx.state.user.id == undefined ? ctx.state.user.data.id : ctx.state.user.id;
 
   let roleNameList = ['basic', 'superadmin', 'tunapanda'];
   let anonymous = 'anonymous';
-  // let user = await User.query().findById(stateUserId);
 
   let chapter = Chapter.query()
     .select('chapters.*')
@@ -142,11 +150,6 @@ router.get('/:id', permController.requireAuth, async ctx => {
     .groupBy('chapters.id', 'rate.chapter_id');
 
   if (roleNameList.includes(stateUserRole)) {
-    // if (user.tags === null) {
-    //   chapter = await chapter.eager('[comment(selectComment), flag(selectFlag), achievement(selectAchievement)]');
-    // } else if (user.tags != null) {
-    //   chapter = await chapter.where('tags', '&&', `${user.tags}`).eager('[comment(selectComment), flag(selectFlag), achievement(selectAchievement)]');
-    // }
     chapter = await chapter.eager('[comment(selectComment), flag(selectFlag), achievement(selectAchievement)]');
     await achievementType(chapter);
   } else if (stateUserRole == anonymous) {

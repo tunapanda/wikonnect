@@ -591,7 +591,7 @@
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "  \"chapter\": {\n      \"id\": \"chapter1\",\n      \"lessonId\": \"lesson1\",\n      \"name\": \"A Chapter\",\n      \"slug\": \"a-chapter\",\n      \"description\": \"An H5P Chapter.\",\n      \"status\": \"published\",\n      \"creatorId\": \"user1\",\n      \"createdAt\": \"2017-12-20T16:17:10.000Z\",\n      \"updatedAt\": \"2017-12-20T16:17:10.000Z\",\n      \"contentType\": \"h5p\",\n      \"contentUri\": \"/uploads/h5p/chapter1\",\n      \"imageUrl\": \"/uploads/images/content/chapters/chapter1.jpeg\",\n      \"contentId\": null,\n      \"tags\": [],\n      \"comment\": [{\n      }]\n}",
+          "content": "HTTP/1.1 200 OK\n{\n   \"chapter\": {\n       \"id\": \"chapter1\",\n       \"lessonId\": \"lesson1\",\n       \"name\": \"A Chapter\",\n       \"slug\": \"a-chapter\",\n       \"description\": \"An H5P Chapter.\",\n       \"status\": \"published\",\n       \"creatorId\": \"user1\",\n       \"createdAt\": \"2017-12-20T16:17:10.000Z\",\n       \"updatedAt\": \"2017-12-20T16:17:10.000Z\",\n       \"contentType\": \"h5p\",\n       \"contentUri\": \"/uploads/h5p/chapter1\",\n       \"imageUrl\": \"/uploads/images/content/chapters/chapter1.jpeg\",\n       \"contentId\": null,\n       \"tags\": [],\n       \"comment\": [{\n       }]\n    }\n }",
           "type": "json"
         }
       ]
@@ -2084,11 +2084,25 @@
       }
     ],
     "version": "0.4.0",
+    "sampleRequest": [
+      {
+        "url": "on"
+      }
+    ],
+    "success": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 200\n{\n   \"search\": [{}]\n}",
+          "type": "json"
+        }
+      ]
+    },
     "error": {
       "examples": [
         {
           "title": "Error-Response:",
-          "content": "HTTP/1.1 404 Not Found\n[{\n   \"error\": \"Search Unavailable\"\n}]",
+          "content": "    HTTP/1.1 404 Not Found\n    [{\n       \"error\": \"Search Unavailable\"\n    }]\n\n/search?q={query-string-goes-here} GET result search query.\n/search?tags=highschool,primary,university GET result search query.",
           "type": "json"
         }
       ]
