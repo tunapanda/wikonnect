@@ -28,25 +28,27 @@ const router = new Router({
  *     [{
  *        "error": "Search Unavailable"
  *     }]
+ *
+ * /search?q={query-string-goes-here} GET result search query.
+ * /search?tags=highschool,primary,university GET result search query.
  */
 router.get('/chapter', requireAuth, async ctx => {
 
-  let stateUserId = ctx.state.user.id == undefined ? ctx.state.user.data.id : ctx.state.user.id;
-  let user = await models.user.query().findById(stateUserId);
   let chapter = models.chapter.query();
   if (ctx.query.q) {
     chapter = await chapter
+      .where({ approved: 'true' })
       .where('name', 'ILIKE', `%${ctx.query.q}%`)
-      .where(ctx.query, { status: 'published' })
-      .whereIn('tags', user.tags)
-      .orWhere('description', 'ILIKE', `%${ctx.query.q}%`)
-      .leftJoin('ratings as rate', 'chapters.id', 'rate.chapter_id')
-      .groupBy('chapters.id', 'rate.chapter_id')
-      .eager('[comment(selectComment), achievement(selectAchievement), flag(selectFlag)]');
+      .orWhere('description', 'ILIKE', `%${ctx.query.q}%`);
+  } else if (ctx.query.tags) {
+    chapter = await chapter
+      .where({ approved: 'true' })
+      .where('tags', '&&', `${ctx.query.tags}`);
   }
   ctx.status = 200;
   ctx.body = { 'search': chapter };
 });
+
 router.get('/elastic', async ctx => {
   const queryText = ctx.query.q;
   try {
