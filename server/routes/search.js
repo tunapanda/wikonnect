@@ -2,7 +2,6 @@ const _ = require('lodash');
 const Router = require('koa-router');
 const log = require('../utils/logger');
 const search = require('../utils/search');
-const { requireAuth } = require('../middleware/permController');
 
 const models = {
   chapter: require('../models/chapter'),
@@ -15,7 +14,8 @@ const router = new Router({
 
 
 /**
- * @api {get} /search?q={query-string-goes-here} GET result search query.
+ * @api {get} /search/chapter?
+ * @apiDescription GET result search query using chapter name, description or tags
  * @apiName GetSearch
  * @apiGroup Search
  * @apiPermission none
@@ -38,7 +38,7 @@ const router = new Router({
  * /search?q={query-string-goes-here} GET result search query.
  * /search?tags=highschool,primary,university GET result search query.
  */
-router.get('/chapter', requireAuth, async ctx => {
+router.get('/chapter', async ctx => {
 
   let chapter = models.chapter.query();
   if (ctx.query.q) {
