@@ -2103,7 +2103,7 @@
       "examples": [
         {
           "title": "Error-Response:",
-          "content": "HTTP/1.1 404 Not Found\n[{\n   \"error\": \"Search Unavailable\"\n}]",
+          "content": "    HTTP/1.1 404 Not Found\n    [{\n       \"error\": \"Search Unavailable\"\n    }]\n\n/search?q={query-string-goes-here} GET result search query.\n/search?tags=highschool,primary,university GET result search query.",
           "type": "json"
         }
       ]
