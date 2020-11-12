@@ -28,17 +28,25 @@
         <div class="bg-primary text-center p-3 text-white mb-4 ">
           UPLOAD THUMBNAIL
         </div>
-        <div class="p-5 border bg-light mb-5 ml-5 mr-5 ">
+        {{#file-drop-zone onDrop=(action "addFiles")}}
+
+
           <Forms::Upload @multiple="false" @accept=".h5p" @filesSelected={{action "uploadPic"}}
             @disabled={{uploader.uploading}}>
-            {{#if uploader.uploading}}
-              Uploading... <span class="loading-spinner"></span> {{uploader.progress}}% <br>
-              <small class="text-muted">You will be redirected once upload is complete</small>
-            {{else}}
-              Upload H5P
-            {{/if}}
+            <div class="p-5 border bg-light mb-5 ml-5 mr-5 ">
+
+              {{#if uploader.uploading}}
+                Uploading... <span class="loading-spinner"></span> {{uploader.progress}}% <br>
+                <small class="text-muted">You will be redirected once upload is complete</small>
+              {{else}}
+                Upload H5P
+              {{/if}}
+            </div>
           </Forms::Upload>
-        </div>
+
+          just drop your files here...
+        {{/file-drop-zone}}
+
         {{#if signup}}
 
           <br><br>
