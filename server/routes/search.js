@@ -16,6 +16,8 @@ const router = new Router({
 /**
  * @api {get} /search/chapter?
  * @apiDescription GET result search query using chapter name, description or tags
+ * /search?q={query-string-goes-here} Using QUERY string.
+ * /search?tags=highschool  Using TAGS.
  * @apiName GetSearch
  * @apiGroup Search
  * @apiPermission none
@@ -35,8 +37,7 @@ const router = new Router({
  *        "error": "Search Unavailable"
  *     }]
  *
- * /search?q={query-string-goes-here} GET result search query.
- * /search?tags=highschool,primary,university GET result search query.
+ *
  */
 router.get('/chapter', async ctx => {
 
