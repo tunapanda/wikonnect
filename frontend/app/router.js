@@ -110,9 +110,5 @@ Router.map(function () {
   this.route('swagger');
   this.route('topics');
   this.route('tags');
-  this.route('tag', function () {
-    this.route('index', {
-      path: '/:id'
-    });
-  });
+  this.route('tag', { path: '/tag/:id' });
 });
