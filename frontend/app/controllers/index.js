@@ -19,4 +19,6 @@ export default class IndexController extends Controller {
     this.loggedIn = this.me.user;
     return this.me.a;
   }
+
+
 }

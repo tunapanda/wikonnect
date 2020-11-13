@@ -45,7 +45,7 @@ Router.map(function () {
   });
 
   this.route('profile');
-  this.route('search');
+  this.route('search', { path: '/search/:id' });
   this.route('about');
 
   this.route('cms', function () {

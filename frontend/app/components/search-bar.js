@@ -73,7 +73,9 @@ export default class SearchBarComponent extends Component {
    */
   @task(function* (q) {
     yield timeout(600);
-    return this.store.query('chapter', { 'q': q });
+    return fetch("kkl.wikonnect.com/api/v1/search/chapters?q=Internet")
+
+    //return this.store.query('chapter', { 'q': q });
   }) query;
 
 
