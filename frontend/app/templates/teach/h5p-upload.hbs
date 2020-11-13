@@ -1,46 +1,70 @@
 {{outlet}}
-<div class="p-4">
+<div class=" d-flex row text-center p-4 shadow-sm justify-content-center">
+  <h3><b>Tag Content</b></h3>
+</div>
+<div class="row text-center d-flex justify-content-center pt-4">
+  <span class="border-bottom border-success m-3"><b>Name & Description</b></span>
+  <span class="border-bottom border-success m-3"><b>H5P Content</b></span>
+  <span class="border-bottom border-success m-3"><b>Thumbnail</b></span>
+  <span class="border-bottom border-success m-3"><b>Tags</b></span>
+  <span class="border-bottom border-success m-3"><b>Preview & Publish</b></span>
 
-  {{#if me.isAuthenticated}}
+</div>
+<div class=" row d-flex justify-content-center">
+  <div class="p-4 col-sm-6">
 
-    <div class="text-center">
-      <br>
-      {{#if this.me.user.profileUri}}
-        <img class="rounded-circle" width="300px" alt="" src={{this.me.user.profileUri}}>
-      {{else}}
-        <img class="rounded-circle" width="300px" alt="" src={{profileImage}}>
+    {{#if me.isAuthenticated}}
 
-      {{/if}}
-
-      <br>
-
-      <br>
-      <Forms::Upload @multiple="false" @accept=".h5p" @filesSelected={{action "uploadPic"}}
-        @disabled={{uploader.uploading}}>
-        {{#if uploader.uploading}}
-          Uploading... <span class="loading-spinner"></span> {{uploader.progress}}% <br>
-          <small class="text-muted">You will be redirected once upload is complete</small>
+      <div class="text-center">
+        <br>
+        {{#if this.me.user.profileUri}}
+          <img class="rounded-circle" width="300px" alt="" src={{this.me.user.profileUri}}>
         {{else}}
-          Upload H5P
+          <img class="rounded-circle" width="300px" alt="" src={{profileImage}}>
+
         {{/if}}
-      </Forms::Upload>
-      {{#if signup}}
-
-        <br><br>
-        {{#link-to "teach.thumbnail-upload" chapter.id}}
-          <button type="button" class="btn btn-success">Add Thumbnail</button>
 
 
-        {{/link-to}}
+        <div class="bg-primary text-center p-3 text-white mb-4 ">
+          UPLOAD THUMBNAIL
+        </div>
+        {{#file-drop-zone onDrop=(action "addFiles")}}
 
-      {{/if}}
-    </div>
+
+          <Forms::Upload @multiple="false" @accept=".h5p" @filesSelected={{action "uploadPic"}}
+            @disabled={{uploader.uploading}}>
+            <div class="p-5 border bg-light mb-5 ml-5 mr-5 ">
+
+              {{#if uploader.uploading}}
+                Uploading... <span class="loading-spinner"></span> {{uploader.progress}}% <br>
+                <small class="text-muted">You will be redirected once upload is complete</small>
+              {{else}}
+                Upload H5P
+              {{/if}}
+            </div>
+          </Forms::Upload>
+
+          just drop your files here...
+        {{/file-drop-zone}}
+
+        {{#if signup}}
+
+          <br><br>
+          {{#link-to "teach.thumbnail-upload" chapter.id}}
+            <button type="button" class="btn btn-success">Add Thumbnail</button>
 
 
-  {{else}}
+          {{/link-to}}
 
-    <Warning @message="You do not have permission to view this page" />
+        {{/if}}
+      </div>
 
-  {{/if}}
 
+    {{else}}
+
+      <Warning @message="You do not have permission to view this page" />
+
+    {{/if}}
+
+  </div>
 </div>
