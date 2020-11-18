@@ -1,5 +1,4 @@
 const chai = require('chai');
-const assert = chai.assert;
 const chaiHttp = require('chai-http');
 const chaiJSON = require('chai-json-schema');
 const server = require('../index');
