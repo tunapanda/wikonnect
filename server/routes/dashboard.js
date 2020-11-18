@@ -78,4 +78,22 @@ router.get('/completed', requireAuth, async ctx => {
   ctx.body = { data };
 });
 
+
+router.get('/learners', requireAuth, async ctx => {
+
+  try {
+    let total = await knex('users').count('*');
+    let quarterly = await knex.raw("select count(users.id), (extract(year from achievements.created_at) || '.Q' || extract(quarter from achievements.created_at)) as quarter from users left join achievements on achievements.user_id = users.id group by extract(year from achievements.created_at), extract(quarter from achievements.created_at) having count(achievements.target_status) > 1")
+
+    const learners ={
+      total: total[0],
+      quarterly: quarterly.rows
+    };
+    ctx.body = learners ;
+  } catch (e) {
+    ctx.throw(406, null, { errors: [e.message] });
+    throw e;
+  }
+
+});
 module.exports = router.routes();
