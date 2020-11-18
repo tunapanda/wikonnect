@@ -15,7 +15,7 @@
     "lint:hbs": "ember-template-lint .",
     "lint:js": "eslint .",
     "start": "ember serve --proxy https://app.wikonnect.org/",
-    "start:local": "ember serve  --proxy http://localhost:3000",
+    "start:local": "ember serve --proxy http://localhost:3000",
     "ci:start": "ember serve --path dist --proxy http://localhost:3000",
     "test": "COVERAGE=true ember test"
   },
@@ -69,6 +69,7 @@
     "ember-simple-auth-token": "^4.0.7",
     "ember-source": "~3.14.1",
     "ember-star-rating": "^3.0.0",
+    "ember-swagger-ui": "^2.3.0",
     "ember-svg-jar": "^2.2.3",
     "ember-template-lint": "^1.5.0",
     "ember-truth-helpers": "^2.1.0",
@@ -80,6 +81,7 @@
     "qunit-dom": "^0.9.0",
     "rsvp": "^4.8.5",
     "sass": "^1.23.0",
+    "swagger-ui-dist": "^3.9.2",
     "torii": "^0.10.1"
   },
   "engines": {

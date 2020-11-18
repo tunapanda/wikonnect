@@ -4,21 +4,21 @@ import Torii from 'ember-simple-auth/authenticators/torii';
 
 export default class ToriiAuthenticator extends Torii {
   @service torii;
-  @service ajax;
+
 
   authenticate() {
-    const ajax = this.get('ajax');
     return super.authenticate(...arguments).then((data) => {
-      return ajax.request('/token', {
-        type:     'POST',
-        dataType: 'json',
-        data:     { 'grant_type': 'facebook_auth_code', 'auth_code': data.authorizationCode }
-      }).then((response) => {
-        return {
-          access_token: response.access_token,
-          provider: data.provider
-        };
-      });
+
+      return fetch('http://localhost:3000/api/v1/users/token', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          'grant_type': data.provider,
+          'auth_code': data.authorizationCode
+        })
+      }).then(response => response.json());
     });
   }
 }

@@ -106,4 +106,5 @@ Router.map(function () {
 
 
   });
+  this.route('swagger');
 });

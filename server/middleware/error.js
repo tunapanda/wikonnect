@@ -1,4 +1,7 @@
+const Sentry = require('@sentry/node');
 const log = require('../utils/logger');
+
+Sentry.init({ dsn: 'https://7f6be831c9764b1aacdeadc3197b4f55@o478432.ingest.sentry.io/5520951' });
 
 module.exports = async function (ctx, next) {
   let err;
@@ -28,6 +31,13 @@ module.exports = async function (ctx, next) {
     if (err.errors) {
       return ctx.body = { errors: err.errors, error_message: err.detail };
     }
+
+    Sentry.withScope(function (scope) {
+      scope.addEventProcessor(function (event) {
+        return Sentry.Handlers.parseRequest(event, ctx.request);
+      });
+      Sentry.captureException(err);
+    });
 
     ctx.body = {
       status: status,
