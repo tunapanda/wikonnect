@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { configurable } from 'torii/configuration';
 import Oauth2Bearer from 'torii/providers/oauth2-bearer';
 

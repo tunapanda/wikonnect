@@ -38,7 +38,7 @@ export default class MeService extends Service {
 
   authenticateGoogleCustom(provider) {
     console.log("Logging in user!");
-    return this.session.authenticate('authenticator:torii', provider).then((response) => {
+    return this.session.authenticate('authenticator:torii', provider).then(() => {
       return this.load();
     });
   }
