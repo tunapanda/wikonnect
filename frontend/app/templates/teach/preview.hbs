@@ -1,6 +1,19 @@
 {{!-- {{outlet}} --}}
 {{outlet}}
+
+
+
+{{!-- {{outlet}} --}}
+{{outlet}}
 <div class="p-4">
+  <div class="row text-center d-flex justify-content-center">
+    <span class="border-bottom border-success m-3"><b>Name & Description</b></span>
+    <span class="border-bottom border-success m-3"><b>H5P Content</b></span>
+    <span class="border-bottom border-success m-3"><b>Thumbnail</b></span>
+    <span class="border-bottom border-success m-3"><b>Tags</b></span>
+    <span class="border-bottom border-success m-3"><b>Preview & Publish</b></span>
+
+  </div>
   <div id="chapter">
     <div class="row">
       <h4><b>Chapter Name: </b>{{model.name}} </h4>
@@ -105,4 +118,3 @@
 
   </div>
 </div>
-{{!-- <div {{did-insert (fn this.dataLoad)}}></div> --}}
