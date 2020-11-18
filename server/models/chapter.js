@@ -27,7 +27,7 @@ class Chapter extends Model {
         modelClass: __dirname + '/comment',
         join: {
           from: 'chapters.id',
-          to: 'comments.chapter_id'
+          to: 'comments.chapterId'
         }
       },
       flag: {

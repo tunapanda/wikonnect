@@ -13,10 +13,12 @@ exports.seed = function (knex) {
           hash: '$2b$10$a.r.mPrpHxwlGh/6jd.RG.QhHu2xHAY3/EzclbPFduSDTnAtV3feu',
           last_ip: '245.19.225.55',
           private: true,
-          invite_code: 'user2',
+          invite_code: 'user1',
           last_seen: '2017-12-20 19:17:10',
           created_at: '2017-12-20 19:17:10',
-          updated_at: '2017-12-20 19:17:10'
+          updated_at: '2017-12-20 19:17:10',
+          tags: ['highschool', 'primary', 'university'],
+          metadata: { profileComplete: 'false', oneInviteComplete: 'false', oneChapterCompletion: 'false' }
         },
         {
           id: 'user2',
@@ -25,10 +27,12 @@ exports.seed = function (knex) {
           hash: '$2b$10$a.r.mPrpHxwlGh/6jd.RG.QhHu2xHAY3/EzclbPFduSDTnAtV3feu',
           last_ip: '245.19.225.55',
           private: false,
-          invite_code: 'user3',
+          invite_code: 'user2',
           last_seen: '2017-12-20 19:17:10',
           created_at: '2017-12-20 19:17:10',
-          updated_at: '2017-12-20 19:17:10'
+          updated_at: '2017-12-20 19:17:10',
+          tags: ['highschool', 'primary'],
+          metadata: { profileComplete: 'false', oneInviteComplete: 'false', oneChapterCompletion: 'false' }
         },
         {
           id: 'user3',
@@ -37,9 +41,26 @@ exports.seed = function (knex) {
           hash: '$2b$10$a.r.mPrpHxwlGh/6jd.RG.QhHu2xHAY3/EzclbPFduSDTnAtV3feu',
           last_ip: '245.19.225.55',
           private: false,
+          invite_code: 'user3',
           last_seen: '2017-12-20 19:17:10',
           created_at: '2017-12-20 19:17:10',
-          updated_at: '2017-12-20 19:17:10'
+          updated_at: '2017-12-20 19:17:10',
+          tags: ['highschool', 'university'],
+          metadata: { profileComplete: 'true', oneInviteComplete: 'true', oneChapterCompletion: 'true' }
+        },
+        {
+          id: 'user4',
+          username: 'user4',
+          email: 'user4@wikonnect.org',
+          hash: '$2b$10$a.r.mPrpHxwlGh/6jd.RG.QhHu2xHAY3/EzclbPFduSDTnAtV3feu',
+          last_ip: '245.19.225.55',
+          private: false,
+          invite_code: 'user4',
+          last_seen: '2017-12-20 19:17:10',
+          created_at: '2017-12-20 19:17:10',
+          updated_at: '2017-12-20 19:17:10',
+          tags: ['all'],
+          metadata: { profileComplete: 'false', oneInviteComplete: 'false', oneChapterCompletion: 'false' }
         }
       ]);
     });

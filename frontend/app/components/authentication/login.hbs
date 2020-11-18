@@ -1,25 +1,42 @@
-<div class="form-title">Log In</div>
-
+{{#if session.isWorking}}
+One sec while we get you signed in...
+{{else}}
+{{error}}
+{{/if}}
 <BsForm @class="form" @formLayout="vertical" @model={{registeredUser}} @onSubmit={{action "login"}} as |form|>
   {{#each registeredUser.errors as |err| }}
-    {{#if (eq err.key "errors")}}
-      <BsAlert @type="danger" @fade={{true}}>
-        {{err.validation}}
-      </BsAlert>
-    {{/if}}
+  {{#if (eq err.key "errors")}}
+  <BsAlert @type="danger" @fade={{true}}>
+    {{err.validation}}
+  </BsAlert>
+  {{/if}}
   {{/each}}
 
   <div class="login-form-fields">
-    <form.element class="inputs" id="username" @controlType="text" @label="Username" @placeholder="Username"
+    <form.element @autocomplete="on" id="username" @controlType="text" @label="Username" @placeholder="Username"
       @property="username" @autocomplete="username" />
 
-    <form.element id="password" class="inputs" @controlType="password"
-    @label="Password" @placeholder="Enter Password"
+    <form.element id="password" @controlType="password" @label="Password" @placeholder="Enter Password"
       @property="password" @autocomplete="new-password" />
 
   </div>
 
-  <BsButton class="submit" @defaultText="Login" @buttonType="submit" @disabled={{form.isSubmitting}}
-    @type={{if form.isRejected "danger" "primary"}}>
+  {{#if loading}}
+  <button class="bg-primary form-control" type="button">
+    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Authenticating...
+  </button>
+  {{else}}
+  <BsButton class="bg-primary form-control" @defaultText="Login" type="submit">
   </BsButton>
+  {{/if}}
+
+  <div class='providers'>
+    {{#each providers as |provider|}}
+    <div class='provider'>
+      <button {{action "authorize" provider}}>
+        {{provider}}
+      </button>
+    </div>
+    {{/each}}
+  </div>
 </BsForm>

@@ -1,0 +1,41 @@
+{
+  "name": "Wikonnect",
+  "version": "0.4.0",
+  "description": "Wikonnect community docs",
+  "title": "Wikonnect community docs",
+  "url": "http://localhost:3000/api/v1",
+  "order": [
+    "Authentication",
+    "Learning_Path",
+    "Courses",
+    "Modules",
+    "Lessons",
+    "GetPaths",
+    "GetAPath",
+    "PostAPath",
+    "PutAPath",
+    "GetCourses",
+    "GetACourse",
+    "PostACourse",
+    "PutACourse",
+    "DeleteACourse",
+    "GetModules",
+    "GetAModule",
+    "PostAModule",
+    "PutAModule",
+    "DeleteAModule",
+    "GetLessons",
+    "GetALesson",
+    "PostALesson",
+    "PutALesson",
+    "DeleteALesson"
+  ],
+  "header": {
+    "title": "Getting Started",
+    "filename": "README.md"
+  },
+  "footer": {
+    "title": "Contributing Guidelines",
+    "filename": "../CONTRIBUTING.md"
+  }
+}

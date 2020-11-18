@@ -9,6 +9,10 @@ module.exports = function (environment) {
     disqus: {
       shortname: 'kmarima'
     },
+    fontawesome: {
+      warnIfNoIconsIncluded: false,
+      defaultPrefix: 'fal' // light icons
+    },
     EmberENV: {
       FEATURES: {
         // Here you can enable experimental features on an ember canary build
@@ -31,9 +35,28 @@ module.exports = function (environment) {
       authenticationRoute: 'login',
     },
 
+    torii: {
+      allowUnsafeRedirect: true,
+      sessionServiceName: 'session',
+      remoteServiceName: 'iframe',
+      providers: {
+        // 'facebook-oauth2': {
+        //   apiKey: process.env.FACEBOOK_KEY,
+        //   scope: 'email',
+        //   redirectUri: 'https://54923196871a.ngrok.io/login'
+        // },
+      //   'google-token': {
+      //     apiKey: process.env.GOOGLE_KEY,
+      //     redirectUri: process.env.GOOGLE_REDIRECT,
+      //     scope:  'email profile'
+      //   }
+      }
+    },
+
     'ember-simple-auth-token': {
       refreshTokenPropertyName: 'token',
-      serverTokenEndpoint: '/api/v1/auth/'
+      serverTokenEndpoint: '/api/v1/auth/',
+      serverTokenRefreshEndpoint: '/api/v1/auth/token-refresh/',
     },
     "ember-drag-drop-polyfill": {
       enableEnterLeave: true,

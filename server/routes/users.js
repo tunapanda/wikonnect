@@ -1,118 +1,38 @@
-const Router = require('koa-router');
-const bcrypt = require('bcrypt');
 const path = require('path');
-
-const busboy = require('async-busboy');
-const shortid = require('shortid');
 const sharp = require('sharp');
-const s3 = require('../utils/s3Util');
-const { updatedAt } = require('../utils/timestamp');
+const shortid = require('shortid');
+const Router = require('koa-router');
+const busboy = require('async-busboy');
+const jsonwebtoken = require('jsonwebtoken');
 
 const User = require('../models/user');
-const log = require('../utils/logger');
-const jwt = require('../middleware/jwt');
+const AchievementAward = require('../models/achievement_awards');
+
+const { authenticate, secret} = require('../middleware/jwt');
 const permController = require('../middleware/permController');
-const validateAuthRoutes = require('../middleware/validation/validateAuthRoutes');
+const validateAuthRoutes = require('../middleware/validateRoutePostSchema/validateAuthRoutes');
 
-const environment = process.env.NODE_ENV || 'development';
-const config = require('../knexfile.js')[environment];
-const knex = require('knex')(config);
 
+const s3 = require('../utils/s3Util');
+const log = require('../utils/logger');
+const knex = require('../utils/knexUtil');
+const { updatedAt } = require('../utils/timestamp');
+const {
+  achievementAwardsType,
+  userRoles,
+  enrolledCoursesType,
+  createPasswordHash,
+  profileCompleteBoolean,
+  inviteUserAward,
+  getProfileImage
+} = require('../utils/routesUtils/userRouteUtils');
+const googleToken = require('../utils/oauth2/googleToken');
 
 
 const router = new Router({
   prefix: '/users'
 });
 
-async function achievementAwardsType(parent) {
-  try {
-    if (parent.length == undefined) {
-      parent.achievementAwards.forEach(award => {
-        return award.type = 'achievementAward';
-      });
-    } else {
-      parent.forEach(mod => {
-        mod.achievementAwards.forEach(award => {
-          return award.type = 'achievementAward';
-        });
-      });
-    }
-  } catch (error) {
-    log.error(error);
-  }
-}
-
-async function userRoles(parent) {
-  try {
-    if (parent.length == undefined) {
-      parent.userRoles.forEach(role => {
-        return role.type = 'userRoles';
-      });
-    } else {
-      parent.forEach(roles => {
-        roles.userRoles.forEach(role => {
-          return role.type = 'userRoles';
-        });
-      });
-    }
-  } catch (error) {
-    log.error(error);
-  }
-}
-
-async function enrolledCoursesType(parent) {
-  try {
-    if (parent.length == undefined) {
-      parent.enrolledCourses.forEach(lesson => {
-        return lesson.type = 'course';
-      });
-    } else {
-      parent.forEach(mod => {
-        mod.enrolledCourses.forEach(lesson => {
-          return lesson.type = 'course';
-        });
-      });
-    }
-  } catch (error) {
-    log.error(error);
-  }
-}
-
-
-function encode(data) {
-  let buf = Buffer.from(data);
-  let base64 = buf.toString('base64');
-  return base64;
-}
-
-async function getProfileImage(id) {
-
-  try {
-    if (s3.config) {
-      const params = {
-        Bucket: s3.config.bucket, // pass your bucket name
-        Key: `uploads/profiles/${id}.jpg`, // key for saving filename
-      };
-
-      const getImage = await s3.s3.getObject(params).promise();
-      let image = 'data:image/(png|jpg);base64,' + encode(getImage.Body);
-      return image;
-    } else {
-      return 'images/profile-placeholder.gif';
-    }
-  } catch (e) {
-    return 'images/profile-placeholder.gif';
-  }
-}
-async function createPasswordHash(ctx, next) {
-  if (ctx.request.body.user.password) {
-    const hash = await bcrypt.hash(ctx.request.body.user.password, 10);
-
-    delete ctx.request.body.user.password;
-    ctx.request.body.user.hash = hash;
-  }
-  await next();
-}
 
 /**
  * @api {post} /users POST create a new user.
@@ -123,6 +43,7 @@ async function createPasswordHash(ctx, next) {
  * @apiParam (Required Params) {string} user[email] Unique email
  * @apiParam (Required Params) {string} user[password] validated password
  * @apiParam (Optional Params) {string} user[invitedBy] auto filled on the form
+ * @apiParam (Optional Params) {string} user[tags] auto filled on the form
  *
  * @apiPermission none
  *
@@ -132,19 +53,63 @@ async function createPasswordHash(ctx, next) {
  *        "user": {
  *          "id": "string",
  *          "username": "string",
- *          "inviteCode": "DTrbi6aLj",
+ *          "inviteCode": "invited_by",
  *          "createdAt": "string",
- *          "updatedAt": "string"
+ *          "updatedAt": "string",
+ *          "tags": "array",
+ *          "metadata": json_array
  *        }
  *     }
  *
- * @apiError {String} errors Bad Request.
  */
+
+/**
+* @api {post} /users POST create a new user.
+* @apiName PostAUser
+* @apiGroup Authentication
+*
+* @apiParam (Required Params) {string} user[username] username
+* @apiParam (Required Params) {string} user[email] Unique email
+* @apiParam (Required Params) {string} user[password] validated password
+* @apiParam (Optional Params) {string} user[invitedBy] auto filled on the form
+*
+* @apiPermission none
+*
+* @apiSuccessExample {json} Success-Response:
+*     HTTP/1.1 201 OK
+*     {
+*        "user": {
+*          "id": "string",
+*          "username": "string",
+*          "inviteCode": "invited_by",
+*          "createdAt": "string",
+*          "updatedAt": "string",
+*          "metadata": json_array
+*        }
+*     }
+*
+* @apiError {String} errors Bad Request.
+*/
+
+
+/**
+ * @swagger
+ * models:
+ *   User:
+ *     id: User
+ *     properties:
+ *       username:
+ *         type: String
+ *       password:
+ *         type: String
+ */
+
 
 router.post('/', validateAuthRoutes.validateNewUser, createPasswordHash, async ctx => {
   ctx.request.body.user.username = ctx.request.body.user.username.toLowerCase();
   ctx.request.body.user.email = ctx.request.body.user.email.toLowerCase();
   ctx.request.body.user.lastSeen = await updatedAt();
+  ctx.request.body.user.metadata = { 'profileComplete': 'false', 'oneInviteComplete': 'false' };
 
   const inviteInsert = await knex('user_invite').insert([{ 'invited_by': ctx.request.body.user.inviteCode }], ['id', 'invited_by']);
 
@@ -165,7 +130,7 @@ router.post('/', validateAuthRoutes.validateNewUser, createPasswordHash, async c
     ctx.status = 201;
     ctx.body = { user };
   } catch (e) {
-    ctx.log.info('Failed for user - %s, with error %s', ctx.request.body.user.email, e.message, e.detail);
+    log.info('Failed for user - %s, with error %s', ctx.request.body.user.email, e.message, e.detail);
     ctx.throw(400, null, { errors: [e] });
   }
 
@@ -191,9 +156,9 @@ router.post('/', validateAuthRoutes.validateNewUser, createPasswordHash, async c
  *       "username": "user2",
  *       "createdAt": "2017-12-20T16:17:10.000Z",
  *       "updatedAt": "2017-12-20T16:17:10.000Z",
- *       "profileUri": "uploads/profiles/user1.jpg",
+ *       "profileUri": "image_url",
  *       "private": boolean,
- *       "inviteCode": "DTrbi6aLj",
+ *       "inviteCode": "invited_by",
  *       "achievementAwards": [
  *         {
  *           "id": "achievementaward1",
@@ -239,37 +204,56 @@ router.post('/', validateAuthRoutes.validateNewUser, createPasswordHash, async c
 
 router.get('/:id', permController.requireAuth, async ctx => {
 
-  let stateUserId = ctx.state.user.id == undefined ? ctx.state.user.data.id : ctx.state.user.id;
+  try {
+    let stateUserId = ctx.state.user.id == undefined ? ctx.state.user.data.id : ctx.state.user.id;
 
-  let userId = ctx.params.id != 'current' ? ctx.params.id : stateUserId;
-  const user = await User.query().findById(userId).mergeJoinEager('[achievementAwards(selectBadgeNameAndId), userRoles(selectName), enrolledCourses(selectNameAndId)]');
-  user.profileUri = await getProfileImage(user.profileUri);
+    let userId = ctx.params.id != 'current' ? ctx.params.id : stateUserId;
+    const user = await User.query().findById(userId).mergeJoinEager('[achievementAwards(selectBadgeNameAndId), userRoles(selectName), enrolledCourses(selectNameAndId), oauth2(selectData)]');
+    user.profileUri = await getProfileImage(user.profileUri);
 
+    if (user.id != stateUserId || stateUserId === 'anonymous') {
+      // return specific data for all profiles incase it's private
+      let publicData = {
+        'username': 'private',
+        'profileUri': 'images/profile-placeholder.gif',
+        'id': user.id,
+        'private': user.private
+      };
+      // return data if profile is not private
+      if (user.private === 'false') {
+        publicData.username = user.username;
+        publicData.profileUri = user.profileUri;
+      }
+      ctx.status = 200;
+      ctx.body = { user: publicData };
+    } else {
+      enrolledCoursesType(user);
+      userRoles(user);
+      // get all verification data
+      achievementAwardsType(user);
+      const userVerification = await knex('user_verification').where({ 'user_id': userId });
+      user.userVerification = userVerification;
 
-  if (!user) {
-    ctx.throw(404, 'No User With that Id');
-  }
+      if (profileCompleteBoolean(user) && user.metadata.profileComplete === 'false') {
+        await User.query().patchAndFetchById(ctx.params.id, { 'metadata:profileComplete': 'true' });
+        await AchievementAward.query().insert({
+          'name': 'profile completed',
+          'achievementId': ctx.params.id,
+          'userId': ctx.params.id
+        });
+      }
 
-  if (user.id != stateUserId || stateUserId === 'anonymous') {
-    const publicData = {
-      'username': user.username,
-      'profileUri': user.profileUri,
-      'id': user.id,
-    };
-    ctx.status = 200;
-    ctx.body = { user: publicData };
-  } else {
-    enrolledCoursesType(user);
-    userRoles(user);
-    // get all verification data
-    achievementAwardsType(user);
-    const userVerification = await knex('user_verification').where({ 'user_id': userId });
-    user.userVerification = userVerification;
+      log.info('Got a request from %s for %s', ctx.request.ip, ctx.path);
 
-    log.info('Got a request from %s for %s', ctx.request.ip, ctx.path);
-
-    ctx.status = 200;
-    ctx.body = { user };
+      ctx.status = 200;
+      ctx.body = { user };
+    }
+  } catch (e) {
+    if (e.statusCode) {
+      ctx.throw(e.statusCode, { message: 'The query key does not exist' });
+      ctx.throw(e.statusCode, null, { errors: [e.message] });
+    } else { ctx.throw(406, null, { errors: [e.message] }); }
+    throw e;
   }
 });
 /**
@@ -281,6 +265,13 @@ router.get('/:id', permController.requireAuth, async ctx => {
  * @apiDescription list all user on the platform
  * @apiPermission [admin, superadmin]
  * @apiHeader (Header) {String} authorization Bearer <<YOUR_API_KEY_HERE>>
+ *
+ * @apiParam (Required Params) {string} user[username] username
+ * @apiParam (Required Params) {string} user[email] Unique email
+ * @apiParam (Required Params) {string} user[password] validated password
+ * @apiParam (Optional Params) {string} user[invitedBy] auto filled on the form
+ * @apiParam (Optional Params) {string} user[tags] a list of String with tags a user has subscribed to
+ * @apiParam (Optional Params) {string} user[metadata] json data
  *
  */
 router.get('/', permController.requireAuth, permController.grantAccess('readAny', 'profile'), async ctx => {
@@ -317,9 +308,16 @@ router.get('/', permController.requireAuth, permController.grantAccess('readAny'
  * @apiPermission [admin, superadmin]
  * @apiHeader (Header) {String} authorization Bearer <<YOUR_API_KEY_HERE>>
  *
+ * @apiParam (PUT Params) {string} user[email] Unique email
+ * @apiParam (PUT Params) {string} user[password] validated password
+ * @apiParam (PUT Params) {string} user[tags] a list of String with tags a user has subscribed to
+ * @apiParam (PUT Params) {string} user[metadata] json data
+ *
+ * @apiSuccess {String} user[object] Object data
+ *
  */
 
-router.put('/:id', jwt.authenticate, permController.requireAuth, permController.grantAccess('updateOwn', 'profile'), async ctx => {
+router.put('/:id', authenticate, permController.requireAuth, async ctx => {
 
   ctx.request.body.user.updatedAt = await updatedAt();
 
@@ -334,6 +332,15 @@ router.put('/:id', jwt.authenticate, permController.requireAuth, permController.
     throw e;
   }
 
+  if (profileCompleteBoolean(user) && user.metadata.profileComplete === 'false') {
+    await User.query().patchAndFetchById(ctx.params.id, { 'metadata:profileComplete': 'true' });
+    await AchievementAward.query().insert({
+      'name': 'profile completed',
+      'achievementId': ctx.params.id,
+      'userId': ctx.params.id
+    });
+  }
+
   ctx.status = 200;
   ctx.body = { user };
 
@@ -342,13 +349,16 @@ router.put('/:id', jwt.authenticate, permController.requireAuth, permController.
 router.post('/invite/:id', async ctx => {
   let invite;
   try {
-    invite = await User.query().patchAndFetchById(ctx.params.id, ctx.request.body.user);
+    // invite = await User.query().patchAndFetchById(ctx.params.id, ctx.request.body.user);
+    invite = await knex('user_invite').insert([{ user_id: ctx.params.id, 'invited_by': ctx.request.body.user.inviteBy }], ['id', 'invited_by', 'user_id']);
     ctx.assert(invite, 404, 'That user does not exist.');
   } catch (e) {
     if (e.statusCode) {
       ctx.throw(e.statusCode, null, { errors: [e.message] });
     } else { ctx.throw(400, null, { errors: ['Bad Request', e.message] }); }
   }
+
+  inviteUserAward(ctx.params.id);
 
   ctx.status = 200;
   ctx.body = { invite };
@@ -415,6 +425,45 @@ router.post('/:id/profile-image', permController.requireAuth, async (ctx, next) 
       host: ctx.host,
       path: `${uploadPath}/${fileNameBase}.jpg`
     };
+  }
+});
+
+
+/**
+ *  {
+ *    grant_type: 'google-token',
+ *    auth_code: 'long token string'
+ *  }
+ *  {
+ *    grant_type: 'facebook-oauth2',
+ *    auth_code: 'long token string'
+ *  }
+ *
+ * connect account if teh user with that email exists
+ * create a new user account if the user with that email does not exists
+ */
+
+router.post('/token', async (ctx, next) => {
+  if ('POST' != ctx.method) return await next();
+
+  try {
+    const token = await googleToken(ctx.request.body.auth_code);
+    ctx.body = {
+      token: jsonwebtoken.sign({
+        data: token,
+        exp: Math.floor(Date.now() / 1000 + 604800) // 60 seconds * 60 minutes * 24 hours * 7 days = 1 week
+      }, secret)
+    };
+  } catch (e) {
+    if (e.name === 'FetchError') {
+      ctx.status = 502;
+      ctx.body = {
+        error: 'You have a slow network'
+      };
+    } else if (e.statusCode) {
+      ctx.throw(e.statusCode, null, { errors: [e.message] });
+    } else { ctx.throw(400, null, { errors: [e.message] }); }
+    throw e;
   }
 });
 

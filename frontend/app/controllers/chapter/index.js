@@ -1,30 +1,50 @@
 import Controller from '@ember/controller';
-import { action } from '@ember/object';
 import { tracked } from '@glimmer/tracking';
-
+import { action } from '@ember/object';
 import { inject } from '@ember/service';
-
 
 
 export default class ChapterIndexController extends Controller {
 
   @inject notify;
 
-
+  @inject
+  store;
 
   @inject
   me
 
 
+  @inject
+  notify;
 
   flaggingModal = false
   ratingModal = false
   @tracked enabled = false
+  @tracked rates = 0;
 
   @action
-  ratingSubmit(val) {
+  async ratingSubmit(val) {
     if (!this.enabled) {
-      this.notify.info('Submitted your ' + val + ' star rating');
+      let slug = await this.target.currentRoute.params.chapter_slug;
+      let chap = await this.store.findRecord('chapter', slug);
+
+      console.log("slug " + slug);
+      console.log("ssuser : " + this.me.user.id);
+
+      let rating = await this.store.createRecord('rating', {
+        rating: val,
+        user: this.me.get('user'),
+        chapter: chap,
+      });
+      await rating.save();
+
+      this.rates = val;
+      // this.notify.info('Submitted your ' + val + ' star rating');
+      this.notify.info('Submitted your ' + val + ' star rating ' + val);
+      this.toggleProperty('ratingModal');
+
+
       this.enabled = true;
     }
   }
@@ -87,5 +107,57 @@ export default class ChapterIndexController extends Controller {
       });
 
     }
+  }
+
+  @action
+  async dataLoad(el) {
+    console.log(el);
+    // this.notify.info('chapter completed');
+    let chapter_id = await this.target.currentRoute.params.chapter_slug;
+    let score;
+    window.H5P.externalDispatcher.on('xAPI', function (event) {
+      if (event.getScore() === event.getMaxScore() && event.getMaxScore() > 0) {
+        console.log(event.data.statement.result.duration);
+        score = event.data.statement.result.duration;
+      }
+    });
+    console.log(score);
+
+    if(score != 'undefined'){
+      let achievement = await this.store.createRecord('achievement', {
+        description: 'completed' + chapter_id,
+        targetStatus: 'completed',
+        target: chapter_id
+      });
+      await achievement.save();
+
+      // if user completes chapters create record
+      // let counter = await this.store.createRecord('counter', {
+      //   counter: 1,
+      //   trigger: 'chapterCompletion'
+      // });
+      // await counter.save()
+    }
+    // record every page view
+    // let counter = await this.store.createRecord('counter', {
+    //   counter: 1,
+    //   trigger: 'pageLanding'
+    // });
+    // await counter.save()
+    let data = {
+      counter: 1,
+      trigger: 'pageLanding'
+    };
+    alert(data.counter, data.trigger);
+
+    // // After 10 secs record page view
+    setTimeout(function () {
+      alert("Hello");
+      let data = {
+        counter: 1,
+        trigger: 'timerDelay'
+      };
+      alert(data.counter, data.trigger);
+    }, 10000);
   }
 }

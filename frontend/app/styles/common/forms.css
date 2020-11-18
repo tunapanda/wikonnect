@@ -1,19 +1,36 @@
 @import url("https://fonts.googleapis.com/css?family=Karla&display=swap");
-.padded {
-  padding-left: 1em;
-  padding-right: 1em;
+.auth-btn {
+  background-color: bisque;
+}
+
+.auth-title {
+  font-size: 30px;
+  color: black;
+  background-color: #FAF1DB;
+  text-align: left;
+  font-weight: bold;
+  padding: 0 1.6rem 0.8rem 1.6rem;
 }
 
 .inputs input {
   outline: 0;
   border-width: 0 0 2px;
-  border-color: #534897;
+  border-color: grey;
   padding-left: 0px;
   border-radius: 0px;
 }
 
 .inputs input:focus {
-  border-color: green;
+  border-color: coral;
+}
+
+.auth-title {
+  font-size: 30px;
+  color: white;
+  background-color: #FAF1DB;
+  text-align: left;
+  font-weight: bold;
+  padding: 0 1.6rem 0.8rem 1.6rem;
 }
 
 .sort-list {
@@ -39,11 +56,6 @@
   padding-bottom: 1em;
 }
 
-.invalid-feedback {
-  font-size: 0.2rem;
-  color: red;
-}
-
 label {
   color: grey;
   font-size: 10px;
@@ -57,11 +69,10 @@ label {
 .form-title {
   font-size: 30px;
   color: white;
-  background-color: #534897;
+  background-color: #910c7f;
   text-align: left;
   font-weight: bold;
-  padding-top: 1.6em;
-  padding-left: 0.5em;
+  padding: 0 1.6rem 0.8rem 1.6rem;
 }
 
 .submit {

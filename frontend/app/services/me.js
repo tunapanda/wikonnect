@@ -33,8 +33,14 @@ export default class MeService extends Service {
 
   register(fields) {
     let user = this.store.createRecord('user', fields);
-
     return user.save();
+  }
+
+  authenticateGoogleCustom(provider) {
+    console.log("Logging in user!");
+    return this.session.authenticate('authenticator:torii', provider).then(() => {
+      return this.load();
+    });
   }
 
   authenticate(username, password) {

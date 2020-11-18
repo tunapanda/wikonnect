@@ -1,13 +1,14 @@
 const Koa = require('koa');
 const path = require('path');
 const koaQs = require('koa-qs');
-const Router = require('koa-router');
+const Router = require('@koa/router');
 const bodyParser = require('koa-bodyparser');
-const koaBunyanLogger = require('koa-bunyan-logger');
 const errorHandler = require('./middleware/error');
 const logger = require('./middleware/logger');
 const jwt = require('./middleware/jwt');
 const cors = require('@koa/cors');
+const log = require('./utils/logger');
+
 const app = new Koa();
 
 const router = new Router({
@@ -16,21 +17,16 @@ const router = new Router({
 
 koaQs(app);
 
-
-
 app.use(cors({
   origin: '*',
-  maxAge: 5,
+  maxAge: 20,
   credentials: true,
-  allowMethods: ['GET', 'POST', 'DELETE'],
-  allowHeaders: ['Content-Type', 'Authorization', 'Accept'],
+  allowMethods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowHeaders: ['Content-Type', 'Authorization', 'Accept', 'mojaHeaders'],
 }));
 app.use(errorHandler);
 
-app.use(koaBunyanLogger());
-
 app.use(logger);
-
 app.use(bodyParser());
 
 app.use(require('koa-static')(path.resolve(__dirname, './public')));
@@ -71,7 +67,7 @@ router.use(require('./routes/search'));
 
 
 router.get('/hello', async ctx => {
-  ctx.log.info('Got a request from %s for %s', ctx.request.ip, ctx.path);
+  log.info('Got a request from %s for %s', ctx.request.ip, ctx.path);
   ctx.body = { user: 'You have access to view this route' };
 });
 

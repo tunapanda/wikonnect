@@ -3,6 +3,8 @@
     "editor.formatOnSave": true,
     "editor.formatOnPaste": true,
     "cSpell.words": [
-        "favicon"
+        "enduser",
+        "favicon",
+        "mojaheader"
     ],
 }

@@ -99,10 +99,17 @@
   background-color: #F57010;
 }
 
+.auth-header {
+  @include header;
+
+  background-color: #FAF1DB;
+}
+
 .yellow-header {
   @include header;
 
   background-color: #fecf00;
+  background-image: $profile-image;
 }
 
 .green-header {
