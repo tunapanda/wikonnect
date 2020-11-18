@@ -21,18 +21,15 @@ export default class TagsListComponent extends Component {
     let filtered = [];
 
     this.store.query('chapter', { 'approved': true }).then(t => {
-      console.log("t")
-      console.log(t)
+
       t.map(c => {
-        console.log(c)
-        console.log(tags)
-        filtered.concat(c.tags)
+
+        filtered.concat(c.tags);
       });
 
     });
 
-    console.log("filtered")
-    console.log(filtered)
+
 
     return filtered;
 

@@ -16,6 +16,6 @@ export default class HomeRoute extends Route {
   }
 
   model() {
-    return this.store.query('chapter', { 'approved': true })
+    return this.store.query('chapter', { 'approved': true });
   }
 }

@@ -22,7 +22,7 @@ export default class TeachH5pUploadController extends Controller {
 
     }
 
-    console.log(files)
+    console.log(files);
   }
 
   @action

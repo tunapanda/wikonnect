@@ -1,5 +1,5 @@
 import Controller from '@ember/controller';
-import { computed } from '@ember/object';
+// import { computed } from '@ember/object';
 import { inject as service } from '@ember/service';
 
 export default class HomeController extends Controller {
@@ -10,17 +10,17 @@ export default class HomeController extends Controller {
 
   get allTags() {
     // this.model
-    let filtered = []
+    let filtered = [];
     this.model.map(c => {
-      console.log("ok")
+      console.log('ok');
       if (c.tags) {
-        filtered.concat(c.tags)
+        filtered.concat(c.tags);
       }
     });
 
-    console.log(filtered)
+    console.log(filtered);
 
-    return ["filtered", "ok"];
+    return ['filtered', 'ok'];
   }
 
 
