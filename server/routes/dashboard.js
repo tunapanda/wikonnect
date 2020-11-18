@@ -59,16 +59,11 @@ router.get('/completed', requireAuth, async ctx => {
   const from = moment().year(2020).quarter(2);
   const start = getQuarter(new Date(from));
 
-  let completed, total, users;
+  let completed;
   try {
-    total = await knex('users').count('id as CNT');
-    completed = await knex('users')
-      .innerJoin('achievements', 'users.id', 'achievements.user_id')
-      .count()
-      .select('achievements.target_status')
-      .groupBy('users.id', 'achievements.target_status').having(knex.raw('count(achievements.target_status) > 1'));
-    // eslint-disable-next-line quotes
-    users = await knex.raw(`select 'Q' || extract(quarter from created_at) as quarter, count(*) from users group by users.id, extract(quarter from created_at) order by extract(quarter from created_at) asc`);
+    /* eslint-disable quotes */
+    completed = await knex.raw("select (extract(year from created_at) || '.Q' || extract(quarter from created_at)) as quarter, count(*) from achievements group by extract(year from created_at), extract(quarter from created_at) having count(target_status) > 1");
+
 
   } catch (e) {
     ctx.throw(406, null, { errors: [e.message] });
@@ -76,13 +71,8 @@ router.get('/completed', requireAuth, async ctx => {
   }
 
   const data = {
-    total: total[0].CNT,
-    completed: completed,
-    quarter: start,
-    users: [{
-      rowCount: users.rowCount,
-      rows: users.rows
-    }]
+    completed: completed.rows,
+    quarter: start
   };
 
   ctx.body = { data };
