@@ -19,9 +19,7 @@
 
 
 
-      <p class="card-text">
-        {{linkify @chapter.description class="btn" }}
-      </p>
+      <p class="card-text">{{@chapter.description}}</p>
       <br>
       {{#each @chapter.tags as |tag|}}
         {{#link-to "tag" tag}}
