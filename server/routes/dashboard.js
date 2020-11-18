@@ -55,7 +55,6 @@ router.get('/achievements/:quarter/:year', requireAuth, dateQuery, async ctx => 
 });
 
 router.get('/completed', requireAuth, async ctx => {
-
   const from = moment().year(2020).quarter(2);
   const start = getQuarter(new Date(from));
 
@@ -63,8 +62,6 @@ router.get('/completed', requireAuth, async ctx => {
   try {
     /* eslint-disable quotes */
     completed = await knex.raw("select (extract(year from created_at) || '.Q' || extract(quarter from created_at)) as quarter, count(*) from achievements group by extract(year from created_at), extract(quarter from created_at) having count(target_status) > 1");
-
-
   } catch (e) {
     ctx.throw(406, null, { errors: [e.message] });
     throw e;
@@ -80,20 +77,20 @@ router.get('/completed', requireAuth, async ctx => {
 
 
 router.get('/learners', requireAuth, async ctx => {
-
+  let total, quarterly;
   try {
-    let total = await knex('users').count('*');
-    let quarterly = await knex.raw("select count(users.id), (extract(year from achievements.created_at) || '.Q' || extract(quarter from achievements.created_at)) as quarter from users left join achievements on achievements.user_id = users.id group by extract(year from achievements.created_at), extract(quarter from achievements.created_at) having count(achievements.target_status) > 1")
-
-    const learners ={
-      total: total[0],
-      quarterly: quarterly.rows
-    };
-    ctx.body = learners ;
+    total = await knex('users').count('*');
+    quarterly = await knex.raw("select count(users.id), (extract(year from achievements.created_at) || '.Q' || extract(quarter from achievements.created_at)) as quarter from users left join achievements on achievements.user_id = users.id group by extract(year from achievements.created_at), extract(quarter from achievements.created_at) having count(achievements.target_status) > 1")
   } catch (e) {
     ctx.throw(406, null, { errors: [e.message] });
     throw e;
   }
+
+  const learners = {
+    total: total[0],
+    quarterly: quarterly.rows,
+  };
+  ctx.body = learners;
 
 });
 module.exports = router.routes();
