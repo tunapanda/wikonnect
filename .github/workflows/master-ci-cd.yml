@@ -28,13 +28,13 @@ jobs:
 
       # Install project dependencies, test and build
       - name: Install dependencies
-        run: cd frontend && yarn install
+        run: cd frontend && yarn --frozen-lockfile install
       - name: Run build
         run: cd frontend && yarn build --prod
 
       # Install project dependencies, test and build
       - name: Install dependencies
-        run: cd server && yarn install
+        run: cd server && yarn --frozen-lockfile install
 
   deploy:
     name: CD Pipeline
@@ -60,11 +60,11 @@ jobs:
 
       # Install project dependencies and build
       - name: Install dependencies
-        run: yarn install
+        run: yarn --frozen-lockfile  install
 
       # Install project dependencies, test and build
       - name: Install dependencies
-        run: cd frontend && yarn install
+        run: cd frontend && yarn --frozen-lockfile install
       - name: Run build
         run: cd frontend && yarn build --prod
 
