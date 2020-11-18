@@ -16,36 +16,26 @@
     {{#if me.isAuthenticated}}
 
       <div class="text-center">
-        <br>
-        {{#if this.me.user.profileUri}}
-          <img class="rounded-circle" width="300px" alt="" src={{this.me.user.profileUri}}>
-        {{else}}
-          <img class="rounded-circle" width="300px" alt="" src={{profileImage}}>
 
-        {{/if}}
 
 
         <div class="bg-primary text-center p-3 text-white mb-4 ">
-          UPLOAD THUMBNAIL
+          UPLOAD H5P
         </div>
-        {{#file-drop-zone onDrop=(action "addFiles")}}
 
 
-          <Forms::Upload @multiple="false" @accept=".h5p" @filesSelected={{action "uploadPic"}}
-            @disabled={{uploader.uploading}}>
-            <div class="p-5 border bg-light mb-5 ml-5 mr-5 ">
+        <Forms::Upload @multiple="false" @accept=".h5p" @filesSelected={{action "uploadPic"}}
+          @disabled={{uploader.uploading}}>
 
-              {{#if uploader.uploading}}
-                Uploading... <span class="loading-spinner"></span> {{uploader.progress}}% <br>
-                <small class="text-muted">You will be redirected once upload is complete</small>
-              {{else}}
-                Upload H5P
-              {{/if}}
-            </div>
-          </Forms::Upload>
+          {{#if uploader.uploading}}
+            Uploading... <span class="loading-spinner"></span> {{uploader.progress}}% <br>
+            <small class="text-muted">You will be redirected once upload is complete</small>
+          {{else}}
+            Upload H5P
+          {{/if}}
+        </Forms::Upload>
 
-          just drop your files here...
-        {{/file-drop-zone}}
+
 
         {{#if signup}}
 

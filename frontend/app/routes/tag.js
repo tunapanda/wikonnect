@@ -4,7 +4,7 @@ export default class TagRoute extends Route {
 
   async model(params) {
     let filtered = [];
-    await this.store.findAll('chapter').then(t => {
+    await this.store.query('chapter', { 'approved': true }).then(t => {
 
       t.map(c => {
         if (c.tags) {

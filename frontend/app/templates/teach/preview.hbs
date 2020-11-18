@@ -1,7 +1,11 @@
 {{!-- {{outlet}} --}}
 {{outlet}}
-<div class="p-4">
 
+
+
+{{!-- {{outlet}} --}}
+{{outlet}}
+<div class="p-4">
   <div class="row text-center d-flex justify-content-center">
     <span class="border-bottom border-success m-3"><b>Name & Description</b></span>
     <span class="border-bottom border-success m-3"><b>H5P Content</b></span>
@@ -10,60 +14,107 @@
     <span class="border-bottom border-success m-3"><b>Preview & Publish</b></span>
 
   </div>
-
-  <div class="row p-5">
-    <div class="col-lg-6">
+  <div id="chapter">
+    <div class="row">
       <h4><b>Chapter Name: </b>{{model.name}} </h4>
-      <br>
-      <H5p @location={{model.contentUri}} />
-      <div class=" mt-1 bg-light m-0 p-4 pt-3">
-        <p>{{model.description}}</p>
-        <b>Tags</b>
 
-        <div class="row ">
 
-          {{#each model.tags as |tag|}}
-            {{#link-to "tag" tag}}
+    </div>
+    {{#if (eq model.approved "true")}}
 
-              <span class="badge badge-pill badge-primary btn-lg m-1">
-                {{tag}}
-              </span>
+      <span class="badge badge-pill badge-success float right">Approved</span>
+    {{else}}
+      <span class="badge badge-pill badge-danger float right">Not Yet Approved</span>
+
+    {{/if}}
+
+    <div class="chapter-content mt-2">
+      {{#if model.contentUri}}
+        <H5p @location={{model.contentUri}} />
+        <div class="mt-2">
+          {{#link-to "teach.h5p-upload" model.id class="btn bg-orange"}}
+
+            Upload H5P
+          {{/link-to}}
+        </div>
+      {{else}}
+        <div class="mt-2">
+          <BsAlert @visible={{true}} @fade={{true}} @type="success" @dismissible={{false}}>
+            <strong> H5P Missing! </strong> You need to upload a H5P file.
+
+            {{#link-to "teach.h5p-upload" model.id class="btn bg-orange"}}
+
+              Upload H5P
             {{/link-to}}
-
-          {{/each}}
+          </BsAlert>
 
         </div>
 
-      </div>
+      {{/if}}
+
+      {{#if model.imageUrl}}
+        <div class="mt-2">
+          {{#link-to "teach.thumbnail-upload" model.id}}
+            <button type="button" class="btn btn-primary">Change Thumbnail</button>
+          {{/link-to}}
+
+        </div>
+      {{else}}
+        <BsAlert @visible={{true}} @fade={{true}} @type="success" @dismissible={{false}}>
+          <strong> No Thumbnail! </strong> You need to upload a thumbnail.
+          {{#link-to "teach.thumbnail-upload" model.id class="btn bg-orange"}}
+
+            Upload Thumbnail
+          {{/link-to}}
+
+        </BsAlert>
+
+      {{/if}}
+
+      <p> <b>Description: </b>{{model.description}}</p>
+      <p> <b>Tags: </b></p>
+      {{#each model.tags as |tag|}}
+        {{#link-to "tag" tag}}
+
+          <span class="badge badge-pill badge-primary btn-lg">
+            {{tag}}
+          </span>
+        {{/link-to}}
+
+      {{/each}}
+      <br>
+      {{#link-to "teach.tag" model.id}}
+        <button type="button" class="btn btn-primary mt-1 mb-1">Modify Tags</button>
+
+      {{/link-to}}
 
 
     </div>
-
-    <div class="col-lg-6  border rounded-lg pl-4 pr-4 pt-3">
-      <div class="form-group ">
-        <label for="">Chapter Name</label>
-        <input value={{model.name}} type="text" class="form-control bg-light" name="" id="" aria-describedby="helpId"
-          placeholder="">
-      </div>
-      <div class="form-group">
-        <label for="">Chapter Description</label>
-        <textarea class="form-control bg-light" name="" id="" rows="3">{{model.description}}</textarea>
-      </div>
-
-      <img src="https://source.unsplash.com/random/1900x480" class="img-thumbnail rounded h-50 d-inline-block" alt="">
-
-
-      <br>
-      <br>
-      <br>
-      <br>
-      <br>
-
-    </div>
-
   </div>
 
+  <div class="text-center">
+    {{#if (and model.contentUri model.imageUrl) }}
 
 
+      {{#if (eq model.status "published")}}
+
+        <button {{on "click" (fn this.unpublish model.id )}} type="button" class="btn form-control btn-danger">
+          UnPublish {{model.name}}
+        </button>
+      {{else}}
+        <button {{on "click" (fn this.publish model.id )}} type="button" class="btn form-control btn-success">
+          Publish {{model.name}}
+        </button>
+      {{/if}}
+    {{else}}
+      <b>Publishing: </b>
+      <div class="alert alert-primary" role="alert">
+        <strong>Thumbnail and H5P required before publishing</strong>
+      </div>
+      <a href="#" class="btn  disabled form-control" role="button">Publish</a>
+
+
+    {{/if}}
+
+  </div>
 </div>
-{{!-- <div {{did-insert (fn this.dataLoad)}}></div> --}}

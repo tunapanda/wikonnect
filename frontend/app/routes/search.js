@@ -6,7 +6,7 @@ export default class SearchRoute extends Route {
   async model(params) {
     let filtered = [];
     let strRegExPattern = '\\b' + params.id + '\\b'
-    await this.store.findAll('chapter').then(t => {
+    await this.store.query('chapter', { 'approved': true }).then(t => {
 
       t.map(c => {
 
