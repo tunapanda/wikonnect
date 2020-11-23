@@ -36,7 +36,7 @@ async function chapterCompletionAward(params) {
   }
 }
 
-router.get('/', async ctx => {
+router.get('/', requireAuth, async ctx => {
   try {
     let achievement = await Achievement.query().where(ctx.query);
     achievement.imageUrl = 'images/profile-placeholder.gif';
@@ -47,37 +47,7 @@ router.get('/', async ctx => {
   }
 });
 
-
-/**
-   * return the count of completed chapter
-   * @param {object[]} dataRange
-   * @return {Integer}
-   */
-
-router.get('/date/:startDate/:endDate', requireAuth, async ctx => {
-
-  // const from = '2017-12-20';
-  // const to = '2018-12-20';
-  const from = ctx.params.startDate;
-  const to = ctx.params.endDate;
-
-  let achievement;
-  try {
-    achievement = await knex('achievements')
-      .select()
-      .where({ target_status: 'completed' })
-      .whereBetween('created_at', [from, to]);
-  } catch (e) {
-    ctx.throw(400, null, { errors: [e.message] });
-  }
-
-
-
-  ctx.status = 200;
-  ctx.body = { achievement: achievement.length };
-});
-
-router.get('/:id', async ctx => {
+router.get('/:id', requireAuth, async ctx => {
   const achievement = await Achievement.query().findById(ctx.params.id);
   if (!achievement) {
     ctx.assert(achievement, 404, 'no achievement by that ID');
@@ -116,8 +86,6 @@ router.delete('/:id', async ctx => {
   }
 
   await Achievement.query().delete().where({ id: ctx.params.id });
-
-
   ctx.status = 200;
   ctx.body = { achievement };
 });

@@ -272,7 +272,7 @@ router.post('/', permController.requireAuth, validateChapter, async ctx => {
  */
 router.put('/:id', permController.requireAuth, async ctx => {
   const chapter_record = await Chapter.query().findById(ctx.params.id);
-  let chapterData = ctx.request.body.chapter;
+  log.error(chapter_record);
 
   if (!chapter_record) {
     ctx.throw(400, 'No chapter with that ID');
@@ -283,9 +283,11 @@ router.put('/:id', permController.requireAuth, async ctx => {
   //   log.info(chapterData.status);
   // }
 
-  let chapter;
   try {
-    chapter = await Chapter.query().patchAndFetchById(ctx.params.id, chapterData);
+    let chapter = await Chapter.query().patchAndFetchById(ctx.params.id, ctx.request.body.chapter);
+    console.log(chapter);
+    ctx.status = 201;
+    ctx.body = { chapter };
   } catch (e) {
     log.error('cant save');
     log.error(e);
@@ -294,8 +296,7 @@ router.put('/:id', permController.requireAuth, async ctx => {
     } else { ctx.throw(400, null, { errors: [e.message] }); }
     throw e;
   }
-  ctx.status = 201;
-  ctx.body = { chapter };
+
 });
 
 

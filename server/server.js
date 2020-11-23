@@ -17,9 +17,8 @@ const router = new Router({
 });
 
 koaQs(app);
-if (process.env.NODE_ENV != 'test') {
-  app.use(removeTrailingSlashes());
-}
+
+app.use(removeTrailingSlashes());
 
 app.use(cors({
   origin: '*',
@@ -28,6 +27,7 @@ app.use(cors({
   allowMethods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowHeaders: ['Content-Type', 'Authorization', 'Accept', 'mojaHeaders'],
 }));
+
 app.use(errorHandler);
 
 app.use(logger);
