@@ -18,11 +18,14 @@ export default class MainHeaderComponent extends Component {
 
   @tracked token = this.session.data.authenticated.token
   @tracked search_term;
+  @tracked searchLoading = false;
 
 
   @action
   search() {
+    this.searchLoading = true;
     this.router.transitionTo('search', this.search_term);
+    this.searchLoading = false;
 
   }
 
