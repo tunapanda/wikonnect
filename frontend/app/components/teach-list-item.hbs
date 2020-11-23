@@ -24,18 +24,16 @@
       <div class="d-flex text-muted ">
         <span class="text-center ">
           <div>
-            <MdIcon @icon="pencil" @size={{20}} />
-            <br>
-            <small>Edit</small>
+            {{#link-to "teach.preview" @chapter.id}}
+
+              <MdIcon @icon="pencil" @size={{20}} />
+              <br>
+              <small>Edit</small>
+            {{/link-to}}
+
           </div>
         </span>
-        <span class="ml-3 text-center ">
-          <div>
-            <MdIcon @icon="eye-off" @size={{20}} />
-            <br>
-            <small>Unpublish</small>
-          </div>
-        </span>
+
 
       </div>
 
