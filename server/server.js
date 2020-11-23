@@ -8,6 +8,7 @@ const logger = require('./middleware/logger');
 const jwt = require('./middleware/jwt');
 const cors = require('@koa/cors');
 const log = require('./utils/logger');
+const removeTrailingSlashes = require('./utils/removeTrailingSlashes');
 
 const app = new Koa();
 
@@ -17,6 +18,8 @@ const router = new Router({
 
 koaQs(app);
 
+app.use(removeTrailingSlashes());
+
 app.use(cors({
   origin: '*',
   maxAge: 20,
@@ -24,6 +27,7 @@ app.use(cors({
   allowMethods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowHeaders: ['Content-Type', 'Authorization', 'Accept', 'mojaHeaders'],
 }));
+
 app.use(errorHandler);
 
 app.use(logger);

@@ -22,7 +22,7 @@ router.get('/completed', requireAuth, async ctx => {
   }
 
   const data = {
-    total: total,
+    total: total.rows[0].count,
     completed: completed.rows
   };
 
