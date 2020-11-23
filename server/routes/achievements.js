@@ -42,9 +42,8 @@ router.get('/', async ctx => {
     achievement.imageUrl = 'images/profile-placeholder.gif';
     ctx.status = 200;
     ctx.body = { achievement };
-  } catch (error) {
-    ctx.status = 400;
-    ctx.body = { message: 'The query key does not exist' };
+  } catch (e) {
+    ctx.throw(400, null, { errors: [e.message] });
   }
 });
 

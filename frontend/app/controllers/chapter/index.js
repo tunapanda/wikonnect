@@ -132,24 +132,20 @@ export default class ChapterIndexController extends Controller {
       await achievement.save();
 
       // if user completes chapters create record
-      // let counter = await this.store.createRecord('counter', {
-      //   counter: 1,
-      //   trigger: 'chapterCompletion'
-      // });
-      // await counter.save()
+      let counter = await this.store.createRecord('counter', {
+        counter: 1,
+        chapterId: chapter_id,
+        trigger: 'chapterCompletion'
+      });
+      await counter.save()
     }
     // record every page view
-    // let counter = await this.store.createRecord('counter', {
-    //   counter: 1,
-    //   trigger: 'pageLanding'
-    // });
-    // await counter.save()
-    let data = {
+    let counter = await this.store.createRecord('counter', {
       counter: 1,
+      chapterId: chapter_id,
       trigger: 'pageLanding'
-    };
-    alert(data.counter, data.trigger);
-
+    });
+    await counter.save()
     // // After 10 secs record page view
     setTimeout(function () {
       alert("Hello");
