@@ -14,7 +14,7 @@ router.get('/completed', requireAuth, async ctx => {
   let completed, total;
   try {
     /* eslint-disable quotes */
-    total = await knex('chapters').select("count(*)").innerJoin("achievements").on("chapters.id = target and target_status = 'completed'");
+    total = await knex.raw("select count(*) from chapters inner join achievements on chapters.id = target and target_status = 'completed'");
     completed = await knex.raw("select (extract(year from chapters.created_at) || '.Q' || extract(quarter from chapters.created_at)) as quarter, count(*) from chapters inner join achievements on chapters.id = target and target_status = 'completed' group by extract(year from chapters.created_at), extract(quarter from chapters.created_at)");
   } catch (e) {
     ctx.throw(406, null, { errors: [e.message] });
@@ -22,7 +22,7 @@ router.get('/completed', requireAuth, async ctx => {
   }
 
   const data = {
-    total: total,
+    total: total.rows[0].count,
     completed: completed.rows
   };
 
