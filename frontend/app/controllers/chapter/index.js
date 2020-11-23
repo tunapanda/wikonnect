@@ -137,7 +137,7 @@ export default class ChapterIndexController extends Controller {
         chapterId: chapter_id,
         trigger: 'chapterCompletion'
       });
-      await counter.save()
+      await counter.save();
     }
     // record every page view
     let counter = await this.store.createRecord('counter', {
@@ -145,7 +145,7 @@ export default class ChapterIndexController extends Controller {
       chapterId: chapter_id,
       trigger: 'pageLanding'
     });
-    await counter.save()
+    await counter.save();
     // // After 10 secs record page view
     setTimeout(function () {
       alert("Hello");
