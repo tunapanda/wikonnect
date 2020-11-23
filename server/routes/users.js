@@ -8,7 +8,7 @@ const jsonwebtoken = require('jsonwebtoken');
 const User = require('../models/user');
 const AchievementAward = require('../models/achievement_awards');
 
-const { authenticate, secret} = require('../middleware/jwt');
+const { authenticate, secret } = require('../middleware/jwt');
 const permController = require('../middleware/permController');
 const validateAuthRoutes = require('../middleware/validateRoutePostSchema/validateAuthRoutes');
 
