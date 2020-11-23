@@ -2074,8 +2074,9 @@ define({ "api": [
   },
   {
     "type": "get",
-    "url": "/search?q={query-string-goes-here}",
-    "title": "GET result search query.",
+    "url": "/search/chapter?",
+    "title": "",
+    "description": "<p>GET result search query using chapter name, description or tags /search?q={query-string-goes-here} Using QUERY string. /search?tags=highschool  Using TAGS.</p>",
     "name": "GetSearch",
     "group": "Search",
     "permission": [

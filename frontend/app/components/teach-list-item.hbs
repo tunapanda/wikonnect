@@ -1,5 +1,5 @@
 <div class="col-lg-4 col-md-6 mb-4">
-  <div class="card h-100">
+  <div class="card h-100 rounded-lg">
     {{#link-to "teach.preview" @chapter.id }}
       {{#if (eq @chapter.imageUrl null)}}
         <img class="card-img-top" src="https://placehold.jp/20/{{color}}/ffffff/328x200.png?text={{@chapter.name}}"
@@ -9,18 +9,35 @@
       {{/if}}
     {{/link-to}}
     <div class="card-body">
-      <h5 class="card-title">
+      <h5 class="text-dark">
 
-        {{#link-to "teach.preview" @chapter.id }}
+        {{#link-to "teach.preview" @chapter.id class="text-dark " }}
 
           {{@chapter.name}}
         {{/link-to}}
       </h5>
-      Approved : {{@chapter.approved}}
+      {{!-- Approved : {{@chapter.approved}} --}}
 
+      <p class="card-text text-muted ">{{@chapter.description}}</p>
+      <hr>
 
-      <p class="card-text">{{@chapter.description}}</p>
+      <div class="d-flex text-muted ">
+        <span class="text-center ">
+          <div>
+            <MdIcon @icon="pencil" @size={{20}} />
+            <br>
+            <small>Edit</small>
+          </div>
+        </span>
+        <span class="ml-3 text-center ">
+          <div>
+            <MdIcon @icon="eye-off" @size={{20}} />
+            <br>
+            <small>Unpublish</small>
+          </div>
+        </span>
 
+      </div>
 
     </div>
 
