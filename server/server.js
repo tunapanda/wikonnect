@@ -17,8 +17,9 @@ const router = new Router({
 });
 
 koaQs(app);
-
-app.use(removeTrailingSlashes());
+if (process.env.NODE_ENV != 'test') {
+  app.use(removeTrailingSlashes());
+}
 
 app.use(cors({
   origin: '*',
