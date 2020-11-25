@@ -4,8 +4,8 @@ exports.up = knex => {
     .createTable('reactions', table => {
       table.text('id').primary().notNullable().defaultTo(knex.raw('next_id()'));
       table.text('reaction');
-      table.text('chapterId');
-      table.text('userId');
+      table.text('chapter_id');
+      table.text('user_id');
       table.timestamps();
     });
 };

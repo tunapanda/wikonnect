@@ -90,13 +90,13 @@ router.get('/', permController.requireAuth, validateRouteQueryParams, async ctx 
       chapter = await chapter.where(ctx.query)
         .leftJoin('ratings as rate', 'chapters.id', 'rate.chapter_id')
         .groupBy('chapters.id', 'rate.chapter_id')
-        .eager('[comment(selectComment), achievement(selectAchievement), flag(selectFlag)]')
+        .eager('[comment(selectComment), achievement(selectAchievement), flag(selectFlag), reaction(selectReaction)]')
         .skipUndefined();
     } else if (user.tags != null || user.tags != undefined || user.tags === 'all') {
       chapter = await chapter.where(ctx.query).where('tags', '&&', `${user.tags}`)
         .leftJoin('ratings as rate', 'chapters.id', 'rate.chapter_id')
         .groupBy('chapters.id', 'rate.chapter_id')
-        .eager('[comment(selectComment), achievement(selectAchievement), flag(selectFlag)]')
+        .eager('[comment(selectComment), achievement(selectAchievement), flag(selectFlag), reaction(selectReaction)]')
         .skipUndefined();
     }
     // await achievementType(chapter);
@@ -105,7 +105,7 @@ router.get('/', permController.requireAuth, validateRouteQueryParams, async ctx 
       .where(ctx.query)
       .leftJoin('ratings as rate', 'chapters.id', 'rate.chapter_id')
       .groupBy('chapters.id', 'rate.chapter_id')
-      .eager('[comment(selectComment), flag(selectFlag)]');
+      .eager('[comment(selectComment), flag(selectFlag), reaction(selectReaction)]');
   }
   // await returnType(chapter);
 
@@ -169,10 +169,10 @@ router.get('/:id', permController.requireAuth, async ctx => {
     .groupBy('chapters.id', 'rate.chapter_id');
 
   if (roleNameList.includes(stateUserRole)) {
-    chapter = await chapter.eager('[comment(selectComment), flag(selectFlag), achievement(selectAchievement)]');
+    chapter = await chapter.eager('[comment(selectComment), flag(selectFlag), achievement(selectAchievement), reaction(selectReaction)]');
     await achievementType(chapter);
   } else if (stateUserRole == anonymous) {
-    chapter = await chapter.where({ status: 'published' }).eager('comment(selectComment)');
+    chapter = await chapter.where({ status: 'published' }).eager('[comment(selectComment), reaction(selectReaction)]');
   }
 
   ctx.assert(chapter, 404, 'no lesson by that ID');

@@ -13,7 +13,7 @@ class Reaction extends Model {
   static get modifiers() {
     return {
       selectReaction: (builder) => {
-        builder.select('id', 'target', 'target_status');
+        builder.select('id', 'reaction', 'user_id');
       }
     };
   }

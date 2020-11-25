@@ -4,7 +4,7 @@ exports.up = knex => {
     .createTable('counter', table => {
       table.text('id').primary().notNullable().defaultTo(knex.raw('next_id()'));
       table.text('trigger');
-      table.text('chapterId');
+      table.text('chapter_id');
       table.integer('counter');
       table.timestamps();
     });
