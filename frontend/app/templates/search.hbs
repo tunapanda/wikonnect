@@ -20,12 +20,17 @@
 <div class="container">
 
   <div class="row m-5">
+    {{#if model}}
 
-    {{#each model as |chapter|}}
 
-      <H5pListItem @chapter={{chapter}} />
-    {{/each}}
+      {{#each model as |chapter|}}
 
+        <H5pListItem @chapter={{chapter}} />
+      {{/each}}
+    {{else}}
+      We could not find what you are looking for
+
+    {{/if}}
 
   </div>
 </div>
