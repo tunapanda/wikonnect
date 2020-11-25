@@ -14,7 +14,7 @@
 @import 'profile';
 @import "cms-desktop";
 @import "common/utils";
-//@import "ember-mdi";
+@import "ember-mdi";
 
 // @import "ember-modal-dialog/ember-modal-structure";
 // @import "ember-modal-dialog/ember-modal-appearance";
@@ -74,8 +74,13 @@ body {
   background-color: orangered;
   text-align: center;
   padding: 4px;
+  display: block;
   left: 0;
   content: "Check it out";
+}
+
+.add-pre {
+  white-space: pre-line;
 }
 
 //@import "ember-bootstrap/bootstrap";

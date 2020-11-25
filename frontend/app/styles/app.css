@@ -1098,7 +1098,12 @@ body {
   background-color: orangered;
   text-align: center;
   padding: 4px;
+  display: block;
   left: 0;
   content: "Check it out";
+}
+
+.add-pre {
+  white-space: pre-line;
 }
 /*# sourceMappingURL=app.css.map */
