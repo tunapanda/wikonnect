@@ -17,6 +17,7 @@ const validateChapter = require('../middleware/validateRoutePostSchema/validateC
 const validateRouteQueryParams = require('../middleware/validateRouteQueryParams/queryValidation');
 const Reaction = require('../models/reaction');
 const knex = require('../utils/knexUtil');
+const { raw } = require('objection');
 
 
 const router = new Router({
@@ -82,7 +83,8 @@ router.get('/', permController.requireAuth, validateRouteQueryParams, async ctx 
   let roleNameList = ['basic', 'superadmin', 'tunapanda', 'admin'];
 
   let chapter = Chapter.query()
-    .select('chapters.*')
+    // eslint-disable-next-line quotes
+    .select('chapters.*', raw("(SELECT COUNT(nullif(reactions.reaction, 'like')) FROM reactions WHERE reactions.chapter_id = chapters.id ) AS likes, (SELECT COUNT(nullif(reactions.reaction, '')) FROM reactions WHERE reactions.chapter_id = chapters.id) AS dislikes"))
     .avg('rate.rating as rating')
     .from('chapters');
 
