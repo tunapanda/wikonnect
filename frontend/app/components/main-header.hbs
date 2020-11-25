@@ -17,14 +17,16 @@
         <li class="nav-item">
 
           {{#link-to "home"  class="nav-link" }}
-            Learn
+
+            {{t "buttons.learn"}}
           {{/link-to}}
         </li>
 
         <li class="nav-item">
 
           {{#link-to "teach" class="nav-link" }}
-            Teach
+            {{t "buttons.teach"}}
+
           {{/link-to}}
 
           {{!-- <a class="nav-link" href="https://teach.wikonnect.org/api/auth?token={{token}}&user={{me.user.username}}">
@@ -35,7 +37,8 @@
         <li class="nav-item">
 
           {{#link-to "index" class="nav-link" }}
-            About
+            {{t "buttons.about"}}
+
           {{/link-to}}
         </li>
 
@@ -58,7 +61,8 @@
         <li class="nav-item">
 
           {{#link-to "home" class="nav-link" }}
-            Home
+            {{t "buttons.learn"}}
+
           {{/link-to}}
         </li>
 
@@ -66,7 +70,9 @@
 
         <li class="nav-item">
 
-          <a class="nav-link" href="https://wikonnect.org">About</a>
+          <a class="nav-link" href="https://wikonnect.org">
+            {{t "buttons.about"}}
+          </a>
 
         </li>
 
@@ -87,7 +93,9 @@
           Searching...
         </button>
       {{else}}
-        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">
+          {{t "buttons.search"}}
+        </button>
 
       {{/if}}
     </form>
@@ -113,13 +121,14 @@
             aria-labelledby="navbarDropdownMenuLink-55">
 
             {{#link-to "profile" class="dropdown-item" }}
-              {{me.user.username}}'s Profile
+              {{me.user.username}}'s {{t "labels.profile"}}
+
             {{/link-to}}
             {{#link-to "profile"  (query-params view="Settings")
                class="dropdown-item"  }}
-              Settings
+              {{t "buttons.settings"}}
             {{/link-to}}
-            <a class="dropdown-item" href="#" {{action "logoutuser"}}>Logout</a>
+            <a class="dropdown-item" href="#" {{action "logoutuser"}}>{{t "buttons.logout"}}</a>
           </div>
         </li>
       {{else}}
