@@ -1,7 +1,6 @@
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 const server = require('../index');
-const knex = require('../db/db');
 const tokens = require('./_tokens');
 
 chai.should();
