@@ -19,7 +19,7 @@
 
 
 
-      <p class="card-text">{{@chapter.description}}</p>
+      <p class="card-text">{{linkify @chapter.description class="btn btn-primary mt-3 replaced"}}</p>
       <br>
       {{#each @chapter.tags as |tag|}}
         {{#link-to "tag" tag}}
