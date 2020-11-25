@@ -27,7 +27,6 @@ const {
   returnType,
   achievementType
 } = require('../utils/routesUtils/chaptersRouteUtils');
-const { nullTime } = require('pino/lib/time');
 
 /**
  * @api {get} /api/v1/chapters/ GET all chapters.
@@ -93,13 +92,13 @@ router.get('/', permController.requireAuth, validateRouteQueryParams, async ctx 
       chapter = await chapter.where(ctx.query)
         .leftJoin('ratings as rate', 'chapters.id', 'rate.chapter_id')
         .groupBy('chapters.id', 'rate.chapter_id')
-        .eager('[comment(selectComment), achievement(selectAchievement), flag(selectFlag), reaction(selectReaction)]')
+        .eager('[comment(selectComment), achievement(selectAchievement), flag(selectFlag)]')
         .skipUndefined();
     } else if (user.tags != null || user.tags != undefined || user.tags === 'all') {
       chapter = await chapter.where(ctx.query).where('tags', '&&', `${user.tags}`)
         .leftJoin('ratings as rate', 'chapters.id', 'rate.chapter_id')
         .groupBy('chapters.id', 'rate.chapter_id')
-        .eager('[comment(selectComment), achievement(selectAchievement), flag(selectFlag), reaction(selectReaction)]')
+        .eager('[comment(selectComment), achievement(selectAchievement), flag(selectFlag)]')
         .skipUndefined();
     }
     // await achievementType(chapter);
@@ -108,7 +107,7 @@ router.get('/', permController.requireAuth, validateRouteQueryParams, async ctx 
       .where(ctx.query)
       .leftJoin('ratings as rate', 'chapters.id', 'rate.chapter_id')
       .groupBy('chapters.id', 'rate.chapter_id')
-      .eager('[comment(selectComment), flag(selectFlag), reaction(selectReaction)]');
+      .eager('[comment(selectComment), flag(selectFlag)]');
   }
   // await returnType(chapter);
 
@@ -175,7 +174,7 @@ router.get('/:id', permController.requireAuth, async ctx => {
     .groupBy('chapters.id', 'rate.chapter_id');
 
   if (roleNameList.includes(stateUserRole)) {
-    chapter = await chapter.eager('[comment(selectComment), flag(selectFlag), achievement(selectAchievement), reaction(selectReaction)]');
+    chapter = await chapter.eager('[comment(selectComment), flag(selectFlag), achievement(selectAchievement)]');
     await achievementType(chapter);
   } else if (stateUserRole == anonymous) {
     chapter = await chapter.where({ status: 'published' }).eager('[comment(selectComment)]');
@@ -187,7 +186,7 @@ router.get('/:id', permController.requireAuth, async ctx => {
   chapter[0].reaction = reaction.rows[0];
   chapter[0].reaction.authenticated_user = check_user[0] === undefined ? null : check_user[0].reaction;
 
-  ctx.assert(chapter, 404, 'no lesson by that ID');
+  ctx.assert(chapter, 404, 'No lesson by that ID');
   await returnType(chapter);
 
   ctx.status = 200;
