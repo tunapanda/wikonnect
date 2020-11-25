@@ -412,7 +412,7 @@ body {
   padding: 1em;
   z-index: 999;
   background-color: #fecf00;
-  background-image: "/public/assets/profile.png";
+  background-image: "/public/assets/profile.svg";
 }
 
 .green-header {
@@ -1082,5 +1082,28 @@ body {
   color: white;
   width: 100%;
   -webkit-mask-image: -webkit-gradient(linear, left top, left bottom, from(rgba(252, 113, 0, 0)), to(black));
+}
+
+.replaced {
+  visibility: hidden;
+  position: relative;
+}
+
+.replaced:after {
+  visibility: visible;
+  position: absolute;
+  top: 0;
+  border-radius: 5px;
+  width: 100%;
+  background-color: orangered;
+  text-align: center;
+  padding: 4px;
+  display: block;
+  left: 0;
+  content: "Check it out";
+}
+
+.add-pre {
+  white-space: pre-line;
 }
 /*# sourceMappingURL=app.css.map */
