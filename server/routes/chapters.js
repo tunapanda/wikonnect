@@ -63,6 +63,9 @@ const {
  *            "contentUri": "/uploads/h5p/chapter1",
  *            "imageUrl": "/uploads/images/content/chapters/chapter1.jpeg",
  *            "contentId": null,
+ *            "likes": "0",
+ *            "dislikes": "0",
+ *            "rating": null,
  *            "tags": [],
  *            "comment": [{
  *            }]
@@ -152,6 +155,12 @@ router.get('/', permController.requireAuth, validateRouteQueryParams, async ctx 
  *            "tags": [],
  *            "comment": [{
  *            }]
+ *            "reaction": {
+ *               "total_likes": "4",
+ *               "likes": "3",
+ *               "dislikes": "1",
+ *               "authenticated_user": null
+ *              }
  *         }
  *      }
  *
