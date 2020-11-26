@@ -12,11 +12,8 @@ const validate = require('validate.js');
 async function validateReaction(ctx, next) {
 
   try {
-    await validate.async(ctx.request.body.rating, {
+    await validate.async(ctx.request.body.reaction, {
       chapterId: {
-        presence: true,
-      },
-      userId: {
         presence: true,
       },
       reaction: {

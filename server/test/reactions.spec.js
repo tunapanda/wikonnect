@@ -9,9 +9,8 @@ chai.use(chaiHttp);
 const reactionRoute = '/api/v1/reactions/';
 const reactionData = {
   reaction: {
-    userId: 'user22',
-    chapterId: 'chapter2',
-    reaction: 'like'
+    'chapterId': 'chapter2',
+    'reaction': 'like'
   }
 };
 
@@ -21,8 +20,8 @@ describe('REACTIONS ROUTE', () => {
       chai
         .request(server)
         .post(reactionRoute)
+        .set(tokens.headersSuperAdmin1)
         .set('Content-Type', 'application/json')
-        .set(tokens.headerAdminUser)
         .send(reactionData)
         .end((err, res) => {
           res.should.have.status(201);

@@ -127,6 +127,7 @@ router.get('/:id', requireAuth, async ctx => {
 
 router.post('/', validateReaction, requireAuth, async ctx => {
   let newReaction = ctx.request.body.reaction;
+  console.log(newReaction);
   newReaction.userId = ctx.state.user.id == undefined ? ctx.state.user.data.id : ctx.state.user.id;
   const reaction = await Reaction.query().insertAndFetch(newReaction);
 
@@ -216,7 +217,7 @@ router.delete('/:id', requireAuth, async ctx => {
   if (!reaction) {
     ctx.assert(reaction, 401, 'Unable to delete');
   }
-  
+
   ctx.status = 200;
   ctx.body = { reaction };
 });

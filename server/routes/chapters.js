@@ -201,7 +201,7 @@ router.get('/:id', permController.requireAuth, async ctx => {
   await returnType(chapter);
 
   ctx.status = 200;
-  ctx.body = chapter;
+  ctx.body = { chapter };
 });
 
 
@@ -307,7 +307,6 @@ router.put('/:id', permController.requireAuth, async ctx => {
 
   try {
     let chapter = await Chapter.query().patchAndFetchById(ctx.params.id, ctx.request.body.chapter);
-    console.log(chapter);
     ctx.status = 201;
     ctx.body = { chapter };
   } catch (e) {
