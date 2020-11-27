@@ -1,20 +1,3 @@
-{{!-- <div class="searchpage padded mt-2">
-  <div class="row">
-  </div>
-
-
-  <div class="row mt-5 card-columns">
-    {{#each model as |chapter|}}
-
-      <H5pListItem @chapter={{chapter}} />
-    {{/each}}
-  </div>
-
-
-
-
-</div> --}}
-
 {{outlet}}
 
 <div class="container">
@@ -28,7 +11,7 @@
         <H5pListItem @chapter={{chapter}} />
       {{/each}}
     {{else}}
-      We could not find what you are looking for
+      {{t "messages.empty_search"}}
 
     {{/if}}
 

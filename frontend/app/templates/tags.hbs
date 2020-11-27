@@ -50,11 +50,13 @@
 </div>
 <nav class="navbar fixed-bottom float-right bg-light justify-content-end mt-4">
   {{#if (or topic_cart custom_cart level_cart  competency_cart)}}
-    <button type="button" class="btn btn-primary form-control float-right" {{action updateTags}}>Done</button>
+    <button type="button" class="btn btn-primary form-control float-right" {{action updateTags}}>
+      {{t "buttons.done"}}
+    </button>
 
   {{else}}
     {{#link-to "upload"}}
-      <button type="button" class="btn btn-primary form-control float-right">Skip</button>
+      <button type="button" class="btn btn-primary form-control float-right">{{t "buttons.next"}}</button>
 
     {{/link-to}}
 
