@@ -1,9 +1,9 @@
 import Component from '@glimmer/component';
 import { inject as service } from '@ember/service';
 // import { action } from '@ember/object';
-import { tracked } from '@glimmer/tracking';
+// import { tracked } from '@glimmer/tracking';
 
-import { computed } from '@ember/object';
+// import { computed } from '@ember/object';
 
 export default class TagsListComponent extends Component {
   @service
@@ -22,15 +22,15 @@ export default class TagsListComponent extends Component {
 
 
   get tagsList() {
-    let mySet = new Set()
+    let mySet = new Set();
 
     this.args.theModel.map(x => {
 
       x.tags.map(y => {
-        mySet.add(y)
+        mySet.add(y);
 
-      })
-    })
+      });
+    });
     return mySet;
 
   }
