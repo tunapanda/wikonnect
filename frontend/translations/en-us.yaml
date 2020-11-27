@@ -1,0 +1,49 @@
+buttons: 
+  teach: Teach
+  learn: Learn
+  login: Login
+  signup: Sign Up
+  profile: Profile
+  about: About
+  publish: Publish
+  unpublish: Un Publish
+  create: Create
+  delete: Delete
+  modify: Modify
+  edit: Edit
+  settings: Edit
+  search: Search
+  comment: Comment
+  rate: Rate
+  copy: Copy
+  close: Close
+  skip: Skip
+  done: Done
+  next: Next
+
+labels:
+  username: Username
+  email: Email
+  name: Name
+  description: Description
+  tags: Tags
+  achievements: My Achievements
+  first_name: First Name
+  last_name: Last Name
+  rating: Rating
+  details: Details
+  thumbnail: Thumbnail
+  preview_publish: Preview & Publish
+  h5p: H5P
+  chapter: Chapter
+  profile: Profile
+
+profile:
+  profile_picture : Profile Picture
+
+messages:
+  empty_search: "We could not find anything that matches your search query"
+  auth_prompt: "    For an enhanced experience please sign up or login"
+  searching: "Searching ..."
+  upload_profile_pic: "Upload Profile Picture"
+  create_h5p_chapter: "Create H5P Chapter"
