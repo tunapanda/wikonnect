@@ -1,16 +1,16 @@
 
 exports.up = knex => {
   return knex.schema
-    .createTable('counter', table => {
+    .createTable('reactions', table => {
       table.text('id').primary().notNullable().defaultTo(knex.raw('next_id()'));
-      table.text('trigger');
+      table.text('reaction');
       table.text('chapter_id');
-      table.integer('counter');
+      table.text('user_id');
       table.timestamps();
     });
 };
 
 exports.down = knex => {
   return knex.schema
-    .dropTableIfExists('counter');
+    .dropTableIfExists('reactions');
 };

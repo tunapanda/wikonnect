@@ -15,6 +15,9 @@ const permController = require('../middleware/permController');
 // const mojaCampaignMiddleware = require('../middleware/mojaCampaignMiddleware');
 const validateChapter = require('../middleware/validateRoutePostSchema/validateChapter');
 const validateRouteQueryParams = require('../middleware/validateRouteQueryParams/queryValidation');
+const Reaction = require('../models/reaction');
+const knex = require('../utils/knexUtil');
+const { raw } = require('objection');
 
 
 const router = new Router({
@@ -60,6 +63,9 @@ const {
  *            "contentUri": "/uploads/h5p/chapter1",
  *            "imageUrl": "/uploads/images/content/chapters/chapter1.jpeg",
  *            "contentId": null,
+ *            "likes": "0",
+ *            "dislikes": "0",
+ *            "rating": null,
  *            "tags": [],
  *            "comment": [{
  *            }]
@@ -80,7 +86,8 @@ router.get('/', permController.requireAuth, validateRouteQueryParams, async ctx 
   let roleNameList = ['basic', 'superadmin', 'tunapanda', 'admin'];
 
   let chapter = Chapter.query()
-    .select('chapters.*')
+    // eslint-disable-next-line quotes
+    .select('chapters.*', raw("(SELECT COUNT(nullif(reactions.reaction, 'like')) FROM reactions WHERE reactions.chapter_id = chapters.id ) AS likes, (SELECT COUNT(nullif(reactions.reaction, '')) FROM reactions WHERE reactions.chapter_id = chapters.id) AS dislikes"))
     .avg('rate.rating as rating')
     .from('chapters');
 
@@ -148,6 +155,12 @@ router.get('/', permController.requireAuth, validateRouteQueryParams, async ctx 
  *            "tags": [],
  *            "comment": [{
  *            }]
+ *            "reaction": {
+ *               "total_likes": "4",
+ *               "likes": "3",
+ *               "dislikes": "1",
+ *               "authenticated_user": null
+ *              }
  *         }
  *      }
  *
@@ -156,9 +169,12 @@ router.get('/', permController.requireAuth, validateRouteQueryParams, async ctx 
  */
 router.get('/:id', permController.requireAuth, async ctx => {
   let stateUserRole = ctx.state.user.role == undefined ? ctx.state.user.data.role : ctx.state.user.role;
+  let stateUserId = ctx.state.user.id == undefined ? ctx.state.user.data.id : ctx.state.user.id;
+
 
   let roleNameList = ['basic', 'superadmin', 'tunapanda'];
   let anonymous = 'anonymous';
+  let reaction, check_user;
 
   let chapter = Chapter.query()
     .select('chapters.*')
@@ -172,10 +188,16 @@ router.get('/:id', permController.requireAuth, async ctx => {
     chapter = await chapter.eager('[comment(selectComment), flag(selectFlag), achievement(selectAchievement)]');
     await achievementType(chapter);
   } else if (stateUserRole == anonymous) {
-    chapter = await chapter.where({ status: 'published' }).eager('comment(selectComment)');
+    chapter = await chapter.where({ status: 'published' }).eager('[comment(selectComment)]');
   }
 
-  ctx.assert(chapter, 404, 'no lesson by that ID');
+  check_user = await Reaction.query().where({ chapter_id: ctx.params.id, user_id: stateUserId });
+  reaction = await knex.raw(`SELECT COUNT(*) AS total_likes, COUNT(CASE WHEN reaction = 'like' THEN 1 ELSE NULL END) AS likes, COUNT(CASE WHEN reaction = 'dislike' THEN 1 ELSE NULL END) AS dislikes FROM reactions  WHERE reactions.chapter_id = '${ctx.params.id}'`);
+
+  chapter[0].reaction = reaction.rows[0];
+  chapter[0].reaction.authenticated_user = check_user[0] === undefined ? null : check_user[0].reaction;
+
+  ctx.assert(chapter, 404, 'No lesson by that ID');
   await returnType(chapter);
 
   ctx.status = 200;
@@ -285,7 +307,6 @@ router.put('/:id', permController.requireAuth, async ctx => {
 
   try {
     let chapter = await Chapter.query().patchAndFetchById(ctx.params.id, ctx.request.body.chapter);
-    console.log(chapter);
     ctx.status = 201;
     ctx.body = { chapter };
   } catch (e) {
