@@ -1,7 +1,8 @@
 {{yield}}
-<div class="row bg-muted">
-  ajshd
-  {{#each tagsList as |tag|}}
+
+{{#each tagsList as |tag|}}
+  {{#link-to "tag" tag class="btn btn-primary m-2 rounded"}}
     {{tag}}
-  {{/each}}
-</div>
+
+  {{/link-to}}
+{{/each}}
