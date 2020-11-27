@@ -13,6 +13,11 @@ export default class ChapterModel extends Model {
   @attr tags;
   @attr targetStatus;
   @attr imageUrl;
+  @attr createdAt;
+  @attr likes;
+  @attr dislikes;
+  @attr reaction;
+  @attr counter;
   @hasMany('comment') comments;
 
   @belongsTo('user') creator;
