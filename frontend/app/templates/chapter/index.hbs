@@ -11,7 +11,7 @@
   <div class="chapter-content ">
     <H5p @location={{model.contentUri}} />
 
-    <p> {{model.description}}</p>
+    <p class="add-pre"> {{linkify model.description class="btn btn-primary replaced"}}</p>
   </div>
   {{#if me.user.id}}
 

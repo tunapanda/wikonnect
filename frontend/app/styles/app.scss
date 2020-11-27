@@ -58,5 +58,30 @@ body {
       from(rgba(252, 113, 0, 0)), to(rgba(0, 0, 0, 1)));
 }
 
+
+
+.replaced {
+  visibility: hidden;
+  position: relative;
+}
+
+.replaced:after {
+  visibility: visible;
+  position: absolute;
+  top: 0;
+  border-radius: 5px;
+  width: 100%;
+  background-color: orangered;
+  text-align: center;
+  padding: 4px;
+  display: block;
+  left: 0;
+  content: "Check it out";
+}
+
+.add-pre {
+  white-space: pre-line;
+}
+
 //@import "ember-bootstrap/bootstrap";
 //@import "ember-power-select";
