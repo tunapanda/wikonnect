@@ -8,9 +8,26 @@
     aria-controls="navbarSupportedContent-555" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
+  <a class="nav-link" href="" {{action "translate" "en-us"}}>
+    EN
+  </a>
+
+  &nbsp; / &nbsp;
+
+
+  <a class="nav-link" {{action "translate" "sw-ke"}} href="">
+    SW
+  </a>
+
 
   <div class="collapse navbar-collapse" id="navbarSupportedContent-555">
     <ul class="navbar-nav ml-auto text-dark">
+
+
+
+
+
+
 
       {{#if me.user.id}}
 
@@ -101,7 +118,10 @@
     </form>
 
 
+
+
     <ul class="navbar-nav ml-auto nav-flex-icons">
+
       {{#if me.user.id}}
 
         <li class="nav-item avatar dropdown">
@@ -135,7 +155,8 @@
         <li>
 
           {{#link-to "login"   }}
-            Login
+            {{t "buttons.login"}}
+
 
           {{/link-to}}
         </li>
@@ -143,10 +164,13 @@
         <li>
 
           {{#link-to "signup"  }}
-            Signup
+            {{t "buttons.signup"}}
+
 
           {{/link-to}}
         </li>
+
+
 
         {{!-- <li class="nav-item">
 
@@ -156,6 +180,9 @@
           {{/link-to}}
         </li> --}}
       {{/if}}
+
+
+
     </ul>
 
 

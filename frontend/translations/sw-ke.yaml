@@ -1,0 +1,49 @@
+buttons: 
+  teach: Fundisha
+  learn: Soma
+  login: Ingia
+  signup: Jisajili
+  profile: Profaili
+  about: Kuhusu
+  publish: Hadhiri
+  unpublish: Ondoa
+  create: Unda
+  delete: Futa
+  modify: Rekebisha
+  edit: Hariri
+  settings: Mipangilio
+  search: Tafuta
+  comment: Toa Maoni
+  rate: Pima
+  copy: Nakala
+  close: Funga
+  skip: Ruka
+  done: Maliza
+  next: Ijayo
+
+labels:
+  username: Jina La Mtumiaji
+  email: Barua Pepe
+  name: Jina
+  description: Maelezo
+  tags: Vitambulisho
+  achievements: Mafanikio Yangu
+  first_name: Jina la kwanza
+  last_name: Jina la mwisho
+  rating: Kipiimo
+  details: Maelezo zaidi
+  thumbnail: Kijipicha
+  preview_publish: Hakikisha kisha Toa
+  h5p: H5P
+  chapter: Sura
+  profile: Profaili
+
+profile:
+  profile_picture : Picha ya Profaili
+
+messages:
+  empty_search: Hatukuweza kupata chochote kinacholingana na hoja yako ya utaftaji
+  auth_prompt: "Kwa uzoefu ulioimarishwa tafadhali jisajili au ingia"
+  searching: "Inatafuta ..."
+  upload_profile_pic: "Pakia Picha ya Profaili"
+  create_h5p_chapter: "Unda Sura ya H5P"
