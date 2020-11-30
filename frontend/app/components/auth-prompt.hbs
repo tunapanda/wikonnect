@@ -3,14 +3,14 @@
 
   <nav class="navbar fixed-bottom text-white  bg-orange justify-content-between ">
 
-    For an enhanced experience please sign up or login
+    {{t "messages.auth_prompt"}}
     <div>
       {{#link-to "login"}}
-        <button type="button" class="btn btn-outline-light float-right mr-2">Login</button>
+        <button type="button" class="btn btn-outline-light float-right mr-2">{{t "buttons.login"}}</button>
 
       {{/link-to}}
       {{#link-to "signup"}}
-        <button type="button" class="btn btn-outline-light float-right mr-2">Signup</button>
+        <button type="button" class="btn btn-outline-light float-right mr-2">{{t "buttons.signup"}}</button>
 
       {{/link-to}}
     </div>

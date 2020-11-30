@@ -1,6 +1,8 @@
 import Component from '@glimmer/component';
 import { inject as service } from '@ember/service';
 // import { action } from '@ember/object';
+// import { tracked } from '@glimmer/tracking';
+
 // import { computed } from '@ember/object';
 
 export default class TagsListComponent extends Component {
@@ -17,21 +19,19 @@ export default class TagsListComponent extends Component {
   notify
 
 
+
+
   get tagsList() {
-    let filtered = [];
+    let mySet = new Set();
 
-    this.store.query('chapter', { 'approved': true }).then(t => {
+    this.args.theModel.map(x => {
 
-      t.map(c => {
+      x.tags.map(y => {
+        mySet.add(y);
 
-        filtered.concat(c.tags);
       });
-
     });
-
-
-
-    return filtered;
+    return mySet;
 
   }
 }

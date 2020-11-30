@@ -14,6 +14,7 @@ export default class MainHeaderComponent extends Component {
 
   @service router;
   @service session;
+  @service intl;
 
 
   @tracked token = this.session.data.authenticated.token
@@ -37,6 +38,12 @@ export default class MainHeaderComponent extends Component {
 
     this.router.transitionTo('home');
 
+
+  }
+
+  @action
+  translate(lang) {
+    this.intl.setLocale([lang]);
 
   }
 
