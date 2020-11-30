@@ -1,49 +1,40 @@
 {{!-- {{outlet}} --}}
 {{outlet}}
+<div {{did-insert (fn this.dataLoad)}}></div>
+<div {{did-insert (fn this.counterTimer)}}></div>
 <div id="chapter" class="p-4">
-
-
-
   <h4>{{model.name}} </h4>
-
-
-
   <div class="chapter-content ">
     <H5p @location={{model.contentUri}} />
+    <div class="row">
+      <div class="col-6">
+        <p> {{model.counter}} views | {{format-date model.createdAt}}</p>
+      </div>
+      <div class="col-6">
+        <Reaction @likes={{model.reaction.likes}} @dislikes={{model.reaction.dislikes}} @status={{model.reaction.authenticated_user}}/>
+        {{log model.reaction.authenticated_user}}
+      </div>
+    </div>
 
     <p class="add-pre"> {{linkify model.description class="btn btn-primary replaced"}}</p>
   </div>
-  {{#if me.user.id}}
-
-    {{!-- <div class="d-flex justify-content-between mr-2">
-
-      <a name="" id="" class="btn btn-primary" href="#" {{action "toggleFlaggingModal"}} role="button">Report </a>
-      {{star-rating readOnly=enabled rating=5 onClick=(action "ratingSubmit")}}
-
-
-    </div> --}}
-  {{/if}}
   <br>
-
-
   <CommentSection @selectedChapter={{model.id}} />
 </div>
 
 <div class="text-center">
   {{#if (eq me.user.username "daph")}}
 
-    {{#if (eq model.approved "true")}}
+  {{#if (eq model.approved "true")}}
 
-      <button {{on "click" (fn this.toggleApproval model.id "true")}} type="button"
-        class="btn form-controll btn-danger">
-        Un Approve This
-      </button>
-    {{else}}
-      <button {{on "click" (fn this.toggleApproval model.id "false")}} type="button"
-        class="btn form-controll btn-success">
-        Approve This
-      </button>
-    {{/if}}
+  <button {{on "click" (fn this.toggleApproval model.id "true")}} type="button" class="btn form-controll btn-danger">
+    Un Approve This
+  </button>
+  {{else}}
+  <button {{on "click" (fn this.toggleApproval model.id "false")}} type="button" class="btn form-controll btn-success">
+    Approve This
+  </button>
+  {{/if}}
 
 
 
@@ -77,4 +68,3 @@
 
   </BsForm>
 </BsModalSimple>
-<div {{did-insert (fn this.dataLoad)}}></div>

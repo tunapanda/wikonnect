@@ -14,6 +14,9 @@ const User = require('../models/user');
 const permController = require('../middleware/permController');
 const validateGetChapter = require('../middleware/validateRequests/chapterGetValidation');
 
+const Reaction = require('../models/reaction');
+const knex = require('../utils/knexUtil');
+const { raw } = require('objection');
 
 const router = new Router({
   prefix: '/chapters'
@@ -61,8 +64,9 @@ router.get('/', permController.requireAuth, validateGetChapter, async ctx => {
   let roleNameList = ['basic', 'superadmin', 'tunapanda', 'admin'];
 
   let chapter = Chapter.query()
-    .select('chapters.*')
-    .avg('rate.rating as rating')
+    // eslint-disable-next-line quotes
+    .select('chapters.*', raw("(SELECT COUNT(nullif(reactions.reaction, 'like')) FROM reactions WHERE reactions.chapter_id = chapters.id ) AS likes, (SELECT COUNT(nullif(reactions.reaction, '')) FROM reactions WHERE reactions.chapter_id = chapters.id) AS dislikes"))
+    .avg('rate.rating as rating').avg('rate.rating as rating')
     .from('chapters');
 
 
@@ -127,6 +131,9 @@ router.get('/', permController.requireAuth, validateGetChapter, async ctx => {
  *            "imageUrl": "/uploads/images/content/chapters/chapter1.jpeg",
  *            "contentId": null,
  *            "tags": [],
+ *            "likes": "0",
+ *            "dislikes": "0",
+ *            "rating": null,
  *            "comment": [{
  *            }]
  *         }
@@ -137,9 +144,11 @@ router.get('/', permController.requireAuth, validateGetChapter, async ctx => {
  */
 router.get('/:id', permController.requireAuth, async ctx => {
   let stateUserRole = ctx.state.user.role == undefined ? ctx.state.user.data.role : ctx.state.user.role;
+  let stateUserId = ctx.state.user.id == undefined ? ctx.state.user.data.id : ctx.state.user.id;
 
   let roleNameList = ['basic', 'superadmin', 'tunapanda'];
   let anonymous = 'anonymous';
+  let reaction, check_user,counter;
 
   let chapter = Chapter.query()
     .select('chapters.*')
@@ -156,7 +165,15 @@ router.get('/:id', permController.requireAuth, async ctx => {
     chapter = await chapter.where({ status: 'published' }).eager('comment(selectComment)');
   }
 
-  ctx.assert(chapter, 404, 'no lesson by that ID');
+  check_user = await Reaction.query().where({ chapter_id: ctx.params.id, user_id: stateUserId });
+  reaction = await knex.raw(`SELECT COUNT(*) AS total_likes, COUNT(CASE WHEN reaction = 'like' THEN 1 ELSE NULL END) AS likes, COUNT(CASE WHEN reaction = 'dislike' THEN 1 ELSE NULL END) AS dislikes FROM reactions  WHERE reactions.chapter_id = '${ctx.params.id}'`);
+  counter = await knex.raw(`select count(*) from counter where trigger = 'timerDelay' and chapter_id = '${ctx.params.id}'`);
+
+  chapter[0].reaction = reaction.rows[0];
+  chapter[0].reaction.authenticated_user = check_user[0] === undefined ? null : check_user[0].reaction;
+  chapter[0].counter = counter.rows === undefined ? '0' : counter.rows[0].count;
+
+  ctx.assert(chapter, 404, 'No lesson by that ID');
   await returnType(chapter);
 
   ctx.status = 200;

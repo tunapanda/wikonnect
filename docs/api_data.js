@@ -591,7 +591,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "HTTP/1.1 200 OK\n{\n   \"chapter\": {\n       \"id\": \"chapter1\",\n       \"lessonId\": \"lesson1\",\n       \"name\": \"A Chapter\",\n       \"slug\": \"a-chapter\",\n       \"description\": \"An H5P Chapter.\",\n       \"status\": \"published\",\n       \"creatorId\": \"user1\",\n       \"createdAt\": \"2017-12-20T16:17:10.000Z\",\n       \"updatedAt\": \"2017-12-20T16:17:10.000Z\",\n       \"contentType\": \"h5p\",\n       \"contentUri\": \"/uploads/h5p/chapter1\",\n       \"imageUrl\": \"/uploads/images/content/chapters/chapter1.jpeg\",\n       \"contentId\": null,\n       \"tags\": [],\n       \"comment\": [{\n       }]\n    }\n }",
+          "content": "HTTP/1.1 200 OK\n{\n   \"chapter\": {\n       \"id\": \"chapter1\",\n       \"lessonId\": \"lesson1\",\n       \"name\": \"A Chapter\",\n       \"slug\": \"a-chapter\",\n       \"description\": \"An H5P Chapter.\",\n       \"status\": \"published\",\n       \"creatorId\": \"user1\",\n       \"createdAt\": \"2017-12-20T16:17:10.000Z\",\n       \"updatedAt\": \"2017-12-20T16:17:10.000Z\",\n       \"contentType\": \"h5p\",\n       \"contentUri\": \"/uploads/h5p/chapter1\",\n       \"imageUrl\": \"/uploads/images/content/chapters/chapter1.jpeg\",\n       \"contentId\": null,\n       \"tags\": [],\n       \"likes\": \"0\",\n       \"dislikes\": \"0\",\n       \"rating\": null,\n       \"comment\": [{\n       }]\n    }\n }",
           "type": "json"
         }
       ]
@@ -2073,6 +2073,412 @@ define({ "api": [
     "groupTitle": "Modules"
   },
   {
+    "type": "delete",
+    "url": "/api/v1/reactions/:id",
+    "title": "DELETE using Id.",
+    "name": "DeleteARection",
+    "group": "Reactions",
+    "permission": [
+      {
+        "name": "none"
+      }
+    ],
+    "version": "0.4.0",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "id",
+            "description": "<p>Reaction Id</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Object[]",
+            "optional": false,
+            "field": "reaction",
+            "description": "<p>list</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "reaction.id",
+            "description": "<p>Reaction id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "reaction.chapterId",
+            "description": "<p>Chapter id.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "reaction.userId",
+            "description": "<p>Authenticated user id</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n{\n reaction: {\n     userId: 'user44',\n     chapterId: 'chapter2',\n     reaction: 'like',\n     createdAt: '2020-11-25T12:56:52.895Z',\n     updatedAt: '2020-11-25T12:56:52.895Z',\n     id: 'IgDuJuUAAvo'\n   }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "List error",
+          "content": "HTTP/1.1 500 Internal Server Error",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "./server/routes/reactions.js",
+    "groupTitle": "Reactions",
+    "sampleRequest": [
+      {
+        "url": "https://kkl.wikonnect.org/api/v1/reactions/:id"
+      }
+    ]
+  },
+  {
+    "type": "get",
+    "url": "/api/v1/reactions/:id",
+    "title": "GET a reaction by ID.",
+    "name": "GetAReAction",
+    "group": "Reactions",
+    "permission": [
+      {
+        "name": "none"
+      }
+    ],
+    "version": "0.4.0",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "id",
+            "description": "<p>Reaction Id</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Object[]",
+            "optional": false,
+            "field": "reaction",
+            "description": "<p>list</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "reaction.id",
+            "description": "<p>Reaction id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object[]",
+            "optional": false,
+            "field": "reaction[object]",
+            "description": "<p>Object data</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n{\n reaction: {\n     userId: 'user44',\n     chapterId: 'chapter2',\n     reaction: 'like',\n     createdAt: '2020-11-25T12:56:52.895Z',\n     updatedAt: '2020-11-25T12:56:52.895Z',\n     id: 'IgDuJuUAAvo'\n   }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "List error",
+          "content": "HTTP/1.1 500 Internal Server Error",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "./server/routes/reactions.js",
+    "groupTitle": "Reactions",
+    "sampleRequest": [
+      {
+        "url": "https://kkl.wikonnect.org/api/v1/reactions/:id"
+      }
+    ]
+  },
+  {
+    "type": "get",
+    "url": "/api/v1/reactions/",
+    "title": "GET all reactions.",
+    "name": "GetReactions",
+    "group": "Reactions",
+    "permission": [
+      {
+        "name": "none"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Optional Params": [
+          {
+            "group": "Optional Params",
+            "type": "String",
+            "optional": false,
+            "field": "reaction.id",
+            "description": "<p>Chapter Id</p>"
+          },
+          {
+            "group": "Optional Params",
+            "type": "String",
+            "optional": false,
+            "field": "reaction[reaction]",
+            "description": "<p>Reaction type (like|dislike|whatever).</p>"
+          },
+          {
+            "group": "Optional Params",
+            "type": "String",
+            "optional": false,
+            "field": "reaction[chapter_id]",
+            "description": "<p>Chapter id.</p>"
+          },
+          {
+            "group": "Optional Params",
+            "type": "String",
+            "optional": false,
+            "field": "reaction[user_id]",
+            "description": "<p>Authenticated user id</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Object[]",
+            "optional": false,
+            "field": "reaction",
+            "description": "<p>list</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "reaction.id",
+            "description": "<p>Reaction id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object[]",
+            "optional": false,
+            "field": "Reaction[object]",
+            "description": "<p>Reaction object data</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n {\n    \"reaction\": [{\n        \"reaction\": \"like|dislike|whatever\",\n        \"chapter\": \"chapter_id\",\n        \"user\": \"authenticated_user_id\"\n    }]\n }",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "List error",
+          "content": "HTTP/1.1 500 Internal Server Error",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "./server/routes/reactions.js",
+    "groupTitle": "Reactions",
+    "sampleRequest": [
+      {
+        "url": "https://kkl.wikonnect.org/api/v1/reactions/"
+      }
+    ]
+  },
+  {
+    "type": "post",
+    "url": "/api/v1/reaction/",
+    "title": "POST a reaction.",
+    "name": "PostAReaction",
+    "group": "Reactions",
+    "permission": [
+      {
+        "name": "none"
+      }
+    ],
+    "version": "0.4.0",
+    "parameter": {
+      "fields": {
+        "Optional Params": [
+          {
+            "group": "Optional Params",
+            "type": "String",
+            "optional": false,
+            "field": "reaction[id]",
+            "description": "<p>Chapter Id</p>"
+          },
+          {
+            "group": "Optional Params",
+            "type": "String",
+            "optional": false,
+            "field": "reaction[reaction]",
+            "description": "<p>Reaction type (like|dislike|whatever).</p>"
+          },
+          {
+            "group": "Optional Params",
+            "type": "String",
+            "optional": false,
+            "field": "reaction[chapter_id]",
+            "description": "<p>Chapter id.</p>"
+          },
+          {
+            "group": "Optional Params",
+            "type": "String",
+            "optional": false,
+            "field": "reaction[user_id]",
+            "description": "<p>Authenticated user id</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n{\n   reaction: {\n     userId: 'user44',\n     chapterId: 'chapter2',\n     reaction: 'like',\n     createdAt: '2020-11-25T12:56:52.895Z',\n     updatedAt: '2020-11-25T12:56:52.895Z',\n     id: 'IgDuJuUAAvo'\n   }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "List error",
+          "content": "HTTP/1.1 500 Internal Server Error",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "./server/routes/reactions.js",
+    "groupTitle": "Reactions"
+  },
+  {
+    "type": "put",
+    "url": "/api/v1/reactions/:id",
+    "title": "PUT using Id.",
+    "name": "PutAReAction",
+    "group": "Reactions",
+    "permission": [
+      {
+        "name": "none"
+      }
+    ],
+    "version": "0.4.0",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "id",
+            "description": "<p>Reaction Id</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Object[]",
+            "optional": false,
+            "field": "reaction",
+            "description": "<p>list</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "reaction.id",
+            "description": "<p>Reaction id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "reaction.chapterId",
+            "description": "<p>Chapter id.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "reaction.userId",
+            "description": "<p>Authenticated user id</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n{\n reaction: {\n     userId: 'user44',\n     chapterId: 'chapter2',\n     reaction: 'like',\n     createdAt: '2020-11-25T12:56:52.895Z',\n     updatedAt: '2020-11-25T12:56:52.895Z',\n     id: 'IgDuJuUAAvo'\n   }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "List error",
+          "content": "HTTP/1.1 500 Internal Server Error",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "./server/routes/reactions.js",
+    "groupTitle": "Reactions",
+    "sampleRequest": [
+      {
+        "url": "https://kkl.wikonnect.org/api/v1/reactions/:id"
+      }
+    ]
+  },
+  {
     "type": "get",
     "url": "/search/chapter?",
     "title": "",
@@ -2103,7 +2509,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Error-Response:",
-          "content": "    HTTP/1.1 404 Not Found\n    [{\n       \"error\": \"Search Unavailable\"\n    }]\n\n/search?q={query-string-goes-here} GET result search query.\n/search?tags=highschool,primary,university GET result search query.",
+          "content": "HTTP/1.1 404 Not Found\n[{\n   \"error\": \"Search Unavailable\"\n}]",
           "type": "json"
         }
       ]
