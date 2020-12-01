@@ -8,7 +8,7 @@ class Rating extends Model {
   static get modifiers() {
     return {
       selectRating: (builder) => {
-        builder.select('id', 'rating', 'chapter_id');
+        builder.select('id', 'rating', 'chapter_id', 'user_id', 'labels', 'comment');
       }
     };
   }
