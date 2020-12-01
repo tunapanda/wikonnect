@@ -3,6 +3,7 @@ const Router = require('koa-router');
 const User = require('../models/user');
 const Achievement = require('../models/achievement');
 const AchievementAward = require('../models/achievement_awards');
+const log = require('../utils/logger');
 
 const knex = require('../utils/knexUtil');
 const { requireAuth } = require('../middleware/permController');
@@ -19,20 +20,24 @@ async function chapterCompletionAward(params) {
     .groupBy('target', 'target_status')
     .having(knex.raw('count(target) > 0'));
 
-  if (completed[0].count === 1) {
-    await AchievementAward.query().insert({
-      'name': 'completed 1 chapter',
-      'achievementId': 'achievements14',
-      'userId': params.userId
-    });
-    await User.query().patchAndFetchById(params.id, { 'metadata:oneChapterCompletion': 'true' });
-  } else if (completed[0].count > 2) {
-    await AchievementAward.query().insert({
-      'name': 'completed 3 chapters',
-      'achievementId': 'achievements15',
-      'userId': params.userId
-    });
-    await User.query().patchAndFetchById(params.userId, { 'metadata:threeChapterCompletion': 'true' });
+  try {
+    if (completed[0].count === 1) {
+      await AchievementAward.query().insert({
+        'name': 'completed 1 chapter',
+        'achievementId': 'achievements14',
+        'userId': params.userId
+      });
+      await User.query().patchAndFetchById(params.id, { 'metadata:oneChapterCompletion': 'true' });
+    } else if (completed[0].count > 2) {
+      await AchievementAward.query().insert({
+        'name': 'completed 3 chapters',
+        'achievementId': 'achievements15',
+        'userId': params.userId
+      });
+      await User.query().patchAndFetchById(params.userId, { 'metadata:threeChapterCompletion': 'true' });
+    }
+  } catch (error) {
+    log.info(error.message);
   }
 }
 
@@ -88,11 +93,16 @@ router.get('/:id', async ctx => {
 });
 
 router.post('/', requireAuth, async ctx => {
+  let stateUserRole = ctx.state.user.role == undefined ? ctx.state.user.data.role : ctx.state.user.role;
+
   const newAchievement = ctx.request.body.achievement;
   newAchievement.userId = ctx.state.user.id == undefined ? ctx.state.user.data.id : ctx.state.user.id;
   const achievement = await Achievement.query().insertAndFetch(newAchievement);
 
-  chapterCompletionAward(newAchievement);
+  if (stateUserRole != 'anonymous') {
+    chapterCompletionAward(newAchievement);
+  }
+
 
   ctx.status = 201;
   ctx.body = { achievement };

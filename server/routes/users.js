@@ -1,6 +1,6 @@
 const Router = require('koa-router');
 const path = require('path');
-const fetch = require('node-fetch');
+
 const busboy = require('async-busboy');
 const shortid = require('shortid');
 const sharp = require('sharp');
@@ -26,40 +26,40 @@ const {
   inviteUserAward,
   getProfileImage
 } = require('../utils/routesUtils/userRouteUtils');
-require('../utils/oauth2/passport');
+
 const router = new Router({
   prefix: '/users'
 });
 
 
+
 /**
- * @api {post} /users POST create a new user.
- * @apiName PostAUser
- * @apiGroup Authentication
- *
- * @apiParam (Required Params) {string} user[username] username
- * @apiParam (Required Params) {string} user[email] Unique email
- * @apiParam (Required Params) {string} user[password] validated password
- * @apiParam (Optional Params) {string} user[invitedBy] auto filled on the form
- * @apiParam (Optional Params) {string} user[tags] auto filled on the form
- *
- * @apiPermission none
- *
- * @apiSuccessExample {json} Success-Response:
- *     HTTP/1.1 201 OK
- *     {
- *        "user": {
- *          "id": "string",
- *          "username": "string",
- *          "inviteCode": "invited_by",
- *          "createdAt": "string",
- *          "updatedAt": "string",
- *          "tags": "array",
- *          "metadata": json_array
- *        }
- *     }
- *
- */
+* @api {post} /api/v1/users POST create a new user.
+* @apiName PostAUser
+* @apiGroup Authentication
+*
+* @apiParam {string} user[username] username
+* @apiParam {string} user[email] Unique email
+* @apiParam {string} user[password] validated password
+* @apiParam {string} user[invitedBy] optional auto filled on the form
+*
+* @apiPermission none
+*
+* @apiSuccessExample {json} Success-Response:
+*     HTTP/1.1 201 OK
+*     {
+*        "user": {
+*          "id": "string",
+*          "username": "string",
+*          "inviteCode": "invited_by",
+*          "createdAt": "string",
+*          "updatedAt": "string",
+*          "metadata": json_array
+*        }
+*     }
+*
+* @apiError {String} errors Bad Request.
+*/
 
 router.post('/', validateAuthRoutes.validateNewUser, createPasswordHash, async ctx => {
   ctx.request.body.user.username = ctx.request.body.user.username.toLowerCase();
@@ -95,14 +95,20 @@ router.post('/', validateAuthRoutes.validateNewUser, createPasswordHash, async c
 
 
 /**
- * @api {get} /users/:id GET a single user using id.
+ * @api {get} /api/v1/users/:id GET a single user using id.
  * @apiName GetAUser
  * @apiGroup Authentication
  *
  * @apiVersion 0.4.0
  * @apiDescription list a single user on the platform
  * @apiPermission [admin, superadmin]
- * @apiHeader (Header) {String} authorization Bearer <<YOUR_API_KEY_HERE>>
+ * @apiHeader {String} authorization Users unique JWT
+ *
+ * @apiParam {string} id The users id
+ *
+ * @apiSampleRequest https://localhost:3000/api/v1/users
+ *
+ * @apiSuccess {String} id Unique user id
  *
  * @apiSuccessExample {json} Success-Response:
  *     HTTP/1.1 201 OK
@@ -163,12 +169,8 @@ router.get('/:id', permController.requireAuth, async ctx => {
   let stateUserId = ctx.state.user.id == undefined ? ctx.state.user.data.id : ctx.state.user.id;
 
   let userId = ctx.params.id != 'current' ? ctx.params.id : stateUserId;
-  let user = await User.query().findById(userId).mergeJoinEager('[achievementAwards(selectBadgeNameAndId), userRoles(selectName), enrolledCourses(selectNameAndId)]');
-  if (s3.config) {
-    user.profileUri = await getProfileImage(user.profileUri);
-  } else if (user.profileUri == null) {
-    user.profileUri = 'images/profile-placeholder.gif';
-  }
+  const user = await User.query().findById(userId).mergeJoinEager('[achievementAwards(selectBadgeNameAndId), userRoles(selectName), enrolledCourses(selectNameAndId)]');
+  user.profileUri = await getProfileImage(user.profileUri);
 
 
   if (!user) {
@@ -179,7 +181,7 @@ router.get('/:id', permController.requireAuth, async ctx => {
     // return specific data for all profiles incase it's private
     let publicData = {
       'username': 'private',
-      // 'profileUri': 'images/profile-placeholder.gif',
+      'profileUri': 'images/profile-placeholder.gif',
       'id': user.id,
       'private': user.private
     };
@@ -206,7 +208,12 @@ router.get('/:id', permController.requireAuth, async ctx => {
         'userId': ctx.params.id
       });
     }
-  } 
+
+    log.info('Got a request from %s for %s', ctx.request.ip, ctx.path);
+
+    ctx.status = 200;
+    ctx.body = { user };
+  }
 });
 /**
  * @api {get} /users GET all users.
@@ -280,7 +287,7 @@ router.put('/:id', jwt.authenticate, permController.requireAuth, async ctx => {
   } catch (e) {
     if (e.statusCode) {
       ctx.throw(e.statusCode, null, { errors: [e.message] });
-    } else { ctx.throw(400, null, { errors: ['Bad Request', e.message] }); }
+    } else { ctx.throw(400, null, { errors: [e.message, e.message] }); }
     throw e;
   }
 
@@ -307,7 +314,7 @@ router.post('/invite/:id', async ctx => {
   } catch (e) {
     if (e.statusCode) {
       ctx.throw(e.statusCode, null, { errors: [e.message] });
-    } else { ctx.throw(400, null, { errors: ['Bad Request', e.message] }); }
+    } else { ctx.throw(400, null, { errors: [e.message] }); }
   }
 
   inviteUserAward(ctx.params.id);
@@ -372,39 +379,11 @@ router.post('/:id/profile-image', permController.requireAuth, async (ctx, next) 
 
   else {
     await resizer.toFile(`${uploadDir}/${fileNameBase}.jpg`);
-    await User.query().patchAndFetchById(ctx.params.id, { profileUri: `${uploadPath}/${fileNameBase}.jpg` });
+    await User.query().findById(ctx.params.id).patchAndFetchById({ profile_uri: `${uploadPath}/${fileNameBase}.jpg` });
     ctx.body = {
       host: ctx.host,
       path: `${uploadPath}/${fileNameBase}.jpg`
     };
-  }
-});
-
-
-/**
- *  {
- *    grant_type: 'google-oauth2',
- *    auth_code: '4/5wHAvpr3Vgw87k0474ZaBugG0SxLTFk9fcGEQal5xhz-QRC_E1tslqdxheSu69t8rH8TILGrMR5mt6vL-yYCIe8'
- *  }
- *
- * {
-  grant_type: 'facebook-oauth2',
-  auth_code: 'AQCKVkC_vwH-lDThmkFvhSmZEzjx4RpM5DH5FCxVSCUqvyaD99Jb_0GSXRBurFyLgl674PZF929og-h3XM9Me1lMWf2b_SONPvwcE7Q5C81Ke4SqQFj-JY03BEAZyTl-y9nFWZkrNPcOgseM98wHQ3diu1BtWXqa0Lcz5FgF54hsCX4DdY2NfudI_QY0udybwVM6FgbUmDFTVuogA4UvUxJbq__BWs4b5zw7LZTROBpVfI-YAsdQmCM-bZE3G8CYObZ1lUtcoKvl1eFFGeOaTQzc1KzYI5U6B2fWiOFoxx21QE7l0quQADEI2BQESpZ6XQ2PTXP0fuf_cEHZwzns7oTw'
-}
- */
-router.post('/token', async ctx => {
-  try {
-    const response = await fetch(`https://people.googleapis.com/v1/people/me?personFields=names,coverPhotos,emailAddresses,phoneNumbers&access_token=${ctx.request.body.auth_code}`, {
-      method: 'get',
-      headers: { 'Content-Type': 'application/json' }
-    });
-    const json = await response.json();
-    console.log(JSON.stringify(json));
-
-    ctx.status = 201;
-    ctx.body = json;
-  } catch (error) {
-    console.log(error);
   }
 });
 

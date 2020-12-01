@@ -17,14 +17,15 @@ const router = new Router({
 });
 
 /**
- * @api {post} /auth POST login a user.
+ * @api {post} /api/v1/auth POST login a user.
  * @apiName PostLoginAUser
  * @apiGroup Authentication
  *
- * @apiParam (Required Params) {string} username username
- * @apiParam (Required Params) {string} password validated password
+ * @apiParam {string} username username
+ * @apiParam {string} password validated password
  *
  * @apiPermission none
+ * @apiSampleRequest https://localhost:3000/api/v1/auth
  *
  * @apiSuccessExample {json} Success-Response:
  *     HTTP/1.1 201 OK

@@ -12,6 +12,9 @@ export default class ChapterIndexController extends Controller {
   store;
 
   @inject
+  router;
+
+  @inject
   me
 
 
@@ -83,6 +86,15 @@ export default class ChapterIndexController extends Controller {
   }
 
   @action
+  deleteChapter(chapter_id) {
+    let chapter = this.store.peekRecord('chapter', chapter_id);
+    chapter.destroyRecord();
+    this.router.transitionTo('manage');
+
+  }
+
+
+  @action
   toggleApproval(chapter_id, a) {
     if (a == 'true') {
       this.store.findRecord('chapter', chapter_id).then(function (chap) {
@@ -107,51 +119,59 @@ export default class ChapterIndexController extends Controller {
 
   @action
   async dataLoad(el) {
-    console.log(el);
-    // this.notify.info('chapter completed');
     let chapter_id = await this.target.currentRoute.params.chapter_slug;
+    console.log(chapter_id);
     let score;
     window.H5P.externalDispatcher.on('xAPI', function (event) {
       if (event.getScore() === event.getMaxScore() && event.getMaxScore() > 0) {
         score = event.data.statement.result.duration;
       }
     });
-
-    if(score != 'undefined'){
+    if (score != 'undefined') {
       let achievement = await this.store.createRecord('achievement', {
         description: 'completed' + chapter_id,
         targetStatus: 'completed',
         target: chapter_id
       });
+
+      // if user completes chapters create record
+      let counter = await this.store.createRecord('counter', {
+        counter: 1,
+        chapterId: chapter_id,
+        trigger: 'chapterCompletion'
+      });
+
       await achievement.save();
 
       // if user completes chapters create record
       // let counter = await this.store.createRecord('counter', {
       //   counter: 1,
-      //   trigger: 'chapterCompletion'
-      // });
-      // await counter.save()
     }
+  }
+  @action
+  async counterTimer(el) {
+    let chapter_id = await this.target.currentRoute.params.chapter_slug;
     // record every page view
-    // let counter = await this.store.createRecord('counter', {
-    //   counter: 1,
-    //   trigger: 'pageLanding'
-    // });
-    // await counter.save()
-    let data = {
+    let counter = await this.store.createRecord('counter', {
       counter: 1,
+      chapterId: chapter_id,
       trigger: 'pageLanding'
-    };
-    alert(data.counter, data.trigger);
+    });
+    await counter.save();
 
-    // // After 10 secs record page view
+    // After 10 secs record page view
+    let counterDelay = await this.store.createRecord('counter', {
+      counter: 1,
+      chapterId: chapter_id,
+      trigger: 'timerDelay'
+    });
     setTimeout(function () {
-      alert('Hello');
       let data = {
         counter: 1,
         trigger: 'timerDelay'
       };
-      alert(data.counter, data.trigger);
-    }, 10000);
+    }, 100);
+    console.log(el);
+    console.log(counterDelay, counter);
   }
 }

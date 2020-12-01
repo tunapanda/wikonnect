@@ -1,13 +1,27 @@
 import Controller from '@ember/controller';
-import { computed } from '@ember/object';
+// import { computed } from '@ember/object';
 import { inject as service } from '@ember/service';
 
 export default class HomeController extends Controller {
   @service
   me
 
-  @computed('model.[]')
-  get allChapters(){
-    return this.store.query('chapter', { 'approved': true });
+
+
+  get allTags() {
+    // this.model
+    let filtered = [];
+    this.model.map(c => {
+      console.log('ok');
+      if (c.tags) {
+        filtered.concat(c.tags);
+      }
+    });
+
+    console.log(filtered);
+
+    return ['filtered', 'ok'];
   }
+
+
 }

@@ -38,6 +38,7 @@ export default class TeachCreateController extends Controller {
   saveChapter(model) {
     model.setProperties({
       status: 'draft',
+      contentType: 'h5p',
       approved: false
     });
     model.save().then((x) => {
