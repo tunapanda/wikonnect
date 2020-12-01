@@ -8,6 +8,29 @@ const router = new Router({
   prefix: '/ratings'
 });
 
+/**
+ * @api {get} /:rating_id GET a rating
+ * @apiName GetAChapterRating
+ * @apiGroup ChapterRatings
+ * @apiPermission authenticated user
+ *
+ * @apiSuccessExample {json} Success-Response:
+ *     HTTP/1.1 201 OK
+ *     {
+ *      "rating": [{
+ *         "id": String,
+ *         "rating": String,
+ *         "comment": String,
+ *         "chapter_id": String,
+ *         "user_id": String,
+ *         "labels": Array,
+ *         "category": String,
+ *         "createdAt": DateTime,
+ *         "updatedAt": DateTime
+ *        }]
+ *      }
+ *
+ */
 
 router.get('/:id', requireAuth, grantAccess('readOwn', 'path'), async ctx => {
 
@@ -29,6 +52,29 @@ router.get('/:id', requireAuth, grantAccess('readOwn', 'path'), async ctx => {
   ctx.body = { rating };
 });
 
+/**
+ * @api {get} / GET ratings
+ * @apiName GetChapterRatings
+ * @apiGroup ChapterRatings
+ * @apiPermission authenticated user
+ *
+ * @apiSuccessExample {json} Success-Response:
+ *     HTTP/1.1 201 OK
+ *     {
+ *      "ratings": [{
+ *         "id": String,
+ *         "rating": String,
+ *         "comment": String,
+ *         "chapter_id": String,
+ *         "user_id": String,
+ *         "labels": Array,
+ *         "category": String,
+ *         "createdAt": DateTime,
+ *         "updatedAt": DateTime
+ *        }]
+ *      }
+ *
+ */
 
 router.get('/', async ctx => {
 
@@ -51,14 +97,29 @@ router.get('/', async ctx => {
 });
 
 /**
+ * @api {post} / POST rating
+ * @apiName PostAChapterRating
+ * @apiGroup ChapterRatings
+ * @apiPermission authenticated user
  *
- * @param {object[]} rating
- * @param id
- * @param chapterId
- * @param userId
- * @param rating
- * @return {object}
+ * @apiSuccessExample {json} Success-Response:
+ *     HTTP/1.1 201 OK
+ *     {
+ *      "ratings": {
+ *         "id": String,
+ *         "rating": String,
+ *         "comment": String,
+ *         "chapter_id": String,
+ *         "user_id": String,
+ *         "labels": Array,
+ *         "category": String,
+ *         "createdAt": DateTime,
+ *         "updatedAt": DateTime
+ *        }
+ *      }
+ *
  */
+
 
 router.post('/', requireAuth, validateRating, grantAccess('createAny', 'path'), async ctx => {
 
@@ -85,6 +146,14 @@ router.post('/', requireAuth, validateRating, grantAccess('createAny', 'path'), 
 });
 
 
+/**
+ * @api {put} /:rating_id PUT comment
+ * @apiName PutAChapterRating
+ * @apiGroup ChapterRatings
+ * @apiPermission authenticated user
+ *
+ */
+
 router.put('/:id', requireAuth, grantAccess('updateOwn', 'path'), async ctx => {
   let newRating = ctx.request.body.rating;
   const checkRating = await Rating.query().findById(ctx.params.id);
@@ -100,7 +169,13 @@ router.put('/:id', requireAuth, grantAccess('updateOwn', 'path'), async ctx => {
   ctx.body = { lesson };
 
 });
-
+/**
+ * @api {delete} /:rating_id DELETE a rating
+ * @apiName DeleteAChapterRating
+ * @apiGroup ChapterRatings
+ * @apiPermission authenticated user
+ *
+ */
 router.delete('/:id', grantAccess('deleteOwn', 'path'), async ctx => {
   const rating = await Rating.query().findById(ctx.params.id);
 

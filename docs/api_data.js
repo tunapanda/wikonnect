@@ -432,7 +432,7 @@ define({ "api": [
   },
   {
     "type": "get",
-    "url": "/:chapterId",
+    "url": "/:comment_id",
     "title": "GET a comment",
     "name": "GetAChapterComment",
     "group": "ChapterComments",
@@ -455,7 +455,7 @@ define({ "api": [
     "groupTitle": "ChapterComments",
     "sampleRequest": [
       {
-        "url": "https://kkl.wikonnect.org/:chapterId"
+        "url": "https://kkl.wikonnect.org/:comment_id"
       }
     ]
   },
@@ -490,7 +490,7 @@ define({ "api": [
   },
   {
     "type": "post",
-    "url": "/:chapterId",
+    "url": "/",
     "title": "POST comment",
     "name": "PostAChapterComment",
     "group": "ChapterComments",
@@ -513,13 +513,13 @@ define({ "api": [
     "groupTitle": "ChapterComments",
     "sampleRequest": [
       {
-        "url": "https://kkl.wikonnect.org/:chapterId"
+        "url": "/"
       }
     ]
   },
   {
     "type": "put",
-    "url": "/:chapterId",
+    "url": "/:comment_id",
     "title": "PUT comment",
     "name": "PutAChapterComment",
     "group": "ChapterComments",
@@ -533,7 +533,134 @@ define({ "api": [
     "groupTitle": "ChapterComments",
     "sampleRequest": [
       {
-        "url": "https://kkl.wikonnect.org/:chapterId"
+        "url": "https://kkl.wikonnect.org/:comment_id"
+      }
+    ]
+  },
+  {
+    "type": "delete",
+    "url": "/:rating_id",
+    "title": "DELETE a rating",
+    "name": "DeleteAChapterRating",
+    "group": "ChapterRatings",
+    "permission": [
+      {
+        "name": "authenticated user"
+      }
+    ],
+    "version": "0.0.0",
+    "filename": "./server/routes/ratings.js",
+    "groupTitle": "ChapterRatings",
+    "sampleRequest": [
+      {
+        "url": "https://kkl.wikonnect.org/:rating_id"
+      }
+    ]
+  },
+  {
+    "type": "get",
+    "url": "/:rating_id",
+    "title": "GET a rating",
+    "name": "GetAChapterRating",
+    "group": "ChapterRatings",
+    "permission": [
+      {
+        "name": "authenticated user"
+      }
+    ],
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 201 OK\n{\n \"rating\": [{\n    \"id\": String,\n    \"rating\": String,\n    \"comment\": String,\n    \"chapter_id\": String,\n    \"user_id\": String,\n    \"labels\": Array,\n    \"category\": String,\n    \"createdAt\": DateTime,\n    \"updatedAt\": DateTime\n   }]\n }",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "./server/routes/ratings.js",
+    "groupTitle": "ChapterRatings",
+    "sampleRequest": [
+      {
+        "url": "https://kkl.wikonnect.org/:rating_id"
+      }
+    ]
+  },
+  {
+    "type": "get",
+    "url": "/",
+    "title": "GET ratings",
+    "name": "GetChapterRatings",
+    "group": "ChapterRatings",
+    "permission": [
+      {
+        "name": "authenticated user"
+      }
+    ],
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 201 OK\n{\n \"ratings\": [{\n    \"id\": String,\n    \"rating\": String,\n    \"comment\": String,\n    \"chapter_id\": String,\n    \"user_id\": String,\n    \"labels\": Array,\n    \"category\": String,\n    \"createdAt\": DateTime,\n    \"updatedAt\": DateTime\n   }]\n }",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "./server/routes/ratings.js",
+    "groupTitle": "ChapterRatings",
+    "sampleRequest": [
+      {
+        "url": "/"
+      }
+    ]
+  },
+  {
+    "type": "post",
+    "url": "/",
+    "title": "POST rating",
+    "name": "PostAChapterRating",
+    "group": "ChapterRatings",
+    "permission": [
+      {
+        "name": "authenticated user"
+      }
+    ],
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 201 OK\n{\n \"ratings\": {\n    \"id\": String,\n    \"rating\": String,\n    \"comment\": String,\n    \"chapter_id\": String,\n    \"user_id\": String,\n    \"labels\": Array,\n    \"category\": String,\n    \"createdAt\": DateTime,\n    \"updatedAt\": DateTime\n   }\n }",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "./server/routes/ratings.js",
+    "groupTitle": "ChapterRatings",
+    "sampleRequest": [
+      {
+        "url": "/"
+      }
+    ]
+  },
+  {
+    "type": "put",
+    "url": "/:rating_id",
+    "title": "PUT comment",
+    "name": "PutAChapterRating",
+    "group": "ChapterRatings",
+    "permission": [
+      {
+        "name": "authenticated user"
+      }
+    ],
+    "version": "0.0.0",
+    "filename": "./server/routes/ratings.js",
+    "groupTitle": "ChapterRatings",
+    "sampleRequest": [
+      {
+        "url": "https://kkl.wikonnect.org/:rating_id"
       }
     ]
   },
