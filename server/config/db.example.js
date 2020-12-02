@@ -11,7 +11,7 @@ module.exports = {
     database: 'swag_dev',
     user: 'swag',
     password: 'password',
-    port: '5434'
+    port: '5432'
   },
   production: {
     host: 'localhost',
