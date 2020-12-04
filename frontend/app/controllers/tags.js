@@ -5,6 +5,8 @@ import { tracked } from '@glimmer/tracking';
 
 export default class TagsController extends Controller {
 
+  @inject
+  config
 
   @inject me;
   @tracked topic_list = ['Literacy', 'STEM', 'Environmental conservation', 'Emotional well-being', 'Life skills and values',
@@ -37,54 +39,54 @@ export default class TagsController extends Controller {
   @action
   addme(item, cart) {
     switch (cart) {
-    case 'competency':
-      this.competency_list.removeObject(item);
-      this.competency_cart.addObject(item);
-      break;
-    case 'topic':
-      this.topic_list.removeObject(item);
-      this.topic_cart.addObject(item);
-      break;
-    case 'level':
-      this.level_list.removeObject(item);
-      this.level_cart.addObject(item);
-      break;
+      case 'competency':
+        this.competency_list.removeObject(item);
+        this.competency_cart.addObject(item);
+        break;
+      case 'topic':
+        this.topic_list.removeObject(item);
+        this.topic_cart.addObject(item);
+        break;
+      case 'level':
+        this.level_list.removeObject(item);
+        this.level_cart.addObject(item);
+        break;
 
-    case 'kicd':
-      this.kicd_list.removeObject(item);
-      this.kicd_cart.addObject(item);
-      break;
+      case 'kicd':
+        this.kicd_list.removeObject(item);
+        this.kicd_cart.addObject(item);
+        break;
 
-    default:
-      break;
+      default:
+        break;
     }
   }
 
   @action
   removeme(item, cart) {
     switch (cart) {
-    case 'competency':
-      this.competency_cart.removeObject(item);
-      this.competency_list.addObject(item);
-      break;
-    case 'topic':
-      this.topic_cart.removeObject(item);
-      this.topic_list.addObject(item);
-      break;
-    case 'level':
-      this.level_cart.removeObject(item);
-      this.level_list.addObject(item);
-      break;
-    case 'kicd':
-      this.kicd_cart.removeObject(item);
-      this.kicd_list.addObject(item);
-      break;
-    case 'custom':
-      this.custom_cart.removeObject(item);
-      break;
+      case 'competency':
+        this.competency_cart.removeObject(item);
+        this.competency_list.addObject(item);
+        break;
+      case 'topic':
+        this.topic_cart.removeObject(item);
+        this.topic_list.addObject(item);
+        break;
+      case 'level':
+        this.level_cart.removeObject(item);
+        this.level_list.addObject(item);
+        break;
+      case 'kicd':
+        this.kicd_cart.removeObject(item);
+        this.kicd_list.addObject(item);
+        break;
+      case 'custom':
+        this.custom_cart.removeObject(item);
+        break;
 
-    default:
-      break;
+      default:
+        break;
     }
   }
 

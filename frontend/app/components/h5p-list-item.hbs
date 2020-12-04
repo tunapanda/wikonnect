@@ -17,10 +17,13 @@
         {{/link-to}}
       </h5>
 
-     <Reaction @likes={{@chapter.likes}} @dislikes={{@chapter.dislikes}}/>
+      {{#if config.content.APP.linkify_description}}
+        <p class="card-text">{{linkify @chapter.description class="btn btn-primary mt-3 replaced"}}</p>
+      {{else}}
+        <p class="card-text">{{@chapter.description}}</p>
 
+      {{/if}}
 
-      <p class="card-text">{{linkify @chapter.description class="btn btn-primary mt-3 replaced"}}</p>
       <br>
       {{#each @chapter.tags as |tag|}}
         {{#link-to "tag" tag}}

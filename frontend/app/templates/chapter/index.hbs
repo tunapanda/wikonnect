@@ -11,12 +11,17 @@
         <p> {{model.counter}} views | {{format-date model.createdAt}}</p>
       </div>
       <div class="col-6">
-        <Reaction @likes={{model.reaction.likes}} @dislikes={{model.reaction.dislikes}} @status={{model.reaction.authenticated_user}}/>
-        {{log model.reaction.authenticated_user}}
+        <Reaction @likes={{model.reaction.likes}} @dislikes={{model.reaction.dislikes}}
+          @status={{model.reaction.authenticated_user}} />
       </div>
     </div>
+    {{#if config.content.APP.linkify_description}}
+      <p class="add-pre"> {{linkify model.description class="btn btn-primary replaced"}}</p>
+    {{else}}
+      <p class="add-pre"> {{model.description}}</p>
 
-    <p class="add-pre"> {{linkify model.description class="btn btn-primary replaced"}}</p>
+    {{/if}}
+
   </div>
   <br>
   <CommentSection @selectedChapter={{model.id}} />
@@ -25,16 +30,18 @@
 <div class="text-center">
   {{#if (eq me.user.username "daph")}}
 
-  {{#if (eq model.approved "true")}}
+    {{#if (eq model.approved "true")}}
 
-  <button {{on "click" (fn this.toggleApproval model.id "true")}} type="button" class="btn form-controll btn-danger">
-    Un Approve This
-  </button>
-  {{else}}
-  <button {{on "click" (fn this.toggleApproval model.id "false")}} type="button" class="btn form-controll btn-success">
-    Approve This
-  </button>
-  {{/if}}
+      <button {{on "click" (fn this.toggleApproval model.id "true")}} type="button"
+        class="btn form-controll btn-danger">
+        Un Approve This
+      </button>
+    {{else}}
+      <button {{on "click" (fn this.toggleApproval model.id "false")}} type="button"
+        class="btn form-controll btn-success">
+        Approve This
+      </button>
+    {{/if}}
 
 
 

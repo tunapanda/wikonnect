@@ -3,6 +3,9 @@ import { inject } from '@ember/service';
 import { action } from '@ember/object';
 import { computed } from '@ember/object';
 
+// import settings from './config/settings';
+
+
 export default class ApplicationController extends Controller {
 
   headerStyles = {
