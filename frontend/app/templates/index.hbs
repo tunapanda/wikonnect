@@ -25,4 +25,12 @@
       </p>
     </div>
   </div>
+  <div class="row mt-2 ml-5 mr-5 ">
+
+
+    {{#each h5pList as |chapter|}}
+
+      <H5pListItem @chapter={{chapter}} />
+    {{/each}}
+  </div>
 </div>
