@@ -1,14 +1,6 @@
 const fetch = require('node-fetch');
 const environment = process.env.NODE_ENV || 'development';
 
-
-/**
- TODO: Linking Wikonnect account to moja account using a link button
- * @param {*} ctx
- * @param {*} next
- */
-
-
 /**
  TODO: Add fetch package for webhook request to the moja platform
  * POST request accepting -> (campaign_id, points, enduser_id, partner_id, userId)
@@ -36,9 +28,9 @@ try {
  * @param {*} url
  * @param {*} data
  */
-module.exports = async function mojaEndpoint(url, data) {
+module.exports = async function mojaEndpoint(data) {
   // Default options are marked with *
-  const response = await fetch(url, {
+  const response = await fetch(moja.url, {
     method: 'POST', // *GET, POST, PUT, DELETE, etc.
     mode: 'cors', // no-cors, *cors, same-origin
     cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
@@ -52,7 +44,7 @@ module.exports = async function mojaEndpoint(url, data) {
     referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
     body: JSON.stringify(data) // body data type must match "Content-Type" header
   });
-  console.log(moja.url);
+  console.log();
   console.log(data);
   console.log(await response);
   return await response.json(); // parses JSON response into native JavaScript objects

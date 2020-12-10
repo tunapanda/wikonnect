@@ -9,9 +9,10 @@ const s3 = require('../utils/s3Util');
 const log = require('../utils/logger');
 const slugGen = require('../utils/slugGen');
 
-const Chapter = require('../models/chapter');
 const User = require('../models/user');
+const Chapter = require('../models/chapter');
 const permController = require('../middleware/permController');
+const mojaCampaignMiddleware = require('../middleware/mojaCampaignMiddleware');
 const validateGetChapter = require('../middleware/validateRequests/chapterGetValidation');
 
 const Reaction = require('../models/reaction');
@@ -55,7 +56,7 @@ const {
  *
  */
 
-router.get('/', permController.requireAuth, validateGetChapter, async ctx => {
+router.get('/', permController.requireAuth, mojaCampaignMiddleware,  validateGetChapter, async ctx => {
 
   let stateUserRole = ctx.state.user.role == undefined ? ctx.state.user.data.role : ctx.state.user.role;
   let stateUserId = ctx.state.user.id == undefined ? ctx.state.user.data.id : ctx.state.user.id;
