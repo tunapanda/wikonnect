@@ -123,12 +123,13 @@ export default class ChapterIndexController extends Controller {
 
   @action
   async dataLoad(el) {
-    let chapter_id = await this.target.currentRoute.params.chapter_slug;
-    let score;
+    // let chapter_id = await this.target.currentRoute.params.chapter_slug;
+    //let score;
+    el;
     window.H5P.externalDispatcher.on('xAPI', function (event) {
       if (event.getScore() === event.getMaxScore() && event.getMaxScore() > 0) {
         console.log(event.data.statement.result.duration);
-        score = event.data.statement.result.duration;
+        // score = event.data.statement.result.duration;
       }
     });
     /**

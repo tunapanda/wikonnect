@@ -32,7 +32,7 @@ export default class H5pComponent extends Component {
         'chapter-id': chapter_id,
         'trigger': 'pageLandingN'
       }
-    }
+    };
 
 
     fetch('http://localhost:3000/api/v1/counters', {
