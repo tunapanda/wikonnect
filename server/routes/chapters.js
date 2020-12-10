@@ -9,9 +9,10 @@ const s3 = require('../utils/s3Util');
 const log = require('../utils/logger');
 const slugGen = require('../utils/slugGen');
 
-const Chapter = require('../models/chapter');
 const User = require('../models/user');
+const Chapter = require('../models/chapter');
 const permController = require('../middleware/permController');
+const mojaCampaignMiddleware = require('../middleware/mojaCampaignMiddleware');
 const validateGetChapter = require('../middleware/validateRequests/chapterGetValidation');
 
 const Reaction = require('../models/reaction');
@@ -55,7 +56,7 @@ const {
  *
  */
 
-router.get('/', permController.requireAuth, validateGetChapter, async ctx => {
+router.get('/', permController.requireAuth, mojaCampaignMiddleware,  validateGetChapter, async ctx => {
 
   let stateUserRole = ctx.state.user.role == undefined ? ctx.state.user.data.role : ctx.state.user.role;
   let stateUserId = ctx.state.user.id == undefined ? ctx.state.user.data.id : ctx.state.user.id;
@@ -148,7 +149,7 @@ router.get('/:id', permController.requireAuth, async ctx => {
 
   let roleNameList = ['basic', 'superadmin', 'tunapanda'];
   let anonymous = 'anonymous';
-  let reaction, check_user,counter;
+  let reaction, check_user, counter;
 
   let chapter = Chapter.query()
     .select('chapters.*')
@@ -167,10 +168,12 @@ router.get('/:id', permController.requireAuth, async ctx => {
 
   check_user = await Reaction.query().where({ chapter_id: ctx.params.id, user_id: stateUserId });
   reaction = await knex.raw(`SELECT COUNT(*) AS total_likes, COUNT(CASE WHEN reaction = 'like' THEN 1 ELSE NULL END) AS likes, COUNT(CASE WHEN reaction = 'dislike' THEN 1 ELSE NULL END) AS dislikes FROM reactions  WHERE reactions.chapter_id = '${ctx.params.id}'`);
-  counter = await knex.raw(`select count(*) from counter where trigger = 'timerDelay' and chapter_id = '${ctx.params.id}'`);
+  counter = await knex.raw(`select count(*) from counter where trigger = 'pageLanding' and chapter_id = '${ctx.params.id}'`);
 
-  chapter[0].reaction = reaction.rows[0];
-  chapter[0].reaction.authenticated_user = check_user[0] === undefined ? null : check_user[0].reaction;
+  chapter[0].total_likes = reaction.rows[0].total_likes;
+  chapter[0].likes = reaction.rows[0].likes;
+  chapter[0].disikes = reaction.rows[0].dislikes;
+  chapter[0].authenticated_user = check_user[0] === undefined ? null : check_user[0].reaction;
   chapter[0].counter = counter.rows === undefined ? '0' : counter.rows[0].count;
 
   ctx.assert(chapter, 404, 'No lesson by that ID');
