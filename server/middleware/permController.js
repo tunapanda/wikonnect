@@ -63,7 +63,7 @@ exports.grantAccess = function (action, resource) {
 
       await next();
     } catch (error) {
-      log.error('Bad request with the following message %s', error);
+      log.error(`Bad request with the following message ${error}`);
       ctx.throw(400, null, { errors: ['Bad Request'] });
     }
   };

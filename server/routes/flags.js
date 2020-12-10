@@ -28,7 +28,7 @@ router.get('/', requireAuth, grantAccess('readAny', 'path'), async ctx => {
     if (e.statusCode) {
       ctx.throw(e.statusCode, { message: 'The query key does not exist' });
       ctx.throw(e.statusCode, null, { errors: [e.message] });
-    } else { ctx.throw(400, null, { errors: ['Bad Request'] }); }
+    } else { ctx.throw(400, null, { errors: [e.message] }); }
     throw e;
   }
   ctx.assert(flags, 401, 'Something went wrong');

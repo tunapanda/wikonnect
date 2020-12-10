@@ -19,4 +19,11 @@ export default class IndexController extends Controller {
     this.loggedIn = this.me.user;
     return this.me.a;
   }
+  @computed
+  get h5pList() {
+    return this.store.query('chapter', { 'approved': true });
+
+  }
+
+
 }

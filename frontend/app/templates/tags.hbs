@@ -13,7 +13,14 @@
       </button>
     {{/each}}
     <hr>
-    <h5>Select competency</h5>
+    <h5>
+      Select competencies of interest
+      <button type="button" class="btn-sm btn-primary btn-lg" data-toggle="modal" data-target="#modelId">
+        Aligned to the new Kenyan CBC
+      </button>
+    </h5>
+
+
     {{#each competency_list as |item|}}
       <button type="button" class="btn btn-outline-primary m-2" {{action addme item "competency"}}>{{item}}</button>
     {{/each}}
@@ -26,7 +33,7 @@
       </button>
     {{/each}}
 
-    <h5>Select Level</h5>
+    <h5>Select level</h5>
     {{#each level_list as |item|}}
       <button type="button" class="btn btn-outline-primary m-2" {{action addme item "level"}}>{{item}}</button>
     {{/each}}
@@ -43,13 +50,35 @@
 </div>
 <nav class="navbar fixed-bottom float-right bg-light justify-content-end mt-4">
   {{#if (or topic_cart custom_cart level_cart  competency_cart)}}
-    <button type="button" class="btn btn-primary form-control float-right" {{action updateTags}}>Done</button>
+    <button type="button" class="btn btn-primary form-control float-right" {{action updateTags}}>
+      {{t "buttons.done"}}
+    </button>
 
   {{else}}
     {{#link-to "upload"}}
-      <button type="button" class="btn btn-primary form-control float-right">Skip</button>
+      <button type="button" class="btn btn-primary form-control float-right">{{t "buttons.next"}}</button>
 
     {{/link-to}}
 
   {{/if}}
 </nav>
+
+<div class="modal fade" id="modelId" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">CBC </h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        Kenya's new Competency-Based Curriculum (CBC) outlines core skills and mindsets that children must develop to be
+        successful as citizens and future workers
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>

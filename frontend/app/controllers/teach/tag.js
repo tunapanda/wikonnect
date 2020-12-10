@@ -57,12 +57,7 @@ export default class TeachTagController extends Controller {
     let id = this.get('model').id;
     let combined = [];
 
-    combined.concat(this.topic_cart);
-    combined.concat(this.competency_cart);
-    combined.concat(this.level_cart);
-    combined.concat(this.custom_cart);
-    combined.concat(this.platform_cart);
-
+    combined = combined.concat(this.topic_cart, this.competency_cart, this.level_cart, this.custom_cart, this.platform_cart);
 
     let chapter = await this.store.findRecord('chapter', id);
     chapter.set('tags', combined);

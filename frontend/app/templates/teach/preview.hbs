@@ -1,6 +1,11 @@
 {{!-- {{outlet}} --}}
 {{outlet}}
+
+
+
+{{!-- {{outlet}} --}}
 <div class="p-4">
+
   <div id="chapter">
     <div class="row">
       <h4><b>Chapter Name: </b>{{model.name}} </h4>
@@ -59,7 +64,7 @@
       {{/if}}
 
       <p> <b>Description: </b>{{model.description}}</p>
-      <p> <b>tags: </b></p>
+      <p> <b>Tags: </b></p>
       {{#each model.tags as |tag|}}
         {{#link-to "tag" tag}}
 
@@ -69,9 +74,9 @@
         {{/link-to}}
 
       {{/each}}
-
+      <br>
       {{#link-to "teach.tag" model.id}}
-        <button type="button" class="btn btn-primary">Modify Tags</button>
+        <button type="button" class="btn btn-primary mt-1 mb-1">Modify Tags</button>
 
       {{/link-to}}
 
@@ -105,4 +110,3 @@
 
   </div>
 </div>
-{{!-- <div {{did-insert (fn this.dataLoad)}}></div> --}}

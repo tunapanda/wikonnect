@@ -9,13 +9,15 @@ const s3 = require('../utils/s3Util');
 const log = require('../utils/logger');
 const slugGen = require('../utils/slugGen');
 
-const Chapter = require('../models/chapter');
 const User = require('../models/user');
+const Chapter = require('../models/chapter');
 const permController = require('../middleware/permController');
 const mojaCampaignMiddleware = require('../middleware/mojaCampaignMiddleware');
-const validateChapter = require('../middleware/validateRoutePostSchema/validateChapter');
-const validateRouteQueryParams = require('../middleware/validateRouteQueryParams/queryValidation');
+const validateGetChapter = require('../middleware/validateRequests/chapterGetValidation');
 
+const Reaction = require('../models/reaction');
+const knex = require('../utils/knexUtil');
+const { raw } = require('objection');
 
 const router = new Router({
   prefix: '/chapters'
@@ -31,45 +33,30 @@ const {
  * @apiName GetChapters
  * @apiGroup Chapters
  * @apiPermission none
+ * @apiDescription Get all chapter and filter using multiple query params
  *
- * @apiParam (Optional Params) {String} chapter.id Chapter Id
- * @apiParam (Optional Params) {String} chapter[name] Chapter Name.
- * @apiParam (Optional Params) {String} chapter[description] Description.
- * @apiParam (Optional Params) {String} chapter[status] modules status - published | draft
- * @apiParam (Optional Params) {Boolean} chapter[approved:false] default is false
- * @apiParam (Optional Params) {Object[]} chapter[tags] Tags list.
+ * @apiParam {String} [id]  Optional id
+ * @apiParam {String} [name]  Optional name
+ * @apiParam {String} [status] Optional chapter status - published | draft
+ * @apiParam {String} [creatorId] Optional author of a chapter
+ * @apiParam {Boolean} [approved] Optional boolean with default being false
  *
- * @apiSuccess {Object[]} chapter list
- * @apiSuccess {String} chapter.id Chapter id
- * @apiSuccess {Object[]} Chapter[object] Object data
+ * @apiParam (Authentication) {String[]} [tags] Optional tags list
  *
- * @apiSuccessExample {json} Success-Response:
- *     HTTP/1.1 200 OK
- *      {
- *         "chapter": [{
- *            "id": "chapter1",
- *            "lessonId": "lesson1",
- *            "name": "A Chapter",
- *            "slug": "a-chapter",
- *            "description": "An H5P Chapter.",
- *            "status": "published",
- *            "creatorId": "user1",
- *            "createdAt": "2017-12-20T16:17:10.000Z",
- *            "updatedAt": "2017-12-20T16:17:10.000Z",
- *            "contentType": "h5p",
- *            "contentUri": "/uploads/h5p/chapter1",
- *            "imageUrl": "/uploads/images/content/chapters/chapter1.jpeg",
- *            "contentId": null,
- *            "tags": [],
- *            "comment": [{
- *            }]
- *         }]
- *      }
- * @apiErrorExample {json} List error
- *    HTTP/1.1 500 Internal Server Error
+ * @apiSuccess {Object[]} chapter List of chapters
+ * @apiSuccess {String} chapter.id Id of the chapter
+ * @apiSuccess {String} chapter.name Name of the chapter
+ * @apiSuccess {String} chapter.description Description of the chapter
+ * @apiSuccess {String} chapter.status  Status of the chapter (published | draft)
+ * @apiSuccess {Boolean} chapter.approved  boolean with default being false
+ * @apiSuccess {Object} chapter.tags tags list
+ * @apiSuccess {String} chapter.tags tags list
+ *
+ * @apiSampleRequest /api/v1/chapters/
+ *
  */
 
-router.get('/', permController.requireAuth, mojaCampaignMiddleware, validateRouteQueryParams, async ctx => {
+router.get('/', permController.requireAuth, mojaCampaignMiddleware,  validateGetChapter, async ctx => {
 
   let stateUserRole = ctx.state.user.role == undefined ? ctx.state.user.data.role : ctx.state.user.role;
   let stateUserId = ctx.state.user.id == undefined ? ctx.state.user.data.id : ctx.state.user.id;
@@ -77,36 +64,30 @@ router.get('/', permController.requireAuth, mojaCampaignMiddleware, validateRout
 
   let roleNameList = ['basic', 'superadmin', 'tunapanda', 'admin'];
 
-  let chapter;
+  let chapter = Chapter.query()
+    // eslint-disable-next-line quotes
+    .select('chapters.*', raw("(SELECT COUNT(nullif(reactions.reaction, 'like')) FROM reactions WHERE reactions.chapter_id = chapters.id ) AS likes, (SELECT COUNT(nullif(reactions.reaction, '')) FROM reactions WHERE reactions.chapter_id = chapters.id) AS dislikes"))
+    .avg('rate.rating as rating').avg('rate.rating as rating')
+    .from('chapters');
+
+
   if (roleNameList.includes(stateUserRole)) {
-    if (ctx.query.q) {
-      console.log(ctx.query.q);
-      chapter = await chapter
-        .where('name', 'ILIKE', `%${ctx.query.q}%`)
-        // .where(ctx.query, { status: 'published' })
-        // .whereIn('tags', user.tags)
-        .orWhere('description', 'ILIKE', `%${ctx.query.q}%`)
+    if (user.tags === null || user.tags === undefined) {
+      chapter = await chapter.where(ctx.query)
         .leftJoin('ratings as rate', 'chapters.id', 'rate.chapter_id')
         .groupBy('chapters.id', 'rate.chapter_id')
-        .eager('[comment(selectComment), achievement(selectAchievement), flag(selectFlag)]');
-    } else {
-      chapter = await Chapter.query()
-        .select('chapters.*')
-        .avg('rate.rating as rating')
-        .from('chapters')
-        .where(ctx.query, { status: 'published' })
-        .whereIn('tags', user.tags)
+        .eager('[comment(selectComment), achievement(selectAchievement), flag(selectFlag)]')
+        .skipUndefined();
+    } else if (user.tags != null || user.tags != undefined || user.tags === 'all') {
+      chapter = await chapter.where(ctx.query).where('tags', '&&', `${user.tags}`)
         .leftJoin('ratings as rate', 'chapters.id', 'rate.chapter_id')
         .groupBy('chapters.id', 'rate.chapter_id')
-        .eager('[comment(selectComment), achievement(selectAchievement), flag(selectFlag)]');
+        .eager('[comment(selectComment), achievement(selectAchievement), flag(selectFlag)]')
+        .skipUndefined();
     }
     await achievementType(chapter);
   } else {
-    // chapter = await Chapter.query().where(ctx.query).eager('[comment(selectComment), flag(selectFlag), rating(selectRating)]');
-    chapter = await Chapter.query()
-      .select('chapters.*')
-      .avg('rate.rating as rating')
-      .from('chapters')
+    chapter = await chapter
       .where(ctx.query)
       .leftJoin('ratings as rate', 'chapters.id', 'rate.chapter_id')
       .groupBy('chapters.id', 'rate.chapter_id')
@@ -115,7 +96,8 @@ router.get('/', permController.requireAuth, mojaCampaignMiddleware, validateRout
   await returnType(chapter);
 
   ctx.status = 200;
-  ctx.body = { 'chapter' : chapter };
+  ctx.body = { 'chapter': chapter };
+
 });
 
 /**
@@ -150,6 +132,9 @@ router.get('/', permController.requireAuth, mojaCampaignMiddleware, validateRout
  *            "imageUrl": "/uploads/images/content/chapters/chapter1.jpeg",
  *            "contentId": null,
  *            "tags": [],
+ *            "likes": "0",
+ *            "dislikes": "0",
+ *            "rating": null,
  *            "comment": [{
  *            }]
  *         }
@@ -164,7 +149,7 @@ router.get('/:id', permController.requireAuth, async ctx => {
 
   let roleNameList = ['basic', 'superadmin', 'tunapanda'];
   let anonymous = 'anonymous';
-  let user = await User.query().findById(stateUserId);
+  let reaction, check_user, counter;
 
   let chapter = Chapter.query()
     .select('chapters.*')
@@ -175,19 +160,23 @@ router.get('/:id', permController.requireAuth, async ctx => {
     .groupBy('chapters.id', 'rate.chapter_id');
 
   if (roleNameList.includes(stateUserRole)) {
-    if (user.tags === null) {
-      chapter = await chapter.eager('[comment(selectComment), flag(selectFlag), achievement(selectAchievement)]');
-    } else if (user.tags != null) {
-      chapter = await chapter.whereIn('tags', user.tags).orWhereIn('tags', user.tags).eager('[comment(selectComment), flag(selectFlag), achievement(selectAchievement)]');
-    }
+    chapter = await chapter.eager('[comment(selectComment), flag(selectFlag), achievement(selectAchievement)]');
     await achievementType(chapter);
   } else if (stateUserRole == anonymous) {
     chapter = await chapter.where({ status: 'published' }).eager('comment(selectComment)');
-  } else {
-    chapter = await Chapter.query().where({ id: ctx.params.id, creatorId: stateUserId });
   }
 
-  ctx.assert(chapter, 404, 'no lesson by that ID');
+  check_user = await Reaction.query().where({ chapter_id: ctx.params.id, user_id: stateUserId });
+  reaction = await knex.raw(`SELECT COUNT(*) AS total_likes, COUNT(CASE WHEN reaction = 'like' THEN 1 ELSE NULL END) AS likes, COUNT(CASE WHEN reaction = 'dislike' THEN 1 ELSE NULL END) AS dislikes FROM reactions  WHERE reactions.chapter_id = '${ctx.params.id}'`);
+  counter = await knex.raw(`select count(*) from counter where trigger = 'pageLanding' and chapter_id = '${ctx.params.id}'`);
+
+  chapter[0].total_likes = reaction.rows[0].total_likes;
+  chapter[0].likes = reaction.rows[0].likes;
+  chapter[0].disikes = reaction.rows[0].dislikes;
+  chapter[0].authenticated_user = check_user[0] === undefined ? null : check_user[0].reaction;
+  chapter[0].counter = counter.rows === undefined ? '0' : counter.rows[0].count;
+
+  ctx.assert(chapter, 404, 'No lesson by that ID');
   await returnType(chapter);
 
   ctx.status = 200;
@@ -213,7 +202,7 @@ router.get('/:id', permController.requireAuth, async ctx => {
  *
  * @apiSampleRequest off
  *
-* @apiSuccessExample {json} Success-Response:
+ * @apiSuccessExample {json} Success-Response:
  *     HTTP/1.1 200 OK
  *     {
  *        "chapter": {
@@ -237,11 +226,11 @@ router.get('/:id', permController.requireAuth, async ctx => {
  * @apiErrorExample {json} List error
  *    HTTP/1.1 500 Internal Server Error
  */
-router.post('/', permController.requireAuth, validateChapter, async ctx => {
+router.post('/', permController.requireAuth, async ctx => {
   let stateUserId = ctx.state.user.id == undefined ? ctx.state.user.data.id : ctx.state.user.id;
   let newChapter = ctx.request.body.chapter;
 
-  // slug generation automated
+  // Server side slug generator
   newChapter.slug = await slugGen(newChapter.name);
   newChapter.creatorId = stateUserId;
 
@@ -272,43 +261,37 @@ router.post('/', permController.requireAuth, validateChapter, async ctx => {
  *
  * @apiSampleRequest off
  *
+ * @apiParam {String} id Id - Unique.
  * @apiParam {String} chapter[name] Name - Unique.
  * @apiParam {String} chapter[description] Description.
  * @apiParam {String} chapter[status] modules status - published | draft
- * @apiParam {Boolean} chapter[approved] defaults is false
+ * @apiParam {Boolean="false"} chapter[approved] defaults is false
  * @apiParam {Object[]} chapter[tags] Tags list.
+ *
+ * @apiSampleRequest /api/v1/chapters/:id
  *
  * @apiSuccess {Object[]} chapter[object] Object data
  * @apiErrorExample {json} List error
  *    HTTP/1.1 500 Internal Server Error
  */
 router.put('/:id', permController.requireAuth, async ctx => {
-  //router.put('/:id', async ctx => {
-  const chapter_record = await Chapter.query().findById(ctx.params.id);
   let chapterData = ctx.request.body.chapter;
+  let chapterRed = await Chapter.query().findById(ctx.params.id);
 
-  if (!chapter_record) {
-    ctx.throw(400, 'No chapter with that ID');
+  if (!chapterRed || chapterData.id) {
+    ctx.throw(400, 'Body contains id, remove it');
   }
 
-  // if (chapter_record.imageUrl === null || chapter_record.contentUri === null) {
-  //   chapterData.status = 'draft';
-  //   log.info(chapterData.status);
-  // }
-
-  let chapter;
   try {
-    chapter = await Chapter.query().patchAndFetchById(ctx.params.id, chapterData);
+    const chapter = await Chapter.query().patchAndFetchById(ctx.params.id, chapterData);
+    ctx.status = 201;
+    ctx.body = { chapter };
   } catch (e) {
-    log.error('cant save');
-    log.error(e);
     if (e.statusCode) {
       ctx.throw(e.statusCode, null, { errors: [e.message] });
     } else { ctx.throw(400, null, { errors: [e.message] }); }
     throw e;
   }
-  ctx.status = 201;
-  ctx.body = { chapter };
 });
 
 

@@ -1,0 +1,34 @@
+{{yield}}
+{{!--
+<button type="button" id="testBtn" class="btn" data-loading-text=" ... "> {{inline-svg "reaction/like"}}
+{{@likes}}</button>
+<button type="button" id="testBtnDown" class="btn" data-loading-text=" ... "> {{inline-svg "reaction/dislike"}}
+  {{@dislikes}}</button> --}}
+{{#if (eq @status "like")}}
+  <button type="button" id="testBtn" class="btn like" data-loading-text=" ... ">
+    {{inline-svg "reaction/likes"}}
+    {{@likes}}
+  </button>
+  <button type="button" id="testBtnDown" class="btn" data-loading-text=" ... ">
+    {{inline-svg "reaction/dislike"}}
+    {{@dislikes}}
+  </button>
+{{else if (eq @status "dislike")}}
+  <button type="button" id="testBtn" class="btn" data-loading-text=" ... ">
+    {{inline-svg "reaction/like"}}
+    {{@likes}}
+  </button>
+  <button type="button" id="testBtnDown" class="btn dislike" data-loading-text=" ... ">
+    {{inline-svg "reaction/dislikes"}}
+    {{@dislikes}}
+  </button>
+{{else}}
+  <button type="button" id="testBtn" class="btn" data-loading-text=" ... ">
+    {{inline-svg "reaction/like"}}
+    {{@likes}}
+  </button>
+  <button type="button" id="testBtnDown" class="btn" data-loading-text=" ... ">
+    {{inline-svg "reaction/dislike"}}
+    {{@dislikes}}
+  </button>
+{{/if}}

@@ -45,7 +45,7 @@ Router.map(function () {
   });
 
   this.route('profile');
-  this.route('search');
+  this.route('search', { path: '/search/:id' });
   this.route('about');
 
   this.route('cms', function () {
@@ -110,9 +110,5 @@ Router.map(function () {
   this.route('swagger');
   this.route('topics');
   this.route('tags');
-  this.route('tag', function () {
-    this.route('index', {
-      path: '/:id'
-    });
-  });
+  this.route('tag', { path: '/tag/:id' });
 });

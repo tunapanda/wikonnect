@@ -48,6 +48,8 @@ router.use(jwt.authenticate, require('./routes/chapters'));
 
 router.use(jwt.authenticate, require('./routes/comments'));
 
+router.use(jwt.authenticate, require('./routes/counter'));
+
 router.use(jwt.authenticate, require('./routes/activity'));
 
 router.use(jwt.authenticate, require('./routes/enrollments'));
@@ -57,6 +59,8 @@ router.use(jwt.authenticate, require('./routes/achievements'));
 router.use(jwt.authenticate, require('./routes/flags'));
 
 router.use(jwt.authenticate, require('./routes/ratings'));
+
+router.use(jwt.authenticate, require('./routes/reactions'));
 
 router.use(jwt.authenticate, require('./routes/dashboard'));
 

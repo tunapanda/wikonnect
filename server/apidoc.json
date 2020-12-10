@@ -3,32 +3,14 @@
   "version": "0.4.0",
   "description": "Wikonnect community docs",
   "title": "Wikonnect community docs",
-  "url": "http://localhost:3000/api/v1",
+  "url": "https://kkl.wikonnect.org",
+  "sampleUrl": "https://kkl.wikonnect.org",
   "order": [
     "Authentication",
+    "Chapters",
     "Learning_Path",
     "Courses",
-    "Modules",
-    "Lessons",
-    "GetPaths",
-    "GetAPath",
-    "PostAPath",
-    "PutAPath",
-    "GetCourses",
-    "GetACourse",
-    "PostACourse",
-    "PutACourse",
-    "DeleteACourse",
-    "GetModules",
-    "GetAModule",
-    "PostAModule",
-    "PutAModule",
-    "DeleteAModule",
-    "GetLessons",
-    "GetALesson",
-    "PostALesson",
-    "PutALesson",
-    "DeleteALesson"
+    "Modules"
   ],
   "header": {
     "title": "Getting Started",
@@ -36,6 +18,6 @@
   },
   "footer": {
     "title": "Contributing Guidelines",
-    "filename": "../CONTRIBUTING.md"
+    "filename": "CONTRIBUTING.md"
   }
 }

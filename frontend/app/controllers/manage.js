@@ -10,6 +10,6 @@ export default class ManageController extends Controller {
 
   @computed()
   get chapters() {
-    return this.store.findAll('chapter');
+    return this.store.query('chapter', { 'status': 'published' });
   }
 }

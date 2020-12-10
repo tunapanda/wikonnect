@@ -16,6 +16,12 @@
           {{@chapter.name}}
         {{/link-to}}
       </h5>
+
+      <Reaction @likes={{@chapter.likes}} @dislikes={{@chapter.dislikes}} />
+
+
+      <p class="card-text">{{linkify @chapter.description class="btn btn-primary mt-3 replaced" target="_blank"}}</p>
+      <br>
       {{#each @chapter.tags as |tag|}}
         {{#link-to "tag" tag}}
 
@@ -25,9 +31,6 @@
         {{/link-to}}
 
       {{/each}}
-
-
-      <p class="card-text">{{@chapter.description}}</p>
     </div>
 
   </div>

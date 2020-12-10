@@ -1,14 +1,12 @@
-const Router = require('koa-router');
-const search = require('../utils/search');
-const log = require('../utils/logger');
 const _ = require('lodash');
+const Router = require('koa-router');
+const log = require('../utils/logger');
+const search = require('../utils/search');
 
-// const models = {
-//   learning_path: require('../models/learning_path'),
-//   course: require('../models/course'),
-//   module: require('../models/module'),
-//   lesson: require('../models/lesson')
-// };
+const models = {
+  chapter: require('../models/chapter'),
+  user: require('../models/user')
+};
 
 const router = new Router({
   prefix: '/search'
@@ -16,22 +14,49 @@ const router = new Router({
 
 
 /**
- * @api {get} /search?q={query-string-goes-here} GET result search query.
+ * @api {get} /search/chapter?
+ * @apiDescription GET result search query using chapter name, description or tags
+ * /search?q={query-string-goes-here} Using QUERY string.
+ * /search?tags=highschool  Using TAGS.
  * @apiName GetSearch
  * @apiGroup Search
  * @apiPermission none
  * @apiVersion 0.4.0
  *
- * @apiSampleRequest off
+ * @apiSampleRequest on
+ *
+ * @apiSuccessExample {json} Error-Response:
+ *     HTTP/1.1 200
+ *     {
+ *        "search": [{}]
+ *     }
  *
  * @apiErrorExample {json} Error-Response:
  *     HTTP/1.1 404 Not Found
  *     [{
  *        "error": "Search Unavailable"
  *     }]
+ *
+ *
  */
+router.get('/chapter', async ctx => {
 
-router.get('/', async ctx => {
+  let chapter = models.chapter.query();
+  if (ctx.query.q) {
+    chapter = await chapter
+      .where({ approved: 'true' })
+      .where('name', 'ILIKE', `%${ctx.query.q}%`)
+      .orWhere('description', 'ILIKE', `%${ctx.query.q}%`);
+  } else if (ctx.query.tags) {
+    chapter = await chapter
+      .where({ approved: 'true' })
+      .whereRaw('? = ANY(tags)', `${ctx.query.tags}`);
+  }
+  ctx.status = 200;
+  ctx.body = { 'search': chapter };
+});
+
+router.get('/elastic', async ctx => {
   const queryText = ctx.query.q;
   try {
     const elasticResponse = await search.search({

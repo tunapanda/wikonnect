@@ -1,10 +1,12 @@
 import Controller from '@ember/controller';
-// import { inject } from '@ember/service';
+import { inject } from '@ember/service';
 import { action } from '@ember/object';
 import { tracked } from '@glimmer/tracking';
 
 export default class TagsController extends Controller {
 
+
+  @inject me;
   @tracked topic_list = ['Literacy', 'STEM', 'Environmental conservation', 'Emotional well-being', 'Life skills and values',
     'Fitness and nutrition', 'Creative arts', 'Community service', 'Learners with special needs', 'Music and movement', 'Entrepreneurship',
     'Health and safety', 'Language Learning']
@@ -34,8 +36,6 @@ export default class TagsController extends Controller {
 
   @action
   addme(item, cart) {
-    console.log(item);
-    console.log(cart);
     switch (cart) {
     case 'competency':
       this.competency_list.removeObject(item);
@@ -58,15 +58,10 @@ export default class TagsController extends Controller {
     default:
       break;
     }
-
-
   }
 
   @action
   removeme(item, cart) {
-    console.log(item);
-    console.log(cart);
-
     switch (cart) {
     case 'competency':
       this.competency_cart.removeObject(item);
@@ -94,29 +89,19 @@ export default class TagsController extends Controller {
   }
 
 
-
-
-
-
-
   @action
-  updateTags() {
-
+  async updateTags() {
     let combined = [];
 
-    combined.concat(this.topic_cart);
-    combined.concat(this.competency_cart);
-    combined.concat(this.level_cart);
+    combined = combined.concat(this.topic_cart, this.competency_cart, this.level_cart);
 
-
-    this.store.findRecord('user', this.me.user.id).then(function (user) {
+    console.log('combined');
+    console.log(combined);
+    await this.store.findRecord('user', this.me.user.id).then(function (user) {
       user.set('tags', combined);
       user.save();
 
     });
-
-
-
 
     this.transitionToRoute('upload', { queryParams: { signup: 'true' } });
 

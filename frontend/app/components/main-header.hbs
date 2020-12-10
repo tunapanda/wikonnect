@@ -1,5 +1,5 @@
 <!-- template-lint disabled=true -->
-<nav class="mb-1 navbar navbar-expand-lg navbar-light text-dark secondary-color bg-white shadow-sm  ">
+<nav class="mb-1 navbar navbar-expand-lg navbar-light text-dark secondary-color bg-white shadow-sm ">
   {{#link-to "home" class="navbar-brand"}}
     <img src="/images/kkllogo.png" alt="">
     {{!-- {{svg-jar "wikonnect-primary" class="icon"   height="40"}} --}}
@@ -8,22 +8,42 @@
     aria-controls="navbarSupportedContent-555" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
+  <a class="nav-link" href="" {{action "translate" "en-us"}}>
+    EN
+  </a>
+
+  &nbsp; / &nbsp;
+
+
+  <a class="nav-link" {{action "translate" "sw-ke"}} href="">
+    SW
+  </a>
+
+
   <div class="collapse navbar-collapse" id="navbarSupportedContent-555">
     <ul class="navbar-nav ml-auto text-dark">
+
+
+
+
+
+
 
       {{#if me.user.id}}
 
         <li class="nav-item">
 
           {{#link-to "home"  class="nav-link" }}
-            Learn
+
+            {{t "buttons.learn"}}
           {{/link-to}}
         </li>
 
         <li class="nav-item">
 
           {{#link-to "teach" class="nav-link" }}
-            Teach
+            {{t "buttons.teach"}}
+
           {{/link-to}}
 
           {{!-- <a class="nav-link" href="https://teach.wikonnect.org/api/auth?token={{token}}&user={{me.user.username}}">
@@ -34,7 +54,8 @@
         <li class="nav-item">
 
           {{#link-to "index" class="nav-link" }}
-            About
+            {{t "buttons.about"}}
+
           {{/link-to}}
         </li>
 
@@ -57,7 +78,8 @@
         <li class="nav-item">
 
           {{#link-to "home" class="nav-link" }}
-            Home
+            {{t "buttons.learn"}}
+
           {{/link-to}}
         </li>
 
@@ -65,7 +87,9 @@
 
         <li class="nav-item">
 
-          <a class="nav-link" href="https://wikonnect.org">About</a>
+          <a class="nav-link" href="https://wikonnect.org">
+            {{t "buttons.about"}}
+          </a>
 
         </li>
 
@@ -74,7 +98,30 @@
 
 
     </ul>
+
+
+    <form class="form-inline ml-5" {{action "search" on="submit"}}>
+      {{!-- <input class="form-control mr-sm-2" value={{search_term}} type="search" placeholder="Search" aria-label="Search"
+        required> --}}
+      <Input @id="search" @class="form-control mr-sm-2" @type="text" @value={{search_term}} />
+      {{#if searchLoading}}
+        <button class="bg-primary form-control" type="button">
+          <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+          Searching...
+        </button>
+      {{else}}
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">
+          {{t "buttons.search"}}
+        </button>
+
+      {{/if}}
+    </form>
+
+
+
+
     <ul class="navbar-nav ml-auto nav-flex-icons">
+
       {{#if me.user.id}}
 
         <li class="nav-item avatar dropdown">
@@ -94,20 +141,22 @@
             aria-labelledby="navbarDropdownMenuLink-55">
 
             {{#link-to "profile" class="dropdown-item" }}
-              {{me.user.username}}'s Profile
+              {{me.user.username}}'s {{t "labels.profile"}}
+
             {{/link-to}}
             {{#link-to "profile"  (query-params view="Settings")
                class="dropdown-item"  }}
-              Settings
+              {{t "buttons.settings"}}
             {{/link-to}}
-            <a class="dropdown-item" href="#" {{action "logoutuser"}}>Logout</a>
+            <a class="dropdown-item" href="#" {{action "logoutuser"}}>{{t "buttons.logout"}}</a>
           </div>
         </li>
       {{else}}
         <li>
 
           {{#link-to "login"   }}
-            Login
+            {{t "buttons.login"}}
+
 
           {{/link-to}}
         </li>
@@ -115,10 +164,13 @@
         <li>
 
           {{#link-to "signup"  }}
-            Signup
+            {{t "buttons.signup"}}
+
 
           {{/link-to}}
         </li>
+
+
 
         {{!-- <li class="nav-item">
 
@@ -128,6 +180,13 @@
           {{/link-to}}
         </li> --}}
       {{/if}}
+
+
+
     </ul>
+
+
+
   </div>
+
 </nav>

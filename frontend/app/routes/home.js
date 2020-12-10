@@ -14,4 +14,9 @@ export default class HomeRoute extends Route {
     set(this, 'headData.title', 'Wikonnect - Chapters');
     set(this, 'headData.theme', '#FF5722');
   }
+
+  model() {
+    return this.store.query('chapter', { 'approved': true });
+    //return this.store.findAll('chapter');
+  }
 }
