@@ -37,7 +37,7 @@ export default class H5pComponent extends Component {
     };
 
 
-    fetch('http://localhost:3000/api/v1/counters', {
+    fetch('api/v1/counters', {
       method: 'POST', // or 'PUT'
       headers: {
         'Content-Type': 'application/json',
