@@ -25,9 +25,6 @@ export default class H5pComponent extends Component {
   async counterTimer(el) {
     console.log(el);
     let chapter_id = await this.args.selectedChapter;
-    console.log('------------chapter_id-----------');
-    console.log(chapter_id);
-
     let data = {
       'counter': {
         'counter': 1,
