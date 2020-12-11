@@ -31,13 +31,13 @@ export default class H5pComponent extends Component {
     let data = {
       'counter': {
         'counter': 1,
-        'chapter-id': chapter_id,
-        'trigger': 'pageLandingN'
+        'chapter_id': chapter_id,
+        'trigger': 'pageLanding'
       }
     };
 
 
-    fetch('/api/v1/counters', {
+    fetch('http://localhost:3000/api/v1/counters', {
       method: 'POST', // or 'PUT'
       headers: {
         'Content-Type': 'application/json',
