@@ -34,7 +34,7 @@ export default class H5pComponent extends Component {
     };
 
 
-    fetch('api/v1/counters', {
+    fetch('https://staging.wikonnect.org/api/v1/counters', {
       method: 'POST', // or 'PUT'
       headers: {
         'Content-Type': 'application/json',
