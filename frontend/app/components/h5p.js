@@ -24,8 +24,10 @@ export default class H5pComponent extends Component {
   @action
   async counterTimer(el) {
     console.log(el);
-    console.log(el.onload);
-    let chapter_id = await this.target.currentRoute.params.chapter_slug;
+    let chapter_id = await this.args.selectedChapter;
+    console.log('------------chapter_id-----------');
+    console.log(chapter_id);
+
     let data = {
       'counter': {
         'counter': 1,
@@ -35,7 +37,7 @@ export default class H5pComponent extends Component {
     };
 
 
-    fetch('http://localhost:3000/api/v1/counters', {
+    fetch('/api/v1/counters', {
       method: 'POST', // or 'PUT'
       headers: {
         'Content-Type': 'application/json',

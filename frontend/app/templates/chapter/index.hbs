@@ -3,7 +3,7 @@
 <div id="chapter" class="p-4">
   <h4>{{model.name}} </h4>
   <div class="chapter-content ">
-    <H5p @location={{model.contentUri}} />
+    <H5p @location={{model.contentUri}} @selectedChapter={{model.id}} />
     <div class="row">
       <div class="col-6">
         <p> {{model.counter}} views | {{format-date model.createdAt}}</p>
