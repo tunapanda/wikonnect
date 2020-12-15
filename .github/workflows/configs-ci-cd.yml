@@ -3,7 +3,7 @@ name: CI/CD
 on:
   push:
     branches:
-      - staging
+      - configs
 
 jobs:
   buildAndTest:
