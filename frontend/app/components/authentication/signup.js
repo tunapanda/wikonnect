@@ -36,15 +36,15 @@ export default class AuthenticationSignupComponent extends Component {
 
           let error_message;
           switch (constraint[1]) {
-            case 'email':
-              error_message = 'This email is already in use';
-              break;
-            case 'username':
-              error_message = 'This username already exists';
-              break;
-            default:
-              error_message = err.errors[key].errors;
-              break;
+          case 'email':
+            error_message = 'This email is already in use';
+            break;
+          case 'username':
+            error_message = 'This username already exists';
+            break;
+          default:
+            error_message = err.errors[key].errors;
+            break;
           }
           model.addError(constraint[1], error_message);
         });
