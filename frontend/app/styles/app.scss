@@ -58,6 +58,10 @@ body {
       from(rgba(252, 113, 0, 0)), to(rgba(0, 0, 0, 1)));
 }
 
+body {
+  margin-bottom: 60px;
+  /* Margin bottom by footer height */
+}
 
 
 .replaced {
@@ -83,11 +87,11 @@ body {
   white-space: pre-line;
 }
 
-button.like{
+button.like {
   filter: invert(27%) sepia(51%) saturate(2878%) hue-rotate(346deg) brightness(104%) contrast(97%);
 }
 
-button.dislike{
+button.dislike {
   filter: invert(27%) sepia(51%) saturate(2878%) hue-rotate(346deg) brightness(104%) contrast(97%);
 }
 
