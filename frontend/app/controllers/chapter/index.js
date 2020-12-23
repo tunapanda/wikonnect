@@ -26,6 +26,15 @@ export default class ChapterIndexController extends Controller {
   @tracked enabled = false
   @tracked rates = 0;
 
+  queryParams = ["callbackUrl", "ref"]
+
+
+
+  get embedCode() {
+    let mod = this.get("model")
+    return `<iframe width="560" height="315" src="http://localhost:4200/embed/${mod.id}" ></iframe>`
+
+  }
   @action
   async ratingSubmit(val) {
     if (!this.enabled) {
