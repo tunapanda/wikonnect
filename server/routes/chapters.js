@@ -13,6 +13,9 @@ const Chapter = require('../models/chapter');
 const User = require('../models/user');
 const permController = require('../middleware/permController');
 const validateGetChapter = require('../middleware/validateRequests/chapterGetValidation');
+const validateRouteQueryParams = require('../middleware/validateRouteQueryParams/queryValidation');
+// const mojaCampaignMiddleware = require('../middleware/mojaCampaignMiddleware');
+const validateChapter = require('../middleware/validateRoutePostSchema/validateChapter');
 
 const Reaction = require('../models/reaction');
 const knex = require('../utils/knexUtil');
@@ -34,6 +37,7 @@ const {
  * @apiPermission none
  * @apiDescription Get all chapter and filter using multiple query params
  *
+<<<<<<< HEAD
  * @apiParam {String} [id]  Optional id
  * @apiParam {String} [name]  Optional name
  * @apiParam {String} [status] Optional chapter status - published | draft
@@ -53,9 +57,37 @@ const {
  *
  * @apiSampleRequest /api/v1/chapters/
  *
+ *
+ * @apiSuccessExample {json} Success-Response:
+ *     HTTP/1.1 200 OK
+ *      {
+ *         "chapter": [{
+ *            "id": "chapter1",
+ *            "lessonId": "lesson1",
+ *            "name": "A Chapter",
+ *            "slug": "a-chapter",
+ *            "description": "An H5P Chapter.",
+ *            "status": "published",
+ *            "creatorId": "user1",
+ *            "createdAt": "2017-12-20T16:17:10.000Z",
+ *            "updatedAt": "2017-12-20T16:17:10.000Z",
+ *            "contentType": "h5p",
+ *            "contentUri": "/uploads/h5p/chapter1",
+ *            "imageUrl": "/uploads/images/content/chapters/chapter1.jpeg",
+ *            "contentId": null,
+ *            "likes": "0",
+ *            "dislikes": "0",
+ *            "rating": null,
+ *            "tags": [],
+ *            "comment": [{
+ *            }]
+ *         }]
+ *      }
+ * @apiErrorExample {json} List error
+ *    HTTP/1.1 500 Internal Server Error
  */
 
-router.get('/', permController.requireAuth, validateGetChapter, async ctx => {
+router.get('/', permController.requireAuth, validateRouteQueryParams, async ctx => {
 
   let stateUserRole = ctx.state.user.role == undefined ? ctx.state.user.data.role : ctx.state.user.role;
   let stateUserId = ctx.state.user.id == undefined ? ctx.state.user.data.id : ctx.state.user.id;
@@ -84,7 +116,7 @@ router.get('/', permController.requireAuth, validateGetChapter, async ctx => {
         .eager('[comment(selectComment), achievement(selectAchievement), flag(selectFlag)]')
         .skipUndefined();
     }
-    await achievementType(chapter);
+    // await achievementType(chapter);
   } else {
     chapter = await chapter
       .where(ctx.query)
@@ -92,7 +124,7 @@ router.get('/', permController.requireAuth, validateGetChapter, async ctx => {
       .groupBy('chapters.id', 'rate.chapter_id')
       .eager('[comment(selectComment), flag(selectFlag)]');
   }
-  await returnType(chapter);
+  // await returnType(chapter);
 
   ctx.status = 200;
   ctx.body = { 'chapter': chapter };
@@ -131,11 +163,14 @@ router.get('/', permController.requireAuth, validateGetChapter, async ctx => {
  *            "imageUrl": "/uploads/images/content/chapters/chapter1.jpeg",
  *            "contentId": null,
  *            "tags": [],
- *            "likes": "0",
- *            "dislikes": "0",
- *            "rating": null,
  *            "comment": [{
  *            }]
+ *            "reaction": {
+ *               "total_likes": "4",
+ *               "likes": "3",
+ *               "dislikes": "1",
+ *               "authenticated_user": null
+ *              }
  *         }
  *      }
  *
@@ -145,6 +180,7 @@ router.get('/', permController.requireAuth, validateGetChapter, async ctx => {
 router.get('/:id', permController.requireAuth, async ctx => {
   let stateUserRole = ctx.state.user.role == undefined ? ctx.state.user.data.role : ctx.state.user.role;
   let stateUserId = ctx.state.user.id == undefined ? ctx.state.user.data.id : ctx.state.user.id;
+
 
   let roleNameList = ['basic', 'superadmin', 'tunapanda'];
   let anonymous = 'anonymous';
@@ -276,6 +312,7 @@ router.put('/:id', permController.requireAuth, async ctx => {
   let chapterRed = await Chapter.query().findById(ctx.params.id);
 
   if (!chapterRed || chapterData.id) {
+    log.error(chapterData);
     ctx.throw(400, 'Body contains id, remove it');
   }
 
@@ -410,7 +447,8 @@ router.post('/:id/upload', async ctx => {
   await Chapter.query()
     .findById(dirName)
     .patch({
-      content_uri: uploadPath
+      content_uri: uploadPath,
+      content_type: 'h5p'
     });
 
 

@@ -7,9 +7,13 @@ const schemaGet = Joi.object({
   id: Joi.string(),
   slug: Joi.string(),
   creatorId: Joi.string(),
+<<<<<<< HEAD:server/middleware/validateRequests/chapterGetValidation.js
   q: Joi.string(),
   name: Joi.string(),
   tags: Joi.string()
+=======
+  q: Joi.string()
+>>>>>>> origin/master:server/middleware/validateRouteQueryParams/queryValidation.js
 });
 
 module.exports =  async (ctx, next) => {

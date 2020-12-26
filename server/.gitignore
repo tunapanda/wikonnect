@@ -102,6 +102,7 @@ dist
 
 # TernJS port file
 .tern-port
+_google.json
 
 config
 !config/*.example.js

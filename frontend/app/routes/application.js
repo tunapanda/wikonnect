@@ -18,10 +18,10 @@ export default class ApplicationRoute extends Route {
 
 
     let mojaLocalStorage = {
-      partner_id: params.campaign_id,
-      enduser_id: params.points,
-      campaign_id: params.enduser_id,
-      points: params.partner_id
+      partner_id: params.partner_id,
+      enduser_id: params.enduser_id,
+      campaign_id: params.campaign_id,
+      points: params.points
     };
 
     window.localStorage.setItem('moja_campaign', JSON.stringify(mojaLocalStorage));

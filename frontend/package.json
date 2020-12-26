@@ -14,19 +14,21 @@
     "build": "ember build",
     "lint:hbs": "ember-template-lint .",
     "lint:js": "eslint .",
-    "start": "ember serve --proxy https://kkl.wikonnect.org/",
-    "start:local": "ember serve  --proxy http://localhost:3000",
+    "start": "ember serve --proxy https://app.wikonnect.org/",
+    "start:local": "ember serve --proxy http://localhost:3000",
     "ci:start": "ember serve --path dist --proxy http://localhost:3000",
     "test": "COVERAGE=true ember test"
   },
   "devDependencies": {
     "@ember/edition-utils": "^1.1.1",
+    "@ember/jquery": "^1.1.0",
     "@ember/optional-features": "^1.0.0",
     "@ember/render-modifiers": "^1.0.2",
     "@fortawesome/ember-fontawesome": "^0.2.1",
     "@fortawesome/free-solid-svg-icons": "^5.14.0",
     "@glimmer/component": "^1.0.0",
     "@mdi/svg": "^5.0.0",
+    "@sentry/ember": "^5.27.4",
     "@types/ember": "^3.1.1",
     "babel-eslint": "^10.0.2",
     "bootstrap": "^4.3.1",
@@ -45,6 +47,7 @@
     "ember-cli-clipboard": "^0.14.0",
     "ember-cli-code-coverage": "^0.4.2",
     "ember-cli-dependency-checker": "^3.1.0",
+    "ember-cli-dotenv": "^3.1.0",
     "ember-cli-head": "^1.0.0",
     "ember-cli-htmlbars": "^4.0.5",
     "ember-cli-inject-live-reload": "^2.0.1",
@@ -89,7 +92,8 @@
     "qunit-dom": "^0.9.0",
     "rsvp": "^4.8.5",
     "sass": "^1.23.0",
-    "swagger-ui-dist": "^3.9.2"
+    "swagger-ui-dist": "^3.9.2",
+    "torii": "^0.10.1"
   },
   "engines": {
     "node": "8.* || >= 10.*"

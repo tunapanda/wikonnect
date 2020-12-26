@@ -1,22 +1,22 @@
-const Router = require('koa-router');
 const path = require('path');
-
-const busboy = require('async-busboy');
-const shortid = require('shortid');
 const sharp = require('sharp');
-const s3 = require('../utils/s3Util');
-const { updatedAt } = require('../utils/timestamp');
+const shortid = require('shortid');
+const Router = require('koa-router');
+const busboy = require('async-busboy');
+const jsonwebtoken = require('jsonwebtoken');
 
 const User = require('../models/user');
 const AchievementAward = require('../models/achievement_awards');
 
-const log = require('../utils/logger');
-const jwt = require('../middleware/jwt');
+const { authenticate, secret } = require('../middleware/jwt');
 const permController = require('../middleware/permController');
 const validateAuthRoutes = require('../middleware/validateRoutePostSchema/validateAuthRoutes');
 
-const knex = require('../utils/knexUtil');
 
+const s3 = require('../utils/s3Util');
+const log = require('../utils/logger');
+const knex = require('../utils/knexUtil');
+const { updatedAt } = require('../utils/timestamp');
 const {
   achievementAwardsType,
   userRoles,
@@ -26,22 +26,23 @@ const {
   inviteUserAward,
   getProfileImage
 } = require('../utils/routesUtils/userRouteUtils');
+const googleToken = require('../utils/oauth2/googleToken');
+
 
 const router = new Router({
   prefix: '/users'
 });
 
 
-
 /**
-* @api {post} /api/v1/users POST create a new user.
+* @api {post} /users POST create a new user.
 * @apiName PostAUser
 * @apiGroup Authentication
 *
-* @apiParam {string} user[username] username
-* @apiParam {string} user[email] Unique email
-* @apiParam {string} user[password] validated password
-* @apiParam {string} user[invitedBy] optional auto filled on the form
+* @apiParam (Required Params) {string} user[username] username
+* @apiParam (Required Params) {string} user[email] Unique email
+* @apiParam (Required Params) {string} user[password] validated password
+* @apiParam (Optional Params) {string} user[invitedBy] auto filled on the form
 *
 * @apiPermission none
 *
@@ -60,6 +61,7 @@ const router = new Router({
 *
 * @apiError {String} errors Bad Request.
 */
+
 
 router.post('/', validateAuthRoutes.validateNewUser, createPasswordHash, async ctx => {
   ctx.request.body.user.username = ctx.request.body.user.username.toLowerCase();
@@ -166,53 +168,56 @@ router.post('/', validateAuthRoutes.validateNewUser, createPasswordHash, async c
 
 router.get('/:id', permController.requireAuth, async ctx => {
 
-  let stateUserId = ctx.state.user.id == undefined ? ctx.state.user.data.id : ctx.state.user.id;
+  try {
+    let stateUserId = ctx.state.user.id == undefined ? ctx.state.user.data.id : ctx.state.user.id;
 
-  let userId = ctx.params.id != 'current' ? ctx.params.id : stateUserId;
-  const user = await User.query().findById(userId).mergeJoinEager('[achievementAwards(selectBadgeNameAndId), userRoles(selectName), enrolledCourses(selectNameAndId)]');
-  user.profileUri = await getProfileImage(user.profileUri);
+    let userId = ctx.params.id != 'current' ? ctx.params.id : stateUserId;
+    const user = await User.query().findById(userId).mergeJoinEager('[achievementAwards(selectBadgeNameAndId), userRoles(selectName), enrolledCourses(selectNameAndId), oauth2(selectData)]');
+    user.profileUri = await getProfileImage(user.profileUri);
 
+    if (user.id != stateUserId || stateUserId === 'anonymous') {
+      // return specific data for all profiles incase it's private
+      let publicData = {
+        'username': 'private',
+        'profileUri': 'images/profile-placeholder.gif',
+        'id': user.id,
+        'private': user.private
+      };
+      // return data if profile is not private
+      if (user.private === 'false') {
+        publicData.username = user.username;
+        publicData.profileUri = user.profileUri;
+      }
+      ctx.status = 200;
+      ctx.body = { user: publicData };
+    } else {
+      enrolledCoursesType(user);
+      userRoles(user);
+      // get all verification data
+      achievementAwardsType(user);
+      const userVerification = await knex('user_verification').where({ 'user_id': userId });
+      user.userVerification = userVerification;
 
-  if (!user) {
-    ctx.throw(404, 'No User With that Id');
-  }
+      if (profileCompleteBoolean(user) && user.metadata.profileComplete === 'false') {
+        await User.query().patchAndFetchById(ctx.params.id, { 'metadata:profileComplete': 'true' });
+        await AchievementAward.query().insert({
+          'name': 'profile completed',
+          'achievementId': ctx.params.id,
+          'userId': ctx.params.id
+        });
+      }
 
-  if (user.id != stateUserId || stateUserId === 'anonymous') {
-    // return specific data for all profiles incase it's private
-    let publicData = {
-      'username': 'private',
-      'profileUri': 'images/profile-placeholder.gif',
-      'id': user.id,
-      'private': user.private
-    };
-    // return data if profile is not private
-    if (user.private === 'false') {
-      publicData.username = user.username;
-      publicData.profileUri = user.profileUri;
+      log.info('Got a request from %s for %s', ctx.request.ip, ctx.path);
+
+      ctx.status = 200;
+      ctx.body = { user };
     }
-    ctx.status = 200;
-    ctx.body = { user: publicData };
-  } else {
-    enrolledCoursesType(user);
-    userRoles(user);
-    // get all verification data
-    achievementAwardsType(user);
-    const userVerification = await knex('user_verification').where({ 'user_id': userId });
-    user.userVerification = userVerification;
-
-    if (profileCompleteBoolean(user) && user.metadata.profileComplete === 'false') {
-      await User.query().patchAndFetchById(ctx.params.id, { 'metadata:profileComplete': 'true' });
-      await AchievementAward.query().insert({
-        'name': 'profile completed',
-        'achievementId': ctx.params.id,
-        'userId': ctx.params.id
-      });
-    }
-
-    log.info('Got a request from %s for %s', ctx.request.ip, ctx.path);
-
-    ctx.status = 200;
-    ctx.body = { user };
+  } catch (e) {
+    if (e.statusCode) {
+      ctx.throw(e.statusCode, { message: 'The query key does not exist' });
+      ctx.throw(e.statusCode, null, { errors: [e.message] });
+    } else { ctx.throw(406, null, { errors: [e.message] }); }
+    throw e;
   }
 });
 /**
@@ -276,7 +281,7 @@ router.get('/', permController.requireAuth, permController.grantAccess('readAny'
  *
  */
 
-router.put('/:id', jwt.authenticate, permController.requireAuth, async ctx => {
+router.put('/:id', authenticate, permController.requireAuth, async ctx => {
 
   ctx.request.body.user.updatedAt = await updatedAt();
 
@@ -384,6 +389,45 @@ router.post('/:id/profile-image', permController.requireAuth, async (ctx, next) 
       host: ctx.host,
       path: `${uploadPath}/${fileNameBase}.jpg`
     };
+  }
+});
+
+
+/**
+ *  {
+ *    grant_type: 'google-token',
+ *    auth_code: 'long token string'
+ *  }
+ *  {
+ *    grant_type: 'facebook-oauth2',
+ *    auth_code: 'long token string'
+ *  }
+ *
+ * connect account if teh user with that email exists
+ * create a new user account if the user with that email does not exists
+ */
+
+router.post('/token', async (ctx, next) => {
+  if ('POST' != ctx.method) return await next();
+
+  try {
+    const token = await googleToken(ctx.request.body.auth_code);
+    ctx.body = {
+      token: jsonwebtoken.sign({
+        data: token,
+        exp: Math.floor(Date.now() / 1000 + 604800) // 60 seconds * 60 minutes * 24 hours * 7 days = 1 week
+      }, secret)
+    };
+  } catch (e) {
+    if (e.name === 'FetchError') {
+      ctx.status = 502;
+      ctx.body = {
+        error: 'You have a slow network'
+      };
+    } else if (e.statusCode) {
+      ctx.throw(e.statusCode, null, { errors: [e.message] });
+    } else { ctx.throw(400, null, { errors: [e.message] }); }
+    throw e;
   }
 });
 

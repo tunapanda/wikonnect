@@ -55,6 +55,24 @@ module.exports = function (environment) {
       authenticationRoute: 'login',
     },
 
+    torii: {
+      allowUnsafeRedirect: true,
+      sessionServiceName: 'session',
+      remoteServiceName: 'iframe',
+      providers: {
+        // 'facebook-oauth2': {
+        //   apiKey: process.env.FACEBOOK_KEY,
+        //   scope: 'email',
+        //   redirectUri: 'https://54923196871a.ngrok.io/login'
+        // },
+      //   'google-token': {
+      //     apiKey: process.env.GOOGLE_KEY,
+      //     redirectUri: process.env.GOOGLE_REDIRECT,
+      //     scope:  'email profile'
+      //   }
+      }
+    },
+
     'ember-simple-auth-token': {
       refreshTokenPropertyName: 'token',
       serverTokenEndpoint: '/api/v1/auth/',
@@ -65,6 +83,18 @@ module.exports = function (environment) {
       holdToDrag: false
     },
 
+  };
+  
+  ENV['@sentry/ember'] = {
+    sentry: {
+      dsn: 'https://6dac48b553d245c8a5e1172d9d8d4f9f@o478432.ingest.sentry.io/5521677',
+
+      // Set tracesSampleRate to 1.0 to capture 100%
+      // of transactions for performance monitoring.
+      // We recommend adjusting this value in production, or using tracesSampler
+      // for finer control
+      tracesSampleRate: 1.0,
+    }
   };
 
   if (environment === 'development') {

@@ -3,6 +3,7 @@
   "version": "0.4.0",
   "description": "Wikonnect community docs",
   "title": "Wikonnect community docs",
+<<<<<<< HEAD
   "url": "https://kkl.wikonnect.org",
   "sampleUrl": "https://kkl.wikonnect.org",
   "order": [
@@ -11,6 +12,16 @@
     "Learning_Path",
     "Courses",
     "Modules"
+=======
+  "url": "http://localhost:3000/api/v1",
+  "order": [
+    "Authentication",
+    "Reactions",
+    "PostAReaction",
+    "GetAReAction",
+    "GetReactions",
+    "DeleteARection"
+>>>>>>> origin/master
   ],
   "header": {
     "title": "Getting Started",

@@ -8,9 +8,11 @@
   "order": [
     "Authentication",
     "Chapters",
-    "Learning_Path",
-    "Courses",
-    "Modules"
+    "Reactions",
+    "PostAReaction",
+    "GetAReAction",
+    "GetReactions",
+    "DeleteAReaction"
   ],
   "header": {
     "title": "Getting Started",

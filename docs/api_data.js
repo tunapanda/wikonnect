@@ -265,6 +265,66 @@ define({ "api": [
         }
       ]
     },
+    "version": "0.0.0",
+    "filename": "./server/routes/users.js",
+    "groupTitle": "Authentication"
+  },
+  {
+    "type": "post",
+    "url": "/users",
+    "title": "POST create a new user.",
+    "name": "PostAUser",
+    "group": "Authentication",
+    "parameter": {
+      "fields": {
+        "Required Params": [
+          {
+            "group": "Required Params",
+            "type": "string",
+            "optional": false,
+            "field": "user[username]",
+            "description": "<p>username</p>"
+          },
+          {
+            "group": "Required Params",
+            "type": "string",
+            "optional": false,
+            "field": "user[email]",
+            "description": "<p>Unique email</p>"
+          },
+          {
+            "group": "Required Params",
+            "type": "string",
+            "optional": false,
+            "field": "user[password]",
+            "description": "<p>validated password</p>"
+          }
+        ],
+        "Optional Params": [
+          {
+            "group": "Optional Params",
+            "type": "string",
+            "optional": false,
+            "field": "user[invitedBy]",
+            "description": "<p>auto filled on the form</p>"
+          }
+        ]
+      }
+    },
+    "permission": [
+      {
+        "name": "none"
+      }
+    ],
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 201 OK\n{\n   \"user\": {\n     \"id\": \"string\",\n     \"username\": \"string\",\n     \"inviteCode\": \"invited_by\",\n     \"createdAt\": \"string\",\n     \"updatedAt\": \"string\",\n     \"metadata\": json_array\n   }\n}",
+          "type": "json"
+        }
+      ]
+    },
     "error": {
       "fields": {
         "Error 4xx": [
@@ -559,20 +619,73 @@ define({ "api": [
   },
   {
     "type": "get",
+<<<<<<< HEAD
     "url": "/:rating_id",
     "title": "GET a rating",
     "name": "GetAChapterRating",
     "group": "ChapterRatings",
+=======
+    "url": "/api/v1/chapters/:id",
+    "title": "GET single chapter.",
+    "name": "GetAChapter",
+    "group": "Chapters",
+>>>>>>> origin/master
     "permission": [
       {
         "name": "authenticated user"
       }
     ],
+<<<<<<< HEAD
+=======
+    "version": "0.4.0",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "id",
+            "description": "<p>Chapter unique ID</p>"
+          }
+        ]
+      }
+    },
+>>>>>>> origin/master
     "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Object[]",
+            "optional": false,
+            "field": "chapter",
+            "description": "<p>list</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "chapter.id",
+            "description": "<p>Chapter id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object[]",
+            "optional": false,
+            "field": "Chapter[object]",
+            "description": "<p>Object data</p>"
+          }
+        ]
+      },
       "examples": [
         {
           "title": "Success-Response:",
+<<<<<<< HEAD
           "content": "HTTP/1.1 201 OK\n{\n \"rating\": [{\n    \"id\": String,\n    \"rating\": String,\n    \"comment\": String,\n    \"chapter_id\": String,\n    \"user_id\": String,\n    \"labels\": Array,\n    \"category\": String,\n    \"createdAt\": DateTime,\n    \"updatedAt\": DateTime\n   }]\n }",
+=======
+          "content": "HTTP/1.1 200 OK\n{\n   \"chapter\": {\n       \"id\": \"chapter1\",\n       \"lessonId\": \"lesson1\",\n       \"name\": \"A Chapter\",\n       \"slug\": \"a-chapter\",\n       \"description\": \"An H5P Chapter.\",\n       \"status\": \"published\",\n       \"creatorId\": \"user1\",\n       \"createdAt\": \"2017-12-20T16:17:10.000Z\",\n       \"updatedAt\": \"2017-12-20T16:17:10.000Z\",\n       \"contentType\": \"h5p\",\n       \"contentUri\": \"/uploads/h5p/chapter1\",\n       \"imageUrl\": \"/uploads/images/content/chapters/chapter1.jpeg\",\n       \"contentId\": null,\n       \"tags\": [],\n       \"comment\": [{\n       }]\n    }\n }",
+>>>>>>> origin/master
           "type": "json"
         }
       ]
@@ -666,9 +779,15 @@ define({ "api": [
   },
   {
     "type": "get",
+<<<<<<< HEAD
     "url": "/api/v1/chapters/:id",
     "title": "GET single chapter.",
     "name": "GetAChapter",
+=======
+    "url": "/api/v1/chapters/",
+    "title": "GET all chapters.",
+    "name": "GetChapters",
+>>>>>>> origin/master
     "group": "Chapters",
     "permission": [
       {
@@ -678,13 +797,53 @@ define({ "api": [
     "version": "0.4.0",
     "parameter": {
       "fields": {
-        "Parameter": [
+        "Optional Params": [
           {
-            "group": "Parameter",
+            "group": "Optional Params",
             "type": "String",
             "optional": false,
+<<<<<<< HEAD
             "field": "id",
             "description": "<p>Chapter unique ID</p>"
+=======
+            "field": "chapter.id",
+            "description": "<p>Chapter Id</p>"
+          },
+          {
+            "group": "Optional Params",
+            "type": "String",
+            "optional": false,
+            "field": "chapter[name]",
+            "description": "<p>Chapter Name.</p>"
+          },
+          {
+            "group": "Optional Params",
+            "type": "String",
+            "optional": false,
+            "field": "chapter[description]",
+            "description": "<p>Description.</p>"
+          },
+          {
+            "group": "Optional Params",
+            "type": "String",
+            "optional": false,
+            "field": "chapter[status]",
+            "description": "<p>modules status - published | draft</p>"
+          },
+          {
+            "group": "Optional Params",
+            "type": "Boolean",
+            "optional": false,
+            "field": "chapter",
+            "description": "<p>[approved:false] default is false</p>"
+          },
+          {
+            "group": "Optional Params",
+            "type": "Object[]",
+            "optional": false,
+            "field": "chapter[tags]",
+            "description": "<p>Tags list.</p>"
+>>>>>>> origin/master
           }
         ]
       }
@@ -741,10 +900,17 @@ define({ "api": [
     ]
   },
   {
+<<<<<<< HEAD
     "type": "get",
     "url": "/api/v1/chapters/",
     "title": "GET all chapters.",
     "name": "GetChapters",
+=======
+    "type": "post",
+    "url": "/api/v1/chapters",
+    "title": "POST single chapter.",
+    "name": "PostAChapter",
+>>>>>>> origin/master
     "group": "Chapters",
     "permission": [
       {
@@ -803,6 +969,7 @@ define({ "api": [
       }
     },
     "success": {
+<<<<<<< HEAD
       "fields": {
         "Success 200": [
           {
@@ -920,6 +1087,8 @@ define({ "api": [
       }
     },
     "success": {
+=======
+>>>>>>> origin/master
       "examples": [
         {
           "title": "Success-Response:",
@@ -2604,6 +2773,392 @@ define({ "api": [
         "url": "https://kkl.wikonnect.org/api/v1/reactions/:id"
       }
     ]
+  },
+  {
+    "type": "delete",
+    "url": "/api/v1/reactions/:id",
+    "title": "DELETE using Id.",
+    "name": "DeleteAReAction",
+    "group": "Reactions",
+    "permission": [
+      {
+        "name": "none"
+      }
+    ],
+    "version": "0.4.0",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "id",
+            "description": "<p>Reaction Id</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Object[]",
+            "optional": false,
+            "field": "reaction",
+            "description": "<p>list</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "reaction.id",
+            "description": "<p>Reaction id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "reaction.chapterId",
+            "description": "<p>Chapter id.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "reaction.userId",
+            "description": "<p>Authenticated user id</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n{\n reaction: {\n     userId: 'user44',\n     chapterId: 'chapter2',\n     reaction: 'like',\n     createdAt: '2020-11-25T12:56:52.895Z',\n     updatedAt: '2020-11-25T12:56:52.895Z',\n     id: 'IgDuJuUAAvo'\n   }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "List error",
+          "content": "HTTP/1.1 500 Internal Server Error",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "./server/routes/reactions.js",
+    "groupTitle": "Reactions"
+  },
+  {
+    "type": "get",
+    "url": "/api/v1/reactions/:id",
+    "title": "GET a reaction by ID.",
+    "name": "GetAReAction",
+    "group": "Reactions",
+    "permission": [
+      {
+        "name": "none"
+      }
+    ],
+    "version": "0.4.0",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "id",
+            "description": "<p>Reaction Id</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Object[]",
+            "optional": false,
+            "field": "reaction",
+            "description": "<p>list</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "reaction.id",
+            "description": "<p>Reaction id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object[]",
+            "optional": false,
+            "field": "reaction[object]",
+            "description": "<p>Object data</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n{\n reaction: {\n     userId: 'user44',\n     chapterId: 'chapter2',\n     reaction: 'like',\n     createdAt: '2020-11-25T12:56:52.895Z',\n     updatedAt: '2020-11-25T12:56:52.895Z',\n     id: 'IgDuJuUAAvo'\n   }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "List error",
+          "content": "HTTP/1.1 500 Internal Server Error",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "./server/routes/reactions.js",
+    "groupTitle": "Reactions"
+  },
+  {
+    "type": "get",
+    "url": "/api/v1/reactions/",
+    "title": "GET all reactions.",
+    "name": "GetReactions",
+    "group": "Reactions",
+    "permission": [
+      {
+        "name": "none"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Optional Params": [
+          {
+            "group": "Optional Params",
+            "type": "String",
+            "optional": false,
+            "field": "reaction.id",
+            "description": "<p>Chapter Id</p>"
+          },
+          {
+            "group": "Optional Params",
+            "type": "String",
+            "optional": false,
+            "field": "reaction[reaction]",
+            "description": "<p>Reaction type (like|dislike|whatever).</p>"
+          },
+          {
+            "group": "Optional Params",
+            "type": "String",
+            "optional": false,
+            "field": "reaction[chapter_id]",
+            "description": "<p>Chapter id.</p>"
+          },
+          {
+            "group": "Optional Params",
+            "type": "String",
+            "optional": false,
+            "field": "reaction[user_id]",
+            "description": "<p>Authenticated user id</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Object[]",
+            "optional": false,
+            "field": "reaction",
+            "description": "<p>list</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "reaction.id",
+            "description": "<p>Reaction id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object[]",
+            "optional": false,
+            "field": "Reaction[object]",
+            "description": "<p>Reaction object data</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n {\n    \"reaction\": [{\n        \"reaction\": \"like|dislike|whatever\",\n        \"chapter\": \"chapter_id\",\n        \"user\": \"authenticated_user_id\"\n    }]\n }",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "List error",
+          "content": "HTTP/1.1 500 Internal Server Error",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "./server/routes/reactions.js",
+    "groupTitle": "Reactions"
+  },
+  {
+    "type": "post",
+    "url": "/api/v1/reaction/",
+    "title": "POST a reaction.",
+    "name": "PostAReaction",
+    "group": "Reactions",
+    "permission": [
+      {
+        "name": "none"
+      }
+    ],
+    "version": "0.4.0",
+    "parameter": {
+      "fields": {
+        "Optional Params": [
+          {
+            "group": "Optional Params",
+            "type": "String",
+            "optional": false,
+            "field": "reaction[id]",
+            "description": "<p>Chapter Id</p>"
+          },
+          {
+            "group": "Optional Params",
+            "type": "String",
+            "optional": false,
+            "field": "reaction[reaction]",
+            "description": "<p>Reaction type (like|dislike|whatever).</p>"
+          },
+          {
+            "group": "Optional Params",
+            "type": "String",
+            "optional": false,
+            "field": "reaction[chapter_id]",
+            "description": "<p>Chapter id.</p>"
+          },
+          {
+            "group": "Optional Params",
+            "type": "String",
+            "optional": false,
+            "field": "reaction[user_id]",
+            "description": "<p>Authenticated user id</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n{\n   reaction: {\n     userId: 'user44',\n     chapterId: 'chapter2',\n     reaction: 'like',\n     createdAt: '2020-11-25T12:56:52.895Z',\n     updatedAt: '2020-11-25T12:56:52.895Z',\n     id: 'IgDuJuUAAvo'\n   }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "List error",
+          "content": "HTTP/1.1 500 Internal Server Error",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "./server/routes/reactions.js",
+    "groupTitle": "Reactions"
+  },
+  {
+    "type": "put",
+    "url": "/api/v1/reactions/:id",
+    "title": "PUT using Id.",
+    "name": "PutAReAction",
+    "group": "Reactions",
+    "permission": [
+      {
+        "name": "none"
+      }
+    ],
+    "version": "0.4.0",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "id",
+            "description": "<p>Reaction Id</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Object[]",
+            "optional": false,
+            "field": "reaction",
+            "description": "<p>list</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "reaction.id",
+            "description": "<p>Reaction id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "reaction.chapterId",
+            "description": "<p>Chapter id.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "reaction.userId",
+            "description": "<p>Authenticated user id</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n{\n reaction: {\n     userId: 'user44',\n     chapterId: 'chapter2',\n     reaction: 'like',\n     createdAt: '2020-11-25T12:56:52.895Z',\n     updatedAt: '2020-11-25T12:56:52.895Z',\n     id: 'IgDuJuUAAvo'\n   }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "List error",
+          "content": "HTTP/1.1 500 Internal Server Error",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "./server/routes/reactions.js",
+    "groupTitle": "Reactions"
   },
   {
     "type": "get",

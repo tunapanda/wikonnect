@@ -5,4 +5,8 @@ export default class CounterModel extends Model {
   @attr('string') trigger;
   @attr('integer') counter;
   // @belongsTo('chapter') chapter;
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> origin/master

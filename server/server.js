@@ -1,14 +1,16 @@
 const Koa = require('koa');
 const path = require('path');
 const koaQs = require('koa-qs');
-const Router = require('koa-router');
+const Router = require('@koa/router');
 const bodyParser = require('koa-bodyparser');
 const errorHandler = require('./middleware/error');
 const logger = require('./middleware/logger');
 const jwt = require('./middleware/jwt');
 const cors = require('@koa/cors');
-const app = new Koa();
 const log = require('./utils/logger');
+// const removeTrailingSlashes = require('./utils/removeTrailingSlashes');
+
+const app = new Koa();
 
 const router = new Router({
   prefix: '/api/v1'
@@ -16,9 +18,11 @@ const router = new Router({
 
 koaQs(app);
 
+// app.use(removeTrailingSlashes());
+
 app.use(cors({
   origin: '*',
-  maxAge: 5,
+  maxAge: 20,
   credentials: true,
   allowMethods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowHeaders: ['Content-Type', 'Authorization', 'Accept', 'mojaHeaders'],
@@ -27,7 +31,6 @@ app.use(cors({
 app.use(errorHandler);
 
 app.use(logger);
-
 app.use(bodyParser());
 
 app.use(require('koa-static')(path.resolve(__dirname, './public')));
@@ -47,6 +50,8 @@ router.use(jwt.authenticate, require('./routes/lessons'));
 router.use(jwt.authenticate, require('./routes/chapters'));
 
 router.use(jwt.authenticate, require('./routes/comments'));
+
+router.use(jwt.authenticate, require('./routes/counter'));
 
 router.use(jwt.authenticate, require('./routes/activity'));
 

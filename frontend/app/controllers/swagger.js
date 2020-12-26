@@ -30,4 +30,8 @@ export default class SwaggerController extends Controller {
     defaultModelExpandDepth: 1,
     validatorUrl: 'https://online.swagger.io/validator'
   }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> origin/master

@@ -182,7 +182,7 @@ router.put('/:id', requireAuth, async ctx => {
 
 /**
  * @api {delete} /api/v1/reactions/:id DELETE using Id.
- * @apiName DeleteARection
+ * @apiName DeleteAReAction
  * @apiGroup Reactions
  * @apiPermission none
  * @apiVersion 0.4.0
