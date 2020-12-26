@@ -1,7 +1,3 @@
-<<<<<<< HEAD
-=======
-
->>>>>>> origin/master
 exports.seed = function (knex) {
   // Deletes ALL existing entries
   return knex('reactions').del()
@@ -17,8 +13,4 @@ exports.seed = function (knex) {
         { id: 6, reaction: 'dislike', user_id: 'user3', chapter_id: 'chapter2' }
       ]);
     });
-<<<<<<< HEAD
 };
-=======
-};
->>>>>>> origin/master

@@ -8,9 +8,11 @@
   "order": [
     "Authentication",
     "Chapters",
-    "Learning_Path",
-    "Courses",
-    "Modules"
+    "Reactions",
+    "PostAReaction",
+    "GetAReAction",
+    "GetReactions",
+    "DeleteAReaction"
   ],
   "header": {
     "title": "Getting Started",
@@ -24,12 +26,8 @@
   "apidoc": "0.3.0",
   "generator": {
     "name": "apidoc",
-<<<<<<< HEAD
-    "time": "2020-12-01T07:05:01.527Z",
-=======
-    "time": "2020-11-25T13:15:07.759Z",
->>>>>>> origin/master
-    "url": "http://apidocjs.com",
-    "version": "0.20.0"
+    "time": "2020-12-26T12:31:36.064Z",
+    "url": "https://apidocjs.com",
+    "version": "0.25.0"
   }
 }

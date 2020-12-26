@@ -15,8 +15,4 @@ export default class SwaggerRoute extends Route {
     }
     return await this.store.findRecord('user', this.me.user.id);
   }
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> origin/master

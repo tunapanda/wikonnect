@@ -108,10 +108,7 @@ Router.map(function () {
 
   });
   this.route('swagger');
-<<<<<<< HEAD
   this.route('topics');
   this.route('tags');
   this.route('tag', { path: '/tag/:id' });
-=======
->>>>>>> origin/master
 });

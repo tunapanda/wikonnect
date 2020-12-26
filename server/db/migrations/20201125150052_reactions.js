@@ -1,7 +1,3 @@
-<<<<<<< HEAD
-=======
-
->>>>>>> origin/master
 exports.up = knex => {
   return knex.schema
     .createTable('reactions', table => {
@@ -16,8 +12,4 @@ exports.up = knex => {
 exports.down = knex => {
   return knex.schema
     .dropTableIfExists('reactions');
-<<<<<<< HEAD
 };
-=======
-};
->>>>>>> origin/master

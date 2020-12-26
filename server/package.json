@@ -68,8 +68,6 @@
   },
   "devDependencies": {
     "ajv": "^6.10.2",
-    "apidoc-swagger": "^0.3.2",
-    "apidocs": "^2017.3.9",
     "chai": "^4.2.0",
     "chai-http": "2.0.1",
     "chai-json-schema-ajv": "^5.0.0",

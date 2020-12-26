@@ -33,7 +33,7 @@ export default class ChapterIndexController extends Controller {
       let chap = await this.store.findRecord('chapter', slug);
 
       console.log('slug ' + slug);
-      console.log('ssuser : ' + this.me.user.id);
+      console.log('user : ' + this.me.user.id);
 
       let rating = await this.store.createRecord('rating', {
         rating: val,
@@ -147,26 +147,8 @@ export default class ChapterIndexController extends Controller {
       });
 
       await achievement.save();
-<<<<<<< HEAD
       await counter.save();
     }
-    console.log(el);
-  }
-
-  @action
-  async counterTimer(el) {
-    let chapter_id = await this.target.currentRoute.params.chapter_slug;
-=======
-
-      // if user completes chapters create record
-      let counter = await this.store.createRecord('counter', {
-        counter: 1,
-        chapterId: chapter_id,
-        trigger: 'chapterCompletion'
-      });
-      await counter.save();
-    }
->>>>>>> origin/master
     // record every page view
     let counter = await this.store.createRecord('counter', {
       counter: 1,
@@ -174,31 +156,15 @@ export default class ChapterIndexController extends Controller {
       trigger: 'pageLanding'
     });
     await counter.save();
-<<<<<<< HEAD
-
-    // After 10 secs record page view
-    let counterDelay = await this.store.createRecord('counter', {
-      counter: 1,
-      chapterId: chapter_id,
-      trigger: 'timerDelay'
-    });
-    setTimeout(function () {
-=======
     // // After 10 secs record page view
     setTimeout(function () {
-      alert("Hello");
->>>>>>> origin/master
+      alert('Hello');
       let data = {
         counter: 1,
         trigger: 'timerDelay'
       };
       alert(data.counter, data.trigger);
-<<<<<<< HEAD
     }, 100);
     console.log(el);
-    console.log(counterDelay, counter);
-=======
-    }, 10000);
->>>>>>> origin/master
   }
 }

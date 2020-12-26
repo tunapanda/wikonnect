@@ -13,9 +13,8 @@ const Chapter = require('../models/chapter');
 const User = require('../models/user');
 const permController = require('../middleware/permController');
 const validateGetChapter = require('../middleware/validateRequests/chapterGetValidation');
-const validateRouteQueryParams = require('../middleware/validateRouteQueryParams/queryValidation');
 // const mojaCampaignMiddleware = require('../middleware/mojaCampaignMiddleware');
-const validateChapter = require('../middleware/validateRoutePostSchema/validateChapter');
+// const validateChapter = require('../middleware/validateRoutePostSchema/validateChapter');
 
 const Reaction = require('../models/reaction');
 const knex = require('../utils/knexUtil');
@@ -37,7 +36,6 @@ const {
  * @apiPermission none
  * @apiDescription Get all chapter and filter using multiple query params
  *
-<<<<<<< HEAD
  * @apiParam {String} [id]  Optional id
  * @apiParam {String} [name]  Optional name
  * @apiParam {String} [status] Optional chapter status - published | draft
@@ -87,7 +85,7 @@ const {
  *    HTTP/1.1 500 Internal Server Error
  */
 
-router.get('/', permController.requireAuth, validateRouteQueryParams, async ctx => {
+router.get('/', permController.requireAuth, validateGetChapter, async ctx => {
 
   let stateUserRole = ctx.state.user.role == undefined ? ctx.state.user.data.role : ctx.state.user.role;
   let stateUserId = ctx.state.user.id == undefined ? ctx.state.user.data.id : ctx.state.user.id;

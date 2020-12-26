@@ -30,8 +30,8 @@ module.exports = function (environment) {
     APP: {
       // Here you can pass flags/options to your application instance
       // when it is created
-      instance_name: 'Keep Kenya Learning',
-      header_logo: '/images/kkllogo.png',
+      instance_name: 'Wikonnect',
+      header_logo: '/images/wikonnect-primary.svg',
       header_background: 'orange',
       header_text: 'light',
       primary_color: 'orange',
@@ -43,10 +43,10 @@ module.exports = function (environment) {
         { name: 'English', code: 'EN', file: 'en-us' },
         { name: 'Swahili', code: 'SW', file: 'sw-ke' }
       ],
-      preset_tags: [
-        { category: 'KICD', tags: ['KICD ALIGNED', 'KICD APPROVED'] },
-        { category: 'Competency', tags: ['TEST', 'TEST2'] }
-      ]
+      // preset_tags: [
+      //   { category: 'KICD', tags: ['KICD ALIGNED', 'KICD APPROVED'] },
+      //   { category: 'Competency', tags: ['TEST', 'TEST2'] }
+      // ]
 
     },
 
@@ -84,7 +84,7 @@ module.exports = function (environment) {
     },
 
   };
-  
+
   ENV['@sentry/ember'] = {
     sentry: {
       dsn: 'https://6dac48b553d245c8a5e1172d9d8d4f9f@o478432.ingest.sentry.io/5521677',
@@ -125,3 +125,8 @@ module.exports = function (environment) {
 
   return ENV;
 };
+
+
+
+
+
