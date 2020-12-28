@@ -24,22 +24,22 @@ export default class ApplicationController extends Controller {
   @inject
   me;
 
-  // @computed('currentRouteName')
-  // get headerStyle() {
-  //   let route = this.get('currentRouteName');
-  //   if (Object.keys(this.headerStyles).includes(route)) {
-  //     return this.headerStyles[route];
-  //   }
-  //   else {
-  //     return this.headerStyles.default;
-  //   }
-  // }
+  @computed('currentRouteName')
+  get headerStyle() {
+    let route = this.get('currentRouteName');
+    if (Object.keys(this.headerStyles).includes(route)) {
+      return this.headerStyles[route];
+    }
+    else {
+      return this.headerStyles.default;
+    }
+  }
 
-  // @computed('currentRouteName')
-  // get route() {
-  //   return this.get('currentRouteName');
+  @computed('currentRouteName')
+  get route() {
+    return this.get('currentRouteName');
 
-  // }
+  }
 
 
 

@@ -26,22 +26,22 @@ export default class ChapterIndexController extends Controller {
   @tracked enabled = false
   @tracked rates = 0;
 
-  queryParams = ["callbackUrl", "ref"]
+  queryParams = ['callbackUrl', 'ref']
 
 
 
   get embedCode() {
-    let mod = this.get("model")
-    console.log("window")
-    let baseURL = window.location.host
-    console.log(window.location.host)
+    let mod = this.get('model');
+    console.log('window');
+    let baseURL = window.location.host;
+    console.log(window.location.host);
     if (this.callbackUrl) {
       return `<iframe width="600" height="400"  src="http://${baseURL}/embed/${mod.id}?callbackUrl=${this.callbackUrl}"  frameBorder="0"
-            scrolling="no"></iframe>`
+            scrolling="no"></iframe>`;
 
     } else {
       return `<iframe width="600" height="400" src="http://${baseURL}/embed/${mod.id}" frameBorder="0"
-            scrolling="no"></iframe>`
+            scrolling="no"></iframe>`;
     }
 
   }
