@@ -33,8 +33,7 @@ export default class ChapterIndexController extends Controller {
   get embedCode() {
     let mod = this.get("model")
     console.log("window")
-    let baseURL = "local"
-    // let baseURL = window.location.host
+    let baseURL = window.location.host
     console.log(window.location.host)
     if (this.callbackUrl) {
       return `<iframe width="600" height="400"  src="http://${baseURL}/embed/${mod.id}?callbackUrl=${this.callbackUrl}"  frameBorder="0"
