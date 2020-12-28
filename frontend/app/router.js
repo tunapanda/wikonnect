@@ -111,4 +111,5 @@ Router.map(function () {
   this.route('topics');
   this.route('tags');
   this.route('tag', { path: '/tag/:id' });
+  this.route('embed', { path: '/embed/:chapter_id' });
 });

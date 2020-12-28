@@ -35,6 +35,14 @@ export default class ApplicationController extends Controller {
     }
   }
 
+  @computed('currentRouteName')
+  get route() {
+    return this.get('currentRouteName');
+
+  }
+
+
+
   @action
   logout() {
     this.me.logout();

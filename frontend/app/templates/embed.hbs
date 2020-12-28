@@ -1,0 +1,9 @@
+{{outlet}}
+{{model.name}}
+{{!-- {{callbackUrl}} --}}
+<br>
+{{#if callbackUrl}}
+  <span class="badge badge-primary">Progress updates sent to: {{callbackUrl}}</span>
+
+{{/if}}
+<H5p @location={{model.contentUri}} />
