@@ -32,7 +32,16 @@ export default class ChapterIndexController extends Controller {
 
   get embedCode() {
     let mod = this.get("model")
-    return `<iframe width="560" height="315" src="http://localhost:4200/embed/${mod.id}" ></iframe>`
+    console.log("callbackUrl")
+    console.log(this.callbackUrl)
+    if (this.callbackUrl) {
+      return `<iframe width="600" height="400"  src="http://localhost:4200/embed/${mod.id}?callbackUrl=${this.callbackUrl}"  frameBorder="0"
+            scrolling="no"></iframe>`
+
+    } else {
+      return `<iframe width="600" height="400" src="http://localhost:4200/embed/${mod.id}" frameBorder="0"
+            scrolling="no"></iframe>`
+    }
 
   }
   @action

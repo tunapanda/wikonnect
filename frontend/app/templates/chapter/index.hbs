@@ -19,7 +19,10 @@
       </div>
     </div>
     <div class="form-group ">
-      <textarea name="" class="form-control" id="" rows="3">{{embedCode}}</textarea>
+      <textarea id="frame" name="frame" class="form-control" rows="3">{{embedCode}}</textarea>
+      <CopyButton @clipboardTarget="#frame" @success={{this.onSuccess}} @error={{this.onError}}>
+        Click To Copy
+      </CopyButton>
     </div>
     {{#if config.content.APP.linkify_description}}
       <p class="add-pre"> {{linkify model.description class="btn btn-primary replaced"}}</p>
