@@ -9,14 +9,14 @@
     aria-controls="navbarSupportedContent-555" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
-  <a class="nav-link text-{{config.content.APP.header_text}}" href="" {{action "translate" "en-us"}}>
+  <a class="nav-link text-{{config.content.APP.header_text}}" href="" {{action "translate" "en-us" }}>
     EN
   </a>
 
   &nbsp; / &nbsp;
 
 
-  <a class="nav-link text-{{config.content.APP.header_text}}" {{action "translate" "sw-ke"}} href="">
+  <a class="nav-link text-{{config.content.APP.header_text}}" {{action "translate" "sw-ke" }} href="">
     SW
   </a>
 
@@ -42,14 +42,14 @@
 
         <li class="nav-item text-{{config.content.APP.header_text}}">
 
-          {{#link-to "teach" class="nav-link" }}
+          {{!-- {{#link-to "teach" class="nav-link" }}
             {{t "buttons.teach"}}
 
-          {{/link-to}}
+          {{/link-to}} --}}
 
-          {{!-- <a class="nav-link text-{{config.content.APP.header_text}}" href="https://teach.wikonnect.org/api/auth?token={{token}}&user={{me.user.username}}">
+          <a class="nav-link " href="https://teach.wikonnect.org/api/auth?token={{token}}&user={{me.user.username}}">
             Teach
-          </a> --}}
+          </a>
         </li>
 
         <li class="nav-item text-{{config.content.APP.header_text}}">
@@ -101,7 +101,7 @@
     </ul>
 
 
-    <form class="form-inline ml-5" {{action "search" on="submit"}}>
+    <form class="form-inline ml-5" {{action "search" on="submit" }}>
       {{!-- <input class="form-control mr-sm-2" value={{search_term}} type="search" placeholder="Search" aria-label="Search"
         required> --}}
       <Input @id="search" @class="form-control mr-sm-2" @type="text" @value={{search_term}} />
@@ -149,7 +149,7 @@
                class="dropdown-item"  }}
               {{t "buttons.settings"}}
             {{/link-to}}
-            <a class="dropdown-item" href="#" {{action "logoutuser"}}>{{t "buttons.logout"}}</a>
+            <a class="dropdown-item" href="#" {{action "logoutuser" }}>{{t "buttons.logout"}}</a>
           </div>
         </li>
       {{else}}

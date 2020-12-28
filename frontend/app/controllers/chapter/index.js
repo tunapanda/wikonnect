@@ -32,14 +32,16 @@ export default class ChapterIndexController extends Controller {
 
   get embedCode() {
     let mod = this.get("model")
-    console.log("callbackUrl")
-    console.log(this.callbackUrl)
+    console.log("window")
+    let baseURL = "local"
+    // let baseURL = window.location.host
+    console.log(window.location.host)
     if (this.callbackUrl) {
-      return `<iframe width="600" height="400"  src="http://localhost:4200/embed/${mod.id}?callbackUrl=${this.callbackUrl}"  frameBorder="0"
+      return `<iframe width="600" height="400"  src="http://${baseURL}/embed/${mod.id}?callbackUrl=${this.callbackUrl}"  frameBorder="0"
             scrolling="no"></iframe>`
 
     } else {
-      return `<iframe width="600" height="400" src="http://localhost:4200/embed/${mod.id}" frameBorder="0"
+      return `<iframe width="600" height="400" src="http://${baseURL}/embed/${mod.id}" frameBorder="0"
             scrolling="no"></iframe>`
     }
 
@@ -139,62 +141,62 @@ export default class ChapterIndexController extends Controller {
     }
   }
 
-  @action
-  async dataLoad(el) {
-    let chapter_id = await this.target.currentRoute.params.chapter_slug;
-    console.log(chapter_id);
-    let score;
-    window.H5P.externalDispatcher.on('xAPI', function (event) {
-      if (event.getScore() === event.getMaxScore() && event.getMaxScore() > 0) {
-        console.log(event.data.statement.result.duration);
-        score = event.data.statement.result.duration;
-      }
-    });
-    if (score != 'undefined') {
-      let achievement = await this.store.createRecord('achievement', {
-        description: 'completed' + chapter_id,
-        targetStatus: 'completed',
-        target: chapter_id
-      });
+  // @action
+  // async dataLoad(el) {
+  //   let chapter_id = await this.target.currentRoute.params.chapter_slug;
+  //   console.log(chapter_id);
+  //   let score;
+  //   window.H5P.externalDispatcher.on('xAPI', function (event) {
+  //     if (event.getScore() === event.getMaxScore() && event.getMaxScore() > 0) {
+  //       console.log(event.data.statement.result.duration);
+  //       score = event.data.statement.result.duration;
+  //     }
+  //   });
+  //   if (score != 'undefined') {
+  //     let achievement = await this.store.createRecord('achievement', {
+  //       description: 'completed' + chapter_id,
+  //       targetStatus: 'completed',
+  //       target: chapter_id
+  //     });
 
-      // if user completes chapters create record
-      let counter = await this.store.createRecord('counter', {
-        counter: 1,
-        chapterId: chapter_id,
-        trigger: 'chapterCompletion'
-      });
+  //     // if user completes chapters create record
+  //     let counter = await this.store.createRecord('counter', {
+  //       counter: 1,
+  //       chapterId: chapter_id,
+  //       trigger: 'chapterCompletion'
+  //     });
 
-      await achievement.save();
-      await counter.save();
-    }
-    console.log(el);
-  }
+  //     await achievement.save();
+  //     await counter.save();
+  //   }
+  //   console.log(el);
+  // }
 
-  @action
-  async counterTimer(el) {
-    let chapter_id = await this.target.currentRoute.params.chapter_slug;
-    // record every page view
-    let counter = await this.store.createRecord('counter', {
-      counter: 1,
-      chapterId: chapter_id,
-      trigger: 'pageLanding'
-    });
-    await counter.save();
+  // @action
+  // async counterTimer(el) {
+  //   let chapter_id = await this.target.currentRoute.params.chapter_slug;
+  //   // record every page view
+  //   let counter = await this.store.createRecord('counter', {
+  //     counter: 1,
+  //     chapterId: chapter_id,
+  //     trigger: 'pageLanding'
+  //   });
+  //   await counter.save();
 
-    // After 10 secs record page view
-    let counterDelay = await this.store.createRecord('counter', {
-      counter: 1,
-      chapterId: chapter_id,
-      trigger: 'timerDelay'
-    });
-    setTimeout(function () {
-      let data = {
-        counter: 1,
-        trigger: 'timerDelay'
-      };
-      alert(data.counter, data.trigger);
-    }, 100);
-    console.log(el);
-    console.log(counterDelay, counter);
-  }
+  //   // After 10 secs record page view
+  //   let counterDelay = await this.store.createRecord('counter', {
+  //     counter: 1,
+  //     chapterId: chapter_id,
+  //     trigger: 'timerDelay'
+  //   });
+  //   setTimeout(function () {
+  //     let data = {
+  //       counter: 1,
+  //       trigger: 'timerDelay'
+  //     };
+  //     alert(data.counter, data.trigger);
+  //   }, 100);
+  //   console.log(el);
+  //   console.log(counterDelay, counter);
+  // }
 }
