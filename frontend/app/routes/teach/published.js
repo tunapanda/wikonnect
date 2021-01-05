@@ -8,6 +8,6 @@ export default class TeachPublishedRoute extends Route {
 
   @service me
   async model() {
-    return this.store.query('chapter', { 'creatorId': this.me.user.id, 'status': "published" });
+    return this.store.query('chapter', { 'creatorId': this.me.user.id, 'status': 'published' });
   }
 }
