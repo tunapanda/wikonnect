@@ -106,6 +106,7 @@ Router.map(function () {
     this.route('index', { path: '/' });
 
 
+    this.route('published');
   });
   this.route('swagger');
   this.route('topics');
