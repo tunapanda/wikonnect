@@ -30,13 +30,13 @@
 
     <div class="row mt-3">
 
-      {{#if @courseList}}
+      {{#if @model}}
 
-        {{#each @courseList as |chapter|}}
+        {{#each @model as |chapter|}}
           <TeachListItem @chapter={{chapter}} />
         {{/each}}
       {{else}}
-
+        No drafts
       {{/if}}
     </div>
   </div>
