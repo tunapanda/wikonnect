@@ -30,9 +30,9 @@
 
     <div class="row mt-3">
 
-      {{#if @model}}
+      {{#if @courseList}}
 
-        {{#each @model as |chapter|}}
+        {{#each @courseList as |chapter|}}
           <TeachListItem @chapter={{chapter}} />
         {{/each}}
       {{else}}

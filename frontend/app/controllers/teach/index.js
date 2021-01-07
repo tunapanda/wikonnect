@@ -7,6 +7,7 @@ export default class TeachIndexController extends Controller {
 
 
   get courseList() {
-    return this.model;
+    return this.store.query('chapter', { 'creatorId': this.me.user.id });
+
   }
 }
