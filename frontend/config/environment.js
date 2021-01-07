@@ -50,6 +50,24 @@ module.exports = function (environment) {
 
     },
 
+    torii: {
+      allowUnsafeRedirect: true,
+      sessionServiceName: 'session',
+      remoteServiceName: 'iframe',
+      providers: {
+        // 'facebook-oauth2': {
+        //   apiKey: process.env.FACEBOOK_KEY,
+        //   scope: 'email',
+        //   redirectUri: 'https://54923196871a.ngrok.io/login'
+        // },
+        'google-token': {
+          apiKey: process.env.GOOGLE_KEY,
+          redirectUri: process.env.GOOGLE_REDIRECT,
+          scope: 'email profile'
+        },
+      }
+    },
+
     'ember-simple-auth': {
       authorizer: 'authorizer:token',
       authenticationRoute: 'login',

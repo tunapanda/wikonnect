@@ -11,7 +11,8 @@ const User = require('../models/user');
 const AchievementAward = require('../models/achievement_awards');
 
 const log = require('../utils/logger');
-const jwt = require('../middleware/jwt');
+const { authenticate, secret } = require('../middleware/jwt');
+
 const permController = require('../middleware/permController');
 const validateAuthRoutes = require('../middleware/validateRoutePostSchema/validateAuthRoutes');
 
@@ -276,7 +277,7 @@ router.get('/', permController.requireAuth, permController.grantAccess('readAny'
  *
  */
 
-router.put('/:id', jwt.authenticate, permController.requireAuth, async ctx => {
+router.put('/:id', authenticate, permController.requireAuth, async ctx => {
 
   ctx.request.body.user.updatedAt = await updatedAt();
 
@@ -384,6 +385,50 @@ router.post('/:id/profile-image', permController.requireAuth, async (ctx, next) 
       host: ctx.host,
       path: `${uploadPath}/${fileNameBase}.jpg`
     };
+  }
+});
+
+
+
+/**
+ *  {
+ *    grant_type: 'google-token',
+ *    auth_code: 'long token string'
+ *  }
+ *  {
+ *    grant_type: 'facebook-oauth2',
+ *    auth_code: 'long token string'
+ *  }
+ *
+ * connect account if teh user with that email exists
+ * create a new user account if the user with that email does not exists
+ */
+
+const googleToken = require('../utils/oauth2/googleToken');
+const jsonwebtoken = require('jsonwebtoken');
+
+
+router.post('/token', async (ctx, next) => {
+  if ('POST' != ctx.method) return await next();
+
+  try {
+    const token = await googleToken(ctx.request.body.auth_code);
+    ctx.body = {
+      token: jsonwebtoken.sign({
+        data: token,
+        exp: Math.floor(Date.now() / 1000 + 604800) // 60 seconds * 60 minutes * 24 hours * 7 days = 1 week
+      }, secret)
+    };
+  } catch (e) {
+    if (e.name === 'FetchError') {
+      ctx.status = 502;
+      ctx.body = {
+        error: 'You have a slow network'
+      };
+    } else if (e.statusCode) {
+      ctx.throw(e.statusCode, null, { errors: [e.message] });
+    } else { ctx.throw(400, null, { errors: [e.message] }); }
+    throw e;
   }
 });
 
