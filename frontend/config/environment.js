@@ -30,8 +30,8 @@ module.exports = function (environment) {
     APP: {
       // Here you can pass flags/options to your application instance
       // when it is created
-      instance_name: 'Keep Kenya Learning',
-      header_logo: '/images/kkllogo.png',
+      instance_name: 'Wikonnect',
+      header_logo: '/images/logo.png',
       header_background: 'orange',
       header_text: 'light',
       primary_color: 'orange',
