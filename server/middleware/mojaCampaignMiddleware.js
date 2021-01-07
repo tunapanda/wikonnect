@@ -57,6 +57,5 @@ module.exports = async function (ctx, next) {
     await next();
   } catch (err) {
     log.error(`The following error ${err} with message ${err.message}`);
-    await next();
   }
 };

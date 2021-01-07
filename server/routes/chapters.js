@@ -283,6 +283,10 @@ router.put('/:id', permController.requireAuth, async ctx => {
   }
 
   try {
+    delete chapterData.likes;
+    delete chapterData.counter;
+    delete chapterData.dislikes;
+
     const chapter = await Chapter.query().patchAndFetchById(ctx.params.id, chapterData);
     ctx.status = 201;
     ctx.body = { chapter };
