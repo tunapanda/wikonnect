@@ -12,7 +12,7 @@ const slugGen = require('../utils/slugGen');
 const User = require('../models/user');
 const Chapter = require('../models/chapter');
 const permController = require('../middleware/permController');
-const mojaCampaignMiddleware = require('../middleware/mojaCampaignMiddleware');
+// const mojaCampaignMiddleware = require('../middleware/mojaCampaignMiddleware');
 const validateGetChapter = require('../middleware/validateRequests/chapterGetValidation');
 
 const Reaction = require('../models/reaction');
@@ -56,7 +56,7 @@ const {
  *
  */
 
-router.get('/', permController.requireAuth, mojaCampaignMiddleware,  validateGetChapter, async ctx => {
+router.get('/', permController.requireAuth,  validateGetChapter, async ctx => {
 
   let stateUserRole = ctx.state.user.role == undefined ? ctx.state.user.data.role : ctx.state.user.role;
   let stateUserId = ctx.state.user.id == undefined ? ctx.state.user.data.id : ctx.state.user.id;
@@ -93,7 +93,7 @@ router.get('/', permController.requireAuth, mojaCampaignMiddleware,  validateGet
       .groupBy('chapters.id', 'rate.chapter_id')
       .eager('[comment(selectComment), flag(selectFlag)]');
   }
-  await returnType(chapter);
+  // await returnType(chapter);
 
   ctx.status = 200;
   ctx.body = { 'chapter': chapter };
