@@ -65,6 +65,10 @@ module.exports = function (environment) {
           redirectUri: process.env.GOOGLE_REDIRECT,
           scope: 'email profile'
         },
+        'google-oauth2-bearer': {
+          apiKey: process.env.GOOGLE_KEY,
+          redirectUri: 'http://localhost:4200',
+        },
       }
     },
 
@@ -83,6 +87,18 @@ module.exports = function (environment) {
       holdToDrag: false
     },
 
+  };
+
+  ENV['@sentry/ember'] = {
+    sentry: {
+      dsn: 'https://6dac48b553d245c8a5e1172d9d8d4f9f@o478432.ingest.sentry.io/5521677',
+
+      // Set tracesSampleRate to 1.0 to capture 100%
+      // of transactions for performance monitoring.
+      // We recommend adjusting this value in production, or using tracesSampler
+      // for finer control
+      tracesSampleRate: 1.0,
+    }
   };
 
   if (environment === 'development') {

@@ -14,9 +14,6 @@ export default class ApplicationRoute extends Route {
 
   model(params) {
 
-
-
-
     let mojaLocalStorage = {
       partner_id: params.campaign_id,
       enduser_id: params.points,
