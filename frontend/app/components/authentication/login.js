@@ -20,7 +20,30 @@ class LoginComponent extends Component {
   @inject
   notify;
 
+  @inject
+  torii;
+
+  @inject
+  session;
+
   @tracked loading = false;
+
+  @action
+  sessionRequiresAuthentication() {
+    this.notify.info('Signing up...', { closeAfter: 5000 });
+    const me = this.me;
+    this.get('torii')
+      .open('google-oauth2-bearer')
+      .then(function (googleAuth) {
+        const googleToken = googleAuth.authorizationToken.access_token;
+
+        me.registerWithGoogle({ googleToken: googleToken, provider: 'google' })
+          .then((user) => me.authenticate(user.get('username'), googleToken));
+      }, function (error) {
+        console.error('Google auth failed: ', error.message);
+      });
+  }
+
 
   @action
   login(model) {

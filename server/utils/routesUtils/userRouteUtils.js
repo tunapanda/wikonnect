@@ -1,5 +1,7 @@
 const s3 = require('../s3Util');
 const bcrypt = require('bcrypt');
+const fetch = require('node-fetch');
+
 
 const User = require('../../models/user');
 const AchievementAward = require('../../models/achievement_awards');
@@ -99,6 +101,26 @@ async function createPasswordHash(ctx, next) {
   await next();
 }
 
+async function getGoogleToken(ctx, next) {
+  if (ctx.request.body.user.username == 'google'){
+    const response = await fetch('https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=' + ctx.request.body.user.password);
+
+    const body = await response.text();
+    console.log(body);
+    console.log('\tsent token');
+    ctx.request.body.user.email = body.email;
+    // const userId = response.user_id;
+    // const userEmail = response.email;
+    // ctx.body = {
+    //   token: jsonwebtoken.sign({
+    //     data: { userId: userId, email: userEmail },
+    //     exp: Math.floor(Date.now() / 1000 + 604800) // 60 seconds * 60 minutes * 24 hours * 7 days = 1 week
+    //   }, secret)
+    // };
+  }
+  await next();
+}
+
 async function profileCompleteBoolean(params) {
   const keys = ['profileUri', 'email'];
   keys.forEach((key, index) => {
@@ -139,5 +161,6 @@ module.exports = {
   createPasswordHash,
   profileCompleteBoolean,
   inviteUserAward,
-  getProfileImage
+  getProfileImage,
+  getGoogleToken
 };
