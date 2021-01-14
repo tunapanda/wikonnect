@@ -57,10 +57,7 @@ router.post('/', validateAuthRoutes.validateUserLogin, async ctx => {
   let role = userData['userRoles'][0] !== undefined ? userData['userRoles'][0].name : 'basic';
   userInfoWithoutPassword['role'] = role;
 
-  console.log(user.oauth2[0].userId == user.id);
-  console.log(user.oauth2[0].userId, user.id);
-
-  if (user.oauth2[0].userId == user.id) {
+  if (user.oauth2[0] != undefined && user.oauth2[0].userId == user.id) {
     console.log('we are here');
     await lastSeen(user.id);
     ctx.body = {
