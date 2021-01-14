@@ -18,12 +18,38 @@
 
       </div>
     </div>
-    <div class="form-group ">
-      <textarea id="frame" name="frame" class="form-control" rows="3">{{embedCode}}</textarea>
-      <CopyButton @clipboardTarget="#frame" @success={{this.onSuccess}} @error={{this.onError}}>
-        Click To Copy
-      </CopyButton>
+    <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modelId">
+      Embed
+    </button>
+
+    <div class="modal fade" id="modelId" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Embed</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="form-group ">
+              <pre id="frame" name="frame">{{embedCode}}</pre>
+              <CopyButton @clipboardTarget="#frame" @success={{this.onSuccess}} @error={{this.onError}}>
+                Copy Embed Code
+              </CopyButton>
+              {{#if copied}}
+                <span class="badge badge-primary pt-2">Copied</span>
+
+              {{/if}}
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
     </div>
+
     {{#if config.content.APP.linkify_description}}
       <p class="add-pre"> {{linkify model.description class="btn btn-primary replaced"}}</p>
     {{else}}

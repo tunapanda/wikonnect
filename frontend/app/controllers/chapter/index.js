@@ -25,6 +25,7 @@ export default class ChapterIndexController extends Controller {
   ratingModal = false
   @tracked enabled = false
   @tracked rates = 0;
+  @tracked copied = false;
 
   queryParams = ['callbackUrl', 'ref']
 
@@ -36,15 +37,14 @@ export default class ChapterIndexController extends Controller {
     let baseURL = window.location.host;
     console.log(window.location.host);
     if (this.callbackUrl) {
-      return `<iframe width="600" height="400"  src="http://${baseURL}/embed/${mod.id}?callbackUrl=${this.callbackUrl}"  frameBorder="0"
-            scrolling="no"></iframe>`;
+      return `<iframe width="600" height="450"  src="http://${baseURL}/embed/${mod.id}?callbackUrl=${this.callbackUrl}" frameBorder="0" scrolling="no"></iframe>`;
 
     } else {
-      return `<iframe width="600" height="400" src="http://${baseURL}/embed/${mod.id}" frameBorder="0"
-            scrolling="no"></iframe>`;
+      return `<iframe width="600" height="450" src="http://${baseURL}/embed/${mod.id}" frameBorder="0" scrolling="no"></iframe>`;
     }
 
   }
+
   @action
   async ratingSubmit(val) {
     if (!this.enabled) {
@@ -69,6 +69,13 @@ export default class ChapterIndexController extends Controller {
 
       this.enabled = true;
     }
+  }
+
+  @action
+  onSuccess() {
+
+    this.copied = true;
+
   }
 
 

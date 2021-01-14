@@ -2200,6 +2200,118 @@
     "groupTitle": "Modules"
   },
   {
+    "type": "get",
+    "url": "/api/v1/oembed/",
+    "title": "GET an oembed structure.",
+    "name": "GetOembed",
+    "group": "Oembed",
+    "permission": [
+      {
+        "name": "none"
+      }
+    ],
+    "description": "<p>Get and embed format using url query params</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": true,
+            "field": "absolute_url",
+            "description": "<p>absolute_url to chapter id</p>"
+          }
+        ],
+        "Authentication": [
+          {
+            "group": "Authentication",
+            "type": "String[]",
+            "optional": true,
+            "field": "tags",
+            "description": "<p>Optional tags list</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Object[]",
+            "optional": false,
+            "field": "List",
+            "description": "<p>of chapters</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "version",
+            "description": "<p>version string</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "type",
+            "description": "<p>data type referencing the object asked for</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "provider_name",
+            "description": "<p>name of organization</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "provider_url",
+            "description": "<p>absolute url</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Integer",
+            "optional": false,
+            "field": "width",
+            "description": "<p>content width</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Integer",
+            "optional": false,
+            "field": "height",
+            "description": "<p>content height</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "title",
+            "description": "<p>object title</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "html",
+            "description": "<p>formatted iframe code in html</p>"
+          }
+        ]
+      }
+    },
+    "sampleRequest": [
+      {
+        "url": "https://kkl.wikonnect.org/api/v1/oembed/\n\n\nhttp://localhost/api/v1/oembed?url=http://localhost:4200/chapters/chapter1\n{\n   \"version\": \"1.0\",\n   \"type\": \"h5p\",\n   \"provider_name\": \"Wikonnect\",\n   \"provider_url\": \"http://app.wikonnect.org/\",\n   \"width\": 425,\n   \"height\": 344,\n   \"title\": \"Cyber bullying\",\n\n   \"html\":\n   \t\"<iframe width=\\\"560\\\" height=\\\"315\\\" src=\\\"http://localhost:4200/embed/chapter1\\\" ></iframe>\",\n}"
+      }
+    ],
+    "version": "0.0.0",
+    "filename": "./server/routes/oembed.js",
+    "groupTitle": "Oembed"
+  },
+  {
     "type": "delete",
     "url": "/api/v1/reactions/:id",
     "title": "DELETE using Id.",
