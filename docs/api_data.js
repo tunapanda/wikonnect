@@ -160,7 +160,7 @@ define({ "api": [
     "groupTitle": "Authentication",
     "sampleRequest": [
       {
-        "url": "https://kkl.wikonnect.org/users"
+        "url": "https://app.wikonnect.org/users"
       }
     ]
   },
@@ -207,7 +207,7 @@ define({ "api": [
     "groupTitle": "Authentication",
     "sampleRequest": [
       {
-        "url": "https://kkl.wikonnect.org/users/:id/profile-image"
+        "url": "https://app.wikonnect.org/users/:id/profile-image"
       }
     ]
   },
@@ -283,7 +283,7 @@ define({ "api": [
     "groupTitle": "Authentication",
     "sampleRequest": [
       {
-        "url": "https://kkl.wikonnect.org/api/v1/users"
+        "url": "https://app.wikonnect.org/api/v1/users"
       }
     ]
   },
@@ -426,7 +426,7 @@ define({ "api": [
     "groupTitle": "Authentication",
     "sampleRequest": [
       {
-        "url": "https://kkl.wikonnect.org/users/:id"
+        "url": "https://app.wikonnect.org/users/:id"
       }
     ]
   },
@@ -455,7 +455,7 @@ define({ "api": [
     "groupTitle": "ChapterComments",
     "sampleRequest": [
       {
-        "url": "https://kkl.wikonnect.org/:comment_id"
+        "url": "https://app.wikonnect.org/:comment_id"
       }
     ]
   },
@@ -533,7 +533,7 @@ define({ "api": [
     "groupTitle": "ChapterComments",
     "sampleRequest": [
       {
-        "url": "https://kkl.wikonnect.org/:comment_id"
+        "url": "https://app.wikonnect.org/:comment_id"
       }
     ]
   },
@@ -553,7 +553,7 @@ define({ "api": [
     "groupTitle": "ChapterRatings",
     "sampleRequest": [
       {
-        "url": "https://kkl.wikonnect.org/:rating_id"
+        "url": "https://app.wikonnect.org/:rating_id"
       }
     ]
   },
@@ -582,7 +582,7 @@ define({ "api": [
     "groupTitle": "ChapterRatings",
     "sampleRequest": [
       {
-        "url": "https://kkl.wikonnect.org/:rating_id"
+        "url": "https://app.wikonnect.org/:rating_id"
       }
     ]
   },
@@ -660,7 +660,7 @@ define({ "api": [
     "groupTitle": "ChapterRatings",
     "sampleRequest": [
       {
-        "url": "https://kkl.wikonnect.org/:rating_id"
+        "url": "https://app.wikonnect.org/:rating_id"
       }
     ]
   },
@@ -736,7 +736,7 @@ define({ "api": [
     "groupTitle": "Chapters",
     "sampleRequest": [
       {
-        "url": "https://kkl.wikonnect.org/api/v1/chapters/:id"
+        "url": "https://app.wikonnect.org/api/v1/chapters/:id"
       }
     ]
   },
@@ -859,7 +859,7 @@ define({ "api": [
     },
     "sampleRequest": [
       {
-        "url": "https://kkl.wikonnect.org/api/v1/chapters/"
+        "url": "https://app.wikonnect.org/api/v1/chapters/"
       }
     ],
     "version": "0.0.0",
@@ -985,7 +985,7 @@ define({ "api": [
     "groupTitle": "Chapters",
     "sampleRequest": [
       {
-        "url": "https://kkl.wikonnect.org/api/v1/chapters/:id/upload"
+        "url": "https://app.wikonnect.org/api/v1/chapters/:id/upload"
       }
     ]
   },
@@ -1034,7 +1034,7 @@ define({ "api": [
     "groupTitle": "Chapters",
     "sampleRequest": [
       {
-        "url": "https://kkl.wikonnect.org/api/v1/chapters/:id/chapter-image"
+        "url": "https://app.wikonnect.org/api/v1/chapters/:id/chapter-image"
       }
     ]
   },
@@ -1052,7 +1052,7 @@ define({ "api": [
     "version": "0.4.0",
     "sampleRequest": [
       {
-        "url": "https://kkl.wikonnect.org/api/v1/chapters/:id"
+        "url": "https://app.wikonnect.org/api/v1/chapters/:id"
       }
     ],
     "parameter": {
@@ -1173,7 +1173,7 @@ define({ "api": [
     "groupTitle": "Courses",
     "sampleRequest": [
       {
-        "url": "https://kkl.wikonnect.org/courses/:id"
+        "url": "https://app.wikonnect.org/courses/:id"
       }
     ]
   },
@@ -1519,7 +1519,7 @@ define({ "api": [
     "groupTitle": "Learning_Path",
     "sampleRequest": [
       {
-        "url": "https://kkl.wikonnect.org/paths/:id"
+        "url": "https://app.wikonnect.org/paths/:id"
       }
     ]
   },
@@ -1714,7 +1714,7 @@ define({ "api": [
     "groupTitle": "Lessons",
     "sampleRequest": [
       {
-        "url": "https://kkl.wikonnect.org/lessons/:id"
+        "url": "https://app.wikonnect.org/lessons/:id"
       }
     ]
   },
@@ -1987,7 +1987,7 @@ define({ "api": [
     "groupTitle": "Modules",
     "sampleRequest": [
       {
-        "url": "https://kkl.wikonnect.org/modules/:id"
+        "url": "https://app.wikonnect.org/modules/:id"
       }
     ]
   },
@@ -2278,7 +2278,7 @@ define({ "api": [
     "groupTitle": "Reactions",
     "sampleRequest": [
       {
-        "url": "https://kkl.wikonnect.org/api/v1/reactions/:id"
+        "url": "https://app.wikonnect.org/api/v1/reactions/:id"
       }
     ]
   },
@@ -2354,7 +2354,7 @@ define({ "api": [
     "groupTitle": "Reactions",
     "sampleRequest": [
       {
-        "url": "https://kkl.wikonnect.org/api/v1/reactions/:id"
+        "url": "https://app.wikonnect.org/api/v1/reactions/:id"
       }
     ]
   },
@@ -2451,7 +2451,7 @@ define({ "api": [
     "groupTitle": "Reactions",
     "sampleRequest": [
       {
-        "url": "https://kkl.wikonnect.org/api/v1/reactions/"
+        "url": "https://app.wikonnect.org/api/v1/reactions/"
       }
     ]
   },
@@ -2601,7 +2601,7 @@ define({ "api": [
     "groupTitle": "Reactions",
     "sampleRequest": [
       {
-        "url": "https://kkl.wikonnect.org/api/v1/reactions/:id"
+        "url": "https://app.wikonnect.org/api/v1/reactions/:id"
       }
     ]
   },
