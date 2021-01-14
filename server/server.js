@@ -50,6 +50,8 @@ router.use(jwt.authenticate, require('./routes/comments'));
 
 router.use(jwt.authenticate, require('./routes/counter'));
 
+router.use(jwt.authenticate, require('./routes/oembed'));
+
 router.use(jwt.authenticate, require('./routes/activity'));
 
 router.use(jwt.authenticate, require('./routes/enrollments'));
