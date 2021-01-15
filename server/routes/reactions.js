@@ -127,7 +127,6 @@ router.get('/:id', requireAuth, async ctx => {
 
 router.post('/', validateReaction, requireAuth, async ctx => {
   let newReaction = ctx.request.body.reaction;
-  console.log(newReaction);
   newReaction.userId = ctx.state.user.id == undefined ? ctx.state.user.data.id : ctx.state.user.id;
   const reaction = await Reaction.query().insertAndFetch(newReaction);
 

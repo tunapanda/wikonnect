@@ -3,14 +3,16 @@ define({
   "version": "0.4.0",
   "description": "Wikonnect community docs",
   "title": "Wikonnect community docs",
-  "url": "https://kkl.wikonnect.org",
-  "sampleUrl": "https://kkl.wikonnect.org",
+  "url": "https://app.wikonnect.org",
+  "sampleUrl": "https://app.wikonnect.org",
   "order": [
     "Authentication",
     "Chapters",
-    "Learning_Path",
-    "Courses",
-    "Modules"
+    "Reactions",
+    "PostAReaction",
+    "GetAReAction",
+    "GetReactions",
+    "DeleteARection"
   ],
   "header": {
     "title": "Getting Started",
@@ -24,7 +26,7 @@ define({
   "apidoc": "0.3.0",
   "generator": {
     "name": "apidoc",
-    "time": "2021-01-14T11:38:26.173Z",
+    "time": "2021-01-14T12:06:24.487Z",
     "url": "https://apidocjs.com",
     "version": "0.25.0"
   }

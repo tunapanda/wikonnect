@@ -47,6 +47,14 @@ class User extends Model {
           to: 'achievement_awards.userId'
         }
       },
+      oauth2: {
+        relation: Model.HasManyRelation,
+        modelClass: __dirname + '/oauth2',
+        join: {
+          from: 'users.id',
+          to: 'oauth2.userId'
+        }
+      },
       userRoles: {
         relation: Model.ManyToManyRelation,
         modelClass: __dirname + '/group',

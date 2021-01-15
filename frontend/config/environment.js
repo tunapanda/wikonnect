@@ -57,13 +57,24 @@ module.exports = function (environment) {
 
     'ember-simple-auth-token': {
       refreshTokenPropertyName: 'token',
-      serverTokenEndpoint: '/api/v1/auth/',
-      serverTokenRefreshEndpoint: '/api/v1/auth/token-refresh/',
+      serverTokenEndpoint: '/api/v1/auth',
+      serverTokenRefreshEndpoint: '/api/v1/auth/token-refresh',
     },
     'ember-drag-drop-polyfill': {
       enableEnterLeave: true,
       holdToDrag: false
     },
+
+    torii: {
+      sessionServiceName: 'session',
+      allowUnsafeRedirect: true,
+      providers: {
+        'google-oauth2-bearer': {
+          apiKey: process.env.GOOGLE_KEY,
+          redirectUri: process.env.GOOGLE_REDIRECT,
+        },
+      }
+    }
 
   };
 

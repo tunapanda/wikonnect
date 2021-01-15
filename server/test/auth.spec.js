@@ -21,7 +21,7 @@ const registerUser = {
 };
 
 const loginUserData = {
-  'username': userId,
+  'username': 'user9',
   'email': 'user9@wikonnect.com',
   'password': 'tunapanda',
   'role': 'admin'
@@ -66,6 +66,7 @@ describe('AUTHENTICATION ROUTES', () => {
         .set('Content-Type', 'application/json')
         .send(loginUserData)
         .end((err, res) => {
+          console.log(res.body);
           res.should.have.status(200);
           res.body.should.have.property('token');
           done();
