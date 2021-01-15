@@ -39,7 +39,7 @@ const router = new Router({
 router.post('/', validateAuthRoutes.validateUserLogin, async ctx => {
   const username = ctx.request.body.username.toLowerCase();
 
-  let user = await User.query().where('username', username);
+  let user = await User.query().where('username', username).eager('oauth2(selectOauth2)');
   if (!user.length) {
     ctx.throw(404, null, {
       errors: [{
@@ -49,7 +49,6 @@ router.post('/', validateAuthRoutes.validateUserLogin, async ctx => {
     });
   }
 
-
   let { hash: hashPassword, ...userInfoWithoutPassword } = user[0];
   user = user[0];
 
@@ -58,8 +57,18 @@ router.post('/', validateAuthRoutes.validateUserLogin, async ctx => {
   let role = userData['userRoles'][0] !== undefined ? userData['userRoles'][0].name : 'basic';
   userInfoWithoutPassword['role'] = role;
 
-  if (await bcrypt.compare(ctx.request.body.password, hashPassword)) {
+  if (user.oauth2[0] != undefined && user.oauth2[0].userId == user.id) {
+    console.log('we are here');
+    await lastSeen(user.id);
+    ctx.body = {
+      token: jsonwebtoken.sign({
+        data: userInfoWithoutPassword,
+        exp: Math.floor(Date.now() / 1000 + 604800) // 60 seconds * 60 minutes * 24 hours * 7 days = 1 week
+      }, secret)
+    };
+  } else if (await bcrypt.compare(ctx.request.body.password, hashPassword)) {
     // eslint-disable-next-line require-atomic-updates
+    console.log('password loop');
     await lastSeen(user.id);
     ctx.body = {
       token: jsonwebtoken.sign({
@@ -68,7 +77,7 @@ router.post('/', validateAuthRoutes.validateUserLogin, async ctx => {
       }, secret)
     };
   } else {
-    ctx.log.error('Wrong email or password from %s for %s', ctx.request.ip, ctx.path);
+    log.error('Wrong email or password from %s for %s', ctx.request.ip, ctx.path);
     ctx.throw(404, null, {
       errors: [{
         'name': 'Wrong username or password',

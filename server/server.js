@@ -21,7 +21,7 @@ app.use(cors({
   maxAge: 5,
   credentials: true,
   allowMethods: ['GET', 'POST', 'PUT', 'DELETE'],
-  allowHeaders: ['Content-Type', 'Authorization', 'Accept', 'mojaHeaders'],
+  allowHeaders: ['Content-Type', 'Authorization', 'Accept', 'mojaHeader', 'achievements'],
 }));
 
 app.use(errorHandler);
@@ -36,6 +36,8 @@ router.use(require('./routes/auth'));
 
 router.use(require('./routes/users'));
 
+router.use(require('./routes/oauth2s'));
+
 router.use(jwt.authenticate, require('./routes/paths'));
 
 router.use(jwt.authenticate, require('./routes/modules'));
@@ -47,6 +49,10 @@ router.use(jwt.authenticate, require('./routes/lessons'));
 router.use(jwt.authenticate, require('./routes/chapters'));
 
 router.use(jwt.authenticate, require('./routes/comments'));
+
+router.use(jwt.authenticate, require('./routes/counter'));
+
+router.use(jwt.authenticate, require('./routes/oembed'));
 
 router.use(jwt.authenticate, require('./routes/activity'));
 

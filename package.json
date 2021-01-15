@@ -18,13 +18,13 @@
     "swagger": "apidoc-swagger -i server/routes -o frontend/public/assets"
   },
   "devDependencies": {
-    "@cypress/code-coverage": "^3.8.2",
+    "@cypress/code-coverage": "^3.9.1",
     "all-contributors-cli": "^6.17.2",
     "babel-plugin-istanbul": "^6.0.0",
-    "cypress": "^5.2.0",
+    "cypress": "^6.2.1",
     "eslint-plugin-cypress": "^2.6.1",
     "istanbul-lib-coverage": "^3.0.0",
-    "knex": "^0.21.5",
+    "knex": "^0.21.15",
     "nyc": "^15.0.0",
     "pg": "^8.3.3"
   },

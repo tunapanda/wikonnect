@@ -26,6 +26,9 @@
       <BsButton class="bg-primary form-control" @defaultText="Login" type="submit">
       </BsButton>
 
+      <BsButton class="bg-primary form-control"><a {{ action 'sessionRequiresAuthentication' }}>Login with Google</a>
+      </BsButton>
+
     {{/if}}
 
   </BsForm>

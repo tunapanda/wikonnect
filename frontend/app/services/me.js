@@ -37,6 +37,10 @@ export default class MeService extends Service {
     return user.save();
   }
 
+  registerWithGoogle(fields) {
+    let oauth2 = this.store.createRecord('oauth2', fields);
+    return oauth2.save();
+  }
 
 
   authenticate(username, password) {
