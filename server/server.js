@@ -36,6 +36,8 @@ router.use(require('./routes/auth'));
 
 router.use(require('./routes/users'));
 
+router.use(require('./routes/oauth2s'));
+
 router.use(jwt.authenticate, require('./routes/paths'));
 
 router.use(jwt.authenticate, require('./routes/modules'));
