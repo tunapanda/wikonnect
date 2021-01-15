@@ -13,7 +13,7 @@ describe('Achievement Awards route and function test', () => {
   before(async () => {
     await knex.migrate.rollback();
     await knex.migrate.latest();
-    return knex.seed.run();
+    return await knex.seed.run();
   });
   it('Should GET all Achievement Awards with valid token', done => {
     chai

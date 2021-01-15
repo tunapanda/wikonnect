@@ -3,12 +3,19 @@ import { inject } from '@ember/service';
 import { action } from '@ember/object';
 import { computed } from '@ember/object';
 
+// import settings from './config/settings';
+
+
 export default class ApplicationController extends Controller {
 
   headerStyles = {
     'default': 'white-header',
     'home': 'orange-header',
+    'login': 'auth-header',
+    'signup': 'auth-header',
+    'upload': 'auth-header',
     'cms.index': 'green-header',
+    'profile': 'yellow-header'
   }
 
   @inject
@@ -27,6 +34,14 @@ export default class ApplicationController extends Controller {
       return this.headerStyles.default;
     }
   }
+
+  @computed('currentRouteName')
+  get route() {
+    return this.get('currentRouteName');
+
+  }
+
+
 
   @action
   logout() {

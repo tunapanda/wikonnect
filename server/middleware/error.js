@@ -1,3 +1,4 @@
+const log = require('../utils/logger');
 
 module.exports = async function (ctx, next) {
   let err;
@@ -5,7 +6,7 @@ module.exports = async function (ctx, next) {
     await next();
   } catch (error) {
     err = error;
-    ctx.log.info(err);
+    log.info(err);
 
     if (typeof error === 'function') {
       err = error();
@@ -15,7 +16,7 @@ module.exports = async function (ctx, next) {
 
     let message = err.message && status < 500 ? err.message : 'Sorry, an error has occurred.';
 
-    ctx.log.info(`${ctx.method} ${ctx.url} - ${status} - ${message}`);
+    log.error(`${ctx.method} ${ctx.url} - ${status} - ${message}`);
 
     if (status >= 500) {
       err.headers = Object.assign({}, err.headers, { 'Retry-After': 30 });

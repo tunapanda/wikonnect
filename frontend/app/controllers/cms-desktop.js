@@ -16,7 +16,7 @@ export default class CmsDesktopController extends Controller {
 
   @computed('name')
   get courseSlug() {
-    return "slug";
+    return 'slug';
     //return this.get('name').replace(/\s/g, "-");
   }
 
@@ -42,23 +42,23 @@ export default class CmsDesktopController extends Controller {
 
   @action
   async selectCourse(course_slug) {
-    this.set("selectedModule", null);
-    this.set("selectedLesson", null);
+    this.set('selectedModule', null);
+    this.set('selectedLesson', null);
 
 
-    console.log("slug");
+    console.log('slug');
     console.log(course_slug);
     let _selectedCourse = await this.store.findBySlug('course', course_slug);
     console.log(_selectedCourse);
-    this.set("selectedCourse", _selectedCourse);
+    this.set('selectedCourse', _selectedCourse);
 
   }
 
   @action
   async selectModule(module_slug) {
-    this.set("selectedLesson", null);
+    this.set('selectedLesson', null);
     let _selectedModule = await this.store.findBySlug('module', module_slug);
-    this.set("selectedModule", _selectedModule);
+    this.set('selectedModule', _selectedModule);
 
   }
 
@@ -66,7 +66,7 @@ export default class CmsDesktopController extends Controller {
   saveCourse(model) {
     model.setProperties({
       slug: this.get('courseSlug'),
-      status: "published"
+      status: 'published'
     });
     model.save();
   }
@@ -74,7 +74,7 @@ export default class CmsDesktopController extends Controller {
   @action
   async selectLesson(lesson_slug) {
     let _selectedLesson = await this.store.findBySlug('lesson', lesson_slug);
-    this.set("selectedLesson", _selectedLesson);
+    this.set('selectedLesson', _selectedLesson);
 
   }
 

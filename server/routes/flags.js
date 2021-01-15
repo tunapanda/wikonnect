@@ -28,7 +28,7 @@ router.get('/', requireAuth, grantAccess('readAny', 'path'), async ctx => {
     if (e.statusCode) {
       ctx.throw(e.statusCode, { message: 'The query key does not exist' });
       ctx.throw(e.statusCode, null, { errors: [e.message] });
-    } else { ctx.throw(400, null, { errors: ['Bad Request'] }); }
+    } else { ctx.throw(400, null, { errors: [e.message] }); }
     throw e;
   }
   ctx.assert(flags, 401, 'Something went wrong');
@@ -39,8 +39,7 @@ router.get('/', requireAuth, grantAccess('readAny', 'path'), async ctx => {
 
 });
 
-//router.post('/', requireAuth, grantAccess('createAny', 'path'), async ctx => {
-router.post('/', async ctx => {
+router.post('/', requireAuth, grantAccess('createAny', 'path'), async ctx => {
 
   let newFLag = ctx.request.body.flag;
 
@@ -65,7 +64,7 @@ router.put('/:id', requireAuth, grantAccess('updateOwn', 'path'), async ctx => {
   const checkFlag = await Flag.query().findById(ctx.params.id);
 
   if (!checkFlag) {
-    ctx.log.info('Error, path does not exists  %s for %s', ctx.request.ip, ctx.path);
+    log.info('Error, path does not exists  %s for %s', ctx.request.ip, ctx.path);
     ctx.throw(400, 'That lesson path does not exist');
   }
 

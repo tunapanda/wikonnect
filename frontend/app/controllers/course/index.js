@@ -31,30 +31,30 @@ export default class CourseIndexController extends Controller {
 
   @action
   showConfirmModal() {
-    this.set("confirmModal", true);
+    this.set('confirmModal', true);
   }
 
   @action
   hideConfirmModal() {
-    this.set("confirmModal", false);
+    this.set('confirmModal', false);
   }
 
   get isEnrolled() {
     if (this.model.enrollments.length == 0) {
       return {
-        status: "false"
+        status: 'false'
       };
     } else {
-      console.log("this.model.e");
-      console.log(this.model.enrollments.get("firstObject").status);
-      console.log(this.model.enrollments.get("firstObject"));
-      return this.model.enrollments.get("firstObject");
+      console.log('this.model.e');
+      console.log(this.model.enrollments.get('firstObject').status);
+      console.log(this.model.enrollments.get('firstObject'));
+      return this.model.enrollments.get('firstObject');
     }
   }
 
   @action
   async enroll(course_id) {
-    console.log("enrolling");
+    console.log('enrolling');
     console.log(this.me.user.id);
 
     console.log(course_id);
@@ -66,12 +66,12 @@ export default class CourseIndexController extends Controller {
 
   @action
   async reenroll(enrollment_id) {
-    console.log("reenrolling");
+    console.log('reenrolling');
 
     console.log(enrollment_id);
     let enroll = await this.store.findRecord('enrollment', enrollment_id);
     console.log(enroll.id);
-    enroll.set("status", true);
+    enroll.set('status', true);
     console.log(enroll);
     enroll.save();
   }
@@ -79,14 +79,14 @@ export default class CourseIndexController extends Controller {
 
   @action
   async leave(enrollment_id) {
-    console.log("leaving");
+    console.log('leaving');
 
     console.log(enrollment_id);
     let enroll = await this.store.findRecord('enrollment', enrollment_id);
     console.log(enroll.id);
-    enroll.set("status", false);
+    enroll.set('status', false);
     console.log(enroll);
-    this.set("toggleConfirm", false);
+    this.set('toggleConfirm', false);
 
     enroll.save();
 

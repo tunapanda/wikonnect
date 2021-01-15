@@ -1,14 +1,38 @@
-<div class="profile">
-  <div class="profile-head">
+<div class="container">
+
+  <div class="row">
     {{#link-to "upload"}}
-      <img class="profile-picture" alt="" src={{profileUri}}>
+      {{#if profileUri}}
+        <img class="h80 mt-3 ml-3  rounded-circle" alt="" src={{profileUri}}>
+      {{else}}
+        <img class="h80 mt-3 ml-3  rounded-circle" alt="" src="/images/profile-placeholder.gif">
+
+      {{/if}}
+      <br>
+      <span class="ml-3">change pic</span>
+
     {{/link-to}}
-    <h2 class="profile-name">{{name}}</h2>
+    <div class="mt-4 ml-3">
+      <b>Username:</b> {{me.user.username}} <br>
+      <b>Email:</b>
+      {{#if me.user.email}}
+
+
+        <a href="#" {{action showEmailModal}}>{{me.user.email}}</a>
+      {{else}}
+        <a name="" id="" class=" btn-primary btn-sm" href="#" {{action showEmailModal}} role="button">
+          Update Email
+        </a>
+      {{/if}}
+
+
+    </div>
+
   </div>
 
 
 
-  <div class="profile-body padded">
+  <div class="profile-body ">
     <div class="profile-options">
       <br><br>
       <BsButtonGroup @value={{profileView}} @type="radio" @onChange={{action (mut profileView)}} as |bg|>
@@ -25,25 +49,22 @@
     {{#if (eq profileView "Profile")}}
       <div class="profile-title">
         <h4>Details</h4>
-        {{#if viewOnly}}
-          <button class="profile-edit btn padded btn-primary btn-small " {{action editProfile}}>
-            Edit
-          </button>
-        {{else}}
-          <button class="profile-edit btn padded btn-primary btn-small" {{action editProfile}}>
-            X
-          </button>
-        {{/if}}
+
 
       </div>
-      <BsForm class="profile-data" @model={{model}} @onSubmit={{action save}} @disabled={{viewOnly}} as |form|>
-        <form.element class="inputs" @property="firstName" @label="First Name"
-          @placeholder="What is your first name?" />
-        <form.element class="inputs" @property="lastName" @label="last Name" @placeholder="What is your second name?" />
-        <form.element class="inputs" @property="aboutMe" @label="About Me" @placeholder="Describe yourself" />
-        {{#unless viewOnly}}
-          <BsButton @defaultText="Save Changes" class="profile-submit" @buttonType="submit" />
-        {{/unless}}
+      <BsForm class="profile-data" @onSubmit={{action saveProfile}} @disabled={{viewOnly}}>
+
+        <label for="fname">First Name</label>
+        {{input id="fname" type="text" label="Name" class="form-control" value=fname placeholer="First Name" }}
+
+        <label for="lname" class="mt-2">Last Name</label>
+
+        {{input id="lname" type="text" label="Name" class="form-control " value=lname placeholer="Last Name" }}
+        <label for="about" class="mt-2">About</label>
+
+        {{textarea id="about" type="text" label="Name" class="form-control" value=about }}
+
+        <BsButton @defaultText="Update Profile" class="btn bg-primary mt-2" @buttonType="submit" />
       </BsForm>
 
     {{/if}}
@@ -52,14 +73,14 @@
       <h5>My Achievements</h5>
 
 
-      {{#each model.achievementAwards as  |achievement|}}
-        <Achievement @name={{achievement.name}} @description="You have completed your profile" @badge="015-new" />
-      {{/each}}
-
-
-
-
-
+      <div class="row">
+        {{#each model.achievementAwards as |achievement|}}
+          <div class="col-md-6">
+            <Achievement @name={{achievement.name}} @created={{achievement.createdAt}}
+              @badge={{achievement.imageUrl}} />
+          </div>
+        {{/each}}
+      </div>
 
     {{/if}}
 
@@ -73,4 +94,25 @@
       </CopyButton>
     {{/if}}
   </div>
+
+
+
+  {{!-- <BsModal @open={{false}} @onSubmit={{action "submit"}} @onHidden={{action (mut modal3) false}} as |modal|> --}}
+  <BsModal @open={{emailModalVisible}} @onHide={{action hideEmailModal}} as |modal|>
+    <modal.header>
+      <h4 class="modal-title">
+        Update Email
+      </h4>
+    </modal.header>
+    <modal.body>
+      {{input type="text" class="form-control" value=email placeholder="eg email@example.com"}}
+      {{!-- <input type="text" class="form-control input-lg" value={{me.user.email}} autofocus="autofocus"> --}}
+    </modal.body>
+    <modal.footer>
+      <BsButton @onClick={{action modal.close}}>Cancel</BsButton>
+      <BsButton @type="success" @onClick={{action updateEmail}}>Save</BsButton>
+    </modal.footer>
+  </BsModal>
+
+
 </div>

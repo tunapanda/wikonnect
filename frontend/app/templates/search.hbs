@@ -1,16 +1,19 @@
-<div class="searchpage padded">
-  <div class="search">
-    <input type="text" name="search" id="search" class="search-input" placeholder="">
-    <button>Find</button>
-  </div>
-  <hr>
-  <h3>Result</h3>
-  <div class="result">
-    <SearchResultItem @title="Web Browser" @description="This is the web browser" @link="home" />
-    <SearchResultItem @title="Web Browser" @description="This is the web browser" @link="home" />
-    <SearchResultItem @title="Web Browser" @description="This is the web browser" @link="home" />
-    <SearchResultItem @title="Web Browser" @description="This is the web browser" @link="home" />
-    <SearchResultItem @title="Web Browser" @description="This is the web browser" @link="home" />
-    <SearchResultItem @title="Web Browser" @description="This is the web browser" @link="home" />
+{{outlet}}
+
+<div class="container">
+
+  <div class="row m-5">
+    {{#if model}}
+
+
+      {{#each model as |chapter|}}
+
+        <H5pListItem @chapter={{chapter}} />
+      {{/each}}
+    {{else}}
+      {{t "messages.empty_search"}}
+
+    {{/if}}
+
   </div>
 </div>

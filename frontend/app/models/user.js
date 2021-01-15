@@ -5,9 +5,6 @@ import { hasMany } from 'ember-data/relationships';
 
 export default class UserModel extends Model {
 
-
-
-
   @attr() username;
   @attr() email;
   @attr() password;
@@ -15,9 +12,11 @@ export default class UserModel extends Model {
   @attr() lastName;
   @attr() aboutMe;
   @attr() lastSeen;
+  @attr() tags;
   @attr() inviteCode;
   @attr() createdAt;
   @attr() profileUri;
+  @attr() metadata;
 
   @hasMany('group') groups;
   @hasMany('activity') activities;

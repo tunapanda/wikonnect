@@ -2,7 +2,7 @@ const Router = require('koa-router');
 
 const Comment = require('../models/comment');
 const { requireAuth, grantAccess } = require('../middleware/permController');
-
+const profaneCheck = require('../utils/profaneCheck');
 
 const router = new Router({
   prefix: '/comments'
@@ -29,12 +29,12 @@ const router = new Router({
  *      }
  *
  */
-router.get('/', async ctx => {
+router.get('/', requireAuth, async ctx => {
   // let stateUserId = ctx.state.user.id == undefined ? ctx.state.user.data.id : ctx.state.user.id;
 
   let comment;
   try {
-    comment = await Comment.query();
+    comment = await Comment.query().where(ctx.query);
   } catch (e) {
     if (e.statusCode) {
       ctx.throw(e.statusCode, null, { errors: [e] });
@@ -53,7 +53,7 @@ router.get('/', async ctx => {
 
 
 /**
- * @api {get} /:chapterId GET a comment
+ * @api {get} /:comment_id GET a comment
  * @apiName GetAChapterComment
  * @apiGroup ChapterComments
  * @apiPermission authenticated user
@@ -92,7 +92,7 @@ router.get('/:id', requireAuth, grantAccess('readAny', 'path'), async ctx => {
 });
 
 /**
- * @api {post} /:chapterId POST comment
+ * @api {post} / POST comment
  * @apiName PostAChapterComment
  * @apiGroup ChapterComments
  * @apiPermission authenticated user
@@ -109,15 +109,22 @@ router.get('/:id', requireAuth, grantAccess('readAny', 'path'), async ctx => {
  *    }
  *
  */
-router.post('/', async ctx => {
-  let stateUserId = ctx.state.user.id == undefined ? ctx.state.user.data.id : ctx.state.user.id;
 
-  let newComment = ctx.request.body.comment;
-  newComment.creatorId = stateUserId;
+
+router.post('/', requireAuth, grantAccess('createAny', 'path'), async ctx => {
+  let stateUserId = ctx.state.user.id == undefined ? ctx.state.user.data.id : ctx.state.user.id;
+  let newChapterComment = ctx.request.body.comment;
+  newChapterComment.creatorId = stateUserId;
+
+  const checked = await profaneCheck(newChapterComment.comment);
+
+  if (checked !== null) {
+    ctx.throw(400, null, { errors: [checked] });
+  }
 
   let comment;
   try {
-    comment = await Comment.query().insertAndFetch(newComment);
+    comment = await Comment.query().insertAndFetch(newChapterComment);
   } catch (e) {
     if (e.statusCode) {
       ctx.throw(e.statusCode, null, { errors: [e] });
@@ -134,7 +141,7 @@ router.post('/', async ctx => {
 
 
 /**
- * @api {put} /:chapterId PUT comment
+ * @api {put} /:comment_id PUT comment
  * @apiName PutAChapterComment
  * @apiGroup ChapterComments
  * @apiPermission authenticated user

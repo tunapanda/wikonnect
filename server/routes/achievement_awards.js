@@ -14,7 +14,10 @@ router.get('/', requireAuth, async ctx => {
 });
 
 router.get('/:id', requireAuth, async ctx => {
-  const achievementAwards = await AchievementAward.query().findById(ctx.params.id);
+  let achievementAwards = await AchievementAward.query().findById(ctx.params.id);
+  const date = new Date(achievementAwards.createdAt);
+  achievementAwards.createdAt = date.toDateString().slice(0, 10);
+
   ctx.assert(achievementAwards, 404, 'No matching record found');
   ctx.status = 200;
   ctx.body = { achievementAwards };

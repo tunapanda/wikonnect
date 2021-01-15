@@ -1,6 +1,7 @@
 import Controller from '@ember/controller';
-import { computed } from '@ember/object';
 import { inject } from '@ember/service';
+import { computed } from '@ember/object';
+
 
 export default class ManageController extends Controller {
   @inject
@@ -9,6 +10,6 @@ export default class ManageController extends Controller {
 
   @computed()
   get chapters() {
-    return this.store.findAll('chapter');
+    return this.store.query('chapter', { 'status': 'published' });
   }
 }

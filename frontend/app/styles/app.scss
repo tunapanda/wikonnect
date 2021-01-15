@@ -1,6 +1,7 @@
 @import 'common/forms';
 @import 'common/buttons';
 @import 'common/colors';
+//@import "bs4";
 @import 'header';
 @import 'landing';
 @import 'home';
@@ -13,11 +14,10 @@
 @import 'profile';
 @import "cms-desktop";
 @import "common/utils";
-@import "moja";
+@import "ember-mdi";
+
 // @import "ember-modal-dialog/ember-modal-structure";
 // @import "ember-modal-dialog/ember-modal-appearance";
-
-
 @import url('https://rsms.me/inter/inter.css');
 
 html {
@@ -30,10 +30,91 @@ html {
   }
 }
 
+.h40 {
+  height: 40px;
+}
+
+.h80 {
+  height: 80px;
+}
+
 body {
   font-family: 'Inter var', sans-serif;
 
 }
 
-@import "ember-bootstrap/bootstrap";
-@import "ember-power-select";
+.kkl-cover {
+  background-image: url(/images/cover.png);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center center;
+  height: 500px;
+}
+
+.kkl-jumbo-text {
+  color: white;
+  width: 100%;
+  -webkit-mask-image: -webkit-gradient(linear, left top, left bottom,
+      from(rgba(252, 113, 0, 0)), to(rgba(0, 0, 0, 1)));
+}
+
+body {
+  margin-bottom: 60px;
+  /* Margin bottom by footer height */
+}
+
+
+.replaced {
+  visibility: hidden;
+  position: relative;
+}
+
+.replaced:after {
+  visibility: visible;
+  position: absolute;
+  top: 0;
+  border-radius: 5px;
+  width: 100%;
+  background-color: orangered;
+  text-align: center;
+  padding: 4px;
+  display: block;
+  left: 0;
+  content: "Check it out";
+}
+
+.add-pre {
+  white-space: pre-line;
+}
+
+button.like {
+  filter: invert(27%) sepia(51%) saturate(2878%) hue-rotate(346deg) brightness(104%) contrast(97%);
+}
+
+button.dislike {
+  filter: invert(27%) sepia(51%) saturate(2878%) hue-rotate(346deg) brightness(104%) contrast(97%);
+}
+
+.icon {
+  display: inline-block;
+  width: 70px;
+  height: 70px;
+  background-size: cover;
+  filter: invert(27%) sepia(51%) saturate(2878%) hue-rotate(346deg) brightness(104%) contrast(97%);
+}
+
+pre {
+  white-space: pre-wrap;
+  /* Since CSS 2.1 */
+  white-space: -moz-pre-wrap;
+  /* Mozilla, since 1999 */
+  white-space: -pre-wrap;
+  /* Opera 4-6 */
+  white-space: -o-pre-wrap;
+  /* Opera 7 */
+  word-wrap: break-word;
+  /* Internet Explorer 5.5+ */
+}
+
+//@import "ember-bootstrap/bootstrap";
+//@import "ember-power-select";

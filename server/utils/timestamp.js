@@ -1,5 +1,9 @@
 const User = require('../models/user');
 
+/**
+ *
+ * @param {*} userId
+ */
 async function lastSeen(userId) {
 
   let lastSeen = new Date().toISOString();

@@ -2,7 +2,10 @@
 node_modules
 config/db.js
 email.js
+server/public
 examples
 coverage/*
 cypress/videos
 cypress/screenshots
+TODO
+.vscode

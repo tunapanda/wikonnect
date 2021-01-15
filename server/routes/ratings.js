@@ -2,11 +2,35 @@ const Router = require('koa-router');
 const log = require('../utils/logger');
 const Rating = require('../models/rating');
 const { requireAuth, grantAccess } = require('../middleware/permController');
+const validateRating = require('../middleware/validateRoutePostSchema/validateRating');
 
 const router = new Router({
   prefix: '/ratings'
 });
 
+/**
+ * @api {get} /:rating_id GET a rating
+ * @apiName GetAChapterRating
+ * @apiGroup ChapterRatings
+ * @apiPermission authenticated user
+ *
+ * @apiSuccessExample {json} Success-Response:
+ *     HTTP/1.1 201 OK
+ *     {
+ *      "rating": [{
+ *         "id": String,
+ *         "rating": String,
+ *         "comment": String,
+ *         "chapter_id": String,
+ *         "user_id": String,
+ *         "labels": Array,
+ *         "category": String,
+ *         "createdAt": DateTime,
+ *         "updatedAt": DateTime
+ *        }]
+ *      }
+ *
+ */
 
 router.get('/:id', requireAuth, grantAccess('readOwn', 'path'), async ctx => {
 
@@ -28,8 +52,31 @@ router.get('/:id', requireAuth, grantAccess('readOwn', 'path'), async ctx => {
   ctx.body = { rating };
 });
 
+/**
+ * @api {get} / GET ratings
+ * @apiName GetChapterRatings
+ * @apiGroup ChapterRatings
+ * @apiPermission authenticated user
+ *
+ * @apiSuccessExample {json} Success-Response:
+ *     HTTP/1.1 201 OK
+ *     {
+ *      "ratings": [{
+ *         "id": String,
+ *         "rating": String,
+ *         "comment": String,
+ *         "chapter_id": String,
+ *         "user_id": String,
+ *         "labels": Array,
+ *         "category": String,
+ *         "createdAt": DateTime,
+ *         "updatedAt": DateTime
+ *        }]
+ *      }
+ *
+ */
 
-router.get('/', requireAuth, grantAccess('readAny', 'path'), async ctx => {
+router.get('/', async ctx => {
 
   let ratings;
   try {
@@ -38,7 +85,7 @@ router.get('/', requireAuth, grantAccess('readAny', 'path'), async ctx => {
     if (e.statusCode) {
       ctx.throw(e.statusCode, { message: 'The query key does not exist' });
       ctx.throw(e.statusCode, null, { errors: [e.message] });
-    } else { ctx.throw(400, null, { errors: ['Bad Request'] }); }
+    } else { ctx.throw(400, null, { errors: [e.message] }); }
     throw e;
   }
   ctx.assert(ratings, 401, 'Something went wrong');
@@ -49,12 +96,37 @@ router.get('/', requireAuth, grantAccess('readAny', 'path'), async ctx => {
 
 });
 
-router.post('/', requireAuth, grantAccess('createAny', 'path'), async ctx => {
+/**
+ * @api {post} / POST rating
+ * @apiName PostAChapterRating
+ * @apiGroup ChapterRatings
+ * @apiPermission authenticated user
+ *
+ * @apiSuccessExample {json} Success-Response:
+ *     HTTP/1.1 201 OK
+ *     {
+ *      "ratings": {
+ *         "id": String,
+ *         "rating": String,
+ *         "comment": String,
+ *         "chapter_id": String,
+ *         "user_id": String,
+ *         "labels": Array,
+ *         "category": String,
+ *         "createdAt": DateTime,
+ *         "updatedAt": DateTime
+ *        }
+ *      }
+ *
+ */
+
+
+router.post('/', requireAuth, validateRating, grantAccess('createAny', 'path'), async ctx => {
 
   let newFLag = ctx.request.body.rating;
   const maxPoints = 5;
 
-  if (newFLag > maxPoints) {
+  if (newFLag.rating > maxPoints) {
     ctx.throw(400, 'Rating cannot be greater than 5');
   }
 
@@ -68,18 +140,26 @@ router.post('/', requireAuth, grantAccess('createAny', 'path'), async ctx => {
   } catch (e) {
     if (e.statusCode) {
       ctx.throw(e.statusCode, null, { errors: [e.message] });
-    } else { ctx.throw(400, null, { errors: ['Bad Request'] }); }
+    } else { ctx.throw(400, null, { errors: [e.message] }); }
     throw e;
   }
 });
 
+
+/**
+ * @api {put} /:rating_id PUT comment
+ * @apiName PutAChapterRating
+ * @apiGroup ChapterRatings
+ * @apiPermission authenticated user
+ *
+ */
 
 router.put('/:id', requireAuth, grantAccess('updateOwn', 'path'), async ctx => {
   let newRating = ctx.request.body.rating;
   const checkRating = await Rating.query().findById(ctx.params.id);
 
   if (!checkRating) {
-    ctx.log.info('Error, path does not exists  %s for %s', ctx.request.ip, ctx.path);
+    log.info('Error, path does not exists  %s for %s', ctx.request.ip, ctx.path);
     ctx.throw(400, 'That lesson path does not exist');
   }
 
@@ -89,7 +169,13 @@ router.put('/:id', requireAuth, grantAccess('updateOwn', 'path'), async ctx => {
   ctx.body = { lesson };
 
 });
-
+/**
+ * @api {delete} /:rating_id DELETE a rating
+ * @apiName DeleteAChapterRating
+ * @apiGroup ChapterRatings
+ * @apiPermission authenticated user
+ *
+ */
 router.delete('/:id', grantAccess('deleteOwn', 'path'), async ctx => {
   const rating = await Rating.query().findById(ctx.params.id);
 

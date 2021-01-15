@@ -1,6 +1,6 @@
 const Router = require('koa-router');
 const LearningPath = require('../models/learning_path');
-const { validatePaths } = require('../middleware/validation/validatePostData');
+const { validatePaths } = require('../middleware/validateRoutePostSchema/validatePostData');
 const permController = require('../middleware/permController');
 
 const slugGen = require('../utils/slugGen');
@@ -188,7 +188,7 @@ router.post('/', permController.requireAuth, permController.grantAccess('createA
   } catch (e) {
     if (e.statusCode) {
       ctx.throw(e.statusCode, null, { errors: [e.message] });
-    } else { ctx.throw(400, null, { errors: ['Bad Request'] }); }
+    } else { ctx.throw(400, null, { errors: [e.message] }); }
     throw e;
   }
 
@@ -232,7 +232,7 @@ router.put('/:id', permController.requireAuth, permController.grantAccess('updat
   } catch (e) {
     if (e.statusCode) {
       ctx.throw(e.statusCode, null, { errors: [e.message] });
-    } else { ctx.throw(400, null, { errors: ['Bad Request'] }); }
+    } else { ctx.throw(400, null, { errors: [e.message] }); }
     throw e;
   }
 

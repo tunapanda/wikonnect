@@ -1,6 +1,8 @@
-import { action, computed } from '@ember/object';
+import { action } from '@ember/object';
 import { inject } from '@ember/service';
 import Component from '@ember/component';
+import { tracked } from '@glimmer/tracking';
+
 // import { tagName } from '@ember-decorators/component';
 import LoginValidations from '../../validations/login';
 
@@ -15,22 +17,50 @@ class LoginComponent extends Component {
   @inject
   store;
 
-  @computed()
-  get user() {
-    return this.store.createRecord('user');
+  @inject
+  notify;
+
+  @inject
+  torii;
+
+  @inject
+  session;
+
+  @tracked loading = false;
+
+  @action
+  sessionRequiresAuthentication() {
+    this.notify.info('Signing up...', { closeAfter: 5000 });
+    const me = this.me;
+    this.get('torii')
+      .open('google-oauth2-bearer')
+      .then(function (googleAuth) {
+        const googleToken = googleAuth.authorizationToken.access_token;
+
+        me.registerWithGoogle({ googleToken: googleToken, provider: 'google' })
+          .then((user) => me.authenticate(user.get('username'), googleToken));
+      }, function (error) {
+        console.error('Google auth failed: ', error.message);
+      });
   }
 
 
   @action
   login(model) {
+    this.loading = true;
     this.me.authenticate(model.get('username'), model.get('password')).then(() => {
+
       this.authenticationSuccessful();
-    }).catch(err => {
-      if (err.json && err.json.errors) {
-        Object.keys(err.json.errors).forEach(field => {
-          model.addError(err.json.errors[field].constraint, err.json.errors[field].name);
-        });
-      }
+    }).catch(() => {
+      this.loading = false;
+      this.notify.alert('Login failed, Check your username and password and try again', { closeAfter: 6000 });
+      // if (err.json && err.json.errors) {
+      //   Object.keys(err.json.errors).forEach(field => {
+      //     model.addError(err.json.errors[field].constraint, err.json.errors[field].name);
+      //   });
+      // }
     });
+
+
   }
 }

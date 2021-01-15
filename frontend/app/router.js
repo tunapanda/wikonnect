@@ -45,7 +45,7 @@ Router.map(function () {
   });
 
   this.route('profile');
-  this.route('search');
+  this.route('search', { path: '/search/:id' });
   this.route('about');
 
   this.route('cms', function () {
@@ -92,11 +92,24 @@ Router.map(function () {
   });
   this.route('upload');
   this.route('manage');
-  this.route('redeem', function () {
-    this.route('moja');
-  });
-
   this.route('admin', function () {
+    this.route('dashboard');
     this.route('accounts');
   });
+  this.route('teach', function () {
+    this.route('preview', { path: '/preview/:id' });
+    this.route('tag', { path: '/tag/:id' });
+
+    this.route('create');
+    this.route('h5p-upload', { path: '/h5p-upload/:id' });
+    this.route('thumbnail-upload', { path: '/thumbnail-upload/:id' });
+    this.route('index', { path: '/' });
+
+
+  });
+  this.route('swagger');
+  this.route('topics');
+  this.route('tags');
+  this.route('tag', { path: '/tag/:id' });
+  this.route('embed', { path: '/embed/:chapter_id' });
 });

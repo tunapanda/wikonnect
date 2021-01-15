@@ -1,26 +1,87 @@
 const Router = require('koa-router');
+
+const User = require('../models/user');
 const Achievement = require('../models/achievement');
-const validateAchievement = require('../middleware/validation/validateAchievement');
-const fetch = require('node-fetch');
+const AchievementAward = require('../models/achievement_awards');
 const log = require('../utils/logger');
 
-const lrsDomain = ' http://www.example.org';
-const lrsPrefix = 'data/xAPI/statements';
-const lrsServerAuth = 'Basic NTlkZGQzYmY4YTA5ZDAzMzU5OTBiOWZhOjVhZTcyZDA3MjQ4ODdhNWM2MTY4MzEwYQ==';
+const knex = require('../utils/knexUtil');
+const { requireAuth } = require('../middleware/permController');
+const customWebhook = require('../utils/customWebhook');
 
 const router = new Router({
   prefix: '/achievements'
 });
 
+async function chapterCompletionAward(params) {
+  let completed = await knex('achievements')
+    .count('target')
+    .select('target_status')
+    .where({ 'user_id': params.userId })
+    .groupBy('target', 'target_status')
+    .having(knex.raw('count(target) > 0'));
+
+  try {
+    if (completed[0].count === 1) {
+      await AchievementAward.query().insert({
+        'name': 'completed 1 chapter',
+        'achievementId': 'achievements14',
+        'userId': params.userId
+      });
+      await User.query().patchAndFetchById(params.id, { 'metadata:oneChapterCompletion': 'true' });
+    } else if (completed[0].count > 2) {
+      await AchievementAward.query().insert({
+        'name': 'completed 3 chapters',
+        'achievementId': 'achievements15',
+        'userId': params.userId
+      });
+      await User.query().patchAndFetchById(params.userId, { 'metadata:threeChapterCompletion': 'true' });
+    }
+  } catch (error) {
+    log.info(error.message);
+  }
+}
+
 router.get('/', async ctx => {
   try {
-    const achievement = await Achievement.query().where(ctx.query);
+    let achievement = await Achievement.query().where(ctx.query);
+    achievement.imageUrl = 'images/profile-placeholder.gif';
     ctx.status = 200;
     ctx.body = { achievement };
   } catch (error) {
     ctx.status = 400;
     ctx.body = { message: 'The query key does not exist' };
   }
+});
+
+
+/**
+   * return the count of completed chapter
+   * @param {object[]} dataRange
+   * @return {Integer}
+   */
+
+router.get('/date/:startDate/:endDate', requireAuth, async ctx => {
+
+  // const from = '2017-12-20';
+  // const to = '2018-12-20';
+  const from = ctx.params.startDate;
+  const to = ctx.params.endDate;
+
+  let achievement;
+  try {
+    achievement = await knex('achievements')
+      .select()
+      .where({ target_status: 'completed' })
+      .whereBetween('created_at', [from, to]);
+  } catch (e) {
+    ctx.throw(400, null, { errors: [e.message] });
+  }
+
+
+
+  ctx.status = 200;
+  ctx.body = { achievement: achievement.length };
 });
 
 router.get('/:id', async ctx => {
@@ -32,71 +93,23 @@ router.get('/:id', async ctx => {
   ctx.body = { achievement };
 });
 
-/**
- * {
-  "actor": {
-    "name": "Sally Glider",
-    "mbox": "mailto:sally@domain.com"
-  },
-  "verb": {
-    "id": "http://adlnet.gov/expapi/verbs/experienced",
-    "display": { "en-US": "experienced" }
-  },
-  "object": {
-    "id": "http://example.com/activities/solo-hang-gliding",
-    "definition": {
-      "name": { "en-US": "Solo Hang Gliding" }
-    }
+router.post('/', requireAuth, async ctx => {
+  let stateUserRole = ctx.state.user.role == undefined ? ctx.state.user.data.role : ctx.state.user.role;
+
+  const newAchievement = ctx.request.body.achievement;
+  newAchievement.userId = ctx.state.user.id == undefined ? ctx.state.user.data.id : ctx.state.user.id;
+  const achievement = await Achievement.query().insertAndFetch(newAchievement);
+
+  if (stateUserRole != 'anonymous') {
+    chapterCompletionAward(newAchievement);
   }
-}
- */
 
-/**
- * storing in the postgresql
- *{
- *   "actor": { "mbox": "mailto:test1@example.org" },
- *   "verb": { "id": "http://www.example.org/verb" },
- *   "object": { "id": "http://www.example.org/activity" },
- * }
- */
+  // trigger webhook util, currently sending data to webhook.site
+  await customWebhook('https://webhook.site/d1f35372-7cbb-4d55-9169-38e9d4a3402d', newAchievement);
 
-router.post('/', validateAchievement, async ctx => {
-  let newAchievement = ctx.request.body.achievement.statement;
-
-  const xAPIRecord = {
-    user_id: newAchievement.actor.mbox,
-    target_status: newAchievement.verb.id,
-    target: newAchievement.object.id,
-    description: newAchievement.object.description
-  };
-
-  try {
-    await fetch(lrsDomain + lrsPrefix, {
-      body: JSON.stringify({
-        statement: {
-          newAchievement
-        },
-        ttl: 10000
-      }),
-      headers: {
-        'authorization': lrsServerAuth,
-        'content-type': 'application/json',
-      },
-      method: 'POST'
-    });
-    log.info(`Connection to Learning Locker on ${lrsDomain} successfully`);
-  } catch (e) {
-    if (e.name !== 'ConnectionError') {
-      log.error(e);
-    } else {
-      log.info(`Connection to Learning Locker on ${lrsDomain} failed`);
-    }
-  }
-  const achievement = await Achievement.query().insertAndFetch(xAPIRecord);
 
   ctx.status = 201;
   ctx.body = { achievement };
-
 });
 router.put('/:id', async ctx => {
   let putAchievement = ctx.request.body.achievement;

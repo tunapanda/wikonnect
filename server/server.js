@@ -3,11 +3,12 @@ const path = require('path');
 const koaQs = require('koa-qs');
 const Router = require('koa-router');
 const bodyParser = require('koa-bodyparser');
-const koaBunyanLogger = require('koa-bunyan-logger');
 const errorHandler = require('./middleware/error');
 const logger = require('./middleware/logger');
 const jwt = require('./middleware/jwt');
+const cors = require('@koa/cors');
 const app = new Koa();
+const log = require('./utils/logger');
 
 const router = new Router({
   prefix: '/api/v1'
@@ -15,9 +16,15 @@ const router = new Router({
 
 koaQs(app);
 
-app.use(errorHandler);
+app.use(cors({
+  origin: '*',
+  maxAge: 5,
+  credentials: true,
+  allowMethods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowHeaders: ['Content-Type', 'Authorization', 'Accept', 'mojaHeader', 'achievements'],
+}));
 
-app.use(koaBunyanLogger());
+app.use(errorHandler);
 
 app.use(logger);
 
@@ -28,6 +35,8 @@ app.use(require('koa-static')(path.resolve(__dirname, './public')));
 router.use(require('./routes/auth'));
 
 router.use(require('./routes/users'));
+
+router.use(require('./routes/oauth2s'));
 
 router.use(jwt.authenticate, require('./routes/paths'));
 
@@ -41,6 +50,10 @@ router.use(jwt.authenticate, require('./routes/chapters'));
 
 router.use(jwt.authenticate, require('./routes/comments'));
 
+router.use(jwt.authenticate, require('./routes/counter'));
+
+router.use(jwt.authenticate, require('./routes/oembed'));
+
 router.use(jwt.authenticate, require('./routes/activity'));
 
 router.use(jwt.authenticate, require('./routes/enrollments'));
@@ -48,6 +61,10 @@ router.use(jwt.authenticate, require('./routes/enrollments'));
 router.use(jwt.authenticate, require('./routes/achievements'));
 
 router.use(jwt.authenticate, require('./routes/flags'));
+
+router.use(jwt.authenticate, require('./routes/ratings'));
+
+router.use(jwt.authenticate, require('./routes/reactions'));
 
 router.use(jwt.authenticate, require('./routes/dashboard'));
 
@@ -59,7 +76,7 @@ router.use(require('./routes/search'));
 
 
 router.get('/hello', async ctx => {
-  ctx.log.info('Got a request from %s for %s', ctx.request.ip, ctx.path);
+  log.info('Got a request from %s for %s', ctx.request.ip, ctx.path);
   ctx.body = { user: 'You have access to view this route' };
 });
 

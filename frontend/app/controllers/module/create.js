@@ -7,7 +7,7 @@ export default class ModuleCreateController extends Controller {
 
   @computed('model.name')
   get moduleSlug() {
-    return this.model.get('name').replace(/\s/g, "-");
+    return this.model.get('name').replace(/\s/g, '-');
   }
 
   @computed('model.modules.[]')
@@ -23,6 +23,8 @@ export default class ModuleCreateController extends Controller {
 
   @action
   addLesson(lesson) {
+
+
     this.model.get('lessons').pushObject(lesson);
     this.set('selectedLesson', null);
   }
@@ -31,7 +33,7 @@ export default class ModuleCreateController extends Controller {
   saveModule(model) {
     model.setProperties({
       slug: this.get('moduleSlug'),
-      status: "published"
+      status: 'published'
     });
     model.save();
   }

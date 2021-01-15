@@ -10,7 +10,7 @@ export default class ProfileController extends Controller {
   me;
 
   queryParams = ['view'];
-  view = "Profile";
+  view = 'Profile';
 
   @computed()
   get myProfile() {

@@ -1,22 +1,35 @@
-<div class="form-title">Log In</div>
+<div class="p-4">
+  <BsForm @class="form" @formLayout="vertical" @model={{registeredUser}} @onSubmit={{action "login"}} as |form|>
+    {{#each registeredUser.errors as |err| }}
+      {{#if (eq err.key "errors")}}
+        <BsAlert @type="danger" @fade={{true}}>
+          {{err.validation}}
+        </BsAlert>
+      {{/if}}
+    {{/each}}
 
-<BsForm @class="form" @formLayout="vertical" @model={{registeredUser}} @onSubmit={{action "login"}} as |form|>
-  {{#each registeredUser.errors as |err| }}
-    {{#if (eq err.key "errors")}}
-      <BsAlert @type="danger" @fade={{true}}>
-        {{err.validation}}
-      </BsAlert>
+    <div class="login-form-fields">
+      <form.element @autocomplete="on" id="username" @controlType="text" @label="Username" @placeholder="Username"
+        @property="username" />
+
+      <form.element id="password" @controlType="password" @label="Password" @placeholder="Enter Password"
+        @property="password" @autocomplete="new-password" />
+
+    </div>
+
+    {{#if loading}}
+      <button class="bg-primary form-control" type="button">
+        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+        Authenticating...
+      </button>
+    {{else}}
+      <BsButton class="bg-primary form-control" @defaultText="Login" type="submit">
+      </BsButton>
+
+      <BsButton class="bg-primary form-control"><a {{ action 'sessionRequiresAuthentication' }}>Login with Google</a>
+      </BsButton>
+
     {{/if}}
-  {{/each}}
 
-  <div class="login-form-fields">
-    <form.element class="inputs" id="username" @controlType="text" @label="Username" @placeholder="Username"
-      @property="username" @autocomplete="username" />
-
-    <form.element id="password" class="inputs" @controlType="password" @label="Password" @placeholder="Enter Password"
-      @property="password" @autocomplete="new-password" />
-
-  </div>
-
-  <BsButton class="submit" @type="primary" @defaultText="Login" @buttonType="submit" />
-</BsForm>
+  </BsForm>
+</div>

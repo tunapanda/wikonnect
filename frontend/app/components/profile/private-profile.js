@@ -1,14 +1,30 @@
 import Component from '@ember/component';
 import { inject } from '@ember/service';
 import { computed, action } from '@ember/object';
+import { tracked } from '@glimmer/tracking';
 
 export default class ProfilePrivateProfileComponent extends Component {
   @inject
   me;
 
+
+  @inject
+  store
+
+  @inject
+  notify;
+
   viewOptions = ['Profile', 'Learning', 'Settings'];
   profileView = 'Profile';
   viewOnly = true;
+  email = this.me.user.email;
+
+  fname = this.me.user.metadata.firstName;
+  lname = this.me.user.metadata.lastName;
+  about = this.me.user.metadata.aboutMe;
+
+
+  @tracked emailModalVisible = false;
 
   inviteCode = location.protocol + '//' + location.host + '/signup?invite_code=' + this.me.user.inviteCode;
 
@@ -33,15 +49,45 @@ export default class ProfilePrivateProfileComponent extends Component {
     return this.me.user.profileUri;
   }
 
+
+
+
   @action
   onSuccess() {
-    console.log("copied");
+    console.log('copied');
+  }
+
+  @action
+  updateEmail() {
+    this.notify.info('Updating Email', { closeAfter: 10000 });
+    console.log(this.email);
+    console.log(this.me.user.id);
+    let theEmail = this.email;
+    // ...after the record has loaded
+
+    this.store.findRecord('user', this.me.user.id).then(function (user) {
+      user.set('email', theEmail);
+      user.save();
+
+    });
+    this.hideEmailModal();
+
   }
 
 
   @action
+  showEmailModal() {
+    this.emailModalVisible = true;
+  }
+
+  @action
+  hideEmailModal() {
+    this.emailModalVisible = false;
+  }
+
+  @action
   onError() {
-    console.log("no copy");
+    console.log('no copy');
   }
 
   @computed('model.hasDirtyAttributes')
@@ -52,5 +98,26 @@ export default class ProfilePrivateProfileComponent extends Component {
   @action
   editProfile() {
     this.toggleProperty('viewOnly');
+  }
+
+
+  @action
+  saveProfile() {
+    this.toggleProperty('viewOnly');
+    let first_name = this.fname;
+    let last_name = this.lname;
+    let about_me = this.about;
+    let notifyer = this.notify;
+    this.store.findRecord('user', this.me.user.id).then(function (user) {
+      user.firstName = first_name; // => "Rails is Omakase"
+      user.lastName = last_name; // => "Rails is Omakase"
+
+      user.aboutMe = about_me;
+
+      user.save(); // => PATCH to '/posts/1'
+      notifyer.info('Profile Updated', { closeAfter: 10000 });
+
+    });
+
   }
 }

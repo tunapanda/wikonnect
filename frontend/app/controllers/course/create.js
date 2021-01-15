@@ -7,7 +7,7 @@ export default class CourseCreateController extends Controller {
 
   @computed('model.name')
   get courseSlug() {
-    return this.model.get('name').replace(/\s/g, "-");
+    return this.model.get('name').replace(/\s/g, '-');
   }
 
   @computed('model.modules.[]')
@@ -32,7 +32,7 @@ export default class CourseCreateController extends Controller {
   saveCourse(model) {
     model.setProperties({
       slug: this.get('courseSlug'),
-      status: "published"
+      status: 'published'
     });
     model.save();
   }

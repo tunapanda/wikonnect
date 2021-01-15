@@ -1,0 +1,60 @@
+{
+  "messages": [
+    "attribute paths.'/users/{id}'(get).responses is missing",
+    "attribute paths.'/users'(get).responses is missing",
+    "attribute paths.'/users'(post).responses is missing",
+    "attribute paths.'/users/{id}/profile-image'(post).responses is missing",
+    "attribute paths.'/auth'(post).responses is missing",
+    "attribute paths.'/{chapterId}'(get).responses is missing",
+    "attribute paths.'/{chapterId}'(put).responses is missing",
+    "attribute paths.'/{chapterId}'(post).responses is missing",
+    "attribute paths.'/'(get).responses is missing",
+    "attribute paths.'/api/v1/chapters'(post).responses is missing",
+    "attribute paths.'/courses/{id}'(get).responses is missing",
+    "attribute paths.'/courses/'(get).responses is missing",
+    "attribute paths.'/courses'(post).responses is missing",
+    "attribute paths.'/paths'(post).responses is missing",
+    "attribute paths.'/paths/{id}'(get).responses is missing",
+    "attribute paths.'/lessons/{id}'(get).responses is missing",
+    "attribute paths.'/lessons/'(get).responses is missing",
+    "attribute paths.'/lessons'(post).responses is missing",
+    "attribute paths.'/modules/{id}'(get).responses is missing",
+    "attribute paths.'/modules/'(get).responses is missing",
+    "attribute paths.'/modules'(post).responses is missing",
+    "attribute paths.'/search?q={query-string-goes-here}'(get).responses is missing",
+    "attribute definitions.GetAChapter.items is missing",
+    "attribute definitions.GetAChapter.items is missing",
+    "attribute definitions.PutAChapter.items is missing",
+    "attribute definitions.PutAChapter.items is missing",
+    "attribute definitions.GetChapters.items is missing",
+    "attribute definitions.GetChapters.items is missing",
+    "attribute definitions.PostAChapter.items is missing",
+    "attribute definitions.PostAH5PChapter.items is missing",
+    "attribute definitions.PostBannerImage.items is missing",
+    "attribute paths.'/users/{id}'. Declared path parameter id needs to be defined as a path parameter in path or operation level",
+    "attribute paths.'/users/{id}/profile-image'. Declared path parameter id needs to be defined as a path parameter in path or operation level",
+    "attribute paths.'/{chapterId}'. Declared path parameter chapterId needs to be defined as a path parameter in path or operation level",
+    "attribute paths.'/api/v1/chapters/{id}'. Declared path parameter id needs to be defined as a path parameter in path or operation level",
+    "attribute paths.'/api/v1/chapters/{id}/upload'. Declared path parameter id needs to be defined as a path parameter in path or operation level",
+    "attribute paths.'/api/v1/chapters/{id}/chapter-image'. Declared path parameter id needs to be defined as a path parameter in path or operation level",
+    "attribute paths.'/courses/{id}'. Declared path parameter id needs to be defined as a path parameter in path or operation level",
+    "attribute paths.'/paths/{id}'. Declared path parameter id needs to be defined as a path parameter in path or operation level",
+    "attribute paths.'/lessons/{id}'. Declared path parameter id needs to be defined as a path parameter in path or operation level",
+    "attribute paths.'/modules/{id}'. Declared path parameter id needs to be defined as a path parameter in path or operation level"
+  ],
+  "schemaValidationMessages": [
+    {
+      "level": "error",
+      "domain": "validation",
+      "keyword": "anyOf",
+      "message": "instance failed to match at least one required schema among 2",
+      "schema": {
+        "loadingURI": "http://swagger.io/v2/schema.json#",
+        "pointer": "/definitions/schema/properties/items"
+      },
+      "instance": {
+        "pointer": "/definitions/GetAChapter/properties/Chapter[object]/items"
+      }
+    }
+  ]
+}
