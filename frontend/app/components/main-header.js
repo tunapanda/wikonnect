@@ -14,13 +14,22 @@ export default class MainHeaderComponent extends Component {
 
   @service router;
   @service session;
-  token = this.session.data.authenticated.token
+  @service intl;
+  @service config;
 
 
   @tracked token = this.session.data.authenticated.token
+  @tracked search_term;
+  @tracked searchLoading = false;
 
 
+  @action
+  search() {
+    this.searchLoading = true;
+    this.router.transitionTo('search', this.search_term);
+    this.searchLoading = false;
 
+  }
 
   @action
   logoutuser() {
@@ -30,6 +39,12 @@ export default class MainHeaderComponent extends Component {
 
     this.router.transitionTo('home');
 
+
+  }
+
+  @action
+  translate(lang) {
+    this.intl.setLocale([lang]);
 
   }
 

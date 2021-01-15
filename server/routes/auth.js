@@ -9,7 +9,7 @@ const { secret } = require('../middleware/jwt');
 const { lastSeen } = require('../utils/timestamp');
 const redisClient = require('../utils/redisConfig');
 const UserVerification = require('../models/user_verification');
-const validateAuthRoutes = require('../middleware/validation/validateAuthRoutes');
+const validateAuthRoutes = require('../middleware/validateRoutePostSchema/validateAuthRoutes');
 
 
 const router = new Router({
@@ -17,14 +17,15 @@ const router = new Router({
 });
 
 /**
- * @api {post} /auth POST login a user.
+ * @api {post} /api/v1/auth POST login a user.
  * @apiName PostLoginAUser
  * @apiGroup Authentication
  *
- * @apiParam (Required Params) {string} username username
- * @apiParam (Required Params) {string} password validated password
+ * @apiParam {string} username username
+ * @apiParam {string} password validated password
  *
  * @apiPermission none
+ * @apiSampleRequest https://localhost:3000/api/v1/auth
  *
  * @apiSuccessExample {json} Success-Response:
  *     HTTP/1.1 201 OK
@@ -106,12 +107,12 @@ router.get('/reset/:mail', async ctx => {
     await verifyEmail(confirmEmail.email);
 
 
-    ctx.log.info('Email verification sent to %s', confirmEmail.email);
+    log.info('Email verification sent to %s', confirmEmail.email);
     ctx.status = 201;
     ctx.body = { confirmEmail };
 
   } catch (e) {
-    ctx.log.info('Email verification already requested');
+    log.info('Email verification already requested');
     if (e.statusCode) {
       ctx.throw(e.statusCode, null, { errors: [e.message] });
     } else { ctx.throw(400, null, { errors: [e.message] }); }

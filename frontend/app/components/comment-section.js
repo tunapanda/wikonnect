@@ -17,6 +17,8 @@ export default class CommentSectionComponent extends Component {
   @service
   notify
 
+
+
   get commentModel() {
     return this.store.createRecord('comment', {
       user: this.me.user.id,
@@ -24,31 +26,32 @@ export default class CommentSectionComponent extends Component {
     });
   }
 
+
+
   @computed('me.user.profileUri')
   get profileUri() {
     return this.me.user.profileUri;
   }
 
 
-  @computed
+  @computed()
   get chapterComments() {
-
-    return this.store.query('comment', { "chapterId": this.args.selectedChapter });
-
+    return this.store.query('comment', { 'chapterId': this.args.selectedChapter });
   }
 
   @action
   async saveComment(model) {
-    let notice = this.notify.alert('Be mindful of your comments', { closeAfter: 10000 });
+    let notice = this.notify;
     let chap = await this.store.findRecord('chapter', this.args.selectedChapter);
     model.setProperties({
       chapter: chap
     });
-    model.save().catch(function () {
-      if (model.get('isError')) {
-        return notice;
-      }
+    model.save().then(function () {
+      // save worked
+    }, function () {
+      notice.alert('Be mindful of your comments');
     });
+
   }
 }
 

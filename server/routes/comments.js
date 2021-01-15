@@ -29,7 +29,7 @@ const router = new Router({
  *      }
  *
  */
-router.get('/', requireAuth, grantAccess('readAny', 'path'), async ctx => {
+router.get('/', requireAuth, async ctx => {
   // let stateUserId = ctx.state.user.id == undefined ? ctx.state.user.data.id : ctx.state.user.id;
 
   let comment;
@@ -53,7 +53,7 @@ router.get('/', requireAuth, grantAccess('readAny', 'path'), async ctx => {
 
 
 /**
- * @api {get} /:chapterId GET a comment
+ * @api {get} /:comment_id GET a comment
  * @apiName GetAChapterComment
  * @apiGroup ChapterComments
  * @apiPermission authenticated user
@@ -92,7 +92,7 @@ router.get('/:id', requireAuth, grantAccess('readAny', 'path'), async ctx => {
 });
 
 /**
- * @api {post} /:chapterId POST comment
+ * @api {post} / POST comment
  * @apiName PostAChapterComment
  * @apiGroup ChapterComments
  * @apiPermission authenticated user
@@ -141,7 +141,7 @@ router.post('/', requireAuth, grantAccess('createAny', 'path'), async ctx => {
 
 
 /**
- * @api {put} /:chapterId PUT comment
+ * @api {put} /:comment_id PUT comment
  * @apiName PutAChapterComment
  * @apiGroup ChapterComments
  * @apiPermission authenticated user

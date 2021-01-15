@@ -9,6 +9,7 @@ exports.seed = function (knex) {
           user_id: 'user1',
           chapter_id: 'chapter1',
           rating: 4,
+          labels: ['bad sound', 'inaudible'],
           created_at: '2017-12-20 19:17:10',
           updated_at: '2017-12-20 19:17:10'
         },
@@ -17,6 +18,7 @@ exports.seed = function (knex) {
           user_id: 'user2',
           chapter_id: 'chapter1',
           rating: 3,
+          labels: ['bad sound', 'inaudible'],
           created_at: '2017-12-20 19:17:10',
           updated_at: '2017-12-20 19:17:10'
         },
@@ -25,6 +27,7 @@ exports.seed = function (knex) {
           user_id: 'user3',
           chapter_id: 'chapter1',
           rating: 4,
+          labels: ['bad sound', 'inaudible'],
           created_at: '2017-12-20 19:17:10',
           updated_at: '2017-12-20 19:17:10'
         }

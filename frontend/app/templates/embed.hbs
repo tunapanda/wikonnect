@@ -1,0 +1,32 @@
+{{outlet}}
+{{model.name}}
+{{!-- {{callbackUrl}} --}}
+<br>
+{{#if callbackUrl}}
+  <span class="badge badge-primary">Progress updates sent to: {{callbackUrl}}</span>
+
+{{/if}}
+
+<H5p @location={{model.contentUri}} />
+{{#if me.isAuthenticated}}
+  Logged in as : {{me.user.username}}
+  <a name="" {{action logout}} id="" class="btn btn-primary" href="#" role="button">Logout</a>
+
+{{else}}
+  <a name="" {{action (mut showLoginModal) true}} id="" class="btn btn-primary" href="#" role="button">Login</a>
+  <a name="" {{action (mut showRegistrationModal) true}} id="" class="btn btn-primary" href="#" role="button">Signup</a>
+{{/if}}
+
+
+<BsModalSimple @open={{showLoginModal}} @title="Login" @size="sm" @onHidden={{action (mut showLoginModal) false}}>
+  <Authentication::Login @registeredUser={{changeset model LoginValidations}} @authenticationSuccessful={{action "login"
+    }} />
+</BsModalSimple>
+
+
+
+<BsModalSimple @open={{showRegistrationModal}} @title="Login" @size="sm" @onHidden={{action (mut showRegistrationModal)
+  false}}>
+  <Authentication::Signup @newUser={{changeset model UserValidation}} @inviteCode={{invite_code}}
+    @success={{action "signup" }} />
+</BsModalSimple>

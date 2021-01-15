@@ -1,8 +1,8 @@
-<div class="col-lg-4 col-md-6 mb-4">
-  <div class="card h-100">
+<div class="col-lg-4 col-md-6 mb-4 ">
+  <div class="card h-100 shadow-sm">
     {{#link-to "chapter" @chapter.id }}
       {{#if (eq @chapter.imageUrl null)}}
-        <img class="card-img-top" src="http://placehold.jp/20/{{color}}/ffffff/328x200.png?text={{@chapter.name}}"
+        <img class="card-img-top" src="https://placehold.jp/20/{{color}}/ffffff/328x200.png?text={{@chapter.name}}"
           alt="">
       {{else}}
         <img class="card-img-top" alt="" src={{@chapter.imageUrl}}>
@@ -17,7 +17,23 @@
         {{/link-to}}
       </h5>
 
-      <p class="card-text">{{@chapter.description}}</p>
+      {{#if config.content.APP.linkify_description}}
+        <p class="card-text">{{linkify @chapter.description class="btn btn-primary mt-3 replaced"}}</p>
+      {{else}}
+        <p class="card-text">{{@chapter.description}}</p>
+
+      {{/if}}
+
+      <br>
+      {{#each @chapter.tags as |tag|}}
+        {{#link-to "tag" tag}}
+
+          <span class="badge badge-pill badge-primary btn-lg">
+            {{tag}}
+          </span>
+        {{/link-to}}
+
+      {{/each}}
     </div>
 
   </div>

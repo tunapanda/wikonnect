@@ -7,3 +7,5 @@ examples
 coverage/*
 cypress/videos
 cypress/screenshots
+TODO
+.vscode

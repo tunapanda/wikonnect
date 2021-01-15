@@ -17,7 +17,8 @@ exports.seed = function (knex) {
           content_uri: '/uploads/h5p/chapter1',
           created_at: '2017-12-20 19:17:10',
           updated_at: '2017-12-20 19:17:10',
-          approved: true
+          approved: true,
+          tags: ['highschool', 'university'],
         },
         {
           'id': 'chapter2',
@@ -30,7 +31,8 @@ exports.seed = function (knex) {
           'content_uri': '/uploads/h5p/chapter2',
           'created_at': '2017-12-20 19:17:10',
           'updated_at': '2017-12-20 19:17:10',
-          approved: true
+          approved: true,
+          tags: ['highschool', 'university'],
         },
         {
           'id': 'chapter3',
@@ -43,7 +45,8 @@ exports.seed = function (knex) {
           'content_uri': '/uploads/h5p/chapter3',
           'created_at': '2017-12-20 19:17:10',
           'updated_at': '2017-12-20 19:17:10',
-          approved: false
+          tags: ['university'],
+          approved: false,
         },
         {
           'id': 'chapter4',
@@ -56,7 +59,22 @@ exports.seed = function (knex) {
           'content_uri': '/uploads/h5p/chapter4',
           'created_at': '2017-12-20 19:17:10',
           'updated_at': '2017-12-20 19:17:10',
-          approved: false
+          approved: true,
+          tags: ['highschool', 'university'],
+        },
+        {
+          'id': 'chapter5',
+          'name': 'Montoya',
+          'slug': 'Myra',
+          'description': 'qui',
+          'status': 'published',
+          'lesson_id': 'basics2',
+          'content_type': 'h5p',
+          'content_uri': '/uploads/h5p/chapter5',
+          'created_at': '2017-12-20 19:17:10',
+          'updated_at': '2017-12-20 19:17:10',
+          approved: true,
+          tags: ['primary', 'university'],
         }
       ]);
     });

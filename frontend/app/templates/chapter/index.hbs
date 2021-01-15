@@ -1,64 +1,84 @@
 {{!-- {{outlet}} --}}
-{{!-- {{outlet}} --}}
-<div id="chapter">
-
-
-
+{{outlet}}
+{{!-- <div {{did-insert (fn this.dataLoad)}}></div>
+<div {{did-insert (fn this.counterTimer)}}></div> --}}
+<div id="chapter" class="p-4">
   <h4>{{model.name}} </h4>
-
-
-
   <div class="chapter-content ">
     <H5p @location={{model.contentUri}} />
+    <div class="row">
 
-    <p> {{model.description}}</p>
-  </div>
-  {{#if me.user.id}}
-
-    <div class="d-flex justify-content-between mr-2">
-
-      <a name="" id="" class="btn btn-primary" href="#" {{action "toggleFlaggingModal"}} role="button">Report </a>
-      {{!-- <a name="" id="" class="btn btn-primary ml-3" href="#" {{action "toggleRatingModal"}} role="button">Rate </a> --}}
-      {{!-- <BsDropdown as |dd|>
-      <dd.button>&#x22EE; <span class="caret"></span></dd.button>
-      <dd.menu as |ddm|>
-        <ddm.item>
-          <ddm.linkTo @route="index">Rating</ddm.linkTo>
-        </ddm.item>
-        <ddm.item>
-          <ddm.linkTo @route="index">Reporting</ddm.linkTo>
-        </ddm.item>
-      </dd.menu>
-    </BsDropdown> --}}
-      {{star-rating readOnly=enabled rating=5 onClick=(action "ratingSubmit")}}
+      <div class="col-6">
+        <p> {{model.counter}} views | {{format-date model.createdAt}}</p>
+      </div>
+      <div class="col-6">
+        {{!-- <Reaction @likes={{model.reaction.likes}} @dislikes={{model.reaction.dislikes}}
+          @status={{model.reaction.authenticated_user}} /> --}}
 
 
+      </div>
     </div>
-  {{/if}}
+    <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modelId">
+      Embed
+    </button>
 
+    <div class="modal fade" id="modelId" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Embed</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="form-group ">
+              <pre id="frame" name="frame">{{embedCode}}</pre>
+              <CopyButton @clipboardTarget="#frame" @success={{this.onSuccess}} @error={{this.onError}}>
+                Copy Embed Code
+              </CopyButton>
+              {{#if copied}}
+                <span class="badge badge-primary pt-2">Copied</span>
 
+              {{/if}}
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
 
+    {{#if config.content.APP.linkify_description}}
+      <p class="add-pre"> {{linkify model.description class="btn btn-primary replaced"}}</p>
+    {{else}}
+      <p class="add-pre"> {{model.description}}</p>
+
+    {{/if}}
+
+  </div>
+  <br>
   <CommentSection @selectedChapter={{model.id}} />
 </div>
 
-
-
-
-
 <div class="text-center">
   {{#if (eq me.user.username "daph")}}
+
     {{#if (eq model.approved "true")}}
 
-      <button {{on "click" (fn this.toggleApproval model.id "true")}} type="button"
+      <button {{on "click" (fn this.toggleApproval model.id "true" )}} type="button"
         class="btn form-controll btn-danger">
         Un Approve This
       </button>
     {{else}}
-      <button {{on "click" (fn this.toggleApproval model.id "false")}} type="button"
+      <button {{on "click" (fn this.toggleApproval model.id "false" )}} type="button"
         class="btn form-controll btn-success">
         Approve This
       </button>
     {{/if}}
+
+
 
   {{/if}}
 </div>
@@ -66,8 +86,8 @@
 
 
 <BsModalSimple @open={{flaggingModal}} @title="Report Chapter" @closeTitle="Close" @submitTitle="Submit Report" @size=""
-  @closeButton={{true}} @fade={{true}} @backdrop={{true}} @backdropClose={{true}} @onSubmit={{action "saveFlag"}}
-  @onHidden={{action "toggleFlaggingModal"}} @renderInPlace={{true}}>
+  @closeButton={{true}} @fade={{true}} @backdrop={{true}} @backdropClose={{true}} @onSubmit={{action "saveFlag" }}
+  @onHidden={{action "toggleFlaggingModal" }} @renderInPlace={{true}}>
 
   <BsForm @model={{flagModel}} @onSubmit={{action "saveFlag" }} as |form|>
     <form.element @controlType="textarea" @label="Reason for reporting" @property="comment" />
@@ -78,12 +98,14 @@
 </BsModalSimple>
 
 
-<BsModalSimple @open={{ratingModal}} @title="Rate Chapter" @closeTitle="Close" @submitTitle="Submit Rating" @size=""
-  @closeButton={{true}} @fade={{true}} @backdrop={{true}} @backdropClose={{true}} @onSubmit={{action "ratingSubmit"}}
-  @onHidden={{action "toggleRatingModal"}} @renderInPlace={{true}}>
+<BsModalSimple @open={{ratingModal}} @title="Rate This Module " @closeTitle="Close"
+  @submitTitle="Submit Optional Remark" @size="" @closeButton={{true}} @fade={{true}} @backdrop={{true}}
+  @backdropClose={{true}} @onSubmit={{action "ratingSubmit" }} @onHidden={{action "toggleRatingModal" }}
+  @renderInPlace={{true}}>
 
-  <BsForm @onSubmit={{action "ratingSubmit"}} as |form|>
-    <form.element @controlType="textarea" @label="Optional reason for your {{rates}} star" @property="comment" />
+  <BsForm @onSubmit={{action "ratingSubmit" }} as |form|>
+    <form.element @controlType="textarea" @label="Optional reason/remark for your {{rates}} star rating"
+      @property="comment" />
 
 
   </BsForm>

@@ -1,9 +1,4 @@
 @import url("https://fonts.googleapis.com/css?family=Karla&display=swap");
-.padded {
-  padding-left: 1em;
-  padding-right: 1em;
-}
-
 .auth-btn {
   background-color: bisque;
 }
@@ -61,11 +56,6 @@
   padding-bottom: 1em;
 }
 
-.invalid-feedback {
-  font-size: 0.2rem;
-  color: red;
-}
-
 label {
   color: grey;
   font-size: 10px;
@@ -79,7 +69,7 @@ label {
 .form-title {
   font-size: 30px;
   color: white;
-  background-color: #534897;
+  background-color: #910c7f;
   text-align: left;
   font-weight: bold;
   padding: 0 1.6rem 0.8rem 1.6rem;

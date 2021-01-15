@@ -16,17 +16,52 @@
 
 }
 
-.achievement {
-  display: flex;
+.achievement .card{
+  margin: 15px 0;
+  background: #FAFAF5 0% 0% no-repeat padding-box;
+  border-radius: 11px;
+  opacity: 1;
   flex-direction: row;
-  padding-top: 7px;
+  border: 1px solid #FAFAF5;
 
+  .card-header{
+    display: unset;
+    border-bottom: unset;
+    background: #FAFAF5 0% 0% no-repeat padding-box;
+  }
   img {
-    margin-top: 6px;
-    padding-right: 8px;
+    margin: 10px 0 0 10px;
+  }
+  p{
+    margin-bottom: 3px;
   }
 
-
+  .badgeName {
+    text-align: left;
+    font: "Semi Bold 10px/16px Inter";
+    letter-spacing: 0px;
+    color: #08BC87;
+    opacity: 1;
+  }
+  .description{
+    text-align: left;
+    font: "Semi Bold 15px/16px Inter";
+    letter-spacing: 0px;
+    color: #201C2F;
+    opacity: 1;
+  }
+  .created{
+    font: "Regular 14px/18px Inter";
+    letter-spacing: 0px;
+    color: #9DA3A2;
+    opacity: 1;
+  }
+  .fa-share-square {
+    opacity: 1;
+    color: #F57010;
+    font-size: 1rem;
+    margin-left: 0;
+  }
 }
 
 .profile-acheivements {
@@ -48,7 +83,6 @@
 
 }
 
-.profile-body {}
 
 .profile-submit {
   background-color: $primary-purple;

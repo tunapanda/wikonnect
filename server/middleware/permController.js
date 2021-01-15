@@ -36,7 +36,7 @@ exports.requireAuth = async function (ctx, next) {
       await next();
     }
   } catch (error) {
-    log.error('Token has expired with error - %s', error);
+    log.error(`The following error ${error} with message ${error.message}`);
     if (process.env.NODE_ENV === 'development') {
       ctx.throw(400, error);
     }
@@ -45,9 +45,9 @@ exports.requireAuth = async function (ctx, next) {
 };
 
 /**
- * 
- * @param {*} action 
- * @param {*} resource 
+ *
+ * @param {*} action
+ * @param {*} resource
  */
 exports.grantAccess = function (action, resource) {
 
@@ -63,7 +63,7 @@ exports.grantAccess = function (action, resource) {
 
       await next();
     } catch (error) {
-      log.error('Bad request with the following message %s', error);
+      log.error(`Bad request with the following message ${error}`);
       ctx.throw(400, null, { errors: ['Bad Request'] });
     }
   };

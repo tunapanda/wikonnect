@@ -33,7 +33,7 @@ export default class EditChapterComponent extends Component {
 
   @action
   opennav() {
-    document.getElementById("mySidenav").style.width = "100%";
+    document.getElementById('mySidenav').style.width = '100%';
   }
 
 }

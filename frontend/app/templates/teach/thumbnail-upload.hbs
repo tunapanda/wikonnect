@@ -1,0 +1,66 @@
+{{outlet}}
+<div class=" d-flex row text-center p-4 shadow-sm justify-content-center">
+  <h3><b>Tag Content</b></h3>
+</div>
+
+<div class=" row d-flex justify-content-center">
+  <div class="p-4 col-sm-6">
+    {{#if me.isAuthenticated}}
+
+      <div class="text-center">
+
+        {{!-- {{#if this.me.user.profileUri}}
+      <img class="rounded-circle" width="300px" alt="" src={{this.me.user.profileUri}}>
+    {{else}}
+      <img class="rounded-circle" width="300px" alt="" src={{profileImage}}>
+
+    {{/if}} --}}
+
+
+        <div class="bg-primary text-center p-3 text-white mb-4 ">
+          UPLOAD THUMBNAIL
+        </div>
+
+        <br>
+
+        <div class="p-5   mb-5 ml-5 mr-5 ">
+          <Forms::Upload @multiple="false" @accept="image/*" @filesSelected={{action "uploadPic"}}
+            @disabled={{uploader.uploading}}>
+            {{#if uploader.uploading}}
+              <BsProgress as |pg|>
+                <pg.bar @value={{uploader.progress}} />
+              </BsProgress>
+              Uploading... <span class="loading-spinner"></span> {{uploader.progress}}% <br>
+              <small class="text-muted">You will be redirected once upload is complete</small>
+
+            {{else}}
+              Upload Thumbnail
+            {{/if}}
+
+
+          </Forms::Upload>
+        </div>
+
+        {{#if signup}}
+
+          <br><br>
+          {{#link-to "profile"}}
+            {{#if complete}}
+              <button type="button" class="btn btn-success">Proceed to profile</button>
+            {{else}}
+              Skip
+            {{/if}}
+
+          {{/link-to}}
+
+        {{/if}}
+      </div>
+
+
+    {{else}}
+
+      <Warning @message="You do not have permission to view this page" />
+
+    {{/if}}
+  </div>
+</div>

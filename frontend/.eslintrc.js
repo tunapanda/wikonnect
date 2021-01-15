@@ -9,7 +9,8 @@ module.exports = {
     }
   },
   plugins: [
-    'ember'
+    'ember',
+    'hbs'
   ],
   extends: [
     'eslint:recommended',
@@ -21,8 +22,10 @@ module.exports = {
   rules: {
     'no-console': 0,
     'no-var': 1,
-    'indent': ["error", 2],
-    'semi': ["error", "always"]
+    'indent': ['error', 2],
+    'quotes': ['error', 'single'],
+    'semi': ['error', 'always'],
+    'hbs/check-hbs-template-literals': 2
   },
   overrides: [
     // node files

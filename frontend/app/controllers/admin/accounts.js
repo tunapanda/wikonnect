@@ -25,12 +25,12 @@ export default class AdminAccountsController extends Controller {
     elements: {
       line: {
         fill: false,
-        backgroundColor: "rgb(255, 99, 132)",
-        borderColor: "rgb(255, 99, 132)",
+        backgroundColor: 'rgb(255, 99, 132)',
+        borderColor: 'rgb(255, 99, 132)',
       },
       point: {
-        backgroundColor: "rgb(153, 102, 255)",
-        hoverBackgroundColor: "rgb(153, 102, 255)",
+        backgroundColor: 'rgb(153, 102, 255)',
+        hoverBackgroundColor: 'rgb(153, 102, 255)',
         hoverRadius: 15,
       }
     }
@@ -73,7 +73,7 @@ export default class AdminAccountsController extends Controller {
         labels: labels,
         datasets: [
           {
-            label: "Users Created",
+            label: 'Users Created',
             data: dataset
           }
         ],

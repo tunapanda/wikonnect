@@ -8,7 +8,7 @@ module.exports = function (defaults) {
       enabled: EmberApp.env() !== 'production',
       extensions: ['js']
     },
-    "ember-drag-drop-polyfill": {
+    'ember-drag-drop-polyfill': {
       includeCSS: true,
       includeIconsCss: false,
       includeDebugCss: true,
@@ -16,9 +16,6 @@ module.exports = function (defaults) {
     },
     babel: {
       sourceMaps: 'both'
-    },
-    fontawesome: {
-      defaultPrefix: 'fal' // light icons
     },
     'ember-bootstrap': {
       bootstrapVersion: 4,
@@ -48,6 +45,9 @@ module.exports = function (defaults) {
 
   app.import('node_modules/h5p-standalone/dist/styles/h5p.css');
   app.import('public/bootstrap.css');
+  app.import('node_modules/ember-tags-input/vendor/styles/eti-svg-icons.css');
+  app.import('node_modules/ember-tags-input/vendor/styles/ember-tags-input.css');
+
 
   return app.toTree();
 };

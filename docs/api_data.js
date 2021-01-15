@@ -1,7 +1,7 @@
 define({ "api": [
   {
     "type": "get",
-    "url": "/users/:id",
+    "url": "/api/v1/users/:id",
     "title": "GET a single user using id.",
     "name": "GetAUser",
     "group": "Authentication",
@@ -20,16 +20,45 @@ define({ "api": [
             "type": "String",
             "optional": false,
             "field": "authorization",
-            "description": "<p>Bearer &lt;&lt;YOUR_API_KEY_HERE&gt;&gt;</p>"
+            "description": "<p>Users unique JWT</p>"
           }
         ]
       }
     },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "id",
+            "description": "<p>The users id</p>"
+          }
+        ]
+      }
+    },
+    "sampleRequest": [
+      {
+        "url": "https://localhost:3000/api/v1/users"
+      }
+    ],
     "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "id",
+            "description": "<p>Unique user id</p>"
+          }
+        ]
+      },
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "    HTTP/1.1 201 OK\n    {\n      \"user\": {\n      \"id\": \"user2\",\n      \"username\": \"user2\",\n      \"createdAt\": \"2017-12-20T16:17:10.000Z\",\n      \"updatedAt\": \"2017-12-20T16:17:10.000Z\",\n      \"profileUri\": \"uploads/profiles/user1.jpg\",\n      \"private\": boolean,\n      \"inviteCode\": \"DTrbi6aLj\",\n      \"achievementAwards\": [\n        {\n          \"id\": \"achievementaward1\",\n          \"name\": \"completed 10 courses\",\n          \"type\": \"achievementAwards\"\n        },\n        {\n          \"id\": \"achievementaward2\",\n          \"name\": \"fully filled profile\",\n          \"type\": \"achievementAwards\"\n        }\n      ],\n      \"userRoles\": [\n        {\n          \"name\": \"basic\"\n        }\n      ],\n      \"enrolledCourses\": [\n         {\n           \"id\": \"course1\",\n           \"name\": \"A Course 1\",\n           \"type\": \"course\"\n         }\n      ],\n      \"userVerification\": []\n   }\n}",
+          "content": "    HTTP/1.1 201 OK\n    {\n      \"user\": {\n      \"id\": \"user2\",\n      \"username\": \"user2\",\n      \"createdAt\": \"2017-12-20T16:17:10.000Z\",\n      \"updatedAt\": \"2017-12-20T16:17:10.000Z\",\n      \"profileUri\": \"image_url\",\n      \"private\": boolean,\n      \"inviteCode\": \"invited_by\",\n      \"achievementAwards\": [\n        {\n          \"id\": \"achievementaward1\",\n          \"name\": \"completed 10 courses\",\n          \"type\": \"achievementAwards\"\n        },\n        {\n          \"id\": \"achievementaward2\",\n          \"name\": \"fully filled profile\",\n          \"type\": \"achievementAwards\"\n        }\n      ],\n      \"userRoles\": [\n        {\n          \"name\": \"basic\"\n        }\n      ],\n      \"enrolledCourses\": [\n         {\n           \"id\": \"course1\",\n           \"name\": \"A Course 1\",\n           \"type\": \"course\"\n         }\n      ],\n      \"userVerification\": []\n   }\n}",
           "type": "json"
         }
       ]
@@ -77,8 +106,63 @@ define({ "api": [
         ]
       }
     },
+    "parameter": {
+      "fields": {
+        "Required Params": [
+          {
+            "group": "Required Params",
+            "type": "string",
+            "optional": false,
+            "field": "user[username]",
+            "description": "<p>username</p>"
+          },
+          {
+            "group": "Required Params",
+            "type": "string",
+            "optional": false,
+            "field": "user[email]",
+            "description": "<p>Unique email</p>"
+          },
+          {
+            "group": "Required Params",
+            "type": "string",
+            "optional": false,
+            "field": "user[password]",
+            "description": "<p>validated password</p>"
+          }
+        ],
+        "Optional Params": [
+          {
+            "group": "Optional Params",
+            "type": "string",
+            "optional": false,
+            "field": "user[invitedBy]",
+            "description": "<p>auto filled on the form</p>"
+          },
+          {
+            "group": "Optional Params",
+            "type": "string",
+            "optional": false,
+            "field": "user[tags]",
+            "description": "<p>a list of String with tags a user has subscribed to</p>"
+          },
+          {
+            "group": "Optional Params",
+            "type": "string",
+            "optional": false,
+            "field": "user[metadata]",
+            "description": "<p>json data</p>"
+          }
+        ]
+      }
+    },
     "filename": "./server/routes/users.js",
-    "groupTitle": "Authentication"
+    "groupTitle": "Authentication",
+    "sampleRequest": [
+      {
+        "url": "https://kkl.wikonnect.org/users"
+      }
+    ]
   },
   {
     "type": "post",
@@ -120,46 +204,49 @@ define({ "api": [
       }
     },
     "filename": "./server/routes/users.js",
-    "groupTitle": "Authentication"
+    "groupTitle": "Authentication",
+    "sampleRequest": [
+      {
+        "url": "https://kkl.wikonnect.org/users/:id/profile-image"
+      }
+    ]
   },
   {
     "type": "post",
-    "url": "/users",
+    "url": "/api/v1/users",
     "title": "POST create a new user.",
     "name": "PostAUser",
     "group": "Authentication",
     "parameter": {
       "fields": {
-        "Required Params": [
+        "Parameter": [
           {
-            "group": "Required Params",
+            "group": "Parameter",
             "type": "string",
             "optional": false,
             "field": "user[username]",
             "description": "<p>username</p>"
           },
           {
-            "group": "Required Params",
+            "group": "Parameter",
             "type": "string",
             "optional": false,
             "field": "user[email]",
             "description": "<p>Unique email</p>"
           },
           {
-            "group": "Required Params",
+            "group": "Parameter",
             "type": "string",
             "optional": false,
             "field": "user[password]",
             "description": "<p>validated password</p>"
-          }
-        ],
-        "Optional Params": [
+          },
           {
-            "group": "Optional Params",
+            "group": "Parameter",
             "type": "string",
             "optional": false,
             "field": "user[invitedBy]",
-            "description": "<p>auto filled on the form</p>"
+            "description": "<p>optional auto filled on the form</p>"
           }
         ]
       }
@@ -173,7 +260,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "HTTP/1.1 201 OK\n{\n   \"user\": {\n     \"id\": \"string\",\n     \"username\": \"string\",\n     \"inviteCode\": \"DTrbi6aLj\",\n     \"createdAt\": \"string\",\n     \"updatedAt\": \"string\"\n   }\n}",
+          "content": "HTTP/1.1 201 OK\n{\n   \"user\": {\n     \"id\": \"string\",\n     \"username\": \"string\",\n     \"inviteCode\": \"invited_by\",\n     \"createdAt\": \"string\",\n     \"updatedAt\": \"string\",\n     \"metadata\": json_array\n   }\n}",
           "type": "json"
         }
       ]
@@ -193,26 +280,31 @@ define({ "api": [
     },
     "version": "0.0.0",
     "filename": "./server/routes/users.js",
-    "groupTitle": "Authentication"
+    "groupTitle": "Authentication",
+    "sampleRequest": [
+      {
+        "url": "https://kkl.wikonnect.org/api/v1/users"
+      }
+    ]
   },
   {
     "type": "post",
-    "url": "/auth",
+    "url": "/api/v1/auth",
     "title": "POST login a user.",
     "name": "PostLoginAUser",
     "group": "Authentication",
     "parameter": {
       "fields": {
-        "Required Params": [
+        "Parameter": [
           {
-            "group": "Required Params",
+            "group": "Parameter",
             "type": "string",
             "optional": false,
             "field": "username",
             "description": "<p>username</p>"
           },
           {
-            "group": "Required Params",
+            "group": "Parameter",
             "type": "string",
             "optional": false,
             "field": "password",
@@ -224,6 +316,11 @@ define({ "api": [
     "permission": [
       {
         "name": "none"
+      }
+    ],
+    "sampleRequest": [
+      {
+        "url": "https://localhost:3000/api/v1/auth"
       }
     ],
     "success": {
@@ -278,12 +375,64 @@ define({ "api": [
         ]
       }
     },
+    "parameter": {
+      "fields": {
+        "PUT Params": [
+          {
+            "group": "PUT Params",
+            "type": "string",
+            "optional": false,
+            "field": "user[email]",
+            "description": "<p>Unique email</p>"
+          },
+          {
+            "group": "PUT Params",
+            "type": "string",
+            "optional": false,
+            "field": "user[password]",
+            "description": "<p>validated password</p>"
+          },
+          {
+            "group": "PUT Params",
+            "type": "string",
+            "optional": false,
+            "field": "user[tags]",
+            "description": "<p>a list of String with tags a user has subscribed to</p>"
+          },
+          {
+            "group": "PUT Params",
+            "type": "string",
+            "optional": false,
+            "field": "user[metadata]",
+            "description": "<p>json data</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "user[object]",
+            "description": "<p>Object data</p>"
+          }
+        ]
+      }
+    },
     "filename": "./server/routes/users.js",
-    "groupTitle": "Authentication"
+    "groupTitle": "Authentication",
+    "sampleRequest": [
+      {
+        "url": "https://kkl.wikonnect.org/users/:id"
+      }
+    ]
   },
   {
     "type": "get",
-    "url": "/:chapterId",
+    "url": "/:comment_id",
     "title": "GET a comment",
     "name": "GetAChapterComment",
     "group": "ChapterComments",
@@ -303,7 +452,12 @@ define({ "api": [
     },
     "version": "0.0.0",
     "filename": "./server/routes/comments.js",
-    "groupTitle": "ChapterComments"
+    "groupTitle": "ChapterComments",
+    "sampleRequest": [
+      {
+        "url": "https://kkl.wikonnect.org/:comment_id"
+      }
+    ]
   },
   {
     "type": "get",
@@ -327,11 +481,16 @@ define({ "api": [
     },
     "version": "0.0.0",
     "filename": "./server/routes/comments.js",
-    "groupTitle": "ChapterComments"
+    "groupTitle": "ChapterComments",
+    "sampleRequest": [
+      {
+        "url": "/"
+      }
+    ]
   },
   {
     "type": "post",
-    "url": "/:chapterId",
+    "url": "/",
     "title": "POST comment",
     "name": "PostAChapterComment",
     "group": "ChapterComments",
@@ -351,11 +510,16 @@ define({ "api": [
     },
     "version": "0.0.0",
     "filename": "./server/routes/comments.js",
-    "groupTitle": "ChapterComments"
+    "groupTitle": "ChapterComments",
+    "sampleRequest": [
+      {
+        "url": "/"
+      }
+    ]
   },
   {
     "type": "put",
-    "url": "/:chapterId",
+    "url": "/:comment_id",
     "title": "PUT comment",
     "name": "PutAChapterComment",
     "group": "ChapterComments",
@@ -366,11 +530,143 @@ define({ "api": [
     ],
     "version": "0.0.0",
     "filename": "./server/routes/comments.js",
-    "groupTitle": "ChapterComments"
+    "groupTitle": "ChapterComments",
+    "sampleRequest": [
+      {
+        "url": "https://kkl.wikonnect.org/:comment_id"
+      }
+    ]
+  },
+  {
+    "type": "delete",
+    "url": "/:rating_id",
+    "title": "DELETE a rating",
+    "name": "DeleteAChapterRating",
+    "group": "ChapterRatings",
+    "permission": [
+      {
+        "name": "authenticated user"
+      }
+    ],
+    "version": "0.0.0",
+    "filename": "./server/routes/ratings.js",
+    "groupTitle": "ChapterRatings",
+    "sampleRequest": [
+      {
+        "url": "https://kkl.wikonnect.org/:rating_id"
+      }
+    ]
   },
   {
     "type": "get",
-    "url": "/chapters/:id",
+    "url": "/:rating_id",
+    "title": "GET a rating",
+    "name": "GetAChapterRating",
+    "group": "ChapterRatings",
+    "permission": [
+      {
+        "name": "authenticated user"
+      }
+    ],
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 201 OK\n{\n \"rating\": [{\n    \"id\": String,\n    \"rating\": String,\n    \"comment\": String,\n    \"chapter_id\": String,\n    \"user_id\": String,\n    \"labels\": Array,\n    \"category\": String,\n    \"createdAt\": DateTime,\n    \"updatedAt\": DateTime\n   }]\n }",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "./server/routes/ratings.js",
+    "groupTitle": "ChapterRatings",
+    "sampleRequest": [
+      {
+        "url": "https://kkl.wikonnect.org/:rating_id"
+      }
+    ]
+  },
+  {
+    "type": "get",
+    "url": "/",
+    "title": "GET ratings",
+    "name": "GetChapterRatings",
+    "group": "ChapterRatings",
+    "permission": [
+      {
+        "name": "authenticated user"
+      }
+    ],
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 201 OK\n{\n \"ratings\": [{\n    \"id\": String,\n    \"rating\": String,\n    \"comment\": String,\n    \"chapter_id\": String,\n    \"user_id\": String,\n    \"labels\": Array,\n    \"category\": String,\n    \"createdAt\": DateTime,\n    \"updatedAt\": DateTime\n   }]\n }",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "./server/routes/ratings.js",
+    "groupTitle": "ChapterRatings",
+    "sampleRequest": [
+      {
+        "url": "/"
+      }
+    ]
+  },
+  {
+    "type": "post",
+    "url": "/",
+    "title": "POST rating",
+    "name": "PostAChapterRating",
+    "group": "ChapterRatings",
+    "permission": [
+      {
+        "name": "authenticated user"
+      }
+    ],
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 201 OK\n{\n \"ratings\": {\n    \"id\": String,\n    \"rating\": String,\n    \"comment\": String,\n    \"chapter_id\": String,\n    \"user_id\": String,\n    \"labels\": Array,\n    \"category\": String,\n    \"createdAt\": DateTime,\n    \"updatedAt\": DateTime\n   }\n }",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "./server/routes/ratings.js",
+    "groupTitle": "ChapterRatings",
+    "sampleRequest": [
+      {
+        "url": "/"
+      }
+    ]
+  },
+  {
+    "type": "put",
+    "url": "/:rating_id",
+    "title": "PUT comment",
+    "name": "PutAChapterRating",
+    "group": "ChapterRatings",
+    "permission": [
+      {
+        "name": "authenticated user"
+      }
+    ],
+    "version": "0.0.0",
+    "filename": "./server/routes/ratings.js",
+    "groupTitle": "ChapterRatings",
+    "sampleRequest": [
+      {
+        "url": "https://kkl.wikonnect.org/:rating_id"
+      }
+    ]
+  },
+  {
+    "type": "get",
+    "url": "/api/v1/chapters/:id",
     "title": "GET single chapter.",
     "name": "GetAChapter",
     "group": "Chapters",
@@ -380,34 +676,73 @@ define({ "api": [
       }
     ],
     "version": "0.4.0",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "id",
+            "description": "<p>Chapter unique ID</p>"
+          }
+        ]
+      }
+    },
     "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Object[]",
+            "optional": false,
+            "field": "chapter",
+            "description": "<p>list</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "chapter.id",
+            "description": "<p>Chapter id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object[]",
+            "optional": false,
+            "field": "Chapter[object]",
+            "description": "<p>Object data</p>"
+          }
+        ]
+      },
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "HTTP/1.1 200 OK\n{\n   \"chapter\": {\n   \"id\": \"chapter4\",\n   \"lessonId\": \"lesson2\",\n   \"name\": \"A Chapter4\",\n   \"slug\": \"a-chapter4\",\n   \"description\": \"An H5P Chapter.\",\n   \"status\": \"published\",\n   \"creatorId\": \"user1\",\n   \"createdAt\": \"2017-12-20T16:17:10.000Z\",\n   \"updatedAt\": \"2017-12-20T16:17:10.000Z\",\n   \"contentType\": \"h5p\",\n   \"contentUri\": \"/uploads/h5p/chapter4\",\n   \"imageUrl\": null,\n   \"contentId\": null,\n   \"tags\": []\n }",
+          "content": "HTTP/1.1 200 OK\n{\n   \"chapter\": {\n       \"id\": \"chapter1\",\n       \"lessonId\": \"lesson1\",\n       \"name\": \"A Chapter\",\n       \"slug\": \"a-chapter\",\n       \"description\": \"An H5P Chapter.\",\n       \"status\": \"published\",\n       \"creatorId\": \"user1\",\n       \"createdAt\": \"2017-12-20T16:17:10.000Z\",\n       \"updatedAt\": \"2017-12-20T16:17:10.000Z\",\n       \"contentType\": \"h5p\",\n       \"contentUri\": \"/uploads/h5p/chapter1\",\n       \"imageUrl\": \"/uploads/images/content/chapters/chapter1.jpeg\",\n       \"contentId\": null,\n       \"tags\": [],\n       \"likes\": \"0\",\n       \"dislikes\": \"0\",\n       \"rating\": null,\n       \"comment\": [{\n       }]\n    }\n }",
           "type": "json"
         }
       ]
     },
     "error": {
-      "fields": {
-        "Error 4xx": [
-          {
-            "group": "Error 4xx",
-            "type": "String",
-            "optional": false,
-            "field": "errors",
-            "description": "<p>Bad Request.</p>"
-          }
-        ]
-      }
+      "examples": [
+        {
+          "title": "List error",
+          "content": "HTTP/1.1 500 Internal Server Error",
+          "type": "json"
+        }
+      ]
     },
     "filename": "./server/routes/chapters.js",
-    "groupTitle": "Chapters"
+    "groupTitle": "Chapters",
+    "sampleRequest": [
+      {
+        "url": "https://kkl.wikonnect.org/api/v1/chapters/:id"
+      }
+    ]
   },
   {
     "type": "get",
-    "url": "/chapters/",
+    "url": "/api/v1/chapters/",
     "title": "GET all chapters.",
     "name": "GetChapters",
     "group": "Chapters",
@@ -416,35 +751,124 @@ define({ "api": [
         "name": "none"
       }
     ],
-    "success": {
-      "examples": [
-        {
-          "title": "Success-Response:",
-          "content": "HTTP/1.1 200 OK\n {\n    \"chapter\": [{\n       \"id\": \"chapter1\",\n       \"lessonId\": \"lesson1\",\n       \"name\": \"A Chapter\",\n       \"slug\": \"a-chapter\",\n       \"description\": \"An H5P Chapter.\",\n       \"status\": \"published\",\n       \"creatorId\": \"user1\",\n       \"createdAt\": \"2017-12-20T16:17:10.000Z\",\n       \"updatedAt\": \"2017-12-20T16:17:10.000Z\",\n       \"contentType\": \"h5p\",\n       \"contentUri\": \"/uploads/h5p/chapter1\",\n       \"imageUrl\": \"/uploads/images/content/chapters/chapter1.jpeg\",\n       \"contentId\": null,\n       \"tags\": [],\n       \"comment\": [{\n       }]\n    }]\n }",
-          "type": "json"
-        }
-      ]
-    },
-    "error": {
+    "description": "<p>Get all chapter and filter using multiple query params</p>",
+    "parameter": {
       "fields": {
-        "Error 4xx": [
+        "Parameter": [
           {
-            "group": "Error 4xx",
+            "group": "Parameter",
             "type": "String",
-            "optional": false,
-            "field": "errors",
-            "description": "<p>Bad Request.</p>"
+            "optional": true,
+            "field": "id",
+            "description": "<p>Optional id</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": true,
+            "field": "name",
+            "description": "<p>Optional name</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": true,
+            "field": "status",
+            "description": "<p>Optional chapter status - published | draft</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": true,
+            "field": "creatorId",
+            "description": "<p>Optional author of a chapter</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Boolean",
+            "optional": true,
+            "field": "approved",
+            "description": "<p>Optional boolean with default being false</p>"
+          }
+        ],
+        "Authentication": [
+          {
+            "group": "Authentication",
+            "type": "String[]",
+            "optional": true,
+            "field": "tags",
+            "description": "<p>Optional tags list</p>"
           }
         ]
       }
     },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Object[]",
+            "optional": false,
+            "field": "chapter",
+            "description": "<p>List of chapters</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "chapter.id",
+            "description": "<p>Id of the chapter</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "chapter.name",
+            "description": "<p>Name of the chapter</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "chapter.description",
+            "description": "<p>Description of the chapter</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "chapter.status",
+            "description": "<p>Status of the chapter (published | draft)</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Boolean",
+            "optional": false,
+            "field": "chapter.approved",
+            "description": "<p>boolean with default being false</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "chapter.tags",
+            "description": "<p>tags list</p>"
+          }
+        ]
+      }
+    },
+    "sampleRequest": [
+      {
+        "url": "https://kkl.wikonnect.org/api/v1/chapters/"
+      }
+    ],
     "version": "0.0.0",
     "filename": "./server/routes/chapters.js",
     "groupTitle": "Chapters"
   },
   {
     "type": "post",
-    "url": "/chapters",
+    "url": "/api/v1/chapters",
     "title": "POST single chapter.",
     "name": "PostAChapter",
     "group": "Chapters",
@@ -476,14 +900,21 @@ define({ "api": [
             "type": "String",
             "optional": false,
             "field": "chapter[status]",
-            "description": "<p>modules status - published | draft .</p>"
+            "description": "<p>modules status - options[published | draft]</p>"
           },
           {
             "group": "Parameter",
-            "type": "String",
+            "type": "Boolean",
             "optional": false,
-            "field": "chapter",
-            "description": "<p>[tags:[ Array ]] Array of tags.</p>"
+            "field": "chapter[approved]",
+            "description": "<p>defaults is false</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Object[]",
+            "optional": false,
+            "field": "chapter[tags]",
+            "description": "<p>Tags list.</p>"
           }
         ]
       }
@@ -498,24 +929,20 @@ define({ "api": [
       ]
     },
     "error": {
-      "fields": {
-        "Error 4xx": [
-          {
-            "group": "Error 4xx",
-            "type": "String",
-            "optional": false,
-            "field": "errors",
-            "description": "<p>Bad Request.</p>"
-          }
-        ]
-      }
+      "examples": [
+        {
+          "title": "List error",
+          "content": "HTTP/1.1 500 Internal Server Error",
+          "type": "json"
+        }
+      ]
     },
     "filename": "./server/routes/chapters.js",
     "groupTitle": "Chapters"
   },
   {
     "type": "post",
-    "url": "/chapters/:id/upload",
+    "url": "/api/v1/chapters/:id/upload",
     "title": "upload H5P chapter",
     "name": "PostAH5PChapter",
     "group": "Chapters",
@@ -532,27 +959,39 @@ define({ "api": [
           "content": "HTTP/1.1 200 OK\n{\n   host: ctx.host,\n   path: uploadPath\n }",
           "type": "json"
         }
-      ]
-    },
-    "error": {
+      ],
       "fields": {
-        "Error 4xx": [
+        "Success 200": [
           {
-            "group": "Error 4xx",
-            "type": "String",
+            "group": "Success 200",
+            "type": "Object[]",
             "optional": false,
-            "field": "errors",
-            "description": "<p>Bad Request.</p>"
+            "field": "chapter[object]",
+            "description": "<p>Object data</p>"
           }
         ]
       }
     },
+    "error": {
+      "examples": [
+        {
+          "title": "List error",
+          "content": "HTTP/1.1 500 Internal Server Error",
+          "type": "json"
+        }
+      ]
+    },
     "filename": "./server/routes/chapters.js",
-    "groupTitle": "Chapters"
+    "groupTitle": "Chapters",
+    "sampleRequest": [
+      {
+        "url": "https://kkl.wikonnect.org/api/v1/chapters/:id/upload"
+      }
+    ]
   },
   {
     "type": "post",
-    "url": "/chapters/:id/chapter-image",
+    "url": "/api/v1/chapters/:id/chapter-image",
     "title": "POST chapter banner image.",
     "name": "PostBannerImage",
     "group": "Chapters",
@@ -569,20 +1008,125 @@ define({ "api": [
           "content": " HTTP/1.1 200 OK\n {\n  \"host\": hostname of where the image has been uploaded\n  \"path\": image path\n}",
           "type": "json"
         }
-      ]
-    },
-    "error": {
+      ],
       "fields": {
-        "Error 4xx": [
+        "Success 200": [
           {
-            "group": "Error 4xx",
-            "type": "String",
+            "group": "Success 200",
+            "type": "Object[]",
             "optional": false,
-            "field": "errors",
-            "description": "<p>Bad Request.</p>"
+            "field": "chapter[object]",
+            "description": "<p>Object data</p>"
           }
         ]
       }
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "List error",
+          "content": "HTTP/1.1 500 Internal Server Error",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "./server/routes/chapters.js",
+    "groupTitle": "Chapters",
+    "sampleRequest": [
+      {
+        "url": "https://kkl.wikonnect.org/api/v1/chapters/:id/chapter-image"
+      }
+    ]
+  },
+  {
+    "type": "put",
+    "url": "/api/v1/chapters/:id",
+    "title": "PUT single chapter.",
+    "name": "PutAChapter",
+    "group": "Chapters",
+    "permission": [
+      {
+        "name": "none"
+      }
+    ],
+    "version": "0.4.0",
+    "sampleRequest": [
+      {
+        "url": "https://kkl.wikonnect.org/api/v1/chapters/:id"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "id",
+            "description": "<p>Id - Unique.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "chapter[name]",
+            "description": "<p>Name - Unique.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "chapter[description]",
+            "description": "<p>Description.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "chapter[status]",
+            "description": "<p>modules status - published | draft</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Boolean",
+            "allowedValues": [
+              "\"false\""
+            ],
+            "optional": false,
+            "field": "chapter[approved]",
+            "description": "<p>defaults is false</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Object[]",
+            "optional": false,
+            "field": "chapter[tags]",
+            "description": "<p>Tags list.</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Object[]",
+            "optional": false,
+            "field": "chapter[object]",
+            "description": "<p>Object data</p>"
+          }
+        ]
+      }
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "List error",
+          "content": "HTTP/1.1 500 Internal Server Error",
+          "type": "json"
+        }
+      ]
     },
     "filename": "./server/routes/chapters.js",
     "groupTitle": "Chapters"
@@ -626,7 +1170,12 @@ define({ "api": [
     },
     "version": "0.0.0",
     "filename": "./server/routes/courses.js",
-    "groupTitle": "Courses"
+    "groupTitle": "Courses",
+    "sampleRequest": [
+      {
+        "url": "https://kkl.wikonnect.org/courses/:id"
+      }
+    ]
   },
   {
     "type": "get",
@@ -967,7 +1516,12 @@ define({ "api": [
     },
     "version": "0.0.0",
     "filename": "./server/routes/paths.js",
-    "groupTitle": "Learning_Path"
+    "groupTitle": "Learning_Path",
+    "sampleRequest": [
+      {
+        "url": "https://kkl.wikonnect.org/paths/:id"
+      }
+    ]
   },
   {
     "type": "get",
@@ -1157,7 +1711,12 @@ define({ "api": [
     },
     "version": "0.0.0",
     "filename": "./server/routes/lessons.js",
-    "groupTitle": "Lessons"
+    "groupTitle": "Lessons",
+    "sampleRequest": [
+      {
+        "url": "https://kkl.wikonnect.org/lessons/:id"
+      }
+    ]
   },
   {
     "type": "get",
@@ -1425,7 +1984,12 @@ define({ "api": [
     },
     "version": "0.0.0",
     "filename": "./server/routes/modules.js",
-    "groupTitle": "Modules"
+    "groupTitle": "Modules",
+    "sampleRequest": [
+      {
+        "url": "https://kkl.wikonnect.org/modules/:id"
+      }
+    ]
   },
   {
     "type": "get",
@@ -1581,7 +2145,7 @@ define({ "api": [
   },
   {
     "type": "put",
-    "url": "/modules/:id",
+    "url": "api/v1/modules/:id",
     "title": "PUT a module.",
     "name": "PutAModule",
     "group": "Modules",
@@ -1597,55 +2161,36 @@ define({ "api": [
             "group": "Parameter",
             "type": "String",
             "optional": false,
-            "field": "module[name]",
-            "description": "<p>Optional Name Unique.</p>"
+            "field": "module",
+            "description": "<p>List of modules</p>"
           },
           {
             "group": "Parameter",
             "type": "String",
             "optional": false,
+            "field": "module.name",
+            "description": "<p>Optional Name Unique.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": true,
             "field": "module[slug]",
             "description": "<p>Optional Slug is Unique and autogenerated.</p>"
           },
           {
             "group": "Parameter",
             "type": "String",
-            "optional": false,
+            "optional": true,
             "field": "module[description]",
             "description": "<p>Optional Description.</p>"
           },
           {
             "group": "Parameter",
             "type": "String",
-            "optional": false,
+            "optional": true,
             "field": "module[status]",
             "description": "<p>modules status[published or draft]</p>"
-          }
-        ]
-      }
-    },
-    "success": {
-      "fields": {
-        "Success 200": [
-          {
-            "group": "Success 200",
-            "type": "String",
-            "optional": false,
-            "field": "module[object]",
-            "description": "<p>Object data</p>"
-          }
-        ]
-      }
-    },
-    "error": {
-      "fields": {
-        "Error 4xx": [
-          {
-            "group": "Error 4xx",
-            "type": "String",
-            "optional": false,
-            "field": "errors",
-            "description": "<p>Bad Request.</p>"
           }
         ]
       }
@@ -1656,8 +2201,527 @@ define({ "api": [
   },
   {
     "type": "get",
-    "url": "/search?q={query-string-goes-here}",
-    "title": "GET result search query.",
+    "url": "/api/v1/oembed/",
+    "title": "GET an oembed structure.",
+    "name": "GetOembed",
+    "group": "Oembed",
+    "permission": [
+      {
+        "name": "none"
+      }
+    ],
+    "description": "<p>Get and embed format using url query params</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": true,
+            "field": "absolute_url",
+            "description": "<p>absolute_url to chapter id</p>"
+          }
+        ],
+        "Authentication": [
+          {
+            "group": "Authentication",
+            "type": "String[]",
+            "optional": true,
+            "field": "tags",
+            "description": "<p>Optional tags list</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Object[]",
+            "optional": false,
+            "field": "List",
+            "description": "<p>of chapters</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "version",
+            "description": "<p>version string</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "type",
+            "description": "<p>data type referencing the object asked for</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "provider_name",
+            "description": "<p>name of organization</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "provider_url",
+            "description": "<p>absolute url</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Integer",
+            "optional": false,
+            "field": "width",
+            "description": "<p>content width</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Integer",
+            "optional": false,
+            "field": "height",
+            "description": "<p>content height</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "title",
+            "description": "<p>object title</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "html",
+            "description": "<p>formatted iframe code in html</p>"
+          }
+        ]
+      }
+    },
+    "sampleRequest": [
+      {
+        "url": "https://kkl.wikonnect.org/api/v1/oembed/\n\n\nhttp://localhost/api/v1/oembed?url=http://localhost:4200/chapters/chapter1\n{\n   \"version\": \"1.0\",\n   \"type\": \"h5p\",\n   \"provider_name\": \"Wikonnect\",\n   \"provider_url\": \"http://app.wikonnect.org/\",\n   \"width\": 425,\n   \"height\": 344,\n   \"title\": \"Cyber bullying\",\n\n   \"html\":\n   \t\"<iframe width=\\\"560\\\" height=\\\"315\\\" src=\\\"http://localhost:4200/embed/chapter1\\\" ></iframe>\",\n}"
+      }
+    ],
+    "version": "0.0.0",
+    "filename": "./server/routes/oembed.js",
+    "groupTitle": "Oembed"
+  },
+  {
+    "type": "delete",
+    "url": "/api/v1/reactions/:id",
+    "title": "DELETE using Id.",
+    "name": "DeleteARection",
+    "group": "Reactions",
+    "permission": [
+      {
+        "name": "none"
+      }
+    ],
+    "version": "0.4.0",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "id",
+            "description": "<p>Reaction Id</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Object[]",
+            "optional": false,
+            "field": "reaction",
+            "description": "<p>list</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "reaction.id",
+            "description": "<p>Reaction id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "reaction.chapterId",
+            "description": "<p>Chapter id.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "reaction.userId",
+            "description": "<p>Authenticated user id</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n{\n reaction: {\n     userId: 'user44',\n     chapterId: 'chapter2',\n     reaction: 'like',\n     createdAt: '2020-11-25T12:56:52.895Z',\n     updatedAt: '2020-11-25T12:56:52.895Z',\n     id: 'IgDuJuUAAvo'\n   }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "List error",
+          "content": "HTTP/1.1 500 Internal Server Error",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "./server/routes/reactions.js",
+    "groupTitle": "Reactions",
+    "sampleRequest": [
+      {
+        "url": "https://kkl.wikonnect.org/api/v1/reactions/:id"
+      }
+    ]
+  },
+  {
+    "type": "get",
+    "url": "/api/v1/reactions/:id",
+    "title": "GET a reaction by ID.",
+    "name": "GetAReAction",
+    "group": "Reactions",
+    "permission": [
+      {
+        "name": "none"
+      }
+    ],
+    "version": "0.4.0",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "id",
+            "description": "<p>Reaction Id</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Object[]",
+            "optional": false,
+            "field": "reaction",
+            "description": "<p>list</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "reaction.id",
+            "description": "<p>Reaction id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object[]",
+            "optional": false,
+            "field": "reaction[object]",
+            "description": "<p>Object data</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n{\n reaction: {\n     userId: 'user44',\n     chapterId: 'chapter2',\n     reaction: 'like',\n     createdAt: '2020-11-25T12:56:52.895Z',\n     updatedAt: '2020-11-25T12:56:52.895Z',\n     id: 'IgDuJuUAAvo'\n   }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "List error",
+          "content": "HTTP/1.1 500 Internal Server Error",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "./server/routes/reactions.js",
+    "groupTitle": "Reactions",
+    "sampleRequest": [
+      {
+        "url": "https://kkl.wikonnect.org/api/v1/reactions/:id"
+      }
+    ]
+  },
+  {
+    "type": "get",
+    "url": "/api/v1/reactions/",
+    "title": "GET all reactions.",
+    "name": "GetReactions",
+    "group": "Reactions",
+    "permission": [
+      {
+        "name": "none"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Optional Params": [
+          {
+            "group": "Optional Params",
+            "type": "String",
+            "optional": false,
+            "field": "reaction.id",
+            "description": "<p>Chapter Id</p>"
+          },
+          {
+            "group": "Optional Params",
+            "type": "String",
+            "optional": false,
+            "field": "reaction[reaction]",
+            "description": "<p>Reaction type (like|dislike|whatever).</p>"
+          },
+          {
+            "group": "Optional Params",
+            "type": "String",
+            "optional": false,
+            "field": "reaction[chapter_id]",
+            "description": "<p>Chapter id.</p>"
+          },
+          {
+            "group": "Optional Params",
+            "type": "String",
+            "optional": false,
+            "field": "reaction[user_id]",
+            "description": "<p>Authenticated user id</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Object[]",
+            "optional": false,
+            "field": "reaction",
+            "description": "<p>list</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "reaction.id",
+            "description": "<p>Reaction id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object[]",
+            "optional": false,
+            "field": "Reaction[object]",
+            "description": "<p>Reaction object data</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n {\n    \"reaction\": [{\n        \"reaction\": \"like|dislike|whatever\",\n        \"chapter\": \"chapter_id\",\n        \"user\": \"authenticated_user_id\"\n    }]\n }",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "List error",
+          "content": "HTTP/1.1 500 Internal Server Error",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "./server/routes/reactions.js",
+    "groupTitle": "Reactions",
+    "sampleRequest": [
+      {
+        "url": "https://kkl.wikonnect.org/api/v1/reactions/"
+      }
+    ]
+  },
+  {
+    "type": "post",
+    "url": "/api/v1/reaction/",
+    "title": "POST a reaction.",
+    "name": "PostAReaction",
+    "group": "Reactions",
+    "permission": [
+      {
+        "name": "none"
+      }
+    ],
+    "version": "0.4.0",
+    "parameter": {
+      "fields": {
+        "Optional Params": [
+          {
+            "group": "Optional Params",
+            "type": "String",
+            "optional": false,
+            "field": "reaction[id]",
+            "description": "<p>Chapter Id</p>"
+          },
+          {
+            "group": "Optional Params",
+            "type": "String",
+            "optional": false,
+            "field": "reaction[reaction]",
+            "description": "<p>Reaction type (like|dislike|whatever).</p>"
+          },
+          {
+            "group": "Optional Params",
+            "type": "String",
+            "optional": false,
+            "field": "reaction[chapter_id]",
+            "description": "<p>Chapter id.</p>"
+          },
+          {
+            "group": "Optional Params",
+            "type": "String",
+            "optional": false,
+            "field": "reaction[user_id]",
+            "description": "<p>Authenticated user id</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n{\n   reaction: {\n     userId: 'user44',\n     chapterId: 'chapter2',\n     reaction: 'like',\n     createdAt: '2020-11-25T12:56:52.895Z',\n     updatedAt: '2020-11-25T12:56:52.895Z',\n     id: 'IgDuJuUAAvo'\n   }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "List error",
+          "content": "HTTP/1.1 500 Internal Server Error",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "./server/routes/reactions.js",
+    "groupTitle": "Reactions"
+  },
+  {
+    "type": "put",
+    "url": "/api/v1/reactions/:id",
+    "title": "PUT using Id.",
+    "name": "PutAReAction",
+    "group": "Reactions",
+    "permission": [
+      {
+        "name": "none"
+      }
+    ],
+    "version": "0.4.0",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "id",
+            "description": "<p>Reaction Id</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Object[]",
+            "optional": false,
+            "field": "reaction",
+            "description": "<p>list</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "reaction.id",
+            "description": "<p>Reaction id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "reaction.chapterId",
+            "description": "<p>Chapter id.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "reaction.userId",
+            "description": "<p>Authenticated user id</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n{\n reaction: {\n     userId: 'user44',\n     chapterId: 'chapter2',\n     reaction: 'like',\n     createdAt: '2020-11-25T12:56:52.895Z',\n     updatedAt: '2020-11-25T12:56:52.895Z',\n     id: 'IgDuJuUAAvo'\n   }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "examples": [
+        {
+          "title": "List error",
+          "content": "HTTP/1.1 500 Internal Server Error",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "./server/routes/reactions.js",
+    "groupTitle": "Reactions",
+    "sampleRequest": [
+      {
+        "url": "https://kkl.wikonnect.org/api/v1/reactions/:id"
+      }
+    ]
+  },
+  {
+    "type": "get",
+    "url": "/search/chapter?",
+    "title": "",
+    "description": "<p>GET result search query using chapter name, description or tags /search?q={query-string-goes-here} Using QUERY string. /search?tags=highschool  Using TAGS.</p>",
     "name": "GetSearch",
     "group": "Search",
     "permission": [
@@ -1666,6 +2730,20 @@ define({ "api": [
       }
     ],
     "version": "0.4.0",
+    "sampleRequest": [
+      {
+        "url": "on"
+      }
+    ],
+    "success": {
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 200\n{\n   \"search\": [{}]\n}",
+          "type": "json"
+        }
+      ]
+    },
     "error": {
       "examples": [
         {

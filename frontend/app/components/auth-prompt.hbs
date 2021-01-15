@@ -1,14 +1,19 @@
 {{#unless me.isAuthenticated}}
-  <div class="padded">
-    <BsAlert @type="error">
-      <strong>
+
+  <footer>
+    <nav class="navbar fixed-bottom text-white mt-5  bg-orange justify-content-between ">
+
+      {{t "messages.auth_prompt"}}
+      <div>
         {{#link-to "login"}}
-          LOGIN
-        {{/link-to}} or
+          <button type="button" class="btn btn-outline-light float-right mr-2">{{t "buttons.login"}}</button>
+
+        {{/link-to}}
         {{#link-to "signup"}}
-          SIGNUP
-        {{/link-to}} to keep track of your activity and to leave comments
-      </strong>
-    </BsAlert>
-  </div>
+          <button type="button" class="btn btn-outline-light float-right mr-2">{{t "buttons.signup"}}</button>
+
+        {{/link-to}}
+      </div>
+    </nav>
+  </footer>
 {{/unless}}
