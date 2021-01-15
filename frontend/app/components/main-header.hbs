@@ -1,9 +1,8 @@
 <!-- template-lint disabled=true -->
 <nav
   class="mb-1 navbar navbar-expand-lg navbar-light text-{{config.content.APP.header_text}} secondary-color bg-{{config.content.APP.header_background}} shadow-sm ">
-  {{#link-to "home" class="navbar-brand"}}
-    <img src={{config.content.APP.header_logo}} alt={{config.content.APP.instance_name}}>
-    {{!-- {{svg-jar "wikonnect-primary" class="icon"   height="40"}} --}}
+  {{#link-to "index"}}
+    {{svg-jar "wikonnect-logo-white" class="icon"   height="40"}}
   {{/link-to}}
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent-555"
     aria-controls="navbarSupportedContent-555" aria-expanded="false" aria-label="Toggle navigation">
