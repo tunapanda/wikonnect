@@ -42,7 +42,7 @@ router.get('/learners', requireAuth, async ctx => {
   }
 
   const learners = {
-    total: total.rows[0].count || fallback,
+    total: total[0].count || fallback,
     quarterly: quarterly.rows || fallback,
   };
   ctx.body = learners;
@@ -62,7 +62,7 @@ router.get('/creators', requireAuth, async ctx => {
   }
 
   const learners = {
-    total: total.rows[0].count || fallback,
+    total: total,
     with_10_chapters: with_10_chapters.rows[0] || fallback,
     created_by_users: created_by_users.rows[0].count || fallback
   };
