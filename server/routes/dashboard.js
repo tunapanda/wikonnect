@@ -1,5 +1,5 @@
 const Router = require('koa-router');
-const { requireAuth } = require('../middleware/permController');
+const { requireAuth, grantAccess } = require('../middleware/permController');
 const knex = require('../utils/knexUtil');
 // const compareAsc = require('date-fns/compareAsc');
 // const startOfQuarter = require('date-fns/startOfQuarter');
@@ -10,7 +10,7 @@ const router = new Router({
   prefix: '/dashboard'
 });
 
-router.get('/completed', requireAuth, async ctx => {
+router.get('/completed', requireAuth, grantAccess('readAny', 'path'), async ctx => {
 
   let completed, total;
   try {
@@ -31,7 +31,7 @@ router.get('/completed', requireAuth, async ctx => {
 });
 
 
-router.get('/learners', requireAuth, async ctx => {
+router.get('/learners', requireAuth, grantAccess('readAny', 'path'), async ctx => {
   let total, quarterly;
   try {
     total = await knex('users').count('*');
@@ -49,7 +49,7 @@ router.get('/learners', requireAuth, async ctx => {
 });
 
 
-router.get('/creators', requireAuth, async ctx => {
+router.get('/creators', requireAuth, grantAccess('readAny', 'path'), async ctx => {
   let total, with_10_chapters, created_by_users;
   try {
     total = await knex.raw('select count(distinct creator_id) from chapters');
@@ -61,12 +61,12 @@ router.get('/creators', requireAuth, async ctx => {
     throw e;
   }
 
-  const learners = {
-    total: total,
+  const creators = {
+    total: total.rows[0].count || fallback,
     with_10_chapters: with_10_chapters.rows[0] || fallback,
     created_by_users: created_by_users.rows[0].count || fallback
   };
-  ctx.body = learners;
+  ctx.body = creators;
 
 });
 module.exports = router.routes();
