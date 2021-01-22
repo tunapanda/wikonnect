@@ -63,13 +63,23 @@
 
 
       <div class="float-right">
-        <button type="button" class="btn btn-primary" {{action "showPublishModal" }}>Publish</button>
+        {{#if (eq model.status "draft")}}
+          <button type="button" class="btn btn-success" {{action (mut publishModal) true}}>Publish</button>
+        {{else}}
+          <button type="button" class="btn btn-danger" {{action (mut unpublishModal) true}}>UnPublish</button>
+
+        {{/if}}
         <button type="button" class="btn btn-danger" {{action "showDeleteModal" }}>Delete</button>
       </div>
 
       <BsModalSimple @open={{publishModal}} @onSubmit={{action "publish" model.id }} @closeTitle="Cancel"
         @submitTitle="Publish" @title="Publish ??" @size="sm" @onHidden={{action (mut publishModal) false}}>
         Are you sure you want to publish ??
+      </BsModalSimple>
+
+      <BsModalSimple @open={{unpublishModal}} @onSubmit={{action "unpublish" model.id }} @closeTitle="Cancel"
+        @submitTitle="UnPublish" @title="UnPublish ??" @size="sm" @onHidden={{action (mut unpublishModal) false}}>
+        Are you sure you want to unpublish ??
       </BsModalSimple>
 
       <BsModalSimple @open={{deleteModal}} @onSubmit={{action "delete" model.id }} @closeTitle="Cancel"
