@@ -21,7 +21,7 @@
             <td>{{item.description}}</td>
             <td>{{item.status}}</td>
             {{#link-to "chapter" item.id }}
-              {{#if (eq item.approved "true")}}
+              {{#if item.approved}}
                 {{!-- <td><span class="badge badge-success badge-pill">Approved</span></td> --}}
                 <td>
                   <BsButton @type="success" @defaultText="Approved" />
