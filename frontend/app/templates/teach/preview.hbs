@@ -6,20 +6,31 @@
 {{!-- {{outlet}} --}}
 <div class="p-4">
 
-  <div class="row text-center d-flex justify-content-center">
-    <span class="border-bottom border-success m-3"><b>Name & Description</b></span>
-    <span class="border-bottom border-success m-3"><b>H5P Content</b></span>
-    <span class="border-bottom border-success m-3"><b>Thumbnail</b></span>
-    <span class="border-bottom border-success m-3"><b>Tags</b></span>
-    <span class="border-bottom border-success m-3"><b>Preview & Publish</b></span>
-
-  </div>
 
   <div class="row p-5">
     <div class="col-lg-6">
-      <h4><b>Chapter Name: </b>{{model.name}} </h4>
+      <h4><b>Chapter Name: </b>{{model.name}} ({{model.status}})</h4>
+      {{#if (eq model.status "published")}}
+        {{#if model.approved}}
+          <span class="badge badge-pill badge-success">approved</span>
+        {{else}}
+          <span class="badge badge-pill badge-danger">not approved</span>
+        {{/if}}
+      {{/if}}
       <br>
-      <H5p @location={{model.contentUri}} />
+      {{#if model.contentUri}}
+        <H5p @location={{model.contentUri}} />
+        <br>
+        {{#link-to "teach.h5p-upload" model.id}}
+          <button type="button" class="btn btn-primary">Upload H5P</button>
+
+        {{/link-to}}
+      {{else}}
+        {{#link-to "teach.h5p-upload" model.id}}
+          <button type="button" class="btn btn-primary">Upload H5P</button>
+
+        {{/link-to}}
+      {{/if}}
       <div class=" mt-1 bg-light m-0 p-4 pt-3">
         <p>{{model.description}}</p>
         <b>Tags</b>
@@ -35,28 +46,74 @@
             {{/link-to}}
 
           {{/each}}
+          <br>
+
 
         </div>
+        {{#link-to "teach.tag" model.id}}
+          <button type="button" class="btn-sm btn-primary">Modify Tags</button>
 
+        {{/link-to}}
       </div>
 
 
     </div>
 
     <div class="col-lg-6  border rounded-lg pl-4 pr-4 pt-3">
+
+
+      <div class="float-right">
+        <button type="button" class="btn btn-primary" {{action "showPublishModal" }}>Publish</button>
+        <button type="button" class="btn btn-danger" {{action "showDeleteModal" }}>Delete</button>
+      </div>
+
+      <BsModalSimple @open={{publishModal}} @onSubmit={{action "publish" model.id }} @closeTitle="Cancel"
+        @submitTitle="Publish" @title="Publish ??" @size="sm" @onHidden={{action (mut publishModal) false}}>
+        Are you sure you want to publish ??
+      </BsModalSimple>
+
+      <BsModalSimple @open={{deleteModal}} @onSubmit={{action "delete" model.id }} @closeTitle="Cancel"
+        @submitTitle="Delete" @title="Simple Dialog" @size="sm" @onHidden={{action (mut deleteModal) false}}>
+        Are you sure you want to delete {{model.name}} ?
+      </BsModalSimple>
+      <br>
       <div class="form-group ">
         <label for="">Chapter Name</label>
         <input value={{model.name}} type="text" class="form-control bg-light" name="" id="" aria-describedby="helpId"
           placeholder="">
+        <div>
+
+
+        </div>
       </div>
       <div class="form-group">
         <label for="">Chapter Description</label>
         <textarea class="form-control bg-light" name="" id="" rows="3">{{model.description}}</textarea>
       </div>
 
-      <img src="https://source.unsplash.com/random/1900x480" class="img-thumbnail rounded h-50 d-inline-block" alt="">
+      {{#link-to "teach.edit" model.id}}
+        <button type="button" class="btn btn-primary form-control">Change Chapter Details</button>
+
+      {{/link-to}}
+      <hr>
+
+      {{#if model.imageUrl}}
+        <img src={{model.imageUrl}} class="img-thumbnail rounded h-50 d-inline-block" alt=""><br>
+        {{#link-to "teach.thumbnail-upload" model.id}}
+          <button type="button" class="btn btn-primary">Edit Thumbail</button>
+        {{/link-to}}
+      {{else}}
+        {{#link-to "teach.thumbnail-upload" model.id}}
+          <button type="button" class="btn btn-primary">Upload thumbail</button>
+
+        {{/link-to}}
+      {{/if}}
 
 
+
+
+      <br>
+      <br>
       <br>
       <br>
       <br>

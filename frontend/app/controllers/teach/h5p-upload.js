@@ -2,11 +2,15 @@ import Controller from '@ember/controller';
 import { inject } from '@ember/service';
 import { action } from '@ember/object';
 import Uploader from '../../utils/uploader';
+import { tracked } from '@glimmer/tracking';
 
 export default class TeachH5pUploadController extends Controller {
   @inject me;
 
   complete = false;
+
+  @tracked hover = false;
+
 
   @action
   addFiles(files) {
@@ -16,8 +20,20 @@ export default class TeachH5pUploadController extends Controller {
 
     }
 
-    console.log(files)
+    console.log(files);
   }
+
+  @action
+  onFileHover() {
+    this.hover = true;
+  }
+
+  @action
+  onFileExit() {
+    this.hover = false;
+  }
+
+
 
   @action
   async uploadPic(files) {
