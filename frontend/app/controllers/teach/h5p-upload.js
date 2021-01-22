@@ -8,7 +8,16 @@ export default class TeachH5pUploadController extends Controller {
 
   complete = false;
 
+  @action
+  addFiles(files) {
+    this.hover = false;
+    if (files.length > 1) {
+      this.notify.warning('You can only upload one file', { closeAfter: 1000 });
 
+    }
+
+    console.log(files)
+  }
 
   @action
   async uploadPic(files) {

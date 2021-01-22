@@ -2,7 +2,14 @@
 <div class=" d-flex row text-center p-4 shadow-sm justify-content-center">
   <h3><b>Tag Content</b></h3>
 </div>
+<div class="row text-center d-flex justify-content-center pt-4">
+  <span class="border-bottom border-success m-3"><b>Name & Description</b></span>
+  <span class="border-bottom border-success m-3"><b>H5P Content</b></span>
+  <span class="border-bottom border-success m-3"><b>Thumbnail</b></span>
+  <span class="border-bottom border-success m-3"><b>Tags</b></span>
+  <span class="border-bottom border-success m-3"><b>Preview & Publish</b></span>
 
+</div>
 <div class=" row d-flex justify-content-center">
   <div class="p-4 col-sm-6">
     {{#if me.isAuthenticated}}
@@ -20,26 +27,31 @@
         <div class="bg-primary text-center p-3 text-white mb-4 ">
           UPLOAD THUMBNAIL
         </div>
-
+        <BsProgress as |pg|>
+          <pg.bar @showLabel={{true}} @roundDigits={{0}} @type="default" @striped={{true}} @animate={{true}}
+            @value={{uploader.progress}} />
+        </BsProgress>
         <br>
+        {{#file-drop-zone onDragEnter=(action "onFileHover") onDragLeave=(action "onFileExit") onDrop=(action "addFiles")}}
 
-        <div class="p-5   mb-5 ml-5 mr-5 ">
-          <Forms::Upload @multiple="false" @accept="image/*" @filesSelected={{action "uploadPic"}}
-            @disabled={{uploader.uploading}}>
-            {{#if uploader.uploading}}
-              <BsProgress as |pg|>
-                <pg.bar @value={{uploader.progress}} />
-              </BsProgress>
-              Uploading... <span class="loading-spinner"></span> {{uploader.progress}}% <br>
-              <small class="text-muted">You will be redirected once upload is complete</small>
+          <div class="p-5   mb-5 ml-5 mr-5 {{if this.hover " bg-white " " bg-light border"}}">
+            <Forms::Upload @multiple="false" @accept="image/*" @filesSelected={{action "uploadPic" }}
+              @disabled={{uploader.uploading}}>
+              {{#if uploader.uploading}}
+                <BsProgress as |pg|>
+                  <pg.bar @value={{uploader.progress}} />
+                </BsProgress>
+                Uploading... <span class="loading-spinner"></span> {{uploader.progress}}% <br>
+                <small class="text-muted">You will be redirected once upload is complete</small>
 
-            {{else}}
-              Upload Thumbnail
-            {{/if}}
+              {{else}}
+                Upload Thumbnail
+              {{/if}}
 
 
-          </Forms::Upload>
-        </div>
+            </Forms::Upload>
+          </div>
+        {{/file-drop-zone}}
 
         {{#if signup}}
 
@@ -48,7 +60,7 @@
             {{#if complete}}
               <button type="button" class="btn btn-success">Proceed to profile</button>
             {{else}}
-              Skip
+              Skip to profile
             {{/if}}
 
           {{/link-to}}

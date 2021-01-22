@@ -4,7 +4,14 @@
 <div class=" d-flex row text-center p-4 shadow-sm justify-content-center">
   <h3><b>Tag Content</b></h3>
 </div>
+<div class="row text-center d-flex justify-content-center pt-4">
+  <span class="border-bottom border-success m-3"><b>Name & Description</b></span>
+  <span class="border-bottom border-success m-3"><b>H5P Content</b></span>
+  <span class="border-bottom border-success m-3"><b>Thumbnail</b></span>
+  <span class="border-bottom border-success m-3"><b>Tags</b></span>
+  <span class="border-bottom border-success m-3"><b>Preview & Publish</b></span>
 
+</div>
 <div class=" row d-flex justify-content-center">
   <div class="p-4 col-sm-8">
     {{#if me.isAuthenticated}}
@@ -50,21 +57,21 @@
       <div class="tab-content" id="myTabContent">
         <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
           {{#each topic_list as |item|}}
-            <button type="button" class="btn btn-outline-primary m-1" {{action addme item "topic"}}>
+            <button type="button" class="btn btn-outline-primary m-1" {{action addme item "topic" }}>
               {{item}}
             </button>
           {{/each}}
         </div>
         <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
           {{#each competency_list as |item|}}
-            <button type="button" class="btn btn-outline-primary m-1" {{action addme item "competency"}}>
+            <button type="button" class="btn btn-outline-primary m-1" {{action addme item "competency" }}>
               {{item}}
             </button>
           {{/each}}
         </div>
         <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
           {{#each level_list as |item|}}
-            <button type="button" class="btn btn-outline-primary m-1" {{action addme item "level"}}>
+            <button type="button" class="btn btn-outline-primary m-1" {{action addme item "level" }}>
               {{item}}
             </button>
           {{/each}}
@@ -73,7 +80,7 @@
         <div class="tab-pane fade" id="platform" role="tabpanel" aria-labelledby="platform-tab">
 
           {{#each platform_list as |item|}}
-            <button type="button" class="btn btn-outline-primary m-1" {{action addme item "platform"}}>
+            <button type="button" class="btn btn-outline-primary m-1" {{action addme item "platform" }}>
               {{item}}
             </button>
           {{/each}}
@@ -83,7 +90,7 @@
         <div class="tab-pane fade" id="kicd" role="tabpanel" aria-labelledby="kicd-tab">
 
           {{#each kicd_list as |item|}}
-            <button type="button" class="btn btn-outline-primary m-1" {{action addme item "kicd"}}>
+            <button type="button" class="btn btn-outline-primary m-1" {{action addme item "kicd" }}>
               {{item}}
             </button>
           {{/each}}
@@ -93,19 +100,19 @@
       <br>
       <br>
       <h5>Or add a custom tag</h5>
-      <form method="post" {{ action "addtag" on="submit"}}>
+      <form method="post" {{ action "addtag" on="submit" }}>
         {{input id="tag" type="text" value=tag aria-controls="existing-user-table" placeholder="Add Custom Tag" class="form-control"}}
         <button type="submit" class="btn btn-primary mt-2 ">Submit</button>
       </form>
       <hr>
       {{#each competency_cart as |item|}}
-        <button type="button" class="btn btn-primary m-1" {{action removeme item "competency"}}>
+        <button type="button" class="btn btn-primary m-1" {{action removeme item "competency" }}>
           {{item}}
           <span aria-hidden="true">&times;</span>
         </button>
       {{/each}}
       {{#each topic_cart as |tag|}}
-        <button type="button" class="btn btn-primary m-1" {{action removeme tag "topic"}}>
+        <button type="button" class="btn btn-primary m-1" {{action removeme tag "topic" }}>
           {{tag}}
           <span aria-hidden="true">&times;</span>
         </button>
@@ -113,21 +120,21 @@
       {{/each}}
 
       {{#each level_cart as |tag|}}
-        <button type="button" class="btn btn-primary m-1" {{action removeme tag "level"}}>
+        <button type="button" class="btn btn-primary m-1" {{action removeme tag "level" }}>
           {{tag}}
           <span aria-hidden="true">&times;</span>
         </button>
 
       {{/each}}
       {{#each platform_cart as |tag|}}
-        <button type="button" class="btn btn-primary m-1" {{action removeme tag "platform"}}>
+        <button type="button" class="btn btn-primary m-1" {{action removeme tag "platform" }}>
           {{tag}}
           <span aria-hidden="true">&times;</span>
         </button>
 
       {{/each}}
       {{#each kicd_cart as |tag|}}
-        <button type="button" class="btn btn-primary m-1" {{action removeme tag "kicd"}}>
+        <button type="button" class="btn btn-primary m-1" {{action removeme tag "kicd" }}>
           {{tag}}
           <span aria-hidden="true">&times;</span>
         </button>
@@ -135,7 +142,7 @@
       {{/each}}
 
       {{#each custom_cart as |tag|}}
-        <button type="button" class="btn btn-primary m-1" {{action removeme tag "custom"}}>
+        <button type="button" class="btn btn-primary m-1" {{action removeme tag "custom" }}>
           {{tag}}
           <span aria-hidden="true">&times;</span>
         </button>

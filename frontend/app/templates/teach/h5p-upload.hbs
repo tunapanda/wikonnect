@@ -2,45 +2,38 @@
 <div class=" d-flex row text-center p-4 shadow-sm justify-content-center">
   <h3><b>Tag Content</b></h3>
 </div>
+<div class="row text-center d-flex justify-content-center pt-4">
+  <span class="border-bottom border-success m-3"><b>Name & Description</b></span>
+  <span class="border-bottom border-success m-3"><b>H5P Content</b></span>
+  <span class="border-bottom border-success m-3"><b>Thumbnail</b></span>
+  <span class="border-bottom border-success m-3"><b>Tags</b></span>
+  <span class="border-bottom border-success m-3"><b>Preview & Publish</b></span>
 
+</div>
 <div class=" row d-flex justify-content-center">
   <div class="p-4 col-sm-6">
 
     {{#if me.isAuthenticated}}
 
       <div class="text-center">
+        {{!-- <br>
+        {{#if this.me.user.profileUri}}
+          <img class="rounded-circle" width="300px" alt="" src={{this.me.user.profileUri}}>
+        {{else}}
+          <img class="rounded-circle" width="300px" alt="" src={{profileImage}}>
 
+        {{/if}} --}}
 
 
         <div class="bg-primary text-center p-3 text-white mb-4 ">
-          UPLOAD H5P
+          ADD H%P
         </div>
 
-
-        <Forms::Upload @multiple="false" @accept=".h5p" @filesSelected={{action "uploadPic"}}
-          @disabled={{uploader.uploading}}>
-
-          {{#if uploader.uploading}}
-            Uploading... <span class="loading-spinner"></span> {{uploader.progress}}% <br>
-            <small class="text-muted">You will be redirected once upload is complete</small>
-          {{else}}
-            Upload H5P
-          {{/if}}
-        </Forms::Upload>
-
-
-
-        {{#if signup}}
-
-          <br><br>
-          {{#link-to "teach.thumbnail-upload" chapter.id}}
-            <button type="button" class="btn btn-success">Add Thumbnail</button>
-
-
-          {{/link-to}}
-
-        {{/if}}
+        {{!-- <embed src="http://localhost:8080/h5p/new" width="400" height="400"> --}}
+        <iframe is="x-frame-bypass" src="http://localhost:8080/h5p/new" frameborder="0"
+          srcdoc="<p>This text will appear in the iframe!</p>"></iframe>
       </div>
+
 
 
     {{else}}
