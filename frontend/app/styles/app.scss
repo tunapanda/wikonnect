@@ -53,9 +53,10 @@ body {
 
 .kkl-jumbo-text {
   color: white;
+  background-color: #F57010;
   width: 100%;
-  -webkit-mask-image: -webkit-gradient(linear, left top, left bottom,
-      from(rgba(252, 113, 0, 0)), to(rgba(0, 0, 0, 1)));
+  // -webkit-mask-image: -webkit-gradient(linear, left top, left bottom,
+  //     from(rgba(252, 113, 0, 0)), to(rgba(0, 0, 0, 1)));
 }
 
 
@@ -83,11 +84,11 @@ body {
   white-space: pre-line;
 }
 
-button.like{
+button.like {
   filter: invert(27%) sepia(51%) saturate(2878%) hue-rotate(346deg) brightness(104%) contrast(97%);
 }
 
-button.dislike{
+button.dislike {
   filter: invert(27%) sepia(51%) saturate(2878%) hue-rotate(346deg) brightness(104%) contrast(97%);
 }
 
@@ -97,6 +98,14 @@ button.dislike{
   height: 70px;
   background-size: cover;
   filter: invert(27%) sepia(51%) saturate(2878%) hue-rotate(346deg) brightness(104%) contrast(97%);
+}
+
+.rounder {
+  border-radius: 15px;
+}
+
+.round-image {
+  border-radius: 15px 15px 0px 0px;
 }
 
 //@import "ember-bootstrap/bootstrap";
