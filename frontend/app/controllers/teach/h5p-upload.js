@@ -2,11 +2,36 @@ import Controller from '@ember/controller';
 import { inject } from '@ember/service';
 import { action } from '@ember/object';
 import Uploader from '../../utils/uploader';
+import { tracked } from '@glimmer/tracking';
 
 export default class TeachH5pUploadController extends Controller {
   @inject me;
 
   complete = false;
+
+  @tracked hover = false;
+
+
+  @action
+  addFiles(files) {
+    this.hover = false;
+    if (files.length > 1) {
+      this.notify.warning('You can only upload one file', { closeAfter: 1000 });
+
+    }
+
+    console.log(files);
+  }
+
+  @action
+  onFileHover() {
+    this.hover = true;
+  }
+
+  @action
+  onFileExit() {
+    this.hover = false;
+  }
 
 
 

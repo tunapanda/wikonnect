@@ -107,6 +107,7 @@ Router.map(function () {
 
 
     this.route('published');
+    this.route('edit', { path: '/edit/:chapter_id' });
   });
   this.route('swagger');
   this.route('topics');
