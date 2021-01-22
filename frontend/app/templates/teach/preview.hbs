@@ -93,48 +93,55 @@
           placeholder="">
         <div>
 
+          {{#link-to "teach.edit" model.id}}
+            <button type="button" class="btn btn-primary form-control">Change Chapter Details</button>
 
+            <<<<<<< HEAD </div>
         </div>
-      </div>
-      <div class="form-group">
-        <label for="">Chapter Description</label>
-        <textarea class="form-control bg-light" name="" id="" rows="3">{{model.description}}</textarea>
-      </div>
+        <div class="form-group">
+          <label for="">Chapter Description</label>
+          <textarea class="form-control bg-light" name="" id="" rows="3">{{model.description}}</textarea>
+        </div>
 
-      {{#link-to "teach.edit" model.id}}
-        <button type="button" class="btn btn-primary form-control">Change Chapter Details</button>
-
-      {{/link-to}}
-      <hr>
-
-      {{#if model.imageUrl}}
-        <img src={{model.imageUrl}} class="img-thumbnail rounded h-50 d-inline-block" alt=""><br>
-        {{#link-to "teach.thumbnail-upload" model.id}}
-          <button type="button" class="btn btn-primary">Edit Thumbail</button>
-        {{/link-to}}
-      {{else}}
-        {{#link-to "teach.thumbnail-upload" model.id}}
-          <button type="button" class="btn btn-primary">Upload thumbail</button>
+        {{#link-to "teach.edit" model.id}}
+          <button type="button" class="btn btn-primary form-control">Change Chapter Details</button>
 
         {{/link-to}}
-      {{/if}}
+        <hr>
+
+        =======
+        {{/link-to}}
+        <hr>
+
+        >>>>>>> aba4c412b52614b6b1a216b6262090d6f11542dd
+        {{#if model.imageUrl}}
+          <img src={{model.imageUrl}} class="img-thumbnail rounded h-50 d-inline-block" alt=""><br>
+          {{#link-to "teach.thumbnail-upload" model.id}}
+            <button type="button" class="btn btn-primary">Edit Thumbail</button>
+          {{/link-to}}
+        {{else}}
+          {{#link-to "teach.thumbnail-upload" model.id}}
+            <button type="button" class="btn btn-primary">Upload thumbail</button>
+
+          {{/link-to}}
+        {{/if}}
 
 
 
 
-      <br>
-      <br>
-      <br>
-      <br>
-      <br>
-      <br>
-      <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+
+      </div>
 
     </div>
 
+
+
   </div>
-
-
-
-</div>
-{{!-- <div {{did-insert (fn this.dataLoad)}}></div> --}}
+  {{!-- <div {{did-insert (fn this.dataLoad)}}></div> --}}
