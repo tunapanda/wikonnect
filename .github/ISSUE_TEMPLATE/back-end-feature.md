@@ -11,7 +11,7 @@ assignees: '@mosesokemwa'
 <!-- eg Admin should be able to delete single or multiple users so that it is easy to manage users.  -->
 
 ### Tasks (where applicable)
-<!-- Please describe back-end tasks needed to accomplisd this-->
+<!-- Please describe back-end tasks needed to accomplished this-->
 - [ ]  eg. Fetch users end point
 
 
