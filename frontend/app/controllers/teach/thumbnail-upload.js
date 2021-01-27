@@ -57,7 +57,7 @@ export default class TeachH5pUploadController extends Controller {
     this.set('complete', true);
 
     if (this.complete === true) {
-      this.transitionToRoute('teach.h5p-upload', id);
+      this.transitionToRoute('teach.preview', id);
     }
 
   }

@@ -22,7 +22,7 @@
         <H5p @location={{model.contentUri}} />
         <br>
         {{#link-to "teach.h5p-upload" model.id}}
-          <button type="button" class="btn btn-primary">Upload H5P</button>
+          <button type="button" class="btn btn-primary">Change H5P</button>
 
         {{/link-to}}
       {{else}}
@@ -64,7 +64,13 @@
 
       <div class="float-right">
         {{#if (eq model.status "draft")}}
-          <button type="button" class="btn btn-success" {{action (mut publishModal) true}}>Publish</button>
+          {{#if (and model.imageUrl model.contentUri)}}
+            <button type="button" class="btn btn-success" {{action (mut publishModal) true}}>Publish</button>
+          {{else}}
+            <small>*upload thumbnail and h5p to publish</small>
+            <button type="button" class="btn  bg-light" disabled>Publish</button>
+
+          {{/if}}
         {{else}}
           <button type="button" class="btn btn-danger" {{action (mut unpublishModal) true}}>UnPublish</button>
 

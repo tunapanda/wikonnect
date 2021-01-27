@@ -29,6 +29,7 @@ export default class TeachPreviewController extends Controller {
     });
     this.publishModal = false;
     this.notify.info('Chapter succesfuly published');
+    this.transitionToRoute('teach.published');
 
   }
 
@@ -37,6 +38,7 @@ export default class TeachPreviewController extends Controller {
   async delete(chapter_id) {
     let chapter = await this.store.findRecord('chapter', chapter_id);
     await chapter.deleteRecord();
+    await chapter.save();
     this.deleteModal = false;
 
     this.notify.info('Chapter succesfuly deleted');
