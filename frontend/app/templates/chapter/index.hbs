@@ -24,14 +24,14 @@
 <div class="text-center">
   {{#if (eq me.user.username "daph")}}
 
-    {{#if (eq model.approved "true")}}
+    {{#if model.approved }}
 
-      <button {{on "click" (fn this.toggleApproval model.id "true")}} type="button"
+      <button {{on "click" (fn this.toggleApproval model.id "true" )}} type="button"
         class="btn form-controll btn-danger">
         Un Approve This
       </button>
     {{else}}
-      <button {{on "click" (fn this.toggleApproval model.id "false")}} type="button"
+      <button {{on "click" (fn this.toggleApproval model.id "false" )}} type="button"
         class="btn form-controll btn-success">
         Approve This
       </button>
@@ -45,8 +45,8 @@
 
 
 <BsModalSimple @open={{flaggingModal}} @title="Report Chapter" @closeTitle="Close" @submitTitle="Submit Report" @size=""
-  @closeButton={{true}} @fade={{true}} @backdrop={{true}} @backdropClose={{true}} @onSubmit={{action "saveFlag"}}
-  @onHidden={{action "toggleFlaggingModal"}} @renderInPlace={{true}}>
+  @closeButton={{true}} @fade={{true}} @backdrop={{true}} @backdropClose={{true}} @onSubmit={{action "saveFlag" }}
+  @onHidden={{action "toggleFlaggingModal" }} @renderInPlace={{true}}>
 
   <BsForm @model={{flagModel}} @onSubmit={{action "saveFlag" }} as |form|>
     <form.element @controlType="textarea" @label="Reason for reporting" @property="comment" />
@@ -59,10 +59,10 @@
 
 <BsModalSimple @open={{ratingModal}} @title="Rate This Module " @closeTitle="Close"
   @submitTitle="Submit Optional Remark" @size="" @closeButton={{true}} @fade={{true}} @backdrop={{true}}
-  @backdropClose={{true}} @onSubmit={{action "ratingSubmit"}} @onHidden={{action "toggleRatingModal"}}
+  @backdropClose={{true}} @onSubmit={{action "ratingSubmit" }} @onHidden={{action "toggleRatingModal" }}
   @renderInPlace={{true}}>
 
-  <BsForm @onSubmit={{action "ratingSubmit"}} as |form|>
+  <BsForm @onSubmit={{action "ratingSubmit" }} as |form|>
     <form.element @controlType="textarea" @label="Optional reason/remark for your {{rates}} star rating"
       @property="comment" />
 

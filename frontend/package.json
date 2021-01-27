@@ -14,7 +14,7 @@
     "build": "ember build",
     "lint:hbs": "ember-template-lint .",
     "lint:js": "eslint .",
-    "start": "ember serve --proxy https://kkl.wikonnect.org/",
+    "start": "ember serve --proxy https://app.wikonnect.org/",
     "start:local": "ember serve  --proxy http://localhost:3000",
     "ci:start": "ember serve --path dist --proxy http://localhost:3000",
     "test": "COVERAGE=true ember test"

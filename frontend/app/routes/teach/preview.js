@@ -11,16 +11,11 @@ export default class TeachPreviewRoute extends Route {
 
 
 
-  model() {
+  model(params) {
 
 
-    if (this.token) {
-      return this.store.query('chapter', { 'creatorId': this.me.user.id, 'status': 'published' });
+    return this.store.findRecord('chapter', params.id);
 
-    } else {
-      return true;
-
-    }
 
 
   }
