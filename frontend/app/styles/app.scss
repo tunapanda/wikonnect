@@ -108,5 +108,15 @@ button.dislike {
   border-radius: 15px 15px 0px 0px;
 }
 
+.active {
+  text-decoration: underline;
+}
+
+.sub-link {
+  color: orange;
+  margin-right: 1em;
+  font-weight: bold;
+}
+
 //@import "ember-bootstrap/bootstrap";
 //@import "ember-power-select";
