@@ -67,6 +67,9 @@ jobs:
         run: cd frontend && yarn --frozen-lockfile install
       - name: Run build
         run: cd frontend && yarn build --prod
+        env:
+          GOOGLE_KEY: ${{ secrets.GOOGLE_KEY }}
+          GOOGLE_REDIRECT: ${{ secrets.GOOGLE_REDIRECT }}
 
       # Install project dependencies, test and build
       - name: Install dependencies
