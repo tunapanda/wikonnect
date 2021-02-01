@@ -21,12 +21,6 @@ const data = {
   }
 };
 
-const putData = {
-  learningPath: {
-    'name': 'PUT update works',
-  }
-};
-
 const invalidPutData ={
   learningPath:{
     creator_id : 'pub'
