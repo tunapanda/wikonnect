@@ -19,20 +19,26 @@ jobs:
 
       # Install project dependencies, test and build
       - name: Install dependencies
-        run: npm install
+        run: yarn --frozen-lockfile
 
       # Install project dependencies, test and build
       - name: Install dependencies
-        run: cd frontend && yarn --frozen-lockfile install
+        run: cd frontend && yarn --frozen-lockfile
       - name: Run build
         run: cd frontend && yarn build --prod
 
       # Install project dependencies, test and build
       - name: Install dependencies
-        run: cd server && yarn --frozen-lockfile install
+        run: cd server && yarn --frozen-lockfile
 
       # and run all Cypress tests
       - name: Cypress run
         uses: cypress-io/github-action@v2.2.7
         with:
           browser: chrome
+          record: true
+        env:
+          # pass the Dashboard record key as an environment variable
+          CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
+          # pass GitHub token to allow accurately detecting a build vs a re-run build
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
