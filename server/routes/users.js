@@ -183,7 +183,8 @@ router.get('/:id', permController.requireAuth, async ctx => {
       'username': 'private',
       'profileUri': 'images/profile-placeholder.gif',
       'id': user.id,
-      'private': user.private
+      'private': user.private,
+      'userRoles': user.userRoles
     };
     // return data if profile is not private
     if (user.private === 'false') {
@@ -305,10 +306,28 @@ router.put('/:id', jwt.authenticate, permController.requireAuth, async ctx => {
 
 });
 
-router.post('/invite/:id', async ctx => {
+
+/**
+ * @api {post} /users/invite/:id POST users invitation token.
+ * @apiName PostAUserInvite
+ * @apiGroup Authentication
+ *
+ * @apiVersion 0.4.0
+ * @apiDescription Create a users invitation token
+ * @apiPermission [admin, superadmin]
+ * @apiHeader (Header) {String} authorization Bearer <<YOUR_API_KEY_HERE>>
+ *
+ * @apiParam (PUT Params) {string} inviteBy[id]
+ * @apiParam (PUT Params) {string} inviteBy[invited_by] invitation token
+ * @apiParam (PUT Params) {string} inviteBy[user_id] new user id
+ *
+ * @apiSuccess {String} inviteBy[object] Object data
+ *
+ */
+
+router.post('/invite/:id',permController.requireAuth, async ctx => {
   let invite;
   try {
-    // invite = await User.query().patchAndFetchById(ctx.params.id, ctx.request.body.user);
     invite = await knex('user_invite').insert([{ user_id: ctx.params.id, 'invited_by': ctx.request.body.user.inviteBy }], ['id', 'invited_by', 'user_id']);
     ctx.assert(invite, 404, 'That user does not exist.');
   } catch (e) {

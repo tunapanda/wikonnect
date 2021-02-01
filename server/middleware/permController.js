@@ -1,8 +1,8 @@
 const jwToken = require('jsonwebtoken');
 const { roles } = require('./_helpers/roles');
-// const { defaultPermissionObject } = require('./_helpers/permission');
 const { secret } = require('../middleware/jwt');
 const log = require('../utils/logger');
+const User = require('../models/user');
 
 
 /**
@@ -31,6 +31,11 @@ exports.requireAuth = async function (ctx, next) {
       if (exp < Date.now().valueOf() / 1000) {
         ctx.throw(400, null, { errors: ['Expired Token'] });
       }
+
+      const userData = await User.query().findById(data.data.id).eager('userRoles(selectName)');
+      const role = userData['userRoles'][0] !== undefined ? userData['userRoles'][0].name : 'basic';
+      data['role'] = role;
+
       ctx.state.user = data;
       log.info('Access granted to %s user', ctx.state.user.data.username);
       await next();
@@ -58,13 +63,16 @@ exports.grantAccess = function (action, resource) {
       const permission = roles.can(roleName)[action](resource);
 
       if (!permission.granted) {
-        ctx.throw(400, null, { errors: ['Bad Request'] });
+        log.error(`You do not have enough permission for role ${roleName}`);
+        ctx.throw(400, null, { errors: [`You do not have enough permission, ${roleName}`] });
       }
 
       await next();
-    } catch (error) {
-      log.error(`Bad request with the following message ${error}`);
-      ctx.throw(400, null, { errors: ['Bad Request'] });
+    } catch (e) {
+      log.error(`Bad request with the following message ${e}`);
+      ctx.throw(400, null, { errors: [e.errors] });
+      throw e;
+
     }
   };
 };
