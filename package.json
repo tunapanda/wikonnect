@@ -5,7 +5,7 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "test": "cypress run",
+    "test": "cypress run --record --key d9ab3f02-3f5f-4f23-9064-cec36274c15d",
     "cy:open": "cypress open",
     "test:server": "cd server && yarn test",
     "test:frontend": "cd frontend && yarn test",
