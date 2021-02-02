@@ -1,5 +1,6 @@
 import Route from '@ember/routing/route';
 import { inject } from '@ember/service';
+//import settings from '../config/settings';
 
 export default class ApplicationRoute extends Route {
 
@@ -12,6 +13,10 @@ export default class ApplicationRoute extends Route {
   queryParams = { campaign_id: '', points: '', enduser_id: '', partner_id: '' };
 
   model(params) {
+
+
+
+
     let mojaLocalStorage = {
       partner_id: params.campaign_id,
       enduser_id: params.points,

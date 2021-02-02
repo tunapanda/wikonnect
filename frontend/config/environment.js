@@ -1,6 +1,8 @@
 'use strict';
 
 module.exports = function (environment) {
+  //
+
   let ENV = {
     modulePrefix: 'wikonnect',
     environment,
@@ -28,6 +30,24 @@ module.exports = function (environment) {
     APP: {
       // Here you can pass flags/options to your application instance
       // when it is created
+      instance_name: 'Wikonnect',
+      header_logo: '/images/logo.png',
+      header_background: 'orange',
+      header_text: 'light',
+      primary_color: 'orange',
+      embeded_h5p_editor: false,
+      linkify_description: false,
+      use_preset_tags: false,
+      moja_integration: false,
+      languages: [
+        { name: 'English', code: 'EN', file: 'en-us' },
+        { name: 'Swahili', code: 'SW', file: 'sw-ke' }
+      ],
+      preset_tags: [
+        { category: 'KICD', tags: ['KICD ALIGNED', 'KICD APPROVED'] },
+        { category: 'Competency', tags: ['TEST', 'TEST2'] }
+      ]
+
     },
 
     'ember-simple-auth': {
@@ -37,13 +57,24 @@ module.exports = function (environment) {
 
     'ember-simple-auth-token': {
       refreshTokenPropertyName: 'token',
-      serverTokenEndpoint: '/api/v1/auth/',
-      serverTokenRefreshEndpoint: '/api/v1/auth/token-refresh/',
+      serverTokenEndpoint: '/api/v1/auth',
+      serverTokenRefreshEndpoint: '/api/v1/auth/token-refresh',
     },
     'ember-drag-drop-polyfill': {
       enableEnterLeave: true,
       holdToDrag: false
     },
+
+    torii: {
+      sessionServiceName: 'session',
+      allowUnsafeRedirect: true,
+      providers: {
+        'google-oauth2-bearer': {
+          apiKey: process.env.GOOGLE_KEY,
+          redirectUri: process.env.GOOGLE_REDIRECT,
+        },
+      }
+    }
 
   };
 
@@ -70,6 +101,8 @@ module.exports = function (environment) {
   if (environment === 'production') {
     // here you can enable a production-specific feature
   }
+
+  // ENV.settings = settings
 
   return ENV;
 };

@@ -160,7 +160,7 @@
     "groupTitle": "Authentication",
     "sampleRequest": [
       {
-        "url": "https://kkl.wikonnect.org/users"
+        "url": "https://app.wikonnect.org/users"
       }
     ]
   },
@@ -207,7 +207,7 @@
     "groupTitle": "Authentication",
     "sampleRequest": [
       {
-        "url": "https://kkl.wikonnect.org/users/:id/profile-image"
+        "url": "https://app.wikonnect.org/users/:id/profile-image"
       }
     ]
   },
@@ -283,7 +283,7 @@
     "groupTitle": "Authentication",
     "sampleRequest": [
       {
-        "url": "https://kkl.wikonnect.org/api/v1/users"
+        "url": "https://app.wikonnect.org/api/v1/users"
       }
     ]
   },
@@ -426,7 +426,7 @@
     "groupTitle": "Authentication",
     "sampleRequest": [
       {
-        "url": "https://kkl.wikonnect.org/users/:id"
+        "url": "https://app.wikonnect.org/users/:id"
       }
     ]
   },
@@ -455,7 +455,7 @@
     "groupTitle": "ChapterComments",
     "sampleRequest": [
       {
-        "url": "https://kkl.wikonnect.org/:comment_id"
+        "url": "https://app.wikonnect.org/:comment_id"
       }
     ]
   },
@@ -533,7 +533,7 @@
     "groupTitle": "ChapterComments",
     "sampleRequest": [
       {
-        "url": "https://kkl.wikonnect.org/:comment_id"
+        "url": "https://app.wikonnect.org/:comment_id"
       }
     ]
   },
@@ -553,7 +553,7 @@
     "groupTitle": "ChapterRatings",
     "sampleRequest": [
       {
-        "url": "https://kkl.wikonnect.org/:rating_id"
+        "url": "https://app.wikonnect.org/:rating_id"
       }
     ]
   },
@@ -582,7 +582,7 @@
     "groupTitle": "ChapterRatings",
     "sampleRequest": [
       {
-        "url": "https://kkl.wikonnect.org/:rating_id"
+        "url": "https://app.wikonnect.org/:rating_id"
       }
     ]
   },
@@ -660,7 +660,7 @@
     "groupTitle": "ChapterRatings",
     "sampleRequest": [
       {
-        "url": "https://kkl.wikonnect.org/:rating_id"
+        "url": "https://app.wikonnect.org/:rating_id"
       }
     ]
   },
@@ -736,7 +736,7 @@
     "groupTitle": "Chapters",
     "sampleRequest": [
       {
-        "url": "https://kkl.wikonnect.org/api/v1/chapters/:id"
+        "url": "https://app.wikonnect.org/api/v1/chapters/:id"
       }
     ]
   },
@@ -859,7 +859,7 @@
     },
     "sampleRequest": [
       {
-        "url": "https://kkl.wikonnect.org/api/v1/chapters/"
+        "url": "https://app.wikonnect.org/api/v1/chapters/"
       }
     ],
     "version": "0.0.0",
@@ -985,7 +985,7 @@
     "groupTitle": "Chapters",
     "sampleRequest": [
       {
-        "url": "https://kkl.wikonnect.org/api/v1/chapters/:id/upload"
+        "url": "https://app.wikonnect.org/api/v1/chapters/:id/upload"
       }
     ]
   },
@@ -1034,7 +1034,7 @@
     "groupTitle": "Chapters",
     "sampleRequest": [
       {
-        "url": "https://kkl.wikonnect.org/api/v1/chapters/:id/chapter-image"
+        "url": "https://app.wikonnect.org/api/v1/chapters/:id/chapter-image"
       }
     ]
   },
@@ -1052,7 +1052,7 @@
     "version": "0.4.0",
     "sampleRequest": [
       {
-        "url": "https://kkl.wikonnect.org/api/v1/chapters/:id"
+        "url": "https://app.wikonnect.org/api/v1/chapters/:id"
       }
     ],
     "parameter": {
@@ -1173,7 +1173,7 @@
     "groupTitle": "Courses",
     "sampleRequest": [
       {
-        "url": "https://kkl.wikonnect.org/courses/:id"
+        "url": "https://app.wikonnect.org/courses/:id"
       }
     ]
   },
@@ -1519,7 +1519,7 @@
     "groupTitle": "Learning_Path",
     "sampleRequest": [
       {
-        "url": "https://kkl.wikonnect.org/paths/:id"
+        "url": "https://app.wikonnect.org/paths/:id"
       }
     ]
   },
@@ -1714,7 +1714,7 @@
     "groupTitle": "Lessons",
     "sampleRequest": [
       {
-        "url": "https://kkl.wikonnect.org/lessons/:id"
+        "url": "https://app.wikonnect.org/lessons/:id"
       }
     ]
   },
@@ -1987,7 +1987,7 @@
     "groupTitle": "Modules",
     "sampleRequest": [
       {
-        "url": "https://kkl.wikonnect.org/modules/:id"
+        "url": "https://app.wikonnect.org/modules/:id"
       }
     ]
   },
@@ -2200,6 +2200,118 @@
     "groupTitle": "Modules"
   },
   {
+    "type": "get",
+    "url": "/api/v1/oembed/",
+    "title": "GET an oembed structure.",
+    "name": "GetOembed",
+    "group": "Oembed",
+    "permission": [
+      {
+        "name": "none"
+      }
+    ],
+    "description": "<p>Get and embed format using url query params</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": true,
+            "field": "absolute_url",
+            "description": "<p>absolute_url to chapter id</p>"
+          }
+        ],
+        "Authentication": [
+          {
+            "group": "Authentication",
+            "type": "String[]",
+            "optional": true,
+            "field": "tags",
+            "description": "<p>Optional tags list</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Object[]",
+            "optional": false,
+            "field": "List",
+            "description": "<p>of chapters</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "version",
+            "description": "<p>version string</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "type",
+            "description": "<p>data type referencing the object asked for</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "provider_name",
+            "description": "<p>name of organization</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "provider_url",
+            "description": "<p>absolute url</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Integer",
+            "optional": false,
+            "field": "width",
+            "description": "<p>content width</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Integer",
+            "optional": false,
+            "field": "height",
+            "description": "<p>content height</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "title",
+            "description": "<p>object title</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "html",
+            "description": "<p>formatted iframe code in html</p>"
+          }
+        ]
+      }
+    },
+    "sampleRequest": [
+      {
+        "url": "https://app.wikonnect.org/api/v1/oembed/\n\n\nhttp://localhost/api/v1/oembed?url=http://localhost:4200/chapters/chapter1\n{\n   \"version\": \"1.0\",\n   \"type\": \"h5p\",\n   \"provider_name\": \"Wikonnect\",\n   \"provider_url\": \"http://app.wikonnect.org/\",\n   \"width\": 425,\n   \"height\": 344,\n   \"title\": \"Cyber bullying\",\n\n   \"html\":\n   \t\"<iframe width=\\\"560\\\" height=\\\"315\\\" src=\\\"http://localhost:4200/embed/chapter1\\\" ></iframe>\",\n}"
+      }
+    ],
+    "version": "0.0.0",
+    "filename": "./server/routes/oembed.js",
+    "groupTitle": "Oembed"
+  },
+  {
     "type": "delete",
     "url": "/api/v1/reactions/:id",
     "title": "DELETE using Id.",
@@ -2278,7 +2390,7 @@
     "groupTitle": "Reactions",
     "sampleRequest": [
       {
-        "url": "https://kkl.wikonnect.org/api/v1/reactions/:id"
+        "url": "https://app.wikonnect.org/api/v1/reactions/:id"
       }
     ]
   },
@@ -2354,7 +2466,7 @@
     "groupTitle": "Reactions",
     "sampleRequest": [
       {
-        "url": "https://kkl.wikonnect.org/api/v1/reactions/:id"
+        "url": "https://app.wikonnect.org/api/v1/reactions/:id"
       }
     ]
   },
@@ -2451,7 +2563,7 @@
     "groupTitle": "Reactions",
     "sampleRequest": [
       {
-        "url": "https://kkl.wikonnect.org/api/v1/reactions/"
+        "url": "https://app.wikonnect.org/api/v1/reactions/"
       }
     ]
   },
@@ -2601,7 +2713,7 @@
     "groupTitle": "Reactions",
     "sampleRequest": [
       {
-        "url": "https://kkl.wikonnect.org/api/v1/reactions/:id"
+        "url": "https://app.wikonnect.org/api/v1/reactions/:id"
       }
     ]
   },

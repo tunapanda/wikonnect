@@ -5,6 +5,8 @@ import { tracked } from '@glimmer/tracking';
 
 export default class TagsController extends Controller {
 
+  @inject
+  config
 
   @inject me;
   @tracked topic_list = ['Literacy', 'STEM', 'Environmental conservation', 'Emotional well-being', 'Life skills and values',

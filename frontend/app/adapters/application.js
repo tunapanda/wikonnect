@@ -11,6 +11,7 @@ export default class ApplicationEmberObject extends RESTAdapter.extend(TokenAuth
 
     hash.headers['Authorization'] = `Bearer ${token}`;
     hash.headers['mojaHeader'] = window.localStorage.getItem('moja_campaign');
+    hash.headers['achievement'] = window.localStorage.getItem('achievement');
 
     return hash;
   }

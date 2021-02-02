@@ -33,5 +33,7 @@
     </div>
 
     <BsButton class="btn btn-primary form-control" @type="submit" @defaultText="Sign Up" @buttonType="submit" />
+    <BsButton class="bg-primary form-control"><a {{ action 'sessionRequiresAuthentication' }}>Sign up with Google</a>
+    </BsButton>
   </BsForm>
 </div>

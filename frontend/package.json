@@ -14,7 +14,7 @@
     "build": "ember build",
     "lint:hbs": "ember-template-lint .",
     "lint:js": "eslint .",
-    "start": "ember serve --proxy https://kkl.wikonnect.org/",
+    "start": "ember serve --proxy https://app.wikonnect.org/",
     "start:local": "ember serve  --proxy http://localhost:3000",
     "ci:start": "ember serve --path dist --proxy http://localhost:3000",
     "test": "COVERAGE=true ember test"
@@ -51,6 +51,7 @@
     "ember-cli-sass": "^10.0.1",
     "ember-cli-sri": "^2.1.1",
     "ember-cli-uglify": "^3.0.0",
+    "ember-config-service": "^1.0.0",
     "ember-data": "~3.14.0",
     "ember-disqus": "^1.0.0",
     "ember-drag-drop": "^0.7.0",
@@ -88,7 +89,8 @@
     "qunit-dom": "^0.9.0",
     "rsvp": "^4.8.5",
     "sass": "^1.23.0",
-    "swagger-ui-dist": "^3.9.2"
+    "swagger-ui-dist": "^3.9.2",
+    "torii": "^0.10.1"
   },
   "engines": {
     "node": "8.* || >= 10.*"

@@ -15,6 +15,7 @@ export default class MainHeaderComponent extends Component {
   @service router;
   @service session;
   @service intl;
+  @service config;
 
 
   @tracked token = this.session.data.authenticated.token

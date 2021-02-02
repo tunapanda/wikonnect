@@ -58,6 +58,10 @@ body {
       from(rgba(252, 113, 0, 0)), to(rgba(0, 0, 0, 1)));
 }
 
+body {
+  margin-bottom: 60px;
+  /* Margin bottom by footer height */
+}
 
 
 .replaced {
@@ -83,11 +87,11 @@ body {
   white-space: pre-line;
 }
 
-button.like{
+button.like {
   filter: invert(27%) sepia(51%) saturate(2878%) hue-rotate(346deg) brightness(104%) contrast(97%);
 }
 
-button.dislike{
+button.dislike {
   filter: invert(27%) sepia(51%) saturate(2878%) hue-rotate(346deg) brightness(104%) contrast(97%);
 }
 
@@ -97,6 +101,19 @@ button.dislike{
   height: 70px;
   background-size: cover;
   filter: invert(27%) sepia(51%) saturate(2878%) hue-rotate(346deg) brightness(104%) contrast(97%);
+}
+
+pre {
+  white-space: pre-wrap;
+  /* Since CSS 2.1 */
+  white-space: -moz-pre-wrap;
+  /* Mozilla, since 1999 */
+  white-space: -pre-wrap;
+  /* Opera 4-6 */
+  white-space: -o-pre-wrap;
+  /* Opera 7 */
+  word-wrap: break-word;
+  /* Internet Explorer 5.5+ */
 }
 
 //@import "ember-bootstrap/bootstrap";

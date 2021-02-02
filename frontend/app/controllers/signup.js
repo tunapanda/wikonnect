@@ -8,6 +8,9 @@ export default class SignupController extends Controller {
   @inject
   me;
 
+  @inject
+  config
+
   queryParams = ['invite_code'];
 
 
@@ -15,9 +18,12 @@ export default class SignupController extends Controller {
 
   @action
   signupSuccess() {
-    // this.transitionToRoute('upload');
+    if (this.config.content.APP.use_preset_tags) {
+      this.transitionToRoute('tags');
+    } else {
+      this.transitionToRoute('upload');
 
-    this.transitionToRoute('tags');
+    }
   }
 
 }
