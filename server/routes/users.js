@@ -121,30 +121,25 @@ router.post('/', validateAuthRoutes.validateNewUser, createPasswordHash, async c
  *       "profileUri": "image_url",
  *       "private": boolean,
  *       "inviteCode": "invited_by",
- *       "achievementAwards": [
- *         {
- *           "id": "achievementaward1",
- *           "name": "completed 10 courses",
- *           "type": "achievementAwards"
- *         },
- *         {
- *           "id": "achievementaward2",
- *           "name": "fully filled profile",
- *           "type": "achievementAwards"
- *         }
- *       ],
- *       "userRoles": [
- *         {
- *           "name": "basic"
- *         }
- *       ],
- *       "enrolledCourses": [
- *          {
- *            "id": "course1",
- *            "name": "A Course 1",
- *            "type": "course"
- *          }
- *       ],
+ *       "achievementAwards": [{
+ *          "id": "achievementaward1",
+ *          "name": "completed 10 courses",
+ *          "type": "achievementAwards"
+ *        },
+ *        {
+ *          "id": "achievementaward2",
+ *          "name": "fully filled profile",
+ *          "type": "achievementAwards"
+ *        }],
+ *       "roles": [{
+*            "name": "admin",
+*            "type": "roles"
+*        }]
+ *       "enrolledCourses": [{
+ *           "id": "course1",
+ *           "name": "A Course 1",
+ *           "type": "course"
+ *         }],
  *       "userVerification": []
  *    }
  * }
@@ -169,7 +164,7 @@ router.get('/:id', permController.requireAuth, async ctx => {
   let stateUserId = ctx.state.user.id == undefined ? ctx.state.user.data.id : ctx.state.user.id;
 
   let userId = ctx.params.id != 'current' ? ctx.params.id : stateUserId;
-  const user = await User.query().findById(userId).mergeJoinEager('[achievementAwards(selectBadgeNameAndId), userRoles(selectName), enrolledCourses(selectNameAndId)]');
+  const user = await User.query().findById(userId).mergeJoinEager('[achievementAwards(selectBadgeNameAndId), roles(selectName), enrolledCourses(selectNameAndId)]');
   user.profileUri = await getProfileImage(user.profileUri);
 
 
@@ -184,7 +179,7 @@ router.get('/:id', permController.requireAuth, async ctx => {
       'profileUri': 'images/profile-placeholder.gif',
       'id': user.id,
       'private': user.private,
-      'userRoles': user.userRoles
+      'roles': user.roles
     };
     // return data if profile is not private
     if (user.private === 'false') {
@@ -242,7 +237,7 @@ router.get('/', permController.requireAuth, permController.grantAccess('readAny'
     ctx.assert(user, 404, 'No User With that username');
   }
   try {
-    user = await user.mergeJoinEager('[achievementAwards(selectBadgeNameAndId), userRoles(selectName), enrolledCourses(selectNameAndId)]');
+    user = await user.mergeJoinEager('[achievementAwards(selectBadgeNameAndId), roles(selectName), enrolledCourses(selectNameAndId)]');
   } catch (e) {
     if (e.statusCode) {
       ctx.throw(e.statusCode, { message: 'The query key does not exist' });

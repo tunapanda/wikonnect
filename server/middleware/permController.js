@@ -32,8 +32,8 @@ exports.requireAuth = async function (ctx, next) {
         ctx.throw(400, null, { errors: ['Expired Token'] });
       }
 
-      const userData = await User.query().findById(data.data.id).eager('userRoles(selectName)');
-      const role = userData['userRoles'][0] !== undefined ? userData['userRoles'][0].name : 'basic';
+      const userData = await User.query().findById(data.data.id).eager('roles(selectName)');
+      const role = userData['roles'][0] !== undefined ? userData['roles'][0].name : 'basic';
       data['role'] = role;
 
       ctx.state.user = data;

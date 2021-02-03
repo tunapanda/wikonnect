@@ -24,9 +24,9 @@ const router = new Router({
 *     HTTP/1.1 201 OK
 *     {
 *       "id": "user1",
-*       "userRoles": [{
+*       "roles": [{
 *          "name": "admin",
-*          "type": "userRoles"
+*          "type": "roles"
 *         }]
 *     }
 *
@@ -37,7 +37,7 @@ router.get('/:id', requireAuth, grantAccess('readAny', 'admin'), async ctx => {
   let user_role;
 
   try {
-    user_role = await User.query().findById(ctx.params.id).mergeJoinEager('userRoles(selectName)');
+    user_role = await User.query().findById(ctx.params.id).mergeJoinEager('roles(selectName)');
     ctx.assert(user_role, 404, 'That is no role for that user.');
   } catch (e) {
     if (e.statusCode) {
@@ -51,7 +51,7 @@ router.get('/:id', requireAuth, grantAccess('readAny', 'admin'), async ctx => {
   ctx.status = 200;
   ctx.body = {
     'id': user_role.id,
-    'userRoles': user_role.userRoles
+    'roles': user_role.roles
   };
 });
 
@@ -69,16 +69,29 @@ router.get('/:id', requireAuth, grantAccess('readAny', 'admin'), async ctx => {
 *
 * @apiSuccessExample {json} Success-Response:
 *     HTTP/1.1 201 OK
-*     {
-*        "user": {
-*          "id": "string",
-*          "username": "string",
-*          "inviteCode": "invited_by",
-*          "createdAt": "string",
-*          "updatedAt": "string",
-*          "metadata": json_array
-*        }
-*     }
+*     [
+*        {
+*          "id": "user1",
+*          "email": "user1@wikonnect.org",
+*          "username": "user1",
+*          "lastSeen": "2017-12-20 19:17:10",
+*          "metadata": {
+*              "profileComplete": "false",
+*              "oneInviteComplete": "false",
+*              "oneChapterCompletion": "false"
+*          },
+*          "createdAt": "2017-12-20T16:17:10.000Z",
+*          "updatedAt": "2017-12-20T16:17:10.000Z",
+*          "profileUri": null,
+*          "inviteCode": "user1",
+*          "private": "true",
+*          "tags": "{\"highschool\",\"primary\",\"university\"}",
+*          "roles": [{
+*             "name": "admin",
+*             "type": "roles"
+*           }]
+*        },
+*      ]
 *
 * @apiError {String} errors Bad Request.
 */
@@ -87,7 +100,7 @@ router.get('/', requireAuth, grantAccess('readAny', 'profile'), async ctx => {
   let user_role;
 
   try {
-    user_role = await User.query().where(ctx.query).mergeJoinEager('userRoles(selectName)');
+    user_role = await User.query().where(ctx.query).mergeJoinEager('roles(selectName)');
     ctx.assert(user_role, 404, 'That is no role for that user.');
   } catch (e) {
     if (e.statusCode) {

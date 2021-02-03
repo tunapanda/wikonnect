@@ -55,7 +55,7 @@ class User extends Model {
           to: 'oauth2.userId'
         }
       },
-      userRoles: {
+      roles: {
         relation: Model.ManyToManyRelation,
         modelClass: __dirname + '/group',
         join: {

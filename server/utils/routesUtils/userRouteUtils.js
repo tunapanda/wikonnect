@@ -32,13 +32,13 @@ async function achievementAwardsType(parent) {
 async function userRoles(parent) {
   try {
     if (parent.length == undefined) {
-      parent.userRoles.forEach(role => {
-        return role.type = 'userRoles';
+      parent.roles.forEach(role => {
+        return role.type = 'roles';
       });
     } else {
       parent.forEach(roles => {
-        roles.userRoles.forEach(role => {
-          return role.type = 'userRoles';
+        roles.roles.forEach(role => {
+          return role.type = 'roles';
         });
       });
     }
