@@ -129,7 +129,7 @@ jobs:
           background: true
       - run:
           name: Run Cypress
-          command: $(yarn bin)/cypress run
+          command: $(yarn bin)/cypress run --record --key d9ab3f02-3f5f-4f23-9064-cec36274c15d
       - store_artifacts:
           path: cypress/screenshots
       - store_artifacts:
@@ -157,29 +157,3 @@ workflows:
       - integration_test:
           requires:
             - build
-      # - aws-code-deploy/deploy:
-      #     # Deployment steps to staging
-      #     requires:
-      #       - integration_test
-      #       - test_server
-      #     filters:
-      #       branches:
-      #         only: kkl_automated
-      #     application-name: aws-codedeploy
-      #     bundle-bucket: wikonnect-codedeploy-deployments
-      #     bundle-key: 'staging-wikonnect-${CIRCLE_SHA1}'
-      #     deployment-group: wikonnect-staging
-      #     service-role-arn: CodeDeployServiceRole
-      # - aws-code-deploy/deploy:
-      #     # Deployment to kkl.wikonnect.org using custom branch
-      #     requires:
-      #       - integration_test
-      #       - test_server
-      #     filters:
-      #       branches:
-      #         only: kkl_automated
-      #     application-name: aws-codedeploy
-      #     bundle-bucket: wikonnect-codedeploy-deployments
-      #     bundle-key: 'kkl-deployment-${CIRCLE_SHA1}'
-      #     deployment-group: staging
-      #     service-role-arn: CodeDeployServiceRole
