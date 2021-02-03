@@ -2,7 +2,7 @@
   {{#if me.isAuthenticated}}
 
     <BsForm @model={{commentModel}} @onSubmit={{action "saveComment"}} as |form|>
-      <form.element @controlType="textarea" @label="Comment" @property="comment" />
+      <form.element @controlType="textarea" @label="Comment" @property="comment"/>
       {{#each commentModel.errors as |err| }}
         {{#if (eq err.key "comment")}}
           <BsAlert @type="danger" @fade={{true}}>
@@ -12,12 +12,13 @@
       {{/each}}
 
       <input type="hidden" value={{@id}} name="chapter_id" id="chapter_id">
-      <BsButton @type="primary" @defaultText="Comment" @buttonType="submit" />
+      <BsButton @type="primary" @defaultText="Comment" @buttonType="submit"/>
     </BsForm>
   {{/if}}
 </div>
 <hr>
-{{#each chapterComments as |item|}}
+
+{{#each @chapterComments as |item|}}
 
   <div id="comments" class="media mt-4">
     {{!-- <img alt="profile image" class="mr-3 rounded-circle" src="https://placehold.co/80"> --}}

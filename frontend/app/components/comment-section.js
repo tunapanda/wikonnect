@@ -1,12 +1,12 @@
 import Component from '@glimmer/component';
-import { inject as service } from '@ember/service';
-import { action } from '@ember/object';
-import { computed } from '@ember/object';
+import {inject as service} from '@ember/service';
+import {action} from '@ember/object';
+import {computed} from '@ember/object';
 
 export default class CommentSectionComponent extends Component {
 
   @service
-  me
+  me;
 
   @service
   session;
@@ -15,8 +15,7 @@ export default class CommentSectionComponent extends Component {
   store;
 
   @service
-  notify
-
+  notify;
 
 
   get commentModel() {
@@ -26,31 +25,25 @@ export default class CommentSectionComponent extends Component {
     });
   }
 
-
-
   @computed('me.user.profileUri')
   get profileUri() {
     return this.me.user.profileUri;
   }
 
-
-  @computed()
-  get chapterComments() {
-    return this.store.query('comment', { 'chapterId': this.args.selectedChapter });
-  }
-
   @action
   async saveComment(model) {
-    let notice = this.notify;
-    let chap = await this.store.findRecord('chapter', this.args.selectedChapter);
+    let chap = await this.store.peekRecord('chapter', this.args.selectedChapter);
     model.setProperties({
       chapter: chap
     });
-    model.save().then(function () {
-      // save worked
-    }, function () {
-      notice.alert('Be mindful of your comments');
-    });
+    model.save()
+      .then(() => {
+        this.notify.success('Comment added successfully', { closeAfter: 6000 });
+
+      })
+      .catch(() => {
+        this.notify.alert('Be mindful of your comments',{closeAfter: 6000});
+      });
 
   }
 }
