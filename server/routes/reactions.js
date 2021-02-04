@@ -2,6 +2,7 @@ const Router = require('koa-router');
 const { requireAuth } = require('../middleware/permController');
 const validateReaction = require('../middleware/validateRoutePostSchema/validateReaction');
 const Reaction = require('../models/reaction');
+const log = require('../utils/logger');
 
 const router = new Router({
   prefix: '/reactions'
@@ -128,8 +129,30 @@ router.get('/:id', requireAuth, async ctx => {
 router.post('/', validateReaction, requireAuth, async ctx => {
   let newReaction = ctx.request.body.reaction;
   newReaction.userId = ctx.state.user.id == undefined ? ctx.state.user.data.id : ctx.state.user.id;
-  const reaction = await Reaction.query().insertAndFetch(newReaction);
 
+  // const check_reaction = await Reaction.query().findOne({ chapterId: newReaction.chapterId, userId: newReaction.userId });
+  let reaction;
+  try {
+
+    // Check if record already exists in database
+    const check_reaction = await Reaction.query().findOne({ chapterId: newReaction.chapterId, userId: newReaction.userId });
+
+    // If record already exists and the reaction object is not equal to the post reaction object, update the current record and skip creating a new record
+    // If record does not exists in database, then create a new record entry
+    // Return the new record
+    if (check_reaction && check_reaction.reaction != newReaction.reaction) {
+      log.info('Updating reaction status');
+      reaction = await Reaction.query().patchAndFetchById(check_reaction.id, { reaction: newReaction.reaction });
+    } else if (!check_reaction) {
+      reaction = await Reaction.query().insertAndFetch(newReaction);
+    } else {
+      reaction = check_reaction;
+    }
+  } catch (error) {
+    if (error instanceof TypeError) {
+      console.log(error);
+    }
+  }
   ctx.status = 201;
   ctx.body = { reaction };
 });
