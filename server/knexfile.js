@@ -1,5 +1,6 @@
 // Update with your config settings.
 const path = require('path');
+const log = require('./utils/logger');
 const BASE_PATH = path.join(__dirname, 'db');
 let connections;
 
@@ -56,6 +57,14 @@ module.exports = {
     },
     seeds: {
       directory: path.join(BASE_PATH, 'seeds')
+    },
+    log: {
+      error(message) {
+        log.fatal(message);
+      },
+      debug(message) {
+        log.debug(message);
+      },
     }
   },
   production: {
