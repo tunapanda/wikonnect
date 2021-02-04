@@ -9,6 +9,7 @@
       {{/if}}
     {{/link-to}}
     <div class="card-body">
+      <Reaction @likes={{@chapter.likes}} @dislikes={{@chapter.dislikes}} />
       <h5 class="card-title">
 
         {{#link-to "chapter" @chapter.id }}
@@ -23,7 +24,6 @@
         <p class="card-text">{{@chapter.description}}</p>
 
       {{/if}}
-
       <br>
       {{#each @chapter.tags as |tag|}}
         {{#link-to "tag" tag}}

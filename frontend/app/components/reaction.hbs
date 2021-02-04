@@ -1,0 +1,6 @@
+<span {{on "click" this.like}}>
+  <MdIcon @icon="thumb-up" @size=15 />{{@likes}}
+</span>
+<span {{on "click" this.dislike}}>
+  <MdIcon @icon="thumb-down" @size=15 />{{@dislikes}}
+</span>
