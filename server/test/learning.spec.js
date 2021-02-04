@@ -21,12 +21,6 @@ const data = {
   }
 };
 
-const putData = {
-  learningPath: {
-    'name': 'PUT update works',
-  }
-};
-
 const invalidPutData ={
   learningPath:{
     creator_id : 'pub'
@@ -112,20 +106,6 @@ describe('LEARNING PATH ROUTE', () => {
         done();
       });
   });
-  it('Should UPDATE a learning-path record on PUT', done => {
-    chai
-      .request(server)
-      .put(route + itemID)
-      .set('Content-Type', 'application/json')
-      .set(tokens.headersSuperAdmin1)
-      .send(putData)
-      .end((err, res) => {
-        res.status.should.eql(201);
-        res.should.be.json;
-        res.body.learningpath.name.should.eql('PUT update works');
-        done();
-      });
-  });
   it('Should throw an ERROR on POST with invalid data', done => {
     chai
       .request(server)
@@ -173,19 +153,6 @@ describe('LEARNING PATH ROUTE', () => {
       .end((err, res) => {
         res.should.have.status(400);
         res.body.message.should.eql('The query key does not exist');
-        done();
-      });
-  });
-  it('Should DELETE a learning-path record on DELETE /:id return deleted JSON object', done => {
-    chai
-      .request(server)
-      .delete(route + itemID)
-      .set('Content-Type', 'application/json')
-      .set(tokens.headersSuperAdmin1)
-      .end((err, res) => {
-        res.status.should.eql(200);
-        res.should.be.json;
-        res.body.should.have.property('learningpath');
         done();
       });
   });

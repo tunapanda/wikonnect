@@ -89,7 +89,7 @@ router.get('/:id', requireAuth, async ctx => {
 
 
 /**
- * @api {post} /api/v1/reaction/ POST a reaction.
+ * @api {post} /api/v1/reactions/ POST a reaction.
  * @apiName PostAReaction
  * @apiGroup Reactions
  * @apiPermission none

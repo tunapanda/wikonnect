@@ -82,7 +82,7 @@ describe('CHAPTER ROUTE', () => {
     chai
       .request(server)
       .post('/api/v1/comments')
-      .set(tokens.headerAdminUser)
+      .set(tokens.headersSuperAdmin1)
       .set('Content-Type', 'application/json')
       .send(userComment)
       .end((err, res) => {
@@ -224,9 +224,8 @@ describe('CHAPTER ROUTE', () => {
       .set('Content-Type', 'application/json')
       .set(tokens.headersSuperAdmin1)
       .end((err, res) => {
-        res.status.should.eql(200);
+        res.status.should.eql(400);
         res.should.be.json;
-        res.body.should.have.property('chapter');
         done();
       });
   });

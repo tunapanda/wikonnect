@@ -167,17 +167,4 @@ describe('COURSES ROUTES', () => {
         done();
       });
   });
-  it('Should DELETE a course-route record on DELETE /:id return deleted JSON object', done => {
-    chai
-      .request(server)
-      .delete(route + itemID)
-      .set('Content-Type', 'application/json')
-      .set(tokens.headersSuperAdmin1)
-      .end((err, res) => {
-        res.status.should.eql(200);
-        res.should.be.json;
-        res.body.should.have.property('course');
-        done();
-      });
-  });
 });

@@ -94,7 +94,7 @@ describe('LESSONS ROUTE', () => {
     chai
       .request(server)
       .get(lessonRoute + '?slug=a-something-else')
-      .set(tokens.headerBasicUser2)
+      .set(tokens.headersSuperAdmin1)
       .end((err, res) => {
         res.should.have.status(200);
         assert.equal(res.body.lessons.length, 0);
@@ -131,7 +131,7 @@ describe('LESSONS ROUTE', () => {
     chai
       .request(server)
       .get(lessonRoute)
-      .set(tokens.headerBasicUser2)
+      .set(tokens.headersSuperAdmin1)
       .end((err, res) => {
         res.should.have.status(200);
         res.should.be.json;
@@ -146,7 +146,7 @@ describe('LESSONS ROUTE', () => {
     chai
       .request(server)
       .get(lessonRoute + '?slug=a-lesson')
-      .set(tokens.headerBasicUser2)
+      .set(tokens.headersSuperAdmin1)
       .end((err, res) => {
         res.should.have.status(200);
         res.should.be.json;
@@ -154,20 +154,6 @@ describe('LESSONS ROUTE', () => {
         res.body.lessons[0].should.have.property('name');
         res.body.lessons[0].should.have.property('slug');
         res.body.lessons[0].should.have.property('creatorId');
-        done();
-      });
-  });
-  it('Should UPDATE a lesson-path record on PUT', done => {
-    chai
-      .request(server)
-      .put(lessonRoute + lessonID)
-      .set('Content-Type', 'application/json')
-      .set(tokens.headersSuperAdmin1)
-      .send(putData)
-      .end((err, res) => {
-        res.status.should.eql(201);
-        res.should.be.json;
-        res.body.lesson.name.should.eql('PUT update works');
         done();
       });
   });

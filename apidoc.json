@@ -9,10 +9,7 @@
     "Authentication",
     "Chapters",
     "Reactions",
-    "PostAReaction",
-    "GetAReAction",
-    "GetReactions",
-    "DeleteARection"
+    "Achievements"
   ],
   "header": {
     "title": "Getting Started",

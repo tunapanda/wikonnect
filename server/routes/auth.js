@@ -50,33 +50,29 @@ router.post('/', validateAuthRoutes.validateUserLogin, async ctx => {
   }
 
   let { hash: hashPassword, ...userInfoWithoutPassword } = user[0];
-  user = user[0];
 
-  const userData = await User.query().findById(user.id).eager('userRoles(selectName)');
+  try {
+    // if (user.oauth2[0] != undefined && user.oauth2[0].userId == user.id) {
+    //   await lastSeen(user.id);
+    //   ctx.body = {
+    //     token: jsonwebtoken.sign({
+    //       data: userInfoWithoutPassword,
+    //       exp: Math.floor(Date.now() / 1000 + 604800) // 60 seconds * 60 minutes * 24 hours * 7 days = 1 week
+    //     }, secret)
+    //   };
+    // }
+    if (await bcrypt.compare(ctx.request.body.password, hashPassword)) {
+      // eslint-disable-next-line require-atomic-updates
+      await lastSeen(user.id);
+      ctx.body = {
+        token: jsonwebtoken.sign({
+          data: userInfoWithoutPassword,
+          exp: Math.floor(Date.now() / 1000 + 604800) // 60 seconds * 60 minutes * 24 hours * 7 days = 1 week
+        }, secret)
+      };
 
-  let role = userData['userRoles'][0] !== undefined ? userData['userRoles'][0].name : 'basic';
-  userInfoWithoutPassword['role'] = role;
-
-  if (user.oauth2[0] != undefined && user.oauth2[0].userId == user.id) {
-    console.log('we are here');
-    await lastSeen(user.id);
-    ctx.body = {
-      token: jsonwebtoken.sign({
-        data: userInfoWithoutPassword,
-        exp: Math.floor(Date.now() / 1000 + 604800) // 60 seconds * 60 minutes * 24 hours * 7 days = 1 week
-      }, secret)
-    };
-  } else if (await bcrypt.compare(ctx.request.body.password, hashPassword)) {
-    // eslint-disable-next-line require-atomic-updates
-    console.log('password loop');
-    await lastSeen(user.id);
-    ctx.body = {
-      token: jsonwebtoken.sign({
-        data: userInfoWithoutPassword,
-        exp: Math.floor(Date.now() / 1000 + 604800) // 60 seconds * 60 minutes * 24 hours * 7 days = 1 week
-      }, secret)
-    };
-  } else {
+    }
+  } catch (e) {
     log.error('Wrong email or password from %s for %s', ctx.request.ip, ctx.path);
     ctx.throw(404, null, {
       errors: [{

@@ -60,7 +60,7 @@ describe('MODULES route', () => {
     chai
       .request(server)
       .post(moduleRoute)
-      .set(tokens.headerAdminUser)
+      .set(tokens.headersSuperAdmin1)
       .set('Content-Type', 'application/json')
       .send(postData)
       .end((err, res) => {
@@ -100,7 +100,7 @@ describe('MODULES route', () => {
       .request(server)
       .put(moduleRoute + moduleId)
       .set('Content-Type', 'application/json')
-      .set(tokens.headerAdminUser)
+      .set(tokens.headersSuperAdmin1)
       .send(putData)
       .end((err, res) => {
         res.should.be.json;
@@ -119,21 +119,6 @@ describe('MODULES route', () => {
         res.status.should.eql(400);
         res.should.be.json;
         res.body.errors[0].should.eql('Bad Request');
-        done();
-      });
-  });
-
-  it('Should DELETE and return deleted module record on DELETE /:id', done => {
-    chai
-      .request(server)
-      .delete(moduleRoute + moduleId)
-      .set('Content-Type', 'application/json')
-      .set(tokens.headerAdminUser)
-      .end((err, res) => {
-        res.status.should.eql(200);
-        res.should.be.json;
-        res.body.modules.should.have.property('creatorId');
-        res.body.modules.should.have.property('description');
         done();
       });
   });
