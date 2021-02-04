@@ -12,7 +12,7 @@
         <p> {{model.counter}} views | {{format-date model.createdAt}}</p>
       </div>
       <div class="col-6">
-      <Reaction @likes={{model.reaction.likes}} @dislikes={{model.reaction.dislikes}} />
+      <Reaction @likes={{model.reaction.likes}} @dislikes={{model.reaction.dislikes}} @chapterId={{@model.id}}/>
 
 
       </div>

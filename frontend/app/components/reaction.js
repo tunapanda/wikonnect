@@ -6,17 +6,28 @@ export default class ReactionComponent extends Component {
   @inject
   me;
 
+  @inject
+  store;
+
   @action
-  like() {
+  like(chapterId) {
     if (this.me.isAuthenticated) {
-      console.log(this.me.user.id);
+      this.store.createRecord("reaction", {
+        reaction: "like",
+        userId: this.me.user.id,
+        chapterId: chapterId,
+      }).save();
     }
   }
 
   @action
-  dislike() {
+  dislike(chapterId) {
     if (this.me.isAuthenticated) {
-      console.log("dislike");
+      this.store.createRecord("reaction", {
+        reaction: "dislike",
+        userId: this.me.user.id,
+        chapterId: chapterId,
+      }).save();
     }
   }
 }
