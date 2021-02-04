@@ -18,8 +18,6 @@ export default class HomeController extends Controller {
       }
     });
 
-    console.log(filtered);
-
     return ['filtered', 'ok'];
   }
 
