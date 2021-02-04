@@ -35,9 +35,9 @@ export default class AuthenticationSignupComponent extends Component {
         const googleToken = googleAuth.authorizationToken.access_token;
 
         me.registerWithGoogle({ googleToken: googleToken, provider: 'google' })
-          .then((user) => me.authenticate(user.get('username'), googleToken));
+          .then((user) => me.authenticate(user.get('username'), googleToken).then(() => this.success()));
       }, function (error) {
-        console.error('Google auth failed: ', error.message);
+        this.notify.info(`Google auth failed: ${error.message}`);
       });
   }
 

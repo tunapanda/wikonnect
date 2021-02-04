@@ -103,8 +103,8 @@ async function createPasswordHash(ctx, next) {
 
 async function getGoogleToken(ctx, next) {
   if (ctx.request.body.user.username == 'google'){
-    const response = await fetch('https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=' + ctx.request.body.user.password);
-
+    const token = ctx.request.body.user.password;
+    const response = await fetch(`https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=${token}`);
     const body = await response.text();
     console.log(body);
     console.log('\tsent token');
