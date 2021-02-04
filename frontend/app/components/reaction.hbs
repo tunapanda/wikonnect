@@ -1,6 +1,6 @@
-<span {{on "click" this.like}}>
+<BsButton disabled={{if this.me.isAuthenticated false true}} {{on "click" (fn this.like @chapterId)}}>
   <MdIcon @icon="thumb-up" @size=15 />{{@likes}}
-</span>
-<span {{on "click" this.dislike}}>
+</BsButton>
+<BsButton disabled={{if this.me.isAuthenticated false true}} {{on "click" (fn this.dislike @chapterId)}}>
   <MdIcon @icon="thumb-down" @size=15 />{{@dislikes}}
-</span>
+</BsButton>
