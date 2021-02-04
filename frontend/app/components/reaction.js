@@ -1,7 +1,7 @@
-import Component from "@glimmer/component";
-import { tracked } from "@glimmer/tracking";
-import { inject } from "@ember/service";
-import { action } from "@ember/object";
+import Component from '@glimmer/component';
+import { tracked } from '@glimmer/tracking';
+import { inject } from '@ember/service';
+import { action } from '@ember/object';
 
 export default class ReactionComponent extends Component {
   @inject
@@ -17,45 +17,45 @@ export default class ReactionComponent extends Component {
   like(chapterId) {
 
     if (this.me.isAuthenticated) {
-      const chapter = this.store.peekRecord("chapter", chapterId);
+      const chapter = this.store.peekRecord('chapter', chapterId);
       const userId = this.me.user.id;
 
       if (chapter.reaction.authenticated_user === null) {
         this.store
-          .createRecord("reaction", {
-            reaction: "like",
+          .createRecord('reaction', {
+            reaction: 'like',
             userId: userId,
             chapterId: chapterId,
           })
           .save();
-          this.likes++;
-      } else if (chapter.reaction.authenticated_user === "like") {
+        this.likes++;
+      } else if (chapter.reaction.authenticated_user === 'like') {
         this.likes--;
-        this.store.findAll("reaction").then((reactions) => {
+        this.store.findAll('reaction').then((reactions) => {
           const reaction = reactions.find(
             (reaction) =>
               reaction.chapterId === chapterId &&
               reaction.userId === userId &&
-              reaction.reaction === "like"
+              reaction.reaction === 'like'
           );
 
           reaction.destroyRecord();
         });
-      } else if (chapter.reaction.authenticated_user === "dislike") {
+      } else if (chapter.reaction.authenticated_user === 'dislike') {
         this.like++;
         this.dislike--;
-        this.store.findAll("reaction").then((reactions) => {
+        this.store.findAll('reaction').then((reactions) => {
           const reaction = reactions.find(
             (reaction) =>
               reaction.chapterId === chapterId &&
               reaction.userId === userId &&
-              reaction.reaction === "dislike"
+              reaction.reaction === 'dislike'
           );
 
           reaction.destroyRecord();
           this.store
-            .createRecord("reaction", {
-              reaction: "like",
+            .createRecord('reaction', {
+              reaction: 'like',
               userId: userId,
               chapterId: chapterId,
             })
@@ -68,45 +68,45 @@ export default class ReactionComponent extends Component {
   @action
   dislike(chapterId) {
     if (this.me.isAuthenticated) {
-      const chapter = this.store.peekRecord("chapter", chapterId);
+      const chapter = this.store.peekRecord('chapter', chapterId);
       const userId = this.me.user.id;
 
       if (chapter.reaction.authenticated_user === null) {
         this.store
-          .createRecord("reaction", {
-            reaction: "dislike",
+          .createRecord('reaction', {
+            reaction: 'dislike',
             userId: userId,
             chapterId: chapterId,
           })
           .save();
-          this.dislikes++;
-      } else if (chapter.reaction.authenticated_user === "like") {
-        this.store.findAll("reaction").then((reactions) => {
+        this.dislikes++;
+      } else if (chapter.reaction.authenticated_user === 'like') {
+        this.store.findAll('reaction').then((reactions) => {
           const reaction = reactions.find(
             (reaction) =>
               reaction.chapterId === chapterId &&
               reaction.userId === userId &&
-              reaction.reaction === "like"
+              reaction.reaction === 'like'
           );
 
           reaction.destroyRecord();
         });
         this.store
-          .createRecord("reaction", {
-            reaction: "dislike",
+          .createRecord('reaction', {
+            reaction: 'dislike',
             userId: userId,
             chapterId: chapterId,
           })
           .save();
-          this.likes--;
-          this.dislikes++;
-      } else if (chapter.reaction.authenticated_user === "dislike") {
-        this.store.findAll("reaction").then((reactions) => {
+        this.likes--;
+        this.dislikes++;
+      } else if (chapter.reaction.authenticated_user === 'dislike') {
+        this.store.findAll('reaction').then((reactions) => {
           const reaction = reactions.find(
             (reaction) =>
               reaction.chapterId === chapterId &&
               reaction.userId === userId &&
-              reaction.reaction === "dislike"
+              reaction.reaction === 'dislike'
           );
 
           reaction.destroyRecord();
