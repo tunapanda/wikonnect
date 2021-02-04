@@ -42,7 +42,53 @@ async function chapterCompletionAward(params) {
   }
 }
 
-router.get('/', async ctx => {
+
+/**
+* @api {get} /api/v1/achievements GET all achievements.
+* @apiName GetAchievements
+* @apiGroup Achievements
+*
+* @apiParam {string} achievement[description] optional achievement description
+* @apiParam {string} achievement[user_id] optional user id
+* @apiParam {string} achievement[target] optional chapter id for the achievement given
+* @apiParam {string} achievement[target_status] optional either completed, started or attempted
+* @apiParam {string} achievement[metadata] optional
+*
+* @apiPermission none
+* @apiSampleRequest off
+*
+* @apiSuccessExample {json} Success-Response:
+ *
+ * @apiSuccessExample {json} Success-Response:
+ *     HTTP/1.1 200 OK
+ *     {
+        "achievement": [
+          {
+            "id": "achievements1",
+            "description": "completed chapter 2",
+            "metadata": null,
+            "createdAt": "2017-12-20T16:17:10.000Z",
+            "updatedAt": "2017-12-20T16:17:10.000Z",
+            "userId": "user1",
+            "target": "chapter2",
+            "targetStatus": "completed"
+          },
+          {
+            "id": "achievements2",
+            "description": "completed chapter1",
+            "metadata": null,
+            "createdAt": "2017-12-20T16:17:10.000Z",
+            "updatedAt": "2017-12-20T16:17:10.000Z",
+            "userId": "user1",
+            "target": "chapter1",
+            "targetStatus": "completed"
+          },
+        ]
+      }
+ * @apiError {String} errors Bad Request.
+ */
+
+router.get('/', requireAuth, async ctx => {
   try {
     let achievement = await Achievement.query().where(ctx.query);
     achievement.imageUrl = 'images/profile-placeholder.gif';
@@ -84,7 +130,32 @@ router.get('/date/:startDate/:endDate', requireAuth, async ctx => {
   ctx.body = { achievement: achievement.length };
 });
 
-router.get('/:id', async ctx => {
+/**
+* @api {get} /api/v1/achievements/:id GET an achievement.
+* @apiName GetAnAchievement
+* @apiGroup Achievements
+*
+* @apiPermission none
+*
+* @apiSuccessExample {json} Success-Response:
+*
+* @apiSuccessExample {json} Success-Response:
+*     HTTP/1.1 200 OK
+*     {
+*        "achievement": {
+*          "id": "achievements1",
+*          "description": "completed chapter 2",
+*          "metadata": null,
+*          "createdAt": "2017-12-20T16:17:10.000Z",
+*          "updatedAt": "2017-12-20T16:17:10.000Z",
+*          "userId": "user1",
+*          "target": "chapter2",
+*          "targetStatus": "completed"
+*        }
+*      }
+*
+*/
+router.get('/:id', requireAuth, async ctx => {
   const achievement = await Achievement.query().findById(ctx.params.id);
   if (!achievement) {
     ctx.assert(achievement, 404, 'no achievement by that ID');
