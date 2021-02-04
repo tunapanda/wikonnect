@@ -18,7 +18,7 @@
     "swagger": "apidoc-swagger -i server/routes -o frontend/public/assets"
   },
   "devDependencies": {
-    "@cypress/code-coverage": "^3.9.1",
+    "@cypress/code-coverage": "^3.9.2",
     "all-contributors-cli": "^6.17.2",
     "babel-plugin-istanbul": "^6.0.0",
     "cypress": "^6.2.1",
