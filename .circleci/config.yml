@@ -110,7 +110,7 @@ jobs:
           at: ~/
       - run:
           name: Lint Ember hbs
-          command: yarn --cwd ./frontend lint:js
+          command: yarn --cwd ./frontend lint:hbs
   integration_test:
     <<: *with_db
     steps:
