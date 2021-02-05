@@ -57,7 +57,7 @@ async function chapterCompletionAward(params) {
 * @apiPermission none
 * @apiSampleRequest off
 *
-* @apiSuccessExample {json} Success-Response:
+
  *
  * @apiSuccessExample {json} Success-Response:
  *     HTTP/1.1 200 OK
@@ -137,7 +137,7 @@ router.get('/date/:startDate/:endDate', requireAuth, async ctx => {
 *
 * @apiPermission none
 *
-* @apiSuccessExample {json} Success-Response:
+
 *
 * @apiSuccessExample {json} Success-Response:
 *     HTTP/1.1 200 OK

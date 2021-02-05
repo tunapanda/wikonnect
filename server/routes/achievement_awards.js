@@ -66,7 +66,7 @@ router.get('/', requireAuth, async ctx => {
 *
 * @apiPermission none
 *
-* @apiSuccessExample {json} Success-Response:
+
 *
 * @apiSuccessExample {json} Success-Response:
 *     HTTP/1.1 200 OK

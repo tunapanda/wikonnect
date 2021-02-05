@@ -18,7 +18,7 @@ const router = new Router({
 * @apiPermission none
 * @apiSampleRequest off
 *
-* @apiSuccessExample {json} Success-Response:
+
 *
 * @apiSuccessExample {json} Success-Response:
 *     HTTP/1.1 200 OK
@@ -62,7 +62,7 @@ router.get('/', requireAuth, async ctx => {
 * @apiPermission none
 * @apiSampleRequest off
 *
-* @apiSuccessExample {json} Success-Response:
+
 *
 * @apiSuccessExample {json} Success-Response:
 *     HTTP/1.1 200 OK
@@ -101,7 +101,7 @@ router.get('/:id', requireAuth, async ctx => {
 * @apiPermission none
 * @apiSampleRequest off
 *
-* @apiSuccessExample {json} Success-Response:
+
 *
 * @apiSuccessExample {json} Success-Response:
 *     HTTP/1.1 200 OK
@@ -143,7 +143,7 @@ router.post('/', requireAuth, async ctx => {
 * @apiPermission none
 * @apiSampleRequest off
 *
-* @apiSuccessExample {json} Success-Response:
+
 *
 * @apiSuccessExample {json} Success-Response:
 *     HTTP/1.1 200 OK
@@ -177,7 +177,7 @@ router.put('/:id', requireAuth, async ctx => {
 * @apiPermission none
 * @apiSampleRequest off
 *
-* @apiSuccessExample {json} Success-Response:
+
 *
 * @apiSuccessExample {json} Success-Response:
 *     HTTP/1.1 200 OK
