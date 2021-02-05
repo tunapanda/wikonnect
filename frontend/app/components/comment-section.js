@@ -2,6 +2,7 @@ import Component from '@glimmer/component';
 import {inject as service} from '@ember/service';
 import {action} from '@ember/object';
 import {computed} from '@ember/object';
+import {tracked} from '@glimmer/tracking';
 
 export default class CommentSectionComponent extends Component {
 
@@ -17,11 +18,15 @@ export default class CommentSectionComponent extends Component {
   @service
   notify;
 
+  @tracked
+  comment;
+
 
   get commentModel() {
     return this.store.createRecord('comment', {
       user: this.me.user.id,
-      chapter: this.me.user.id
+      chapter: this.me.user.id,
+      comment: this.comment
     });
   }
 
@@ -33,16 +38,17 @@ export default class CommentSectionComponent extends Component {
   @action
   async saveComment(model) {
     let chap = await this.store.peekRecord('chapter', this.args.selectedChapter);
-    model.setProperties({
-      chapter: chap
-    });
+    model.set('chapter', chap);
     model.save()
       .then(() => {
-        this.notify.success('Comment added successfully', { closeAfter: 6000 });
+        this.comment = '';
+        this.notify.success('Comment added successfully', {closeAfter: 6000});
 
       })
       .catch(() => {
-        this.notify.alert('Be mindful of your comments',{closeAfter: 6000});
+        this.comment = model.comment;
+        model.deleteRecord();
+        this.notify.alert('Be mindful of your comments', {closeAfter: 6000});
       });
 
   }
