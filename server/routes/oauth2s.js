@@ -40,9 +40,8 @@ router.post('/', async ctx => {
 
   const hashPassword = await bcrypt.hash(googleToken, 10);
   const username = shortid.generate().toLowerCase();
-  const extension = gData.picture.match(/\.[0-9a-z]+$/i);
 
-  await download(gData.picture, `gData.id.${extension}`);
+  await download(gData.picture, `${gData.id}.jpg`);
 
   // const url = gData.picture;
   // const path = './';

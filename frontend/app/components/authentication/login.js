@@ -33,12 +33,16 @@ class LoginComponent extends Component {
     this.notify.info('Signing up...', { closeAfter: 5000 });
     const me = this.me;
     this.get('torii')
-      .open('google-oauth2-bearer')
+      .open('google-oauth2')
       .then(function (googleAuth) {
         const googleToken = googleAuth.authorizationToken.access_token;
+        console.log(googleAuth);
 
         me.registerWithGoogle({ googleToken: googleToken, provider: 'google' })
           .then((user) => me.authenticate(user.get('username'), googleToken).then(() => {
+            console.log(user.get('username'));
+            console.log(user.get('password'));
+            console.log(user.get('email'));
             this.transitionToRoute('home');
           }))
       }, function (error) {

@@ -72,7 +72,11 @@ module.exports = function (environment) {
         'google-oauth2-bearer': {
           apiKey: process.env.GOOGLE_KEY,
           redirectUri: process.env.GOOGLE_REDIRECT,
-        },
+          scopes: [
+            'email',
+            'profile',
+          ],
+        }
       }
     }
 
