@@ -32,9 +32,15 @@
         </li>
 
         <li class="nav-item text-{{config.content.APP.header_text}}">
-          <a class="nav-link" href="https://teach.wikonnect.org/api/auth?token={{token}}&user={{me.user.username}}">
+
+          {{#link-to "teach" class="nav-link" }}
+            {{t "buttons.teach"}}
+
+          {{/link-to}}
+
+          {{!-- <a class="nav-link " href="https://teach.wikonnect.org/api/auth?token={{token}}&user={{me.user.username}}">
             Teach
-          </a>
+          </a> --}}
         </li>
         <li class="nav-item text-{{config.content.APP.header_text}}">
           {{#link-to "index" class="nav-link" }}
