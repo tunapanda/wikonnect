@@ -13,11 +13,8 @@
 
     {{/link-to}}
     <div class="mt-4 ml-3">
-      <b>Username:</b> {{me.user.username}} <br>
-      <b>Email:</b>
-      {{#if me.user.email}}
-
-
+      <b>Username:</b> {{ name }} <br>
+      <b>Email:</b> {{#if me.user.email}}
         <a href="#" {{action showEmailModal}}>{{me.user.email}}</a>
       {{else}}
         <a name="" id="" class=" btn-primary btn-sm" href="#" {{action showEmailModal}} role="button">

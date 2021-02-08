@@ -65,6 +65,14 @@ module.exports = function (environment) {
       holdToDrag: false
     },
 
+    google: {
+      apiKey: process.env.GOOGLE_KEY
+    },
+
+    fastboot: {
+      hostWhitelist: [/^localhost:\d+$/]
+    },
+
     torii: {
       sessionServiceName: 'session',
       allowUnsafeRedirect: true,

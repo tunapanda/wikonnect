@@ -1,185 +1,115 @@
 <nav
   class="mb-1 navbar navbar-expand-lg navbar-light text-{{config.content.APP.header_text}} secondary-color bg-{{config.content.APP.header_background}} shadow-sm ">
-  {{#link-to "index"}}
-    {{svg-jar "wikonnect-logo-white" class="icon"   height="40"}}
-  {{/link-to}}
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent-555"
-    aria-controls="navbarSupportedContent-555" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-  <a class="nav-link text-{{config.content.APP.header_text}}" href="" {{action "translate" "en-us" }}>
-    EN
-  </a>
-
-  &nbsp; / &nbsp;
-
-
-  <a class="nav-link text-{{config.content.APP.header_text}}" {{action "translate" "sw-ke" }} href="">
-    SW
-  </a>
-
+  <div class="row">
+    <div class="col-5">
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent-555"
+        aria-controls="navbarSupportedContent-555" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+    </div>
+    <div class="col-2">
+      {{#link-to "index"}}
+      {{svg-jar "wikonnect-logo-white" class="icon" height="40"}}
+      {{/link-to}}
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-5">
+    </div>
+    <div class="col-2">
+      <a class="nav-link text-{{config.content.APP.header_text}}" href="" {{action "translate" "en-us" }}>
+        EN
+      </a>
+    </div>
+    <div class="col-3">
+      <a class="nav-link text-{{config.content.APP.header_text}}" {{action "translate" "sw-ke" }} href="">
+        SW
+      </a>
+    </div>
+  </div>
 
   <div class="collapse navbar-collapse" id="navbarSupportedContent-555">
     <ul class="navbar-nav ml-auto text-{{config.content.APP.header_text}} ">
-
-
-
-
-
-
-
       {{#if me.user.id}}
+      <li class="nav-item text-{{config.content.APP.header_text}}">
+        {{#link-to "home" class="nav-link" }}
+        {{t "buttons.learn"}}
+        {{/link-to}}
+      </li>
+      <li class="nav-item text-{{config.content.APP.header_text}}">
+        <a class="nav-link " href="https://teach.wikonnect.org/api/auth?token={{token}}&user={{me.user.username}}">
+          Teach
+        </a>
+      </li>
 
-        <li class="nav-item text-{{config.content.APP.header_text}}">
-
-          {{#link-to "home"  class="nav-link" }}
-
-            {{t "buttons.learn"}}
-          {{/link-to}}
-        </li>
-
-        <li class="nav-item text-{{config.content.APP.header_text}}">
-
-          {{!-- {{#link-to "teach" class="nav-link" }}
-            {{t "buttons.teach"}}
-
-          {{/link-to}} --}}
-
-          <a class="nav-link " href="https://teach.wikonnect.org/api/auth?token={{token}}&user={{me.user.username}}">
-            Teach
-          </a>
-        </li>
-
-        <li class="nav-item text-{{config.content.APP.header_text}}">
-
-          {{#link-to "index" class="nav-link" }}
-            {{t "buttons.about"}}
-
-          {{/link-to}}
-        </li>
-
-        {{!-- <li class="nav-item">
-
-          <a class="nav-link"
-            href="https://community.wikonnect.org/new-topic?title=[FEEDBACK] Title&body=Explain the feedback in detail&category=Site Feedback">
-            Feedback
-          </a>
-        </li>
-        <li class="nav-item">
-
-          <a class="nav-link"
-            href="https://community.wikonnect.org/new-topic?title=[REQUESTING CONTENT]&body=Explain the request&category=Learning">
-            Request Content
-          </a>
-        </li> --}}
-
+      <li class="nav-item text-{{config.content.APP.header_text}}">
+        {{#link-to "index" class="nav-link" }}
+        {{t "buttons.about"}}
+        {{/link-to}}
+      </li>
       {{else}}
-        <li class="nav-item text-{{config.content.APP.header_text}}">
-
-          {{#link-to "home" class="nav-link" }}
-            {{t "buttons.learn"}}
-
-          {{/link-to}}
-        </li>
-
-
-
-        <li class="nav-item text-{{config.content.APP.header_text}}">
-
-          <a class="nav-link" href="https://wikonnect.org">
-            {{t "buttons.about"}}
-          </a>
-
-        </li>
-
-
+      <li class="nav-item text-{{config.content.APP.header_text}}">
+        {{#link-to "home" class="nav-link" }}
+        {{t "buttons.learn"}}
+        {{/link-to}}
+      </li>
+      <li class="nav-item text-{{config.content.APP.header_text}}">
+        <a class="nav-link" href="https://wikonnect.org">
+          {{t "buttons.about"}}
+        </a>
+      </li>
       {{/if}}
-
-
     </ul>
-
-
-    <form class="form-inline ml-5" {{action "search" on="submit" }}>
-      {{!-- <input class="form-control mr-sm-2" value={{search_term}} type="search" placeholder="Search" aria-label="Search"
-        required> --}}
-      <Input @id="search" @class="form-control mr-sm-2" @type="text" @value={{search_term}} />
-      {{#if searchLoading}}
+      <form class="form-inline my-2 my-lg-0" {{action "search" on="submit" }}>
+        <Input @id="search" @class="form-control mr-sm-2" @type="text" @value={{search_term}} />
+        {{#if searchLoading}}
         <button class="bg-primary form-control" type="button">
           <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
           Searching...
         </button>
-      {{else}}
+        {{else}}
         <button class="btn btn-outline-success my-2 my-sm-0" type="submit">
           {{t "buttons.search"}}
         </button>
 
-      {{/if}}
-    </form>
-
-
-
-
-    <ul class="navbar-nav ml-auto nav-flex-icons">
-
-      {{#if me.user.id}}
-
+        {{/if}}
+      </form>
+      <ul class="navbar-nav ml-auto nav-flex-icons">
+        {{#if me.user.id}}
         <li class="nav-item avatar dropdown text-{{config.content.APP.header_text}}">
           <a class="nav-link dropdown-toggle mh-50" id="navbarDropdownMenuLink-55" data-toggle="dropdown"
             aria-haspopup="true" aria-expanded="false">
             {{#if me.user.profileUri}}
-              <img src={{me.user.profileUri}} class="rounded-circle h40" alt="avatar image">
+            <img src={{me.user.profileUri}} class="rounded-circle h40" alt="avatar image">
             {{else}}
-              {{!-- <img src="images/profile-placeholder.gif" class="rounded-circle h40" alt="avatar image"> --}}
-
-              <span aria-hidden="true">&times;</span>
-
-
+            <span aria-hidden="true">&times;</span>
             {{/if}}
           </a>
           <div class="dropdown-menu dropdown-menu-lg-right dropdown-secondary"
             aria-labelledby="navbarDropdownMenuLink-55">
-
             {{#link-to "profile" class="dropdown-item" }}
-              {{me.user.username}}'s {{t "labels.profile"}}
-
+            {{name}}'s {{t "labels.profile"}}
             {{/link-to}}
-            {{#link-to "profile"  (query-params view="Settings")
-               class="dropdown-item"  }}
-              {{t "buttons.settings"}}
+            {{#link-to "profile" (query-params view="Settings")
+            class="dropdown-item" }}
+            {{t "buttons.settings"}}
             {{/link-to}}
-            <a class="dropdown-item" href="#" {{action "logoutuser" }}>{{t "buttons.logout"}}</a>
+            <a class="dropdown-item" href="#" {{action this.logout}}>{{t "buttons.logout"}}</a>
           </div>
         </li>
-      {{else}}
+        {{else}}
         <li class="text-light">
-
           {{#link-to "login" class="text-light" }}
-            {{t "buttons.login"}}
-
-
+          {{t "buttons.login"}}
           {{/link-to}}
         </li>
         &nbsp; / &nbsp;
         <li class="text-light">
-
-          {{#link-to "signup"  class="text-light"}}
-            {{t "buttons.signup"}}
-
-
+          {{#link-to "signup" class="text-light"}}
+          {{t "buttons.signup"}}
           {{/link-to}}
         </li>
-
-
-
-
-      {{/if}}
-
-
-
-    </ul>
-
-
-
+        {{/if}}
+      </ul>
   </div>
-
 </nav>
