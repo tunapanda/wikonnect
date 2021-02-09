@@ -1,15 +1,6 @@
 name: CI
-on:
-  push:
-    paths:
-    - '!docs/**'
-    - '!.vscode/**'
-    - 'frontend/**'
-    - '!frontend/dist/**'
-    - '!frontend/public/**'
-    - 'server/**'
+on: push
 jobs:
-
   buildAndTest:
     name: CI Pipeline
     runs-on: ubuntu-latest
