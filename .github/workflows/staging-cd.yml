@@ -32,7 +32,7 @@ jobs:
 
       - name: Do something with a failing build
         if: steps.wait-for-build.outputs.conclusion == 'failure'
-        run: echo fail; exit 1
+        run: exit 1
 
       - uses: actions/checkout@v2
 
