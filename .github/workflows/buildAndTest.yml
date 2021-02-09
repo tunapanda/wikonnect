@@ -83,6 +83,9 @@ jobs:
           POSTGRES_HOST: localhost
           # The default PostgreSQL port
           POSTGRES_PORT: 5432
+          POSTGRES_USER: acbe
+          POSTGRES_NAME: swag_test
+          NODE_ENV: ci
 
       # Install project dependencies, test and build
       - name: Backend testing
