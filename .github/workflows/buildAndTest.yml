@@ -1,28 +1,6 @@
 name: CI
 on: push
 jobs:
-  # Label of the container job
-  container-job:
-    # Containers must run in Linux based operating systems
-    runs-on: ubuntu-latest
-    # Docker Hub image that `container-job` executes in
-    container: node:10.18-jessie
-
-    # Service containers to run with `container-job`
-    services:
-      # Label used to access the service container
-      postgres:
-        # Docker Hub image
-        image: postgres
-        # Provide the password for postgres
-        env:
-          POSTGRES_PASSWORD: postgres
-        # Set health checks to wait until postgres has started
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
 
   buildAndTest:
     name: CI Pipeline
@@ -66,24 +44,43 @@ jobs:
       - name: Backend install dependencies
         run: yarn --frozen-lockfile --cwd ./server
 
-      # # Frontend install dependencies
-      # - name: Frontend install dependencies
-      #   run: yarn --frozen-lockfile --cwd ./frontend
+      # Frontend install dependencies
+      - name: Frontend install dependencies
+        run: yarn --frozen-lockfile --cwd ./frontend
 
-      # # Frontend run build
-      # - name: Frontend run build
-      #   run: yarn --cwd ./frontend build --prod
+      # Frontend run build
+      - name: Frontend run build
+        run: yarn --cwd ./frontend build --prod
 
-      # # Frontend lint Ember JS
-      # - name: Frontend lint Ember JS
-      #   run: yarn --cwd ./frontend lint:js
+      # Frontend lint Ember JS
+      - name: Frontend lint Ember JS
+        run: yarn --cwd ./frontend lint:js
 
   test:
+
     name: Server-side Tests
     runs-on: ubuntu-latest
     strategy:
       matrix:
         node-version: ['12.x']
+    # Docker Hub image that `container-job` executes in
+    container: node:10.18-jessie
+
+    # Service containers to run with `container-job`
+    services:
+      # Label used to access the service container
+      postgres:
+        # Docker Hub image
+        image: postgres
+        # Provide the password for postgres
+        env:
+          POSTGRES_PASSWORD: postgres
+        # Set health checks to wait until postgres has started
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
 
     needs: buildAndTest
     steps:
