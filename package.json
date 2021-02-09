@@ -17,18 +17,9 @@
     "docs": "apidoc -e node_modules -e docs -o docs/"
   },
   "lint-staged": {
-    "frontend/*.js": [
-      "yarn --cwd ./frontend lint:js --fix",
-      "git add"
-    ],
-    "frontend/*.hbs": [
-      "yarn --cwd ./frontend lint:hbs --fix",
-      "git add"
-    ],
-    "server/*js": [
-      "yarn --cwd ./frontend lint:hbs --fix",
-      "git add"
-    ]
+    "frontend/*.js": "yarn --cwd ./frontend lint:js --fix",
+    "frontend/*.hbs": "yarn --cwd ./frontend lint:hbs --fix",
+    "server/*js": "yarn --cwd ./frontend lint:hbs --fix"
   },
   "devDependencies": {
     "@cypress/code-coverage": "^3.9.1",
