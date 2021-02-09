@@ -66,6 +66,18 @@ jobs:
         ports:
           # Maps tcp port 5432 on service container to the host
           - 5432:5432
+      redis:
+        # Docker Hub image
+        image: redis
+        # Set health checks to wait until redis has started
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          # Maps port 6379 on service container to the host
+          - 6379:6379
 
     # needs: buildAndTest
     steps:
@@ -88,3 +100,6 @@ jobs:
         run: yarn --cwd ./server test:local
         env:
           NODE_ENV: test
+          REDIS_HOST: localhost
+          # The default Redis port
+          REDIS_PORT: 6379
