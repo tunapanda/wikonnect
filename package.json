@@ -16,14 +16,19 @@
     "start:server": "nodemon ./server index.js",
     "docs": "apidoc -e node_modules -e docs -o docs/"
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
-  },
   "lint-staged": {
-    "*.js": "yarn --cwd ./frontend lint:js --fix",
-    "*.hbs": "yarn --cwd ./frontend lint:hbs --fix"
+    "frontend/*.js": [
+      "yarn --cwd ./frontend lint:js --fix",
+      "git add"
+    ],
+    "frontend/*.hbs": [
+      "yarn --cwd ./frontend lint:hbs --fix",
+      "git add"
+    ],
+    "server/*js": [
+      "yarn --cwd ./frontend lint:hbs --fix",
+      "git add"
+    ]
   },
   "devDependencies": {
     "@cypress/code-coverage": "^3.9.1",
