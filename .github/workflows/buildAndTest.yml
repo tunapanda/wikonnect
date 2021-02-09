@@ -47,8 +47,6 @@ jobs:
     strategy:
       matrix:
         node-version: ['12.x']
-    # Docker Hub image that `container-job` executes in
-    container: node:10.18-jessie
 
     # Service containers to run with `container-job`
     services:
