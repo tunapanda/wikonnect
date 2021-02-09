@@ -23,6 +23,7 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           checkName: test
+          timeoutSeconds: 90
           ref: ${{ github.event.pull_request.head.sha || github.sha }}
 
       - name: Do something with a passing build

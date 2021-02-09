@@ -85,4 +85,6 @@ jobs:
 
       # Install project dependencies, test and build
       - name: Backend testing
-        run: yarn --cwd ./server test
+        run: yarn --cwd ./server test:local
+        env:
+          NODE_ENV: test
