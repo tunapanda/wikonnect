@@ -1,41 +1,9 @@
-name: CI/CD
-
+name: CD
 on:
   push:
     branches:
       - staging
-
 jobs:
-  buildAndTest:
-    name: CI Pipeline
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: ['12.x']
-
-    steps:
-      - uses: actions/checkout@v2
-
-      # Initialize Node.js
-      - name: Install Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v1
-        with:
-          node-version: ${{ matrix.node-version }}
-
-      # Install project dependencies, test and build
-      - name: Install dependencies
-        run: npm install
-
-      # Install project dependencies, test and build
-      - name: Install dependencies
-        run: cd frontend && yarn install
-      - name: Run build
-        run: cd frontend && yarn build --prod
-
-      # Install project dependencies, test and build
-      - name: Install dependencies
-        run: cd server && yarn install
-
   deploy:
     name: CD Pipeline
     runs-on: ubuntu-latest
@@ -48,8 +16,23 @@ jobs:
         s3-bucket: ['wikonnect-codedeploy-deployments']
         s3-filename: ['staging-wikonnect-codedeploy-${{ github.sha }}']
 
-    needs: buildAndTest
     steps:
+      - name: Wait for build to succeed
+        uses: fountainhead/action-wait-for-check@v1.0.0
+        id: wait-for-build
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          checkName: buildAndTest
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+
+      - name: Do something with a passing build
+        if: steps.wait-for-build.outputs.conclusion == 'success'
+        run: echo success && true
+
+      - name: Do something with a failing build
+        if: steps.wait-for-build.outputs.conclusion == 'failure'
+        run: echo fail && false
+
       - uses: actions/checkout@v2
 
       # Initialize Node.js
@@ -60,17 +43,17 @@ jobs:
 
       # Install project dependencies and build
       - name: Install dependencies
-        run: yarn install
+        run: yarn --frozen-lockfile
 
       # Install project dependencies, test and build
       - name: Install dependencies
-        run: cd frontend && yarn install
+        run: yarn --frozen-lockfile --cwd ./frontend
       - name: Run build
-        run: cd frontend && yarn build --prod
+        run: yarn --frozen-lockfile --cwd ./frontend build --prod
 
       # Install project dependencies, test and build
       - name: Install dependencies
-        run: cd server && yarn install
+        run: yarn --frozen-lockfile --cwd ./server
 
       # Install AWS CLI 2
       - name: Install AWS CLI 2
