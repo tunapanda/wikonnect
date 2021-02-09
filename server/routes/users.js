@@ -26,6 +26,7 @@ const {
   inviteUserAward,
   getProfileImage
 } = require('../utils/routesUtils/userRouteUtils');
+const { profile } = require('console');
 
 const router = new Router({
   prefix: '/users'
@@ -155,7 +156,7 @@ router.post('/', validateAuthRoutes.validateNewUser, createPasswordHash, async c
  *    HTTP/1.1 404 Not Found
  *    {
  *      "status": 404,
- *      "message": "No User With that Id"
+ *      "message": "No user found"
  *    }
  */
 
@@ -164,33 +165,23 @@ router.get('/:id', permController.requireAuth, async ctx => {
   let stateUserId = ctx.state.user.id == undefined ? ctx.state.user.data.id : ctx.state.user.id;
 
   let userId = ctx.params.id != 'current' ? ctx.params.id : stateUserId;
-  const user = await User.query().findById(userId).mergeJoinEager('[achievementAwards(selectBadgeNameAndId), roles(selectName), enrolledCourses(selectNameAndId)]');
+  let user = await User.query().findById(userId).mergeJoinEager('[achievementAwards(selectBadgeNameAndId), roles(selectName), enrolledCourses(selectNameAndId)]');
   user.profileUri = await getProfileImage(user.profileUri);
 
-
-  if (!user) {
-    ctx.throw(404, 'No User With that Id');
-  }
+  ctx.assert(user, 404, 'No user found');
 
   if (user.id != stateUserId || stateUserId === 'anonymous') {
     // return specific data for all profiles incase it's private
-    let publicData = {
+    user = {
       'username': 'private',
       'profileUri': 'images/profile-placeholder.gif',
       'id': user.id,
       'private': user.private,
       'roles': user.roles
     };
-    // return data if profile is not private
-    if (user.private === 'false') {
-      publicData.username = user.username;
-      publicData.profileUri = user.profileUri;
-    }
-    ctx.status = 200;
-    ctx.body = { user: publicData };
+
   } else {
     enrolledCoursesType(user);
-    userRoles(user);
     // get all verification data
     achievementAwardsType(user);
     const userVerification = await knex('user_verification').where({ 'user_id': userId });
@@ -206,10 +197,10 @@ router.get('/:id', permController.requireAuth, async ctx => {
     }
 
     log.info('Got a request from %s for %s', ctx.request.ip, ctx.path);
-
-    ctx.status = 200;
-    ctx.body = { user };
   }
+  userRoles(user);
+  ctx.status = 200;
+  ctx.body = { user };
 });
 /**
  * @api {get} /users GET all users.
@@ -320,7 +311,7 @@ router.put('/:id', jwt.authenticate, permController.requireAuth, async ctx => {
  *
  */
 
-router.post('/invite/:id',permController.requireAuth, async ctx => {
+router.post('/invite/:id', permController.requireAuth, async ctx => {
   let invite;
   try {
     invite = await knex('user_invite').insert([{ user_id: ctx.params.id, 'invited_by': ctx.request.body.user.inviteBy }], ['id', 'invited_by', 'user_id']);
