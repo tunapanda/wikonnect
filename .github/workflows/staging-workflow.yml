@@ -1,5 +1,8 @@
-name: CI
-on: push
+name: CD
+on:
+  push:
+    branches:
+      - staging
 jobs:
   buildAndTest:
     name: CI Pipeline
@@ -40,7 +43,6 @@ jobs:
         run: yarn --cwd ./frontend lint:js
 
   test:
-
     name: Server-side Tests
     runs-on: ubuntu-latest
     strategy:
@@ -102,3 +104,71 @@ jobs:
           REDIS_HOST: localhost
           # The default Redis port
           REDIS_PORT: 6379
+  deploy:
+    name: CD Pipeline
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.8]
+        node-version: ['12.x']
+        appname: ['aws-codedeploy']
+        deploy-group: ['wikonnect-staging']
+        s3-bucket: ['wikonnect-codedeploy-deployments']
+        s3-filename: ['staging-wikonnect-codedeploy-${{ github.sha }}']
+
+    needs: test
+    steps:
+      - uses: actions/checkout@v2
+
+      # Initialize Node.js
+      - name: Install Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      # Install project dependencies and build
+      - name: Install dependencies
+        run: yarn --frozen-lockfile
+
+      # Install project dependencies, test and build
+      - name: Install dependencies
+        run: yarn --frozen-lockfile --cwd ./frontend
+      - name: Run build
+        run: yarn --frozen-lockfile --cwd ./frontend build --prod
+
+      # Install project dependencies, test and build
+      - name: Install dependencies
+        run: yarn --frozen-lockfile --cwd ./server
+
+      # Install AWS CLI 2
+      - name: Install AWS CLI 2
+        run: |
+          curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+          unzip awscliv2.zip
+          sudo ./aws/install --update
+      # Configure AWS credentials
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+
+      # Deploy push to AWS S3
+      - name: AWS Deploy push
+        run: |
+          aws deploy push \
+          --application-name ${{ matrix.appname }} \
+          --description "This is a revision for the ${{ matrix.appname }}-${{ github.sha }}" \
+          --ignore-hidden-files \
+          --s3-location s3://${{ matrix.s3-bucket }}/${{ matrix.s3-filename }}.zip \
+          --source .
+      # Create deployment to CodeDeploy
+      - name: AWS Create Deployment
+        run: |
+          aws deploy create-deployment \
+           --application-name ${{ matrix.appname }} \
+           --deployment-config-name CodeDeployDefault.OneAtATime \
+           --deployment-group-name ${{ matrix.deploy-group }} \
+           --file-exists-behavior OVERWRITE \
+           --s3-location bucket=${{ matrix.s3-bucket }},key=${{ matrix.s3-filename }}.zip,bundleType=zip \
