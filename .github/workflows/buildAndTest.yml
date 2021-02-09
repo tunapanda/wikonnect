@@ -25,7 +25,7 @@ jobs:
           --health-retries 5
 
   buildAndTest:
-    name: Install and Build Project
+    name: CI Pipeline
     runs-on: ubuntu-latest
     strategy:
       matrix:
