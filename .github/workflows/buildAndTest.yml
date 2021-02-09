@@ -2,59 +2,43 @@ name: CI
 on: push
 jobs:
 
-  buildAndTest:
-    name: CI Pipeline
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: ['12.x']
+  # buildAndTest:
+  #   name: CI Pipeline
+  #   runs-on: ubuntu-latest
+  #   strategy:
+  #     matrix:
+  #       node-version: ['12.x']
 
-    steps:
-      - uses: actions/checkout@v2
+  #   steps:
+  #     - uses: actions/checkout@v2
 
-      # - name: Get yarn cache directory path
-      #   id: yarn-cache-dir-path
-      #   run: echo "::set-output name=dir::$(yarn cache dir)"
+  #     # cache node_modules in our monorepo project instead of caching the yarn cache
+  #     - uses: actions/cache@v2
+  #       with:
+  #         path: '**/node_modules'
+  #         key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
 
-      # - uses: actions/cache@v2
-      #   id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
-      #   with:
-      #     path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
-      #     key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-      #     restore-keys: |
-      #       ${{ runner.os }}-yarn-
+  #     # Initialize Node.js
+  #     - name: Install Node.js ${{ matrix.node-version }}
+  #       uses: actions/setup-node@v1
+  #       with:
+  #         node-version: ${{ matrix.node-version }}
 
-      # cache node_modules in our monorepo project instead of caching the yarn cache
-      - uses: actions/cache@v2
-        with:
-          path: '**/node_modules'
-          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
+  #     # Wikonnect root install dependencies
+  #     - name: Wikonnect root install dependencies
+  #       run: yarn --frozen-lockfile
 
-      # Initialize Node.js
-      - name: Install Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v1
-        with:
-          node-version: ${{ matrix.node-version }}
+  #     # Frontend install dependencies
+  #     - name: Frontend install dependencies
+  #       run: yarn --frozen-lockfile --cwd ./frontend
 
-      # Wikonnect root install dependencies
-      - name: Wikonnect root install dependencies
-        run: yarn --frozen-lockfile
+  #     # Frontend run build
+  #     - name: Frontend run build
+  #       run: yarn --cwd ./frontend build --prod
 
-      # Backend install dependencies
-      - name: Backend install dependencies
-        run: yarn --frozen-lockfile --cwd ./server
-
-      # Frontend install dependencies
-      - name: Frontend install dependencies
-        run: yarn --frozen-lockfile --cwd ./frontend
-
-      # Frontend run build
-      - name: Frontend run build
-        run: yarn --cwd ./frontend build --prod
-
-      # Frontend lint Ember JS
-      - name: Frontend lint Ember JS
-        run: yarn --cwd ./frontend lint:js
+  #     # Frontend lint Ember JS
+  #     - name: Frontend lint Ember JS
+  #       run: yarn --cwd ./frontend lint:js
 
   test:
 
@@ -86,9 +70,13 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      # Backend install dependencies
+      - name: Backend install dependencies
+        run: yarn --frozen-lockfile --cwd ./server
+
       # Backend migrate database nad seed
       - name: Backend database set-up
-        run: cd server && $(yarn bin)/knex migrate:latest; $(yarn bin)/knex seed:run; cd ../
+        run: yarn ./server db:init; yarn ./server db:seed
         env:
           # The hostname used to communicate with the PostgreSQL service container
           POSTGRES_HOST: postgres
