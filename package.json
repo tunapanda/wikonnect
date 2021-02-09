@@ -16,12 +16,22 @@
     "start:server": "nodemon ./server index.js",
     "docs": "apidoc -e node_modules -e docs -o docs/"
   },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.js": "yarn --cwd ./frontend lint:js --fix",
+    "*.hbs": "yarn --cwd ./frontend lint:hbs --fix"
+  },
   "devDependencies": {
     "@cypress/code-coverage": "^3.9.1",
     "all-contributors-cli": "^6.17.2",
     "babel-plugin-istanbul": "^6.0.0",
     "cypress": "^6.2.1",
     "eslint-plugin-cypress": "^2.6.1",
+    "husky": "^5.0.9",
     "istanbul-lib-coverage": "^3.0.0",
     "knex": "^0.21.15",
     "nyc": "^15.0.0",
@@ -31,6 +41,7 @@
     "concurrently": "^5.3.0",
     "eslint-plugin-ember": "^8.10.1",
     "eslint-plugin-node": "^11.1.0",
+    "lint-staged": "^10.5.4",
     "redis": "^3.0.2"
   }
 }

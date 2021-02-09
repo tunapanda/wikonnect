@@ -1,34 +1,26 @@
 <div class="container">
-
   <div class="row">
     {{#link-to "upload"}}
       {{#if profileUri}}
         <img class="h80 mt-3 ml-3  rounded-circle" alt="" src={{profileUri}}>
       {{else}}
         <img class="h80 mt-3 ml-3  rounded-circle" alt="" src="/images/profile-placeholder.gif">
-
       {{/if}}
       <br>
       <span class="ml-3">change pic</span>
-
     {{/link-to}}
     <div class="mt-4 ml-3">
       <b>Username:</b> {{ name }} <br>
-      <b>Email:</b> {{#if me.user.email}}
+      <b>Email:</b>
+      {{#if me.user.email}}
         <a href="#" {{action showEmailModal}}>{{me.user.email}}</a>
       {{else}}
         <a name="" id="" class=" btn-primary btn-sm" href="#" {{action showEmailModal}} role="button">
           Update Email
         </a>
       {{/if}}
-
-
     </div>
-
   </div>
-
-
-
   <div class="profile-body ">
     <div class="profile-options">
       <br><br>
@@ -36,40 +28,25 @@
         {{#each viewOptions as |view|}}
           <bg.button @type="default" @value={{view}}>{{view}}</bg.button>
         {{/each}}
-
       </BsButtonGroup>
-
     </div>
-
     <hr>
-
     {{#if (eq profileView "Profile")}}
       <div class="profile-title">
         <h4>Details</h4>
-
-
       </div>
       <BsForm class="profile-data" @onSubmit={{action saveProfile}} @disabled={{viewOnly}}>
-
         <label for="fname">First Name</label>
         {{input id="fname" type="text" label="Name" class="form-control" value=fname placeholer="First Name" }}
-
         <label for="lname" class="mt-2">Last Name</label>
-
         {{input id="lname" type="text" label="Name" class="form-control " value=lname placeholer="Last Name" }}
         <label for="about" class="mt-2">About</label>
-
         {{textarea id="about" type="text" label="Name" class="form-control" value=about }}
-
         <BsButton @defaultText="Update Profile" class="btn bg-primary mt-2" @buttonType="submit" />
       </BsForm>
-
     {{/if}}
-
     {{#if (eq profileView "Learning")}}
       <h5>My Achievements</h5>
-
-
       <div class="row">
         {{#each model.achievementAwards as |achievement|}}
           <div class="col-md-6">
@@ -78,13 +55,10 @@
           </div>
         {{/each}}
       </div>
-
     {{/if}}
-
     {{#if (eq profileView "Settings")}}
       Invite Link : <br>
       <code>{{inviteCode}}</code>
-
       <CopyButton @clipboardText={{inviteCode}} @success={{this.onSuccess}} @error={{this.onError}}
         title="copy to clipboard">
         <span>copy</span>
