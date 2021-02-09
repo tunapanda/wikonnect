@@ -34,7 +34,7 @@
 
     <BsButton class="btn btn-primary form-control" @type="submit" @defaultText="Sign Up" @buttonType="submit"/>
 
-    <BsButton class="bg-primary form-control" {{ on "click" this.sessionRequiresAuthentication }}>
+    <BsButton class="bg-primary form-control" {{ on "click" this.authenticateWithGoogleImplicitGrant }}>
       Sign up with Google
     </BsButton>
   </BsForm>
