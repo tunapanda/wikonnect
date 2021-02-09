@@ -99,7 +99,7 @@ jobs:
       - name: Backend testing
         run: yarn --cwd ./server test:local
         env:
-          NODE_ENV: test
+          NODE_ENV: action
           REDIS_HOST: localhost
           # The default Redis port
           REDIS_PORT: 6379
