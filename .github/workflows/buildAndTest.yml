@@ -2,43 +2,43 @@ name: CI
 on: push
 jobs:
 
-  # buildAndTest:
-  #   name: CI Pipeline
-  #   runs-on: ubuntu-latest
-  #   strategy:
-  #     matrix:
-  #       node-version: ['12.x']
+  buildAndTest:
+    name: CI Pipeline
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: ['12.x']
 
-  #   steps:
-  #     - uses: actions/checkout@v2
+    steps:
+      - uses: actions/checkout@v2
 
-  #     # cache node_modules in our monorepo project instead of caching the yarn cache
-  #     - uses: actions/cache@v2
-  #       with:
-  #         path: '**/node_modules'
-  #         key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
+      # cache node_modules in our monorepo project instead of caching the yarn cache
+      - uses: actions/cache@v2
+        with:
+          path: '**/node_modules'
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
 
-  #     # Initialize Node.js
-  #     - name: Install Node.js ${{ matrix.node-version }}
-  #       uses: actions/setup-node@v1
-  #       with:
-  #         node-version: ${{ matrix.node-version }}
+      # Initialize Node.js
+      - name: Install Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
 
-  #     # Wikonnect root install dependencies
-  #     - name: Wikonnect root install dependencies
-  #       run: yarn --frozen-lockfile
+      # Wikonnect root install dependencies
+      - name: Wikonnect root install dependencies
+        run: yarn --frozen-lockfile
 
-  #     # Frontend install dependencies
-  #     - name: Frontend install dependencies
-  #       run: yarn --frozen-lockfile --cwd ./frontend
+      # Frontend install dependencies
+      - name: Frontend install dependencies
+        run: yarn --frozen-lockfile --cwd ./frontend
 
-  #     # Frontend run build
-  #     - name: Frontend run build
-  #       run: yarn --cwd ./frontend build --prod
+      # Frontend run build
+      - name: Frontend run build
+        run: yarn --cwd ./frontend build --prod
 
-  #     # Frontend lint Ember JS
-  #     - name: Frontend lint Ember JS
-  #       run: yarn --cwd ./frontend lint:js
+      # Frontend lint Ember JS
+      - name: Frontend lint Ember JS
+        run: yarn --cwd ./frontend lint:js
 
   test:
 
@@ -79,7 +79,7 @@ jobs:
           # Maps port 6379 on service container to the host
           - 6379:6379
 
-    # needs: buildAndTest
+    needs: buildAndTest
     steps:
       - uses: actions/checkout@v2
 
