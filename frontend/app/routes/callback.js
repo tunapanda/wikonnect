@@ -45,7 +45,7 @@ export default class CallbackRoute extends Route {
         if (user.get('isNew')) {
           this.signupSuccess();
         } else {
-          this.me.authenticate(user.get('username'), googleToken).then(() => this.transitionTo('home'))
+          this.me.authenticate(user.get('username'), googleToken).then(() => this.transitionTo('home'));
         }
       });
   }

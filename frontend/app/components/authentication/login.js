@@ -35,15 +35,15 @@ class LoginComponent extends Component {
   authenticateWithGoogleImplicitGrant() {
     let clientId = this.config.get('google').apiKey;
     let redirectURI = `${window.location.origin}/callback`;
-    let responseType = `token`;
-    let scope = `profile email`;
-    window.location.replace(`https://accounts.google.com/o/oauth2/v2/auth?`
+    let responseType = 'token';
+    let scope = 'profile email';
+    window.location.replace('https://accounts.google.com/o/oauth2/v2/auth?'
       + `client_id=${clientId}`
       + `&redirect_uri=${redirectURI}`
       + `&response_type=${responseType}`
       + `&scope=${scope}`
     );
-  };
+  }
 
 
   @action
