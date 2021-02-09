@@ -81,7 +81,7 @@ jobs:
         env:
           POSTGRES_HOST: localhost
           POSTGRES_PORT: 5432
-          NODE_ENV: ci
+          NODE_ENV: action
 
       # Install project dependencies, test and build
       - name: Backend testing
