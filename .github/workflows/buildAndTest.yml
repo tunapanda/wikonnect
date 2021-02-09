@@ -76,7 +76,7 @@ jobs:
 
       # Backend migrate database nad seed
       - name: Backend database set-up
-        run: yarn ./server db:init; yarn ./server db:seed
+        run: cd server;$(yarn bin)/knex migrate:latest; $(yarn bin)/knex seed:run; cd ../
         env:
           # The hostname used to communicate with the PostgreSQL service container
           POSTGRES_HOST: postgres
