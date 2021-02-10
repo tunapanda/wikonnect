@@ -1,6 +1,8 @@
 const Router = require('koa-router');
 const { requireAuth } = require('../middleware/permController');
 const Chapter = require('../models/chapter');
+const querystring = require('querystring');
+const url = require('url');
 
 const router = new Router({
   prefix: '/oembed'
@@ -28,7 +30,7 @@ const router = new Router({
  * @apiSuccess {String} html formatted iframe code in html
  *
  *
- * @apiSampleRequest /api/v1/oembed/
+ * @apiSampleRequest /api/v1/oembed/?url=https://app.wikonnect.org/chapter/chapter1?callbackUrl=https://webhook.com
  *
  *
  * http://localhost/api/v1/oembed?url=http://localhost:4200/chapters/chapter1
@@ -42,15 +44,21 @@ const router = new Router({
    "title": "Cyber bullying",
 
    "html":
-   	"<iframe width=\"560\" height=\"315\" src=\"http://localhost:4200/embed/chapter1\" ></iframe>",
+      "<iframe width=\"560\" height=\"315\" src=\"http://localhost:4200/embed/chapter1\" ></iframe>",
 }
  */
 
-router.get('/', requireAuth, async ctx =>{
-  let url = ctx.query.url;
-  const n = url.lastIndexOf('/');
-  const chapterId = url.substring(n + 1);
+router.get('/', requireAuth, async ctx => {
+  let rawUrl = ctx.query.url;
+  let parsedUrl = url.parse(rawUrl);
+  let parsedQs = querystring.parse(parsedUrl.query);
+
+  const n = parsedUrl.pathname.lastIndexOf('/');
+  const chapterId = parsedUrl.pathname.substring(n + 1);
   const chapter = await Chapter.query().findById(chapterId);
+  ctx.assert(chapter, 400, { message: ['No chapter found'] });
+
+  console.log(parsedQs.callbackUrl);
 
   const provider_url = 'http://app.wikonnect.org';
   let data = {
