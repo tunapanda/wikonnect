@@ -15,10 +15,10 @@ const superAdmin = {
 
 const basicUser = {
   'user': {
-    'id': 'user10',
-    'username': 'user10',
+    'id': 'user3',
+    'username': 'user3',
     'password': 'wikonnect',
-    'email': 'user10@wikonnect.com',
+    'email': 'user3@wikonnect.com',
     'role': 'basic',
     'tags': ['test'],
   }
@@ -39,7 +39,7 @@ const headersSuperAdmin1 = {
   'Authorization': 'Bearer ' + jsonwebtoken.sign({ data: superAdmin.user }, secret, { expiresIn: '1d' })
 };
 const headerBasicUser2 = {
-  'Authorization': 'Bearer ' + jsonwebtoken.sign({ data: basicUser.user }, secret, { expiresIn: '1d' })
+  'Authorization': 'Bearer ' + jsonwebtoken.sign({ data: basicUser.user}, secret, { expiresIn: '1d' })
 };
 
 const headerAdminUser = {

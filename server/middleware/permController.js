@@ -41,11 +41,8 @@ exports.requireAuth = async function (ctx, next) {
       await next();
     }
   } catch (error) {
-    log.error(`The following error ${error} with message ${error.message}`);
-    if (process.env.NODE_ENV === 'development') {
-      ctx.throw(400, error);
-    }
-    ctx.throw(400, null, { errors: ['Bad Request'] });
+    log.error(`The following JWT error ${error} with message ${error.message}`);
+    ctx.throw(400, null, { errors: [error.message] });
   }
 };
 
@@ -57,23 +54,16 @@ exports.requireAuth = async function (ctx, next) {
 exports.grantAccess = function (action, resource) {
 
   return async (ctx, next) => {
-    try {
-      let roleName = ctx.state.user.role == undefined ? ctx.state.user.data.role : ctx.state.user.role;
+    let roleName = ctx.state.user.role == undefined ? ctx.state.user.data.role : ctx.state.user.role;
 
-      const permission = roles.can(roleName)[action](resource);
+    const permission = roles.can(roleName)[action](resource);
 
-      if (!permission.granted) {
-        log.error(`You do not have enough permission for role ${roleName}`);
-        ctx.throw(400, null, { errors: [`You do not have enough permission, ${roleName}`] });
-      }
-
-      await next();
-    } catch (e) {
-      log.error(`Bad request with the following message ${e}`);
-      ctx.throw(400, null, { errors: [e.errors] });
-      throw e;
-
+    if (!permission.granted) {
+      log.error(`User with ${roleName} permission cannot perform that action`);
+      ctx.throw(400, null, `User with ${roleName} permission cannot perform that action`);
     }
+
+    await next();
   };
 };
 

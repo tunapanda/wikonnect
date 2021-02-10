@@ -73,7 +73,7 @@ describe('LESSONS ROUTE', () => {
         res.should.be.json;
         res.body.should.be.a('object');
         res.body.should.have.property('errors');
-        res.body.errors.should.eql(['Bad Request']);
+        res.body.errors.should.eql(['User with anonymous permission cannot perform that action']);
         done();
       });
   });
@@ -86,7 +86,7 @@ describe('LESSONS ROUTE', () => {
       .end((err, res) => {
         res.status.should.eql(400);
         res.should.be.json;
-        res.body.errors.should.eql(['Bad Request']);
+        res.body.errors.should.eql(['User with anonymous permission cannot perform that action']);
         done();
       });
   });

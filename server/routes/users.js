@@ -26,7 +26,6 @@ const {
   inviteUserAward,
   getProfileImage
 } = require('../utils/routesUtils/userRouteUtils');
-const { profile } = require('console');
 
 const router = new Router({
   prefix: '/users'
@@ -391,5 +390,51 @@ router.post('/:id/profile-image', permController.requireAuth, async (ctx, next) 
     };
   }
 });
+
+
+
+/**
+ * @api {delete} /users/:id DELETE a user by id.
+ * @apiName DeleteAUser
+ * @apiGroup Authentication
+ * @apiPermission [admin, superadmin]
+ *
+ * @apiSuccess {String} user[object] Object data
+ * @apiError {String} errors Bad Request.
+ *
+ * @apiSuccessExample {json} Success-Response:
+ *     HTTP/1.1 201 OK
+ *      {
+ *        "user": {
+ *            "id": "user2",
+ *            "email": "user2@wikonnect.org",
+ *            "username": "user2",
+ *            "lastSeen": "2017-12-20 19:17:10",
+ *            "metadata": {
+ *                "profileComplete": "false",
+ *                "oneInviteComplete": "false",
+ *                "oneChapterCompletion": "false"
+ *            },
+ *            "createdAt": "2017-12-20T16:17:10.000Z",
+ *            "updatedAt": "2017-12-20T16:17:10.000Z",
+ *           "profileUri": null,
+ *           "inviteCode": "user2",
+ *           "private": "false",
+ *           "tags": "{\"primary\"}"
+ *         }
+ *      }
+ */
+
+
+router.delete('/:id', permController.requireAuth, permController.grantAccess('deleteOwn', 'path'), async ctx => {
+  const user_id = ctx.params.id;
+  const user = await User.query().findById(user_id);
+  ctx.assert(user, 400, 'Cannot delete that user');
+  await User.query().deleteById(user.id);
+
+  ctx.status = 200;
+  ctx.body = { user };
+});
+
 
 module.exports = router.routes();

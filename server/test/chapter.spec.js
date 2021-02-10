@@ -109,15 +109,16 @@ describe('CHAPTER ROUTE', () => {
     chai
       .request(server)
       .get(route + itemID)
-      .set(tokens.headersSuperAdmin1)
+      // .set(tokens.headersSuperAdmin1)
       .end((err, res) => {
-
-        res.should.have.status(200);
         res.should.be.json;
+        console.log('--------------------------------');
+        console.log(res.body);
         res.body.chapter[0].should.have.property('id');
         res.body.chapter[0].should.have.property('name');
         res.body.chapter[0].should.have.property('slug');
         res.body.chapter[0].should.have.property('creatorId');
+        res.should.have.status(200);
         done();
       });
   });
@@ -203,7 +204,7 @@ describe('CHAPTER ROUTE', () => {
         res.should.be.json;
         res.body.should.be.a('object');
         res.body.should.have.property('errors');
-        res.body.errors.should.eql(['Bad Request']);
+        res.body.errors.should.eql(['Body contains id, remove it']);
         done();
       });
   });

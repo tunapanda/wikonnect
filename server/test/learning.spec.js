@@ -130,7 +130,7 @@ describe('LEARNING PATH ROUTE', () => {
       .end((err, res) => {
         res.status.should.eql(400);
         res.should.be.json;
-        res.body.errors[0].should.eql('Bad Request');
+        res.body.errors[0].should.eql('That learning path does not exist');
         done();
       });
   });

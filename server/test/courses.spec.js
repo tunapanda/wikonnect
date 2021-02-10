@@ -71,7 +71,7 @@ describe('COURSES ROUTES', () => {
       .end((err, res) => {
         res.status.should.eql(400);
         res.should.be.json;
-        res.body.errors[0].should.eql('Bad Request');
+        res.body.errors[0].should.eql('Not Found');
         done();
       });
   });

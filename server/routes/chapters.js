@@ -64,9 +64,8 @@ router.get('/', permController.requireAuth, validateGetChapter, async ctx => {
   let roleNameList = ['basic', 'superadmin', 'tunapanda', 'admin'];
 
   let chapter = Chapter.query()
-    // eslint-disable-next-line quotes
-    .select('chapters.*', raw("(SELECT COUNT(nullif(reactions.reaction, 'like')) FROM reactions WHERE reactions.chapter_id = chapters.id ) AS likes, (SELECT COUNT(nullif(reactions.reaction, '')) FROM reactions WHERE reactions.chapter_id = chapters.id) AS dislikes"))
-    .avg('rate.rating as rating').avg('rate.rating as rating')
+    .select('chapters.*', raw('(SELECT COUNT(nullif(reactions.reaction, \'like\')) FROM reactions WHERE reactions.chapter_id = chapters.id ) AS likes, (SELECT COUNT(nullif(reactions.reaction, \'\')) FROM reactions WHERE reactions.chapter_id = chapters.id) AS dislikes'))
+    .avg('rate.rating as rating')
     .from('chapters');
 
 
@@ -146,7 +145,7 @@ router.get('/:id', permController.requireAuth, async ctx => {
   let stateUserRole = ctx.state.user.role == undefined ? ctx.state.user.data.role : ctx.state.user.role;
   let stateUserId = ctx.state.user.id == undefined ? ctx.state.user.data.id : ctx.state.user.id;
 
-  let roleNameList = ['basic', 'superadmin', 'tunapanda'];
+  let roleNameList = ['basic', 'admin', 'superadmin', 'tunapanda'];
   let anonymous = 'anonymous';
   let reaction, check_user,counter;
 
@@ -178,7 +177,7 @@ router.get('/:id', permController.requireAuth, async ctx => {
     log.error(error.message);
   }
 
-  ctx.assert(chapter, 404, 'No lesson by that ID');
+  ctx.assert(chapter, 404, 'No chapter by that ID');
   await returnType(chapter);
 
   ctx.status = 200;

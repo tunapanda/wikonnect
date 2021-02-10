@@ -91,7 +91,7 @@ describe('MODULES route', () => {
       .send(putData)
       .end((err, res) => {
         res.status.should.eql(400);
-        res.body.errors[0].should.eql('Bad Request');
+        res.body.errors[0].should.eql('invalid signature');
         done();
       });
   });
@@ -118,7 +118,7 @@ describe('MODULES route', () => {
       .end((err, res) => {
         res.status.should.eql(400);
         res.should.be.json;
-        res.body.errors[0].should.eql('Bad Request');
+        res.body.errors[0].should.eql('Cannot read property \'roles\' of undefined');
         done();
       });
   });

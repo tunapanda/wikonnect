@@ -131,5 +131,21 @@ describe('AUTHENTICATION ROUTES', () => {
           done();
         });
     });
+    it('Should throw if user deletion is initiated by non admin users', done => {
+      chai
+        .request(server)
+        .delete(usersRoute + userId)
+        .set('Content-Type', 'application/json')
+        .set(tokens.headerBasicUser2)
+        .end((err, res) => {
+          res.should.have.status(400);
+          res.status.should.eql(400);
+          res.should.be.json;
+          res.body.should.be.a('object');
+          res.body.should.have.property('errors');
+          res.body.errors.should.eql(['User with basic permission cannot perform that action']);
+          done();
+        });
+    });
   });
 });
