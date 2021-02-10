@@ -121,21 +121,29 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      # cache node_modules in our monorepo project instead of caching the yarn cache
+      - uses: actions/cache@v2
+        with:
+          path: '**/node_modules'
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
+
       # Initialize Node.js
       - name: Install Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
 
-      # Install project dependencies and build
-      - name: Install dependencies
+      # Wikonnect root install dependencies
+      - name: Wikonnect root install dependencies
         run: yarn --frozen-lockfile
 
-      # Install project dependencies, test and build
-      - name: Install dependencies
+      # Frontend install dependencies
+      - name: Frontend install dependencies
         run: yarn --frozen-lockfile --cwd ./frontend
-      - name: Run build
-        run: yarn --frozen-lockfile --cwd ./frontend build --prod
+
+      # Frontend run build
+      - name: Frontend run build
+        run: yarn --cwd ./frontend build --prod
 
       # Install project dependencies, test and build
       - name: Install dependencies
