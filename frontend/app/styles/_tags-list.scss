@@ -1,0 +1,119 @@
+
+.tags-filter-dropdown {
+  margin-right: 8px;
+
+  .tags-filter-dropdown-button {
+    padding: 3px 8px;
+  }
+
+  .dropdown-item:hover {
+    background-color: transparent;
+  }
+
+  .tags-filter-dropdown-menu {
+    min-width: 316px;
+    border-radius: 3px;
+
+    .menu-header {
+      font-size: 10px;
+      color: #9DA3A2;
+      text-transform: uppercase;
+      padding-left: 18px;
+      padding-right: 18px;
+      padding-bottom: 12px;
+
+      .close-icon {
+        color: #5E6C73;
+      }
+    }
+
+    .tag-select {
+      padding-top: 8px;
+      padding-bottom: 8px;
+
+      label {
+        text-align: left;
+        font-size: 15px;
+        color: #5C6267;
+        font-weight: normal;
+        margin: 0;
+      }
+
+      &:hover {
+        background-color: #F7F9FA;
+      }
+    }
+
+    .action-section {
+      border-top: solid 1px #00000026;
+
+      .btn-clear-filters {
+        border: none;
+        color: #787878;
+
+        &:hover, &:active {
+          color: white;
+          background: #f3662a;
+        }
+      }
+    }
+  }
+
+  .action-section {
+    .btn {
+      line-height: normal;
+      font-size: 12px;
+      border-radius: 3px;
+    }
+  }
+}
+
+.tag-list {
+  padding: 0;
+
+  .tag-button {
+    border-radius: 3px;
+    font-size: 12px;
+    padding: 2px 6px 3px;
+    height: 32px;
+    margin-right: 8px;
+    outline: none;
+    box-shadow: none;
+  }
+}
+
+.tags-row-section {
+  overflow-y: hidden;
+}
+
+.tags-section-container {
+  .clear-tags-btn {
+    border-width: 0 0 2px 0;
+    padding: 0;
+    font-size: 12px;
+    border-radius: 0;
+
+    &:hover, &:focus, &:active {
+      background-color: transparent;
+      color: $primary;
+      box-shadow: none;
+      border-width: 0 0 2px 0;
+
+    }
+
+    &.hidden-sm {
+      color: #829199;
+      padding: 7px;
+      line-height: 1.5;
+      border: none;
+
+      &:hover, &:focus, &:active {
+        border-width: 0;
+        background-color: transparent;
+        color: $primary;
+        box-shadow: none !important;
+      }
+    }
+
+  }
+}

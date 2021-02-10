@@ -1,6 +1,6 @@
 import Route from '@ember/routing/route';
-import { inject, inject as service } from '@ember/service';
-import { set } from '@ember/object';
+import {inject, inject as service} from '@ember/service';
+import {set} from '@ember/object';
 
 export default class HomeRoute extends Route {
 
@@ -19,7 +19,6 @@ export default class HomeRoute extends Route {
   }
 
   model() {
-    return this.store.query('chapter', { 'approved': true });
-    //return this.store.findAll('chapter');
+    return this.store.query('chapter', {'approved': true});
   }
 }

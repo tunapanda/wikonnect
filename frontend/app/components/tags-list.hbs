@@ -1,8 +1,75 @@
-{{yield}}
+<div class="tags-section-container">
+  <div class="d-flex nowrap">
 
-{{#each tagsList as |tag|}}
-  {{#link-to "tag" tag class="btn btn-primary m-2 rounded"}}
-    {{tag}}
+    <div class="tags-filter-dropdown ">
+      <BsButton @type="primary" class="tags-filter-dropdown-button" id="filterDropdown" data-toggle="dropdown">
+        <MdIcon @icon="filter-variant" @size={{20}} />
+      </BsButton>
 
-  {{/link-to}}
-{{/each}}
+      <div class="dropdown-menu tags-filter-dropdown-menu" aria-labelledby="filterDropdown">
+        <div class="dropdown-item d-flex justify-content-between menu-header">
+          <span class="title">Click to filter</span>
+          <span class="close-icon">
+            <MdIcon @icon="close" @size={{20}} />
+          </span>
+        </div>
+        <ul class="list-group list-group-flush">
+          {{#each @tagsList as |tag|}}
+            <li class="list-group-item tag-select">
+              <label class=" d-flex justify-content-between align-items-center">
+                {{tag.name}}
+                <Input @type="checkbox" class="checkbox wik-checkbox"
+                  {{on "change" (fn this.toggleCheckBoxSelection tag) }} @checked={{tag.checkBoxSelected}} />
+
+              </label>
+            </li>
+          {{/each}}
+        </ul>
+
+        <div class="dropdown-item d-flex justify-content-end action-section pt-3">
+          <button class="btn btn-outline-primary btn-clear-filters"
+            {{on "click" this.clearDropdownSelectedFilterTags}}>
+            Clear filters
+          </button>
+
+          <button class="btn btn-primary ml-2 btn-apply-filters" disabled={{this.disableApplyFiltersButton}}
+            {{on "click" this.applyMultipleFilters}}>
+            Apply filters
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="d-flex justify-between tags-row-section">
+      <div class="tag-list d-flex col-sm ">
+        {{#each @tagsList as |tag|}}
+
+          <button class="btn tag-button {{if tag.selected "btn-primary" "btn-outline-primary"}}"
+            {{on "click" (fn @toggleTagSelection tag)}}>
+            {{tag.name}}
+          </button>
+
+        {{/each}}
+      </div>
+
+      {{#if  this.hasSelectedFilterTags }}
+        <BsButton @type="primary" @outline="true"
+                  class="text-sm-center d-none d-sm-none d-md-flex clear-tags-btn hidden-sm"
+                  @onClick={{action @clearAllTagFilters}}>
+          Clear filters
+        </BsButton>
+      {{/if}}
+    </div>
+
+
+  </div>
+
+  {{#if this.hasSelectedFilterTags}}
+    <div class="d-flex justify-content-center pt-2">
+      <BsButton @type="primary" @outline="true" class="clear-tags-btn d-md-none"
+                @onClick={{action @clearAllTagFilters}}>
+        Clear filters
+      </BsButton>
+    </div>
+  {{/if}}
+</div>

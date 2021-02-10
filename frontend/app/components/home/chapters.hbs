@@ -1,0 +1,5 @@
+<Home::Filter @chapters={{@chapters}} @tagFilters={{@selectedFilterTags}} as |results|>
+  {{#each results as |chapter|}}
+    <H5pListItem @chapter={{chapter}} />
+  {{/each}}
+</Home::Filter>

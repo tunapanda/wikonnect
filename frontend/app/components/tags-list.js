@@ -1,37 +1,43 @@
 import Component from '@glimmer/component';
-import { inject as service } from '@ember/service';
-// import { action } from '@ember/object';
-// import { tracked } from '@glimmer/tracking';
-
-// import { computed } from '@ember/object';
+import {tracked} from '@glimmer/tracking';
+import {A} from '@ember/array';
+import {action} from '@ember/object';
 
 export default class TagsListComponent extends Component {
-  @service
-  me
 
-  @service
-  session;
-
-  @service
-  store;
-
-  @service
-  notify
+  @tracked
+  dropdownSelectedTags = A([]);
 
 
+  get hasSelectedFilterTags() {
+    return this.args.selectedFilterTags.length > 0;
+  }
 
+  get disableApplyFiltersButton() {
+    return this.dropdownSelectedTags.length === 0;
+  }
 
-  get tagsList() {
-    let mySet = new Set();
+  @action
+  toggleCheckBoxSelection(tag) {
 
-    this.args.theModel.map(x => {
+    if (tag.checkBoxSelected) {
+      this.dropdownSelectedTags.removeObject(tag);
+    } else {
+      this.dropdownSelectedTags.addObject(tag);
+    }
+  }
 
-      x.tags.map(y => {
-        mySet.add(y);
+  @action
+  clearDropdownSelectedFilterTags() {
+    this.dropdownSelectedTags.clear();
+    // propagate the changes up to  parent
+    this.args.clearAllTagFilters();
+  }
 
-      });
-    });
-    return mySet;
+  @action
+  applyMultipleFilters() {
+    this.args.filterWithMultipleTags(this.dropdownSelectedTags);
+    this.dropdownSelectedTags.clear();
 
   }
 }
