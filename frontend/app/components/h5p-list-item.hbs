@@ -1,39 +1,73 @@
-<div class="col-lg-4 col-md-6 mb-4 ">
-  <div class="card h-100 shadow-sm">
-    {{#link-to "chapter" @chapter.id }}
+<div class="col-lg-4 col-md-6 mb-4  ">
+  <div class="card h-100 shadow-sm chapter-preview">
+    <LinkTo @route="chapter" @model={{@chapter.id}} class="preview-image-section">
       {{#if (eq @chapter.imageUrl null)}}
-        <img class="card-img-top" src="https://placehold.jp/20/{{color}}/ffffff/328x200.png?text={{@chapter.name}}"
-          alt="">
+        <img class="card-img-top chapter-preview-image"
+             src="https://placehold.jp/20/{{color}}/ffffff/328x200.png?text={{@chapter.name}}"
+        alt="">
       {{else}}
-        <img class="card-img-top" alt="" src={{@chapter.imageUrl}}>
+        <img class="card-img-top chapter-preview-image" alt="" src={{@chapter.imageUrl}}>
       {{/if}}
-    {{/link-to}}
-    <div class="card-body">
-      <Reaction @likes={{@chapter.likes}} @dislikes={{@chapter.dislikes}} @chapterId={{@chapter.id}}/>
-      <h5 class="card-title">
 
-        {{#link-to "chapter" @chapter.id }}
+    </LinkTo>
 
+    <div class="card-body chapter-body">
+      <div class="actions-section d-flex justify-content-between">
+        <div class="reactions">
+          <Reaction @likes={{@chapter.likes}} @dislikes={{@chapter.dislikes}} @chapterId={{@chapter.id}}/>
+        </div>
+        <div class="popup-actions">
+          <button class="btn-popup-actions">
+            <MdIcon @icon="dots-horizontal-circle" @size="28" @fill="#EBF0F2"/>
+          </button>
+        </div>
+      </div>
+
+      <div class="title-section">
+        <LinkTo @route="chapter" @model={{@chapter.id}} class="title">
           {{@chapter.name}}
-        {{/link-to}}
-      </h5>
+        </LinkTo>
+      </div>
 
-      {{#if config.content.APP.linkify_description}}
-        <p class="card-text">{{linkify @chapter.description class="btn btn-primary mt-3 replaced"}}</p>
-      {{else}}
-        <p class="card-text">{{@chapter.description}}</p>
+      <div class="activity-section d-flex pt-1 pb-1">
+        {{#if @chapter.approved}}
+          <p class="verification-status mr-2">
+            <MdIcon @icon="check-decagram" @size="21" @fill="#F57010"/>
+          </p>
+        {{/if}}
 
-      {{/if}}
-      <br>
-      {{#each @chapter.tags as |tag|}}
-        {{#link-to "tag" tag}}
+        <p class="publish-time mr-3">
+          <MdIcon @icon="clock-outline" @size="16" @fill="#B0BABF"></MdIcon>
+          <span>2 days</span>
+        </p>
+        <p class="views-count">
+          <MdIcon @icon="eye-outline" @size="16" @fill="#B0BABF"></MdIcon>
+          <span>89</span>
+        </p>
+      </div>
 
-          <span class="badge badge-pill badge-primary btn-lg">
-            {{tag}}
-          </span>
-        {{/link-to}}
+      <div class="description-section pt-1 pb-1">
+        {{#if config.content.APP.linkify_description}}
+          <p class="description">
+            {{linkify @chapter.description class="btn btn-primary mt-3 replaced"}}
+          </p>
+        {{else}}
+          <p class="description">
+            {{@chapter.description}}
+          </p>
 
-      {{/each}}
+        {{/if}}
+      </div>
+
+      <div class="chapter-tags-section">
+        {{#each @chapter.tags as |tag|}}
+          <LinkTo @route="tag" @model={{tag}}>
+            <span class="badge badge-pill badge-primary btn-lg">
+              {{tag}}
+            </span>
+          </LinkTo>
+        {{/each}}
+      </div>
     </div>
 
   </div>

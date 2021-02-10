@@ -1,6 +1,11 @@
-<BsButton disabled={{if this.me.isAuthenticated false true}} {{on "click" (fn this.like @chapterId)}}>
-  <MdIcon @icon="thumb-up" @size=15 />{{this.likes}}
-</BsButton>
-<BsButton disabled={{if this.me.isAuthenticated false true}} {{on "click" (fn this.dislike @chapterId)}}>
-  <MdIcon @icon="thumb-down" @size=15 />{{this.dislikes}}
-</BsButton>
+<button class="reaction-btn" disabled={{if this.me.isAuthenticated false true}}
+  {{on "click" (fn this.like @chapterId)}}>
+  <MdIcon @icon="thumb-up" @size="15"/>
+  <span class="count"> {{this.likes}}</span>
+</button>
+
+<button class="reaction-btn" disabled={{if this.me.isAuthenticated false true}}
+  {{on "click" (fn this.dislike @chapterId)}}>
+  <MdIcon @icon="thumb-down" @size="15"/>
+  <span class="count"> {{this.dislikes}}</span>
+</button>

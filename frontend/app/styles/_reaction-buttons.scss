@@ -1,0 +1,27 @@
+$palette: (
+  gray75: #B0BABF
+);
+
+.reaction-btn {
+  background: none;
+  border: none;
+  padding: 0;
+  color: map-get($palette, gray75);
+  outline: none;
+  box-shadow: none;
+  font-size: 12px;
+  font-weight: bold;
+  font-style: normal;
+  margin: 0 14px 0 0;
+  display: inline-flex;
+  align-items: center;
+
+  span.count {
+    padding-left: 5px;
+  }
+
+  &:focus,
+  &:active {
+    outline: none;
+  }
+}

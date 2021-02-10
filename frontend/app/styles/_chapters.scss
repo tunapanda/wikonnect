@@ -1,0 +1,81 @@
+$palette: (
+  primary: $primary,
+  white: #FFFFFF,
+  gray30: #3F484D,
+  gray45: rgb(94, 108, 115),
+  gray60: #829199,
+  gray75: #B0BABF,
+  gray95: #EBF0F2,
+  black: #000000,
+);
+.chapter-body {
+
+  .actions-section {
+    font-size: 12px;
+    color: map-get($palette, gray75);
+
+    .popup-actions {
+      .btn-popup-actions {
+        border: none;
+        background-color: transparent;
+        box-shadow: none;
+        outline: none;
+
+        &:focus,
+        &:active {
+          outline: none;
+        }
+      }
+
+    }
+  }
+}
+
+.chapter-body {
+  .title-section {
+    .title {
+      color: map-get($palette, black);
+      font-size: 18px;
+      font-family: Inter, serif;
+      font-weight: bold;
+      line-height: 32px;
+    }
+  }
+}
+
+.chapter-body {
+  .activity-section {
+    p {
+      font-size: 12px;
+      line-height: 18px;
+      font-family: 'Inter', serif;
+      margin: 0;
+    }
+
+    .publish-time, .views-count {
+      color: map-get($palette, gray75);
+    }
+
+  }
+}
+
+.chapter-body {
+  .description-section {
+    .description {
+      margin: 0;
+      color: map-get($palette, gray30);
+      font-size: 14px;
+      line-height: 20px;
+      letter-spacing: 0;
+
+    }
+  }
+}
+
+.chapter-body {
+  .chapter-tags-section {
+    .badge-primary {
+      background-color: map-get($palette, gray60);
+    }
+  }
+}
