@@ -30,7 +30,7 @@ const router = new Router({
  * @apiSuccess {String} html formatted iframe code in html
  *
  *
- * @apiSampleRequest /api/v1/oembed/?url=https://app.wikonnect.org/chapter/chapter1?callbackUrl=https://webhook.com
+ * @apiSampleRequest /api/v1/oembed/?url=https://app.wikonnect.org/chapter/IPUkk_YAA9w?callbackUrl=https://webhook.com
  *
  *
  * http://localhost/api/v1/oembed?url=http://localhost:4200/chapters/chapter1
