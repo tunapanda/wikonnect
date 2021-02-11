@@ -10,10 +10,10 @@
 
     <div class="login-form-fields">
       <form.element @autocomplete="on" id="username" @controlType="text" @label="Username" @placeholder="Username"
-        @property="username" />
+                    @property="username"/>
 
       <form.element id="password" @controlType="password" @label="Password" @placeholder="Enter Password"
-        @property="password" @autocomplete="new-password" />
+                    @property="password" @autocomplete="new-password"/>
 
     </div>
 
@@ -24,6 +24,10 @@
       </button>
     {{else}}
       <BsButton class="bg-primary form-control" @defaultText="Login" type="submit">
+      </BsButton>
+
+      <BsButton type="button" class="bg-primary form-control" {{ on "click" this.sessionRequiresAuthentication}}>
+        Login with Google
       </BsButton>
 
     {{/if}}

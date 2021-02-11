@@ -1,6 +1,419 @@
 define({ "api": [
   {
     "type": "get",
+    "url": "/api/v1/achievementAwards",
+    "title": "POST create a achievements.",
+    "name": "GetAchievementAwards",
+    "group": "AchievementAwards",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "achievementAwards[id]",
+            "description": "<p>optional achievement-award id</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "achievementAwards[user_id]",
+            "description": "<p>optional user id</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "achievementAwards[achievementId]",
+            "description": "<p>optional achievement id</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "achievementAwards[metadata]",
+            "description": "<p>optional</p>"
+          }
+        ]
+      }
+    },
+    "permission": [
+      {
+        "name": "none"
+      }
+    ],
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n{\n   \"achievementAwards\": [\n     {\n       \"achievementId\": \"achievements1\",\n       \"userId\": \"user1\",\n       \"createdAt\": \"2017-12-20T16:17:10.000Z\",\n       \"updatedAt\": \"2017-12-20T16:17:10.000Z\",\n       \"name\": \"longest streak\",\n       \"slug\": null,\n       \"imageUrl\": \"/badges/badge1.png\",\n       \"metadata\": null,\n       \"id\": \"IrSGD70AAA4\"\n     },\n     {\n       \"achievementId\": \"achievements2\",\n       \"userId\": \"user2\",\n       \"createdAt\": \"2017-12-20T16:17:10.000Z\",\n       \"updatedAt\": \"2017-12-20T16:17:10.000Z\",\n       \"name\": \"completed courses\",\n       \"slug\": null,\n       \"imageUrl\": \"/badges/badge1.png\",\n       \"metadata\": null,\n       \"id\": \"IrSGD8MAAA8\"\n     }\n   ]\n }",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "errors",
+            "description": "<p>Bad Request.</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "./server/routes/achievement_awards.js",
+    "groupTitle": "AchievementAwards"
+  },
+  {
+    "type": "get",
+    "url": "/api/v1/achievements/:id",
+    "title": "GET an achievement.",
+    "name": "GetAnAchievementAward",
+    "group": "AchievementAwards",
+    "permission": [
+      {
+        "name": "none"
+      }
+    ],
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n{\n   \"achievementAwards\": {\n       \"achievementId\": \"achievements1\",\n       \"userId\": \"user1\",\n       \"createdAt\": \"2017-12-20T16:17:10.000Z\",\n       \"updatedAt\": \"2017-12-20T16:17:10.000Z\",\n       \"name\": \"longest streak\",\n       \"slug\": null,\n       \"imageUrl\": \"/badges/badge1.png\",\n       \"metadata\": null,\n       \"id\": \"IrSGD70AAA4\"\n     }\n }",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "errors",
+            "description": "<p>Bad Request.</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "./server/routes/achievement_awards.js",
+    "groupTitle": "AchievementAwards",
+    "sampleRequest": [
+      {
+        "url": "https://app.wikonnect.org/api/v1/achievements/:id"
+      }
+    ]
+  },
+  {
+    "type": "delete",
+    "url": "/api/v1/achievements/:id",
+    "title": "DELETE an achievement.",
+    "name": "DeleteAnAchievement",
+    "group": "Achievements",
+    "permission": [
+      {
+        "name": "none"
+      }
+    ],
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 201 OK\n{\n   \"achievement\": {\n     \"id\": \"string\",\n     \"description\": \"string\",\n     \"metadata\": \"jsonb\",\n     \"user_id\": \"string\",\n     \"target\": \"chapter id\",\n     \"target_status\": \"either completed, started or attempted\",\n     \"createdAt\": \"2020-11-25T12:56:52.895Z\",\n    \"updatedAt\": \"2020-11-25T12:56:52.895Z\"\n   }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "errors",
+            "description": "<p>Bad Request.</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "./server/routes/achievements.js",
+    "groupTitle": "Achievements"
+  },
+  {
+    "type": "get",
+    "url": "/api/v1/achievements",
+    "title": "GET all achievements.",
+    "name": "GetAchievements",
+    "group": "Achievements",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "achievement[description]",
+            "description": "<p>optional achievement description</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "achievement[user_id]",
+            "description": "<p>optional user id</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "achievement[target]",
+            "description": "<p>optional chapter id for the achievement given</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "achievement[target_status]",
+            "description": "<p>optional either completed, started or attempted</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "achievement[metadata]",
+            "description": "<p>optional</p>"
+          }
+        ]
+      }
+    },
+    "permission": [
+      {
+        "name": "none"
+      }
+    ],
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n{\n    \"achievement\": [\n      {\n        \"id\": \"achievements1\",\n        \"description\": \"completed chapter 2\",\n        \"metadata\": null,\n        \"createdAt\": \"2017-12-20T16:17:10.000Z\",\n        \"updatedAt\": \"2017-12-20T16:17:10.000Z\",\n        \"userId\": \"user1\",\n        \"target\": \"chapter2\",\n        \"targetStatus\": \"completed\"\n      },\n      {\n        \"id\": \"achievements2\",\n        \"description\": \"completed chapter1\",\n        \"metadata\": null,\n        \"createdAt\": \"2017-12-20T16:17:10.000Z\",\n        \"updatedAt\": \"2017-12-20T16:17:10.000Z\",\n        \"userId\": \"user1\",\n        \"target\": \"chapter1\",\n        \"targetStatus\": \"completed\"\n      },\n    ]\n  }",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "errors",
+            "description": "<p>Bad Request.</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "./server/routes/achievements.js",
+    "groupTitle": "Achievements"
+  },
+  {
+    "type": "get",
+    "url": "/api/v1/achievements/:id",
+    "title": "GET an achievement.",
+    "name": "GetAnAchievement",
+    "group": "Achievements",
+    "permission": [
+      {
+        "name": "none"
+      }
+    ],
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n{\n   \"achievement\": {\n     \"id\": \"achievements1\",\n     \"description\": \"completed chapter 2\",\n     \"metadata\": null,\n     \"createdAt\": \"2017-12-20T16:17:10.000Z\",\n     \"updatedAt\": \"2017-12-20T16:17:10.000Z\",\n     \"userId\": \"user1\",\n     \"target\": \"chapter2\",\n     \"targetStatus\": \"completed\"\n   }\n }",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "./server/routes/achievements.js",
+    "groupTitle": "Achievements",
+    "sampleRequest": [
+      {
+        "url": "https://app.wikonnect.org/api/v1/achievements/:id"
+      }
+    ]
+  },
+  {
+    "type": "post",
+    "url": "/api/v1/achievements",
+    "title": "POST create a achievements.",
+    "name": "PostAnAchievement",
+    "group": "Achievements",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "achievement[description]",
+            "description": "<p>achievement description</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "achievement[user_id]",
+            "description": "<p>user id</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "achievement[target]",
+            "description": "<p>chapter id for the achievement given</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "achievement[target_status]",
+            "description": "<p>either completed, started or attempted</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "achievement[metadata]",
+            "description": "<p>optional</p>"
+          }
+        ]
+      }
+    },
+    "permission": [
+      {
+        "name": "none"
+      }
+    ],
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 201 OK\n{\n   \"achievement\": {\n     \"id\": \"string\",\n     \"description\": \"string\",\n     \"metadata\": \"jsonb\",\n     \"user_id\": \"string\",\n     \"target\": \"chapter id\",\n     \"target_status\": \"either completed, started or attempted\"\n   }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "errors",
+            "description": "<p>Bad Request.</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "./server/routes/achievements.js",
+    "groupTitle": "Achievements"
+  },
+  {
+    "type": "put",
+    "url": "/api/v1/achievements/:id",
+    "title": "PUT an achievement.",
+    "name": "PutAnAchievement",
+    "group": "Achievements",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "achievement[description]",
+            "description": "<p>optional achievement description</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "achievement[user_id]",
+            "description": "<p>optional user id</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "achievement[target]",
+            "description": "<p>optional chapter id for the achievement given</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "achievement[target_status]",
+            "description": "<p>optional either completed, started or attempted</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "achievement[metadata]",
+            "description": "<p>optional</p>"
+          }
+        ]
+      }
+    },
+    "permission": [
+      {
+        "name": "none"
+      }
+    ],
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 201 OK\n{\n   \"achievement\": {\n     \"id\": \"string\",\n     \"description\": \"string\",\n     \"metadata\": \"jsonb\",\n     \"user_id\": \"string\",\n     \"target\": \"chapter id\",\n     \"target_status\": \"either completed, started or attempted\",\n     \"createdAt\": \"2020-11-25T12:56:52.895Z\",\n    \"updatedAt\": \"2020-11-25T12:56:52.895Z\"\n   }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "errors",
+            "description": "<p>Bad Request.</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "./server/routes/achievements.js",
+    "groupTitle": "Achievements"
+  },
+  {
+    "type": "get",
     "url": "/api/v1/users/:id",
     "title": "GET a single user using id.",
     "name": "GetAUser",
@@ -160,7 +573,7 @@ define({ "api": [
     "groupTitle": "Authentication",
     "sampleRequest": [
       {
-        "url": "https://kkl.wikonnect.org/users"
+        "url": "https://app.wikonnect.org/users"
       }
     ]
   },
@@ -207,7 +620,7 @@ define({ "api": [
     "groupTitle": "Authentication",
     "sampleRequest": [
       {
-        "url": "https://kkl.wikonnect.org/users/:id/profile-image"
+        "url": "https://app.wikonnect.org/users/:id/profile-image"
       }
     ]
   },
@@ -283,7 +696,7 @@ define({ "api": [
     "groupTitle": "Authentication",
     "sampleRequest": [
       {
-        "url": "https://kkl.wikonnect.org/api/v1/users"
+        "url": "https://app.wikonnect.org/api/v1/users"
       }
     ]
   },
@@ -426,7 +839,7 @@ define({ "api": [
     "groupTitle": "Authentication",
     "sampleRequest": [
       {
-        "url": "https://kkl.wikonnect.org/users/:id"
+        "url": "https://app.wikonnect.org/users/:id"
       }
     ]
   },
@@ -455,7 +868,7 @@ define({ "api": [
     "groupTitle": "ChapterComments",
     "sampleRequest": [
       {
-        "url": "https://kkl.wikonnect.org/:comment_id"
+        "url": "https://app.wikonnect.org/:comment_id"
       }
     ]
   },
@@ -533,7 +946,7 @@ define({ "api": [
     "groupTitle": "ChapterComments",
     "sampleRequest": [
       {
-        "url": "https://kkl.wikonnect.org/:comment_id"
+        "url": "https://app.wikonnect.org/:comment_id"
       }
     ]
   },
@@ -553,7 +966,7 @@ define({ "api": [
     "groupTitle": "ChapterRatings",
     "sampleRequest": [
       {
-        "url": "https://kkl.wikonnect.org/:rating_id"
+        "url": "https://app.wikonnect.org/:rating_id"
       }
     ]
   },
@@ -582,7 +995,7 @@ define({ "api": [
     "groupTitle": "ChapterRatings",
     "sampleRequest": [
       {
-        "url": "https://kkl.wikonnect.org/:rating_id"
+        "url": "https://app.wikonnect.org/:rating_id"
       }
     ]
   },
@@ -660,7 +1073,7 @@ define({ "api": [
     "groupTitle": "ChapterRatings",
     "sampleRequest": [
       {
-        "url": "https://kkl.wikonnect.org/:rating_id"
+        "url": "https://app.wikonnect.org/:rating_id"
       }
     ]
   },
@@ -736,7 +1149,7 @@ define({ "api": [
     "groupTitle": "Chapters",
     "sampleRequest": [
       {
-        "url": "https://kkl.wikonnect.org/api/v1/chapters/:id"
+        "url": "https://app.wikonnect.org/api/v1/chapters/:id"
       }
     ]
   },
@@ -859,7 +1272,7 @@ define({ "api": [
     },
     "sampleRequest": [
       {
-        "url": "https://kkl.wikonnect.org/api/v1/chapters/"
+        "url": "https://app.wikonnect.org/api/v1/chapters/"
       }
     ],
     "version": "0.0.0",
@@ -985,7 +1398,7 @@ define({ "api": [
     "groupTitle": "Chapters",
     "sampleRequest": [
       {
-        "url": "https://kkl.wikonnect.org/api/v1/chapters/:id/upload"
+        "url": "https://app.wikonnect.org/api/v1/chapters/:id/upload"
       }
     ]
   },
@@ -1034,7 +1447,7 @@ define({ "api": [
     "groupTitle": "Chapters",
     "sampleRequest": [
       {
-        "url": "https://kkl.wikonnect.org/api/v1/chapters/:id/chapter-image"
+        "url": "https://app.wikonnect.org/api/v1/chapters/:id/chapter-image"
       }
     ]
   },
@@ -1052,7 +1465,7 @@ define({ "api": [
     "version": "0.4.0",
     "sampleRequest": [
       {
-        "url": "https://kkl.wikonnect.org/api/v1/chapters/:id"
+        "url": "https://app.wikonnect.org/api/v1/chapters/:id"
       }
     ],
     "parameter": {
@@ -1173,7 +1586,7 @@ define({ "api": [
     "groupTitle": "Courses",
     "sampleRequest": [
       {
-        "url": "https://kkl.wikonnect.org/courses/:id"
+        "url": "https://app.wikonnect.org/courses/:id"
       }
     ]
   },
@@ -1519,7 +1932,7 @@ define({ "api": [
     "groupTitle": "Learning_Path",
     "sampleRequest": [
       {
-        "url": "https://kkl.wikonnect.org/paths/:id"
+        "url": "https://app.wikonnect.org/paths/:id"
       }
     ]
   },
@@ -1714,7 +2127,7 @@ define({ "api": [
     "groupTitle": "Lessons",
     "sampleRequest": [
       {
-        "url": "https://kkl.wikonnect.org/lessons/:id"
+        "url": "https://app.wikonnect.org/lessons/:id"
       }
     ]
   },
@@ -1987,7 +2400,7 @@ define({ "api": [
     "groupTitle": "Modules",
     "sampleRequest": [
       {
-        "url": "https://kkl.wikonnect.org/modules/:id"
+        "url": "https://app.wikonnect.org/modules/:id"
       }
     ]
   },
@@ -2304,7 +2717,7 @@ define({ "api": [
     },
     "sampleRequest": [
       {
-        "url": "https://kkl.wikonnect.org/api/v1/oembed/\n\n\nhttp://localhost/api/v1/oembed?url=http://localhost:4200/chapters/chapter1\n{\n   \"version\": \"1.0\",\n   \"type\": \"h5p\",\n   \"provider_name\": \"Wikonnect\",\n   \"provider_url\": \"http://app.wikonnect.org/\",\n   \"width\": 425,\n   \"height\": 344,\n   \"title\": \"Cyber bullying\",\n\n   \"html\":\n   \t\"<iframe width=\\\"560\\\" height=\\\"315\\\" src=\\\"http://localhost:4200/embed/chapter1\\\" ></iframe>\",\n}"
+        "url": "https://app.wikonnect.org/api/v1/oembed/\n\n\nhttp://localhost/api/v1/oembed?url=http://localhost:4200/chapters/chapter1\n{\n   \"version\": \"1.0\",\n   \"type\": \"h5p\",\n   \"provider_name\": \"Wikonnect\",\n   \"provider_url\": \"http://app.wikonnect.org/\",\n   \"width\": 425,\n   \"height\": 344,\n   \"title\": \"Cyber bullying\",\n\n   \"html\":\n   \t\"<iframe width=\\\"560\\\" height=\\\"315\\\" src=\\\"http://localhost:4200/embed/chapter1\\\" ></iframe>\",\n}"
       }
     ],
     "version": "0.0.0",
@@ -2390,7 +2803,7 @@ define({ "api": [
     "groupTitle": "Reactions",
     "sampleRequest": [
       {
-        "url": "https://kkl.wikonnect.org/api/v1/reactions/:id"
+        "url": "https://app.wikonnect.org/api/v1/reactions/:id"
       }
     ]
   },
@@ -2466,7 +2879,7 @@ define({ "api": [
     "groupTitle": "Reactions",
     "sampleRequest": [
       {
-        "url": "https://kkl.wikonnect.org/api/v1/reactions/:id"
+        "url": "https://app.wikonnect.org/api/v1/reactions/:id"
       }
     ]
   },
@@ -2563,13 +2976,13 @@ define({ "api": [
     "groupTitle": "Reactions",
     "sampleRequest": [
       {
-        "url": "https://kkl.wikonnect.org/api/v1/reactions/"
+        "url": "https://app.wikonnect.org/api/v1/reactions/"
       }
     ]
   },
   {
     "type": "post",
-    "url": "/api/v1/reaction/",
+    "url": "/api/v1/reactions/",
     "title": "POST a reaction.",
     "name": "PostAReaction",
     "group": "Reactions",
@@ -2713,7 +3126,7 @@ define({ "api": [
     "groupTitle": "Reactions",
     "sampleRequest": [
       {
-        "url": "https://kkl.wikonnect.org/api/v1/reactions/:id"
+        "url": "https://app.wikonnect.org/api/v1/reactions/:id"
       }
     ]
   },
@@ -2755,5 +3168,206 @@ define({ "api": [
     },
     "filename": "./server/routes/search.js",
     "groupTitle": "Search"
+  },
+  {
+    "type": "delete",
+    "url": "/api/v1/counters/:id",
+    "title": "DELETE a view counter.",
+    "name": "DeleteViewCounters",
+    "group": "ViewCounters",
+    "permission": [
+      {
+        "name": "none"
+      }
+    ],
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "  HTTP/1.1 200 OK\n {\n   \"counter\": {\n      \"id\": \"2\",\n      \"trigger\": \"chapterCompletion\",\n      \"chapterId\": \"chapter1\",\n      \"counter\": 3,\n      \"createdAt\": \"2017-12-20T16:17:10.000Z\",\n      \"updatedAt\": \"2017-12-20T16:17:10.000Z\"\n    }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "./server/routes/counter.js",
+    "groupTitle": "ViewCounters"
+  },
+  {
+    "type": "get",
+    "url": "/api/v1/counters/:id",
+    "title": "GET a view counter.",
+    "name": "GetAViewCounters",
+    "group": "ViewCounters",
+    "permission": [
+      {
+        "name": "none"
+      }
+    ],
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": " HTTP/1.1 200 OK\n{\n   \"counter\": {\n      \"id\": \"1\",\n      \"trigger\": \"chapterCompletion\",\n      \"chapterId\": \"chapter1\",\n      \"counter\": 3,\n      \"createdAt\": \"2017-12-20T16:17:10.000Z\",\n      \"updatedAt\": \"2017-12-20T16:17:10.000Z\"\n     }\n }",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "./server/routes/counter.js",
+    "groupTitle": "ViewCounters"
+  },
+  {
+    "type": "get",
+    "url": "/api/v1/counters",
+    "title": "GET all view counters.",
+    "name": "GetViewCounters",
+    "group": "ViewCounters",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "trigger",
+            "description": "<p>optional preset triggers</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "chapterId",
+            "description": "<p>optional chapter id</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "counter",
+            "description": "<p>optional integer counter</p>"
+          }
+        ]
+      }
+    },
+    "permission": [
+      {
+        "name": "none"
+      }
+    ],
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": " HTTP/1.1 200 OK\n{\n   \"counter\": [\n     {\n      \"id\": \"1\",\n      \"trigger\": \"chapterCompletion\",\n      \"chapterId\": \"chapter1\",\n      \"counter\": 3,\n      \"createdAt\": \"2017-12-20T16:17:10.000Z\",\n      \"updatedAt\": \"2017-12-20T16:17:10.000Z\"\n     },\n     {\n      \"id\": \"2\",\n      \"trigger\": \"chapterCompletion\",\n      \"chapterId\": \"chapter1\",\n      \"counter\": 3,\n      \"createdAt\": \"2017-12-20T16:17:10.000Z\",\n      \"updatedAt\": \"2017-12-20T16:17:10.000Z\"\n     }\n   ]\n }",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "./server/routes/counter.js",
+    "groupTitle": "ViewCounters"
+  },
+  {
+    "type": "post",
+    "url": "/api/v1/counters",
+    "title": "POST a view counter.",
+    "name": "PostViewCounters",
+    "group": "ViewCounters",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "counter[trigger]",
+            "description": "<p>optional preset triggers</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "counter[chapterId]",
+            "description": "<p>optional chapter id</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "counter[counter]",
+            "description": "<p>optional integer counter</p>"
+          }
+        ]
+      }
+    },
+    "permission": [
+      {
+        "name": "none"
+      }
+    ],
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": " HTTP/1.1 200 OK\n{\n   \"counter\": {\n      \"id\": \"1\",\n      \"trigger\": \"chapterCompletion\",\n      \"chapterId\": \"chapter1\",\n      \"counter\": 3,\n      \"createdAt\": \"2017-12-20T16:17:10.000Z\",\n      \"updatedAt\": \"2017-12-20T16:17:10.000Z\"\n    }\n }",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "./server/routes/counter.js",
+    "groupTitle": "ViewCounters"
+  },
+  {
+    "type": "put",
+    "url": "/api/v1/counters/:id",
+    "title": "PUT a view counter.",
+    "name": "PutViewCounters",
+    "group": "ViewCounters",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "counter[trigger]",
+            "description": "<p>optional preset triggers</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "counter[chapterId]",
+            "description": "<p>optional chapter id</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "counter[counter]",
+            "description": "<p>optional integer counter</p>"
+          }
+        ]
+      }
+    },
+    "permission": [
+      {
+        "name": "none"
+      }
+    ],
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "  HTTP/1.1 200 OK\n {\n   \"counter\": {\n      \"id\": \"2\",\n      \"trigger\": \"chapterCompletion\",\n      \"chapterId\": \"chapter1\",\n      \"counter\": 3,\n      \"createdAt\": \"2017-12-20T16:17:10.000Z\",\n      \"updatedAt\": \"2017-12-20T16:17:10.000Z\"\n    }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "./server/routes/counter.js",
+    "groupTitle": "ViewCounters"
   }
 ] });

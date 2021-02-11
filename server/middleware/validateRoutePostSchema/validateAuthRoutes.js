@@ -57,8 +57,7 @@ async function validateUserLogin(ctx, next) {
       password: {
         presence: true,
         length: {
-          minimum: 8,
-          maximum: 50
+          minimum: 8
         }
       }
     });

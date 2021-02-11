@@ -3,7 +3,7 @@
 
     <div class="signup-form-fields">
       <form.element id="username" class="" @controlType="text" @label="Username" @placeholder="Username"
-        @property="username" @autocomplete="username" />
+                    @property="username" @autocomplete="username"/>
       {{#each newUser.errors as |err| }}
         {{#if (eq err.key "username")}}
           <BsAlert @type="danger" @fade={{true}}>
@@ -13,7 +13,7 @@
       {{/each}}
 
       <form.element id="email" class="" @controlType="text" @label="Email address" @placeholder="example@mail.com"
-        @property="email" @autocomplete="email" />
+                    @property="email" @autocomplete="email"/>
       {{#each newUser.errors as |err| }}
         {{#if (eq err.key "email")}}
           <BsAlert @type="danger" @fade={{true}}>
@@ -23,15 +23,19 @@
       {{/each}}
 
       <form.element id="password" class="" @controlType="password" @label="Password" @placeholder="Enter Password"
-        @property="password" @autocomplete="new-password" />
+                    @property="password" @autocomplete="new-password"/>
 
       <form.element id="confirm-password" class="" @controlType="password" @label="Repeat password"
-        @placeholder="Repeat Password" @property="passwordConfirmation" />
+                    @placeholder="Repeat Password" @property="passwordConfirmation"/>
 
       <form.element id="invite-code" class="" @controlType="text" @label="Invite Code" @placeholder="Invite Code"
-        @property="inviteCode" />
+                    @property="inviteCode"/>
     </div>
 
-    <BsButton class="btn btn-primary form-control" @type="submit" @defaultText="Sign Up" @buttonType="submit" />
+    <BsButton class="btn btn-primary form-control" @type="submit" @defaultText="Sign Up" @buttonType="submit"/>
+
+    <BsButton class="bg-primary form-control" {{ on "click" this.sessionRequiresAuthentication }}>
+      Sign up with Google
+    </BsButton>
   </BsForm>
 </div>

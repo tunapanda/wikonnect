@@ -165,13 +165,18 @@ router.get('/:id', permController.requireAuth, async ctx => {
     chapter = await chapter.where({ status: 'published' }).eager('comment(selectComment)');
   }
 
-  check_user = await Reaction.query().where({ chapter_id: ctx.params.id, user_id: stateUserId });
-  reaction = await knex.raw(`SELECT COUNT(*) AS total_likes, COUNT(CASE WHEN reaction = 'like' THEN 1 ELSE NULL END) AS likes, COUNT(CASE WHEN reaction = 'dislike' THEN 1 ELSE NULL END) AS dislikes FROM reactions  WHERE reactions.chapter_id = '${ctx.params.id}'`);
-  counter = await knex.raw(`select count(*) from counter where trigger = 'timerDelay' and chapter_id = '${ctx.params.id}'`);
+  try {
+    check_user = await Reaction.query().where({ chapter_id: ctx.params.id, user_id: stateUserId });
+    reaction = await knex.raw(`SELECT COUNT(*) AS total_likes, COUNT(CASE WHEN reaction = 'like' THEN 1 ELSE NULL END) AS likes, COUNT(CASE WHEN reaction = 'dislike' THEN 1 ELSE NULL END) AS dislikes FROM reactions  WHERE reactions.chapter_id = '${ctx.params.id}'`);
+    counter = await knex.raw(`select count(*) from counter where trigger = 'timerDelay' and chapter_id = '${ctx.params.id}'`);
 
-  chapter[0].reaction = reaction.rows[0];
-  chapter[0].reaction.authenticated_user = check_user[0] === undefined ? null : check_user[0].reaction;
-  chapter[0].counter = counter.rows === undefined ? '0' : counter.rows[0].count;
+    chapter[0].reaction = reaction.rows[0];
+    chapter[0].reaction.authenticated_user = check_user[0] === undefined ? null : check_user[0].reaction;
+    chapter[0].counter = counter.rows === undefined ? '0' : counter.rows[0].count;
+
+  } catch (error) {
+    log.error(error.message);
+  }
 
   ctx.assert(chapter, 404, 'No lesson by that ID');
   await returnType(chapter);
