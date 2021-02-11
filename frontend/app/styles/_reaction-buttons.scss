@@ -1,4 +1,5 @@
 $palette: (
+  primary: #F57010,
   gray75: #B0BABF
 );
 
@@ -23,5 +24,8 @@ $palette: (
   &:focus,
   &:active {
     outline: none;
+  }
+  &.active{
+    color: map-get($palette,primary);
   }
 }

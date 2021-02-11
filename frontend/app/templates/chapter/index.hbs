@@ -12,9 +12,7 @@
         <p> {{model.counter}} views | {{format-date model.createdAt}}</p>
       </div>
       <div class="col-6">
-      <Reaction @likes={{model.reaction.likes}} @dislikes={{model.reaction.dislikes}} @chapterId={{@model.id}}/>
-
-
+        <Reaction @chapter={{@model}}/>
       </div>
     </div>
     <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modelId">
@@ -67,12 +65,12 @@
     {{#if (eq model.approved "true")}}
 
       <button {{on "click" (fn this.toggleApproval model.id "true" )}} type="button"
-        class="btn form-controll btn-danger">
+                                                                       class="btn form-controll btn-danger">
         Un Approve This
       </button>
     {{else}}
       <button {{on "click" (fn this.toggleApproval model.id "false" )}} type="button"
-        class="btn form-controll btn-success">
+                                                                        class="btn form-controll btn-success">
         Approve This
       </button>
     {{/if}}
@@ -83,14 +81,14 @@
 </div>
 
 
-
 <BsModalSimple @open={{flaggingModal}} @title="Report Chapter" @closeTitle="Close" @submitTitle="Submit Report" @size=""
-  @closeButton={{true}} @fade={{true}} @backdrop={{true}} @backdropClose={{true}} @onSubmit={{action "saveFlag" }}
-  @onHidden={{action "toggleFlaggingModal" }} @renderInPlace={{true}}>
+               @closeButton={{true}} @fade={{true}} @backdrop={{true}} @backdropClose={{true}} @onSubmit={{action
+        "saveFlag" }}
+               @onHidden={{action "toggleFlaggingModal" }} @renderInPlace={{true}}>
 
   <BsForm @model={{flagModel}} @onSubmit={{action "saveFlag" }} as |form|>
-    <form.element @controlType="textarea" @label="Reason for reporting" @property="comment" />
-    <form.element @controlType="hidden" @value={{model}} @name="chapter" />
+    <form.element @controlType="textarea" @label="Reason for reporting" @property="comment"/>
+    <form.element @controlType="hidden" @value={{model}} @name="chapter"/>
 
 
   </BsForm>
@@ -98,13 +96,13 @@
 
 
 <BsModalSimple @open={{ratingModal}} @title="Rate This Module " @closeTitle="Close"
-  @submitTitle="Submit Optional Remark" @size="" @closeButton={{true}} @fade={{true}} @backdrop={{true}}
-  @backdropClose={{true}} @onSubmit={{action "ratingSubmit" }} @onHidden={{action "toggleRatingModal" }}
-  @renderInPlace={{true}}>
+               @submitTitle="Submit Optional Remark" @size="" @closeButton={{true}} @fade={{true}} @backdrop={{true}}
+               @backdropClose={{true}} @onSubmit={{action "ratingSubmit" }} @onHidden={{action "toggleRatingModal" }}
+               @renderInPlace={{true}}>
 
   <BsForm @onSubmit={{action "ratingSubmit" }} as |form|>
     <form.element @controlType="textarea" @label="Optional reason/remark for your {{rates}} star rating"
-      @property="comment" />
+                  @property="comment"/>
 
 
   </BsForm>

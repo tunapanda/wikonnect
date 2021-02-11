@@ -1,9 +1,11 @@
-<button class="reaction-btn"   {{on "click" (fn @reactAction @model true)}}>
+<button class="reaction-btn {{if this.hasLiked "active" ""}}"
+  {{on "click" (fn this.onUserChapterReaction @chapter true)}}>
   <MdIcon @icon="thumb-up" @size="15"/>
-  <span class="count"> {{@model.likes}}</span>
+  <span class="count"> {{@chapter.likes}}</span>
 </button>
 
-<button class="reaction-btn"  {{on "click" (fn @reactAction @model false)}}>
+<button class="reaction-btn {{if this.hasDisliked "active" ""}}"
+  {{on "click" (fn this.onUserChapterReaction @chapter false)}}>
   <MdIcon @icon="thumb-down" @size="15"/>
-  <span class="count"> {{@model.dislikes}}</span>
+  <span class="count"> {{@chapter.dislikes}}</span>
 </button>
