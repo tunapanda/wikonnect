@@ -14,8 +14,8 @@ export default class ChapterModel extends Model {
   @attr targetStatus;
   @attr imageUrl;
   @attr createdAt;
-  @attr likes;
-  @attr dislikes;
+  @attr('number') likes;
+  @attr('number') dislikes;
   @attr reaction;
   @attr counter;
   @hasMany('comment') comments;

@@ -14,7 +14,7 @@
     <div class="card-body chapter-body">
       <div class="actions-section d-flex justify-content-between">
         <div class="reactions">
-          <Reaction @likes={{@chapter.likes}} @dislikes={{@chapter.dislikes}} @chapterId={{@chapter.id}}/>
+          <Reaction @model={{@chapter}} @reactAction={{@userChapterReactionAction}} />
         </div>
         <div class="popup-actions">
           <button class="btn-popup-actions">

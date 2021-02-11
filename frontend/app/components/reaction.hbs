@@ -1,11 +1,9 @@
-<button class="reaction-btn" disabled={{if this.me.isAuthenticated false true}}
-  {{on "click" (fn this.like @chapterId)}}>
+<button class="reaction-btn"   {{on "click" (fn @reactAction @model true)}}>
   <MdIcon @icon="thumb-up" @size="15"/>
-  <span class="count"> {{this.likes}}</span>
+  <span class="count"> {{@model.likes}}</span>
 </button>
 
-<button class="reaction-btn" disabled={{if this.me.isAuthenticated false true}}
-  {{on "click" (fn this.dislike @chapterId)}}>
+<button class="reaction-btn"  {{on "click" (fn @reactAction @model false)}}>
   <MdIcon @icon="thumb-down" @size="15"/>
-  <span class="count"> {{this.dislikes}}</span>
+  <span class="count"> {{@model.dislikes}}</span>
 </button>

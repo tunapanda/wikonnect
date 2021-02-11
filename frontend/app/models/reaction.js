@@ -1,7 +1,10 @@
-import Model, { attr } from '@ember-data/model';
+import Model, {attr, belongsTo} from '@ember-data/model';
 
 export default class ReactionModel extends Model {
-  @attr reaction;
-  @attr chapterId;
-  @attr userId;
+  @attr('string') reaction;
+  @attr('date') createdAt;
+  @attr('date') updatedAt;
+
+  @belongsTo('chapter', {inverse: null}) chapter;
+  @belongsTo('user') user;
 }
