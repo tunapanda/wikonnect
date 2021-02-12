@@ -2,7 +2,7 @@
 <div class="p-4">
 
   <div class="row p-5">
-    
+
     <div class="col-lg-6">
       <h4><b>Chapter Name: </b>{{model.name}} ({{model.status}})</h4>
       {{#if (eq model.status "published")}}
@@ -62,12 +62,12 @@
 
       <BsModalSimple @open={{publishModal}} @onSubmit={{action "publish" model.id }} @closeTitle="Cancel"
         @submitTitle="Publish" @title="Publish ??" @size="sm" @onHidden={{action (mut publishModal) false}}>
-        Are you sure you want to publish ??
+        Are you sure you want to publish ?
       </BsModalSimple>
 
       <BsModalSimple @open={{unpublishModal}} @onSubmit={{action "unpublish" model.id }} @closeTitle="Cancel"
         @submitTitle="UnPublish" @title="UnPublish ??" @size="sm" @onHidden={{action (mut unpublishModal) false}}>
-        Are you sure you want to unpublish ??
+        Are you sure you want to unpublish ?
       </BsModalSimple>
 
       <BsModalSimple @open={{deleteModal}} @onSubmit={{action "delete" model.id }} @closeTitle="Cancel"
@@ -88,8 +88,6 @@
       {{#link-to "teach.edit" model.id}}
         <button type="button" class="btn btn-primary form-control">Change Chapter Details</button>
       {{/link-to}}
-      <hr>
-
       <hr>
 
       {{#if model.imageUrl}}
