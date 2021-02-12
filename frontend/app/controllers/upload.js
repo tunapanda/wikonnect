@@ -21,8 +21,6 @@ export default class UploadController extends Controller {
 
   @computed('me.user.profileUri')
   get profileImage() {
-    console.log(this.me.user.profileUri);
-
     return this.me.user.profileUri;
   }
 
@@ -38,8 +36,6 @@ export default class UploadController extends Controller {
     this.set('uploader', uploader);
 
     const host = '/' + this.store.adapterFor('application').urlPrefix();
-    console.log('host');
-    console.log(host);
 
     const uploadRes = await uploader.startUpload([host, 'users', this.me.user.id, 'profile-image'].join('/'));
 
