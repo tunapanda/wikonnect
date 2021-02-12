@@ -97,4 +97,10 @@ describe('Sign up', () => {
         cy.get('a[href="/login"]')
             .should('be.visible');
     });
+
+    it('should have Google signup call to action', () => {
+        cy.get('form button')
+            .contains('Sign up with Google', {matchCase: false})
+            .should('be.visible');
+    });
 })
