@@ -280,9 +280,9 @@ router.put('/:id', permController.requireAuth, async ctx => {
   let chapterData = ctx.request.body.chapter;
   ctx.assert(chapterData, 400, 'No chapter found');
   const chapter = await Chapter.query().patchAndFetchById(ctx.params.id, chapterData);
+  ctx.assert(chapter, 400, 'No chapter found');
   ctx.status = 201;
   ctx.body = { chapter };
-
 });
 
 
