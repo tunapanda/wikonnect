@@ -9,17 +9,20 @@
     {{#if me.isAuthenticated}}
 
       <div class="text-center">
-
-
-
         <div class="bg-primary text-center p-3 text-white mb-4 ">
           UPLOAD H5P
         </div>
 
+        {{#if uploader.uploading}}
+          <BsProgress as |pg|>
+            <pg.bar @showLabel={{true}} @roundDigits={{0}} @type="default" @striped={{true}} @animate={{true}}
+              @value={{uploader.progress}} />
+          </BsProgress>
+        {{/if}}
+        <br>
+        {{!-- {{#file-drop-zone onDragEnter=(action "onFileHover") onDragLeave=(action "onFileExit") onDrop=(action "addFiles")}} --}}
 
-        <Forms::Upload @multiple="false" @accept=".h5p" @filesSelected={{action "uploadPic"}}
-          @disabled={{uploader.uploading}}>
-
+        <Forms::Upload @multiple="false" @accept=".h5p" @filesSelected={{action "uploadPic"}} @disabled={{uploader.uploading}}>
           {{#if uploader.uploading}}
             Uploading... <span class="loading-spinner"></span> {{uploader.progress}}% <br>
             <small class="text-muted">You will be redirected once upload is complete</small>
@@ -28,18 +31,12 @@
           {{/if}}
         </Forms::Upload>
 
-
-
-        {{#if signup}}
-
+        {{#unless signup}}
           <br><br>
-          {{#link-to "teach.thumbnail-upload" chapter.id}}
+          {{#link-to "teach.thumbnail-upload" model.id}}
             <button type="button" class="btn btn-success">Add Thumbnail</button>
-
-
           {{/link-to}}
-
-        {{/if}}
+        {{/unless}}
       </div>
 
 

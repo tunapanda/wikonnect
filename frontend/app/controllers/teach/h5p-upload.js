@@ -23,14 +23,17 @@ export default class TeachH5pUploadController extends Controller {
 
     const host = '/' + this.store.adapterFor('application').urlPrefix();
 
-
-    await uploader.startUpload([host, 'chapters', id, 'upload'].join('/'));
+    try {
+      await uploader.startUpload([host, 'chapters', id, 'upload'].join('/'));
+    } catch(err) {
+      console.log(err);
+    }
 
     //upload
     this.set('complete', true);
 
     if (this.complete === true) {
-      this.transitionToRoute('teach.preview', id);
+      this.transitionToRoute('teach.thumbnail-upload', id);
     }
 
   }
