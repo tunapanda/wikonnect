@@ -1,0 +1,17 @@
+{{outlet}}
+
+<div class=" d-flex row text-center p-4 shadow-sm justify-content-center">
+  <h3><b>Edit H5P Chapter</b></h3>
+</div>
+
+<div class="row d-flex justify-content-center">
+
+  <div class="p-4 col-lg-8">
+    <BsForm @model={{model}} @onSubmit={{action "saveChapter" }} as |form|>
+      <form.element @controlType="text" @label="Chapter Title" @property="name" />
+      <form.element @controlType="textarea" @label="Chapter Description" @property="description" />
+
+      <BsButton @type="primary" class="form-control" @defaultText="Update Chapter Details" @buttonType="submit" />
+    </BsForm>
+  </div>
+</div>
