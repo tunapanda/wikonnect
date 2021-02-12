@@ -4,7 +4,6 @@ import { tracked } from '@glimmer/tracking';
 
 export default class TeachIndexRoute extends Route {
   @service session;
-  @tracked token = this.session.data.authenticated.token
 
   @service me
   async model() {
