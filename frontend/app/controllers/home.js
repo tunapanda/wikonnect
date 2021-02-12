@@ -12,7 +12,6 @@ export default class HomeController extends Controller {
     // this.model
     let filtered = [];
     this.model.map(c => {
-      console.log('ok');
       if (c.tags) {
         filtered.concat(c.tags);
       }

@@ -66,7 +66,6 @@ describe('AUTHENTICATION ROUTES', () => {
         .set('Content-Type', 'application/json')
         .send(loginUserData)
         .end((err, res) => {
-          console.log(res.body);
           res.should.have.status(200);
           res.body.should.have.property('token');
           done();
