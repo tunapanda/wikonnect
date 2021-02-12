@@ -298,7 +298,7 @@ router.put('/:id', permController.requireAuth, async ctx => {
 
 
 
-router.delete('/:id', permController.requireAuth, permController.grantAccess('deleteAny', 'path'), async ctx => {
+router.delete('/:id', permController.requireAuth, async ctx => {
   const chapter = await Chapter.query().findById(ctx.params.id);
 
   if (!chapter) {
