@@ -108,8 +108,6 @@ router.get('/', permController.requireAuth, validateGetChapter, async ctx => {
   let stateUserRole = ctx.state.user.role == undefined ? ctx.state.user.data.role : ctx.state.user.role;
   let stateUserId = ctx.state.user.id == undefined ? ctx.state.user.data.id : ctx.state.user.id;
   let user = await User.query().findById(stateUserId);
-  console.log({ stateUserRole: stateUserRole });
-
 
   let roleNameList = ['basic', 'superadmin', 'tunapanda', 'admin'];
 
@@ -216,7 +214,11 @@ router.get('/:id', permController.requireAuth, async ctx => {
 
   try {
     counter = await knex.raw(`select count(*) from counter where trigger = 'timerDelay' and chapter_id = '${ctx.params.id}'`);
-    chapter[0].counter = counter.rows === undefined ? '0' : counter.rows[0].count;
+    const count = counter.rows === undefined ? '0' : counter.rows[0].count;
+    chapter[0].counter = {
+      counter: count,
+      type: 'counter'
+    };
 
   } catch (error) {
     log.error(error.message);
