@@ -1,7 +1,8 @@
-buttons: 
+buttons:
   teach: Teach
   learn: Learn
   login: Login
+  logout: Logout
   signup: Sign Up
   profile: Profile
   about: About

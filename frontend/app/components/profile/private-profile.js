@@ -54,14 +54,11 @@ export default class ProfilePrivateProfileComponent extends Component {
 
   @action
   onSuccess() {
-    console.log('copied');
   }
 
   @action
   updateEmail() {
     this.notify.info('Updating Email', { closeAfter: 10000 });
-    console.log(this.email);
-    console.log(this.me.user.id);
     let theEmail = this.email;
     // ...after the record has loaded
 
@@ -87,7 +84,6 @@ export default class ProfilePrivateProfileComponent extends Component {
 
   @action
   onError() {
-    console.log('no copy');
   }
 
   @computed('model.hasDirtyAttributes')
