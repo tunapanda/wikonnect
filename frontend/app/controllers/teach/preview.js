@@ -15,27 +15,27 @@ export default class TeachPreviewController extends Controller {
 
   @action
   publish(chapter_id) {
-    this.store.findRecord("chapter", chapter_id).then(function (chap) {
+    this.store.findRecord('chapter', chapter_id).then(function (chap) {
       // ...after the record has loaded
 
-      chap.set("status", "published");
+      chap.set('status', 'published');
       chap.save();
     });
 
     this.publishModal = false;
-    this.notify.info("Chapter succesfuly published");
-    this.transitionToRoute("teach.published");
+    this.notify.info('Chapter succesfuly published');
+    this.transitionToRoute('teach.published');
   }
 
   @action
   async delete(chapter_id) {
-    // console.log("Deleting chapter", chapter_id);
-    let chapter = await this.store.findRecord("chapter", chapter_id);
+    // console.log('Deleting chapter', chapter_id);
+    let chapter = await this.store.findRecord('chapter', chapter_id);
     await chapter.deleteRecord();
     await chapter.save();
     this.deleteModal = false;
-    this.notify.info("Chapter succesfuly deleted");
-    this.transitionToRoute("teach");
+    this.notify.info('Chapter succesfuly deleted');
+    this.transitionToRoute('teach');
   }
 
   @action
@@ -50,15 +50,15 @@ export default class TeachPreviewController extends Controller {
 
   @action
   unpublish(chapter_id) {
-    this.store.findRecord("chapter", chapter_id).then(function (chap) {
+    this.store.findRecord('chapter', chapter_id).then(function (chap) {
       // ...after the record has loaded
 
-      chap.set("status", "draft");
-      chap.set("approved", false);
+      chap.set('status', 'draft');
+      chap.set('approved', false);
       chap.save();
     });
 
     this.unpublishModal = false;
-    this.notify.info("Chapter succesfuly unpublished");
+    this.notify.info('Chapter succesfuly unpublished');
   }
 }
