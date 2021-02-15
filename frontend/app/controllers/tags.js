@@ -97,8 +97,6 @@ export default class TagsController extends Controller {
 
     combined = combined.concat(this.topic_cart, this.competency_cart, this.level_cart);
 
-    console.log('combined');
-    console.log(combined);
     await this.store.findRecord('user', this.me.user.id).then(function (user) {
       user.set('tags', combined);
       user.save();

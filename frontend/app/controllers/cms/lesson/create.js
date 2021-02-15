@@ -33,7 +33,6 @@ export default class CmsLessonCreateController extends Controller {
 
   @action
   async fileAdded(chapter, files) {
-    console.log(arguments);
 
     const uploader = Uploader.create({
       file: files[0],

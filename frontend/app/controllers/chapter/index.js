@@ -33,9 +33,7 @@ export default class ChapterIndexController extends Controller {
 
   get embedCode() {
     let mod = this.get('model');
-    console.log('window');
     let baseURL = window.location.host;
-    console.log(window.location.host);
     if (this.callbackUrl) {
       return `<iframe width="600" height="450"  src="http://${baseURL}/embed/${mod.id}?callbackUrl=${this.callbackUrl}" frameBorder="0" scrolling="no"></iframe>`;
 
@@ -50,9 +48,6 @@ export default class ChapterIndexController extends Controller {
     if (!this.enabled) {
       let slug = await this.target.currentRoute.params.chapter_slug;
       let chap = await this.store.findRecord('chapter', slug);
-
-      console.log('slug ' + slug);
-      console.log('ssuser : ' + this.me.user.id);
 
       let rating = await this.store.createRecord('rating', {
         rating: val,
@@ -106,7 +101,6 @@ export default class ChapterIndexController extends Controller {
 
     let slug = this.target.currentRoute.params.chapter_slug;
 
-    // console.log(this.params['chapter_slug'])
     let chap = await this.store.findRecord('chapter', slug);
     model.setProperties({
       chapter: chap,
@@ -150,11 +144,9 @@ export default class ChapterIndexController extends Controller {
   // @action
   // async dataLoad(el) {
   //   let chapter_id = await this.target.currentRoute.params.chapter_slug;
-  //   console.log(chapter_id);
   //   let score;
   //   window.H5P.externalDispatcher.on('xAPI', function (event) {
   //     if (event.getScore() === event.getMaxScore() && event.getMaxScore() > 0) {
-  //       console.log(event.data.statement.result.duration);
   //       score = event.data.statement.result.duration;
   //     }
   //   });
@@ -175,7 +167,6 @@ export default class ChapterIndexController extends Controller {
   //     await achievement.save();
   //     await counter.save();
   //   }
-  //   console.log(el);
   // }
 
   // @action
@@ -202,7 +193,5 @@ export default class ChapterIndexController extends Controller {
   //     };
   //     alert(data.counter, data.trigger);
   //   }, 100);
-  //   console.log(el);
-  //   console.log(counterDelay, counter);
   // }
 }
