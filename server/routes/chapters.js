@@ -53,12 +53,62 @@ const {
  * @apiSampleRequest /api/v1/chapters/
  *
  */
+async function reactionsAggregate(parent, stateUserId) {
 
+  if (parent.length == undefined) {
+    let dislike = 0;
+    let like = 0;
+    let authenticated_user = null;
+    parent.reaction.forEach(reaction => {
+      if (reaction.userId == stateUserId) {
+        authenticated_user = reaction.reaction;
+      }
+      if (reaction.reaction === 'dislike') {
+        dislike += 1;
+      }
+      else if (reaction.reaction == 'like') {
+        like += 1;
+      }
+      let data = {
+        likes: like,
+        authenticated_user: authenticated_user,
+        dislikes: dislike
+      };
+      return reaction.reaction = data;
+    });
+  } else {
+    parent.forEach(mod => {
+      let dislike = 0;
+      let like = 0;
+      let authenticated_user = null;
+      mod.reaction.forEach(reaction => {
+        if (reaction.userId == stateUserId) {
+          authenticated_user = reaction.reaction;
+        }
+        if (reaction.reaction === 'dislike') {
+          dislike += 1;
+        }
+        else if (reaction.reaction == 'like') {
+          like += 1;
+        }
+        let data = {
+          likes: like,
+          authenticated_user: authenticated_user,
+          dislikes: dislike
+        };
+        return mod.reaction = data;
+      });
+    });
+  }
+
+}
 router.get('/', permController.requireAuth, validateGetChapter, async ctx => {
 
   let stateUserRole = ctx.state.user.role == undefined ? ctx.state.user.data.role : ctx.state.user.role;
   let stateUserId = ctx.state.user.id == undefined ? ctx.state.user.data.id : ctx.state.user.id;
   let user = await User.query().findById(stateUserId);
+  console.log({ stateUserRole: stateUserRole });
+
 
   let roleNameList = ['basic', 'superadmin', 'tunapanda', 'admin'];
 
@@ -165,11 +215,7 @@ router.get('/:id', permController.requireAuth, async ctx => {
 
   try {
     counter = await knex.raw(`select count(*) from counter where trigger = 'timerDelay' and chapter_id = '${ctx.params.id}'`);
-    const count = counter.rows === undefined ? '0' : counter.rows[0].count;
-    chapter[0].counter = {
-      counter: count,
-      type: 'counter'
-    };
+    chapter[0].counter = counter.rows === undefined ? '0' : counter.rows[0].count;
 
   } catch (error) {
     log.error(error.message);
@@ -180,7 +226,7 @@ router.get('/:id', permController.requireAuth, async ctx => {
   await reactionsAggregate(chapter, stateUserId);
 
   ctx.status = 200;
-  ctx.body = { chapter };
+  ctx.body = { chapter};
 });
 
 
