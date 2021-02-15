@@ -104,8 +104,8 @@ Router.map(function () {
     this.route('h5p-upload', { path: '/h5p-upload/:id' });
     this.route('thumbnail-upload', { path: '/thumbnail-upload/:id' });
     this.route('index', { path: '/' });
-    this.route("published");
-    this.route("edit", { path: "/edit/:chapter_id" });
+    this.route('published');
+    this.route('edit', { path: '/edit/:chapter_id' });
 
   });
   this.route('swagger');

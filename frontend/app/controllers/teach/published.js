@@ -1,5 +1,5 @@
-import Controller from "@ember/controller";
-import { inject } from "@ember/service";
+import Controller from '@ember/controller';
+import { inject } from '@ember/service';
 
 export default class TeachPublishedController extends Controller {
   @inject me;
