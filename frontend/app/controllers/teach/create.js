@@ -42,7 +42,7 @@ export default class TeachCreateController extends Controller {
       approved: false
     });
     model.save().then((x) => {
-      this.transitionToRoute("teach.h5p-upload", x.id);
+      this.transitionToRoute('teach.h5p-upload', x.id);
 
     });
 
