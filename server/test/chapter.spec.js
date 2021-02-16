@@ -207,13 +207,14 @@ describe('CHAPTER ROUTE', () => {
         done();
       });
   });
-  it('Should throw an ERROR on GET req using invalid query', done => {
+  it('Should return an empty list on GET req using invalid query', done => {
     chai
       .request(server)
       .get(route + '?slug=a-learning')
       .set(tokens.headersSuperAdmin1)
       .end((err, res) => {
         res.should.have.status(200);
+        res.body.should.have.property('chapter');
         done();
       });
   });
