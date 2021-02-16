@@ -3,16 +3,14 @@
   <h3><b>{{t "messages.create_h5p_chapter"}}</b></h3>
 </div>
 
+<Toc @page="2" />
 <div class=" row d-flex justify-content-center">
   <div class="p-4 col-sm-6">
 
     {{#if me.isAuthenticated}}
 
       <div class="text-center">
-        <div class="bg-primary text-center p-3 text-white mb-4 ">
-          UPLOAD H5P
-        </div>
-
+        
         {{#if uploader.uploading}}
           <BsProgress as |pg|>
             <pg.bar @showLabel={{true}} @roundDigits={{0}} @type="default" @striped={{true}} @animate={{true}}

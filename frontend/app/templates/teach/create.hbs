@@ -12,7 +12,7 @@
 
 </div> --}}
 <div class="row d-flex justify-content-center">
-
+  <Toc @page="1"/>
   <div class="p-4 col-lg-8">
     <BsForm @model={{model}} @onSubmit={{action "saveChapter"}} as |form|>
       <form.element @controlType="text" @label="CHAPTER NAME" @property="name" />
