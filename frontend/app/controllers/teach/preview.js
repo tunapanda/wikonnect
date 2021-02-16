@@ -14,13 +14,10 @@ export default class TeachPreviewController extends Controller {
   @tracked deleteModal;
 
   @action
-  publish(chapter_id) {
-    this.store.findRecord('chapter', chapter_id).then(function (chap) {
-      // ...after the record has loaded
-
-      chap.set('status', 'published');
-      chap.save();
-    });
+  async publish(chapter_id) {
+    let chapter  = await this.store.findRecord('chapter', chapter_id);
+    await chapter.set('status', 'published');
+    await chapter.save();
 
     this.publishModal = false;
     this.notify.info('Chapter succesfuly published');
@@ -29,7 +26,6 @@ export default class TeachPreviewController extends Controller {
 
   @action
   async delete(chapter_id) {
-    // console.log('Deleting chapter', chapter_id);
     let chapter = await this.store.findRecord('chapter', chapter_id);
     await chapter.deleteRecord();
     await chapter.save();

@@ -14,7 +14,9 @@ export default class ChapterModel extends Model {
   @attr targetStatus;
   @attr imageUrl;
   @attr createdAt;
-  @attr reaction;
+  // Getting an error when publishing a chapter that reaction
+  // doesn't exist in chapter table. Commenting this out fixes it.
+  // @attr reaction;
   @hasMany('comment') comments;
 
   @belongsTo('user') creator;
