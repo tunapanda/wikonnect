@@ -112,4 +112,5 @@ Router.map(function () {
   this.route('tags');
   this.route('tag', { path: '/tag/:id' });
   this.route('embed', { path: '/embed/:chapter_id' });
+  this.route('callback');
 });

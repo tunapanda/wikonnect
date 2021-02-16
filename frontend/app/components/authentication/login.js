@@ -21,6 +21,9 @@ class LoginComponent extends Component {
   notify;
 
   @inject
+  config;
+  
+  @inject
   torii;
 
   @inject
@@ -29,19 +32,17 @@ class LoginComponent extends Component {
   @tracked loading = false;
 
   @action
-  sessionRequiresAuthentication() {
-    this.notify.info('Signing up...', { closeAfter: 5000 });
-    const me = this.me;
-    this.get('torii')
-      .open('google-oauth2-bearer')
-      .then(function (googleAuth) {
-        const googleToken = googleAuth.authorizationToken.access_token;
-
-        me.registerWithGoogle({ googleToken: googleToken, provider: 'google' })
-          .then((user) => me.authenticate(user.get('username'), googleToken));
-      }, function (error) {
-        console.error('Google auth failed: ', error.message);
-      });
+  authenticateWithGoogleImplicitGrant() {
+    let clientId = this.config.get('google').apiKey;
+    let redirectURI = `${window.location.origin}/callback`;
+    let responseType = 'token';
+    let scope = 'profile email';
+    window.location.replace('https://accounts.google.com/o/oauth2/v2/auth?'
+      + `client_id=${clientId}`
+      + `&redirect_uri=${redirectURI}`
+      + `&response_type=${responseType}`
+      + `&scope=${scope}`
+    );
   }
 
 

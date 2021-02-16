@@ -25,20 +25,17 @@ export default class AuthenticationSignupComponent extends Component {
   torii
 
   @action
-  sessionRequiresAuthentication() {
-    this.notify.info('Signing up...', { closeAfter: 5000 });
-
-    const me = this.me;
-    this.get('torii')
-      .open('google-oauth2-bearer')
-      .then(function (googleAuth) {
-        const googleToken = googleAuth.authorizationToken.access_token;
-
-        me.registerWithGoogle({ googleToken: googleToken, provider: 'google' })
-          .then((user) => me.authenticate(user.get('username'), googleToken));
-      }, function (error) {
-        console.error('Google auth failed: ', error.message);
-      });
+  authenticateWithGoogleImplicitGrant() {
+    let clientId = this.config.get('google').apiKey;
+    let redirectURI = `${window.location.origin}/callback`;
+    let responseType = 'token';
+    let scope = 'profile email';
+    window.location.replace('https://accounts.google.com/o/oauth2/v2/auth?'
+      + `client_id=${clientId}`
+      + `&redirect_uri=${redirectURI}`
+      + `&response_type=${responseType}`
+      + `&scope=${scope}`
+    );
   }
 
   @action
@@ -51,11 +48,12 @@ export default class AuthenticationSignupComponent extends Component {
       if (err && err.errors) {
         Object.keys(err.errors).forEach(key => {
           let constraint = err.errors[key].constraint.split('_');
+          console.log(err.errors);
 
           let error_message;
           switch (constraint[1]) {
           case 'email':
-            error_message = 'This email is already in use';
+            error_message = err.errors[key].detail;
             break;
           case 'username':
             error_message = 'This username already exists';
@@ -69,5 +67,4 @@ export default class AuthenticationSignupComponent extends Component {
       }
     });
   }
-
 }

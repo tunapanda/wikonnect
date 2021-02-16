@@ -42,7 +42,6 @@ export default class MeService extends Service {
     return oauth2.save();
   }
 
-
   authenticate(username, password) {
     let credentials = { username, password };
     return this.session.authenticate('authenticator:jwt', credentials).then(() => {
