@@ -26,6 +26,7 @@ const {
   inviteUserAward,
   getProfileImage
 } = require('../utils/routesUtils/userRouteUtils');
+const Oauth2 = require('../models/oauth2');
 
 const router = new Router({
   prefix: '/users'
@@ -86,7 +87,12 @@ router.post('/', validateAuthRoutes.validateNewUser, createPasswordHash, async c
     ctx.status = 201;
     ctx.body = { user };
   } catch (e) {
-    log.info('Failed for user - %s, with error %s', ctx.request.body.user.email, e.message, e.detail);
+    if(e.constraint === 'users_email_unique'){
+      const strategy = await Oauth2.query().where({ email: newUser.email});
+      console.log(strategy[0].provider);
+      e.detail = 'Account already created using Google';
+    }
+    log.error('Failed for user - %s, with error %s', ctx.request.body.user.email, e.message, e.detail);
     ctx.throw(400, null, { errors: [e] });
   }
 
