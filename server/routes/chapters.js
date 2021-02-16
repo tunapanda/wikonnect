@@ -148,7 +148,7 @@ router.get('/:id', permController.requireAuth, async ctx => {
 
   let roleNameList = ['basic', 'superadmin', 'tunapanda'];
   let anonymous = 'anonymous';
-  let reaction, check_user,counter;
+  let reaction, check_user, counter;
 
   let chapter = Chapter.query()
     .select('chapters.*')
@@ -278,22 +278,11 @@ router.post('/', permController.requireAuth, async ctx => {
  */
 router.put('/:id', permController.requireAuth, async ctx => {
   let chapterData = ctx.request.body.chapter;
-  let chapterRed = await Chapter.query().findById(ctx.params.id);
-
-  if (!chapterRed || chapterData.id) {
-    ctx.throw(400, 'Body contains id, remove it');
-  }
-
-  try {
-    const chapter = await Chapter.query().patchAndFetchById(ctx.params.id, chapterData);
-    ctx.status = 201;
-    ctx.body = { chapter };
-  } catch (e) {
-    if (e.statusCode) {
-      ctx.throw(e.statusCode, null, { errors: [e.message] });
-    } else { ctx.throw(400, null, { errors: [e.message] }); }
-    throw e;
-  }
+  ctx.assert(chapterData, 400, 'No chapter found');
+  const chapter = await Chapter.query().patchAndFetchById(ctx.params.id, chapterData);
+  ctx.assert(chapter, 400, 'No chapter found');
+  ctx.status = 201;
+  ctx.body = { chapter };
 });
 
 
