@@ -8,12 +8,10 @@ export default class LessonVotingComponent extends Component {
   me;
 
   @action
-  upvoteLesson(model) {
-    console.log(model);
+  upvoteLesson() {
   }
 
   @action
-  downvoteLesson(model) {
-    console.log(model);
+  downvoteLesson() {
   }
 }

@@ -2717,7 +2717,7 @@
     },
     "sampleRequest": [
       {
-        "url": "https://app.wikonnect.org/api/v1/oembed/\n\n\nhttp://localhost/api/v1/oembed?url=http://localhost:4200/chapters/chapter1\n{\n   \"version\": \"1.0\",\n   \"type\": \"h5p\",\n   \"provider_name\": \"Wikonnect\",\n   \"provider_url\": \"http://app.wikonnect.org/\",\n   \"width\": 425,\n   \"height\": 344,\n   \"title\": \"Cyber bullying\",\n\n   \"html\":\n   \t\"<iframe width=\\\"560\\\" height=\\\"315\\\" src=\\\"http://localhost:4200/embed/chapter1\\\" ></iframe>\",\n}"
+        "url": "https://app.wikonnect.org/api/v1/oembed/?url=https://app.wikonnect.org/chapter/IPUkk_YAA9w?callbackUrl=https://webhook.com\n\n\nhttp://localhost/api/v1/oembed?url=http://localhost:4200/chapters/chapter1\n{\n   \"version\": \"1.0\",\n   \"type\": \"h5p\",\n   \"provider_name\": \"Wikonnect\",\n   \"provider_url\": \"http://app.wikonnect.org/\",\n   \"width\": 425,\n   \"height\": 344,\n   \"title\": \"Cyber bullying\",\n\n   \"html\":\n      \"<iframe width=\\\"560\\\" height=\\\"315\\\" src=\\\"http://localhost:4200/embed/chapter1\\\" ></iframe>\",\n}"
       }
     ],
     "version": "0.0.0",

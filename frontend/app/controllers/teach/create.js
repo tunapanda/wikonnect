@@ -12,7 +12,6 @@ export default class TeachCreateController extends Controller {
   @action
   addTag(tag) {
     this.tag.pushObject(tag);
-    console.log(this.tag);
   }
   @action
   removeTagAtIndex(index) {
