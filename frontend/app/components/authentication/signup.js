@@ -53,7 +53,7 @@ export default class AuthenticationSignupComponent extends Component {
           let error_message;
           switch (constraint[1]) {
           case 'email':
-              error_message = err.errors[key].detail;
+            error_message = err.errors[key].detail;
             break;
           case 'username':
             error_message = 'This username already exists';
