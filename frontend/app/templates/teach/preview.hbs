@@ -78,11 +78,11 @@
       <div class="form-group ">
         <label for="">Chapter Name</label>
         <input value={{model.name}} type="text" class="form-control bg-light" name="" id="" aria-describedby="helpId"
-          placeholder="">
+          placeholder="" disabled>
       </div>
       <div class="form-group">
         <label for="">Chapter Description</label>
-        <textarea class="form-control bg-light" name="" id="" rows="3">{{model.description}}</textarea>
+        <textarea class="form-control bg-light" name="" id="" rows="3" disabled>{{model.description}}</textarea>
       </div>
 
       {{#link-to "teach.edit" model.id}}
