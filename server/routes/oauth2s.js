@@ -22,7 +22,6 @@ router.post('/', async ctx => {
   const hashPassword = await bcrypt.hash(googleToken, 10);
   const username = shortid.generate().toLowerCase();
   // const username = gData.names[0].displayName.split(' ').join('').replace(/^[\s\uFEFF\xAO] + |[\s\uFEFF\xAO] + $ /g, ' ');
-
   let newUser = {
     email: gData.emailAddresses[0].value,
     hash: hashPassword,
@@ -30,7 +29,6 @@ router.post('/', async ctx => {
     firstName: gData.names[0].familyName,
     lastName: gData.names[0].givenName,
     lastSeen: await updatedAt(),
-    profileUri: gData.photos[0].url,
     metadata: {
       'profileComplete': 'false',
       'oneInviteComplete': 'false',
@@ -39,20 +37,8 @@ router.post('/', async ctx => {
     }
   };
 
-  let updateData = {
-    lastSeen: await updatedAt(),
-    profileUri: gData.photos[0].url,
-    metadata: {
-      'profileComplete': 'false',
-      'oneInviteComplete': 'false',
-      'firstName': gData.names[0].familyName,
-      'lastName': gData.names[0].givenName,
-    }
-  };
-
   try {
     const user = await User.query().insertAndFetch(newUser);
-    await User.query().update(user.id, updateData);
     await Oauth2.query().insertAndFetch({ provider: provider, email: newUser.email, user_id: user.id });
     ctx.body = { oauth2: user };
   } catch (err) {
