@@ -175,7 +175,7 @@ router.get('/:id', permController.requireAuth, async ctx => {
     log.error(error.message);
   }
 
-  ctx.assert(chapter, 404, 'No lesson by that ID');
+  ctx.assert(chapter, 404, 'No chapter by that ID');
   await returnType(chapter);
   await reactionsAggregate(chapter, stateUserId);
 
