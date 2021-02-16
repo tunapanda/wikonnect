@@ -1,11 +1,7 @@
 import Component from '@ember/component';
 import { inject as service } from '@ember/service';
-import { action } from '@ember/object';
+import { computed, action } from '@ember/object';
 import { tracked } from '@glimmer/tracking';
-
-
-
-
 export default class MainHeaderComponent extends Component {
 
   @service
@@ -31,22 +27,25 @@ export default class MainHeaderComponent extends Component {
 
   }
 
-  @action
-  logoutuser() {
-
-    this.me.logout();
-    document.location.reload();
-
-    this.router.transitionTo('home');
-
-
+  @computed('me.user.{firstName,lastName}')
+  get name() {
+    if (this.me.user.metadata.firstName && this.me.user.metadata.lastName) {
+      return `${this.me.user.metadata.firstName} ${this.me.user.metadata.lastName}`;
+    }
+    else if (this.me.user.metadata.firstName && !this.me.user.metadata.lastName) {
+      return this.me.user.metadata.firstName;
+    }
+    else if (!this.me.user.metadata.firstName && this.me.user.metadata.lastName) {
+      return this.me.user.metadata.lastName;
+    }
+    else {
+      return this.me.user.username;
+    }
   }
+
 
   @action
   translate(lang) {
     this.intl.setLocale([lang]);
-
   }
-
-
 }

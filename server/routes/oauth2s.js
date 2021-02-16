@@ -15,23 +15,44 @@ const router = new Router({
 router.post('/', async ctx => {
   const googleToken = ctx.request.body.oauth2.googleToken;
   const provider = ctx.request.body.oauth2.provider;
-  const response = await fetch('https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=' + googleToken);
+  const response = await fetch(`https://people.googleapis.com/v1/people/me?access_token=${googleToken}&personFields=names,emailAddresses`);
   const data = await response.text();
   const gData = JSON.parse(data);
 
   const hashPassword = await bcrypt.hash(googleToken, 10);
   const username = shortid.generate().toLowerCase();
+  // const username = gData.names[0].displayName.split(' ').join('').replace(/^[\s\uFEFF\xAO] + |[\s\uFEFF\xAO] + $ /g, ' ');
 
   let newUser = {
-    email: gData.email,
+    email: gData.emailAddresses[0].value,
     hash: hashPassword,
     username: username,
+    firstName: gData.names[0].familyName,
+    lastName: gData.names[0].givenName,
     lastSeen: await updatedAt(),
-    metadata: { 'profileComplete': 'false', 'oneInviteComplete': 'false' }
+    profileUri: gData.photos[0].url,
+    metadata: {
+      'profileComplete': 'false',
+      'oneInviteComplete': 'false',
+      'firstName': gData.names[0].familyName,
+      'lastName': gData.names[0].givenName
+    }
+  };
+
+  let updateData = {
+    lastSeen: await updatedAt(),
+    profileUri: gData.photos[0].url,
+    metadata: {
+      'profileComplete': 'false',
+      'oneInviteComplete': 'false',
+      'firstName': gData.names[0].familyName,
+      'lastName': gData.names[0].givenName,
+    }
   };
 
   try {
     const user = await User.query().insertAndFetch(newUser);
+    await User.query().update(user.id, updateData);
     await Oauth2.query().insertAndFetch({ provider: provider, email: newUser.email, user_id: user.id });
     ctx.body = { oauth2: user };
   } catch (err) {

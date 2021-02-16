@@ -30,14 +30,14 @@ export default class ProfilePrivateProfileComponent extends Component {
 
   @computed('me.user.{firstName,lastName}')
   get name() {
-    if (this.me.user.firstName && this.me.user.lastName) {
-      return `${this.me.user.firstName} ${this.me.user.lastName}`;
+    if (this.me.user.metadata.firstName && this.me.user.metadata.lastName) {
+      return `${this.me.user.metadata.firstName} ${this.me.user.metadata.lastName}`;
     }
-    else if (this.me.user.firstName && !this.me.user.lastName) {
-      return this.me.user.firstName;
+    else if (this.me.user.metadata.firstName && !this.me.user.metadata.lastName) {
+      return this.me.user.metadata.firstName;
     }
-    else if (!this.me.user.firstName && this.me.user.lastName) {
-      return this.me.user.lastName;
+    else if (!this.me.user.metadata.firstName && this.me.user.metadata.lastName) {
+      return this.me.user.metadata.lastName;
     }
     else {
       return this.me.user.username;
