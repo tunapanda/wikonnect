@@ -14,9 +14,9 @@ const User = require('../models/user');
 const permController = require('../middleware/permController');
 const validateGetChapter = require('../middleware/validateRequests/chapterGetValidation');
 
-const Reaction = require('../models/reaction');
+// const Reaction = require('../models/reaction');
 const knex = require('../utils/knexUtil');
-const { raw } = require('objection');
+// const { raw } = require('objection');
 
 const router = new Router({
   prefix: '/chapters'

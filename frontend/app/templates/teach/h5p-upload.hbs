@@ -10,7 +10,6 @@
     {{#if me.isAuthenticated}}
 
       <div class="text-center">
-        
         {{#if uploader.uploading}}
           <BsProgress as |pg|>
             <pg.bar @showLabel={{true}} @roundDigits={{0}} @type="default" @striped={{true}} @animate={{true}}
