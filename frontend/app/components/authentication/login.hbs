@@ -26,7 +26,7 @@
       <BsButton class="bg-primary form-control" @defaultText="Login" type="submit">
       </BsButton>
 
-      <BsButton type="button" class="bg-primary form-control" {{ on "click" this.sessionRequiresAuthentication}}>
+      <BsButton type="button" class="bg-primary form-control" {{ on "click" this.authenticateWithGoogleImplicitGrant}}>
         Login with Google
       </BsButton>
 
