@@ -3,13 +3,13 @@
   <h3><b>{{t "messages.create_h5p_chapter"}}</b></h3>
 </div>
 
-<Toc @page="2" />
-<div class=" row d-flex justify-content-center">
-  <div class="p-4 col-sm-6">
-
+<div class="row d-flex flex-column justify-content-center align-items-center">
+  <Toc @page="2" />
     {{#if me.isAuthenticated}}
-
-      <div class="text-center">
+      <div class="bg-primary text-center p-3 text-white w-50 rounded-top">
+        Upload H5P
+      </div>
+      <div class="drop-area w-50 d-flex flex-column justify-content-center align-items-center">
         {{#if uploader.uploading}}
           <BsProgress as |pg|>
             <pg.bar @showLabel={{true}} @roundDigits={{0}} @type="default" @striped={{true}} @animate={{true}}
@@ -17,23 +17,28 @@
           </BsProgress>
         {{/if}}
         <br>
-        {{!-- {{#file-drop-zone onDragEnter=(action "onFileHover") onDragLeave=(action "onFileExit") onDrop=(action "addFiles")}} --}}
-
-        <Forms::Upload @multiple="false" @accept=".h5p" @filesSelected={{action "uploadPic"}} @disabled={{uploader.uploading}}>
-          {{#if uploader.uploading}}
-            Uploading... <span class="loading-spinner"></span> {{uploader.progress}}% <br>
-            <small class="text-muted">You will be redirected once upload is complete</small>
-          {{else}}
-            Upload H5P
-          {{/if}}
-        </Forms::Upload>
-
-        {{#unless signup}}
+        <File-drop-zone @onDrop={{action "uploadH5p"}}>
+          <p>Drag and drop here</p>
+          <p>or</p>
+          <Forms::Upload @multiple="false" @accept=".h5p" @filesSelected={{action "uploadH5p"}} @disabled={{uploader.uploading}}>
+            {{#if uploader.uploading}}
+              <BsProgress as |pg|>
+                <pg.bar @showLabel={{true}} @roundDigits={{0}} @type="default" @striped={{true}} @animate={{true}}
+                  @value={{uploader.progress}} />
+              </BsProgress>
+              Uploading... <span class="loading-spinner"></span> {{uploader.progress}}% <br>
+              <small class="text-muted">You will be redirected once upload is complete</small>
+            {{else}}
+              Upload H5P
+            {{/if}}
+          </Forms::Upload>
+        </File-drop-zone>
+        {{!-- {{#unless signup}}
           <br><br>
           {{#link-to "teach.thumbnail-upload" model.id}}
             <button type="button" class="btn btn-success">Add Thumbnail</button>
           {{/link-to}}
-        {{/unless}}
+        {{/unless}} --}}
       </div>
 
 
@@ -43,5 +48,4 @@
 
     {{/if}}
 
-  </div>
 </div>

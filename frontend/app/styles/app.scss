@@ -123,6 +123,23 @@ pre {
   font-weight: bold;
 }
 
+.ember-file-drop-zone {
+  width: 20em;
+  height: 10em;
+  border: 2px dashed #707070;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 10px 0;
+}
+
+.drop-area {
+  background-color: #EBF0F2;
+  height: 300px;
+}
+
 //@import "ember-bootstrap/bootstrap";
 //@import "ember-power-select";
 @import "tags-list";
