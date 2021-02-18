@@ -99,6 +99,13 @@ $palette: (
 
 .tag-list {
   padding: 0;
+  overflow-y: auto;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
 
   .tag-button {
     border-radius: 3px;
