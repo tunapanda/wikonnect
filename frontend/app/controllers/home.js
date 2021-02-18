@@ -30,48 +30,19 @@ export default class HomeController extends Controller {
   clearAllTagFilters() {
     this.selectedFilterTags.map((tag) => {
       tag.selected = false;
-      tag.checkBoxSelected = false;
     });
     this.selectedFilterTags.clear();
   }
 
-  //event from button tags filters
   @action
   toggleTagSelection(tag) {
-
     if (tag.selected) {
       this.selectedFilterTags.removeObject(tag);
-      //unselect the tag
-      tag.selected = false;
-      tag.checkBoxSelected = false;
-
     } else {
       this.selectedFilterTags.addObject(tag);
-      tag.selected = true;
-      tag.checkBoxSelected = true;
-
     }
+    tag.selected = !tag.selected;
 
   }
 
-  //event from tag filters dropdown
-  @action
-  filterWithMultipleTags(selectedTags) {
-    // sync any previous selection first
-    const unselected = this.selectedFilterTags
-      .filter(t => {
-        if (t.checkBoxSelected === false) {
-          t.selected = false; //2 birds 1 stone  😎
-          return true;
-        }
-        return false;
-      });
-
-    this.selectedFilterTags.removeObjects(unselected);
-
-
-    this.selectedFilterTags.addObjects(selectedTags);
-    //in case there is unselected tag with checkbox checked
-    this.selectedFilterTags.map((tag) => tag.selected = true);
-  }
 }
