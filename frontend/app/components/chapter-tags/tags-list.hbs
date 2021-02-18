@@ -47,8 +47,8 @@
 
         <button class="btn tag-button btn-outline-primary"
           {{on "click" (fn @toggleTagSelection tag)}}>
-          {{tag.name}}
-          <MdIcon @icon="close-circle" @size={{20}} @fill="#b0babf"/>
+          <span class="mr-1"> {{tag.name}}</span>
+          <MdIcon @icon="close-circle" @size={{16}} @fill="#b0babf"/>
         </button>
 
       {{/each}}
