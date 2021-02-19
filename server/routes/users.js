@@ -88,8 +88,7 @@ router.post('/', validateAuthRoutes.validateNewUser, createPasswordHash, async c
     ctx.body = { user };
   } catch (e) {
     if(e.constraint === 'users_email_unique'){
-      const strategy = await Oauth2.query().where({ email: newUser.email});
-      console.log(strategy[0].provider);
+      await Oauth2.query().where({ email: newUser.email});
       e.detail = 'Account already created using Google';
     }
     log.error('Failed for user - %s, with error %s', ctx.request.body.user.email, e.message, e.detail);

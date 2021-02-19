@@ -30,7 +30,6 @@ const router = new Router({
  *
  */
 router.get('/', requireAuth, async ctx => {
-  // let stateUserId = ctx.state.user.id == undefined ? ctx.state.user.data.id : ctx.state.user.id;
 
   let comment;
   try {
@@ -71,8 +70,7 @@ router.get('/', requireAuth, async ctx => {
  *      }
  *
  */
-router.get('/:id', requireAuth, grantAccess('readAny', 'path'), async ctx => {
-  // let stateUserId = ctx.state.user.id == undefined ? ctx.state.user.data.id : ctx.state.user.id;
+router.get('/:id', requireAuth, async ctx => {
 
   let comment;
   try {
@@ -83,9 +81,8 @@ router.get('/:id', requireAuth, grantAccess('readAny', 'path'), async ctx => {
     } else { ctx.throw(400, null, { errors: [e] }); }
     throw e;
   }
-  if (!comment) {
-    ctx.assert(comment, 401, 'Something went wrong');
-  }
+
+  ctx.assert(comment, 401, 'Something went wrong');
   ctx.status = 201;
   ctx.body = { comment };
 
