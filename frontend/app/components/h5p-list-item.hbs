@@ -8,8 +8,19 @@
         <img class="card-img-top" alt="" src={{@chapter.imageUrl}}>
       {{/if}}
     {{/link-to}}
-    <div class="card-body">
-      <h5 class="card-title">
+    <div class="card-body chapter-body">
+      <div class="actions-section d-flex justify-content-between">
+        <div class="reactions">
+          <Reaction::ChapterReaction  @chapter={{@chapter}} @canReact={{false}}>
+
+          </Reaction::ChapterReaction>
+        </div>
+        <div class="popup-actions">
+
+        </div>
+      </div>
+
+      <h5 class="card-title title-section">
 
         {{#link-to "chapter" @chapter.id }}
 
