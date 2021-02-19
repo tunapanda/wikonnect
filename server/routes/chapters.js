@@ -71,15 +71,9 @@ router.get('/', permController.requireAuth, validateGetChapter, async ctx => {
 
 
   if (roleNameList.includes(stateUserRole)) {
-    if (user.tags === null || user.tags === undefined) {
-      chapter = await chapter.where(ctx.query)
-        .mergeEager('[comment(selectComment), achievement(selectAchievement), flag(selectFlag)]')
-        .skipUndefined();
-    } else if (user.tags != null || user.tags != undefined || user.tags === 'all') {
-      chapter = await chapter.where(ctx.query).where('tags', '&&', `${user.tags}`)
-        .mergeEager('[comment(selectComment), achievement(selectAchievement), flag(selectFlag)]')
-        .skipUndefined();
-    }
+    chapter = await chapter.where(ctx.query)
+      .mergeEager('[comment(selectComment), achievement(selectAchievement), flag(selectFlag)]')
+      .skipUndefined();
   } else {
     chapter = await chapter
       .where(ctx.query)
