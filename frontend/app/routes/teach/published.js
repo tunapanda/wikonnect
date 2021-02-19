@@ -5,11 +5,19 @@ export default class TeachPublishedRoute extends Route {
   @service session;
 
   @service me;
+
+  beforeModel(transition) {
+    if (!this.me.isAuthenticated) {
+      let loginController = this.controllerFor("login");
+      loginController.set("previousTransition", transition);
+      this.transitionTo("login");
+    }
+  }
   
   async model() {
-    return this.store.query('chapter', {
+    return this.store.query("chapter", {
       creatorId: this.me.user.id,
-      status: 'published',
+      status: "published",
     });
   }
 }
