@@ -50,9 +50,6 @@ export default class ReactionChapterReactionComponent extends Component {
       return;
     }
 
-    console.log(this.hasDisliked,this.hasDisliked);
-
-
     //if they have none, post
     if (!this.hasLiked && !this.hasDisliked) {
       return this.createUserChapterReaction(chapter, liked)
@@ -104,7 +101,6 @@ export default class ReactionChapterReactionComponent extends Component {
   }
 
   updateChapterReactions(chapter, likesIncrement, dislikesIncrement = 0) {
-    console.log(likesIncrement, dislikesIncrement);
     this.likes += likesIncrement;
     this.dislikes += dislikesIncrement;
   }
