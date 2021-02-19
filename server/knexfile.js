@@ -58,14 +58,6 @@ module.exports = {
     seeds: {
       directory: path.join(BASE_PATH, 'seeds')
     },
-    log: {
-      error(message) {
-        log.fatal(message);
-      },
-      debug(message) {
-        log.debug(message);
-      },
-    }
   },
   production: {
     client: 'pg',
@@ -75,6 +67,14 @@ module.exports = {
     },
     seeds: {
       directory: path.join(BASE_PATH, 'seeds')
+    },
+    log: {
+      error(message) {
+        log.fatal(message);
+      },
+      debug(message) {
+        log.debug(message);
+      },
     }
   }
 };

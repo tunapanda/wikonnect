@@ -11,6 +11,19 @@ class Comment extends Model {
     return commentSchema;
   }
 
+  static get relationMappings() {
+    return {
+      replies: {
+        relation: Model.HasManyRelation,
+        modelClass: Comment,
+        join: {
+          from: 'comments.id',
+          to: 'comments.parentId',
+        },
+      },
+    };
+  }
+
   static get modifiers() {
     return {
       selectComment: (builder) => {
