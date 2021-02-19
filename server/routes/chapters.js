@@ -54,42 +54,40 @@ const {
 
 router.get('/', permController.requireAuth, validateGetChapter, async ctx => {
 
-  // let stateUserRole = ctx.state.user.role == undefined ? ctx.state.user.data.role : ctx.state.user.role;
-  // let stateUserId = ctx.state.user.id == undefined ? ctx.state.user.data.id : ctx.state.user.id;
-  // let user = await User.query().findById(stateUserId);
+  let stateUserRole = ctx.state.user.role == undefined ? ctx.state.user.data.role : ctx.state.user.role;
+  let stateUserId = ctx.state.user.id == undefined ? ctx.state.user.data.id : ctx.state.user.id;
+  let user = await User.query().findById(stateUserId);
 
-  // let roleNameList = ['basic', 'superadmin', 'tunapanda', 'admin'];
+  let roleNameList = ['basic', 'superadmin', 'tunapanda', 'admin'];
 
-  // let chapter = Chapter.query()
-  //   .select('chapters.*')
-  //   .avg('rate.rating as rating')
-  //   .from('chapters')
-  //   .leftJoin('ratings as rate', 'chapters.id', 'rate.chapter_id')
-  //   .groupBy('chapters.id', 'rate.chapter_id')
-  //   .orderBy('chapters.id')
-  //   .eager('reaction(selectReaction)');
+  let chapter = Chapter.query()
+    .select('chapters.*')
+    .avg('rate.rating as rating')
+    .from('chapters')
+    .leftJoin('ratings as rate', 'chapters.id', 'rate.chapter_id')
+    .groupBy('chapters.id', 'rate.chapter_id')
+    .orderBy('chapters.id')
+    .eager('reaction(selectReaction)');
 
 
-  // if (roleNameList.includes(stateUserRole)) {
-  //   if (user.tags === null || user.tags === undefined) {
-  //     chapter = await chapter.where(ctx.query)
-  //       .mergeEager('[comment(selectComment), achievement(selectAchievement), flag(selectFlag)]')
-  //       .skipUndefined();
-  //   } else if (user.tags != null || user.tags != undefined || user.tags === 'all') {
-  //     chapter = await chapter.where(ctx.query).where('tags', '&&', `${user.tags}`)
-  //       .mergeEager('[comment(selectComment), achievement(selectAchievement), flag(selectFlag)]')
-  //       .skipUndefined();
-  //   }
-  // } else {
-  //   chapter = await chapter
-  //     .where(ctx.query)
-  //     .mergeEager('[comment(selectComment), flag(selectFlag)]');
-  // }
+  if (roleNameList.includes(stateUserRole)) {
+    if (user.tags === null || user.tags === undefined) {
+      chapter = await chapter.where(ctx.query)
+        .mergeEager('[comment(selectComment), achievement(selectAchievement), flag(selectFlag)]')
+        .skipUndefined();
+    } else if (user.tags != null || user.tags != undefined || user.tags === 'all') {
+      chapter = await chapter.where(ctx.query).where('tags', '&&', `${user.tags}`)
+        .mergeEager('[comment(selectComment), achievement(selectAchievement), flag(selectFlag)]')
+        .skipUndefined();
+    }
+  } else {
+    chapter = await chapter
+      .where(ctx.query)
+      .mergeEager('[comment(selectComment), flag(selectFlag)]');
+  }
 
-  // await reactionsAggregate(chapter, stateUserId);
-  let chapter = await Chapter.query().select(
-    'id:reactions.chapterId as likes'
-  ).joinEager('reactions');
+  await reactionsAggregate(chapter, stateUserId);
+
 
   ctx.status = 200;
   ctx.body = { 'chapter': chapter };
