@@ -1,10 +1,10 @@
-<button class="reaction-btn {{if this.hasLiked "active" ""}}"
+<button class="reaction-btn {{if this.hasLiked "active" ""}} like-button"
   {{on "click" (fn this.userChapterReaction this.chapter true)}}>
   <MdIcon @icon="thumb-up" @size="15"/>
   <span class="count"> {{this.likes}} </span>
 </button>
 
-<button class="reaction-btn {{if this.hasDisliked "active" ""}}"
+<button class="reaction-btn {{if this.hasDisliked "active" ""}} dislike-button"
   {{on "click" (fn this.userChapterReaction this.chapter false)}}>
   <MdIcon @icon="thumb-down" @size="15"/>
   <span class="count"> {{this.dislikes}}</span>
