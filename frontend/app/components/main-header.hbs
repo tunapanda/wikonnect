@@ -86,7 +86,7 @@
                aria-labelledby="navbarDropdownMenuLink-55">
 
             {{#link-to "profile" class="dropdown-item" }}
-              {{me.user.username}}'s {{t "labels.profile"}}
+              {{this.name}}'s {{t "labels.profile"}}
 
             {{/link-to}}
 
@@ -94,7 +94,7 @@
                        class="dropdown-item"  }}
               {{t "buttons.settings"}}
             {{/link-to}}
-            <a class="dropdown-item" href="#" {{action "logoutuser" }}>
+            <a class="dropdown-item" href="#" {{action this.logout }}>
               {{t "buttons.logout"}}
             </a>
           </div>
