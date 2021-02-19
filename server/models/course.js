@@ -12,6 +12,18 @@ class Course extends Model {
     return modelSchema;
   }
 
+  // get $virtualFields() {
+  //   return [{type: 'course'}];
+  // }
+
+  static get virtualAttributes() {
+    return ['type'];
+  }
+
+  type() {
+    return 'course';
+  }
+
   static get relationMappings() {
     return {
       modules: {

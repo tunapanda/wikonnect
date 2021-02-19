@@ -10,62 +10,6 @@ const log = require('../logger');
 const knex = require('../knexUtil');
 const { wikonnectUser } = require('../mojaCampaigns/mojaEndpoint');
 
-
-async function achievementAwardsType(parent) {
-  try {
-    if (parent.length == undefined) {
-      parent.achievementAwards.forEach(award => {
-        return award.type = 'achievementAward';
-      });
-    } else {
-      parent.forEach(mod => {
-        mod.achievementAwards.forEach(award => {
-          return award.type = 'achievementAward';
-        });
-      });
-    }
-  } catch (error) {
-    log.error(error);
-  }
-}
-
-async function userRoles(parent) {
-  try {
-    if (parent.length == undefined) {
-      parent.userRoles.forEach(role => {
-        return role.type = 'userRoles';
-      });
-    } else {
-      parent.forEach(roles => {
-        roles.userRoles.forEach(role => {
-          return role.type = 'userRoles';
-        });
-      });
-    }
-  } catch (error) {
-    log.error(error);
-  }
-}
-
-async function enrolledCoursesType(parent) {
-  try {
-    if (parent.length == undefined) {
-      parent.enrolledCourses.forEach(lesson => {
-        return lesson.type = 'course';
-      });
-    } else {
-      parent.forEach(mod => {
-        mod.enrolledCourses.forEach(lesson => {
-          return lesson.type = 'course';
-        });
-      });
-    }
-  } catch (error) {
-    log.error(error);
-  }
-}
-
-
 function encode(data) {
   let buf = Buffer.from(data);
   let base64 = buf.toString('base64');
@@ -155,9 +99,6 @@ async function inviteUserAward(params) {
 
 
 module.exports = {
-  achievementAwardsType,
-  userRoles,
-  enrolledCoursesType,
   createPasswordHash,
   profileCompleteBoolean,
   inviteUserAward,

@@ -10,6 +10,15 @@ class AchievementAwards extends Model {
     return {};
   }
 
+  static get virtualAttributes() {
+    return ['type'];
+  }
+
+  type() {
+    return 'achievementAward';
+  }
+
+
   static get modifiers() {
     return {
       selectBadgeNameAndId: (builder) => {

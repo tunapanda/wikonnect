@@ -18,9 +18,6 @@ const validateAuthRoutes = require('../middleware/validateRoutePostSchema/valida
 const knex = require('../utils/knexUtil');
 
 const {
-  achievementAwardsType,
-  userRoles,
-  enrolledCoursesType,
   createPasswordHash,
   profileCompleteBoolean,
   inviteUserAward,
@@ -198,10 +195,7 @@ router.get('/:id', permController.requireAuth, async ctx => {
     ctx.status = 200;
     ctx.body = { user: publicData };
   } else {
-    enrolledCoursesType(user);
-    userRoles(user);
     // get all verification data
-    achievementAwardsType(user);
     const userVerification = await knex('user_verification').where({ 'user_id': userId });
     user.userVerification = userVerification;
 
@@ -254,10 +248,6 @@ router.get('/', permController.requireAuth, permController.grantAccess('readAny'
     } else { ctx.throw(406, null, { errors: [e.message] }); }
     throw e;
   }
-
-  enrolledCoursesType(user);
-  achievementAwardsType(user);
-  userRoles(user);
 
   ctx.body = { user };
 });
