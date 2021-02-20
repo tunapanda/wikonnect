@@ -16,7 +16,7 @@ exports.up = function (knex) {
       table
         .foreign('user_id')
         .references('users.id')
-        .onDelete('CASCADE')
+        .onDelete('SET NULL')
         .onUpdate('CASCADE');
     })
     .alterTable('comments', (table) => {
@@ -28,7 +28,7 @@ exports.up = function (knex) {
       table
         .foreign('creator_id')
         .references('users.id')
-        .onDelete('CASCADE')
+        .onDelete('SET NULL')
         .onUpdate('CASCADE');
     })
     .alterTable('oauth2', (table) => {
@@ -52,25 +52,20 @@ exports.up = function (knex) {
       table
         .foreign('user_id')
         .references('users.id')
-        .onDelete('CASCADE')
+        .onDelete('SET NULL')
         .onUpdate('CASCADE');
     })
     .alterTable('chapters', (table) => {
       table
         .foreign('creator_id')
         .references('users.id')
-        .onDelete('CASCADE')
+        .onDelete('SET NULL')
         .onUpdate('CASCADE');
     })
     .alterTable('group_members', (table) => {
       table
         .foreign('user_id')
         .references('users.id')
-        .onDelete('CASCADE')
-        .onUpdate('CASCADE');
-      table
-        .foreign('group_id')
-        .references('groups.id')
         .onDelete('CASCADE')
         .onUpdate('CASCADE');
     })
@@ -80,18 +75,8 @@ exports.up = function (knex) {
         .references('chapters.id')
         .onDelete('CASCADE')
         .onUpdate('CASCADE');
-      table
-        .foreign('user_id')
-        .references('users.id')
-        .onDelete('CASCADE')
-        .onUpdate('CASCADE');
     })
     .alterTable('achievements', (table) => {
-      table
-        .foreign('target')
-        .references('chapters.id')
-        .onDelete('CASCADE')
-        .onUpdate('CASCADE');
       table
         .foreign('user_id')
         .references('users.id')
@@ -103,6 +88,13 @@ exports.up = function (knex) {
         .foreign('user_id')
         .references('users.id')
         .onDelete('CASCADE')
+        .onUpdate('CASCADE');
+    })
+    .alterTable('user_invite', (table) => {
+      table
+        .foreign('user_id')
+        .references('users.id')
+        .onDelete('SET NULL')
         .onUpdate('CASCADE');
     });
 };
@@ -133,7 +125,6 @@ exports.down = function (knex) {
     })
     .alterTable('group_members', (table) => {
       table.dropForeign('user_id');
-      table.dropForeign('group_id');
     })
     .alterTable('reactions', (table) => {
       table.dropForeign('chapter_id');
@@ -145,5 +136,10 @@ exports.down = function (knex) {
     })
     .alterTable('achievement_awards', (table) => {
       table.dropForeign('user_id');
+    })
+    .alterTable('user_invite', (table) => {
+      table.dropForeign('user_id');
     });
+
+
 };

@@ -20,6 +20,10 @@ class User extends Model {
     return ['hash', 'lastIp'];
   }
 
+  $beforeInsert() {
+    this.lastSeen = knex.fn.now();
+  }
+
   async $indexForSearch() {
     return null;
   }

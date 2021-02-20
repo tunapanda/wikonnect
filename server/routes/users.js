@@ -4,26 +4,25 @@ const path = require('path');
 const busboy = require('async-busboy');
 const shortid = require('shortid');
 const sharp = require('sharp');
-const s3 = require('../utils/s3Util');
-const { updatedAt } = require('../utils/timestamp');
 
 const User = require('../models/user');
-const AchievementAward = require('../models/achievement_awards');
+const Oauth2 = require('../models/oauth2');
 
-const log = require('../utils/logger');
 const jwt = require('../middleware/jwt');
 const permController = require('../middleware/permController');
 const validateAuthRoutes = require('../middleware/validateRoutePostSchema/validateAuthRoutes');
 
 const knex = require('../utils/knexUtil');
-
+const log = require('../utils/logger');
+const s3 = require('../utils/s3Util');
 const {
   createPasswordHash,
-  profileCompleteBoolean,
-  inviteUserAward,
   getProfileImage
 } = require('../utils/routesUtils/userRouteUtils');
-const Oauth2 = require('../models/oauth2');
+const {
+  profileCompleteBoolean,
+  inviteUserAward,
+} = require('../utils/awards/awards');
 
 const router = new Router({
   prefix: '/users'
@@ -49,10 +48,10 @@ const router = new Router({
 *        "user": {
 *          "id": "string",
 *          "username": "string",
-*          "inviteCode": "invited_by",
+*          "inviteCode": "inviteCode",
 *          "createdAt": "string",
 *          "updatedAt": "string",
-*          "metadata": json_array
+*          "metadata": "json_array"
 *        }
 *     }
 *
@@ -62,30 +61,30 @@ const router = new Router({
 router.post('/', validateAuthRoutes.validateNewUser, createPasswordHash, async ctx => {
   ctx.request.body.user.username = ctx.request.body.user.username.toLowerCase();
   ctx.request.body.user.email = ctx.request.body.user.email.toLowerCase();
-  ctx.request.body.user.lastSeen = await updatedAt();
   ctx.request.body.user.metadata = { 'profileComplete': 'false', 'oneInviteComplete': 'false' };
 
-  const inviteInsert = await knex('user_invite').insert([{ 'invited_by': ctx.request.body.user.inviteCode }], ['id', 'invited_by']);
+  const invitedBy = ctx.request.body.user.inviteCode;
 
   let newUser = ctx.request.body.user;
   newUser.inviteCode = shortid.generate();
-  newUser.lastSeen = await updatedAt();
 
-  const firstUserCheck = await User.query();
-  let role = !firstUserCheck.length ? 'groupSuperAdmin' : 'groupBasic';
+  const userCheck = await User.query();
+  let role = !userCheck.length ? 'groupSuperAdmin' : 'groupBasic';
 
   try {
     const user = await User.query().insertAndFetch(newUser);
     await knex('group_members').insert({ 'user_id': user.id, 'group_id': role });
-    await knex('user_invite').where({ id: inviteInsert[0].id }).update({ user_id: user.id }, ['id', 'invited_by', 'user_id']);
+    await knex('user_invite').insert([{ 'invited_by': invitedBy, user_id: user.id }], ['id', 'invited_by', 'user_id']);
+    inviteUserAward(invitedBy);
+
 
     log.info('Created a user with id %s with username %s with the invite code %s', user.id, user.username, user.inviteCode);
 
     ctx.status = 201;
     ctx.body = { user };
   } catch (e) {
-    if(e.constraint === 'users_email_unique'){
-      await Oauth2.query().where({ email: newUser.email});
+    if (e.constraint === 'users_email_unique') {
+      await Oauth2.query().where({ email: newUser.email });
       e.detail = 'Account already created using Google';
     }
     log.error('Failed for user - %s, with error %s', ctx.request.body.user.email, e.message, e.detail);
@@ -174,10 +173,7 @@ router.get('/:id', permController.requireAuth, async ctx => {
   const user = await User.query().findById(userId).withGraphFetched('[achievementAwards(selectBadgeNameAndId), userRoles(selectName), enrolledCourses(selectNameAndId)]');
   user.profileUri = await getProfileImage(user.profileUri);
 
-
-  if (!user) {
-    ctx.throw(404, 'No User With that Id');
-  }
+  ctx.assert(user, 404, 'No User With that Id');
 
   if (user.id != stateUserId || stateUserId === 'anonymous') {
     // return specific data for all profiles incase it's private
@@ -199,14 +195,7 @@ router.get('/:id', permController.requireAuth, async ctx => {
     const userVerification = await knex('user_verification').where({ 'user_id': userId });
     user.userVerification = userVerification;
 
-    if (profileCompleteBoolean(user) && user.metadata.profileComplete === 'false') {
-      await User.query().patchAndFetchById(ctx.params.id, { 'metadata:profileComplete': 'true' });
-      await AchievementAward.query().insert({
-        'name': 'profile completed',
-        'achievementId': ctx.params.id,
-        'userId': ctx.params.id
-      });
-    }
+    profileCompleteBoolean(user, ctx.params.id);
 
     log.info('Got a request from %s for %s', ctx.request.ip, ctx.path);
 
@@ -273,8 +262,6 @@ router.get('/', permController.requireAuth, permController.grantAccess('readAny'
 
 router.put('/:id', jwt.authenticate, permController.requireAuth, async ctx => {
 
-  ctx.request.body.user.updatedAt = await updatedAt();
-
   let user;
   try {
     user = await User.query().patchAndFetchById(ctx.params.id, ctx.request.body.user);
@@ -286,14 +273,7 @@ router.put('/:id', jwt.authenticate, permController.requireAuth, async ctx => {
     throw e;
   }
 
-  if (profileCompleteBoolean(user) && user.metadata.profileComplete === 'false') {
-    await User.query().patchAndFetchById(ctx.params.id, { 'metadata:profileComplete': 'true' });
-    await AchievementAward.query().insert({
-      'name': 'profile completed',
-      'achievementId': ctx.params.id,
-      'userId': ctx.params.id
-    });
-  }
+  profileCompleteBoolean(user, ctx.params.id);
 
   ctx.status = 200;
   ctx.body = { user };
