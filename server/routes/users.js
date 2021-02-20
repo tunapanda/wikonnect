@@ -67,6 +67,7 @@ router.post('/', validateAuthRoutes.validateNewUser, createPasswordHash, async c
 
   let newUser = ctx.request.body.user;
   newUser.inviteCode = shortid.generate();
+  newUser.lastIp = ctx.request.ip;
 
   const userCheck = await User.query();
   let role = !userCheck.length ? 'groupSuperAdmin' : 'groupBasic';
@@ -76,7 +77,6 @@ router.post('/', validateAuthRoutes.validateNewUser, createPasswordHash, async c
     await knex('group_members').insert({ 'user_id': user.id, 'group_id': role });
     await knex('user_invite').insert([{ 'invited_by': invitedBy, user_id: user.id }], ['id', 'invited_by', 'user_id']);
     inviteUserAward(invitedBy);
-
 
     log.info('Created a user with id %s with username %s with the invite code %s', user.id, user.username, user.inviteCode);
 

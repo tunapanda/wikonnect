@@ -1,10 +1,7 @@
 
 exports.seed = function (knex) {
   // Deletes ALL existing entries
-  return knex('user_verification').del()
-
-    .then(() => knex('oauth2').del())
-    .then(() => knex('users').del())
+  return knex('users').del()
     .then(function () {
       // Inserts seed entries
       return knex('users').insert([
@@ -50,23 +47,6 @@ exports.seed = function (knex) {
           tags: ['highschool', 'university'],
           metadata: { profileComplete: 'true', oneInviteComplete: 'true', oneChapterCompletion: 'true' }
         }
-      ]).then(() => knex('oauth2').insert([
-        {
-          provider: 'google',
-          user_id: 'user1',
-          email: 'user1@wikonnect.org',
-        },
-        {
-          provider: 'google',
-          user_id: 'user2',
-          email: 'user2@wikonnect.org',
-        },
-        {
-          provider: 'google',
-          user_id: 'user3',
-          email: 'user3@wikonnect.org',
-        }
-
-      ]));
+      ]);
     });
 };

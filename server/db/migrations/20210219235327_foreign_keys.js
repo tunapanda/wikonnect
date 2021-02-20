@@ -128,10 +128,8 @@ exports.down = function (knex) {
     })
     .alterTable('reactions', (table) => {
       table.dropForeign('chapter_id');
-      table.dropForeign('user_id');
     })
     .alterTable('achievements', (table) => {
-      table.dropForeign('target');
       table.dropForeign('user_id');
     })
     .alterTable('achievement_awards', (table) => {

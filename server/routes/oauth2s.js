@@ -6,8 +6,6 @@ const Router = require('koa-router');
 const User = require('../models/user');
 const Oauth2 = require('../models/oauth2');
 
-const { updatedAt } = require('../utils/timestamp');
-
 const router = new Router({
   prefix: '/oauth2s'
 });
@@ -28,7 +26,6 @@ router.post('/', async ctx => {
     username: username,
     firstName: gData.names[0].familyName,
     lastName: gData.names[0].givenName,
-    lastSeen: await updatedAt(),
     metadata: {
       'profileComplete': 'false',
       'oneInviteComplete': 'false',

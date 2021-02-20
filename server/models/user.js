@@ -21,7 +21,11 @@ class User extends Model {
   }
 
   $beforeInsert() {
-    this.lastSeen = knex.fn.now();
+    this.lastSeen = new Date().toISOString();
+  }
+
+  $afterFind() {
+    this.lastSeen = new Date().toISOString();
   }
 
   async $indexForSearch() {
