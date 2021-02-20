@@ -74,6 +74,9 @@ class User extends Model {
     return {
       selectNameAndId: (builder) => {
         builder.select('users.id', 'name');
+      },
+      selectNameAndProfile: (builder) => {
+        builder.select('username', 'profileUri');
       }
     };
   }

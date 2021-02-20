@@ -171,7 +171,7 @@ router.get('/:id', permController.requireAuth, async ctx => {
   let stateUserId = ctx.state.user.id == undefined ? ctx.state.user.data.id : ctx.state.user.id;
 
   let userId = ctx.params.id != 'current' ? ctx.params.id : stateUserId;
-  const user = await User.query().findById(userId).mergeJoinEager('[achievementAwards(selectBadgeNameAndId), userRoles(selectName), enrolledCourses(selectNameAndId)]');
+  const user = await User.query().findById(userId).withGraphFetched('[achievementAwards(selectBadgeNameAndId), userRoles(selectName), enrolledCourses(selectNameAndId)]');
   user.profileUri = await getProfileImage(user.profileUri);
 
 
@@ -240,7 +240,7 @@ router.get('/', permController.requireAuth, permController.grantAccess('readAny'
     ctx.assert(user, 404, 'No User With that username');
   }
   try {
-    user = await user.mergeJoinEager('[achievementAwards(selectBadgeNameAndId), userRoles(selectName), enrolledCourses(selectNameAndId)]');
+    user = await user.withGraphFetched('[achievementAwards(selectBadgeNameAndId), userRoles(selectName), enrolledCourses(selectNameAndId)]');
   } catch (e) {
     if (e.statusCode) {
       ctx.throw(e.statusCode, { message: 'The query key does not exist' });

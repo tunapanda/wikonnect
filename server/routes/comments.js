@@ -108,7 +108,7 @@ router.get('/:id', requireAuth, async ctx => {
  */
 
 
-router.post('/', requireAuth, grantAccess('createAny', 'path'), async ctx => {
+router.post('/', requireAuth, async ctx => {
   let stateUserId = ctx.state.user.id == undefined ? ctx.state.user.data.id : ctx.state.user.id;
   let newChapterComment = ctx.request.body.comment;
   newChapterComment.creatorId = stateUserId;
@@ -124,13 +124,11 @@ router.post('/', requireAuth, grantAccess('createAny', 'path'), async ctx => {
     comment = await Comment.query().insertAndFetch(newChapterComment);
   } catch (e) {
     if (e.statusCode) {
-      ctx.throw(e.statusCode, null, { errors: [e] });
-    } else { ctx.throw(400, null, { errors: [e] }); }
+      ctx.throw(e.statusCode, null, { errors: [e.data] });
+    } else { ctx.throw(400, null, { errors: [e.nativeError.detail] }); }
     throw e;
   }
-  if (!comment) {
-    ctx.assert(comment, 401, 'Something went wrong');
-  }
+  ctx.assert(comment, 401, 'Something went wrong');
   ctx.status = 201;
   ctx.body = { comment };
 

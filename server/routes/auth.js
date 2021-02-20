@@ -39,7 +39,7 @@ const router = new Router({
 router.post('/', validateAuthRoutes.validateUserLogin, async ctx => {
   const username = ctx.request.body.username.toLowerCase();
 
-  let user = await User.query().where('username', username).eager('oauth2(selectOauth2)');
+  let user = await User.query().where('username', username).withGraphFetched('oauth2(selectOauth2)');
   if (!user.length) {
     ctx.throw(404, null, {
       errors: [{
@@ -52,7 +52,7 @@ router.post('/', validateAuthRoutes.validateUserLogin, async ctx => {
   let { hash: hashPassword, ...userInfoWithoutPassword } = user[0];
   user = user[0];
 
-  const userData = await User.query().findById(user.id).eager('userRoles(selectName)');
+  const userData = await User.query().findById(user.id).withGraphFetched('userRoles(selectName)');
 
   let role = userData['userRoles'][0] !== undefined ? userData['userRoles'][0].name : 'basic';
   userInfoWithoutPassword['role'] = role;

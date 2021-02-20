@@ -1,6 +1,5 @@
 const Model = require('./_model');
 const knex = require('../db/db');
-const commentSchema = require('../db/json_schema/commentSchema');
 
 class Comment extends Model {
   static get tableName() {
@@ -16,7 +15,16 @@ class Comment extends Model {
   }
 
   static get jsonSchema() {
-    return commentSchema;
+    return {
+      'type': 'object',
+      'properties': {
+        'id': { 'type': 'string' },
+        'chapterId': { 'type': 'string' },
+        'creatorId': { 'type': 'string' },
+        'comment': { 'type': 'string' }
+      },
+      'required': ['chapterId', 'creatorId', 'comment'],
+    };
   }
 
   static get modifiers() {

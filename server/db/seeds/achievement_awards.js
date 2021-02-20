@@ -36,7 +36,7 @@ exports.seed = function (knex) {
           updated_at: '2017-12-20 19:17:10'
         },
         {
-          user_id: 'usernew',
+          user_id: 'user3',
           achievement_id: 'achievements5',
           name: 'master yoda',
           image_url: 'badges/badge1.png',
@@ -44,7 +44,7 @@ exports.seed = function (knex) {
           updated_at: '2017-12-20 19:17:10'
         },
         {
-          user_id: 'usernew',
+          user_id: 'user3',
           achievement_id: 'achievements6',
           name: 'coding master',
           image_url: '/badges/badge1.png',

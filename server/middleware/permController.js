@@ -37,7 +37,7 @@ exports.requireAuth = async function (ctx, next) {
     }
   } catch (error) {
     log.error(`The following error ${error} with message ${error.message}`);
-    if (process.env.NODE_ENV === 'development') {
+    if (process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'test' ) {
       ctx.throw(400, error);
     }
     ctx.throw(400, null, { errors: ['Bad Request'] });
