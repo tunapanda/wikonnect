@@ -13,15 +13,9 @@ export default class HomeRoute extends Route {
   @service
   headData;
 
-  async afterModel(model) {
+  async afterModel() {
     set(this, 'headData.title', 'Wikonnect - Chapters');
     set(this, 'headData.theme', '#FF5722');
-
-    /*Get user chapter reactions if they are already authenticated*/
-    return {
-      reactions: this.me.isAuthenticated ?
-        this.store.query('reaction', {'chapterId': model.id, 'user_id': this.me.user.id}) : []
-    };
 
   }
 
