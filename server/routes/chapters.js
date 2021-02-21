@@ -121,12 +121,6 @@ router.get('/', permController.requireAuth, validateGetChapter, async ctx => {
  */
 router.get('/:id', permController.requireAuth, async ctx => {
 
-  // const tweets = await Tweet.query().select(
-  //   'Tweet.*',
-  //   Tweet.relatedQuery('likes')
-  //     .count()
-  //     .as('numberOfLikes')
-  // );
   const chapter = await Chapter.query()
     .select([
       'chapters.*',
