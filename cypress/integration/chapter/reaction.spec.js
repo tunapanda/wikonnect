@@ -66,9 +66,7 @@ describe('Chapter Reaction After Auth', () => {
 
     it('Should see chapter reactions', () => {
         const {id} = newChapter();
-        cy.visit(`/home/`)
-            .get(`a[href="/chapter/${id}"]:first`)
-            .click();
+        cy.visit(`/chapter/${id}`);
 
         cy.get('.reactions .reaction-btn.like-button')
             .should('be.visible')
@@ -81,10 +79,7 @@ describe('Chapter Reaction After Auth', () => {
 
     it('Should like a chapter', () => {
         const {id, reaction} = newChapter();
-        cy.visit(`/home/`)
-            .get(`a[href="/chapter/${id}"]:first`)
-            .click();
-
+        cy.visit(`/chapter/${id}`);
 
         cy.get('.reactions .reaction-btn.like-button')
             .click()
@@ -94,9 +89,7 @@ describe('Chapter Reaction After Auth', () => {
 
     it('Should dislike a chapter', () => {
         const {id, reaction} = newChapter();
-        cy.visit(`/home/`)
-            .get(`a[href="/chapter/${id}"]:first`)
-            .click();
+        cy.visit(`/chapter/${id}`);
 
         cy.get('.reactions .reaction-btn.dislike-button')
             .click()
@@ -110,9 +103,7 @@ describe('Chapter Reaction After Auth', () => {
         cy.visit(`/chapter/${id}`);
 
         cy.get('.reactions .reaction-btn.like-button')
-            .click()
-            .visit('/home')
-            .visit(`/chapter/${id}`);
+            .click();
 
         cy.get('.reactions .like-button .count')
             .contains(reaction.likes + 1);
@@ -127,9 +118,7 @@ describe('Chapter Reaction After Auth', () => {
         cy.visit(`/chapter/${id}`);
 
         cy.get('.reactions .reaction-btn.dislike-button')
-            .click()
-            .visit('/home')
-            .visit(`/chapter/${id}`);
+            .click();
 
 
         cy.get('.reactions .like-button .count')
@@ -139,5 +128,32 @@ describe('Chapter Reaction After Auth', () => {
             .contains(reaction.dislikes + 1);
     });
 
+    it('Should retract previous liked chapter reaction', () => {
+        const { id, reaction } = likedChapter();
+
+        cy.visit(`/chapter/${id}`);
+
+        cy.get('.reactions .reaction-btn.like-button')
+            .click()
+            .find(' .count')
+            .contains(reaction.likes - 1);
+
+        cy.get('.reactions .dislike-button .count')
+            .contains(reaction.dislikes);
+    });
+
+    it('Should retract previous disliked chapter reaction', () => {
+        const { id, reaction } = dislikedChapter();
+
+        cy.visit(`/chapter/${id}`);
+
+        cy.get('.reactions .reaction-btn.dislike-button')
+            .click()
+            .find(' .count')
+            .contains(reaction.dislikes - 1);
+
+        cy.get('.reactions .like-button .count')
+            .contains(reaction.likes);
+    });
 })
 
