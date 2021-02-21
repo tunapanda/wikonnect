@@ -17,32 +17,15 @@ export default class ReactionChapterReactionComponent extends Component {
     return this.args.chapter;
   }
 
-  get currentUserReaction() {
-    return this.store.peekAll('reaction')
-      .find((r) => (r.user.get('id') === this.me.user.id && r.chapter.get('id') === this.args.chapter.id));
-  }
 
-  get hasLiked() {
-    if (!this.me.isAuthenticated) {
-      return false;
-    }
-    const obj = this.currentUserReaction;
-    if (!obj) {
-      return false;
-    }
-    return obj.reaction === 'like';
-  }
+  @tracked
+  hasLiked = (!this.me.isAuthenticated || !this.chapter?.reaction?.authenticated_user) ? false :
+    this.chapter.reaction.authenticated_user === 'like';
 
-  get hasDisliked() {
-    if (!this.me.isAuthenticated) {
-      return false;
-    }
-    const obj = this.currentUserReaction;
-    if (!obj) {
-      return false;
-    }
-    return obj.reaction === 'dislike';
-  }
+  @tracked
+  hasDisliked = (!this.me.isAuthenticated || !this.chapter?.reaction?.authenticated_user) ? false :
+    this.chapter.reaction.authenticated_user === 'dislike';
+
 
   @action
   async userChapterReaction(chapter, liked = true) {
@@ -54,28 +37,33 @@ export default class ReactionChapterReactionComponent extends Component {
     if (!this.hasLiked && !this.hasDisliked) {
       return this.createUserChapterReaction(chapter, liked)
         .then(() => {
-
-          this.updateChapterReactions(chapter, liked ? 1 : 0, liked ? 0 : 1);
-
+          this.updateUserReaction(liked);
+          this.updateReactionsCount(chapter, liked ? 1 : 0, liked ? 0 : 1);
         }).catch(() => {
         });
     }
 
+    let previousReaction = (await this.store
+      .query('reaction', {'chapterId': this.chapter.id, 'user_id': this.me.user.id}))
+      .find((reactions) => reactions.chapter.get('id') === this.chapter.id);
+
     //if is the same, they have retracted it, delete/undo the reaction
     if ((this.hasLiked && liked === true) ||
       (this.hasDisliked && liked === false)) {
-      return this.deleteUserChapterReaction(this.currentUserReaction)
+      return this.deleteUserChapterReaction(previousReaction)
         .then(() => {
-          this.updateChapterReactions(chapter, liked ? -1 : 0, liked ? 0 : -1);
+          this.updateUserReaction();
+          this.updateReactionsCount(chapter, liked ? -1 : 0, liked ? 0 : -1);
         }).catch(() => {
 
         });
     }
 
     // if they switch, update the reaction
-    return this.updateUserChapterReaction(this.currentUserReaction, liked)
+    return this.updateUserChapterReaction(previousReaction, liked)
       .then(() => {
-        this.updateChapterReactions(chapter, liked ? 1 : -1, liked ? -1 : 1);
+        this.updateUserReaction(liked);
+        this.updateReactionsCount(chapter, liked ? 1 : -1, liked ? -1 : 1);
       }).catch(() => {
       });
 
@@ -100,9 +88,14 @@ export default class ReactionChapterReactionComponent extends Component {
     return await reaction.save();
   }
 
-  updateChapterReactions(chapter, likesIncrement, dislikesIncrement = 0) {
+  updateReactionsCount(chapter, likesIncrement, dislikesIncrement = 0) {
     this.likes += likesIncrement;
     this.dislikes += dislikesIncrement;
+  }
+
+  updateUserReaction(liked = null) {
+    this.hasDisliked = liked == null ? false : liked === false;
+    this.hasLiked = liked == null ? false : liked === true;
   }
 
 }
