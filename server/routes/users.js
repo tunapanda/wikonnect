@@ -4,6 +4,8 @@ const path = require('path');
 const busboy = require('async-busboy');
 const shortid = require('shortid');
 const sharp = require('sharp');
+const _ = require('lodash');
+
 
 const User = require('../models/user');
 const Oauth2 = require('../models/oauth2');
@@ -165,43 +167,40 @@ router.post('/', validateAuthRoutes.validateNewUser, createPasswordHash, async c
  *    }
  */
 
+
+function Private() {
+  // this.a = 1;
+  this.username = 'private';
+  this.profileUri = 'images/profile-placeholder.gif';
+  return this;
+}
+
 router.get('/:id', permController.requireAuth, async ctx => {
 
   let stateUserId = ctx.state.user.id == undefined ? ctx.state.user.data.id : ctx.state.user.id;
 
   let userId = ctx.params.id != 'current' ? ctx.params.id : stateUserId;
-  const user = await User.query().findById(userId).withGraphFetched('[achievementAwards(selectBadgeNameAndId), userRoles(selectName), enrolledCourses(selectNameAndId)]');
+  let user = await User.query().findById(userId).withGraphFetched('[achievementAwards(selectBadgeNameAndId), userRoles(selectName), enrolledCourses(selectNameAndId)]');
   user.profileUri = await getProfileImage(user.profileUri);
 
   ctx.assert(user, 404, 'No User With that Id');
 
+  let publicData = ['username', 'profileUri', 'id', 'private'];
+
   if (user.id != stateUserId || stateUserId === 'anonymous') {
-    // return specific data for all profiles incase it's private
-    let publicData = {
-      'username': 'private',
-      'profileUri': 'images/profile-placeholder.gif',
-      'id': user.id,
-      'private': user.private
-    };
-    // return data if profile is not private
-    if (user.private === 'false') {
-      publicData.username = user.username;
-      publicData.profileUri = user.profileUri;
-    }
-    ctx.status = 200;
-    ctx.body = { user: publicData };
+    // If profile is private, return specific data
+    if(!user.private) user = _.assign(user, new Private);
+    user = _.pick(user, publicData);
   } else {
     // get all verification data
     const userVerification = await knex('user_verification').where({ 'user_id': userId });
     user.userVerification = userVerification;
-
     profileCompleteBoolean(user, ctx.params.id);
-
     log.info('Got a request from %s for %s', ctx.request.ip, ctx.path);
-
-    ctx.status = 200;
-    ctx.body = { user };
   }
+
+  ctx.status = 200;
+  ctx.body = { user: user };
 });
 /**
  * @api {get} /users GET all users.
