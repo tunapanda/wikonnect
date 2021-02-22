@@ -9,9 +9,9 @@ export default class ReactionChapterReactionComponent extends Component {
   @service store;
 
   @tracked
-  likes = this.args.chapter.reaction.likes || 0;
+  likes = Array.isArray(this.args.chapter.reaction) ? 0 : this.args.chapter.reaction.likes || 0;
   @tracked
-  dislikes = this.args.chapter.reaction.dislikes || 0;
+  dislikes = Array.isArray(this.args.chapter.reaction) ? 0 : this.args.chapter.reaction?.dislikes || 0;
 
   get chapter() {
     return this.args.chapter;
@@ -19,11 +19,13 @@ export default class ReactionChapterReactionComponent extends Component {
 
 
   @tracked
-  hasLiked = (!this.me.isAuthenticated || !this.chapter?.reaction?.authenticated_user) ? false :
+  hasLiked = (!this.me.isAuthenticated ||Array.isArray(this.args.chapter.reaction)||
+    !this.chapter?.reaction?.authenticated_user) ? false :
     this.chapter.reaction.authenticated_user === 'like';
 
   @tracked
-  hasDisliked = (!this.me.isAuthenticated || !this.chapter?.reaction?.authenticated_user) ? false :
+  hasDisliked = (!this.me.isAuthenticated ||Array.isArray(this.args.chapter.reaction)||
+    !this.chapter?.reaction?.authenticated_user) ? false :
     this.chapter.reaction.authenticated_user === 'dislike';
 
 
