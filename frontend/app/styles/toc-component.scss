@@ -1,7 +1,8 @@
 ul#toc {
     list-style-type: none;
-    padding: 0;
-        
+    display: flex;
+    justify-content: center;
+    
     li {
         display: inline;
         float: left;

@@ -53,7 +53,55 @@ const {
  * @apiSampleRequest /api/v1/chapters/
  *
  */
+async function reactionsAggregate(parent, stateUserId) {
 
+  if (parent.length == undefined) {
+    let dislike = 0;
+    let like = 0;
+    let authenticated_user = null;
+    parent.reaction.forEach(reaction => {
+      if (reaction.userId == stateUserId) {
+        authenticated_user = reaction.reaction;
+      }
+      if (reaction.reaction === 'dislike') {
+        dislike += 1;
+      }
+      else if (reaction.reaction == 'like') {
+        like += 1;
+      }
+      let data = {
+        likes: like,
+        authenticated_user: authenticated_user,
+        dislikes: dislike
+      };
+      return reaction.reaction = data;
+    });
+  } else {
+    parent.forEach(mod => {
+      let dislike = 0;
+      let like = 0;
+      let authenticated_user = null;
+      mod.reaction.forEach(reaction => {
+        if (reaction.userId == stateUserId) {
+          authenticated_user = reaction.reaction;
+        }
+        if (reaction.reaction === 'dislike') {
+          dislike += 1;
+        }
+        else if (reaction.reaction == 'like') {
+          like += 1;
+        }
+        let data = {
+          likes: like,
+          authenticated_user: authenticated_user,
+          dislikes: dislike
+        };
+        return mod.reaction = data;
+      });
+    });
+  }
+
+}
 router.get('/', permController.requireAuth, validateGetChapter, async ctx => {
 
   let stateUserRole = ctx.state.user.role == undefined ? ctx.state.user.data.role : ctx.state.user.role;
