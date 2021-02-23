@@ -96,21 +96,6 @@ exports.seed = function (knex) {
           'updated_at': '2017-12-20 19:17:10',
           approved: true,
           tags: ['primary', 'university'],
-        },
-        {
-          'id': 'chapter6',
-          'name': 'Montoya',
-          'slug': 'Myra',
-          'description': 'qui',
-          'status': 'published',
-          'lesson_id': 'basics2',
-          creator_id: 'user1',
-          'content_type': 'h5p',
-          'content_uri': '/uploads/h5p/chapter5',
-          'created_at': '2017-12-20 19:17:10',
-          'updated_at': '2017-12-20 19:17:10',
-          approved: true,
-          tags: ['primary', 'university'],
         }
       ]);
     });
