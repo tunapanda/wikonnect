@@ -9,9 +9,9 @@ export default class TeachIndexRoute extends Route {
 
   beforeModel(transition) {
     if (!this.me.isAuthenticated) {
-      let loginController = this.controllerFor("login");
-      loginController.set("previousTransition", transition);
-      this.transitionTo("login");
+      let loginController = this.controllerFor('login');
+      loginController.set('previousTransition', transition);
+      this.transitionTo('login');
     }
   }
 

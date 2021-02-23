@@ -6,10 +6,10 @@
 <div class="row d-flex flex-column justify-content-center align-items-center">
   <Toc @page="3" />
   {{#if me.isAuthenticated}}
-    <div class="bg-primary text-center p-3 text-white w-50 rounded-top">
+    <div class="bg-primary col-md-6 col-sm-12 text-center p-3 text-white rounded-top">
       Upload Thumbnail
     </div>
-    <div class="drop-area w-50 d-flex flex-column justify-content-center align-items-center">
+    <div class="drop-area col-md-6 col-sm-12 mb-5 d-flex flex-column justify-content-center align-items-center">
       <File-drop-zone @onDrop={{action "uploadPic" }}>
         <p>Drag and drop here</p>
         <p>or</p>
@@ -29,22 +29,9 @@
       <p><em>*Max image file size allowed is 8mb</em></p>
       <p><em>*Accepted file types: jpg, png, svg</em></p>
     </div>
-
-      {{#if signup}}
-
-        <br><br>
-        {{#link-to "profile"}}
-          {{#if complete}}
-            <button type="button" class="btn btn-success">Proceed to profile</button>
-          {{else}}
-            Skip
-          {{/if}}
-
-        {{/link-to}}
-
-      {{/if}}
-
-
+    {{#link-to "teach.tag" model.id}}
+      <button type="button" class="btn btn-warning btn-lg btn-block">Skip</button>
+    {{/link-to}}
 
   {{else}}
 

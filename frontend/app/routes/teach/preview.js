@@ -8,13 +8,13 @@ export default class TeachPreviewRoute extends Route {
 
   beforeModel(transition) {
     if (!this.me.isAuthenticated) {
-      let loginController = this.controllerFor("login");
-      loginController.set("previousTransition", transition);
-      this.transitionTo("login");
+      let loginController = this.controllerFor('login');
+      loginController.set('previousTransition', transition);
+      this.transitionTo('login');
     }
   }
 
   model(params) {
-    return this.store.findRecord("chapter", params.id);
+    return this.store.findRecord('chapter', params.id);
   }
 }

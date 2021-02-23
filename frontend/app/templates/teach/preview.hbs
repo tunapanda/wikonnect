@@ -1,6 +1,8 @@
 {{!-- {{outlet}} --}}
 <div class="p-4">
-  <Toc @page="5" />
+  <div class="d-flex justify-content-center">
+    <Toc @page="5" />
+  </div>
   <div class="row p-5">
 
     <div class="col-lg-6">
@@ -61,17 +63,17 @@
       </div>
 
       <BsModalSimple @open={{publishModal}} @onSubmit={{action "publish" model.id }} @closeTitle="Cancel"
-        @submitTitle="Publish" @title="Publish ??" @size="sm" @onHidden={{action (mut publishModal) false}}>
+        @submitTitle="Publish" @title="Publish" @size="sm" @onHidden={{action (mut publishModal) false}}>
         Are you sure you want to publish ?
       </BsModalSimple>
 
       <BsModalSimple @open={{unpublishModal}} @onSubmit={{action "unpublish" model.id }} @closeTitle="Cancel"
-        @submitTitle="UnPublish" @title="UnPublish ??" @size="sm" @onHidden={{action (mut unpublishModal) false}}>
+        @submitTitle="Unpublish" @title="Unpublish" @size="sm" @onHidden={{action (mut unpublishModal) false}}>
         Are you sure you want to unpublish ?
       </BsModalSimple>
 
       <BsModalSimple @open={{deleteModal}} @onSubmit={{action "delete" model.id }} @closeTitle="Cancel"
-        @submitTitle="Delete" @title="Simple Dialog" @size="sm" @onHidden={{action (mut deleteModal) false}}>
+        @submitTitle="Delete" @title="Delete" @size="sm" @onHidden={{action (mut deleteModal) false}}>
         Are you sure you want to delete {{model.name}} ?
       </BsModalSimple>
       <br>
@@ -89,17 +91,18 @@
         <button type="button" class="btn btn-primary form-control">Change Chapter Details</button>
       {{/link-to}}
       <hr>
-
-      {{#if model.imageUrl}}
-        <img src="/{{model.imageUrl}}" class="img-thumbnail rounded h-50 d-inline-block" alt=""><br>
-        {{#link-to "teach.thumbnail-upload" model.id}}
-          <button type="button" class="btn btn-primary">Edit Thumbail</button>
-        {{/link-to}}
-      {{else}}
-        {{#link-to "teach.thumbnail-upload" model.id}}
-          <button type="button" class="btn btn-primary">Upload thumbail</button>
-        {{/link-to}}
-      {{/if}}
+      <div>
+        {{#if model.imageUrl}}
+          <img src="/{{model.imageUrl}}" class="img-thumbnail img-fluid rounded h-50 d-inline-block" alt=""><br>
+          {{#link-to "teach.thumbnail-upload" model.id}}
+            <button type="button" class="btn btn-primary">Edit Thumbail</button>
+          {{/link-to}}
+        {{else}}
+          {{#link-to "teach.thumbnail-upload" model.id}}
+            <button type="button" class="btn btn-primary">Upload thumbail</button>
+          {{/link-to}}
+        {{/if}}
+      </div>
 
     </div>
 

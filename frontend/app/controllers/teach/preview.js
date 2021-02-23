@@ -45,16 +45,15 @@ export default class TeachPreviewController extends Controller {
   }
 
   @action
-  unpublish(chapter_id) {
-    this.store.findRecord('chapter', chapter_id).then(function (chap) {
-      // ...after the record has loaded
+  async unpublish(chapter_id) {
+    let chap  = await this.store.findRecord('chapter', chapter_id);
 
-      chap.set('status', 'draft');
-      chap.set('approved', false);
-      chap.save();
-    });
+    await chap.set('status', 'draft');
+    await chap.set('approved', false);
+    await chap.save();
 
     this.unpublishModal = false;
     this.notify.info('Chapter succesfuly unpublished');
+    this.transitionToRoute('teach');
   }
 }
