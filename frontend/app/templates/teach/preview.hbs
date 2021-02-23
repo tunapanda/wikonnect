@@ -63,29 +63,17 @@
       </div>
 
       <BsModalSimple @open={{publishModal}} @onSubmit={{action "publish" model.id }} @closeTitle="Cancel"
-<<<<<<< HEAD
         @submitTitle="Publish" @title="Publish" @size="sm" @onHidden={{action (mut publishModal) false}}>
-=======
-        @submitTitle="Publish" @title="Publish ??" @size="sm" @onHidden={{action (mut publishModal) false}}>
->>>>>>> 76e003658aefc0eeeafd1a0fd77cf7b3dca81098
         Are you sure you want to publish ?
       </BsModalSimple>
 
       <BsModalSimple @open={{unpublishModal}} @onSubmit={{action "unpublish" model.id }} @closeTitle="Cancel"
-<<<<<<< HEAD
         @submitTitle="Unpublish" @title="Unpublish" @size="sm" @onHidden={{action (mut unpublishModal) false}}>
-=======
-        @submitTitle="UnPublish" @title="UnPublish ??" @size="sm" @onHidden={{action (mut unpublishModal) false}}>
->>>>>>> 76e003658aefc0eeeafd1a0fd77cf7b3dca81098
         Are you sure you want to unpublish ?
       </BsModalSimple>
 
       <BsModalSimple @open={{deleteModal}} @onSubmit={{action "delete" model.id }} @closeTitle="Cancel"
-<<<<<<< HEAD
         @submitTitle="Delete" @title="Delete" @size="sm" @onHidden={{action (mut deleteModal) false}}>
-=======
-        @submitTitle="Delete" @title="Simple Dialog" @size="sm" @onHidden={{action (mut deleteModal) false}}>
->>>>>>> 76e003658aefc0eeeafd1a0fd77cf7b3dca81098
         Are you sure you want to delete {{model.name}} ?
       </BsModalSimple>
       <br>
@@ -98,7 +86,6 @@
         <label for="">Chapter Description</label>
         <textarea class="form-control bg-light" name="" id="" rows="3" disabled>{{model.description}}</textarea>
       </div>
-<<<<<<< HEAD
 
       {{#link-to "teach.edit" model.id}}
         <button type="button" class="btn btn-primary form-control">Change Chapter Details</button>
@@ -117,25 +104,6 @@
         {{/if}}
       </div>
 
-=======
-
-      {{#link-to "teach.edit" model.id}}
-        <button type="button" class="btn btn-primary form-control">Change Chapter Details</button>
-      {{/link-to}}
-      <hr>
-
-      {{#if model.imageUrl}}
-        <img src="/{{model.imageUrl}}" class="img-thumbnail rounded h-50 d-inline-block" alt=""><br>
-        {{#link-to "teach.thumbnail-upload" model.id}}
-          <button type="button" class="btn btn-primary">Edit Thumbail</button>
-        {{/link-to}}
-      {{else}}
-        {{#link-to "teach.thumbnail-upload" model.id}}
-          <button type="button" class="btn btn-primary">Upload thumbail</button>
-        {{/link-to}}
-      {{/if}}
-
->>>>>>> 76e003658aefc0eeeafd1a0fd77cf7b3dca81098
     </div>
 
   </div>
