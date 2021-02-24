@@ -1,0 +1,52 @@
+name: CI/CD
+
+on: pull_request
+
+jobs:
+  buildAndTest:
+    name: CI Pipeline
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: ['12.x']
+
+    steps:
+      - uses: actions/checkout@v2
+
+      # Initialize Node.js
+      - name: Install Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      # Install project dependencies, test and build
+      - name: Install dependencies
+        run: npm install
+
+      # Install project dependencies, test and build
+      - name: Install dependencies
+        run: cd frontend && yarn install
+      - name: Run build
+        run: cd frontend && yarn build --prod
+
+      # Install project dependencies, test and build
+      - name: Install dependencies
+        run: cd server && yarn install
+  cypress-run:
+    name: E2E on Chrome
+    runs-on: ubuntu-16.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      # Install NPM dependencies, cache them correctly
+      # and run all Cypress tests
+      - name: Cypress run
+        uses: cypress-io/github-action@v2
+        with:
+          start: yarn --cwd ./server start, yarn --cwd ./frontend start
+          config: pageLoadTimeout=100000,baseUrl=http://localhost:3000
+      - uses: actions/upload-artifact@v1
+        if: failure()
+        with:
+          name: cypress-screenshots
+          path: cypress/screenshots
