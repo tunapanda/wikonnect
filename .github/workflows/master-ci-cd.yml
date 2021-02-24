@@ -73,7 +73,7 @@ jobs:
 
       # Install project dependencies, test and build
       - name: Install dependencies
-        run: cd server && yarn install
+        run: yarn --frozen-lockfile install
 
       # Install AWS CLI 2
       - name: Install AWS CLI 2
