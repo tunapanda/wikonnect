@@ -20,19 +20,48 @@
     "contentId": null,
     "approved": "true",
     "topics": null,
-    "likes": "1",
-    "dislikes": "4",
     "rating": "3.6666666666666667",
     "flag": [],
+    "reaction": {
+      "likes": 3,
+      "authenticated_user": "like",
+      "dislikes": 1
+    },
+    "achievement": [
+      {
+        "id": "achievements2",
+        "target": "chapter1",
+        "targetStatus": "completed",
+        "type": "achievement"
+      },
+      {
+        "id": "achievements4",
+        "target": "chapter1",
+        "targetStatus": "completed",
+        "type": "achievement"
+      },
+      {
+        "id": "achievements7",
+        "target": "chapter1",
+        "targetStatus": "started",
+        "type": "achievement"
+      },
+      {
+        "id": "achievements8",
+        "target": "chapter1",
+        "targetStatus": "attempted",
+        "type": "achievement"
+      }
+    ],
     "comment": [
       {
-        "id": "ItiSBfqAAAc",
+        "id": "It40-WKAAAc",
         "creatorId": "user1",
         "comment": "chapter1",
         "type": "comment"
       },
       {
-        "id": "ItiSBfqAAAg",
+        "id": "It40-WMAAAg",
         "creatorId": "user1",
         "comment": "chapter1",
         "type": "comment"
@@ -60,19 +89,36 @@
     "contentId": null,
     "approved": "true",
     "topics": null,
-    "likes": "3",
-    "dislikes": "3",
     "rating": null,
     "flag": [],
+    "reaction": {
+      "likes": 0,
+      "authenticated_user": "dislike",
+      "dislikes": 3
+    },
+    "achievement": [
+      {
+        "id": "achievements1",
+        "target": "chapter2",
+        "targetStatus": "completed",
+        "type": "achievement"
+      },
+      {
+        "id": "achievements3",
+        "target": "chapter2",
+        "targetStatus": "completed",
+        "type": "achievement"
+      }
+    ],
     "comment": [
       {
-        "id": "ItiSBfqAAAk",
+        "id": "It40-WMAAAk",
         "creatorId": "user2",
         "comment": "chapter2",
         "type": "comment"
       },
       {
-        "id": "ItiSBfqAAAo",
+        "id": "It40-WMAAAo",
         "creatorId": "user3",
         "comment": "chapter2",
         "type": "comment"
@@ -100,10 +146,17 @@
     "contentId": null,
     "approved": "true",
     "topics": null,
-    "likes": "0",
-    "dislikes": "0",
     "rating": null,
     "flag": [],
+    "reaction": [],
+    "achievement": [
+      {
+        "id": "achievements5",
+        "target": "chapter4",
+        "targetStatus": "completed",
+        "type": "achievement"
+      }
+    ],
     "comment": []
   },
   {
@@ -127,10 +180,10 @@
     "contentId": null,
     "approved": "true",
     "topics": null,
-    "likes": "0",
-    "dislikes": "0",
     "rating": null,
     "flag": [],
+    "reaction": [],
+    "achievement": [],
     "comment": []
   }
 ]
