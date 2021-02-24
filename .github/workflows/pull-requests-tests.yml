@@ -190,14 +190,14 @@ jobs:
       # Run all Cypress tests
       - name: Cypress run
         uses: cypress-io/github-action@v2
-        with:
-          start: yarn --cwd ./server start, yarn --cwd ./frontend start:local
-          config: pageLoadTimeout=100000,baseUrl=http://localhost:4200
         env:
           NODE_ENV: action
           REDIS_HOST: localhost
           # The default Redis port
           REDIS_PORT: 6379
+        with:
+          start: yarn --cwd ./server start, yarn --cwd ./frontend start:local
+          config: pageLoadTimeout=100000,baseUrl=http://localhost:4200
       - uses: actions/upload-artifact@v1
         if: failure()
         with:
