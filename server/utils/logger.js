@@ -1,5 +1,5 @@
 const pino = require('pino');
-const level = process.env.NODE_ENV === 'test' ? 'error' : 'info';
+const level = process.env.NODE_ENV === 'action' || process.env.NODE_ENV === 'test' ? 'error' : 'info';
 const log = pino({
   name: 'Wikonnect ' + process.env.NODE_ENV || 'development',
   // level: process.env.LOG_LEVEL || 'info'
