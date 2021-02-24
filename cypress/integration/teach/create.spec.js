@@ -29,7 +29,7 @@ describe('User can create chapter', () => {
     cy.wait("@imgUpload");
 
     // Tag
-    cy.get('input#tag').type(tag);
+    cy.get('.p-4 input.form-control').type(tag);
     cy.get('.p-4 > form > .btn').click();
     cy.get('.m-1').should('be.visible').and('contain', tag);
     cy.get('.float-right').click();
