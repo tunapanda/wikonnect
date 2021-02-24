@@ -56,9 +56,6 @@ jobs:
   test:
     name: Server-side Tests
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: ['12.x']
 
     # Service containers to run with `container-job`
     services:
