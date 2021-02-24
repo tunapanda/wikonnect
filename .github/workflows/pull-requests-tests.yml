@@ -175,7 +175,7 @@ jobs:
       - name: Install dependencies
         run:  yarn --cwd ./frontend  --frozen-lockfile
       - name: Run build
-        run:  yarn --cwd ./frontend build --prod
+        run:  yarn --cwd ./frontend build
 
       # Install project dependencies, test and build
       - name: Install dependencies
