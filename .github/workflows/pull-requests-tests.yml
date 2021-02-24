@@ -4,7 +4,7 @@ on: push
 
 jobs:
   build:
-    name: CI Pipeline
+    name: Build and Install Dependencies
     runs-on: ubuntu-latest
     strategy:
       matrix:
