@@ -26,7 +26,7 @@ describe('User can create chapter', () => {
     // Thumbnail Upload
     cy.intercept(/api\/v1\/chapters\/.*\/chapter-image/).as("imgUpload");
     cy.get('input[type="file"]').attachFile('test.jpg');
-    cy.wait("@imgUpload");
+    cy.wait(6000);
 
     // Tag
     cy.get('.p-4 input.form-control').type(tag);
