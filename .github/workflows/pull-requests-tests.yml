@@ -1,6 +1,6 @@
-name: CI/CD
+name: End to End Testing on Push
 
-on: pull_request
+on: push
 
 jobs:
   buildAndTest:
