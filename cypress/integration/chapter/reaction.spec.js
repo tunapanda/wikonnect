@@ -6,18 +6,6 @@ describe('Chapter Reaction Without Auth', () => {
         return chapters.find((chapter) => !chapter.reaction.authenticated_user);
     }
 
-    it('Should see chapter reactions', () => {
-        const {id} = newChapter();
-
-        cy.visit(`/chapter/${id}`);
-
-        cy.get('.reactions .reaction-btn.like-button')
-            .should('be.visible');
-
-        cy.get('.reactions .reaction-btn.dislike-button')
-            .should('be.visible');
-    });
-
     it('Should not like a chapter', () => {
         const {id} = newChapter();
 
