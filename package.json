@@ -5,7 +5,7 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "test": "cypress run --record --key e71d24a2-723b-4605-ab6a-060ac44827cd",
+    "test": "cypress run",
     "cy:open": "cypress open",
     "test:server": "yarn --cwd ./server test",
     "test:frontend": "yarn --cwd ./frontend test",
@@ -14,7 +14,8 @@
     "build:frontend": "yarn --cwd ./frontend && yarn --cwd ./frontend build --prod",
     "start:frontend": "yarn --cwd ./frontend start:local",
     "start:server": "nodemon ./server index.js",
-    "docs": "apidoc -e node_modules -e docs -o docs/"
+    "docs": "apidoc -e node_modules -e docs -o docs/",
+    "start:all": "concurrently yarn:start:server yarn:start:frontend"
   },
   "devDependencies": {
     "@cypress/code-coverage": "^3.9.1",
