@@ -52,8 +52,7 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      # Install NPM dependencies, cache them correctly
-       # Yarn cache dir
+      # Install YARN dependencies, cache them correctly
       - name: Get yarn cache directory path
         id: yarn-cache-dir-path
         run: echo "::set-output name=dir::$(yarn cache dir)"
@@ -65,6 +64,20 @@ jobs:
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
             ${{ runner.os }}-yarn-
+      # Install project dependencies, test and build
+      - name: Install dependencies
+        run: yarn  --frozen-lockfile
+
+      # Install project dependencies, test and build
+      - name: Install dependencies
+        run:  yarn --cwd ./frontend  --frozen-lockfile
+      - name: Run build
+        run:  yarn --cwd ./frontend build --prod
+
+      # Install project dependencies, test and build
+      - name: Install dependencies
+        run: yarn --cwd ./server --frozen-lockfile
+        
       # Run all Cypress tests
       - name: Cypress run
         uses: cypress-io/github-action@v2
