@@ -32,18 +32,17 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-yarn-
 
-      # Install project dependencies, test and build
-      - name: Install dependencies
+      # Install project dependencies
+      - name: Installing Wikonnect root dependencies
         run: yarn  --frozen-lockfile
 
-      # Install project dependencies, test and build
-      - name: Install dependencies
+      # Install project dependencies
+      - name: Install frontend dependencies
         run:  yarn --cwd ./frontend  --frozen-lockfile
-      - name: Run build
-        run:  yarn --cwd ./frontend build --prod
+
 
       # Install project dependencies, test and build
-      - name: Install dependencies
+      - name: Install backend dependencies
         run: yarn --cwd ./server --frozen-lockfile
   linters:
     name: Project linting
@@ -53,10 +52,11 @@ jobs:
         node-version: ['12.x']
     needs: build
     steps:
+      - uses: actions/checkout@v2
       - name: Lint server
-        run: yarn --cwd ./server lint:js
+        run: cd ..;yarn --cwd ./server lint:js
       - name: Linting frontend HBS
-        run: yarn --cwd ./server lint:hbs
+        run: yarn --cwd ./frontend lint:hbs
       - name: Linting frontend JS
         run: yarn --cwd ./server lint:js
   test:
@@ -115,7 +115,7 @@ jobs:
 
       # Backend install dependencies
       - name: Backend install dependencies
-        run: yarn --cwd ./server --frozen-lockfile
+        run: yarn --frozen-lockfile --cwd ./server
 
       # Backend migrate database nad seed
       - name: Backend database set-up
@@ -188,7 +188,8 @@ jobs:
       # Install project dependencies, test and build
       - name: Install dependencies
         run:  yarn --cwd ./frontend  --frozen-lockfile
-      - name: Run build
+
+      - name: Running build
         run:  yarn --cwd ./frontend build
 
       # Install project dependencies, test and build
@@ -200,7 +201,7 @@ jobs:
         uses: cypress-io/github-action@v2
         with:
           start: yarn --cwd ./server start, yarn --cwd ./frontend start:local
-          config: pageLoadTimeout=100000,baseUrl=http://localhost:3000
+          config: pageLoadTimeout=100000,baseUrl=http://localhost:4200
         env:
           NODE_ENV: action
           REDIS_HOST: localhost
