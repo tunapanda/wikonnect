@@ -90,7 +90,7 @@ describe('MODULES route', () => {
       .send(putData)
       .end((err, res) => {
         res.status.should.eql(400);
-        res.body.message.should.eql('invalid signature');
+        res.body.errors.should.eql(['invalid signature']);
         done();
       });
   });

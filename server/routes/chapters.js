@@ -258,10 +258,7 @@ router.put('/:id', permController.requireAuth, async ctx => {
 
 router.delete('/:id', permController.requireAuth, async ctx => {
   const chapter = await Chapter.query().findById(ctx.params.id);
-
-  if (!chapter) {
-    ctx.assert(chapter, 401, 'No ID was found');
-  }
+  ctx.assert(chapter, 401, 'No ID was found');
   await Chapter.query().delete().where({ id: ctx.params.id });
 
   ctx.status = 200;
