@@ -45,6 +45,20 @@ jobs:
       # Install project dependencies, test and build
       - name: Install dependencies
         run: yarn --cwd ./server --frozen-lockfile
+  linters:
+    name: Project linting
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: ['12.x']
+    needs: build
+    steps:
+      - name: Lint server
+        run: yarn --cwd ./server lint:js
+      - name: Linting frontend HBS
+        run: yarn --cwd ./server lint:hbs
+      - name: Linting frontend JS
+        run: yarn --cwd ./server lint:js
   test:
     name: Server-side Tests
     runs-on: ubuntu-latest
@@ -151,7 +165,7 @@ jobs:
         ports:
           # Maps port 6379 on service container to the host
           - 6379:6379
-    needs: test
+    needs: build
     steps:
       - name: Checkout
         uses: actions/checkout@v2
