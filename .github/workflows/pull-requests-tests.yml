@@ -44,19 +44,13 @@ jobs:
       # Install project dependencies, test and build
       - name: Install backend dependencies
         run: yarn --cwd ./server --frozen-lockfile
-  linters:
-    name: Project linting
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: ['12.x']
-    needs: build
-    steps:
-      - uses: actions/checkout@v2
+
       - name: Lint server
-        run: cd ..;yarn --cwd ./server lint:js
+        run: yarn --cwd ./server lint:js
+
       - name: Linting frontend HBS
         run: yarn --cwd ./frontend lint:hbs
+
       - name: Linting frontend JS
         run: yarn --cwd ./server lint:js
   test:
