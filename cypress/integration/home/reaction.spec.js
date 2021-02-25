@@ -8,13 +8,11 @@ describe('Homepage Chapter Reactions After Auth', () => {
     })
 
     function newChapter() {
-        return chapters.find((chapter) => !chapter.reaction.authenticated_user);
+        return chapters.find((chapter) => !chapter.reaction[0]);
     }
 
 
     it('Should see chapter reactions', () => {
-        cy.login();
-
         cy.get('.reactions .reaction-btn.like-button')
             .should('be.visible');
 
@@ -25,14 +23,13 @@ describe('Homepage Chapter Reactions After Auth', () => {
 
     it('Should not like a chapter', () => {
         const {id, reaction} = newChapter();
-
         cy.get(`.card a[href="/chapter/${id}"]:first`)
             .siblings()
             .find('.reactions')
             .find('.like-button')
             .click()
             .find('.count')
-            .contains((reaction.likes)||0);
+            .contains(0);
     });
 
     it('Should not dislike a chapter', () => {
@@ -44,7 +41,7 @@ describe('Homepage Chapter Reactions After Auth', () => {
             .find('.dislike-button')
             .click()
             .find('.count')
-            .contains((reaction.likes)||0);
+            .contains(0);
     });
 
 })
