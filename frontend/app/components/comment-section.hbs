@@ -1,17 +1,15 @@
 <div class="padded">
   {{#if me.isAuthenticated}}
 
-    <BsForm @model={{commentModel}} @onSubmit={{action "saveComment"}} as |form|>
+    <BsForm @model={{this.commentModel}} @onSubmit={{action "saveComment"}} as |form|>
       <form.element @controlType="textarea" @label="Comment" @property="comment"/>
-      {{#each commentModel.errors as |err| }}
+      {{#each this.commentModel.errors as |err| }}
         {{#if (eq err.key "comment")}}
           <BsAlert @type="danger" @fade={{true}}>
             {{err.message}}
           </BsAlert>
         {{/if}}
       {{/each}}
-
-      <input type="hidden" value={{@id}} name="chapter_id" id="chapter_id">
       <BsButton @type="primary" @defaultText="Comment" @buttonType="submit"/>
     </BsForm>
   {{/if}}
