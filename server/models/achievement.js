@@ -10,6 +10,14 @@ class Achievement extends Model {
     return {};
   }
 
+  static get virtualAttributes() {
+    return ['type'];
+  }
+
+  type() {
+    return 'achievement';
+  }
+
   static get modifiers() {
     return {
       selectAchievement: (builder) => {

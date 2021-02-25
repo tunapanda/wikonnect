@@ -2,70 +2,6 @@ const s3 = require('../s3Util');
 const bcrypt = require('bcrypt');
 const fetch = require('node-fetch');
 
-
-const User = require('../../models/user');
-const AchievementAward = require('../../models/achievement_awards');
-
-const log = require('../logger');
-const knex = require('../knexUtil');
-const { wikonnectUser } = require('../mojaCampaigns/mojaEndpoint');
-
-
-async function achievementAwardsType(parent) {
-  try {
-    if (parent.length == undefined) {
-      parent.achievementAwards.forEach(award => {
-        return award.type = 'achievementAward';
-      });
-    } else {
-      parent.forEach(mod => {
-        mod.achievementAwards.forEach(award => {
-          return award.type = 'achievementAward';
-        });
-      });
-    }
-  } catch (error) {
-    log.error(error);
-  }
-}
-
-async function userRoles(parent) {
-  try {
-    if (parent.length == undefined) {
-      parent.userRoles.forEach(role => {
-        return role.type = 'userRoles';
-      });
-    } else {
-      parent.forEach(roles => {
-        roles.userRoles.forEach(role => {
-          return role.type = 'userRoles';
-        });
-      });
-    }
-  } catch (error) {
-    log.error(error);
-  }
-}
-
-async function enrolledCoursesType(parent) {
-  try {
-    if (parent.length == undefined) {
-      parent.enrolledCourses.forEach(lesson => {
-        return lesson.type = 'course';
-      });
-    } else {
-      parent.forEach(mod => {
-        mod.enrolledCourses.forEach(lesson => {
-          return lesson.type = 'course';
-        });
-      });
-    }
-  } catch (error) {
-    log.error(error);
-  }
-}
-
-
 function encode(data) {
   let buf = Buffer.from(data);
   let base64 = buf.toString('base64');
@@ -85,10 +21,10 @@ async function getProfileImage(id) {
       let image = 'data:image/(png|jpg);base64,' + encode(getImage.Body);
       return image;
     } else {
-      return 'data:image/gif;base64,R0lGODdh+gD6APEAAJCQkNDQ0LCwsAAAACwAAAAA+gD6AAAC/4yPqcvtD6OctNqLs968+w+G4kiW5omm6sq27gvH8kzX9o3n+s73/g8MCofEovGITCqXzKbzCY1Kp9Sq9YrNarfcrvcLDovH5LL5jE6r1+y2+w2Py+f0uv2Oz+v3/L7/DxgoOEhYaHiImKioJNAI8AgZGdkosOjlKJmpqdloSYW5GSoq2em5BDqaqgpQakoksBory+oaNHs7W8uDy5ura9Mb7PsLAyt8vFpJzGKM7KyqvHzyTB0rXdJcrS0afe2RvR3O6e0hbj5KrgF+zj6ZbrHeLk/7LhE/L99dz3CPn7/foJ+/fwATCBxIsGCAgwgT7mPY0OG7iBQlAayIEVK9jP8cAaSD2JGdvl8gQ4q8ZrKjtJIpz4001bLjy0UxQ+piWdNlrZw2TeHkaW6mIaA9F/0kKk7oIKRFER1lGk4pIKhNCz2luk1qn6tYq2nl01WlIa5hqX3NQ7ass7N41HK06jYj2zpp4x6bS8duRkJ6MQ6q2zcY3jiAA/MaDKew4VuI3yymKOhxxMiSEVKu7C+QYszJAG3mnKoxm8+guXkuPU/0GtKox/1h3ZrU6dg6X9Ou7Qf2bXq5dyed7VubajW6bw9XE3zb5eTPljNH5vy5sOjSewkq3vo48ep3l3IPxve7de/icRHCDlo7m/K3hrKXNfZ9Z/fy0R2qn8op/lDqHe//16TIfwAGKKBGNBX4iCXo9dWfHAj6JGCDcwioy34k1SehHfUtsyBWGd7RIVMftiUeOSEC9c6JNY24h4opsQgWcwolp5ABvtV4wG04IhAbjOGBtuMCQAYpZGVEBrSYjwoGpiRMdh1JgVtNXtjVlBxCZaU3SEH5gYuxZPnQi1ya8NaYKXgJppkLSaSmC6yl2eYDqDAGZ5wXUEIJK6zgaWeffv4JaKCCDkpooYYeimiiii7KaKOOPgoplHgieBclacxJaVR10oBppvlsyoyXnmYCqgmijsrfE6eiCg0jrCJV6p2vUhXrBLOGBcSqtwrGg667doeDr78CW8OwgXFqrGGbxgqbrFkvNGskC9BitsK0nKVg7ZAlZFvattx2K8K3rYXArLi4cVCuuedqoG5sHbRL2wbpwrsuBfPSW68E+OoIz778TnCvv/k2IPBuABdsnL4I/+tAwAsHBcHDBjcsccIEV8ywQRhbrMDGE3fscbwKOBxyVCCX7G4CKIt8AMkrC8fjyynbKPO4BrhcMzUt54yaMjzb/DNqNAd9Lc5EV3o0Z50mzSDTTj8NddRST0111VZfjXXWWm/Ndddefw122GKPTXbZZnNWAAA7';
+      return 'uploads/images/profile-placeholder.gif';
     }
   } catch (e) {
-    return 'data:image/gif;base64,R0lGODdh+gD6APEAAJCQkNDQ0LCwsAAAACwAAAAA+gD6AAAC/4yPqcvtD6OctNqLs968+w+G4kiW5omm6sq27gvH8kzX9o3n+s73/g8MCofEovGITCqXzKbzCY1Kp9Sq9YrNarfcrvcLDovH5LL5jE6r1+y2+w2Py+f0uv2Oz+v3/L7/DxgoOEhYaHiImKioJNAI8AgZGdkosOjlKJmpqdloSYW5GSoq2em5BDqaqgpQakoksBory+oaNHs7W8uDy5ura9Mb7PsLAyt8vFpJzGKM7KyqvHzyTB0rXdJcrS0afe2RvR3O6e0hbj5KrgF+zj6ZbrHeLk/7LhE/L99dz3CPn7/foJ+/fwATCBxIsGCAgwgT7mPY0OG7iBQlAayIEVK9jP8cAaSD2JGdvl8gQ4q8ZrKjtJIpz4001bLjy0UxQ+piWdNlrZw2TeHkaW6mIaA9F/0kKk7oIKRFER1lGk4pIKhNCz2luk1qn6tYq2nl01WlIa5hqX3NQ7ass7N41HK06jYj2zpp4x6bS8duRkJ6MQ6q2zcY3jiAA/MaDKew4VuI3yymKOhxxMiSEVKu7C+QYszJAG3mnKoxm8+guXkuPU/0GtKox/1h3ZrU6dg6X9Ou7Qf2bXq5dyed7VubajW6bw9XE3zb5eTPljNH5vy5sOjSewkq3vo48ep3l3IPxve7de/icRHCDlo7m/K3hrKXNfZ9Z/fy0R2qn8op/lDqHe//16TIfwAGKKBGNBX4iCXo9dWfHAj6JGCDcwioy34k1SehHfUtsyBWGd7RIVMftiUeOSEC9c6JNY24h4opsQgWcwolp5ABvtV4wG04IhAbjOGBtuMCQAYpZGVEBrSYjwoGpiRMdh1JgVtNXtjVlBxCZaU3SEH5gYuxZPnQi1ya8NaYKXgJppkLSaSmC6yl2eYDqDAGZ5wXUEIJK6zgaWeffv4JaKCCDkpooYYeimiiii7KaKOOPgoplHgieBclacxJaVR10oBppvlsyoyXnmYCqgmijsrfE6eiCg0jrCJV6p2vUhXrBLOGBcSqtwrGg667doeDr78CW8OwgXFqrGGbxgqbrFkvNGskC9BitsK0nKVg7ZAlZFvattx2K8K3rYXArLi4cVCuuedqoG5sHbRL2wbpwrsuBfPSW68E+OoIz778TnCvv/k2IPBuABdsnL4I/+tAwAsHBcHDBjcsccIEV8ywQRhbrMDGE3fscbwKOBxyVCCX7G4CKIt8AMkrC8fjyynbKPO4BrhcMzUt54yaMjzb/DNqNAd9Lc5EV3o0Z50mzSDTTj8NddRST0111VZfjXXWWm/Ndddefw122GKPTXbZZnNWAAA7';
+    return 'uploads/images/profile-placeholder.gif';
   }
 }
 async function createPasswordHash(ctx, next) {
@@ -121,46 +57,8 @@ async function getGoogleToken(ctx, next) {
   await next();
 }
 
-async function profileCompleteBoolean(params) {
-  const keys = ['profileUri', 'email'];
-  keys.forEach((key, index) => {
-    if (params[key] != null) {
-      log.info(index);
-      return 'false';
-    } else {
-      return 'true';
-    }
-  });
-}
-
-async function inviteUserAward(params) {
-  let completed = await knex('user_invite')
-    .count('invited_by')
-    .select('invited_by')
-    .where({ 'invited_by': params.invitedBy })
-    .groupBy('invited_by')
-    .having(knex.raw('count(invited_by) > 0'));
-
-  await AchievementAward.query().insert({
-    'name': 'Invited 1 users',
-    'achievementId': 'achievements12',
-    'userId': completed[0].invited_by
-  });
-
-  if (params.metadata.oneInviteComplete == 'false' && completed > 0) {
-    await User.query().patchAndFetchById(params.id, { 'metadata:oneInviteComplete': 'true' });
-    await wikonnectUser(params.id);
-  }
-}
-
-
 module.exports = {
-  achievementAwardsType,
-  userRoles,
-  enrolledCoursesType,
   createPasswordHash,
-  profileCompleteBoolean,
-  inviteUserAward,
   getProfileImage,
   getGoogleToken
 };

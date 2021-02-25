@@ -16,6 +16,7 @@ export default class HomeRoute extends Route {
   async afterModel() {
     set(this, 'headData.title', 'Wikonnect - Chapters');
     set(this, 'headData.theme', '#FF5722');
+
   }
 
   model() {
