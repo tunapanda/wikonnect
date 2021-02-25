@@ -1,8 +1,7 @@
 
 exports.seed = function (knex) {
   // Deletes ALL existing entries
-  return knex('user_verification').del()
-    .then(() => knex('users').del())
+  return knex('users').del()
     .then(function () {
       // Inserts seed entries
       return knex('users').insert([

@@ -31,6 +31,15 @@ class Group extends Model {
     };
   }
 
+  static get virtualAttributes() {
+    return ['type'];
+  }
+
+  type() {
+    return 'userRoles';
+  }
+
+
   static get modifiers() {
     return {
       selectNameAndId: (builder) => {

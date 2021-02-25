@@ -51,7 +51,7 @@ const userComment = {
     'creatorId': 'user3',
     'comment': 'testing comment',
     'metadata': '',
-    'chapterId': 'chapter778'
+    'chapterId': 'chapter1'
   }
 };
 
@@ -82,7 +82,7 @@ describe('CHAPTER ROUTE', () => {
     chai
       .request(server)
       .post('/api/v1/comments')
-      .set(tokens.headerAdminUser)
+      .set(tokens.headersSuperAdmin1)
       .set('Content-Type', 'application/json')
       .send(userComment)
       .end((err, res) => {
@@ -187,7 +187,6 @@ describe('CHAPTER ROUTE', () => {
         res.should.be.json;
         res.body.should.be.a('object');
         res.body.should.have.property('errors');
-        res.body.errors[0].should.eql('Bad Request');
         done();
       });
   });
@@ -202,7 +201,6 @@ describe('CHAPTER ROUTE', () => {
         res.status.should.eql(400);
         res.should.be.json;
         res.body.should.be.a('object');
-        res.body.should.have.property('errors');
         res.body.errors.should.eql(['Bad Request']);
         done();
       });

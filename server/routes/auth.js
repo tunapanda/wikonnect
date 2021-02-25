@@ -6,7 +6,6 @@ const User = require('../models/user');
 const sendMAil = require('../utils/sendMail');
 const log = require('../utils/logger');
 const { secret } = require('../middleware/jwt');
-const { lastSeen } = require('../utils/timestamp');
 const redisClient = require('../utils/redisConfig');
 const UserVerification = require('../models/user_verification');
 const validateAuthRoutes = require('../middleware/validateRoutePostSchema/validateAuthRoutes');
@@ -39,27 +38,19 @@ const router = new Router({
 router.post('/', validateAuthRoutes.validateUserLogin, async ctx => {
   const username = ctx.request.body.username.toLowerCase();
 
-  let user = await User.query().where('username', username).eager('oauth2(selectOauth2)');
-  if (!user.length) {
-    ctx.throw(404, null, {
-      errors: [{
-        'name': 'Wrong username or password',
-        'constraint': 'errors',
-      }]
-    });
-  }
+  let user = await User.query().where('username', username).withGraphFetched('oauth2(selectOauth2)');
+  if (!user.length) ctx.throw(404, null, { errors: [{ 'name': 'Wrong username or password', 'constraint': 'errors', }] });
+
 
   let { hash: hashPassword, ...userInfoWithoutPassword } = user[0];
   user = user[0];
 
-  const userData = await User.query().findById(user.id).eager('userRoles(selectName)');
+  const userData = await user.$query().findById(user.id).withGraphFetched('userRoles(selectName)');
 
   let role = userData['userRoles'][0] !== undefined ? userData['userRoles'][0].name : 'basic';
   userInfoWithoutPassword['role'] = role;
 
   if (user.oauth2[0] != undefined && user.oauth2[0].userId == user.id) {
-    console.log('we are here');
-    await lastSeen(user.id);
     ctx.body = {
       token: jsonwebtoken.sign({
         data: userInfoWithoutPassword,
@@ -68,8 +59,6 @@ router.post('/', validateAuthRoutes.validateUserLogin, async ctx => {
     };
   } else if (await bcrypt.compare(ctx.request.body.password, hashPassword)) {
     // eslint-disable-next-line require-atomic-updates
-    console.log('password loop');
-    await lastSeen(user.id);
     ctx.body = {
       token: jsonwebtoken.sign({
         data: userInfoWithoutPassword,

@@ -1,7 +1,6 @@
 exports.seed = function (knex) {
   // Deletes ALL existing entries
   return knex('groups').del()
-    .then(() => knex('group_members').del())
     .then(() => knex('group_permissions').del())
     .then(() => knex('group_members').del())
     .then(function () {
