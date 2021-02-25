@@ -27,7 +27,7 @@ export default class ReactionChapterReactionComponent extends Component {
     !this.args.chapter?.reaction[0] ||
     !this.chapter?.authenticatedUser
       ? false
-      : this.chapter.authenticatedUser === "like";
+      : this.chapter.authenticatedUser === 'like';
 
   @tracked
   hasDisliked =
@@ -35,7 +35,7 @@ export default class ReactionChapterReactionComponent extends Component {
     !this.args.chapter?.reaction[0] ||
     !this.chapter?.authenticatedUser
       ? false
-      : this.chapter.authenticatedUser === "dislike";
+      : this.chapter.authenticatedUser === 'dislike';
 
   @action
   async userChapterReaction(chapter, liked = true) {
@@ -54,11 +54,11 @@ export default class ReactionChapterReactionComponent extends Component {
     }
 
     let previousReaction = (
-      await this.store.query("reaction", {
+      await this.store.query('reaction', {
         chapterId: this.chapter.id,
         user_id: this.me.user.id,
       })
-    ).find((reactions) => reactions.chapter.get("id") === this.chapter.id);
+    ).find((reactions) => reactions.chapter.get('id') === this.chapter.id);
 
     //if is the same, they have retracted it, delete/undo the reaction
     if (
@@ -83,8 +83,8 @@ export default class ReactionChapterReactionComponent extends Component {
   }
 
   async createUserChapterReaction(chapter, liked) {
-    const model = this.store.createRecord("reaction", {
-      reaction: liked ? "like" : "dislike",
+    const model = this.store.createRecord('reaction', {
+      reaction: liked ? 'like' : 'dislike',
       chapter: chapter,
       user: this.me.user,
     });
@@ -96,7 +96,7 @@ export default class ReactionChapterReactionComponent extends Component {
   }
 
   async updateUserChapterReaction(reaction, liked) {
-    reaction.reaction = liked ? "like" : "dislike";
+    reaction.reaction = liked ? 'like' : 'dislike';
     return await reaction.save();
   }
 
