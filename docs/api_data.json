@@ -1131,7 +1131,7 @@
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "HTTP/1.1 200 OK\n{\n   \"chapter\": {\n       \"id\": \"chapter1\",\n       \"lessonId\": \"lesson1\",\n       \"name\": \"A Chapter\",\n       \"slug\": \"a-chapter\",\n       \"description\": \"An H5P Chapter.\",\n       \"status\": \"published\",\n       \"creatorId\": \"user1\",\n       \"createdAt\": \"2017-12-20T16:17:10.000Z\",\n       \"updatedAt\": \"2017-12-20T16:17:10.000Z\",\n       \"contentType\": \"h5p\",\n       \"contentUri\": \"/uploads/h5p/chapter1\",\n       \"imageUrl\": \"/uploads/images/content/chapters/chapter1.jpeg\",\n       \"contentId\": null,\n       \"tags\": [],\n       \"likes\": \"0\",\n       \"dislikes\": \"0\",\n       \"rating\": null,\n       \"comment\": [{\n       }]\n    }\n }",
+          "content": "HTTP/1.1 200 OK\n{\n   \"chapter\": {\n       \"id\": \"chapter1\",\n       \"lessonId\": \"lesson1\",\n       \"name\": \"A Chapter\",\n       \"slug\": \"a-chapter\",\n       \"description\": \"An H5P Chapter.\",\n       \"status\": \"published\",\n       \"creatorId\": \"user1\",\n       \"createdAt\": \"2017-12-20T16:17:10.000Z\",\n       \"updatedAt\": \"2017-12-20T16:17:10.000Z\",\n       \"contentType\": \"h5p\",\n       \"contentUri\": \"/uploads/h5p/chapter1\",\n       \"imageUrl\": \"/uploads/images/content/chapters/chapter1.jpeg\",\n       \"contentId\": null,\n       \"tags\": [],\n       \"likes\": \"0\",\n       \"dislikes\": \"0\",\n       \"rating\": null,\n       \"comment\": [{\n       }],\n       \"author\": {\n         \"username\": \"user1\",\n         \"profileUri\": null,\n         \"lastSeen\": \"2021-02-22T11:57:10.468Z\"\n       },\n       \"reaction\": [{\n         \"likes\": 3,\n         \"authenticated_user\": \"like\",\n         \"reaction.id\": \"\",\n         \"dislikes\": 1\n       }]\n    }\n }",
           "type": "json"
         }
       ]
@@ -1216,59 +1216,13 @@
       }
     },
     "success": {
-      "fields": {
-        "Success 200": [
-          {
-            "group": "Success 200",
-            "type": "Object[]",
-            "optional": false,
-            "field": "chapter",
-            "description": "<p>List of chapters</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "String",
-            "optional": false,
-            "field": "chapter.id",
-            "description": "<p>Id of the chapter</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "String",
-            "optional": false,
-            "field": "chapter.name",
-            "description": "<p>Name of the chapter</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "String",
-            "optional": false,
-            "field": "chapter.description",
-            "description": "<p>Description of the chapter</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "String",
-            "optional": false,
-            "field": "chapter.status",
-            "description": "<p>Status of the chapter (published | draft)</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "Boolean",
-            "optional": false,
-            "field": "chapter.approved",
-            "description": "<p>boolean with default being false</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "Object",
-            "optional": false,
-            "field": "chapter.tags",
-            "description": "<p>tags list</p>"
-          }
-        ]
-      }
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": " HTTP/1.1 200 OK\n  {\n    \"chapter\": [{\n        \"id\": \"chapter1\",\n        \"lessonId\": \"lesson1\",\n        \"name\": \"A Chapter\",\n        \"slug\": \"a-chapter\",\n        \"description\": \"An H5P Chapter.\",\n        \"status\": \"published\",\n        \"creatorId\": \"user1\",\n        \"metadata\": null,\n        \"createdAt\": \"2017-12-20T16:17:10.000Z\",\n        \"updatedAt\": \"2017-12-20T16:17:10.000Z\",\n        \"contentType\": \"h5p\",\n        \"contentUri\": \"/uploads/h5p/chapter1\",\n        \"imageUrl\": null,\n        \"tags\": [ \"highschool\", \"university\" ],\n        \"contentId\": null,\n        \"approved\": \"true\",\n        \"topics\": null,\n        \"views\": \"3\",\n        \"ratings\": \"3.6666666666666667\",\n        \"authenticatedUser\": null,\n        \"authenticatedUserReactionId\": null,\n        \"reaction\": [{\n            \"totalLikes\": \"4\",\n            \"likes\": \"3\",\n            \"dislikes\": \"1\"\n           }],\n        \"flag\": [],\n        \"author\": {\n            \"username\": \"user1\",\n            \"profileUri\": null,\n            \"lastSeen\": \"2021-02-25T09:19:08.239Z\"\n        }\n    }]\n}",
+          "type": "json"
+        }
+      ]
     },
     "sampleRequest": [
       {

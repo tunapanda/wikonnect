@@ -36,14 +36,45 @@ const router = new Router({
  *
  * @apiParam (Authentication) {String[]} [tags] Optional tags list
  *
- * @apiSuccess {Object[]} chapter List of chapters
- * @apiSuccess {String} chapter.id Id of the chapter
- * @apiSuccess {String} chapter.name Name of the chapter
- * @apiSuccess {String} chapter.description Description of the chapter
- * @apiSuccess {String} chapter.status  Status of the chapter (published | draft)
- * @apiSuccess {Boolean} chapter.approved  boolean with default being false
- * @apiSuccess {Object} chapter.tags tags list
- * @apiSuccess {String} chapter.tags tags list
+ *
+ * @apiSuccessExample {json} Success-Response:
+ *     HTTP/1.1 200 OK
+ *      {
+ *        "chapter": [{
+ *            "id": "chapter1",
+ *            "lessonId": "lesson1",
+ *            "name": "A Chapter",
+ *            "slug": "a-chapter",
+ *            "description": "An H5P Chapter.",
+ *            "status": "published",
+ *            "creatorId": "user1",
+ *            "metadata": null,
+ *            "createdAt": "2017-12-20T16:17:10.000Z",
+ *            "updatedAt": "2017-12-20T16:17:10.000Z",
+ *            "contentType": "h5p",
+ *            "contentUri": "/uploads/h5p/chapter1",
+ *            "imageUrl": null,
+ *            "tags": [ "highschool", "university" ],
+ *            "contentId": null,
+ *            "approved": "true",
+ *            "topics": null,
+ *            "views": "3",
+ *            "ratings": "3.6666666666666667",
+ *            "authenticatedUser": null,
+ *            "authenticatedUserReactionId": null,
+ *            "reaction": [{
+ *                "totalLikes": "4",
+ *                "likes": "3",
+ *                "dislikes": "1"
+ *               }],
+ *            "flag": [],
+ *            "author": {
+ *                "username": "user1",
+ *                "profileUri": null,
+ *                "lastSeen": "2021-02-25T09:19:08.239Z"
+ *            }
+ *        }]
+ *    }
  *
  * @apiSampleRequest /api/v1/chapters/
  *
