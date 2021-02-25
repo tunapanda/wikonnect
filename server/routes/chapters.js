@@ -15,6 +15,7 @@ const Rating = require('../models/rating');
 const Counter = require('../models/counter');
 const permController = require('../middleware/permController');
 const validateGetChapter = require('../middleware/validateRequests/chapterGetValidation');
+const Reaction = require('../models/reaction');
 
 const router = new Router({
   prefix: '/chapters'
@@ -49,30 +50,45 @@ const router = new Router({
  */
 
 router.get('/', permController.requireAuth, validateGetChapter, async ctx => {
-
-  // View counter for each chapter
-  const chapter = await Chapter.query()
-    .select([
-      'chapters.*',
-      Counter.query()
-        .where({ 'chapterId': ref('chapters.id'), 'trigger': 'timerDelay' })
-        .count()
-        .as('views'),
-      Rating.query()
-        .where('chapterId', ref('chapters.id'))
-        .avg('ratings.rating')
-        .as('ratings')
-
-    ])
-    .where(ctx.query)
-    .withGraphFetched(
-      '[comment, reaction(selectReactionCount), flag(selectFlag),author(selectNameAndProfile)]'
-    );
-
-
-
+  let stateUserId = ctx.state.user.id == undefined ? ctx.state.user.data.id : ctx.state.user.id;
+  let chapter;
+  try {
+    // View counter for each chapter
+    chapter = await Chapter.query()
+      .select([
+        'chapters.*',
+        Counter.query()
+          .where({ 'chapterId': ref('chapters.id'), 'trigger': 'timerDelay' })
+          .count()
+          .as('views'),
+        Rating.query()
+          .where('chapterId', ref('chapters.id'))
+          .avg('ratings.rating')
+          .as('ratings'),
+        Reaction.query()
+          .select('reaction')
+          .where('userId', stateUserId)
+          .andWhere('chapterId', ref('chapters.id'))
+          .as('authenticated_user'),
+        Reaction.query()
+          .select('id')
+          .where('userId', stateUserId)
+          .andWhere('chapterId', ref('chapters.id'))
+          .as('authenticated_user_reaction_id')
+      ])
+      .where(ctx.query)
+      .withGraphFetched(
+        '[reaction(reactionAggregate), flag(selectFlag),author(selectNameAndProfile)]'
+      );
+  } catch (e) {
+    if (e.statusCode) {
+      ctx.throw(e.statusCode, null, { errors: [e.message] });
+    } else { ctx.throw(400, null, { errors: [e.message] }); }
+    throw e;
+  }
+  ctx.assert(chapter, 404, 'No chapter by that ID');
   ctx.status = 200;
-  ctx.body = { 'chapter': chapter};
+  ctx.body = { 'chapter': chapter };
 
 });
 
@@ -112,6 +128,17 @@ router.get('/', permController.requireAuth, validateGetChapter, async ctx => {
  *            "dislikes": "0",
  *            "rating": null,
  *            "comment": [{
+ *            }],
+ *            "author": {
+ *              "username": "user1",
+ *              "profileUri": null,
+ *              "lastSeen": "2021-02-22T11:57:10.468Z"
+ *            },
+ *            "reaction": [{
+ *              "likes": 3,
+ *              "authenticated_user": "like",
+ *              "reaction.id": "",
+ *              "dislikes": 1
  *            }]
  *         }
  *      }
@@ -119,27 +146,55 @@ router.get('/', permController.requireAuth, validateGetChapter, async ctx => {
  * @apiErrorExample {json} List error
  *    HTTP/1.1 500 Internal Server Error
  */
+
+
+/** TODO:
+* Add reactions List<>Objects
+* "reaction": [{
+*     "likes": 3,
+*     "authenticated_user": "like",
+*     "id": "",
+*     "dislikes": 1
+* }]
+*/
+
 router.get('/:id', permController.requireAuth, async ctx => {
 
-  const chapter = await Chapter.query()
-    .select([
-      'chapters.*',
-      Counter.query()
-        .where({ 'chapterId': ref('chapters.id'), 'trigger': 'timerDelay' })
-        .count()
-        .as('views'),
-      Rating.query()
-        .where('chapterId', ref('chapters.id'))
-        .avg('ratings.rating')
-        .as('ratings')
+  let stateUserId = ctx.state.user.id == undefined ? ctx.state.user.data.id : ctx.state.user.id;
+  let chapter;
+  try {
+    chapter = await Chapter.query()
+      .select([
+        'chapters.*',
+        Counter.query()
+          .where({ 'chapterId': ref('chapters.id'), 'trigger': 'timerDelay' })
+          .count()
+          .as('views'),
+        Rating.query()
+          .where('chapterId', ref('chapters.id'))
+          .avg('ratings.rating')
+          .as('ratings'),
+        Reaction.query()
+          .select('reaction')
+          .where('userId', stateUserId)
+          .andWhere('chapterId', ref('chapters.id'))
+          .as('authenticated_user')
 
-    ])
-    .where({ 'chapters.id': ctx.params.id })
-    .withGraphFetched(
-      '[comment, reaction(selectReactionCount), flag(selectFlag),author(selectNameAndProfile)]'
-    );
+      ])
+      .where({ 'chapters.id': ctx.params.id })
+      .withGraphFetched(
+        '[comment, reaction(reactionAggregate), flag(selectFlag),author(selectNameAndProfile)]'
+      );
+
+  } catch (e) {
+    if (e.statusCode) {
+      ctx.throw(e.statusCode, null, { errors: [e.message] });
+    } else { ctx.throw(400, null, { errors: ['Bad Request'] }); }
+    throw e;
+  }
 
   ctx.assert(chapter, 404, 'No chapter by that ID');
+
 
   ctx.status = 200;
   ctx.body = { chapter };
@@ -205,9 +260,8 @@ router.post('/', permController.requireAuth, async ctx => {
     } else { ctx.throw(400, null, { errors: ['Bad Request'] }); }
     throw e;
   }
-  if (!chapter) {
-    ctx.assert(chapter, 401, 'Something went wrong');
-  }
+  ctx.assert(chapter, 401, 'Something went wrong');
+
   ctx.status = 201;
   ctx.body = { chapter };
 

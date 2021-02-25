@@ -80,9 +80,7 @@ router.get('/', requireAuth, async ctx => {
 
 router.get('/:id', requireAuth, async ctx => {
   const reaction = await Reaction.query().findById(ctx.params.id);
-  if (!reaction) {
-    ctx.assert(reaction, 404, 'no reaction by that ID');
-  }
+  ctx.assert(reaction, 404, 'no reaction by that ID');
   ctx.status = 200;
   ctx.body = { reaction };
 });

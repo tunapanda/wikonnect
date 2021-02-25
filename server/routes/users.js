@@ -189,7 +189,7 @@ router.get('/:id', permController.requireAuth, async ctx => {
 
   if (user.id != stateUserId || stateUserId === 'anonymous') {
     // If profile is private, return specific data
-    if(!user.private) user = _.assign(user, new Private);
+    if(user.private) user = _.assign(user, new Private);
     user = _.pick(user, publicData);
   } else {
     // get all verification data
