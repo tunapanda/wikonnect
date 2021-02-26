@@ -19,9 +19,10 @@ describe('User can create chapter', () => {
       .click();
     
     // H5P Upload
-    cy.intercept(/api\/v1\/chapters\/.*\/upload/).as('h5pUpload');
-    cy.get('input[type="file"]').attachFile({filePath: 'test.h5p', encoding: 'base64'});
-    cy.wait('@h5pUpload');
+    // cy.intercept(/api\/v1\/chapters\/.*\/upload/).as('h5pUpload');
+    // cy.get('input[type="file"]').attachFile({filePath: 'test.h5p', encoding: 'base64'});
+    // cy.wait('@h5pUpload');
+    cy.get('button.btn.btn-warning').click();
 
     // Thumbnail Upload
     cy.intercept(/api\/v1\/chapters\/.*\/chapter-image/).as("imgUpload");
@@ -35,7 +36,7 @@ describe('User can create chapter', () => {
     cy.get('.float-right').click();
 
     // Preview
-    cy.get('.h5p-iframe-wrapper').should('be.visible');
+    // cy.get('.h5p-iframe-wrapper').should('be.visible');
 
     cy.get('span.badge')
       .should('be.visible')
