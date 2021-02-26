@@ -48,16 +48,16 @@ export default class TeachH5pUploadController extends Controller {
 
     try {
       await uploader.startUpload([host, 'chapters', id, 'chapter-image'].join('/'));
+      //upload
+      this.set('complete', true);
+  
+      if (this.complete === true) {
+        this.transitionToRoute('teach.tag', id);
+      }
     } catch(err) {
       console.log(err);
     }
 
-    //upload
-    this.set('complete', true);
-
-    if (this.complete === true) {
-      this.transitionToRoute('teach.tag', id);
-    }
 
   }
 }
