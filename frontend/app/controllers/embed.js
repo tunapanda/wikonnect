@@ -33,4 +33,32 @@ export default class EmbedController extends Controller {
     this.me.logout();
 
   }
+  @action
+  async dataLoad(el) {
+    let score;
+    console.log(this.callbackUrl);
+    window.H5P.externalDispatcher.on('xAPI', function (event) {
+      if (event.getScore() === event.getMaxScore() && event.getMaxScore() > 0) {
+        score = event.data.statement.result.duration;
+      }
+      console.log(event);
+    });
+    // if (score != 'undefined') {
+    //   let achievement = await this.store.createRecord('achievement', {
+    //     description: 'completed' + chapter_id,
+    //     targetStatus: 'completed',
+    //     target: chapter_id
+    //   });
+
+    //   // if user completes chapters create record
+    //   let counter = await this.store.createRecord('counter', {
+    //     counter: 1,
+    //     chapterId: chapter_id,
+    //     trigger: 'chapterCompletion'
+    //   });
+
+    //   await achievement.save();
+    //   await counter.save();
+    // }
+  }
 }

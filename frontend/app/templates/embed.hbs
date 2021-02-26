@@ -1,6 +1,7 @@
 {{outlet}}
 {{model.name}}
-{{!-- {{callbackUrl}} --}}
+<div {{did-insert (fn this.dataLoad)}}></div>
+
 <br>
 {{#if callbackUrl}}
   <span class="badge badge-primary">Progress updates sent to: {{callbackUrl}}</span>
