@@ -49,6 +49,7 @@
 
     <div class="col-lg-6  border rounded-lg pl-4 pr-4 pt-3">
       <div class="float-right">
+        <button type="button" class="btn btn-danger" {{action "showDeleteModal" }}>Delete</button>
         {{#if (eq model.status "draft")}}
           {{#if (and model.imageUrl model.contentUri)}}
             <button type="button" class="btn btn-success" {{action (mut publishModal) true}}>Publish</button>
@@ -59,7 +60,6 @@
         {{else}}
           <button type="button" class="btn btn-danger" {{action (mut unpublishModal) true}}>UnPublish</button>
         {{/if}}
-        <button type="button" class="btn btn-danger" {{action "showDeleteModal" }}>Delete</button>
       </div>
 
       <BsModalSimple @open={{publishModal}} @onSubmit={{action "publish" model.id }} @closeTitle="Cancel"
