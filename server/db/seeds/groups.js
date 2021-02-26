@@ -1,8 +1,8 @@
 exports.seed = function (knex) {
   // Deletes ALL existing entries
   return knex('groups').del()
-    .then(() => knex('group_members').del())
     .then(() => knex('group_permissions').del())
+    .then(() => knex('group_members').del())
     .then(function () {
       return knex('groups').insert([
         {
@@ -77,6 +77,25 @@ exports.seed = function (knex) {
           action: 'update:any',
           attributes: '*'
         },
+      ])).then(() => knex('group_members').insert([
+        {
+          user_id: 'user1',
+          group_id: 'groupAdmin',
+          created_at: '2019-12-20 19:17:10',
+          updated_at: '2019-12-20 19:17:10'
+        },
+        {
+          user_id: 'user2',
+          group_id: 'groupSuperAdmin',
+          created_at: '2019-12-20 19:17:10',
+          updated_at: '2019-12-20 19:17:10'
+        },
+        {
+          user_id: 'user3',
+          group_id: 'groupBasic',
+          created_at: '2019-12-20 19:17:10',
+          updated_at: '2019-12-20 19:17:10'
+        }
       ]));
     });
 };

@@ -48,11 +48,12 @@ export default class AuthenticationSignupComponent extends Component {
       if (err && err.errors) {
         Object.keys(err.errors).forEach(key => {
           let constraint = err.errors[key].constraint.split('_');
+          console.log(err.errors);
 
           let error_message;
           switch (constraint[1]) {
           case 'email':
-            error_message = 'This email is already in use';
+            error_message = err.errors[key].detail;
             break;
           case 'username':
             error_message = 'This username already exists';

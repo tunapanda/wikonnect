@@ -2,6 +2,7 @@ const Router = require('koa-router');
 const path = require('path');
 const unzipper = require('unzipper');
 const busboy = require('async-busboy');
+const { ref } = require('objection');
 
 const shortid = require('shortid');
 const sharp = require('sharp');
@@ -10,22 +11,15 @@ const log = require('../utils/logger');
 const slugGen = require('../utils/slugGen');
 
 const Chapter = require('../models/chapter');
-const User = require('../models/user');
+const Rating = require('../models/rating');
+const Counter = require('../models/counter');
 const permController = require('../middleware/permController');
 const validateGetChapter = require('../middleware/validateRequests/chapterGetValidation');
-
 const Reaction = require('../models/reaction');
-const knex = require('../utils/knexUtil');
-const { raw } = require('objection');
 
 const router = new Router({
   prefix: '/chapters'
 });
-
-const {
-  returnType,
-  achievementType
-} = require('../utils/routesUtils/chaptersRouteUtils');
 
 /**
  * @api {get} /api/v1/chapters/ GET all chapters.
@@ -42,58 +36,88 @@ const {
  *
  * @apiParam (Authentication) {String[]} [tags] Optional tags list
  *
- * @apiSuccess {Object[]} chapter List of chapters
- * @apiSuccess {String} chapter.id Id of the chapter
- * @apiSuccess {String} chapter.name Name of the chapter
- * @apiSuccess {String} chapter.description Description of the chapter
- * @apiSuccess {String} chapter.status  Status of the chapter (published | draft)
- * @apiSuccess {Boolean} chapter.approved  boolean with default being false
- * @apiSuccess {Object} chapter.tags tags list
- * @apiSuccess {String} chapter.tags tags list
+ *
+ * @apiSuccessExample {json} Success-Response:
+ *     HTTP/1.1 200 OK
+ *      {
+ *        "chapter": [{
+ *            "id": "chapter1",
+ *            "lessonId": "lesson1",
+ *            "name": "A Chapter",
+ *            "slug": "a-chapter",
+ *            "description": "An H5P Chapter.",
+ *            "status": "published",
+ *            "creatorId": "user1",
+ *            "metadata": null,
+ *            "createdAt": "2017-12-20T16:17:10.000Z",
+ *            "updatedAt": "2017-12-20T16:17:10.000Z",
+ *            "contentType": "h5p",
+ *            "contentUri": "/uploads/h5p/chapter1",
+ *            "imageUrl": null,
+ *            "tags": [ "highschool", "university" ],
+ *            "contentId": null,
+ *            "approved": "true",
+ *            "topics": null,
+ *            "views": "3",
+ *            "ratings": "3.6666666666666667",
+ *            "authenticatedUser": null,
+ *            "authenticatedUserReactionId": null,
+ *            "reaction": [{
+ *                "totalLikes": "4",
+ *                "likes": "3",
+ *                "dislikes": "1"
+ *               }],
+ *            "flag": [],
+ *            "author": {
+ *                "username": "user1",
+ *                "profileUri": null,
+ *                "lastSeen": "2021-02-25T09:19:08.239Z"
+ *            }
+ *        }]
+ *    }
  *
  * @apiSampleRequest /api/v1/chapters/
  *
  */
 
 router.get('/', permController.requireAuth, validateGetChapter, async ctx => {
-
-  let stateUserRole = ctx.state.user.role == undefined ? ctx.state.user.data.role : ctx.state.user.role;
   let stateUserId = ctx.state.user.id == undefined ? ctx.state.user.data.id : ctx.state.user.id;
-  let user = await User.query().findById(stateUserId);
-
-  let roleNameList = ['basic', 'superadmin', 'tunapanda', 'admin'];
-
-  let chapter = Chapter.query()
-    // eslint-disable-next-line quotes
-    .select('chapters.*', raw("(SELECT COUNT(nullif(reactions.reaction, 'like')) FROM reactions WHERE reactions.chapter_id = chapters.id ) AS likes, (SELECT COUNT(nullif(reactions.reaction, '')) FROM reactions WHERE reactions.chapter_id = chapters.id) AS dislikes"))
-    .avg('rate.rating as rating').avg('rate.rating as rating')
-    .from('chapters');
-
-
-  if (roleNameList.includes(stateUserRole)) {
-    if (user.tags === null || user.tags === undefined) {
-      chapter = await chapter.where(ctx.query)
-        .leftJoin('ratings as rate', 'chapters.id', 'rate.chapter_id')
-        .groupBy('chapters.id', 'rate.chapter_id')
-        .eager('[comment(selectComment), achievement(selectAchievement), flag(selectFlag)]')
-        .skipUndefined();
-    } else if (user.tags != null || user.tags != undefined || user.tags === 'all') {
-      chapter = await chapter.where(ctx.query).where('tags', '&&', `${user.tags}`)
-        .leftJoin('ratings as rate', 'chapters.id', 'rate.chapter_id')
-        .groupBy('chapters.id', 'rate.chapter_id')
-        .eager('[comment(selectComment), achievement(selectAchievement), flag(selectFlag)]')
-        .skipUndefined();
-    }
-    await achievementType(chapter);
-  } else {
-    chapter = await chapter
+  let chapter;
+  try {
+    // View counter for each chapter
+    chapter = await Chapter.query()
+      .select([
+        'chapters.*',
+        Counter.query()
+          .where({ 'chapterId': ref('chapters.id'), 'trigger': 'timerDelay' })
+          .count()
+          .as('views'),
+        Rating.query()
+          .where('chapterId', ref('chapters.id'))
+          .avg('ratings.rating')
+          .as('ratings'),
+        Reaction.query()
+          .select('reaction')
+          .where('userId', stateUserId)
+          .andWhere('chapterId', ref('chapters.id'))
+          .as('authenticated_user'),
+        Reaction.query()
+          .select('id')
+          .where('userId', stateUserId)
+          .andWhere('chapterId', ref('chapters.id'))
+          .as('authenticated_user_reaction_id')
+      ])
       .where(ctx.query)
-      .leftJoin('ratings as rate', 'chapters.id', 'rate.chapter_id')
-      .groupBy('chapters.id', 'rate.chapter_id')
-      .eager('[comment(selectComment), flag(selectFlag)]');
+      .withGraphFetched(
+        '[reaction(reactionAggregate), flag(selectFlag),author(selectNameAndProfile)]'
+      );
+  } catch (e) {
+    if (e.statusCode) {
+      ctx.throw(e.statusCode, null, { errors: [e.message] });
+    } else { ctx.throw(400, null, { errors: [e.message] }); }
+    throw e;
   }
-  await returnType(chapter);
-
+  ctx.assert(chapter, 404, 'No chapter by that ID');
   ctx.status = 200;
   ctx.body = { 'chapter': chapter };
 
@@ -135,6 +159,17 @@ router.get('/', permController.requireAuth, validateGetChapter, async ctx => {
  *            "dislikes": "0",
  *            "rating": null,
  *            "comment": [{
+ *            }],
+ *            "author": {
+ *              "username": "user1",
+ *              "profileUri": null,
+ *              "lastSeen": "2021-02-22T11:57:10.468Z"
+ *            },
+ *            "reaction": [{
+ *              "likes": 3,
+ *              "authenticated_user": "like",
+ *              "reaction.id": "",
+ *              "dislikes": 1
  *            }]
  *         }
  *      }
@@ -142,44 +177,55 @@ router.get('/', permController.requireAuth, validateGetChapter, async ctx => {
  * @apiErrorExample {json} List error
  *    HTTP/1.1 500 Internal Server Error
  */
+
+
+/** TODO:
+* Add reactions List<>Objects
+* "reaction": [{
+*     "likes": 3,
+*     "authenticated_user": "like",
+*     "id": "",
+*     "dislikes": 1
+* }]
+*/
+
 router.get('/:id', permController.requireAuth, async ctx => {
-  let stateUserRole = ctx.state.user.role == undefined ? ctx.state.user.data.role : ctx.state.user.role;
+
   let stateUserId = ctx.state.user.id == undefined ? ctx.state.user.data.id : ctx.state.user.id;
-
-  let roleNameList = ['basic', 'superadmin', 'tunapanda'];
-  let anonymous = 'anonymous';
-  let reaction, check_user,counter;
-
-  let chapter = Chapter.query()
-    .select('chapters.*')
-    .avg('rate.rating as rating')
-    .from('chapters')
-    .where({ 'chapters.id': ctx.params.id })
-    .leftJoin('ratings as rate', 'chapters.id', 'rate.chapter_id')
-    .groupBy('chapters.id', 'rate.chapter_id');
-
-  if (roleNameList.includes(stateUserRole)) {
-    chapter = await chapter.eager('[comment(selectComment), flag(selectFlag), achievement(selectAchievement)]');
-    await achievementType(chapter);
-  } else if (stateUserRole == anonymous) {
-    chapter = await chapter.where({ status: 'published' }).eager('comment(selectComment)');
-  }
-
+  let chapter;
   try {
-    check_user = await Reaction.query().where({ chapter_id: ctx.params.id, user_id: stateUserId });
-    reaction = await knex.raw(`SELECT COUNT(*) AS total_likes, COUNT(CASE WHEN reaction = 'like' THEN 1 ELSE NULL END) AS likes, COUNT(CASE WHEN reaction = 'dislike' THEN 1 ELSE NULL END) AS dislikes FROM reactions  WHERE reactions.chapter_id = '${ctx.params.id}'`);
-    counter = await knex.raw(`select count(*) from counter where trigger = 'timerDelay' and chapter_id = '${ctx.params.id}'`);
+    chapter = await Chapter.query()
+      .select([
+        'chapters.*',
+        Counter.query()
+          .where({ 'chapterId': ref('chapters.id'), 'trigger': 'timerDelay' })
+          .count()
+          .as('views'),
+        Rating.query()
+          .where('chapterId', ref('chapters.id'))
+          .avg('ratings.rating')
+          .as('ratings'),
+        Reaction.query()
+          .select('reaction')
+          .where('userId', stateUserId)
+          .andWhere('chapterId', ref('chapters.id'))
+          .as('authenticated_user')
 
-    chapter[0].reaction = reaction.rows[0];
-    chapter[0].reaction.authenticated_user = check_user[0] === undefined ? null : check_user[0].reaction;
-    chapter[0].counter = counter.rows === undefined ? '0' : counter.rows[0].count;
+      ])
+      .where({ 'chapters.id': ctx.params.id })
+      .withGraphFetched(
+        '[comment, reaction(reactionAggregate), flag(selectFlag),author(selectNameAndProfile)]'
+      );
 
-  } catch (error) {
-    log.error(error.message);
+  } catch (e) {
+    if (e.statusCode) {
+      ctx.throw(e.statusCode, null, { errors: [e.message] });
+    } else { ctx.throw(400, null, { errors: ['Bad Request'] }); }
+    throw e;
   }
 
-  ctx.assert(chapter, 404, 'No lesson by that ID');
-  await returnType(chapter);
+  ctx.assert(chapter, 404, 'No chapter by that ID');
+
 
   ctx.status = 200;
   ctx.body = { chapter };
@@ -245,9 +291,8 @@ router.post('/', permController.requireAuth, async ctx => {
     } else { ctx.throw(400, null, { errors: ['Bad Request'] }); }
     throw e;
   }
-  if (!chapter) {
-    ctx.assert(chapter, 401, 'Something went wrong');
-  }
+  ctx.assert(chapter, 401, 'Something went wrong');
+
   ctx.status = 201;
   ctx.body = { chapter };
 
@@ -278,14 +323,12 @@ router.post('/', permController.requireAuth, async ctx => {
  */
 router.put('/:id', permController.requireAuth, async ctx => {
   let chapterData = ctx.request.body.chapter;
-  let chapterRed = await Chapter.query().findById(ctx.params.id);
-
-  if (!chapterRed || chapterData.id) {
-    ctx.throw(400, 'Body contains id, remove it');
-  }
+  if (chapterData.id) delete chapterData.id;
+  const chapterCheck = await Chapter.query().findById(ctx.params.id);
+  ctx.assert(chapterCheck, 400, 'Invalid data provided');
 
   try {
-    const chapter = await Chapter.query().patchAndFetchById(ctx.params.id, chapterData);
+    const chapter = await chapterCheck.$query().patchAndFetchById(ctx.params.id, chapterData);
     ctx.status = 201;
     ctx.body = { chapter };
   } catch (e) {
@@ -298,12 +341,9 @@ router.put('/:id', permController.requireAuth, async ctx => {
 
 
 
-router.delete('/:id', permController.requireAuth, permController.grantAccess('deleteAny', 'path'), async ctx => {
+router.delete('/:id', permController.requireAuth, async ctx => {
   const chapter = await Chapter.query().findById(ctx.params.id);
-
-  if (!chapter) {
-    ctx.assert(chapter, 401, 'No ID was found');
-  }
+  ctx.assert(chapter, 401, 'No ID was found');
   await Chapter.query().delete().where({ id: ctx.params.id });
 
   ctx.status = 200;

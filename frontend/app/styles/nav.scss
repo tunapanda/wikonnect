@@ -55,12 +55,6 @@
   padding: 20px;
 }
 
-.nav-item {
-  border-bottom: grey;
-  border-bottom-width: thin;
-  border-bottom-style: solid;
-}
-
 .nav-head {
   background-color: coral;
   color: white;
@@ -85,7 +79,50 @@
   border-radius: 50px;
 }
 
-/* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */
+.main-header {
+
+  .navbar-nav {
+    .nav-link {
+      color: #FFFFFF !important;
+      &.active {
+        font-weight: bold;
+      }
+    }
+
+  }
+}
+
+.main-header {
+  .search-form {
+    .search-input {
+      border-radius: 3px 0 0 3px;
+      margin-right: -1px !important;
+      padding-right: 0;
+      border: 0;
+
+    }
+
+    .search-button {
+      background: #FAF1DB;
+      color: white;
+      border-radius: 0;
+
+      .search-icon {
+        color: white
+      }
+    }
+  }
+
+  .navbar-toggler {
+    color: #FFFFFF;
+    border-color: transparent;
+    transform: scaleX(-1);
+    -webkit-transform: scaleX(-1);
+  }
+}
+
+
+/* On smaller screens, where height is less than 450px */
 @media screen and (max-height: 450px) {
   .sidenav {
     padding-top: 15px;
@@ -94,4 +131,31 @@
   .sidenav a {
     font-size: 18px;
   }
+}
+
+@media (min-width: 992px) {
+
+  .main-header {
+    height: 60px;
+
+    .action-btn {
+      font-size: 15px;
+      letter-spacing: 0;
+      border: 1px solid #FFFFFF;
+      border-radius: 2px;
+      padding-top: 8px;
+      padding-bottom: 8px;
+      display: inline;
+
+      &.signup {
+        background-color: #FFFFFF;
+        color: $primary !important;
+      }
+
+      &.signin {
+        color: #FFFF !important;
+      }
+    }
+  }
+
 }
