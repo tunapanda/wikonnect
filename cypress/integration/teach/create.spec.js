@@ -25,15 +25,15 @@ describe('User can create chapter', () => {
     
     // Thumbnail Upload
     cy.intercept(/api\/v1\/chapters\/.*\/chapter-image/).as("imgUpload");
-    cy.get('input[type="file"]').attachFile({filePath: 'test.jpg'});
-    // cy.wait("@imgUpload");
-    cy.get('button.btn.btn-warning').click();
+    cy.get('input[type="file"]').attachFile({filePath: 'test.jpg', encoding: ''});
+    cy.wait("@imgUpload");
+    // cy.get('button.btn.btn-warning').click();
 
     // Tag
     cy.get('.p-4 input.form-control').type(tag);
     cy.get('.p-4 > form > .btn').click();
     cy.get('.m-1').should('be.visible').and('contain', tag);
-    cy.get('.float-right').click();
+    // cy.get('.float-right').click();
 
     // Preview
     cy.get('.h5p-iframe-wrapper').should('be.visible');
