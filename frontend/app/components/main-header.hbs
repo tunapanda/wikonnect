@@ -17,7 +17,8 @@
 
   <button class="navbar-toggler ml-auto" type="button" data-toggle="collapse" data-target="#mainTopNav"
           aria-controls="navbarSupportedContent-555" aria-expanded="false" aria-label="Toggle navigation">
-    <MdIcon @icon="segment" @size={{27}} />
+    {{svg-jar "segment" width="27" height="27"}}
+
   </button>
 
   <div class="collapse navbar-collapse" id="mainTopNav">
@@ -64,7 +65,8 @@
         </button>
       {{else}}
         <button class="btn  my-2 my-sm-0 search-button" type="submit">
-          <MdIcon @icon="magnify" @size={{20}} class="search-icon" @fill="black"/>
+    {{svg-jar "magnify" width="20" height="21"}}
+
         </button>
 
       {{/if}}
