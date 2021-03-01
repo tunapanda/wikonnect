@@ -52,6 +52,9 @@ export default class MeService extends Service {
   }
 
   get name() {
+    if (!this.user.metadata) {
+      return this.user.username;
+    }
     if (this.user.metadata.firstName && this.user.metadata.lastName) {
       return `${this.user.metadata.firstName} ${this.user.metadata.lastName}`;
     } else if (this.user.metadata.firstName && !this.user.metadata.lastName) {
