@@ -1,6 +1,6 @@
 import {action} from '@ember/object';
 import {inject} from '@ember/service';
-import Component from '@ember/component';
+import Component from '@glimmer/component';
 import {tracked} from '@glimmer/tracking';
 import LoginValidations from '../../validations/login';
 
@@ -35,8 +35,7 @@ export default class LoginComponent extends Component {
   login(model) {
     this.loading = true;
     this.me.authenticate(model.get('username'), model.get('password')).then(() => {
-
-      this.authenticationSuccessful(); //todo use this.args after Ember bootstrap update
+      this.args.authenticationSuccessful();
     }).catch(() => {
       this.loading = false;
       this.notify.alert('Login failed, Check your username and password and try again', {closeAfter: 6000});
