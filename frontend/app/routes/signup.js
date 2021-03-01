@@ -1,9 +1,8 @@
 import Route from '@ember/routing/route';
-import { inject } from '@ember/service';
+import {inject as service} from '@ember/service';
 
 export default class SignupRoute extends Route {
-  @inject
-  me;
+  @service me;
 
   beforeModel() {
     if (this.me.user) {

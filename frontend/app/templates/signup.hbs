@@ -1,1 +1,3 @@
-<Authentication::Signup @newUser={{changeset model UserValidation}} @inviteCode={{invite_code}} @success={{action "signupSuccess"}} />
+<Authentication::Signup @newUser={{changeset this.model this.UserValidation}}
+                        @inviteCode={{this.invite_code}}
+                        @success={{this.signupSuccess}} />
