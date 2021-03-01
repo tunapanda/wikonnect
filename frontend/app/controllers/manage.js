@@ -1,15 +1,12 @@
 import Controller from '@ember/controller';
-import { inject } from '@ember/service';
-import { computed } from '@ember/object';
+import {inject as service} from '@ember/service';
 
 
 export default class ManageController extends Controller {
-  @inject
-  me
+  @service me;
 
 
-  @computed()
   get chapters() {
-    return this.store.query('chapter', { 'status': 'published' });
+    return this.model;
   }
 }
