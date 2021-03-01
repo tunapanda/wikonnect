@@ -1,27 +1,14 @@
-{{outlet}}
-
 <div class=" d-flex row text-center p-4 shadow-sm justify-content-center">
   <h3><b>{{t "messages.create_h5p_chapter"}}</b></h3>
 </div>
-{{!-- <div class="row text-center d-flex justify-content-center pt-4">
-  <span class="border-bottom border-success m-3"><b>{{t "labels.details"}}</b></span>
-  <span class="border-bottom border-success m-3"><b>{{t "labels.tags"}}</b></span>
-  <span class="border-bottom border-success m-3"><b>{{t "labels.thumbnail"}}</b></span>
-  <span class="border-bottom border-success m-3"><b>{{t "labels.h5p"}}</b></span>
-  <span class="border-bottom border-success m-3"><b>{{t "labels.preview_publish"}}</b></span>
 
-</div> --}}
 <div class="row d-flex justify-content-center">
 
   <div class="p-4 col-lg-8">
-    <BsForm @model={{model}} @onSubmit={{action "saveChapter"}} as |form|>
+    <BsForm @model={{this.model}} @onSubmit={{this.saveChapter}} as |form|>
       <form.element @controlType="text" @label="Chapter Title" @property="name" />
       <form.element @controlType="textarea" @label="Chapter Description" @property="description" />
-
-
-
       <BsButton @type="primary" class="form-control" @defaultText="Save Chapter Details" @buttonType="submit" />
-
 
     </BsForm>
   </div>

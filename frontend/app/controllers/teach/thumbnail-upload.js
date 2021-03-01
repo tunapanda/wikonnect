@@ -1,24 +1,24 @@
 import Controller from '@ember/controller';
-import { inject } from '@ember/service';
-import { action } from '@ember/object';
+import {inject as service} from '@ember/service';
+import {action} from '@ember/object';
 import Uploader from '../../utils/uploader';
-import { tracked } from '@glimmer/tracking';
+import {tracked} from '@glimmer/tracking';
 
 
 export default class TeachH5pUploadController extends Controller {
-  @inject me;
+  @service me;
+  @service notify;
 
-  @inject notify;
-
-  complete = false;
+  @tracked complete = false;
   @tracked hover = false;
+  @tracked uploader;
 
 
   @action
   addFiles(files) {
     this.hover = false;
     if (files.length > 1) {
-      this.notify.warning('You can only upload one file', { closeAfter: 1000 });
+      this.notify.warning('You can only upload one file', {closeAfter: 1000});
 
     }
 
@@ -38,25 +38,20 @@ export default class TeachH5pUploadController extends Controller {
   @action
   async uploadPic(files) {
 
-    let id = this.get('model').id;
-    const uploader = Uploader.create({
+    let id = this.model.id;
+    this.uploader = Uploader.create({
       file: files[0],
       filename: files[0].name,
     });
 
-    this.set('uploader', uploader);
-
     const host = '/' + this.store.adapterFor('application').urlPrefix();
+    try {
+      await this.uploader.startUpload([host, 'chapters', id, 'chapter-image'].join('/'));
 
-
-    await uploader.startUpload([host, 'chapters', id, 'chapter-image'].join('/'));
-
-    //upload
-    this.set('complete', true);
-
-    if (this.complete === true) {
+      this.complete = true;
       this.transitionToRoute('teach.h5p-upload', id);
+    } catch (e) {
+      this.notify.alert('Unexpected err encountered during thumbnail upload');
     }
-
   }
 }

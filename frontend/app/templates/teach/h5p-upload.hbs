@@ -1,4 +1,3 @@
-{{outlet}}
 <div class=" d-flex row text-center p-4 shadow-sm justify-content-center">
   <h3><b>Tag Content</b></h3>
 </div>
@@ -6,38 +5,32 @@
 <div class=" row d-flex justify-content-center">
   <div class="p-4 col-sm-6">
 
-    {{#if me.isAuthenticated}}
+    {{#if this.me.isAuthenticated}}
 
       <div class="text-center">
-
 
 
         <div class="bg-primary text-center p-3 text-white mb-4 ">
           UPLOAD H5P
         </div>
 
+        <Forms::Upload @multiple="false" @accept=".h5p" @filesSelected={{this.uploadPic}}
+                       @disabled={{this.uploader.uploading}}>
 
-        <Forms::Upload @multiple="false" @accept=".h5p" @filesSelected={{action "uploadPic"}}
-          @disabled={{uploader.uploading}}>
-
-          {{#if uploader.uploading}}
-            Uploading... <span class="loading-spinner"></span> {{uploader.progress}}% <br>
+          {{#if this.uploader.uploading}}
+            Uploading... <span class="loading-spinner"></span> {{this.uploader.progress}}% <br>
             <small class="text-muted">You will be redirected once upload is complete</small>
           {{else}}
             Upload H5P
           {{/if}}
         </Forms::Upload>
 
-
-
-        {{#if signup}}
+        {{#if this.signup}}
 
           <br><br>
-          {{#link-to "teach.thumbnail-upload" chapter.id}}
+          <LinkTo @route="teach.thumbnail-upload" @model={{this.chapter.id}}>
             <button type="button" class="btn btn-success">Add Thumbnail</button>
-
-
-          {{/link-to}}
+          </LinkTo>
 
         {{/if}}
       </div>
@@ -45,7 +38,7 @@
 
     {{else}}
 
-      <Warning @message="You do not have permission to view this page" />
+      <Warning @message="You do not have permission to view this page"/>
 
     {{/if}}
 

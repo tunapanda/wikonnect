@@ -1,17 +1,10 @@
 {{#if me.isAuthenticated}}
-
-
-  {{outlet}}
-
   <div class="container bg-white">
-    {{!-- <div class="d-flex justify-content-between pt-3 mt-0"> --}}
     <div class="d-flex justify-content-between pt-3 mt-0">
-
       <h3>My H5P Chapters</h3>
-      {{#link-to "teach.create"}}
-        <a name="" id="" class="btn bg-primary" href="#" role="button">Create H5P Chapter </a>
-
-      {{/link-to}}
+      <LinkTo @route="teach.create" class="btn bg-primary" role="button">
+        Create H5P Chapter
+      </LinkTo>
 
     </div>
 
@@ -23,9 +16,9 @@
 
     <div class="row mt-3">
 
-      {{#if @model}}
+      {{#if this.model}}
 
-        {{#each @model as |chapter|}}
+        {{#each this.model as |chapter|}}
           <TeachListItem @chapter={{chapter}} />
         {{/each}}
       {{else}}
@@ -35,6 +28,6 @@
   </div>
 {{else}}
 
-  <Warning @message="You do not have permission to view this page" />
+  <Warning @message="You do not have permission to view this page"/>
 
 {{/if}}

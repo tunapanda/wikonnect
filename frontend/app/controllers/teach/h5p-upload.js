@@ -1,37 +1,37 @@
 import Controller from '@ember/controller';
-import { inject } from '@ember/service';
-import { action } from '@ember/object';
+import {inject as service} from '@ember/service';
+import {action} from '@ember/object';
 import Uploader from '../../utils/uploader';
+import {tracked} from '@glimmer/tracking';
 
 export default class TeachH5pUploadController extends Controller {
-  @inject me;
+  @service me;
+  @service notify;
 
-  complete = false;
-
+  @tracked uploader;
+  @tracked complete = false;
 
 
   @action
   async uploadPic(files) {
 
-    let id = this.get('model').id;
-    const uploader = Uploader.create({
-      file: files[0],
-      filename: files[0].name,
-    });
-
-    this.set('uploader', uploader);
-
-    const host = '/' + this.store.adapterFor('application').urlPrefix();
+    try {
+      let id = this.model.id;
+      this.uploader = Uploader.create({
+        file: files[0],
+        filename: files[0].name,
+      });
 
 
-    await uploader.startUpload([host, 'chapters', id, 'upload'].join('/'));
+      const host = '/' + this.store.adapterFor('application').urlPrefix();
 
-    //upload
-    this.set('complete', true);
 
-    if (this.complete === true) {
+      await this.uploader.startUpload([host, 'chapters', id, 'upload'].join('/'));
+
+      this.complete = true;
       this.transitionToRoute('teach.preview', id);
+    } catch (e) {
+      this.notify.alert('We have encountered unexpected error when uploading the H5P content');
     }
-
   }
 }

@@ -1,10 +1,8 @@
 import Route from '@ember/routing/route';
-import { inject } from '@ember/service';
+import {inject as service} from '@ember/service';
 
 export default class TeachCreateRoute extends Route {
-  @inject
-  me;
-
+  @service me;
 
 
   model() {
