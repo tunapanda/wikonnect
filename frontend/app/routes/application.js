@@ -1,21 +1,14 @@
 import Route from '@ember/routing/route';
-import { inject } from '@ember/service';
-//import settings from '../config/settings';
+import {inject as service} from '@ember/service';
 
 export default class ApplicationRoute extends Route {
 
-  @inject
-  session;
+  @service session;
+  @service me;
 
-  @inject
-  me;
-
-  queryParams = { campaign_id: '', points: '', enduser_id: '', partner_id: '' };
+  queryParams = {campaign_id: '', points: '', enduser_id: '', partner_id: ''};
 
   model(params) {
-
-
-
 
     let mojaLocalStorage = {
       partner_id: params.campaign_id,
