@@ -1,11 +1,7 @@
-{{!-- {{outlet}} --}}
-{{outlet}}
-{{!-- <div {{did-insert (fn this.dataLoad)}}></div>
-<div {{did-insert (fn this.counterTimer)}}></div> --}}
 <div id="chapter" class="p-4">
-  <h4>{{model.name}} </h4>
+  <h4>{{this.model.name}} </h4>
   <div class="chapter-content ">
-    <H5p @location={{model.contentUri}} />
+    <H5p @location={{this.model.contentUri}} />
 
     <div class="section d-flex justify-content-between pt-2 pb-2">
       <div class="reactions">
@@ -14,7 +10,7 @@
         </Reaction::ChapterReaction>
       </div>
       <div class="popup-actions">
-        <p> {{model.counter}} views | {{format-date model.createdAt}}</p>
+        <p> {{this.model.counter}} views | {{format-date this.model.createdAt}}</p>
       </div>
     </div>
 
@@ -33,11 +29,11 @@
           </div>
           <div class="modal-body">
             <div class="form-group ">
-              <pre id="frame" name="frame">{{embedCode}}</pre>
+              <pre id="frame" name="frame">{{this.embedCode}}</pre>
               <CopyButton @clipboardTarget="#frame" @success={{this.onSuccess}} @error={{this.onError}}>
                 Copy Embed Code
               </CopyButton>
-              {{#if copied}}
+              {{#if this.copied}}
                 <span class="badge badge-primary pt-2">Copied</span>
 
               {{/if}}
@@ -50,30 +46,30 @@
       </div>
     </div>
 
-    {{#if config.content.APP.linkify_description}}
-      <p class="add-pre"> {{linkify model.description class="btn btn-primary replaced"}}</p>
+    {{#if this.config.content.APP.linkify_description}}
+      <p class="add-pre"> {{linkify this.model.description class="btn btn-primary replaced"}}</p>
     {{else}}
-      <p class="add-pre"> {{model.description}}</p>
+      <p class="add-pre"> {{this.model.description}}</p>
 
     {{/if}}
 
   </div>
   <br>
-  <CommentSection @selectedChapter={{model.id}} @chapterComments={{model.comments}} />
+  <CommentSection @selectedChapter={{this.model.id}} @chapterComments={{this.model.comments}} />
 </div>
 
 <div class="text-center">
-  {{#if (eq me.user.username "daph")}}
+  {{#if (eq this.me.user.username "daph")}}
 
-    {{#if (eq model.approved "true")}}
+    {{#if (eq this.model.approved "true")}}
 
-      <button {{on "click" (fn this.toggleApproval model.id "true" )}} type="button"
-                                                                       class="btn form-controll btn-danger">
+      <button type="button" class="btn form-control btn-danger"
+        {{on "click" (fn this.toggleApproval this.model.id false )}}>
         Un Approve This
       </button>
     {{else}}
-      <button {{on "click" (fn this.toggleApproval model.id "false" )}} type="button"
-                                                                        class="btn form-controll btn-success">
+      <button type="button"  class="btn form-control btn-success"
+        {{on "click" (fn this.toggleApproval this.model.id true )}}>
         Approve This
       </button>
     {{/if}}
@@ -84,12 +80,11 @@
 </div>
 
 
-<BsModalSimple @open={{flaggingModal}} @title="Report Chapter" @closeTitle="Close" @submitTitle="Submit Report" @size=""
-               @closeButton={{true}} @fade={{true}} @backdrop={{true}} @backdropClose={{true}} @onSubmit={{action
-        "saveFlag" }}
-               @onHidden={{action "toggleFlaggingModal" }} @renderInPlace={{true}}>
+<BsModalSimple  @title="Report Chapter" @closeTitle="Close" @submitTitle="Submit Report" @size="" @closeButton={{true}}
+                @fade={{true}} @backdrop={{true}} @backdropClose={{true}} @onSubmit={{action this.saveFlag }}
+                @open={{this.flaggingModal}} @onHidden={{action this.toggleFlaggingModal }} @renderInPlace={{true}}>
 
-  <BsForm @model={{flagModel}} @onSubmit={{action "saveFlag" }} as |form|>
+  <BsForm @model={{flagModel}} @onSubmit={{action this.saveFlag }} as |form|>
     <form.element @controlType="textarea" @label="Reason for reporting" @property="comment"/>
     <form.element @controlType="hidden" @value={{model}} @name="chapter"/>
 
@@ -98,12 +93,12 @@
 </BsModalSimple>
 
 
-<BsModalSimple @open={{ratingModal}} @title="Rate This Module " @closeTitle="Close"
+<BsModalSimple @open={{this.ratingModal}} @title="Rate This Module " @closeTitle="Close"
                @submitTitle="Submit Optional Remark" @size="" @closeButton={{true}} @fade={{true}} @backdrop={{true}}
-               @backdropClose={{true}} @onSubmit={{action "ratingSubmit" }} @onHidden={{action "toggleRatingModal" }}
+               @backdropClose={{true}} @onSubmit={{this.ratingSubmit}} @onHidden={{this.toggleRatingModal}}
                @renderInPlace={{true}}>
 
-  <BsForm @onSubmit={{action "ratingSubmit" }} as |form|>
+  <BsForm @onSubmit={{this.ratingSubmit }} as |form|>
     <form.element @controlType="textarea" @label="Optional reason/remark for your {{rates}} star rating"
                   @property="comment"/>
 

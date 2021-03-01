@@ -1,44 +1,33 @@
 import Controller from '@ember/controller';
-import { tracked } from '@glimmer/tracking';
-import { action } from '@ember/object';
-import { inject } from '@ember/service';
+import {tracked} from '@glimmer/tracking';
+import {action} from '@ember/object';
+import {inject as service} from '@ember/service';
 
 
 export default class ChapterIndexController extends Controller {
 
-  @inject notify;
+  @service store;
+  @service router;
+  @service me;
+  @service notify;
 
-  @inject
-  store;
-
-  @inject
-  router;
-
-  @inject
-  me
-
-
-  @inject
-  notify;
-
-  flaggingModal = false
-  ratingModal = false
-  @tracked enabled = false
+  @tracked enabled = false;
   @tracked rates = 0;
   @tracked copied = false;
-
-  queryParams = ['callbackUrl', 'ref']
-
+  @tracked flaggingModal = false;
+  @tracked ratingModal = false;
+  queryParams = ['callbackUrl', 'ref'];
 
 
   get embedCode() {
-    let mod = this.get('model');
     let baseURL = window.location.host;
     if (this.callbackUrl) {
-      return `<iframe width="600" height="450"  src="http://${baseURL}/embed/${mod.id}?callbackUrl=${this.callbackUrl}" frameBorder="0" scrolling="no"></iframe>`;
+      return `<iframe width="600" height="450"  src="http://${baseURL}/embed/${this.model.id}?` +
+        `callbackUrl=${this.callbackUrl}" frameBorder="0" scrolling="no"></iframe>`;
 
     } else {
-      return `<iframe width="600" height="450" src="http://${baseURL}/embed/${mod.id}" frameBorder="0" scrolling="no"></iframe>`;
+      return `<iframe width="600" height="450" src="http://${baseURL}/embed/${this.model.id}" ` +
+        'frameBorder="0" scrolling="no"></iframe>';
     }
 
   }
@@ -47,11 +36,11 @@ export default class ChapterIndexController extends Controller {
   async ratingSubmit(val) {
     if (!this.enabled) {
       let slug = await this.target.currentRoute.params.chapter_slug;
-      let chap = await this.store.findRecord('chapter', slug);
+      let chap = this.store.peekRecord('chapter', slug);
 
       let rating = await this.store.createRecord('rating', {
         rating: val,
-        user: this.me.get('user'),
+        user: this.me.user,
         chapter: chap,
       });
       await rating.save();
@@ -59,7 +48,7 @@ export default class ChapterIndexController extends Controller {
       this.rates = val;
       // this.notify.info('Submitted your ' + val + ' star rating');
       this.notify.info('Submitted your ' + val + ' star rating ' + val);
-      this.toggleProperty('ratingModal');
+      this.ratingModal = !this.ratingModal;
 
 
       this.enabled = true;
@@ -81,14 +70,15 @@ export default class ChapterIndexController extends Controller {
 
   @action
   toggleFlaggingModal() {
-    this.toggleProperty('flaggingModal');
+    this.flaggingModal = !this.flaggingModal;
   }
 
 
   @action
   toggleRatingModal() {
-    this.toggleProperty('ratingModal');
+    this.ratingModal = !this.ratingModal;
   }
+
   get flagModel() {
     return this.store.createRecord('flag', {
       creator: this.me.get('user')
@@ -101,11 +91,11 @@ export default class ChapterIndexController extends Controller {
 
     let slug = this.target.currentRoute.params.chapter_slug;
 
-    let chap = await this.store.findRecord('chapter', slug);
+    let chap = this.store.peekRecord('chapter', slug);
     model.setProperties({
       chapter: chap,
     });
-    model.save();
+    await model.save();
 
   }
 
@@ -119,26 +109,16 @@ export default class ChapterIndexController extends Controller {
 
 
   @action
-  toggleApproval(chapter_id, a) {
-    if (a == 'true') {
-      this.store.findRecord('chapter', chapter_id).then(function (chap) {
-        // ...after the record has loaded
-
-        chap.set('approved', false);
-        chap.set('contentType', 'false');
-        chap.save();
-      });
-    } else {
-      this.store.findRecord('chapter', chapter_id).then(function (chap) {
-        // ...after the record has loaded
-        chap.set('approved', true);
-        chap.set('contentType', 'false');
-
-        chap.save();
-
-      });
-
+  async toggleApproval(chapterId, choice) {
+    try {
+      let chapter = this.store.peekRecord('chapter', chapterId);
+      chapter.approved = choice;
+      await chapter.save();
+      this.notify.alert('Chapter approval status updated successfully');
+    } catch (e) {
+      this.notify.alert('Could not update chapter approval status');
     }
+
   }
 
   // @action
