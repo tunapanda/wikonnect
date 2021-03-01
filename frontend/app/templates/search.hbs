@@ -1,12 +1,9 @@
-{{outlet}}
-
 <div class="container">
 
   <div class="row m-5">
-    {{#if model}}
+    {{#if this.model}}
 
-
-      {{#each model as |chapter|}}
+      {{#each this.model as |chapter|}}
 
         <H5pListItem @chapter={{chapter}} />
       {{/each}}
