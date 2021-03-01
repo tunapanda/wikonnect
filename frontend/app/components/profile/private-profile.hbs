@@ -24,11 +24,13 @@
   <div class="profile-body ">
     <div class="profile-options">
       <br><br>
-      <BsButtonGroup @value={{profileView}} @type="radio" @onChange={{action (mut profileView)}} as |bg|>
-        {{#each viewOptions as |view|}}
-          <bg.button @type="default" @value={{view}}>{{view}}</bg.button>
-        {{/each}}
-      </BsButtonGroup>
+      <div class="btn-group" role="group">
+        <BsButtonGroup @value={{profileView}} @type="radio" @onChange={{action (mut profileView)}} as |bg|>
+          {{#each viewOptions as |view|}}
+            <bg.button @type="default" @value={{view}}>{{view}}</bg.button>
+          {{/each}}
+        </BsButtonGroup>
+      </div>
     </div>
     <hr>
     {{#if (eq profileView "Profile")}}
@@ -50,25 +52,30 @@
       <div class="row">
         {{#each model.achievementAwards as |achievement|}}
           <div class="col-md-6">
-            <Achievement @name={{achievement.name}} @created={{achievement.createdAt}}
-              @badge={{achievement.imageUrl}} />
+            <Achievement @name={{achievement.name}} @created={{achievement.createdAt}} @badge={{achievement.imageUrl}} />
           </div>
         {{/each}}
       </div>
     {{/if}}
     {{#if (eq profileView "Settings")}}
-      Invite Link : <br>
-      <code>{{inviteCode}}</code>
-      <CopyButton @clipboardText={{inviteCode}} @success={{this.onSuccess}} @error={{this.onError}}
-        title="copy to clipboard">
-        <span>copy</span>
-      </CopyButton>
+      <div class="main">
+        <ul>
+          <li>
+            Invite Link
+            <code>{{inviteCode}}</code>
+            <CopyButton @class={{".btn"}} @clipboardText={{inviteCode}} @error={{this.onError}} title="copy to clipboard">
+              {{svg-jar "clipboard"}}
+              <BsTooltip @title="Copied" @triggerEvents="click" />
+              <BsTooltip @title="Copy" @triggerEvents="hover" />
+            </CopyButton>
+          </li>
+        </ul>
+      </div>
+
     {{/if}}
   </div>
 
 
-
-  {{!-- <BsModal @open={{false}} @onSubmit={{action "submit"}} @onHidden={{action (mut modal3) false}} as |modal|> --}}
   <BsModal @open={{emailModalVisible}} @onHide={{action hideEmailModal}} as |modal|>
     <modal.header>
       <h4 class="modal-title">
