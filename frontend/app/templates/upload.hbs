@@ -1,47 +1,39 @@
-{{outlet}}
-
-{{#if me.isAuthenticated}}
+{{#if this.me.isAuthenticated}}
 
   <div class="text-center">
     <br>
-    {{#if this.me.user.profileUri}}
-      <img class="rounded-circle" width="300px" alt="" src={{this.me.user.profileUri}}>
-    {{else}}
-      <img class="rounded-circle" width="300px" alt="" src={{profileImage}}>
 
-    {{/if}}
+    <img class="rounded-circle" width="300px" alt="" src={{this.profileImage}}>
 
     <br>
 
     <br>
-    {{#unless complete}}
-      <Forms::Upload @multiple="false" @accept="image/*" @filesSelected={{action "uploadPic"}}
-        @disabled={{uploader.uploading}}>
-        {{#if uploader.uploading}}
-          Uploading... <span class="loading-spinner"></span> {{uploader.progress}}%
+    {{#unless this.complete}}
+      <Forms::Upload @multiple="false" @accept="image/*" @filesSelected={{action this.uploadPic}}
+                     @disabled={{this.uploader.uploading}}>
+        {{#if this.uploader.uploading}}
+          Uploading... <span class="loading-spinner"></span> {{this.uploader.progress}}%
         {{else}}
           {{t "messages.upload_profile_pic"}}
         {{/if}}
       </Forms::Upload>
     {{/unless}}
-    {{#if signup}}
+    {{#if this.signup}}
 
       <br><br>
-      {{#link-to "profile"}}
-        {{#if complete}}
+      <LinkTo @route="profile">
+        {{#if this.complete}}
           <button type="button" class="btn btn-success">Proceed to profile</button>
         {{else}}
           Skip to profile
         {{/if}}
-
-      {{/link-to}}
-
+      </LinkTo>
     {{/if}}
   </div>
 
 
 {{else}}
 
-  <Warning @message="You do not have permission to view this page" />
+  <Warning @message="You do not have permission to view this page"/>
 
 {{/if}}
