@@ -28,20 +28,8 @@ export default class ProfilePrivateProfileComponent extends Component {
 
   inviteCode = location.protocol + '//' + location.host + '/signup?invite_code=' + this.me.user.inviteCode;
 
-  @computed('me.user.{firstName,lastName}')
   get name() {
-    if (this.me.user.metadata.firstName && this.me.user.metadata.lastName) {
-      return `${this.me.user.metadata.firstName} ${this.me.user.metadata.lastName}`;
-    }
-    else if (this.me.user.metadata.firstName && !this.me.user.metadata.lastName) {
-      return this.me.user.metadata.firstName;
-    }
-    else if (!this.me.user.metadata.firstName && this.me.user.metadata.lastName) {
-      return this.me.user.metadata.lastName;
-    }
-    else {
-      return this.me.user.username;
-    }
+    return this.me.name;
   }
 
   @computed('me.user.profileUri')
