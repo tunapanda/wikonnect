@@ -328,12 +328,12 @@ router.put('/:id', permController.requireAuth, async ctx => {
   if (chapterData.id) delete chapterData.id;
   
   const stateUserRole = ctx.state.user.role == undefined
-                          ? ctx.state.user.data.role
-                          : ctx.state.user.role;
-  const roles = ["admin", "superadmin"];
+    ? ctx.state.user.data.role
+    : ctx.state.user.role;
+  const roles = ['admin', 'superadmin'];
   if (!roles.includes(stateUserRole)) {
-    ctx.throw(400, null, { errors: ["Not enough permissions"] });
-    chapterData.verified = "false";
+    ctx.throw(400, null, { errors: ['Not enough permissions'] });
+    chapterData.verified = 'false';
   }
   
   const chapterCheck = await Chapter.query().findById(ctx.params.id);

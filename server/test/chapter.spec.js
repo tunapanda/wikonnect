@@ -230,18 +230,18 @@ describe('CHAPTER ROUTE', () => {
         done();
       });
   });
-  it("Should throw an ERROR on PUT when not admin or superadmin for verified", (done) => {
+  it('Should throw an ERROR on PUT when not admin or superadmin for verified', (done) => {
     chai
       .request(server)
       .put(route + itemID)
-      .set("Content-Type", "application/json")
+      .set('Content-Type', 'application/json')
       .set(tokens.headerBasicUser2)
       .send(putData)
       .end((err, res) => {
         res.status.should.eql(400);
         res.should.be.json;
-        res.body.should.be.a("object");
-        res.body.errors.should.eql(["Bad Request"]);
+        res.body.should.be.a('object');
+        res.body.errors.should.eql(['Bad Request']);
         done();
       });
   });
