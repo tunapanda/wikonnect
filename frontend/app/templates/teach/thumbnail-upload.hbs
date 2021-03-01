@@ -1,41 +1,45 @@
-{{outlet}}
-<div class="d-flex row text-center p-4 shadow-sm justify-content-center">
+<div class=" d-flex row text-center p-4 shadow-sm justify-content-center">
   <h3><b>{{t "messages.create_h5p_chapter"}}</b></h3>
 </div>
 
 <div class="row d-flex flex-column justify-content-center align-items-center">
-  <Toc @page="3" />
-  {{#if me.isAuthenticated}}
+  <Toc @page="3"/>
+  {{#if this.me.isAuthenticated}}
     <div class="bg-primary col-md-6 col-sm-12 text-center p-3 text-white rounded-top">
       Upload Thumbnail
     </div>
+
     <div class="drop-area col-md-6 col-sm-12 mb-5 d-flex flex-column justify-content-center align-items-center">
-      <File-drop-zone @onDrop={{action "uploadPic" }}>
+      <File-drop-zone @onDrop={{this.uploadPic}}>
         <p>Drag and drop here</p>
         <p>or</p>
-        <Forms::Upload @multiple="false" @accept="image/*" @filesSelected={{action "uploadPic"}}
-          @disabled={{uploader.uploading}}>
-          {{#if uploader.uploading}}
+        <Forms::Upload @multiple="false" @accept="image/*" @filesSelected={{this.uploadPic}}
+                       @disabled={{this.uploader.uploading}}>
+          {{#if this.uploader.uploading}}
             <BsProgress as |pg|>
-              <pg.bar @value={{uploader.progress}} />
+              <pg.bar @value={{this.uploader.progress}} />
             </BsProgress>
-            Uploading... <span class="loading-spinner"></span> {{uploader.progress}}% <br>
+            Uploading... <span class="loading-spinner"></span> {{this.uploader.progress}}% <br>
             <small class="text-muted">You will be redirected once upload is complete</small>
+
           {{else}}
-            Browse files
+            Upload Thumbnail
           {{/if}}
+
         </Forms::Upload>
       </File-drop-zone>
+
       <p><em>*Max image file size allowed is 8mb</em></p>
       <p><em>*Accepted file types: jpg, png, svg</em></p>
     </div>
-    {{#link-to "teach.tag" model.id}}
+
+    <LinkTo @route="teach.tag" @model={{model.id}}>
       <button type="button" class="btn btn-warning btn-lg btn-block">Skip</button>
-    {{/link-to}}
+    </LinkTo>
 
   {{else}}
 
-    <Warning @message="You do not have permission to view this page" />
+    <Warning @message="You do not have permission to view this page"/>
 
   {{/if}}
 </div>

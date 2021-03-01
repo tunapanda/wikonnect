@@ -3,7 +3,6 @@ import { inject as service } from '@ember/service';
 
 export default class TeachTagRoute extends Route {
   @service session;
-
   @service me;
 
   beforeModel(transition) {
@@ -18,10 +17,4 @@ export default class TeachTagRoute extends Route {
     return this.store.findRecord('chapter', params.id);
   }
 
-  setupController(controller, model) {
-    // Call _super for default behavior
-    super.setupController(controller, model);
-    // Implement your custom setup after
-    controller.set('chapter_id', this.get('chapter_id'));
-  }
 }

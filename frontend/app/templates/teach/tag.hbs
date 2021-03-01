@@ -1,53 +1,53 @@
-{{outlet}}
-
-
 <div class=" d-flex row text-center p-4 shadow-sm justify-content-center">
   <h3><b>Tag Content</b></h3>
 </div>
 
 <div class=" row d-flex justify-content-center">
-  <Toc @page="4" />
+  <Toc @page="4"/>
   <div class="p-4 col-sm-8">
-    {{#if me.isAuthenticated}}
+    {{#if this.me.isAuthenticated}}
 
       <h5>Add custom tags</h5>
-      <form method="post" {{ action "addtag" on="submit"}}>
-        {{input id="tag" type="text" value=tag aria-controls="existing-user-table" placeholder="Add Custom Tag" class="form-control"}}
+      <h5>Add custom tags</h5>
+      <form method="post" {{on "submit" this.addtag}}>
+        <Input id="tag" @type="text" @value={{this.tag}} aria-controls="existing-user-table"
+               class="form-control" placeholder="Add Custom Tag"/>
         <button type="submit" class="btn btn-primary mt-2 ">Submit</button>
       </form>
-      <hr>
-      {{#if config.content.APP.use_preset_tags}}
 
-        {{#each competency_cart as |item|}}
-          <button type="button" class="btn btn-primary m-1" {{action removeme item "competency"}}>
+      <hr/>
+      {{#if this.config.content.APP.use_preset_tags}}
+
+        {{#each this.competency_cart as |item|}}
+          <button type="button" class="btn btn-primary m-1" {{on "click" (fn this.removeme tag "competency")}}>
             {{item}}
             <span aria-hidden="true">&times;</span>
           </button>
         {{/each}}
-        {{#each topic_cart as |tag|}}
-          <button type="button" class="btn btn-primary m-1" {{action removeme tag "topic"}}>
+        {{#each this.topic_cart as |tag|}}
+          <button type="button" class="btn btn-primary m-1" {{on "click" (fn this.removeme tag  "topic")}}>
             {{tag}}
             <span aria-hidden="true">&times;</span>
           </button>
 
         {{/each}}
 
-        {{#each level_cart as |tag|}}
-          <button type="button" class="btn btn-primary m-1" {{action removeme tag "level"}}>
+        {{#each this.level_cart as |tag|}}
+          <button type="button" class="btn btn-primary m-1" {{on "click" (fn this.removeme tag  "level")}}>
             {{tag}}
             <span aria-hidden="true">&times;</span>
           </button>
 
         {{/each}}
-        {{#each platform_cart as |tag|}}
-          <button type="button" class="btn btn-primary m-1" {{action removeme tag "platform"}}>
+        {{#each this.platform_cart as |tag|}}
+          <button type="button" class="btn btn-primary m-1" {{on "click" (fn this.removeme tag "platform")}}>
             {{tag}}
             <span aria-hidden="true">&times;</span>
           </button>
 
         {{/each}}
-        {{#each kicd_cart as |tag|}}
-          <button type="button" class="btn btn-primary m-1" {{action removeme tag "kicd"}}>
+        {{#each this.kicd_cart as |tag|}}
+          <button type="button" class="btn btn-primary m-1" {{on "click" (fn this.removeme tag  "kicd")}}>
             {{tag}}
             <span aria-hidden="true">&times;</span>
           </button>
@@ -55,27 +55,27 @@
         {{/each}}
       {{/if}}
 
-      {{#each custom_cart as |tag|}}
-        <button type="button" class="btn btn-primary m-1" {{action removeme tag "custom"}}>
+      {{#each this.custom_cart as |tag|}}
+        <button type="button" class="btn btn-primary m-1" {{on "click" (fn this.removeme tag "custom")}}>
           {{tag}}
           <span aria-hidden="true">&times;</span>
         </button>
 
       {{/each}}
 
-      {{#if (or topic_cart custom_cart level_cart  competency_cart)}}
-        <button type="button" class="btn btn-primary form-control float-right" {{action updateTags}}>Continue</button>
+      {{#if (or this.topic_cart this.custom_cart level_cart  this.competency_cart)}}
+        <button type="button" class="btn btn-primary form-control float-right" {{on "click" this.updateTags}}>
+          Continue
+        </button>
 
       {{else}}
-        {{#link-to "teach.preview" model.id}}
+        <LinkTo @route="teach.preview" @model={{this.model.id}}>
           <button type="button" class="btn btn-warning btn-lg btn-block">Skip</button>
-
-        {{/link-to}}
-
+        </LinkTo>
       {{/if}}
 
     {{else}}
-      <Warning @message="You do not have permission to view this page" />
+      <Warning @message="You do not have permission to view this page"/>
 
     {{/if}}
   </div>

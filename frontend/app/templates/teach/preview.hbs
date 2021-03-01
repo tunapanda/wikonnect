@@ -1,111 +1,118 @@
-{{!-- {{outlet}} --}}
 <div class="p-4">
+
   <div class="d-flex justify-content-center">
-    <Toc @page="5" />
+    <Toc @page="5"/>
   </div>
   <div class="row p-5">
-
     <div class="col-lg-6">
-      <h4><b>Chapter Name: </b>{{model.name}} ({{model.status}})</h4>
-      {{#if (eq model.status "published")}}
-        {{#if model.approved}}
+      <h4><b>Chapter Name: </b>{{this.model.name}}({{this.model.status}}) </h4>
+
+      {{#if (eq this.model.status "published")}}
+        {{#if this.model.approved}}
           <span class="badge badge-pill badge-success">approved</span>
         {{else}}
           <span class="badge badge-pill badge-danger">not approved</span>
         {{/if}}
       {{/if}}
       <br>
-      {{#if model.contentUri}}
-        <H5p @location={{model.contentUri}} />
+      {{#if this.model.contentUri}}
+        <H5p @location={{this.model.contentUri}} />
         <br>
-        {{#link-to "teach.h5p-upload" model.id}}
+        <LinkTo class="btn bg-orange" @route="teach.h5p-upload" @model={{this.model.id}}>
           <button type="button" class="btn btn-primary">Change H5P</button>
-        {{/link-to}}
+        </LinkTo>
       {{else}}
-        {{#link-to "teach.h5p-upload" model.id}}
+        <LinkTo class="btn bg-orange" @route="teach.h5p-upload" @model={{this.model.id}}>
           <button type="button" class="btn btn-primary">Upload H5P</button>
-        {{/link-to}}
+        </LinkTo>
       {{/if}}
 
       <div class=" mt-1 bg-light m-0 p-4 pt-3">
-        <p>{{model.description}}</p>
+        <p>{{this.model.description}}</p>
         <b>Tags</b>
 
         <div class="row ">
-          {{#each model.tags as |tag|}}
-            {{#link-to "tag" tag}}
+          {{#each this.model.tags as |tag|}}
+            <LinkTo @route="tag" @model={{tag}}>
               <span class="badge badge-pill badge-primary btn-lg m-1">
                 {{tag}}
               </span>
-            {{/link-to}}
+            </LinkTo>
           {{/each}}
           <br>
         </div>
-        {{#link-to "teach.tag" model.id}}
+        <LinkTo @route="teach.tag" @model={{this.model.id}}>
           <button type="button" class="btn-sm btn-primary">Modify Tags</button>
-        {{/link-to}}
+        </LinkTo>
+
       </div>
     </div>
 
+
     <div class="col-lg-6  border rounded-lg pl-4 pr-4 pt-3">
       <div class="float-right">
-        <button type="button" class="btn btn-danger" {{action "showDeleteModal" }}>Delete</button>
-        {{#if (eq model.status "draft")}}
-          {{#if (and model.imageUrl model.contentUri)}}
-            <button type="button" class="btn btn-success" {{action (mut publishModal) true}}>Publish</button>
+        <button type="button" class="btn btn-danger" {{on "click" this.showDeleteModal }}>Delete</button>
+        {{#if (eq this.model.status "draft")}}
+          {{#if (and this.model.imageUrl this.model.contentUri)}}
+            //TODO check this mut
+            <button type="button" class="btn btn-success" {{on "click" fn (mut publishModal) true}}>Publish</button>
           {{else}}
             <small>*upload thumbnail and h5p to publish</small>
             <button type="button" class="btn  bg-light" disabled>Publish</button>
           {{/if}}
         {{else}}
-          <button type="button" class="btn btn-danger" {{action (mut unpublishModal) true}}>Unpublish</button>
+          <button type="button" class="btn btn-danger" {{on "click" fn (mut this.unpublishModal) true}}>
+            Unpublish
+          </button>
         {{/if}}
       </div>
 
-      <BsModalSimple @open={{publishModal}} @onSubmit={{action "publish" model.id }} @closeTitle="Cancel"
-        @submitTitle="Publish" @title="Publish" @size="sm" @onHidden={{action (mut publishModal) false}}>
+      <BsModalSimple @open={{this.publishModal}} @onSubmit={{ fn this.publish model.id }} @closeTitle="Cancel"
+                     @submitTitle="Publish" @title="Publish" @size="sm" @onHidden={{fn (mut this.publishModal) false}}>
         Are you sure you want to publish ?
       </BsModalSimple>
 
-      <BsModalSimple @open={{unpublishModal}} @onSubmit={{action "unpublish" model.id }} @closeTitle="Cancel"
-        @submitTitle="Unpublish" @title="Unpublish" @size="sm" @onHidden={{action (mut unpublishModal) false}}>
+      <BsModalSimple @open={{this.unpublishModal}} @onSubmit={{ fn this.unpublish model.id }} @closeTitle="Cancel"
+                     @submitTitle="Unpublish" @title="Unpublish" @size="sm"
+                     @onHidden={{fn (mut this.unpublishModal) false}}>
         Are you sure you want to unpublish ?
       </BsModalSimple>
 
-      <BsModalSimple @open={{deleteModal}} @onSubmit={{action "delete" model.id }} @closeTitle="Cancel"
-        @submitTitle="Delete" @title="Delete" @size="sm" @onHidden={{action (mut deleteModal) false}}>
-        Are you sure you want to delete {{model.name}} ?
+      <BsModalSimple @open={{this.deleteModal}} @onSubmit={{fn this.delete model.id }} @closeTitle="Cancel"
+                     @submitTitle="Delete" @title="Delete" @size="sm" @onHidden={{fn (mut this.deleteModal) false}}>
+        Are you sure you want to delete {{this.model.name}} ?
       </BsModalSimple>
       <br>
       <div class="form-group ">
-        <label for="">Chapter Name</label>
-        <input value={{model.name}} type="text" class="form-control bg-light" name="" id="" aria-describedby="helpId"
-          placeholder="" disabled>
+        <label for="t">Chapter Name</label>
+        <input value={{this.model.name}} type="text" class="form-control bg-light" id="t" disabled>
       </div>
       <div class="form-group">
         <label for="">Chapter Description</label>
-        <textarea class="form-control bg-light" name="" id="" rows="3" disabled>{{model.description}}</textarea>
+        <textarea class="form-control bg-light" name="" id="" rows="3" disabled>{{this.model.description}}</textarea>
       </div>
 
-      {{#link-to "teach.edit" model.id}}
+      <LinkTo @route="teach.edit" @model={{this.model.id}}>
         <button type="button" class="btn btn-primary form-control">Change Chapter Details</button>
-      {{/link-to}}
+      </LinkTo>
       <hr>
       <div>
-        {{#if model.imageUrl}}
-          <img src="/{{model.imageUrl}}" class="img-thumbnail img-fluid rounded h-50 d-inline-block" alt=""><br>
-          {{#link-to "teach.thumbnail-upload" model.id}}
+
+        {{#if this.model.imageUrl}}
+          <img src="/{{this.model.imageUrl}}" class="img-thumbnail img-fluid rounded h-50 d-inline-block" alt="Chapter">
+          <br>
+          <LinkTo @route="teach.thumbnail-upload" @model={{this.model.id}}>
             <button type="button" class="btn btn-primary">Edit Thumbail</button>
-          {{/link-to}}
+          </LinkTo>
+
         {{else}}
-          {{#link-to "teach.thumbnail-upload" model.id}}
+          <LinkTo @route="teach.thumbnail-upload" @model={{this.model.id}}>
             <button type="button" class="btn btn-primary">Upload thumbail</button>
-          {{/link-to}}
+          </LinkTo>
+
         {{/if}}
       </div>
 
     </div>
-
   </div>
-
 </div>

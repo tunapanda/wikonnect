@@ -1,12 +1,13 @@
 import Controller from '@ember/controller';
 import { inject as service } from '@ember/service';
 import { action } from '@ember/object';
+import {A} from '@ember/array';
 
 export default class TeachCreateController extends Controller {
   @service router;
 
 
-  tag = [];
+  tag = A([]);
 
 
   @action
@@ -20,17 +21,17 @@ export default class TeachCreateController extends Controller {
 
   @action
   addTags(newTags) {
-    this.get('tags').addObject(newTags);
+    this.tags.addObject(newTags);
   }
 
   @action
   replaceTagAtIndex(tag, index) {
-    this.get('tags').replace(index, 1, [tag]);
+    this.tags.replace(index, 1, [tag]);
   }
 
   @action
   replaceTagWithTagsAtIndex(tags, index) {
-    this.get('tags').replace(index, 1, tags);
+    this.tags.replace(index, 1, tags);
   }
 
 

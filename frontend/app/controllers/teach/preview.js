@@ -1,37 +1,47 @@
 import Controller from '@ember/controller';
-import { tracked } from '@glimmer/tracking';
-import { action } from '@ember/object';
-import { inject } from '@ember/service';
+import {action} from '@ember/object';
+import {inject as service} from '@ember/service';
+import {tracked} from '@glimmer/tracking';
 
 export default class TeachPreviewController extends Controller {
-  @inject notify;
-  @inject session;
-  @inject
-  me;
-  token = this.session.data.authenticated.token;
+
+  @service notify;
+  @service session;
+  @service me;
   @tracked publishModal;
   @tracked unpublishModal;
   @tracked deleteModal;
+  token = this.session.data.authenticated.token;
+
 
   @action
   async publish(chapter_id) {
-    let chapter  = await this.store.peekRecord('chapter', chapter_id);
-    await chapter.set('status', 'published');
-    await chapter.save();
+    try {
+      let chapter = this.store.peekRecord('chapter', chapter_id);
+      chapter.status = 'published';
 
-    this.publishModal = false;
-    this.notify.info('Chapter succesfuly published');
-    this.transitionToRoute('teach.published');
+      await chapter.save();
+
+      this.publishModal = false;
+      this.notify.info('Chapter successfully published');
+      this.transitionToRoute('teach.published');
+    } catch (e) {
+      this.notify.alert('Chapter not published. Unexpected error encountered');
+    }
   }
 
-  @action
   async delete(chapter_id) {
-    let chapter = await this.store.findRecord('chapter', chapter_id);
-    await chapter.deleteRecord();
-    await chapter.save();
-    this.deleteModal = false;
-    this.notify.info('Chapter succesfuly deleted');
-    this.transitionToRoute('teach');
+    try {
+
+      let chapter = await this.store.find('chapter', chapter_id);
+      await chapter.deleteRecord();
+      await chapter.save();
+      this.deleteModal = false;
+      this.notify.info('Chapter successfully deleted');
+      this.transitionToRoute('teach');
+    } catch (e) {
+      this.notify.alert('Chapter not deleted. Unexpected error encountered');
+    }
   }
 
   @action
@@ -46,14 +56,20 @@ export default class TeachPreviewController extends Controller {
 
   @action
   async unpublish(chapter_id) {
-    let chap  = await this.store.findRecord('chapter', chapter_id);
+    try {
+      let chapter = this.store.peekRecord('chapter', chapter_id);
+      chapter.status = 'draft';
+      chapter.approved = false;
+      await chapter.save();
 
-    await chap.set('status', 'draft');
-    await chap.set('approved', false);
-    await chap.save();
+      this.unpublishModal = false;
+      this.notify.info('Chapter successfully unpublished');
+      this.transitionToRoute('teach');
+    } catch (e) {
+      this.notify.alert('Chapter not unpublished. Unexpected error encountered');
+    }
 
-    this.unpublishModal = false;
-    this.notify.info('Chapter succesfuly unpublished');
-    this.transitionToRoute('teach');
   }
+
+
 }

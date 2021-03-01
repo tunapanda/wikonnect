@@ -1,10 +1,9 @@
 import Route from '@ember/routing/route';
-import { inject } from '@ember/service';
-// import { tracked } from '@glimmer/tracking';
+import {inject as service} from '@ember/service';
 
 export default class TeachPreviewRoute extends Route {
-  @inject
-  me;
+
+  @service me;
 
   beforeModel(transition) {
     if (!this.me.isAuthenticated) {
@@ -13,7 +12,6 @@ export default class TeachPreviewRoute extends Route {
       this.transitionTo('login');
     }
   }
-
   model(params) {
     return this.store.findRecord('chapter', params.id);
   }
