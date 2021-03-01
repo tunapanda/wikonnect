@@ -6,20 +6,103 @@
   <Toc @page="4"/>
   <div class="p-4 col-sm-8">
     {{#if this.me.isAuthenticated}}
-
-      <h5>Add custom tags</h5>
       <h5>Add custom tags</h5>
       <form method="post" {{on "submit" this.addtag}}>
         <Input id="tag" @type="text" @value={{this.tag}} aria-controls="existing-user-table"
                class="form-control" placeholder="Add Custom Tag"/>
         <button type="submit" class="btn btn-primary mt-2 ">Submit</button>
       </form>
+      <hr>
+      {{#if this.config.content.APP.use_preset_tags}}
 
-      <hr/>
+        <h5>Select Tags</h5>
+        <hr>
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+          <li class="nav-item">
+            <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home"
+               aria-selected="true">
+              Topic
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile"
+               aria-selected="false">
+              Competency
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact"
+               aria-selected="false">
+              Level
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" id="contact-tab" data-toggle="tab" href="#platform" role="tab" aria-controls="platform"
+               aria-selected="false">
+              Platform
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" id="contact-tab" data-toggle="tab" href="#kicd" role="tab" aria-controls="kicd"
+               aria-selected="false">
+              KICD Status
+            </a>
+          </li>
+        </ul>
+        <div class="tab-content" id="myTabContent">
+          <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+            {{#each this.topic_list as |item|}}
+              <button type="button" class="btn btn-outline-primary m-1" {{on "click" (fn this.addme item "topic")}}>
+                {{item}}
+              </button>
+            {{/each}}
+          </div>
+          <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+            {{#each this.competency_list as |item|}}
+              <button type="button" class="btn btn-outline-primary m-1"
+                {{on "click" (fn this.addme item "competency")}}>
+                {{item}}
+              </button>
+            {{/each}}
+          </div>
+          <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
+            {{#each this.level_list as |item|}}
+              <button type="button" class="btn btn-outline-primary m-1" {{on "click" (fn this.addme item "level")}}>
+                {{item}}
+              </button>
+            {{/each}}
+          </div>
+
+          <div class="tab-pane fade" id="platform" role="tabpanel" aria-labelledby="platform-tab">
+
+            {{#each this.platform_list as |item|}}
+              <button type="button" class="btn btn-outline-primary m-1" {{on "click" (fn this.addme item "platform")}}>
+                {{item}}
+              </button>
+            {{/each}}
+          </div>
+
+
+          <div class="tab-pane fade" id="kicd" role="tabpanel" aria-labelledby="kicd-tab">
+
+            {{#each this.kicd_list as |item|}}
+              <button type="button" class="btn btn-outline-primary m-1" {{on "click" (fn this.addme item "kicd")}}>
+                {{item}}
+              </button>
+            {{/each}}
+          </div>
+        </div>
+
+        <br>
+        <br>
+      {{/if}}
+
       {{#if this.config.content.APP.use_preset_tags}}
 
         {{#each this.competency_cart as |item|}}
-          <button type="button" class="btn btn-primary m-1" {{on "click" (fn this.removeme tag "competency")}}>
+          <button type="button" class="btn btn-primary m-1" {{on "click" (fn this.removeme item "competency")}}>
             {{item}}
             <span aria-hidden="true">&times;</span>
           </button>
@@ -75,7 +158,7 @@
       {{/if}}
 
     {{else}}
-      <Warning @message="You do not have permission to view this page"/>
+      <Warning @message="You do not have permission to view this page" />
 
     {{/if}}
   </div>
