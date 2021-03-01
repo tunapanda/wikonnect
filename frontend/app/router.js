@@ -21,10 +21,7 @@ Router.map(function () {
   });
   this.route('upload');
   this.route('manage');
-  this.route('admin', function () {
-    this.route('dashboard');
-    this.route('accounts');
-  });
+
   this.route('teach', function () {
     this.route('preview', { path: '/preview/:id' });
     this.route('tag', { path: '/tag/:id' });
@@ -37,7 +34,6 @@ Router.map(function () {
     this.route('edit', { path: '/edit/:chapter_id' });
 
   });
-  this.route('swagger');
   this.route('tag', { path: '/tag/:id' });
   this.route('embed', { path: '/embed/:chapter_id' });
   this.route('callback');
