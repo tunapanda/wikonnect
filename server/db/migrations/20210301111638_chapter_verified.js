@@ -1,7 +1,7 @@
 
 exports.up = function (knex) {
   return knex.schema.table('chapters', (table) => {
-    table.boolean('verified');
+    table.boolean('verified').defaultTo(false);
   }).alterTable('chapters', (table) => {
     table.boolean('approved').notNullable().alter();
   });
