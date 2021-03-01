@@ -1,5 +1,5 @@
 <div class="p-4">
-  <BsForm @class="form" @formLayout="vertical" @model={{@registeredUser}} @onSubmit={{action this.login}} as |form|>
+  <BsForm @class="form" @formLayout="vertical" @model={{@registeredUser}} @onSubmit={{this.login}} as |form|>
     {{#each @registeredUser.errors as |err| }}
       {{#if (eq err.key "errors")}}
         <BsAlert @type="danger" @fade={{true}}>
