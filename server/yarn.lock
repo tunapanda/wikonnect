@@ -377,11 +377,6 @@ apidoc-swagger@^0.3.2:
     path-to-regexp "^1.2.0"
     winston "^0.9.0"
 
-apidocs@^2017.3.9:
-  version "2017.3.9"
-  resolved "https://registry.yarnpkg.com/apidocs/-/apidocs-2017.3.9.tgz#e417d46e80a2d8c4acebcadfc487b82c0ef18c22"
-  integrity sha1-5BfUboCi2MSs68rfxIe4LA7xjCI=
-
 append-transform@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/append-transform/-/append-transform-1.0.0.tgz#046a52ae582a228bd72f58acfbe2967c678759ab"
@@ -829,11 +824,6 @@ chai-http@2.0.1:
     methods "0.0.x"
     qs "2.0.x"
     superagent "1.2.x"
-
-chai-json-schema-ajv@^5.0.0:
-  version "5.1.0"
-  resolved "https://registry.yarnpkg.com/chai-json-schema-ajv/-/chai-json-schema-ajv-5.1.0.tgz#bf862385899c32f2af2816da507d8c3d6ccbdaa4"
-  integrity sha512-HuPu3kNy8D7znpumTve99vCOeCDe1jVnl80XUuBeALScFY1rBTxPy+umGn+BNGr9uOYAXOPBjthsvgc5OcSJbg==
 
 chai-json-schema@^1.5.1:
   version "1.5.1"

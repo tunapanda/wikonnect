@@ -21,10 +21,10 @@ async function getProfileImage(id) {
       let image = 'data:image/(png|jpg);base64,' + encode(getImage.Body);
       return image;
     } else {
-      return 'uploads/images/profile-placeholder.gif';
+      return '/uploads/images/profile-placeholder.gif';
     }
   } catch (e) {
-    return 'uploads/images/profile-placeholder.gif';
+    return '/uploads/images/profile-placeholder.gif';
   }
 }
 async function createPasswordHash(ctx, next) {
