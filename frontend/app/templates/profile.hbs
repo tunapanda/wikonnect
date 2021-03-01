@@ -1,5 +1,5 @@
 {{#if myProfile}}
-  <Profile::PrivateProfile @profileView={{view}} @save={{action "saveUser"}} @model={{model}} />
+  <Profile::PrivateProfile @profileView={{this.view}} @save={{this.saveUser}} @model={{this.model}} />
 {{else}}
-  <Profile::PublicProfile @model={{model}} />
+  <Profile::PublicProfile @model={{this.model}} />
 {{/if}}
