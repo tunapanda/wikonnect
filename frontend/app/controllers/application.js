@@ -1,12 +1,12 @@
 import Controller from '@ember/controller';
-import { inject } from '@ember/service';
-import { action } from '@ember/object';
-import { computed } from '@ember/object';
-
-// import settings from './config/settings';
-
+import {inject as service} from '@ember/service';
+import {action} from '@ember/object';
 
 export default class ApplicationController extends Controller {
+
+  @service session;
+  @service me;
+  @service router;
 
   headerStyles = {
     'default': 'white-header',
@@ -16,40 +16,28 @@ export default class ApplicationController extends Controller {
     'upload': 'auth-header',
     'cms.index': 'green-header',
     'profile': 'yellow-header'
-  }
+  };
 
-  @inject
-  session;
 
-  @inject
-  me;
-
-  @computed('currentRouteName')
   get headerStyle() {
-    let route = this.get('currentRouteName');
+    let route = this.router.currentRouteName;
     if (Object.keys(this.headerStyles).includes(route)) {
       return this.headerStyles[route];
-    }
-    else {
+    } else {
       return this.headerStyles.default;
     }
   }
 
-  @computed('currentRouteName')
   get route() {
-    return this.get('currentRouteName');
-
+    return this.router.currentRouteName;
   }
-
 
 
   @action
   logout() {
     this.me.logout();
     document.location.reload();
-    this.transitionToRoute('home');
+    this.router.transitionTo('home');
   }
-
-
 
 }

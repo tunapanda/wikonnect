@@ -1,5 +1,5 @@
 {{#if (not-eq route "embed")}}
-  <MainHeader @style={{headerStyle}} @logout={{action "logout"}} />
+  <MainHeader @style={{this.headerStyle}} @logout={{this.logout}} />
   <div class="container-fluid m-0 p-0 ">
     {{outlet}}
   </div>
