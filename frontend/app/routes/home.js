@@ -1,21 +1,15 @@
 import Route from '@ember/routing/route';
-import {inject, inject as service} from '@ember/service';
-import {set} from '@ember/object';
+import {inject as service} from '@ember/service';
 
 export default class HomeRoute extends Route {
 
-  @inject
-  me;
-
-  @inject
-  config;
-
-  @service
-  headData;
+  @service me;
+  @service config;
+  @service headData;
 
   async afterModel() {
-    set(this, 'headData.title', 'Wikonnect - Chapters');
-    set(this, 'headData.theme', '#FF5722');
+    this.headData.title = 'Wikonnect - Chapters';
+    this.headData.theme = '#FF5722';
 
   }
 
