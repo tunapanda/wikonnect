@@ -1,12 +1,11 @@
 import Component from '@glimmer/component';
 import { H5P } from 'h5p-standalone'; // ES6
 import { action } from '@ember/object';
-import { inject, inject as service } from '@ember/service';
+import { inject as service } from '@ember/service';
 
 
 export default class H5pComponent extends Component {
-  @inject me;
-
+  @service me;
   @service notify;
 
   @action
