@@ -4,6 +4,14 @@
 <div {{did-insert (fn this.counterTimer)}}></div> --}}
 <div id="chapter" class="p-4">
   <h4>{{model.name}} </h4>
+
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="#">Home</a></li>
+      <li class="breadcrumb-item"><a href="#">Library</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Data</li>
+    </ol>
+  </nav>
   <div class="chapter-content ">
     <H5p @location={{model.contentUri}} />
 
