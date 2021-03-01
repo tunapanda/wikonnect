@@ -16,14 +16,14 @@
               </span>
             </div>
 
-            <Input @type="search" class="form-control search-input" @value={{filterTagsSearchTerm}}
+            <Input @type="search" class="form-control search-input" @value={{this.filterTagsSearchTerm}}
                    placeholder="Search filters"/>
           </div>
 
           <div class="header d-flex justify-content-between">
             <span class="title">Select to filter</span>
-            <button class="btn btn-clear {{if this.hasSelectedFilterTags "active" "" }}" {{on "click"
-                                                                                              @clearAllTagFilters}}>
+            <button class="btn btn-clear {{if this.hasSelectedFilterTags "active" "" }}"
+              {{on "click" @clearAllTagFilters}}>
               Clear
             </button>
           </div>
@@ -56,7 +56,7 @@
       {{#if  this.hasSelectedFilterTags }}
         <BsButton @type="primary" @outline="true"
                   class="text-sm-center d-none d-sm-none d-md-flex clear-tags-btn hidden-sm"
-                  @onClick={{action @clearAllTagFilters}}>
+                  @onClick={{@clearAllTagFilters}}>
           Clear all filters
         </BsButton>
       {{/if}}
@@ -66,7 +66,7 @@
   {{#if this.hasSelectedFilterTags}}
     <div class="d-flex justify-content-center pt-2">
       <BsButton @type="primary" @outline="true" class="clear-tags-btn d-md-none"
-                @onClick={{action @clearAllTagFilters}}>
+                @onClick={{@clearAllTagFilters}}>
         Clear all filters
       </BsButton>
     </div>
