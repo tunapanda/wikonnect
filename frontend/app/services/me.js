@@ -1,15 +1,14 @@
-import { alias } from '@ember/object/computed';
-import Service, { inject as service } from '@ember/service';
-import { getOwner } from '@ember/application';
+import {alias} from '@ember/object/computed';
+import Service, {inject as service} from '@ember/service';
+import {getOwner} from '@ember/application';
 import RSVP from 'rsvp';
+import {tracked} from '@glimmer/tracking';
 
 
 export default class MeService extends Service {
-  @service
-  session;
-
-  @service
-  store;
+  @service session;
+  @service store;
+  @tracked user;
 
   async load() {
     const authenticator = getOwner(this).lookup('authenticator:jwt');
@@ -19,8 +18,7 @@ export default class MeService extends Service {
     if (session && session.token) {
       tokenData = authenticator.getTokenData(session.token);
       try {
-        const user = await this.store.findRecord('user', tokenData.data.id);
-        this.set('user', user);
+        this.user = await this.store.findRecord('user', tokenData.data.id);
       } catch (e) {
         return this.session.invalidate();
       }
@@ -43,7 +41,7 @@ export default class MeService extends Service {
   }
 
   authenticate(username, password) {
-    let credentials = { username, password };
+    let credentials = {username, password};
     return this.session.authenticate('authenticator:jwt', credentials).then(() => {
       return this.load();
     });
@@ -51,5 +49,17 @@ export default class MeService extends Service {
 
   logout() {
     return this.session.invalidate();
+  }
+
+  get name() {
+    if (this.user.metadata.firstName && this.user.metadata.lastName) {
+      return `${this.user.metadata.firstName} ${this.user.metadata.lastName}`;
+    } else if (this.user.metadata.firstName && !this.user.metadata.lastName) {
+      return this.user.metadata.firstName;
+    } else if (!this.user.metadata.firstName && this.user.metadata.lastName) {
+      return this.user.metadata.lastName;
+    } else {
+      return this.user.username;
+    }
   }
 }
