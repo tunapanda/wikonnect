@@ -19,7 +19,7 @@
   },
   "devDependencies": {
     "cypress": "^6.2.1",
-    "knex": "^0.21.15",
+    "knex": "^0.21.18",
     "pg": "^8.3.3"
   },
   "dependencies": {
