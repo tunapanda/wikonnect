@@ -1,7 +1,6 @@
-import Component from '@ember/component';
+import Component from '@glimmer/component';
 import { action } from '@ember/object';
 import { guidFor } from '@ember/object/internals';
-// import layout from './copy-button';
 import ClipboardJS from 'clipboard';
 
 const CLIPBOARD_EVENTS = ['success', 'error'];
