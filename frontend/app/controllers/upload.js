@@ -12,15 +12,17 @@ export default class UploadController extends Controller {
 
   queryParams = ['signup'];
   signup = false;
-
+  @tracked
+  userImage;
+  @tracked
+  uploader;
   @tracked
   complete = false;
 
-  @tracked
-  profileImage = this.me?.user?.profileUri;
-
-  @tracked
-  uploader;
+  get profileImage() {
+    this.userImage = this.me?.user?.profileUri;
+    return this.userImage;
+  }
 
   @action
   async uploadPic(files) {
@@ -35,7 +37,7 @@ export default class UploadController extends Controller {
 
       const uploadRes = await this.uploader.startUpload([host, 'users', this.me.user.id, 'profile-image'].join('/'));
 
-      this.profileImage = window.location.orign + uploadRes.path;
+      this.userImage = window.location.origin + uploadRes.path;
       this.complete = true;
       this.transitionToRoute('profile');
     } catch (e) {
