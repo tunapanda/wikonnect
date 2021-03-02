@@ -15,7 +15,7 @@ export default class TeachPreviewController extends Controller {
 
   @action
   async publish(chapter_id) {
-    let chapter  = await this.store.findRecord('chapter', chapter_id);
+    let chapter  = await this.store.peekRecord('chapter', chapter_id);
     await chapter.set('status', 'published');
     await chapter.save();
 

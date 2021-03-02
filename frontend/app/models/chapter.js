@@ -15,7 +15,7 @@ export default class ChapterModel extends Model {
   @attr imageUrl;
   @attr createdAt;
   @attr reaction;
-  @attr authenticated_user;
+  @attr authenticatedUser;
   @hasMany('comment') comments;
 
   @belongsTo('user') creator;
