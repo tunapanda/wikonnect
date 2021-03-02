@@ -11,7 +11,6 @@ export default class AuthenticationSignupComponent extends Component {
   @service session;
   @service store;
   @service config;
-  @service torii;
 
   @action
   authenticateWithGoogleImplicitGrant() {

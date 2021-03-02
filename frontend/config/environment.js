@@ -70,17 +70,6 @@ module.exports = function (environment) {
       hostWhitelist: [/^localhost:\d+$/]
     },
 
-    torii: {
-      sessionServiceName: 'session',
-      allowUnsafeRedirect: true,
-      providers: {
-        'google-oauth2-bearer': {
-          apiKey: process.env.GOOGLE_KEY,
-          redirectUri: process.env.GOOGLE_REDIRECT,
-        },
-      }
-    }
-
   };
 
   if (environment === 'development') {

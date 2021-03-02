@@ -11,7 +11,6 @@ export default class LoginComponent extends Component {
   @inject store;
   @inject notify;
   @inject config;
-  @inject torii;
   @inject session;
 
   @tracked loading = false;
