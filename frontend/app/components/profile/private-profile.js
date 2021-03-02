@@ -1,7 +1,7 @@
 import Component from '@glimmer/component';
-import {inject as service} from '@ember/service';
-import {action} from '@ember/object';
-import {tracked} from '@glimmer/tracking';
+import { inject as service } from '@ember/service';
+import { action } from '@ember/object';
+import { tracked } from '@glimmer/tracking';
 
 export default class ProfilePrivateProfileComponent extends Component {
   @service me;
@@ -18,7 +18,12 @@ export default class ProfilePrivateProfileComponent extends Component {
   lname = this.me.user?.metadata?.lastName;
   about = this.me.user?.metadata?.aboutMe;
 
-  inviteCode = location.protocol + '//' + location.host + '/signup?invite_code=' + this.me.user.inviteCode;
+  inviteCode =
+    location.protocol +
+    '//' +
+    location.host +
+    '/signup?invite_code=' +
+    this.me.user.inviteCode;
 
   get name() {
     return this.me.name;
@@ -29,18 +34,17 @@ export default class ProfilePrivateProfileComponent extends Component {
   }
 
   @action
-  onSuccess() {
-  }
+  onSuccess() {}
 
   @action
-  onError() {
-  }
+  onError() {}
 
   @action
   updateEmail() {
-    this.notify.info('Updating Email', {closeAfter: 10000});
+    this.notify.info('Updating Email', { closeAfter: 10000 });
 
-    this.store.findRecord('user', this.me.user.id)
+    this.store
+      .findRecord('user', this.me.user.id)
       .then((user) => {
         user.email = this.email;
         user.save();
@@ -48,9 +52,7 @@ export default class ProfilePrivateProfileComponent extends Component {
       .then(() => {
         this.hideEmailModal();
       });
-
   }
-
 
   @action
   showEmailModal() {
@@ -67,7 +69,6 @@ export default class ProfilePrivateProfileComponent extends Component {
     this.viewOnly = !this.viewOnly;
   }
 
-
   @action
   async saveProfile() {
     try {
@@ -78,10 +79,12 @@ export default class ProfilePrivateProfileComponent extends Component {
       user.lastName = this.lname;
       user.aboutMe = this.about;
       await user.save();
-      this.notify.info('Profile Updated', {closeAfter: 10000});
+      this.notify.info('Profile Updated', { closeAfter: 10000 });
     } catch (e) {
-      this.notify.notify('Unexpected error encountered while updating the profile.', {closeAfter: 10000});
-
+      this.notify.notify(
+        'Unexpected error encountered while updating the profile.',
+        { closeAfter: 10000 }
+      );
     }
   }
 }

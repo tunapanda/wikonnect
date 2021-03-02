@@ -4,19 +4,17 @@ import { action } from '@ember/object';
 import { tracked } from '@glimmer/tracking';
 
 export default class CommentSectionComponent extends Component {
-
   @service me;
   @service session;
   @service store;
   @service notify;
   @tracked comment;
 
-
   get commentModel() {
     return this.store.createRecord('comment', {
       creator: this.me.user,
       chapter: this.args.selectedChapter,
-      comment: this.comment
+      comment: this.comment,
     });
   }
 
@@ -26,23 +24,17 @@ export default class CommentSectionComponent extends Component {
 
   @action
   saveComment(model) {
-    model.chapter=this.store.peekRecord('chapter', this.args.selectedChapter);
-    model.save()
+    model.chapter = this.store.peekRecord('chapter', this.args.selectedChapter);
+    model
+      .save()
       .then(() => {
         this.comment = '';
-        this.notify.success('Comment added successfully', {closeAfter: 6000});
-
+        this.notify.success('Comment added successfully', { closeAfter: 6000 });
       })
       .catch(() => {
         this.comment = model.comment;
         model.deleteRecord();
-        this.notify.alert('Be mindful of your comments', {closeAfter: 6000});
+        this.notify.alert('Be mindful of your comments', { closeAfter: 6000 });
       });
-
   }
 }
-
-
-
-
-

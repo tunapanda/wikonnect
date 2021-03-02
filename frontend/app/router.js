@@ -16,7 +16,7 @@ Router.map(function () {
 
   this.route('chapter', function () {
     this.route('index', {
-      path: '/:chapter_slug'
+      path: '/:chapter_slug',
     });
   });
   this.route('upload');
@@ -30,8 +30,6 @@ Router.map(function () {
     this.route('h5p-upload', { path: '/h5p-upload/:id' });
     this.route('thumbnail-upload', { path: '/thumbnail-upload/:id' });
     this.route('index', { path: '/' });
-
-
   });
   this.route('tag', { path: '/tag/:id' });
   this.route('embed', { path: '/embed/:chapter_id' });

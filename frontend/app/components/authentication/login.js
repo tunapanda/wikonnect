@@ -21,25 +21,29 @@ export default class LoginComponent extends Component {
     let redirectURI = `${window.location.origin}/callback`;
     let responseType = 'token';
     let scope = 'profile email';
-    window.location.replace('https://accounts.google.com/o/oauth2/v2/auth?'
-      + `client_id=${clientId}`
-      + `&redirect_uri=${redirectURI}`
-      + `&response_type=${responseType}`
-      + `&scope=${scope}`
+    window.location.replace(
+      'https://accounts.google.com/o/oauth2/v2/auth?' +
+        `client_id=${clientId}` +
+        `&redirect_uri=${redirectURI}` +
+        `&response_type=${responseType}` +
+        `&scope=${scope}`
     );
   }
-
 
   @action
   login(model) {
     this.loading = true;
-    this.me.authenticate(model.get('username'), model.get('password')).then(() => {
-      this.args.authenticationSuccessful();
-    }).catch(() => {
-      this.loading = false;
-      this.notify.alert('Login failed, Check your username and password and try again', {closeAfter: 6000});
-    });
-
-
+    this.me
+      .authenticate(model.get('username'), model.get('password'))
+      .then(() => {
+        this.args.authenticationSuccessful();
+      })
+      .catch(() => {
+        this.loading = false;
+        this.notify.alert(
+          'Login failed, Check your username and password and try again',
+          { closeAfter: 6000 }
+        );
+      });
   }
 }

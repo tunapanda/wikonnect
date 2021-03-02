@@ -11,10 +11,8 @@ export default class TeachH5pUploadController extends Controller {
   @tracked uploader;
   @tracked complete = false;
 
-
   @action
   async uploadPic(files) {
-
     try {
       let id = this.model.id;
       this.uploader = Uploader.create({
@@ -22,16 +20,18 @@ export default class TeachH5pUploadController extends Controller {
         filename: files[0].name,
       });
 
-
       const host = '/' + this.store.adapterFor('application').urlPrefix();
 
-
-      await this.uploader.startUpload([host, 'chapters', id, 'upload'].join('/'));
+      await this.uploader.startUpload(
+        [host, 'chapters', id, 'upload'].join('/')
+      );
 
       this.complete = true;
       this.transitionToRoute('teach.preview', id);
     } catch (e) {
-      this.notify.alert('We have encountered unexpected error when uploading the H5P content');
+      this.notify.alert(
+        'We have encountered unexpected error when uploading the H5P content'
+      );
     }
   }
 }

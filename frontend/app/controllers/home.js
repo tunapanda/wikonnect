@@ -14,18 +14,18 @@ export default class HomeController extends Controller {
 
   get chapters() {
     if (this.selectedFilterTags.length > 0) {
-      return this.model
-        .filter((chapter) => this.selectedFilterTags.some((tag) => chapter.tags.includes(tag.name)));
+      return this.model.filter((chapter) =>
+        this.selectedFilterTags.some((tag) => chapter.tags.includes(tag.name))
+      );
     }
     return this.model;
   }
 
-
   get tagsList() {
     let allFilterTags = A([]);
 
-    this.model.map(chapter => {
-      chapter.tags.map(tag => {
+    this.model.map((chapter) => {
+      chapter.tags.map((tag) => {
         let obj = new ChapterFilterTag(tag);
         allFilterTags.addObject(obj);
       });
@@ -49,7 +49,5 @@ export default class HomeController extends Controller {
       this.selectedFilterTags.addObject(tag);
     }
     tag.selected = !tag.selected;
-
   }
-
 }

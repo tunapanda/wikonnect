@@ -3,9 +3,7 @@ import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
 
-
 export default class ChapterIndexController extends Controller {
-
   @service store;
   @service router;
   @service me;
@@ -18,18 +16,19 @@ export default class ChapterIndexController extends Controller {
   @tracked ratingModal = false;
   queryParams = ['callbackUrl', 'ref'];
 
-
   get embedCode() {
     let baseURL = window.location.host;
     if (this.callbackUrl) {
-      return `<iframe width="600" height="450"  src="http://${baseURL}/embed/${this.model.id}?` +
-        `callbackUrl=${this.callbackUrl}" frameBorder="0" scrolling="no"></iframe>`;
-
+      return (
+        `<iframe width="600" height="450"  src="http://${baseURL}/embed/${this.model.id}?` +
+        `callbackUrl=${this.callbackUrl}" frameBorder="0" scrolling="no"></iframe>`
+      );
     } else {
-      return `<iframe width="600" height="450" src="http://${baseURL}/embed/${this.model.id}" ` +
-        'frameBorder="0" scrolling="no"></iframe>';
+      return (
+        `<iframe width="600" height="450" src="http://${baseURL}/embed/${this.model.id}" ` +
+        'frameBorder="0" scrolling="no"></iframe>'
+      );
     }
-
   }
 
   @action
@@ -50,29 +49,22 @@ export default class ChapterIndexController extends Controller {
       this.notify.info('Submitted your ' + val + ' star rating ' + val);
       this.ratingModal = !this.ratingModal;
 
-
       this.enabled = true;
     }
   }
 
   @action
   onSuccess() {
-
     this.copied = true;
-
   }
-
 
   @action
-  reportSubmit() {
-
-  }
+  reportSubmit() {}
 
   @action
   toggleFlaggingModal() {
     this.flaggingModal = !this.flaggingModal;
   }
-
 
   @action
   toggleRatingModal() {
@@ -81,14 +73,12 @@ export default class ChapterIndexController extends Controller {
 
   get flagModel() {
     return this.store.createRecord('flag', {
-      creator: this.me.get('user')
+      creator: this.me.get('user'),
     });
   }
 
   @action
   async saveFlag(model) {
-
-
     let slug = this.target.currentRoute.params.chapter_slug;
 
     let chap = this.store.peekRecord('chapter', slug);
@@ -96,7 +86,6 @@ export default class ChapterIndexController extends Controller {
       chapter: chap,
     });
     await model.save();
-
   }
 
   @action
@@ -104,9 +93,7 @@ export default class ChapterIndexController extends Controller {
     let chapter = this.store.peekRecord('chapter', chapter_id);
     chapter.destroyRecord();
     this.router.transitionTo('manage');
-
   }
-
 
   @action
   async toggleApproval(chapterId, choice) {
@@ -118,7 +105,6 @@ export default class ChapterIndexController extends Controller {
     } catch (e) {
       this.notify.alert('Could not update chapter approval status');
     }
-
   }
 
   // @action

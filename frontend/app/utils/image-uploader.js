@@ -1,10 +1,14 @@
 import Uploader from './uploader';
-
+import { tracked } from '@glimmer/tracking';
 
 export default class ImageUploaderEmberObject extends Uploader {
+  @tracked loading;
+  @tracked width;
+  @tracked height;
+  @tracked thumbnail;
 
   generateThumbnail() {
-    this.set('loading', true);
+    this.loading = true;
     let file = this.file;
     let fileReader = new FileReader();
     let img = new Image();
@@ -24,9 +28,8 @@ export default class ImageUploaderEmberObject extends Uploader {
     });
 
     return loadImage.then(() => {
-
-      this.set('width', img.width);
-      this.set('height', img.height);
+      this.width = img.width;
+      this.height = img.height;
 
       let resizeInfo = this._resizeInfo(img);
 
@@ -39,12 +42,23 @@ export default class ImageUploaderEmberObject extends Uploader {
 
       let _ref, _ref1, _ref2, _ref3;
 
-      this._drawImageIOSFix(ctx, img, (_ref = resizeInfo.srcX) != null ? _ref : 0, (_ref1 = resizeInfo.srcY) != null ? _ref1 : 0, resizeInfo.srcWidth, resizeInfo.srcHeight, (_ref2 = resizeInfo.trgX) != null ? _ref2 : 0, (_ref3 = resizeInfo.trgY) != null ? _ref3 : 0, resizeInfo.trgWidth, resizeInfo.trgHeight);
+      this._drawImageIOSFix(
+        ctx,
+        img,
+        (_ref = resizeInfo.srcX) != null ? _ref : 0,
+        (_ref1 = resizeInfo.srcY) != null ? _ref1 : 0,
+        resizeInfo.srcWidth,
+        resizeInfo.srcHeight,
+        (_ref2 = resizeInfo.trgX) != null ? _ref2 : 0,
+        (_ref3 = resizeInfo.trgY) != null ? _ref3 : 0,
+        resizeInfo.trgWidth,
+        resizeInfo.trgHeight
+      );
 
       let thumbnail = canvas.toDataURL('image/png');
 
-      this.set('loading', false);
-      this.set('thumbnail', thumbnail);
+      this.loading = false;
+      this.thumbnail = thumbnail;
       Promise.resolve(thumbnail);
     });
   }
@@ -55,7 +69,7 @@ export default class ImageUploaderEmberObject extends Uploader {
       srcX: 0,
       srcY: 0,
       srcWidth: img.width,
-      srcHeight: img.height
+      srcHeight: img.height,
     };
     srcRatio = img.width / img.height;
     trgRatio = this.thumbnailWidth / this.thumbnailHeight;
@@ -87,7 +101,6 @@ export default class ImageUploaderEmberObject extends Uploader {
     let vertSquashRatio;
     vertSquashRatio = this._detectVerticalSquash(img);
     ctx.drawImage(img, sx, sy, sw, sh, dx, dy, dw, dh / vertSquashRatio);
-
   }
 
   _detectVerticalSquash(img) {

@@ -9,5 +9,4 @@ export default class IndexRoute extends Route {
     this.headData.title = 'Wikonnect - Home';
     this.headData.theme = '#534897';
   }
-
 }

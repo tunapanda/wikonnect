@@ -1,14 +1,15 @@
-import { alias } from '@ember/object/computed';
 import Service, { inject as service } from '@ember/service';
 import { getOwner } from '@ember/application';
 import RSVP from 'rsvp';
 import { tracked } from '@glimmer/tracking';
 
-
 export default class MeService extends Service {
   @service session;
   @service store;
   @tracked user;
+
+  @tracked
+  isAuthenticated = this.session.isAuthenticated;
 
   async load() {
     const authenticator = getOwner(this).lookup('authenticator:jwt');
@@ -26,9 +27,6 @@ export default class MeService extends Service {
     return RSVP.resolve();
   }
 
-  @alias('session.isAuthenticated')
-  isAuthenticated;
-
   async register(fields) {
     let user = this.store.createRecord('user', fields);
 
@@ -41,10 +39,12 @@ export default class MeService extends Service {
   }
 
   authenticate(username, password) {
-    let credentials = {username, password};
-    return this.session.authenticate('authenticator:jwt', credentials).then(() => {
-      return this.load();
-    });
+    let credentials = { username, password };
+    return this.session
+      .authenticate('authenticator:jwt', credentials)
+      .then(() => {
+        return this.load();
+      });
   }
 
   logout() {

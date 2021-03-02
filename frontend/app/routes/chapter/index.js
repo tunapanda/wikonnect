@@ -1,7 +1,6 @@
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
 
-
 export default class ChapterIndexRoute extends Route {
   @service me;
 
@@ -11,7 +10,7 @@ export default class ChapterIndexRoute extends Route {
 
   afterModel(model) {
     return {
-      comments: this.store.query('comment', {'chapterId': model.id})
+      comments: this.store.query('comment', { chapterId: model.id }),
     };
   }
 }
