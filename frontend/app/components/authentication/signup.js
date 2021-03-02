@@ -35,7 +35,9 @@ export default class AuthenticationSignupComponent extends Component {
 
     this.me.register(fields)
       .then(() => this.me.authenticate(model.get('username'), model.get('password'))
-        .then(() => this.args.success()), err => {
+        .then(() => this.args.success()))
+      .catch((error) => {
+        const err = JSON.parse(error.errors[0].detail);
         if (err && err.errors) {
           Object.keys(err.errors).forEach(key => {
             let constraint = err.errors[key].constraint.split('_');
