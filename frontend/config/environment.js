@@ -8,9 +8,6 @@ module.exports = function (environment) {
     environment,
     rootURL: '/',
     locationType: 'auto',
-    disqus: {
-      shortname: 'kmarima'
-    },
     fontawesome: {
       warnIfNoIconsIncluded: false,
       defaultPrefix: 'fal' // light icons
