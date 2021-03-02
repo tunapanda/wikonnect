@@ -6,7 +6,7 @@ export default Torii.extend({
   ajax: service(),
 
   authenticate() {
-    const ajax = this.get('ajax');
+    const ajax = this.ajax;
 
     return this._super(...arguments).then((data) => {
       return ajax.request('/token', {
