@@ -1,8 +1,6 @@
 # unconventional js
 /blueprints/*/files/
 /vendor/
-/public/
-/app/components/main-header.hbs
 
 # compiled output
 /dist/
@@ -21,6 +19,3 @@
 /.node_modules.ember-try/
 /bower.json.ember-try
 /package.json.ember-try
-
-/public/h5p/
-/public/uploads/
