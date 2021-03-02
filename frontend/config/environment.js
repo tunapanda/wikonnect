@@ -1,27 +1,21 @@
 'use strict';
 
 module.exports = function (environment) {
-  //
-
   let ENV = {
     modulePrefix: 'wikonnect',
     environment,
     rootURL: '/',
     locationType: 'auto',
-    fontawesome: {
-      warnIfNoIconsIncluded: false,
-      defaultPrefix: 'fal' // light icons
-    },
     EmberENV: {
       FEATURES: {
         // Here you can enable experimental features on an ember canary build
         // e.g. EMBER_MODULE_UNIFICATION: true
-        EMBER_METAL_TRACKED_PROPERTIES: true
+        EMBER_METAL_TRACKED_PROPERTIES: true,
       },
       EXTEND_PROTOTYPES: {
         // Prevent Ember Data from overriding Date.parse.
-        Date: false
-      }
+        Date: false,
+      },
     },
 
     APP: {
@@ -38,13 +32,12 @@ module.exports = function (environment) {
       moja_integration: false,
       languages: [
         { name: 'English', code: 'EN', file: 'en-us' },
-        { name: 'Swahili', code: 'SW', file: 'sw-ke' }
+        { name: 'Swahili', code: 'SW', file: 'sw-ke' },
       ],
       preset_tags: [
         { category: 'KICD', tags: ['KICD ALIGNED', 'KICD APPROVED'] },
-        { category: 'Competency', tags: ['TEST', 'TEST2'] }
-      ]
-
+        { category: 'Competency', tags: ['TEST', 'TEST2'] },
+      ],
     },
 
     'ember-simple-auth': {
@@ -59,17 +52,16 @@ module.exports = function (environment) {
     },
     'ember-drag-drop-polyfill': {
       enableEnterLeave: true,
-      holdToDrag: false
+      holdToDrag: false,
     },
 
     google: {
-      apiKey: process.env.GOOGLE_KEY
+      apiKey: process.env.GOOGLE_KEY,
     },
 
     fastboot: {
-      hostWhitelist: [/^localhost:\d+$/]
+      hostWhitelist: [/^localhost:\d+$/],
     },
-
   };
 
   if (environment === 'development') {
