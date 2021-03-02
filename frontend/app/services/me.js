@@ -1,6 +1,5 @@
 import Service, { inject as service } from '@ember/service';
 import { getOwner } from '@ember/application';
-import RSVP from 'rsvp';
 import { tracked } from '@glimmer/tracking';
 
 export default class MeService extends Service {
@@ -24,7 +23,7 @@ export default class MeService extends Service {
         return this.session.invalidate();
       }
     }
-    return RSVP.resolve();
+    return Promise.resolve();
   }
 
   async register(fields) {
