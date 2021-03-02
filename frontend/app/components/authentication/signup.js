@@ -1,6 +1,6 @@
 import Component from '@glimmer/component';
-import {inject as service} from '@ember/service';
-import {action} from '@ember/object';
+import { inject as service } from '@ember/service';
+import { action } from '@ember/object';
 import UserValidation from '../../validations/user';
 
 export default class AuthenticationSignupComponent extends Component {
@@ -36,8 +36,7 @@ export default class AuthenticationSignupComponent extends Component {
     this.me.register(fields)
       .then(() => this.me.authenticate(model.get('username'), model.get('password'))
         .then(() => this.args.success()))
-      .catch((error) => {
-        const err = JSON.parse(error.errors[0].detail);
+      .catch((err) => {
         if (err && err.errors) {
           Object.keys(err.errors).forEach(key => {
             let constraint = err.errors[key].constraint.split('_');
