@@ -2,12 +2,10 @@ import Uploader from './uploader';
 
 
 export default class ImageUploaderEmberObject extends Uploader {
-  // startUpload: function() {
-  //   this._generateThumbnail();
-  // },
+
   generateThumbnail() {
     this.set('loading', true);
-    let file = this.get('file');
+    let file = this.file;
     let fileReader = new FileReader();
     let img = new Image();
 
@@ -60,8 +58,8 @@ export default class ImageUploaderEmberObject extends Uploader {
       srcHeight: img.height
     };
     srcRatio = img.width / img.height;
-    trgRatio = this.get('thumbnailWidth') / this.get('thumbnailHeight');
-    if (img.height < this.get('thumbnailHeight') || img.width < this.get('thumbnailWidth')) {
+    trgRatio = this.thumbnailWidth / this.thumbnailHeight;
+    if (img.height < this.thumbnailHeight || img.width < this.thumbnailWidth) {
       info.trgHeight = info.srcHeight;
       info.trgWidth = info.srcWidth;
     } else {
@@ -77,10 +75,10 @@ export default class ImageUploaderEmberObject extends Uploader {
     info.srcY = (img.height - info.srcHeight) / 2;
 
     if (info.trgWidth == null) {
-      info.trgWidth = this.get('thumbnailWidth');
+      info.trgWidth = this.thumbnailWidth;
     }
     if (info.trgHeight == null) {
-      info.trgHeight = this.get('thumbnailHeight');
+      info.trgHeight = this.thumbnailHeight;
     }
     return info;
   }

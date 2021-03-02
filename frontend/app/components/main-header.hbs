@@ -1,12 +1,13 @@
 <nav
-        class="main-header mb-1 navbar navbar-expand-lg navbar-light text-{{this.config.content.APP.header_text}} secondary-color bg-{{config.content.APP.header_background}} shadow-sm ">
+        class="main-header mb-1 navbar navbar-expand-lg navbar-light text-{{this.config.content.APP.header_text}}
+         secondary-color bg-{{this.config.content.APP.header_background}} shadow-sm ">
   <LinkTo @route="index" class="pr-4">
 
     {{svg-jar "wikonnect-logo-white"   height="40"}}
   </LinkTo>
 
   <a class="nav-link text-{{this.config.content.APP.header_text}} lang-selector m-0 p-1" href="#"
-     {{on "click" (fn this.translate "en-us")}}>
+    {{on "click" (fn this.translate "en-us")}}>
     EN
   </a>
   <span class="lang-selector-divider">/</span>
@@ -23,28 +24,29 @@
 
   <div class="collapse navbar-collapse" id="mainTopNav">
     <ul class="navbar-nav ml-auto text-{{this.config.content.APP.header_text}} ">
-      {{#if me.user.id}}
+      {{#if this.me.user.id}}
 
         <li class="nav-item text-{{this.config.content.APP.header_text}}">
 
-          <LinkTo @route="home"  class="nav-link">
+          <LinkTo @route="home" class="nav-link">
             {{t "buttons.learn"}}
           </LinkTo>
         </li>
 
         <li class="nav-item text-{{this.config.content.APP.header_text}}">
-          <a class="nav-link" href="https://teach.wikonnect.org/api/auth?token={{token}}&user={{me.user.username}}">
-            Teach
+          <a class="nav-link"
+             href="https://teach.wikonnect.org/api/auth?token={{this.token}}&user={{this.me.user.username}}">
+          Teach
           </a>
         </li>
         <li class="nav-item text-{{this.config.content.APP.header_text}}">
-          <LinkTo @route="index" class="nav-link" >
+          <LinkTo @route="index" class="nav-link">
             {{t "buttons.about"}}
           </LinkTo>
         </li>
       {{else}}
         <li class="nav-item text-{{this.config.content.APP.header_text}}">
-          <LinkTo @route="home" class="nav-link" >
+          <LinkTo @route="home" class="nav-link">
             {{t "buttons.learn"}}
           </LinkTo>
         </li>
@@ -76,10 +78,10 @@
       {{#if this.me.user.id}}
 
         <li class="nav-item avatar dropdown text-{{this.config.content.APP.header_text}}">
-          <a class="nav-link dropdown-toggle mh-50" id="navbarDropdownMenuLink-55" data-toggle="dropdown"
+          <a href="#" class="nav-link dropdown-toggle mh-50" id="navbarDropdownMenuLink-55" data-toggle="dropdown"
              aria-haspopup="true" aria-expanded="false">
             {{#if this.me.user.profileUri}}
-              <img src={{this.me.user.profileUri}} class="rounded-circle h40" alt="avatar image">
+              <img src={{this.me.user.profileUri}} class="rounded-circle h40" alt="avatar">
             {{else}}
               <span aria-hidden="true">&times;</span>
             {{/if}}
@@ -91,7 +93,7 @@
               {{this.name}}'s {{t "labels.profile"}}
             </LinkTo>
 
-            <LinkTo @route="profile" @query={{hash view="Settings"}}  class="dropdown-item" >
+            <LinkTo @route="profile" @query={{hash view="Settings"}}  class="dropdown-item">
               {{t "buttons.settings"}}
             </LinkTo>
 

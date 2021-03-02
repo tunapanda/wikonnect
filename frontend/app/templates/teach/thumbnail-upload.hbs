@@ -32,11 +32,11 @@
           </Forms::Upload>
         </div>
 
-        {{#if signup}}
+        {{#if this.signup}}
 
           <br><br>
           <LinkTo @route="profile">
-            {{#if complete}}
+            {{#if this.complete}}
               <button type="button" class="btn btn-success">Proceed to profile</button>
             {{else}}
               Skip

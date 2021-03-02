@@ -4,9 +4,9 @@
 
       {{#if (eq @chapter.imageUrl null)}}
         <img class="card-img-top" src="https://placehold.jp/20/{{this.color}}/ffffff/328x200.png?text={{@chapter.name}}"
-        alt="">
+        alt="" role="presentation">
       {{else}}
-        <img class="card-img-top" alt="" src={{@chapter.imageUrl}}>
+        <img class="card-img-top" alt="" src={{@chapter.imageUrl}} role="presentation">
       {{/if}}
     </LinkTo>
 

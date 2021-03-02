@@ -1,8 +1,8 @@
-import {alias} from '@ember/object/computed';
-import Service, {inject as service} from '@ember/service';
-import {getOwner} from '@ember/application';
+import { alias } from '@ember/object/computed';
+import Service, { inject as service } from '@ember/service';
+import { getOwner } from '@ember/application';
 import RSVP from 'rsvp';
-import {tracked} from '@glimmer/tracking';
+import { tracked } from '@glimmer/tracking';
 
 
 export default class MeService extends Service {
@@ -29,10 +29,10 @@ export default class MeService extends Service {
   @alias('session.isAuthenticated')
   isAuthenticated;
 
-  register(fields) {
+  async register(fields) {
     let user = this.store.createRecord('user', fields);
 
-    return user.save();
+    return await user.save();
   }
 
   registerWithGoogle(fields) {

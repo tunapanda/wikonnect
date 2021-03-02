@@ -1,8 +1,8 @@
 import Controller from '@ember/controller';
-import {inject as service} from '@ember/service';
-import {action} from '@ember/object';
-import {tracked} from '@glimmer/tracking';
-import {A} from '@ember/array';
+import { inject as service } from '@ember/service';
+import { action } from '@ember/object';
+import { tracked } from '@glimmer/tracking';
+import { A } from '@ember/array';
 
 export default class TeachTagController extends Controller {
   @service me;

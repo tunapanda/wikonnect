@@ -95,7 +95,7 @@
 
       <h5>Add a custom tags</h5>
       <form method="post" {{on "submit" this.addtag}}>
-        <Input @type="text" id="tag" @value={{tag}} aria-controls="existing-user-table" placeholder="Add Custom Tag"
+        <Input @type="text" id="tag" @value={{this.tag}} aria-controls="existing-user-table" placeholder="Add Custom Tag"
                class="form-control"/>
         <button type="submit" class="btn btn-primary mt-2 ">Submit</button>
       </form>

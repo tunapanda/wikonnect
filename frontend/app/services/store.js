@@ -1,6 +1,6 @@
-import DS from 'ember-data';
+import Store from '@ember-data/store';
 
-export default DS.Store.extend({
+export default Store.extend({
 
   findBySlug: function () {
     return this.query(arguments[0], { 'slug': arguments[1] }).then((items) => {

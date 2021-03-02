@@ -20,9 +20,9 @@
 
   <div id="comments" class="media mt-4">
     {{#if item.creator.profileUri}}
-      <img alt="profile image" class="mr-3 rounded-circle" width="80px" src={{item.creator.profileUri}}>
+      <img alt="profile" class="mr-3 rounded-circle" width="80px" src={{item.creator.profileUri}}>
     {{else}}
-      <img alt="profile image" class="mr-3 rounded-circle" width="80px" src="/uploads/images/profile-placeholder.gif">
+      <img alt="profile" class="mr-3 rounded-circle" width="80px" src="/uploads/images/profile-placeholder.gif">
     {{/if}}
     <div class="media-body">
       <h5 class="mt-2">{{item.creator.username}}</h5>
