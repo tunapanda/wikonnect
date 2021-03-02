@@ -4,7 +4,6 @@ import { inject as service } from '@ember/service';
 import UserValidation from '../validations/user';
 
 export default class SignupController extends Controller {
-
   @service me;
   @service config;
 
@@ -17,8 +16,6 @@ export default class SignupController extends Controller {
       this.transitionToRoute('tags');
     } else {
       this.transitionToRoute('upload');
-
     }
   }
-
 }

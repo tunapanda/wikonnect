@@ -13,5 +13,4 @@ export default class LoginRoute extends Route {
   model() {
     return this.store.createRecord('user');
   }
-
 }

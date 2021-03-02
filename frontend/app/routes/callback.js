@@ -2,15 +2,14 @@ import { inject as service } from '@ember/service';
 import Route from '@ember/routing/route';
 
 export default class CallbackRoute extends Route {
+  @service
+  session;
 
   @service
-  session
+  me;
 
   @service
-  me
-
-  @service
-  config
+  config;
 
   parseResponse(locationHash) {
     let params = {};
@@ -31,7 +30,6 @@ export default class CallbackRoute extends Route {
       this.transitionTo('tags');
     } else {
       this.transitionTo('upload');
-
     }
   }
 
@@ -39,13 +37,16 @@ export default class CallbackRoute extends Route {
     let hash = this.parseResponse(window.location.hash);
     let googleToken = hash.access_token;
 
-    this.me.registerWithGoogle({ googleToken: googleToken, provider: 'google' })
+    this.me
+      .registerWithGoogle({ googleToken: googleToken, provider: 'google' })
       .then((user) => {
         console.log(user.get('isNew'));
         if (user.get('isNew')) {
           this.signupSuccess();
         } else {
-          this.me.authenticate(user.get('username'), googleToken).then(() => this.transitionTo('home'));
+          this.me
+            .authenticate(user.get('username'), googleToken)
+            .then(() => this.transitionTo('home'));
         }
       });
   }

@@ -6,9 +6,7 @@ import { A } from '@ember/array';
 export default class TeachCreateController extends Controller {
   @service router;
 
-
   tag = A([]);
-
 
   @action
   addTag(tag) {
@@ -34,19 +32,15 @@ export default class TeachCreateController extends Controller {
     this.tags.replace(index, 1, tags);
   }
 
-
   @action
   saveChapter(model) {
     model.setProperties({
       status: 'draft',
       contentType: 'h5p',
-      approved: false
+      approved: false,
     });
     model.save().then((x) => {
       this.transitionToRoute('teach.h5p-upload', x.id);
-
     });
-
   }
-
 }

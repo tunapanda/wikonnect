@@ -4,7 +4,6 @@ import { action } from '@ember/object';
 import { tracked } from '@glimmer/tracking';
 
 export default class MainHeaderComponent extends Component {
-
   @service me;
   @service router;
   @service session;
@@ -14,7 +13,6 @@ export default class MainHeaderComponent extends Component {
   @tracked search_term;
   @tracked searchLoading = false;
 
-
   @action
   search(evt) {
     evt.preventDefault();
@@ -22,13 +20,11 @@ export default class MainHeaderComponent extends Component {
     this.searchLoading = true;
     this.router.transitionTo('search', this.search_term);
     this.searchLoading = false;
-
   }
 
   get name() {
     return this.me.name;
   }
-
 
   @action
   translate(lang) {

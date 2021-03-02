@@ -16,7 +16,7 @@ Router.map(function () {
 
   this.route('chapter', function () {
     this.route('index', {
-      path: '/:chapter_slug'
+      path: '/:chapter_slug',
     });
   });
   this.route('upload');

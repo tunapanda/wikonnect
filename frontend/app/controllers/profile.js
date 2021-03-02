@@ -3,14 +3,12 @@ import { inject } from '@ember/service';
 import { action } from '@ember/object';
 
 export default class ProfileController extends Controller {
-
   editing = false;
 
   @inject me;
 
   queryParams = ['view'];
   view = 'Profile';
-
 
   get myProfile() {
     return this.me.user.id;
@@ -20,6 +18,4 @@ export default class ProfileController extends Controller {
   saveUser(model) {
     model.save();
   }
-
-
 }

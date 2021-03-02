@@ -18,38 +18,47 @@ export default class AuthenticationSignupComponent extends Component {
     let redirectURI = `${window.location.origin}/callback`;
     let responseType = 'token';
     let scope = 'profile email';
-    window.location.replace('https://accounts.google.com/o/oauth2/v2/auth?'
-      + `client_id=${clientId}`
-      + `&redirect_uri=${redirectURI}`
-      + `&response_type=${responseType}`
-      + `&scope=${scope}`
+    window.location.replace(
+      'https://accounts.google.com/o/oauth2/v2/auth?' +
+        `client_id=${clientId}` +
+        `&redirect_uri=${redirectURI}` +
+        `&response_type=${responseType}` +
+        `&scope=${scope}`
     );
   }
 
   @action
   createUser(model) {
-    let fields = model.getProperties('username', 'email', 'password', 'inviteCode');
-    this.notify.info('Signing up...', {closeAfter: 5000});
+    let fields = model.getProperties(
+      'username',
+      'email',
+      'password',
+      'inviteCode'
+    );
+    this.notify.info('Signing up...', { closeAfter: 5000 });
 
-
-    this.me.register(fields)
-      .then(() => this.me.authenticate(model.get('username'), model.get('password'))
-        .then(() => this.args.success()))
+    this.me
+      .register(fields)
+      .then(() =>
+        this.me
+          .authenticate(model.get('username'), model.get('password'))
+          .then(() => this.args.success())
+      )
       .catch((err) => {
         if (err && err.errors) {
-          Object.keys(err.errors).forEach(key => {
+          Object.keys(err.errors).forEach((key) => {
             let constraint = err.errors[key].constraint.split('_');
             let error_message;
             switch (constraint[1]) {
-            case 'email':
-              error_message = err.errors[key].detail;
-              break;
-            case 'username':
-              error_message = 'This username already exists';
-              break;
-            default:
-              error_message = err.errors[key].errors;
-              break;
+              case 'email':
+                error_message = err.errors[key].detail;
+                break;
+              case 'username':
+                error_message = 'This username already exists';
+                break;
+              default:
+                error_message = err.errors[key].errors;
+                break;
             }
             model.addError(constraint[1], error_message);
           });

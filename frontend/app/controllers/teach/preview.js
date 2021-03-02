@@ -4,7 +4,6 @@ import { inject as service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
 
 export default class TeachPreviewController extends Controller {
-
   @service notify;
   @service session;
   @service me;
@@ -12,7 +11,6 @@ export default class TeachPreviewController extends Controller {
   @tracked unpublishModal;
   @tracked deleteModal;
   token = this.session.data.authenticated.token;
-
 
   @action
   async publish(chapter_id) {
@@ -70,6 +68,4 @@ export default class TeachPreviewController extends Controller {
     }
 
   }
-
-
 }

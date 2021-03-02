@@ -3,7 +3,6 @@ import { inject as service } from '@ember/service';
 
 export default class TeachIndexRoute extends Route {
   @service session;
-
   @service me
 
 
@@ -16,8 +15,8 @@ export default class TeachIndexRoute extends Route {
   }
 
   async model() {
-    return this.store.query('chapter', { 
-      creatorId: this.me.user.id, 
+    return this.store.query('chapter', {
+      creatorId: this.me.user.id,
       status: 'draft'
     });
   }

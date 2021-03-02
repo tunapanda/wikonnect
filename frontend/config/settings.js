@@ -1,8 +1,8 @@
 const settings = {
   moja: false,
-  app_name: 'Wikonnect'
+  app_name: 'Wikonnect',
 };
 
 module.exports = {
-  settings
+  settings,
 };

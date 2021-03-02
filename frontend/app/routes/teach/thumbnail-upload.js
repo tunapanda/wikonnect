@@ -15,5 +15,4 @@ export default class TeachThumbnailUploadRoute extends Route {
   model(params) {
     return this.store.findRecord('chapter', params.id);
   }
-
 }

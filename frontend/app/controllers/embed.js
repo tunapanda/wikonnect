@@ -4,26 +4,23 @@ import { inject as service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
 
 export default class EmbedController extends Controller {
-
   @service me;
 
   queryParams = ['callbackUrl', 'ref'];
   @tracked showLoginModal = false;
   @tracked showRegistrationModal = false;
 
-
   get embedCode() {
     return `<iframe width="560" height="315" src="app.wikonnect.org/embed/${this.model.id}" ></iframe>`;
-
   }
 
   @action
-  openLoginModal(status){
+  openLoginModal(status) {
     this.showLoginModal = status;
   }
 
   @action
-  openSignUpModal(status){
+  openSignUpModal(status) {
     this.showRegistrationModal = status;
   }
 

@@ -1,9 +1,8 @@
 import Controller from '@ember/controller';
-import {inject as service} from '@ember/service';
-import {action} from '@ember/object';
-import {tracked} from '@glimmer/tracking';
+import { inject as service } from '@ember/service';
+import { action } from '@ember/object';
+import { tracked } from '@glimmer/tracking';
 import Uploader from '../utils/uploader';
-
 
 export default class UploadController extends Controller {
   @service me;
@@ -12,21 +11,21 @@ export default class UploadController extends Controller {
 
   queryParams = ['signup'];
   signup = false;
-  @tracked
-  userImage;
-  @tracked
-  uploader;
-  @tracked
-  complete = false;
+  @tracked uploader;
+  @tracked userImage;
+  @tracked complete = false;
 
   get profileImage() {
-    this.userImage = this.me?.user?.profileUri;
+    this.setDefaultUserImage();
     return this.userImage;
+  }
+
+  setDefaultUserImage() {
+    this.userImage = this.me?.user?.profileUri;
   }
 
   @action
   async uploadPic(files) {
-
     try {
       this.uploader = Uploader.create({
         file: files[0],
@@ -35,14 +34,18 @@ export default class UploadController extends Controller {
 
       const host = '/' + this.store.adapterFor('application').urlPrefix();
 
-      const uploadRes = await this.uploader.startUpload([host, 'users', this.me.user.id, 'profile-image'].join('/'));
+      const uploadRes = await this.uploader.startUpload(
+        [host, 'users', this.me.user.id, 'profile-image'].join('/')
+      );
 
       this.userImage = window.location.origin + uploadRes.path;
       this.complete = true;
       this.transitionToRoute('profile');
     } catch (e) {
-      this.notify.alert('Issue encountered while uploading your profile image', {closeAfter: 6000});
+      this.notify.alert(
+        'Issue encountered while uploading your profile image',
+        { closeAfter: 6000 }
+      );
     }
-
   }
 }
