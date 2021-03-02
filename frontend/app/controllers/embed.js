@@ -11,6 +11,11 @@ export default class EmbedController extends Controller {
   @inject
   me
 
+  /** TODO:
+   *      Send progress webhook to 3rd party(consumer) endpoint
+   *      Retry progress update if unsuccessful
+   *      Documentation for 3rd party
+  */
 
 
   get embedCode() {

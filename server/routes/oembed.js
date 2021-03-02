@@ -53,14 +53,14 @@ router.get('/', requireAuth, async ctx => {
   let parsedUrl = url.parse(rawUrl);
   let parsedQs = querystring.parse(parsedUrl.query);
 
+  const callbackUrl = parsedQs.callbackUrl === undefined ? '' : `callbackUrl = ${ parsedQs.callbackUrl}`;
+
   const n = parsedUrl.pathname.lastIndexOf('/');
   const chapterId = parsedUrl.pathname.substring(n + 1);
   const chapter = await Chapter.query().findById(chapterId);
   ctx.assert(chapter, 400, { message: ['No chapter found'] });
 
-  console.log(parsedQs.callbackUrl);
-
-  const provider_url = 'http://app.wikonnect.org';
+  const provider_url = 'https://app.wikonnect.org';
   let data = {
     'version': '1.0',
     'type': 'h5p',
@@ -69,7 +69,7 @@ router.get('/', requireAuth, async ctx => {
     'width': 425,
     'height': 344,
     'title': `${chapter.name}`,
-    'html': `<iframe width='560' height='315' src='${provider_url}/embed/${chapter.id}' ></iframe>`
+    'html': `<iframe width='425' height='344' src='${provider_url}/embed/${chapter.id}?${callbackUrl}' ></iframe>`
   };
   ctx.status = 200;
   ctx.body = { data };
