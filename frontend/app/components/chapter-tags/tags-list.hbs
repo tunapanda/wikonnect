@@ -4,14 +4,15 @@
       <BsDropdown @closeOnMenuClick={{false}} as |dd|>
         <dd.button @type="primary" class="tags-filter-dropdown-button">
           Filter
-          <MdIcon @icon="filter-variant" @size={{20}} />
+          {{svg-jar "filter-variant" width="20" height="20"}}
+
         </dd.button>
         <dd.menu class="tags-filter-dropdown-menu" as |ddm|>
 
           <div class="filter-tags-search input-group">
             <div class="input-group-prepend">
               <span class="input-group-text">
-                <MdIcon @icon="magnify" @size={{28}} @fill="black"/>
+                {{svg-jar "magnify" width="28" height="28"}}
               </span>
             </div>
 
@@ -48,7 +49,7 @@
         <button class="btn tag-button btn-outline-primary"
           {{on "click" (fn @toggleTagSelection tag)}}>
           <span class="mr-1"> {{tag.name}}</span>
-          <MdIcon @icon="close-circle" @size={{16}} @fill="#b0babf"/>
+          {{svg-jar "close-circle" width="16" height="16"}}
         </button>
 
       {{/each}}

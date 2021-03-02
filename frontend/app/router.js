@@ -108,7 +108,6 @@ Router.map(function () {
     this.route('edit', { path: '/edit/:chapter_id' });
 
   });
-  this.route('swagger');
   this.route('topics');
   this.route('tags');
   this.route('tag', { path: '/tag/:id' });
