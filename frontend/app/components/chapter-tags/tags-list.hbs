@@ -22,7 +22,7 @@
 
           <div class="header d-flex justify-content-between">
             <span class="title">Select to filter</span>
-            <button class="btn btn-clear {{if this.hasSelectedFilterTags "active" "" }}"
+            <button type="button" class="btn btn-clear {{if this.hasSelectedFilterTags "active" "" }}"
               {{on "click" @clearAllTagFilters}}>
               Clear
             </button>
@@ -46,7 +46,7 @@
     <div class="selected-tags tag-list d-flex col-sm ">
       {{#each @selectedFilterTags as |tag|}}
 
-        <button class="btn tag-button btn-outline-primary"
+        <button type="button" class="btn tag-button btn-outline-primary"
           {{on "click" (fn @toggleTagSelection tag)}}>
           <span class="mr-1"> {{tag.name}}</span>
           {{svg-jar "close-circle" width="16" height="16"}}

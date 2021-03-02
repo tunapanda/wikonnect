@@ -32,11 +32,11 @@ export default class UploaderEmberObject extends EmberObject.extend(Evented) {
 
   _uploadFile(urlOveride) {
     const xhr = new XMLHttpRequest();
-    const url = this.get('uploadUrl') || urlOveride;
+    const url = this.uploadUrl || urlOveride;
 
     xhr.open('post', url, true);
 
-    xhr.withCredentials = !!this.get('withCredentials');
+    xhr.withCredentials = !!this.withCredentials;
 
     let headers = {
       'Accept': 'application/json',
@@ -44,8 +44,8 @@ export default class UploaderEmberObject extends EmberObject.extend(Evented) {
       'X-Requested-With': 'XMLHttpRequest'
     };
 
-    if (this.get('auth')) {
-      headers.Authorization = this.get('auth');
+    if (this.auth) {
+      headers.Authorization = this.auth;
     }
 
     let headerValue;
@@ -57,7 +57,7 @@ export default class UploaderEmberObject extends EmberObject.extend(Evented) {
 
     const formData = new FormData();
 
-    const file = this.get('file');
+    const file = this.file;
 
     formData.append('file', file, file.name);
 
@@ -86,7 +86,7 @@ export default class UploaderEmberObject extends EmberObject.extend(Evented) {
   }
 
   _onFinish() {
-    const xhr = this.get('xhr');
+    const xhr = this.xhr;
 
     if (xhr.readyState !== 4) {
       return this._onError('Network Error');
@@ -113,14 +113,14 @@ export default class UploaderEmberObject extends EmberObject.extend(Evented) {
       'uploading': false
     });
 
-    this.get('resolve')(response);
+    this.resolve(response);
     this.trigger('finish', response);
   }
 
   _onError(err) {
     let msg = err;
     if (typeof err !== 'string') {
-      switch (this.get('xhr').status) {
+      switch (this.xhr.status) {
       case 404:
         msg = 'File not found';
         break;
@@ -131,11 +131,11 @@ export default class UploaderEmberObject extends EmberObject.extend(Evented) {
         msg = 'Request aborted';
         break;
       default:
-        msg = 'Unknown error ' + this.get('xhr').status;
+        msg = 'Unknown error ' + this.xhr.status;
       }
     }
 
-    if (this.get('attempts') < 3 && msg !== 'Request aborted') {
+    if (this.attempts < 3 && msg !== 'Request aborted') {
       this.incrementProperty('attempts');
       this.reset();
       return this._uploadFile();
@@ -147,6 +147,6 @@ export default class UploaderEmberObject extends EmberObject.extend(Evented) {
       error: true
     });
 
-    this.get('reject')();
+    this.reject();
   }
 }

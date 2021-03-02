@@ -1,5 +1,5 @@
 import Controller from '@ember/controller';
-import {action} from '@ember/object';
+import { action } from '@ember/object';
 import LoginValidations from '../validations/login';
 
 

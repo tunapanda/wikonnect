@@ -2,9 +2,10 @@
   <div class="row">
     <LinkTo @route="upload">
       {{#if this.profileUri}}
-        <img class="h80 mt-3 ml-3  rounded-circle" alt="" src={{this.profileUri}}>
+        <img class="h80 mt-3 ml-3  rounded-circle" alt="" src={{this.profileUri}} role="presentation">
       {{else}}
-        <img class="h80 mt-3 ml-3  rounded-circle" alt="" src="/uploads/images/profile-placeholder.gif">
+        <img class="h80 mt-3 ml-3  rounded-circle" alt=""
+             src="/uploads/images/profile-placeholder.gif" role="presentation">
       {{/if}}
       <br>
       <span class="ml-3">change pic</span>
@@ -25,7 +26,7 @@
     <div class="profile-options">
       <br><br>
       <div class="btn-group" role="group">
-        <BsButtonGroup @value={{@profileView}} @type="radio" @onChange={{action (mut @profileView)}} as |bg|>
+        <BsButtonGroup @value={{@profileView}} @type="radio" @onChange={{fn (mut @profileView)}} as |bg|>
           {{#each this.viewOptions as |view|}}
             <bg.button @type="default" @value={{view}}>{{view}}</bg.button>
           {{/each}}

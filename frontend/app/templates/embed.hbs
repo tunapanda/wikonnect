@@ -29,6 +29,6 @@
 <BsModalSimple @open={{this.showRegistrationModal}} @title="Login" @size="sm"
                @onHidden={{fn this.openSignUpModal false}}>
 
-  <Authentication::Signup @newUser={{changeset @model UserValidation}} @inviteCode={{invite_code}}
+  <Authentication::Signup @newUser={{changeset @model this.UserValidation}} @inviteCode={{this.invite_code}}
                           @success={{this.signup }} />
 </BsModalSimple>

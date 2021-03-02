@@ -1,7 +1,7 @@
-import {action} from '@ember/object';
-import {inject} from '@ember/service';
+import { action } from '@ember/object';
+import { inject } from '@ember/service';
 import Component from '@glimmer/component';
-import {tracked} from '@glimmer/tracking';
+import { tracked } from '@glimmer/tracking';
 import LoginValidations from '../../validations/login';
 
 export default class LoginComponent extends Component {

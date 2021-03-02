@@ -1,9 +1,9 @@
 import Controller from '@ember/controller';
-import {inject as service} from '@ember/service';
-import {A} from '@ember/array';
-import {tracked} from '@glimmer/tracking';
-import {action} from '@ember/object';
-import {ChapterFilterTag} from '../utils/chapter-filter-tag';
+import { inject as service } from '@ember/service';
+import { A } from '@ember/array';
+import { tracked } from '@glimmer/tracking';
+import { action } from '@ember/object';
+import { ChapterFilterTag } from '../utils/chapter-filter-tag';
 
 export default class HomeController extends Controller {
   @service

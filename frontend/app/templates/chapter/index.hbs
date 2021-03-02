@@ -84,9 +84,9 @@
                 @fade={{true}} @backdrop={{true}} @backdropClose={{true}} @onSubmit={{this.saveFlag }}
                 @open={{this.flaggingModal}} @onHidden={{this.toggleFlaggingModal }} @renderInPlace={{true}}>
 
-  <BsForm @model={{flagModel}} @onSubmit={{this.saveFlag }} as |form|>
+  <BsForm @model={{this.flagModel}} @onSubmit={{this.saveFlag }} as |form|>
     <form.element @controlType="textarea" @label="Reason for reporting" @property="comment"/>
-    <form.element @controlType="hidden" @value={{model}} @name="chapter"/>
+    <form.element @controlType="hidden" @value={{this.model}} @name="chapter"/>
 
 
   </BsForm>
@@ -99,7 +99,7 @@
                @renderInPlace={{true}}>
 
   <BsForm @onSubmit={{this.ratingSubmit }} as |form|>
-    <form.element @controlType="textarea" @label="Optional reason/remark for your {{rates}} star rating"
+    <form.element @controlType="textarea" @label="Optional reason/remark for your {{this.rates}} star rating"
                   @property="comment"/>
 
 

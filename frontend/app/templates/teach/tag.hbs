@@ -99,6 +99,13 @@
         <br>
       {{/if}}
 
+      <h5>Add a custom tag</h5>
+      <form method="post" {{on "submit" this.addtag}}>
+        <Input @type="text" id="tag" @value={{this.tag}} aria-controls="existing-user-table" placeholder="Add Custom Tag"
+               class="form-control"/>
+        <button type="submit" class="btn btn-primary mt-2 ">Submit</button>
+      </form>
+      <hr>
       {{#if this.config.content.APP.use_preset_tags}}
 
         {{#each this.competency_cart as |item|}}
