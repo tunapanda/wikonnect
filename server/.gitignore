@@ -111,3 +111,4 @@ public/uploads/*
 public/uploads/h5p/*
 !public/uploads/h5p/.gitinclude
 !public/uploads/images/profile-placeholder.gif
+.envrc
