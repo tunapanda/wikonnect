@@ -67,7 +67,7 @@ define({ "api": [
       }
     },
     "version": "0.0.0",
-    "filename": "./server/routes/achievement_awards.js",
+    "filename": "server/routes/achievement_awards.js",
     "groupTitle": "AchievementAwards"
   },
   {
@@ -104,7 +104,7 @@ define({ "api": [
       }
     },
     "version": "0.0.0",
-    "filename": "./server/routes/achievement_awards.js",
+    "filename": "server/routes/achievement_awards.js",
     "groupTitle": "AchievementAwards",
     "sampleRequest": [
       {
@@ -146,7 +146,7 @@ define({ "api": [
       }
     },
     "version": "0.0.0",
-    "filename": "./server/routes/achievements.js",
+    "filename": "server/routes/achievements.js",
     "groupTitle": "Achievements"
   },
   {
@@ -224,7 +224,7 @@ define({ "api": [
       }
     },
     "version": "0.0.0",
-    "filename": "./server/routes/achievements.js",
+    "filename": "server/routes/achievements.js",
     "groupTitle": "Achievements"
   },
   {
@@ -248,7 +248,7 @@ define({ "api": [
       ]
     },
     "version": "0.0.0",
-    "filename": "./server/routes/achievements.js",
+    "filename": "server/routes/achievements.js",
     "groupTitle": "Achievements",
     "sampleRequest": [
       {
@@ -331,7 +331,7 @@ define({ "api": [
       }
     },
     "version": "0.0.0",
-    "filename": "./server/routes/achievements.js",
+    "filename": "server/routes/achievements.js",
     "groupTitle": "Achievements"
   },
   {
@@ -409,7 +409,7 @@ define({ "api": [
       }
     },
     "version": "0.0.0",
-    "filename": "./server/routes/achievements.js",
+    "filename": "server/routes/achievements.js",
     "groupTitle": "Achievements"
   },
   {
@@ -490,7 +490,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "./server/routes/users.js",
+    "filename": "server/routes/users.js",
     "groupTitle": "Authentication"
   },
   {
@@ -569,7 +569,7 @@ define({ "api": [
         ]
       }
     },
-    "filename": "./server/routes/users.js",
+    "filename": "server/routes/users.js",
     "groupTitle": "Authentication",
     "sampleRequest": [
       {
@@ -616,7 +616,7 @@ define({ "api": [
         ]
       }
     },
-    "filename": "./server/routes/users.js",
+    "filename": "server/routes/users.js",
     "groupTitle": "Authentication",
     "sampleRequest": [
       {
@@ -692,7 +692,7 @@ define({ "api": [
       }
     },
     "version": "0.0.0",
-    "filename": "./server/routes/users.js",
+    "filename": "server/routes/users.js",
     "groupTitle": "Authentication",
     "sampleRequest": [
       {
@@ -759,7 +759,7 @@ define({ "api": [
       }
     },
     "version": "0.0.0",
-    "filename": "./server/routes/auth.js",
+    "filename": "server/routes/auth.js",
     "groupTitle": "Authentication"
   },
   {
@@ -835,7 +835,7 @@ define({ "api": [
         ]
       }
     },
-    "filename": "./server/routes/users.js",
+    "filename": "server/routes/users.js",
     "groupTitle": "Authentication",
     "sampleRequest": [
       {
@@ -864,7 +864,7 @@ define({ "api": [
       ]
     },
     "version": "0.0.0",
-    "filename": "./server/routes/comments.js",
+    "filename": "server/routes/comments.js",
     "groupTitle": "ChapterComments",
     "sampleRequest": [
       {
@@ -893,7 +893,7 @@ define({ "api": [
       ]
     },
     "version": "0.0.0",
-    "filename": "./server/routes/comments.js",
+    "filename": "server/routes/comments.js",
     "groupTitle": "ChapterComments",
     "sampleRequest": [
       {
@@ -922,7 +922,7 @@ define({ "api": [
       ]
     },
     "version": "0.0.0",
-    "filename": "./server/routes/comments.js",
+    "filename": "server/routes/comments.js",
     "groupTitle": "ChapterComments",
     "sampleRequest": [
       {
@@ -942,7 +942,7 @@ define({ "api": [
       }
     ],
     "version": "0.0.0",
-    "filename": "./server/routes/comments.js",
+    "filename": "server/routes/comments.js",
     "groupTitle": "ChapterComments",
     "sampleRequest": [
       {
@@ -962,7 +962,7 @@ define({ "api": [
       }
     ],
     "version": "0.0.0",
-    "filename": "./server/routes/ratings.js",
+    "filename": "server/routes/ratings.js",
     "groupTitle": "ChapterRatings",
     "sampleRequest": [
       {
@@ -991,7 +991,7 @@ define({ "api": [
       ]
     },
     "version": "0.0.0",
-    "filename": "./server/routes/ratings.js",
+    "filename": "server/routes/ratings.js",
     "groupTitle": "ChapterRatings",
     "sampleRequest": [
       {
@@ -1020,7 +1020,7 @@ define({ "api": [
       ]
     },
     "version": "0.0.0",
-    "filename": "./server/routes/ratings.js",
+    "filename": "server/routes/ratings.js",
     "groupTitle": "ChapterRatings",
     "sampleRequest": [
       {
@@ -1049,7 +1049,7 @@ define({ "api": [
       ]
     },
     "version": "0.0.0",
-    "filename": "./server/routes/ratings.js",
+    "filename": "server/routes/ratings.js",
     "groupTitle": "ChapterRatings",
     "sampleRequest": [
       {
@@ -1069,7 +1069,7 @@ define({ "api": [
       }
     ],
     "version": "0.0.0",
-    "filename": "./server/routes/ratings.js",
+    "filename": "server/routes/ratings.js",
     "groupTitle": "ChapterRatings",
     "sampleRequest": [
       {
@@ -1145,7 +1145,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "./server/routes/chapters.js",
+    "filename": "server/routes/chapters.js",
     "groupTitle": "Chapters",
     "sampleRequest": [
       {
@@ -1230,7 +1230,7 @@ define({ "api": [
       }
     ],
     "version": "0.0.0",
-    "filename": "./server/routes/chapters.js",
+    "filename": "server/routes/chapters.js",
     "groupTitle": "Chapters"
   },
   {
@@ -1304,7 +1304,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "./server/routes/chapters.js",
+    "filename": "server/routes/chapters.js",
     "groupTitle": "Chapters"
   },
   {
@@ -1348,7 +1348,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "./server/routes/chapters.js",
+    "filename": "server/routes/chapters.js",
     "groupTitle": "Chapters",
     "sampleRequest": [
       {
@@ -1397,7 +1397,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "./server/routes/chapters.js",
+    "filename": "server/routes/chapters.js",
     "groupTitle": "Chapters",
     "sampleRequest": [
       {
@@ -1495,7 +1495,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "./server/routes/chapters.js",
+    "filename": "server/routes/chapters.js",
     "groupTitle": "Chapters"
   },
   {
@@ -1536,7 +1536,7 @@ define({ "api": [
       }
     },
     "version": "0.0.0",
-    "filename": "./server/routes/courses.js",
+    "filename": "server/routes/courses.js",
     "groupTitle": "Courses",
     "sampleRequest": [
       {
@@ -1578,7 +1578,7 @@ define({ "api": [
         ]
       }
     },
-    "filename": "./server/routes/courses.js",
+    "filename": "server/routes/courses.js",
     "groupTitle": "Courses"
   },
   {
@@ -1615,7 +1615,7 @@ define({ "api": [
       }
     },
     "version": "0.0.0",
-    "filename": "./server/routes/courses.js",
+    "filename": "server/routes/courses.js",
     "groupTitle": "Courses"
   },
   {
@@ -1693,7 +1693,7 @@ define({ "api": [
       }
     },
     "version": "0.0.0",
-    "filename": "./server/routes/courses.js",
+    "filename": "server/routes/courses.js",
     "groupTitle": "Courses"
   },
   {
@@ -1771,7 +1771,7 @@ define({ "api": [
       }
     },
     "version": "0.0.0",
-    "filename": "./server/routes/paths.js",
+    "filename": "server/routes/paths.js",
     "groupTitle": "Courses"
   },
   {
@@ -1846,7 +1846,7 @@ define({ "api": [
       }
     },
     "version": "0.0.0",
-    "filename": "./server/routes/courses.js",
+    "filename": "server/routes/courses.js",
     "groupTitle": "Courses"
   },
   {
@@ -1882,7 +1882,7 @@ define({ "api": [
       }
     },
     "version": "0.0.0",
-    "filename": "./server/routes/paths.js",
+    "filename": "server/routes/paths.js",
     "groupTitle": "Learning_Path",
     "sampleRequest": [
       {
@@ -1924,7 +1924,7 @@ define({ "api": [
         ]
       }
     },
-    "filename": "./server/routes/paths.js",
+    "filename": "server/routes/paths.js",
     "groupTitle": "Learning_Path"
   },
   {
@@ -1961,7 +1961,7 @@ define({ "api": [
       }
     },
     "version": "0.0.0",
-    "filename": "./server/routes/paths.js",
+    "filename": "server/routes/paths.js",
     "groupTitle": "Learning_Path"
   },
   {
@@ -2036,7 +2036,7 @@ define({ "api": [
       }
     },
     "version": "0.0.0",
-    "filename": "./server/routes/paths.js",
+    "filename": "server/routes/paths.js",
     "groupTitle": "Learning_Path"
   },
   {
@@ -2077,7 +2077,7 @@ define({ "api": [
       }
     },
     "version": "0.0.0",
-    "filename": "./server/routes/lessons.js",
+    "filename": "server/routes/lessons.js",
     "groupTitle": "Lessons",
     "sampleRequest": [
       {
@@ -2119,7 +2119,7 @@ define({ "api": [
         ]
       }
     },
-    "filename": "./server/routes/lessons.js",
+    "filename": "server/routes/lessons.js",
     "groupTitle": "Lessons"
   },
   {
@@ -2156,7 +2156,7 @@ define({ "api": [
       }
     },
     "version": "0.0.0",
-    "filename": "./server/routes/lessons.js",
+    "filename": "server/routes/lessons.js",
     "groupTitle": "Lessons"
   },
   {
@@ -2234,7 +2234,7 @@ define({ "api": [
       }
     },
     "version": "0.0.0",
-    "filename": "./server/routes/lessons.js",
+    "filename": "server/routes/lessons.js",
     "groupTitle": "Lessons"
   },
   {
@@ -2309,7 +2309,7 @@ define({ "api": [
       }
     },
     "version": "0.0.0",
-    "filename": "./server/routes/lessons.js",
+    "filename": "server/routes/lessons.js",
     "groupTitle": "Lessons"
   },
   {
@@ -2350,7 +2350,7 @@ define({ "api": [
       }
     },
     "version": "0.0.0",
-    "filename": "./server/routes/modules.js",
+    "filename": "server/routes/modules.js",
     "groupTitle": "Modules",
     "sampleRequest": [
       {
@@ -2392,7 +2392,7 @@ define({ "api": [
         ]
       }
     },
-    "filename": "./server/routes/modules.js",
+    "filename": "server/routes/modules.js",
     "groupTitle": "Modules"
   },
   {
@@ -2429,7 +2429,7 @@ define({ "api": [
       }
     },
     "version": "0.0.0",
-    "filename": "./server/routes/modules.js",
+    "filename": "server/routes/modules.js",
     "groupTitle": "Modules"
   },
   {
@@ -2507,7 +2507,7 @@ define({ "api": [
       }
     },
     "version": "0.0.0",
-    "filename": "./server/routes/modules.js",
+    "filename": "server/routes/modules.js",
     "groupTitle": "Modules"
   },
   {
@@ -2563,7 +2563,7 @@ define({ "api": [
       }
     },
     "version": "0.0.0",
-    "filename": "./server/routes/modules.js",
+    "filename": "server/routes/modules.js",
     "groupTitle": "Modules"
   },
   {
@@ -2675,7 +2675,7 @@ define({ "api": [
       }
     ],
     "version": "0.0.0",
-    "filename": "./server/routes/oembed.js",
+    "filename": "server/routes/oembed.js",
     "groupTitle": "Oembed"
   },
   {
@@ -2753,7 +2753,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "./server/routes/reactions.js",
+    "filename": "server/routes/reactions.js",
     "groupTitle": "Reactions",
     "sampleRequest": [
       {
@@ -2829,7 +2829,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "./server/routes/reactions.js",
+    "filename": "server/routes/reactions.js",
     "groupTitle": "Reactions",
     "sampleRequest": [
       {
@@ -2926,7 +2926,7 @@ define({ "api": [
       ]
     },
     "version": "0.0.0",
-    "filename": "./server/routes/reactions.js",
+    "filename": "server/routes/reactions.js",
     "groupTitle": "Reactions",
     "sampleRequest": [
       {
@@ -2998,7 +2998,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "./server/routes/reactions.js",
+    "filename": "server/routes/reactions.js",
     "groupTitle": "Reactions"
   },
   {
@@ -3076,7 +3076,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "./server/routes/reactions.js",
+    "filename": "server/routes/reactions.js",
     "groupTitle": "Reactions",
     "sampleRequest": [
       {
@@ -3120,7 +3120,7 @@ define({ "api": [
         }
       ]
     },
-    "filename": "./server/routes/search.js",
+    "filename": "server/routes/search.js",
     "groupTitle": "Search"
   },
   {
@@ -3144,7 +3144,7 @@ define({ "api": [
       ]
     },
     "version": "0.0.0",
-    "filename": "./server/routes/counter.js",
+    "filename": "server/routes/counter.js",
     "groupTitle": "ViewCounters"
   },
   {
@@ -3168,7 +3168,7 @@ define({ "api": [
       ]
     },
     "version": "0.0.0",
-    "filename": "./server/routes/counter.js",
+    "filename": "server/routes/counter.js",
     "groupTitle": "ViewCounters"
   },
   {
@@ -3219,7 +3219,7 @@ define({ "api": [
       ]
     },
     "version": "0.0.0",
-    "filename": "./server/routes/counter.js",
+    "filename": "server/routes/counter.js",
     "groupTitle": "ViewCounters"
   },
   {
@@ -3270,7 +3270,7 @@ define({ "api": [
       ]
     },
     "version": "0.0.0",
-    "filename": "./server/routes/counter.js",
+    "filename": "server/routes/counter.js",
     "groupTitle": "ViewCounters"
   },
   {
@@ -3321,7 +3321,7 @@ define({ "api": [
       ]
     },
     "version": "0.0.0",
-    "filename": "./server/routes/counter.js",
+    "filename": "server/routes/counter.js",
     "groupTitle": "ViewCounters"
   }
 ] });

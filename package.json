@@ -14,7 +14,7 @@
     "build:frontend": "yarn --cwd ./frontend && yarn --cwd ./frontend build --prod",
     "start:frontend": "yarn --cwd ./frontend start",
     "start:server": "nodemon ./server index.js",
-    "docs": "apidoc -e node_modules -e docs -o docs/",
+    "docs": "aapidoc -e node_modules -e docs -o docs/ -i server",
     "start:all": "concurrently yarn:start:server yarn:start:frontend"
   },
   "devDependencies": {
