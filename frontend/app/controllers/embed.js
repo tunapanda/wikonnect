@@ -11,8 +11,6 @@ export default class EmbedController extends Controller {
   @inject me
 
   /** TODO:
-   *      Send progress webhook to 3rd party(consumer) endpoint
-   *      Retry progress update if unsuccessful
    *      Documentation for 3rd party
   */
 
@@ -54,11 +52,9 @@ export default class EmbedController extends Controller {
 
   @action
   async dataLoad() {
-    const url = this.callbackUrl
+    const url = this.callbackUrl;
+    // eslint-disable-next-line no-undef
     H5P.externalDispatcher.on('xAPI', function (event) {
-      // if (event.getScore() === event.getMaxScore() && event.getMaxScore() > 0) {
-      //   score = event.data.statement.result.duration;
-      // }
       fetch(url, {
         method: 'POST',
         mode: 'cors',
@@ -68,10 +64,6 @@ export default class EmbedController extends Controller {
         redirect: 'follow',
         body: JSON.stringify(event)
       });
-      console.log(event);
     });
-    // this.document.addEventListener("click", event => {
-    //   console.log(event);
-    // });
   }
 }
