@@ -19,9 +19,7 @@ export default class TeachH5pUploadController extends Controller {
     this.hover = false;
     if (files.length > 1) {
       this.notify.warning('You can only upload one file', { closeAfter: 1000 });
-
     }
-
   }
 
   @action
@@ -48,15 +46,18 @@ export default class TeachH5pUploadController extends Controller {
 
     const host = '/' + this.store.adapterFor('application').urlPrefix();
 
-
-    await uploader.startUpload([host, 'chapters', id, 'chapter-image'].join('/'));
-
-    //upload
-    this.set('complete', true);
-
-    if (this.complete === true) {
-      this.transitionToRoute('teach.h5p-upload', id);
+    try {
+      await uploader.startUpload([host, 'chapters', id, 'chapter-image'].join('/'));
+      //upload
+      this.set('complete', true);
+  
+      if (this.complete === true) {
+        this.transitionToRoute('teach.tag', id);
+      }
+    } catch(err) {
+      console.log(err);
     }
+
 
   }
 }

@@ -50,6 +50,7 @@
     "ember-drag-drop": "^0.7.0",
     "ember-drag-drop-polyfill": "^1.0.0",
     "ember-export-application-global": "^2.0.0",
+    "ember-file-drop-zone": "^0.2.1",
     "ember-intl": "^5.5.0",
     "ember-link-action": "^1.0.0",
     "ember-linkify": "^4.1.2",
