@@ -53,7 +53,7 @@ router.get('/', requireAuth, async ctx => {
   let parsedUrl = url.parse(rawUrl);
   let parsedQs = querystring.parse(parsedUrl.query);
 
-  const callbackUrl = parsedQs.callbackUrl === undefined ? '' : `callbackUrl = ${ parsedQs.callbackUrl}`;
+  const callbackUrl = parsedQs.callbackUrl === undefined ? '' : `callbackUrl=${ parsedQs.callbackUrl}`;
 
   const n = parsedUrl.pathname.lastIndexOf('/');
   const chapterId = parsedUrl.pathname.substring(n + 1);

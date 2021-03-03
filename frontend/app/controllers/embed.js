@@ -2,14 +2,13 @@ import Controller from '@ember/controller';
 import { action } from '@ember/object';
 import { inject } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
-
+import fetch from 'fetch';
 export default class EmbedController extends Controller {
 
   queryParams = ['callbackUrl', 'ref']
   @tracked showLoginModal = false;
   @tracked showRegistrationModal = false;
-  @inject
-  me
+  @inject me
 
   /** TODO:
    *      Send progress webhook to 3rd party(consumer) endpoint
@@ -38,32 +37,41 @@ export default class EmbedController extends Controller {
     this.me.logout();
 
   }
+
+  document = document;
+
+  async sendData(url, data) {
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      redirect: 'follow',
+      body: JSON.stringify(data)
+    });
+    return response.json();
+  }
+
   @action
-  async dataLoad(el) {
-    let score;
-    console.log(this.callbackUrl);
-    window.H5P.externalDispatcher.on('xAPI', function (event) {
-      if (event.getScore() === event.getMaxScore() && event.getMaxScore() > 0) {
-        score = event.data.statement.result.duration;
-      }
+  async dataLoad() {
+    const url = this.callbackUrl
+    H5P.externalDispatcher.on('xAPI', function (event) {
+      // if (event.getScore() === event.getMaxScore() && event.getMaxScore() > 0) {
+      //   score = event.data.statement.result.duration;
+      // }
+      fetch(url, {
+        method: 'POST',
+        mode: 'cors',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        redirect: 'follow',
+        body: JSON.stringify(event)
+      });
       console.log(event);
     });
-    // if (score != 'undefined') {
-    //   let achievement = await this.store.createRecord('achievement', {
-    //     description: 'completed' + chapter_id,
-    //     targetStatus: 'completed',
-    //     target: chapter_id
-    //   });
-
-    //   // if user completes chapters create record
-    //   let counter = await this.store.createRecord('counter', {
-    //     counter: 1,
-    //     chapterId: chapter_id,
-    //     trigger: 'chapterCompletion'
-    //   });
-
-    //   await achievement.save();
-    //   await counter.save();
-    // }
+    // this.document.addEventListener("click", event => {
+    //   console.log(event);
+    // });
   }
 }

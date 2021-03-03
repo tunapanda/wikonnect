@@ -1,7 +1,6 @@
 {{outlet}}
 {{model.name}}
 <div {{did-insert (fn this.dataLoad)}}></div>
-
 <br>
 {{#if callbackUrl}}
   <span class="badge badge-primary">Progress updates sent to: {{callbackUrl}}</span>
@@ -19,14 +18,14 @@
 {{/if}}
 
 
-<BsModalSimple @open={{showLoginModal}} @title="Login" @size="sm" @onHidden={{action (mut showLoginModal) false}}>
+<BsModalSimple @open={{showLoginModal}} @title="Login" @size="md" @onHidden={{action (mut showLoginModal) false}}>
   <Authentication::Login @registeredUser={{changeset model LoginValidations}} @authenticationSuccessful={{action "login"
     }} />
 </BsModalSimple>
 
 
 
-<BsModalSimple @open={{showRegistrationModal}} @title="Login" @size="sm" @onHidden={{action (mut showRegistrationModal)
+<BsModalSimple @open={{showRegistrationModal}} @title="Login" @size="md" @onHidden={{action (mut showRegistrationModal)
   false}}>
   <Authentication::Signup @newUser={{changeset model UserValidation}} @inviteCode={{invite_code}}
     @success={{action "signup" }} />
