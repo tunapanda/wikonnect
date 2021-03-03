@@ -10,16 +10,15 @@ export default class ChapterModel extends Model {
   @attr contentType;
   @attr contentUri;
   @attr('boolean') approved;
+  @attr('boolean') verified;
   @attr tags;
   @attr targetStatus;
   @attr imageUrl;
   @attr createdAt;
   @attr reaction;
   @attr authenticatedUser;
-  @hasMany('comment') comments;
+  @hasMany("comment") comments;
 
-  @belongsTo('user') creator;
+  @belongsTo("user") creator;
   // @belongsTo('lesson') lesson;
-
-
 }
