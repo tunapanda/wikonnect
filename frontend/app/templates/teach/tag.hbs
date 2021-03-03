@@ -147,7 +147,7 @@
 
       {{/each}}
 
-      {{#if (or this.topic_cart this.custom_cart level_cart  this.competency_cart)}}
+      {{#if (or this.topic_cart this.custom_cart this.level_cart  this.competency_cart)}}
         <button type="button" class="btn btn-primary form-control float-right" {{on "click" this.updateTags}}>
           Continue
         </button>

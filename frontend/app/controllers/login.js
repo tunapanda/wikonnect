@@ -10,6 +10,8 @@ export default class LoginController extends Controller {
     const previousTransition = this.previousTransition;
     if (previousTransition) {
       this.previousTransition = null;
+      console.log('log ', previousTransition.targetName);
+
       previousTransition.retry();
     } else {
       this.transitionToRoute('/home');

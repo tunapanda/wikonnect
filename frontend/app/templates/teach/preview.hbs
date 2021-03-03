@@ -62,25 +62,25 @@
             <button type="button" class="btn  bg-light" disabled>Publish</button>
           {{/if}}
         {{else}}
-          <button type="button" class="btn btn-danger" {{on "click" (fn (mut this.unpublishModal true))}}>
+          <button type="button" class="btn btn-danger" {{on "click" (fn (mut this.unpublishModal) true)}}>
             Unpublish
           </button>
         {{/if}}
       </div>
 
-      <BsModalSimple @open={{this.publishModal}} @onSubmit={{ fn this.publish model.id }} @closeTitle="Cancel"
+      <BsModalSimple @open={{this.publishModal}} @onSubmit={{ fn this.publish this.model.id }} @closeTitle="Cancel"
                      @submitTitle="Publish" @title="Publish" @size="sm"
                      @onHidden={{fn (mut this.publishModal) false}}>
         Are you sure you want to publish ?
       </BsModalSimple>
 
-      <BsModalSimple @open={{this.unpublishModal}} @onSubmit={{ fn this.unpublish model.id }} @closeTitle="Cancel"
+      <BsModalSimple @open={{this.unpublishModal}} @onSubmit={{ fn this.unpublish this.model.id }} @closeTitle="Cancel"
                      @submitTitle="Unpublish" @title="Unpublish" @size="sm"
                      @onHidden={{fn (mut this.unpublishModal) false}}>
         Are you sure you want to unpublish ?
       </BsModalSimple>
 
-      <BsModalSimple @open={{this.deleteModal}} @onSubmit={{fn this.delete model.id }} @closeTitle="Cancel"
+      <BsModalSimple @open={{this.deleteModal}} @onSubmit={{fn this.delete this.model.id }} @closeTitle="Cancel"
                      @submitTitle="Delete" @title="Delete" @size="sm" @onHidden={{fn (mut this.deleteModal) false}}>
         Are you sure you want to delete {{this.model.name}} ?
       </BsModalSimple>
