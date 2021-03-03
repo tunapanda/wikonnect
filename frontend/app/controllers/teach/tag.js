@@ -77,7 +77,9 @@ export default class TeachTagController extends Controller {
   @tracked tag;
 
   @action
-  addtag() {
+  addtag(evt) {
+    evt.preventDefault();
+    evt.stopPropagation();
     if (this.tag) {
       this.custom_cart.pushObject(this.tag);
       this.tag = '';

@@ -6,13 +6,7 @@
   <Toc @page="4"/>
   <div class="p-4 col-sm-8">
     {{#if this.me.isAuthenticated}}
-      <h5>Add custom tags</h5>
-      <form method="post" {{on "submit" this.addtag}}>
-        <Input id="tag" @type="text" @value={{this.tag}} aria-controls="existing-user-table"
-               class="form-control" placeholder="Add Custom Tag"/>
-        <button type="submit" class="btn btn-primary mt-2 ">Submit</button>
-      </form>
-      <hr>
+
       {{#if this.config.content.APP.use_preset_tags}}
 
         <h5>Select Tags</h5>

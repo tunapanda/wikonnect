@@ -54,21 +54,23 @@
         <button type="button" class="btn btn-danger" {{on "click" this.showDeleteModal }}>Delete</button>
         {{#if (eq this.model.status "draft")}}
           {{#if (and this.model.imageUrl this.model.contentUri)}}
-            //TODO check this mut
-            <button type="button" class="btn btn-success" {{on "click" fn (mut publishModal) true}}>Publish</button>
+            <button type="button" class="btn btn-success" {{on "click" (fn (mut this.publishModal) true)}}>
+              Publish
+            </button>
           {{else}}
             <small>*upload thumbnail and h5p to publish</small>
             <button type="button" class="btn  bg-light" disabled>Publish</button>
           {{/if}}
         {{else}}
-          <button type="button" class="btn btn-danger" {{on "click" fn (mut this.unpublishModal) true}}>
+          <button type="button" class="btn btn-danger" {{on "click" (fn (mut this.unpublishModal true))}}>
             Unpublish
           </button>
         {{/if}}
       </div>
 
       <BsModalSimple @open={{this.publishModal}} @onSubmit={{ fn this.publish model.id }} @closeTitle="Cancel"
-                     @submitTitle="Publish" @title="Publish" @size="sm" @onHidden={{fn (mut this.publishModal) false}}>
+                     @submitTitle="Publish" @title="Publish" @size="sm"
+                     @onHidden={{fn (mut this.publishModal) false}}>
         Are you sure you want to publish ?
       </BsModalSimple>
 

@@ -2,7 +2,7 @@
   <h3><b>{{t "messages.create_h5p_chapter"}}</b></h3>
 </div>
 
-<div id="create-chapter-form"  class="row d-flex flex-column justify-content-center">
+  <div id="create-chapter-form" class="row d-flex flex-column align-items-center">
   <Toc @page="1"/>
   <div class="p-4 col-lg-8">
     <BsForm @model={{this.model}} @onSubmit={{this.saveChapter}} as |form|>

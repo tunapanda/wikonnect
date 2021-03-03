@@ -28,9 +28,9 @@ export default class TeachPreviewController extends Controller {
     }
   }
 
+  @action
   async delete(chapter_id) {
     try {
-
       let chapter = await this.store.find('chapter', chapter_id);
       await chapter.deleteRecord();
       await chapter.save();
@@ -64,8 +64,9 @@ export default class TeachPreviewController extends Controller {
       this.notify.info('Chapter successfully unpublished');
       this.transitionToRoute('teach');
     } catch (e) {
-      this.notify.alert('Chapter not unpublished. Unexpected error encountered');
+      this.notify.alert(
+        'Chapter not unpublished. Unexpected error encountered'
+      );
     }
-
   }
 }

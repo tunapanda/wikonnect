@@ -19,7 +19,7 @@
       <File-drop-zone @onDrop={{this.uploadH5p}}>
         <p>Drag and drop here</p>
         <p>or</p>
-        <Forms::Upload @multiple="false" @accept=".h5p" @filesSelected={{this.uploadPic}}
+        <Forms::Upload @multiple="false" @accept=".h5p" @filesSelected={{this.uploadH5p}}
                        @disabled={{this.uploader.uploading}}>
 
           {{#if this.uploader.uploading}}
@@ -36,7 +36,6 @@
       </File-drop-zone>
     </div>
 
-  //TODO check this model or is this.chapter?
     <LinkTo @route="teach.thumbnail-upload" @model={{this.model.id}}>
       <button type="button" class="btn btn-warning btn-lg btn-block">Skip</button>
     </LinkTo>
