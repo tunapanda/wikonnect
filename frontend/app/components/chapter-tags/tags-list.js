@@ -1,8 +1,7 @@
 import Component from '@glimmer/component';
-import {tracked} from '@glimmer/tracking';
+import { tracked } from '@glimmer/tracking';
 
 export default class TagsListComponent extends Component {
-
   @tracked
   filterTagsSearchTerm;
 
@@ -11,7 +10,7 @@ export default class TagsListComponent extends Component {
   }
 
   get filterTags() {
-    const {tagsList} = this.args;
+    const { tagsList } = this.args;
 
     if (!this.filterTagsSearchTerm) {
       return tagsList;
@@ -21,5 +20,4 @@ export default class TagsListComponent extends Component {
       return tag.name.search(search) > -1;
     });
   }
-
 }

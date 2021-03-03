@@ -6,7 +6,7 @@ module.exports = function (defaults) {
   let app = new EmberApp(defaults, {
     sourcemaps: {
       enabled: EmberApp.env() !== 'production',
-      extensions: ['js']
+      extensions: ['js'],
     },
     'ember-drag-drop-polyfill': {
       includeCSS: true,
@@ -15,28 +15,19 @@ module.exports = function (defaults) {
       includeScrollBehavior: false,
     },
     babel: {
-      sourceMaps: 'both'
+      sourceMaps: 'both',
     },
     'ember-bootstrap': {
       bootstrapVersion: 4,
       importBootstrapFont: false,
-      'importBootstrapCSS': false
-    },
-    'ember-cli-uglify': {
-      enabled: false
+      importBootstrapCSS: false,
     },
     minifyCSS: {
-      enabled: true
+      enabled: true,
     },
-    minifyJS: {
-      enabled: true
-    },
-
     svgJar: {
-      sourceDirs: [
-        'public/images/icons'
-      ]
-    }
+      sourceDirs: ['public/images/icons'],
+    },
   });
 
   // Use `app.import` to add additional libraries to the generated
@@ -56,7 +47,6 @@ module.exports = function (defaults) {
   app.import('public/bootstrap.css');
   // app.import('node_modules/ember-tags-input/vendor/styles/eti-svg-icons.css');
   // app.import('node_modules/ember-tags-input/vendor/styles/ember-tags-input.css');
-
 
   return app.toTree();
 };

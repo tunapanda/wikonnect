@@ -1,21 +1,22 @@
 <div class="container">
   <div class="row">
-    {{#link-to "upload"}}
-      {{#if profileUri}}
-        <img class="h80 mt-3 ml-3  rounded-circle" alt="" src={{profileUri}}>
+    <LinkTo @route="upload">
+      {{#if this.profileUri}}
+        <img class="h80 mt-3 ml-3  rounded-circle" alt="" src={{this.profileUri}} role="presentation">
       {{else}}
-        <img class="h80 mt-3 ml-3  rounded-circle" alt="" src="/images/profile-placeholder.gif">
+        <img class="h80 mt-3 ml-3  rounded-circle" alt=""
+             src="/uploads/images/profile-placeholder.gif" role="presentation">
       {{/if}}
       <br>
       <span class="ml-3">change pic</span>
-    {{/link-to}}
+    </LinkTo>
     <div class="mt-4 ml-3">
-      <b>Username:</b> {{ name }} <br>
+      <b>Username:</b> {{ this.name }} <br>
       <b>Email:</b>
-      {{#if me.user.email}}
-        <a href="#" {{action showEmailModal}}>{{me.user.email}}</a>
+      {{#if this.me.user.email}}
+        <a href="#" {{on "click" this.showEmailModal}}>{{this.me.user.email}}</a>
       {{else}}
-        <a name="" id="" class=" btn-primary btn-sm" href="#" {{action showEmailModal}} role="button">
+        <a name="" id="" class=" btn-primary btn-sm" href="#" {{on "click" this.showEmailModal}} role="button">
           Update Email
         </a>
       {{/if}}
@@ -25,48 +26,52 @@
     <div class="profile-options">
       <br><br>
       <div class="btn-group" role="group">
-        <BsButtonGroup @value={{profileView}} @type="radio" @onChange={{action (mut profileView)}} as |bg|>
-          {{#each viewOptions as |view|}}
+        <BsButtonGroup @value={{@profileView}} @type="radio" @onChange={{fn (mut @profileView)}} as |bg|>
+          {{#each this.viewOptions as |view|}}
             <bg.button @type="default" @value={{view}}>{{view}}</bg.button>
           {{/each}}
         </BsButtonGroup>
       </div>
     </div>
     <hr>
-    {{#if (eq profileView "Profile")}}
+    {{#if (eq @profileView "Profile")}}
       <div class="profile-title">
         <h4>Details</h4>
       </div>
-      <BsForm class="profile-data" @onSubmit={{action saveProfile}} @disabled={{viewOnly}}>
+      <BsForm class="profile-data" @onSubmit={{this.saveProfile}} @disabled={{this.viewOnly}}>
         <label for="fname">First Name</label>
-        {{input id="fname" type="text" label="Name" class="form-control" value=fname placeholer="First Name" }}
+        <Input @type="text" id="fname" class="form-control" placeholer="First Name" @value={{this.fname}} />
+
         <label for="lname" class="mt-2">Last Name</label>
-        {{input id="lname" type="text" label="Name" class="form-control " value=lname placeholer="Last Name" }}
+        <Input @type="text" id="lname" class="form-control" placeholer="Last name" @value={{this.lname}} />
+
         <label for="about" class="mt-2">About</label>
-        {{textarea id="about" type="text" label="Name" class="form-control" value=about }}
-        <BsButton @defaultText="Update Profile" class="btn bg-primary mt-2" @buttonType="submit" />
+        <Textarea id="about" class="form-control" @value={{this.about}}/>
+        <BsButton @defaultText="Update Profile" class="btn bg-primary mt-2" @buttonType="submit"/>
       </BsForm>
     {{/if}}
-    {{#if (eq profileView "Learning")}}
+    {{#if (eq @profileView "Learning")}}
       <h5>My Achievements</h5>
       <div class="row">
-        {{#each model.achievementAwards as |achievement|}}
+        {{#each this.model.achievementAwards as |achievement|}}
           <div class="col-md-6">
-            <Achievement @name={{achievement.name}} @created={{achievement.createdAt}} @badge={{achievement.imageUrl}} />
+            <Achievement @name={{achievement.name}} @created={{achievement.createdAt}}
+                         @badge={{achievement.imageUrl}} />
           </div>
         {{/each}}
       </div>
     {{/if}}
-    {{#if (eq profileView "Settings")}}
+    {{#if (eq @profileView "Settings")}}
       <div class="main">
         <ul>
           <li>
             Invite Link
-            <code>{{inviteCode}}</code>
-            <CopyButton @class={{".btn"}} @clipboardText={{inviteCode}} @error={{this.onError}} title="copy to clipboard">
+            <code>{{this.inviteCode}}</code>
+            <CopyButton @class={{".btn"}} @clipboardText={{this.inviteCode}} @error={{this.onError}}
+                        title="copy to clipboard">
               {{svg-jar "clipboard"}}
-              <BsTooltip @title="Copied" @triggerEvents="click" />
-              <BsTooltip @title="Copy" @triggerEvents="hover" />
+              <BsTooltip @title="Copied" @triggerEvents="click"/>
+              <BsTooltip @title="Copy" @triggerEvents="hover"/>
             </CopyButton>
           </li>
         </ul>
@@ -76,19 +81,18 @@
   </div>
 
 
-  <BsModal @open={{emailModalVisible}} @onHide={{action hideEmailModal}} as |modal|>
+  <BsModal @open={{this.emailModalVisible}} @onHide={{this.hideEmailModal}} as |modal|>
     <modal.header>
       <h4 class="modal-title">
         Update Email
       </h4>
     </modal.header>
     <modal.body>
-      {{input type="text" class="form-control" value=email placeholder="eg email@example.com"}}
-      {{!-- <input type="text" class="form-control input-lg" value={{me.user.email}} autofocus="autofocus"> --}}
+      <Input @type="text" class="form-control" placeholder="eg email@example.com" @value={{this.email}}/>
     </modal.body>
     <modal.footer>
-      <BsButton @onClick={{action modal.close}}>Cancel</BsButton>
-      <BsButton @type="success" @onClick={{action updateEmail}}>Save</BsButton>
+      <BsButton {{on "click" modal.close}}>Cancel</BsButton>
+      <BsButton @type="success" {{on "click" this.updateEmail}}>Save</BsButton>
     </modal.footer>
   </BsModal>
 
