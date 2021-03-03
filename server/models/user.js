@@ -20,6 +20,14 @@ class User extends Model {
     return ['hash', 'lastIp'];
   }
 
+  $beforeInsert() {
+    this.lastSeen = new Date().toISOString();
+  }
+
+  $afterFind() {
+    this.lastSeen = new Date().toISOString();
+  }
+
   async $indexForSearch() {
     return null;
   }
@@ -74,6 +82,9 @@ class User extends Model {
     return {
       selectNameAndId: (builder) => {
         builder.select('users.id', 'name');
+      },
+      selectNameAndProfile: (builder) => {
+        builder.select('username', 'profileUri');
       }
     };
   }

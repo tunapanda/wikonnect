@@ -377,11 +377,6 @@ apidoc-swagger@^0.3.2:
     path-to-regexp "^1.2.0"
     winston "^0.9.0"
 
-apidocs@^2017.3.9:
-  version "2017.3.9"
-  resolved "https://registry.yarnpkg.com/apidocs/-/apidocs-2017.3.9.tgz#e417d46e80a2d8c4acebcadfc487b82c0ef18c22"
-  integrity sha1-5BfUboCi2MSs68rfxIe4LA7xjCI=
-
 append-transform@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/append-transform/-/append-transform-1.0.0.tgz#046a52ae582a228bd72f58acfbe2967c678759ab"
@@ -829,11 +824,6 @@ chai-http@2.0.1:
     methods "0.0.x"
     qs "2.0.x"
     superagent "1.2.x"
-
-chai-json-schema-ajv@^5.0.0:
-  version "5.1.0"
-  resolved "https://registry.yarnpkg.com/chai-json-schema-ajv/-/chai-json-schema-ajv-5.1.0.tgz#bf862385899c32f2af2816da507d8c3d6ccbdaa4"
-  integrity sha512-HuPu3kNy8D7znpumTve99vCOeCDe1jVnl80XUuBeALScFY1rBTxPy+umGn+BNGr9uOYAXOPBjthsvgc5OcSJbg==
 
 chai-json-schema@^1.5.1:
   version "1.5.1"
@@ -3417,10 +3407,10 @@ klaw@^3.0.0:
   dependencies:
     graceful-fs "^4.1.9"
 
-knex@^0.21.17:
-  version "0.21.17"
-  resolved "https://registry.yarnpkg.com/knex/-/knex-0.21.17.tgz#f99f5b90132b9bb9c6eb5c81f0a035e0232c870f"
-  integrity sha512-kAt58lRwjzqwedApKF7luYPa7HsLb0oDiczwKrkZcekIzTmSow5YGK149S2C8HjH63R3NcOBo9+1rjvWnC1Paw==
+knex@^0.21.18:
+  version "0.21.18"
+  resolved "https://registry.yarnpkg.com/knex/-/knex-0.21.18.tgz#ca16e95b8b5c0891a6b012fb3fb34185e067b0e2"
+  integrity sha512-hP4Qyy2LjQLsabQYc6YgDFHb+CJJBjQz1TMPTKyN85CF2NLIsZsF4FDe0NvQXeXMeak3E/kKr5iJog1JBm6ZCQ==
   dependencies:
     colorette "1.2.1"
     commander "^6.2.0"
@@ -3681,10 +3671,15 @@ lodash.startswith@^4.0.1:
   resolved "https://registry.yarnpkg.com/lodash.startswith/-/lodash.startswith-4.2.1.tgz#c598c4adce188a27e53145731cdc6c0e7177600c"
   integrity sha1-xZjErc4YiiflMUVzHNxsDnF3YAw=
 
-lodash@^4.17.11, lodash@^4.17.14, lodash@^4.17.15, lodash@^4.17.19, lodash@^4.17.20, lodash@^4.2.1, lodash@~4.17.15:
+lodash@^4.17.11, lodash@^4.17.14, lodash@^4.17.15, lodash@^4.17.19, lodash@^4.2.1, lodash@~4.17.15:
   version "4.17.20"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.20.tgz#b44a9b6297bcb698f1c51a3545a2b3b368d59c52"
   integrity sha512-PlhdFcillOINfeV7Ni6oF1TAEayyZBoZ8bcshTHqOYJYlrqzRK5hagpagky5o4HfCzzd1TRkXPMFq6cKk9rGmA==
+
+lodash@^4.17.20:
+  version "4.17.21"
+  resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.21.tgz#679591c564c3bffaae8454cf0b3df370c3d6911c"
+  integrity sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==
 
 log-symbols@3.0.0:
   version "3.0.0"

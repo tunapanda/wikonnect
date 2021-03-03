@@ -11,6 +11,8 @@ export default class ChapterIndexRoute extends Route {
   }
 
   afterModel(model) {
-    return this.store.query('comment', {'chapterId': model.id});
+    return {
+      comments: this.store.query('comment', {'chapterId': model.id})
+    };
   }
 }

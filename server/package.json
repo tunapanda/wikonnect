@@ -33,7 +33,7 @@
     "joi": "^17.2.1",
     "jsdoc": "^3.6.3",
     "jsonwebtoken": "^8.5.1",
-    "knex": "^0.21.17",
+    "knex": "^0.21.18",
     "koa": "^2.10.0",
     "koa-body": "^4.1.1",
     "koa-bodyparser": "^4.2.1",
@@ -63,12 +63,9 @@
     "yaml": "^2.0.0-1"
   },
   "devDependencies": {
-    "ajv": "^6.10.2",
     "apidoc-swagger": "^0.3.2",
-    "apidocs": "^2017.3.9",
     "chai": "^4.2.0",
     "chai-http": "2.0.1",
-    "chai-json-schema-ajv": "^5.0.0",
     "eslint": "^6.4.0",
     "mocha": "^7.1.0",
     "nodemon": "^2.0.4",

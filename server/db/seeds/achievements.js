@@ -59,7 +59,7 @@ exports.seed = function (knex) {
         },
         {
           id: 'achievements8',
-          user_id: 'user1',
+          user_id: 'user3',
           target: 'chapter1',
           description: 'completed chapter1',
           target_status: 'attempted',

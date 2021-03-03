@@ -57,6 +57,10 @@ export default class ProfilePrivateProfileComponent extends Component {
   }
 
   @action
+  onError() {
+  }
+
+  @action
   updateEmail() {
     this.notify.info('Updating Email', { closeAfter: 10000 });
     let theEmail = this.email;
@@ -82,9 +86,7 @@ export default class ProfilePrivateProfileComponent extends Component {
     this.emailModalVisible = false;
   }
 
-  @action
-  onError() {
-  }
+
 
   @computed('model.hasDirtyAttributes')
   get unsavedChanges() {

@@ -1,0 +1,183 @@
+[
+  {
+    "id": "chapter1",
+    "lessonId": "lesson1",
+    "name": "A Chapter",
+    "slug": "a-chapter",
+    "description": "An H5P Chapter.",
+    "status": "published",
+    "creatorId": "user1",
+    "metadata": null,
+    "createdAt": "2017-12-20T19:17:10.000Z",
+    "updatedAt": "2017-12-20T19:17:10.000Z",
+    "contentType": "h5p",
+    "contentUri": "/uploads/h5p/chapter1",
+    "imageUrl": null,
+    "tags": ["highschool", "university"],
+    "contentId": null,
+    "approved": "true",
+    "topics": null,
+    "rating": "3.6666666666666667",
+    "flag": [],
+    "authenticatedUser": "like",
+    "reaction": [
+      {
+        "totalLikes": 4,
+        "likes": 3,
+        "dislikes": 1
+      }
+    ],
+    "achievement": [
+      {
+        "id": "achievements2",
+        "target": "chapter1",
+        "targetStatus": "completed",
+        "type": "achievement"
+      },
+      {
+        "id": "achievements4",
+        "target": "chapter1",
+        "targetStatus": "completed",
+        "type": "achievement"
+      },
+      {
+        "id": "achievements7",
+        "target": "chapter1",
+        "targetStatus": "started",
+        "type": "achievement"
+      },
+      {
+        "id": "achievements8",
+        "target": "chapter1",
+        "targetStatus": "attempted",
+        "type": "achievement"
+      }
+    ],
+    "comment": [
+      {
+        "id": "It40-WKAAAc",
+        "creatorId": "user1",
+        "comment": "chapter1",
+        "type": "comment"
+      },
+      {
+        "id": "It40-WMAAAg",
+        "creatorId": "user1",
+        "comment": "chapter1",
+        "type": "comment"
+      }
+    ]
+  },
+  {
+    "id": "chapter2",
+    "lessonId": "basics1",
+    "name": "Kelley",
+    "slug": "Elisa",
+    "description": "consectetur",
+    "status": "published",
+    "creatorId": "user1",
+    "metadata": null,
+    "createdAt": "2017-12-20T19:17:10.000Z",
+    "updatedAt": "2017-12-20T19:17:10.000Z",
+    "contentType": "h5p",
+    "contentUri": "/uploads/h5p/chapter2",
+    "imageUrl": null,
+    "tags": ["highschool", "university"],
+    "contentId": null,
+    "approved": "true",
+    "topics": null,
+    "rating": null,
+    "flag": [],
+    "authenticatedUser": "dislike",
+    "reaction": [{
+      "likes": 0,
+      "totalLikes": 3,
+      "dislikes": 3
+    }],
+    "achievement": [
+      {
+        "id": "achievements1",
+        "target": "chapter2",
+        "targetStatus": "completed",
+        "type": "achievement"
+      },
+      {
+        "id": "achievements3",
+        "target": "chapter2",
+        "targetStatus": "completed",
+        "type": "achievement"
+      }
+    ],
+    "comment": [
+      {
+        "id": "It40-WMAAAk",
+        "creatorId": "user2",
+        "comment": "chapter2",
+        "type": "comment"
+      },
+      {
+        "id": "It40-WMAAAo",
+        "creatorId": "user3",
+        "comment": "chapter2",
+        "type": "comment"
+      }
+    ]
+  },
+  {
+    "id": "chapter4",
+    "lessonId": "basics2",
+    "name": "Montoya",
+    "slug": "Myra",
+    "description": "qui",
+    "status": "published",
+    "creatorId": "user1",
+    "metadata": null,
+    "createdAt": "2017-12-20T19:17:10.000Z",
+    "updatedAt": "2017-12-20T19:17:10.000Z",
+    "contentType": "h5p",
+    "contentUri": "/uploads/h5p/chapter4",
+    "imageUrl": null,
+    "tags": ["highschool", "university"],
+    "contentId": null,
+    "approved": "true",
+    "topics": null,
+    "rating": null,
+    "flag": [],
+    "authenticatedUser": null,
+    "reaction": [],
+    "achievement": [
+      {
+        "id": "achievements5",
+        "target": "chapter4",
+        "targetStatus": "completed",
+        "type": "achievement"
+      }
+    ],
+    "comment": []
+  },
+  {
+    "id": "chapter5",
+    "lessonId": "basics2",
+    "name": "Montoya",
+    "slug": "Myra",
+    "description": "qui",
+    "status": "published",
+    "creatorId": "user1",
+    "metadata": null,
+    "createdAt": "2017-12-20T19:17:10.000Z",
+    "updatedAt": "2017-12-20T19:17:10.000Z",
+    "contentType": "h5p",
+    "contentUri": "/uploads/h5p/chapter5",
+    "imageUrl": null,
+    "tags": ["primary", "university"],
+    "contentId": null,
+    "approved": "true",
+    "topics": null,
+    "rating": null,
+    "flag": [],
+    "authenticatedUser": null,
+    "reaction": [],
+    "achievement": [],
+    "comment": []
+  }
+]

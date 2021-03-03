@@ -1,4 +1,9 @@
 module.exports = {
+  action: {
+    user: 'postgres',
+    password: 'postgres',
+    database: 'postgres'
+  },
   test: {
     host: 'localhost',
     database: 'swag_test',

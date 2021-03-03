@@ -61,6 +61,14 @@ class Chapter extends Model {
           from: 'chapters.id',
           to: 'reactions.chapterId'
         }
+      },
+      author: {
+        relation: Model.BelongsToOneRelation,
+        modelClass: __dirname + '/user',
+        join: {
+          from: 'chapters.creatorId',
+          to: 'users.id'
+        }
       }
     };
   }
