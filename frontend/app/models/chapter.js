@@ -18,8 +18,8 @@ export default class ChapterModel extends Model {
   @attr reaction;
   @attr authenticatedUser;
   @attr views;
-  @hasMany("comment") comments;
+  @hasMany('comment') comments;
 
-  @belongsTo("user") creator;
+  @belongsTo('user') creator;
   // @belongsTo('lesson') lesson;
 }
