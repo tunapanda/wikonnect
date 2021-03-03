@@ -31,7 +31,8 @@ const data = {
 const putData = {
   chapter: {
     'name': 'PUT update works',
-    'description': 'PUT update works'
+    'description': 'PUT update works',
+    'verified': true
   }
 };
 
@@ -226,6 +227,21 @@ describe('CHAPTER ROUTE', () => {
         res.status.should.eql(200);
         res.should.be.json;
         res.body.should.have.property('chapter');
+        done();
+      });
+  });
+  it('Should throw an ERROR on PUT when not admin or superadmin for verified', (done) => {
+    chai
+      .request(server)
+      .put(route + itemID)
+      .set('Content-Type', 'application/json')
+      .set(tokens.headerBasicUser2)
+      .send(putData)
+      .end((err, res) => {
+        res.status.should.eql(400);
+        res.should.be.json;
+        res.body.should.be.a('object');
+        res.body.errors.should.eql(['Bad Request']);
         done();
       });
   });
