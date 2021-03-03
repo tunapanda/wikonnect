@@ -1,13 +1,13 @@
 <div class="col-lg-4 col-md-6 mb-4 ">
   <div class="card h-100 shadow-sm">
-    {{#link-to "chapter" @chapter.id }}
+    <LinkTo @route="chapter" @model={{@chapter.id}}>
       {{#if (eq @chapter.imageUrl null)}}
         <img class="card-img-top" src="https://placehold.jp/20/{{color}}/ffffff/328x200.png?text={{@chapter.name}}"
           alt="">
       {{else}}
         <img class="card-img-top" alt="" src={{@chapter.imageUrl}}>
       {{/if}}
-    {{/link-to}}
+    </LinkTo>
     <div class="card-body chapter-body">
       <div class="actions-section d-flex justify-content-between">
         <div class="reactions">
@@ -22,29 +22,36 @@
 
       <h5 class="card-title title-section">
 
-        {{#link-to "chapter" @chapter.id }}
+        <LinkTo @route="chapter" @model={{@chapter.id}}>
 
           {{@chapter.name}}
-        {{/link-to}}
+        </LinkTo>
       </h5>
 
-      {{#if config.content.APP.linkify_description}}
-        <p class="card-text">{{linkify @chapter.description class="btn btn-primary mt-3 replaced"}}</p>
-      {{else}}
-        <p class="card-text">{{@chapter.description}}</p>
+      <div class="chapter-metadata">
+        {{#if @chapter.verified }}
+          <div class="d-inline mr-2">
+            {{svg-jar "verified-black-24dp" class="verified-icon"}}
+          </div>
+        {{/if}}
+        <div class="d-inline mr-3">
+        {{svg-jar "watch" class="watch-icon"}} {{relative-time @chapter.createdAt}}
+        </div>
+        {{svg-jar "visibility" class="eye-icon"}} {{@chapter.views}}
+      </div>
 
-      {{/if}}
+      <div class="chapter-description mt-1 mb-3">
+        {{#if config.content.APP.linkify_description}}
+          <p class="card-text">{{linkify @chapter.description class="btn btn-primary mt-3 replaced"}}</p>
+        {{else}}
+          <p class="card-text">{{@chapter.description}}</p>
+        {{/if}}
+      </div>
 
-      <br>
-      {{#each @chapter.tags as |tag|}}
-        {{#link-to "tag" tag}}
-
-          <span class="badge badge-pill badge-primary btn-lg">
-            {{tag}}
-          </span>
-        {{/link-to}}
-
-      {{/each}}
+      <div class="chapter-creator">
+        <img src={{@chapter.creator.profileUri}} alt="" class="rounded-circle">
+        {{@chapter.creator.username}}
+      </div>
     </div>
 
   </div>
