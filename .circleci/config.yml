@@ -17,7 +17,7 @@ with_db: &with_db
   working_directory: ~/ember-circleci
 without_db: &without_db
   docker:
-    - image: circleci/node:10-browsers
+    - image: circleci/node:14-browsers
       environment:
         JOBS: 1
         NODE_ENV: ci

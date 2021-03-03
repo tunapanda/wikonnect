@@ -1,22 +1,22 @@
 <div class="col-lg-4 col-md-6 mb-4">
   <div class="card h-100 rounded-lg">
-    {{#link-to "teach.preview" @chapter.id }}
+    <LinkTo @route="teach.preview" @model={{@chapter.id}}>
+
       {{#if (eq @chapter.imageUrl null)}}
-        <img class="card-img-top" src="https://placehold.jp/20/{{color}}/ffffff/328x200.png?text={{@chapter.name}}"
-          alt="">
+        <img class="card-img-top" src="https://placehold.jp/20/{{this.color}}/ffffff/328x200.png?text={{@chapter.name}}"
+        alt="" role="presentation">
       {{else}}
-        <img class="card-img-top" alt="" src="/{{@chapter.imageUrl}}">
+        <img class="card-img-top" alt="" src="/{{@chapter.imageUrl}}" role="presentation">
       {{/if}}
-    {{/link-to}}
+    </LinkTo>
+
     <div class="card-body">
       <h5 class="text-dark">
 
-        {{#link-to "teach.preview" @chapter.id class="text-dark " }}
-
+        <LinkTo @route="teach.preview" class="text-dark" @model={{@chapter.id }}>
           {{@chapter.name}}
-        {{/link-to}}
+        </LinkTo>
       </h5>
-      {{!-- Approved : {{@chapter.approved}} --}}
 
       <p class="card-text text-muted ">{{@chapter.description}}</p>
       <hr>
@@ -24,14 +24,11 @@
       <div class="d-flex text-muted ">
         <span class="text-center ">
           <div>
-            {{#link-to "teach.preview" @chapter.id}}
-
+            <LinkTo @route="teach.preview" @model={{@chapter.id}}>
               {{svg-jar "pencil" width="20" height="20"}}
-
               <br>
               <small>Edit</small>
-            {{/link-to}}
-
+            </LinkTo>
           </div>
         </span>
 

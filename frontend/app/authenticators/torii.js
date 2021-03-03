@@ -6,19 +6,24 @@ export default Torii.extend({
   ajax: service(),
 
   authenticate() {
-    const ajax = this.get('ajax');
+    const ajax = this.ajax;
 
     return this._super(...arguments).then((data) => {
-      return ajax.request('/token', {
-        type:     'POST',
-        dataType: 'json',
-        data:     { 'grant_type': 'facebook_auth_code', 'auth_code': data.authorizationCode }
-      }).then((response) => {
-        return {
-          access_token: response.access_token,
-          provider: data.provider
-        };
-      });
+      return ajax
+        .request('/token', {
+          type: 'POST',
+          dataType: 'json',
+          data: {
+            grant_type: 'facebook_auth_code',
+            auth_code: data.authorizationCode,
+          },
+        })
+        .then((response) => {
+          return {
+            access_token: response.access_token,
+            provider: data.provider,
+          };
+        });
     });
-  }
+  },
 });

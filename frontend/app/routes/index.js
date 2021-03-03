@@ -1,18 +1,12 @@
 import Route from '@ember/routing/route';
-import { inject, inject as service } from '@ember/service';
-import { set } from '@ember/object';
+import { inject as service } from '@ember/service';
 
 export default class IndexRoute extends Route {
+  @service me;
+  @service headData;
 
-    @inject
-    me;
-
-    @service
-    headData;
-
-    async afterModel() {
-      set(this, 'headData.title', 'Wikonnect - Home');
-      set(this, 'headData.theme', '#534897');
-    }
-
+  async afterModel() {
+    this.headData.title = 'Wikonnect - Home';
+    this.headData.theme = '#534897';
+  }
 }
