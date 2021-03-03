@@ -11,7 +11,7 @@ export default class TeachH5pUploadController extends Controller {
 
 
   @action
-  async uploadPic(files) {
+  async uploadH5p(files) {
 
     let id = this.get('model').id;
     const uploader = Uploader.create({
@@ -23,15 +23,18 @@ export default class TeachH5pUploadController extends Controller {
 
     const host = '/' + this.store.adapterFor('application').urlPrefix();
 
-
-    await uploader.startUpload([host, 'chapters', id, 'upload'].join('/'));
-
-    //upload
-    this.set('complete', true);
-
-    if (this.complete === true) {
-      this.transitionToRoute('teach.preview', id);
+    try {
+      await uploader.startUpload([host, 'chapters', id, 'upload'].join('/'));
+      //upload
+      this.set('complete', true);
+  
+      if (this.complete === true) {
+        this.transitionToRoute('teach.thumbnail-upload', id);
+      }
+    } catch(err) {
+      console.log(err);
     }
+
 
   }
 }

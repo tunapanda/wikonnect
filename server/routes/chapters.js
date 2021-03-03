@@ -230,7 +230,7 @@ router.get('/:id', permController.requireAuth, async ctx => {
 
 
   ctx.status = 200;
-  ctx.body = { chapter };
+  ctx.body = { chapter};
 });
 
 

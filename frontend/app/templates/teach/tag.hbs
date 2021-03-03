@@ -6,96 +6,11 @@
 </div>
 
 <div class=" row d-flex justify-content-center">
+  <Toc @page="4" />
   <div class="p-4 col-sm-8">
     {{#if me.isAuthenticated}}
 
-
-      {{#if config.content.APP.use_preset_tags}}
-
-        <h5>Select Tags</h5>
-        <hr>
-        <ul class="nav nav-tabs" id="myTab" role="tablist">
-          <li class="nav-item">
-            <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home"
-              aria-selected="true">
-              Topic
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile"
-              aria-selected="false">
-              Competency
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact"
-              aria-selected="false">
-              Level
-            </a>
-          </li>
-
-          <li class="nav-item">
-            <a class="nav-link" id="contact-tab" data-toggle="tab" href="#platform" role="tab" aria-controls="platform"
-              aria-selected="false">
-              Platform
-            </a>
-          </li>
-
-          <li class="nav-item">
-            <a class="nav-link" id="contact-tab" data-toggle="tab" href="#kicd" role="tab" aria-controls="kicd"
-              aria-selected="false">
-              KICD Status
-            </a>
-          </li>
-        </ul>
-        <div class="tab-content" id="myTabContent">
-          <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-            {{#each topic_list as |item|}}
-              <button type="button" class="btn btn-outline-primary m-1" {{action addme item "topic"}}>
-                {{item}}
-              </button>
-            {{/each}}
-          </div>
-          <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-            {{#each competency_list as |item|}}
-              <button type="button" class="btn btn-outline-primary m-1" {{action addme item "competency"}}>
-                {{item}}
-              </button>
-            {{/each}}
-          </div>
-          <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
-            {{#each level_list as |item|}}
-              <button type="button" class="btn btn-outline-primary m-1" {{action addme item "level"}}>
-                {{item}}
-              </button>
-            {{/each}}
-          </div>
-
-          <div class="tab-pane fade" id="platform" role="tabpanel" aria-labelledby="platform-tab">
-
-            {{#each platform_list as |item|}}
-              <button type="button" class="btn btn-outline-primary m-1" {{action addme item "platform"}}>
-                {{item}}
-              </button>
-            {{/each}}
-          </div>
-
-
-          <div class="tab-pane fade" id="kicd" role="tabpanel" aria-labelledby="kicd-tab">
-
-            {{#each kicd_list as |item|}}
-              <button type="button" class="btn btn-outline-primary m-1" {{action addme item "kicd"}}>
-                {{item}}
-              </button>
-            {{/each}}
-          </div>
-        </div>
-
-        <br>
-        <br>
-      {{/if}}
-
-      <h5>Add a custom tags</h5>
+      <h5>Add custom tags</h5>
       <form method="post" {{ action "addtag" on="submit"}}>
         {{input id="tag" type="text" value=tag aria-controls="existing-user-table" placeholder="Add Custom Tag" class="form-control"}}
         <button type="submit" class="btn btn-primary mt-2 ">Submit</button>
@@ -152,8 +67,8 @@
         <button type="button" class="btn btn-primary form-control float-right" {{action updateTags}}>Continue</button>
 
       {{else}}
-        {{#link-to "teach.h5p-upload" model.id}}
-          <button type="button" class="btn btn-primary form-control float-right">Skip</button>
+        {{#link-to "teach.preview" model.id}}
+          <button type="button" class="btn btn-warning btn-lg btn-block">Skip</button>
 
         {{/link-to}}
 
