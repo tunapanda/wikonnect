@@ -39,7 +39,7 @@
       </div>
 
       <div class="chapter-description mt-1 mb-3">
-        {{#if config.content.APP.linkify_description}}
+        {{#if this.config.content.APP.linkify_description}}
           <p class="card-text">{{linkify @chapter.description class="btn btn-primary mt-3 replaced"}}</p>
         {{else}}
           <p class="card-text">{{@chapter.description}}</p>
@@ -47,7 +47,7 @@
       </div>
 
       <div class="chapter-creator">
-        <img src={{@chapter.creator.profileUri}} alt="" class="rounded-circle">
+        <img src={{@chapter.creator.profileUri}} alt="Chapter creator avatar" class="rounded-circle">
         {{@chapter.creator.username}}
       </div>
     </div>
