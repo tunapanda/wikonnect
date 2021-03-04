@@ -208,17 +208,6 @@ router.get('/', permController.requireAuth, validateGetChapter, async ctx => {
  *    HTTP/1.1 500 Internal Server Error
  */
 
-
-/** TODO:
-* Add reactions List<>Objects
-* "reaction": [{
-*     "likes": 3,
-*     "authenticated_user": "like",
-*     "id": "",
-*     "dislikes": 1
-* }]
-*/
-
 router.get('/:id', permController.requireAuth, async ctx => {
 
   let stateUserId = ctx.state.user.id == undefined ? ctx.state.user.data.id : ctx.state.user.id;

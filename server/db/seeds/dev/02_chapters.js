@@ -12,6 +12,7 @@ exports.seed = function (knex) {
           const slug = faker.helpers.slugify(name);
           const status = ['published', 'drafts', 'archived'];
           const tags = ['highschool', 'university', 'all', 'data', 'test'];
+          const chapterId = ['chapter1', 'chapter2'];
           fakeChapters.push({
             name: name,
             slug: slug,
@@ -19,7 +20,7 @@ exports.seed = function (knex) {
             lesson_id: 'lesson1',
             content_type: 'h5p',
             status: faker.random.arrayElement(status),
-            content_uri: '/uploads/h5p/chapter1',
+            content_uri: `/uploads/h5p/${faker.random.arrayElement(chapterId)}`,
             creator_id: faker.random.arrayElement(userIds),
             created_at: faker.date.past(),
             updated_at: faker.date.recent(),

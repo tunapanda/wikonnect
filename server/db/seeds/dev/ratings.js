@@ -11,7 +11,7 @@ exports.seed = function (knex) {
             ratings.push({
               chapter_id: faker.random.arrayElement(chapterIds),
               user_id: faker.random.arrayElement(userIds),
-              rating: 4,
+              rating: Math.floor(Math.random() * Math.floor(5)),
               labels: faker.random.arrayElements(labels),
               created_at: faker.date.past(),
               updated_at: faker.date.recent(),
