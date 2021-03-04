@@ -2,7 +2,7 @@ const Router = require('koa-router');
 const path = require('path');
 const unzipper = require('unzipper');
 const busboy = require('async-busboy');
-const { ref } = require('objection');
+const { ref, raw } = require('objection');
 
 const shortid = require('shortid');
 const sharp = require('sharp');
@@ -16,6 +16,7 @@ const Counter = require('../models/counter');
 const permController = require('../middleware/permController');
 const validateGetChapter = require('../middleware/validateRequests/chapterGetValidation');
 const Reaction = require('../models/reaction');
+const Comment = require('../models/comment');
 
 const router = new Router({
   prefix: '/chapters'
@@ -216,7 +217,7 @@ router.get('/:id', permController.requireAuth, async ctx => {
       ])
       .where({ 'chapters.id': ctx.params.id })
       .withGraphFetched(
-        '[comment, reaction(reactionAggregate), flag(selectFlag),author(selectNameAndProfile)]'
+        '[comment.[children], reaction(reactionAggregate), flag(selectFlag),author(selectNameAndProfile)]'
       );
 
   } catch (e) {
@@ -326,7 +327,7 @@ router.post('/', permController.requireAuth, async ctx => {
 router.put('/:id', permController.requireAuth, async ctx => {
   let chapterData = ctx.request.body.chapter;
   if (chapterData.id) delete chapterData.id;
-  
+
   const stateUserRole = ctx.state.user.role == undefined
     ? ctx.state.user.data.role
     : ctx.state.user.role;
@@ -335,7 +336,7 @@ router.put('/:id', permController.requireAuth, async ctx => {
     ctx.throw(400, null, { errors: ['Not enough permissions'] });
     chapterData.verified = 'false';
   }
-  
+
   const chapterCheck = await Chapter.query().findById(ctx.params.id);
   ctx.assert(chapterCheck, 400, 'Invalid data provided');
 

@@ -33,8 +33,10 @@ router.get('/', requireAuth, async ctx => {
 
   try {
     const comment = await Comment.query()
-      .allowGraph('[replies]')
-      .withGraphFetched('replies');
+      .where(ctx.query)
+      .allowGraph('[children]')
+      .withGraphFetched('children');
+
     ctx.assert(comment, 401, 'Something went wrong');
     ctx.status = 201;
     ctx.body = comment;
@@ -71,10 +73,13 @@ router.get('/', requireAuth, async ctx => {
  *
  */
 router.get('/:id', requireAuth, async ctx => {
+  console.log(ctx.params.id);
 
   let comment;
   try {
-    comment = await Comment.query().where({ id: ctx.params.id })
+    comment = await Comment.query()
+      .where({ id: ctx.params.id })
+      .andWhere(ctx.query)
       .allowGraph('[replies]')
       .withGraphFetched('replies');
   } catch (e) {

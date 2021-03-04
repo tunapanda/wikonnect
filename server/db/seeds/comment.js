@@ -1,17 +1,41 @@
-
+const faker = require('faker');
+const desiredFakeNum = 100;
 exports.seed = function (knex) {
   // Deletes ALL existing entries
   return knex('comments').del()
-    .then(function () {
-      return knex('comments').insert([
-        { id: '1', chapter_id: 'chapter1', parent_id: 'null', comment: 'chapter1', creator_id: 'user1' },
-        { id: '2', chapter_id: 'chapter1', parent_id: '1', comment: 'chapter1', creator_id: 'user1' },
-        { id: '3', chapter_id: 'chapter2', parent_id: '1', comment: 'chapter2', creator_id: 'user2' },
-        { id: '4', chapter_id: 'chapter2', parent_id: 'null', comment: 'chapter2', creator_id: 'user3' },
-        { id: '5', chapter_id: 'chapter1', parent_id: '4', comment: 'chapter1', creator_id: 'user1' },
-        { id: '6', chapter_id: 'chapter1', parent_id: '4', comment: 'chapter1', creator_id: 'user1' },
-        { id: '7', chapter_id: 'chapter2', parent_id: '4', comment: 'chapter2', creator_id: 'user2' },
-        { id: '8', chapter_id: 'chapter2', parent_id: '4', comment: 'chapter2', creator_id: 'user3' }
-      ]);
+    .then(() => knex('parent_child_comments').del())
+    .then(() => {
+      return knex('chapters').pluck('id').then((chapterIds) => {
+        knex('users').pluck('id').then((userIds) => {
+          const fakeComments = [];
+
+          for (let index = 0; index < desiredFakeNum; index++) {
+            fakeComments.push({
+              chapter_id: faker.random.arrayElement(chapterIds),
+              comment: faker.lorem.sentence(),
+              creator_id: faker.random.arrayElement(userIds),
+              created_at: faker.date.past(),
+              updated_at: faker.date.recent()
+            });
+          }
+
+          return knex('comments').insert(fakeComments);
+        })
+          .then(() => {
+
+            return knex('comments').pluck('id').then((commentIds) => {
+              const parent_child_comments = [];
+
+              for (let index = 0; index < desiredFakeNum; index++) {
+                parent_child_comments.push({
+                  parent_id: faker.random.arrayElement(commentIds),
+                  child_id: faker.random.arrayElement(commentIds)
+                });
+              }
+
+              return knex('parent_child_comments').insert(parent_child_comments);
+            });
+          });
+      });
     });
 };
