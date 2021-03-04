@@ -49,10 +49,9 @@ const invalidData = {
 
 const userComment = {
   'comment': {
-    'creatorId': 'user3',
     'comment': 'testing comment',
     'metadata': '',
-    'chapterId': 'chapter1'
+    'chapterId': itemID
   }
 };
 
@@ -79,7 +78,7 @@ describe('CHAPTER ROUTE', () => {
       });
   });
   // comments tests
-  it('Should POST a chapter on POST /comments and return a JSON object', done => {
+  it('Should POST a comment on POST /comments and return a JSON object', done => {
     chai
       .request(server)
       .post('/api/v1/comments')
