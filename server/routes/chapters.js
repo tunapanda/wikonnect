@@ -2,7 +2,7 @@ const Router = require('koa-router');
 const path = require('path');
 const unzipper = require('unzipper');
 const busboy = require('async-busboy');
-const { ref, raw } = require('objection');
+const { ref } = require('objection');
 
 const shortid = require('shortid');
 const sharp = require('sharp');
@@ -16,7 +16,6 @@ const Counter = require('../models/counter');
 const permController = require('../middleware/permController');
 const validateGetChapter = require('../middleware/validateRequests/chapterGetValidation');
 const Reaction = require('../models/reaction');
-const Comment = require('../models/comment');
 
 const router = new Router({
   prefix: '/chapters'
