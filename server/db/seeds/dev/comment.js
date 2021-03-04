@@ -1,5 +1,5 @@
-const faker = require('faker');
-const desiredFakeNum = 100;
+const { faker, seed_number } = require('../_seeds');
+
 exports.seed = function (knex) {
   // Deletes ALL existing entries
   return knex('comments').del()
@@ -9,7 +9,7 @@ exports.seed = function (knex) {
         knex('users').pluck('id').then((userIds) => {
           const fakeComments = [];
 
-          for (let index = 0; index < desiredFakeNum; index++) {
+          for (let index = 0; index < seed_number; index++) {
             fakeComments.push({
               chapter_id: faker.random.arrayElement(chapterIds),
               comment: faker.lorem.sentence(),
@@ -26,7 +26,7 @@ exports.seed = function (knex) {
             return knex('comments').pluck('id').then((commentIds) => {
               const parent_child_comments = [];
 
-              for (let index = 0; index < desiredFakeNum; index++) {
+              for (let index = 0; index < seed_number; index++) {
                 parent_child_comments.push({
                   parent_id: faker.random.arrayElement(commentIds),
                   child_id: faker.random.arrayElement(commentIds)

@@ -35,7 +35,7 @@ module.exports = {
       directory: path.join(BASE_PATH, 'migrations')
     },
     seeds: {
-      directory: path.join(BASE_PATH, 'seeds')
+      directory: path.join(BASE_PATH, 'seeds/dev')
     }
   },
   test: {
@@ -45,7 +45,7 @@ module.exports = {
       directory: path.join(BASE_PATH, 'migrations')
     },
     seeds: {
-      directory: path.join(BASE_PATH, 'seeds')
+      directory: path.join(BASE_PATH, 'seeds/dev')
     }
   },
   action: {
@@ -55,7 +55,7 @@ module.exports = {
       directory: path.join(BASE_PATH, 'migrations')
     },
     seeds: {
-      directory: path.join(BASE_PATH, 'seeds')
+      directory: path.join(BASE_PATH, 'seeds/dev')
     }
   },
   development: {
@@ -66,7 +66,7 @@ module.exports = {
       directory: path.join(BASE_PATH, 'migrations')
     },
     seeds: {
-      directory: path.join(BASE_PATH, 'seeds')
+      directory: path.join(BASE_PATH, 'seeds/dev')
     },
   },
   production: {
@@ -76,7 +76,7 @@ module.exports = {
       directory: path.join(BASE_PATH, 'migrations')
     },
     seeds: {
-      directory: path.join(BASE_PATH, 'seeds')
+      directory: path.join(BASE_PATH, 'seeds/dev')
     },
     log: {
       error(message) {
