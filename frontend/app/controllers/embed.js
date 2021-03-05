@@ -45,10 +45,10 @@ export default class EmbedController extends Controller {
     const response = await fetch(url, {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
       },
       redirect: 'follow',
-      body: JSON.stringify(data)
+      body: JSON.stringify(data),
     });
     return response.json();
   }
@@ -62,10 +62,10 @@ export default class EmbedController extends Controller {
         method: 'POST',
         mode: 'cors',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
         },
         redirect: 'follow',
-        body: JSON.stringify(event)
+        body: JSON.stringify(event),
       });
     });
   }
