@@ -20,6 +20,7 @@
   "dependencies": {
     "@elastic/elasticsearch": "^7.4.0",
     "@koa/cors": "^3.1.0",
+    "@lumieducation/h5p-server": "^7.1.0",
     "accesscontrol": "^2.2.1",
     "async-busboy": "^1.0.1",
     "aws-sdk": "^2.643.0",
