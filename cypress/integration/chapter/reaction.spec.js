@@ -76,6 +76,7 @@ describe("Chapter Reaction After Auth", () => {
           cy.get(".reactions .reaction-btn.like-button").click();
           cy.get(".reactions .like-button .count").contains(parseFloat(item.reaction[0].likes) + 1);
           cy.get(".reactions .dislike-button .count").contains(parseFloat(item.reaction[0].dislikes) - 1);
+          return false;
         }
       })
     });
@@ -89,6 +90,7 @@ describe("Chapter Reaction After Auth", () => {
           cy.get(".reactions .reaction-btn.dislike-button").click();
           cy.get(".reactions .like-button .count").contains(parseFloat(item.reaction[0].likes) - 1);
           cy.get(".reactions .dislike-button .count").contains(parseFloat(item.reaction[0].dislikes) + 1);
+          return false;
         }
       })
     });
@@ -103,6 +105,7 @@ describe("Chapter Reaction After Auth", () => {
             .find(" .count")
             .contains(parseFloat(item.reaction[0].likes) - 1);
           cy.get(".reactions .dislike-button .count").contains(item.reaction[0].dislikes);
+          return false;
         }
       })
     });
@@ -117,6 +120,7 @@ describe("Chapter Reaction After Auth", () => {
             .find(" .count")
             .contains(parseFloat(item.reaction[0].dislikes) - 1);
           cy.get(".reactions .like-button .count").contains(item.reaction[0].likes);
+          return false;
         }
       })
     });
