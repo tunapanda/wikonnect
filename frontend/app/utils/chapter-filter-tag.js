@@ -1,4 +1,4 @@
-import {tracked} from '@glimmer/tracking';
+import { tracked } from '@glimmer/tracking';
 
 export class ChapterFilterTag {
   @tracked name;

@@ -1,60 +1,40 @@
 import Component from '@glimmer/component';
-import {inject as service} from '@ember/service';
-import {action} from '@ember/object';
-import {computed} from '@ember/object';
-import {tracked} from '@glimmer/tracking';
+import { inject as service } from '@ember/service';
+import { action } from '@ember/object';
+import { tracked } from '@glimmer/tracking';
 
 export default class CommentSectionComponent extends Component {
-
-  @service
-  me;
-
-  @service
-  session;
-
-  @service
-  store;
-
-  @service
-  notify;
-
-  @tracked
-  comment;
-
+  @service me;
+  @service session;
+  @service store;
+  @service notify;
+  @tracked comment;
 
   get commentModel() {
     return this.store.createRecord('comment', {
-      user: this.me.user?.id,
+      creator: this.me.user,
       chapter: this.args.selectedChapter,
-      comment: this.comment
+      comment: this.comment,
     });
   }
 
-  @computed('me.user.profileUri')
   get profileUri() {
     return this.me.user.profileUri;
   }
 
   @action
-  async saveComment(model) {
-    let chap = await this.store.peekRecord('chapter', this.args.selectedChapter);
-    model.set('chapter', chap);
-    model.save()
+  saveComment(model) {
+    model.chapter = this.store.peekRecord('chapter', this.args.selectedChapter);
+    model
+      .save()
       .then(() => {
         this.comment = '';
-        this.notify.success('Comment added successfully', {closeAfter: 6000});
-
+        this.notify.success('Comment added successfully', { closeAfter: 6000 });
       })
       .catch(() => {
         this.comment = model.comment;
         model.deleteRecord();
-        this.notify.alert('Be mindful of your comments', {closeAfter: 6000});
+        this.notify.alert('Be mindful of your comments', { closeAfter: 6000 });
       });
-
   }
 }
-
-
-
-
-

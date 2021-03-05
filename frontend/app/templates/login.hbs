@@ -1,1 +1,2 @@
-<Authentication::Login @registeredUser={{changeset model LoginValidations}} @authenticationSuccessful={{action "login"}} />
+<Authentication::Login @registeredUser={{changeset this.model this.LoginValidations}}
+                       @authenticationSuccessful={{this.login}} />

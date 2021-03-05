@@ -171,7 +171,7 @@ router.post('/', validateAuthRoutes.validateNewUser, createPasswordHash, async c
 function Private() {
   // this.a = 1;
   this.username = 'private';
-  this.profileUri = 'images/profile-placeholder.gif';
+  this.profileUri = '/uploads/images/profile-placeholder.gif';
   return this;
 }
 

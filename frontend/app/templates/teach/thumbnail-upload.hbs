@@ -1,66 +1,45 @@
-{{outlet}}
 <div class=" d-flex row text-center p-4 shadow-sm justify-content-center">
-  <h3><b>Tag Content</b></h3>
+  <h3><b>{{t "messages.create_h5p_chapter"}}</b></h3>
 </div>
 
-<div class=" row d-flex justify-content-center">
-  <div class="p-4 col-sm-6">
-    {{#if me.isAuthenticated}}
+<div class="row d-flex flex-column justify-content-center align-items-center">
+  <Toc @page="3"/>
+  {{#if this.me.isAuthenticated}}
+    <div class="bg-primary col-md-6 col-sm-12 text-center p-3 text-white rounded-top">
+      Upload Thumbnail
+    </div>
 
-      <div class="text-center">
+    <div class="drop-area col-md-6 col-sm-12 mb-5 d-flex flex-column justify-content-center align-items-center">
+      <File-drop-zone @onDrop={{this.uploadPic}}>
+        <p>Drag and drop here</p>
+        <p>or</p>
+        <Forms::Upload @multiple="false" @accept="image/*" @filesSelected={{this.uploadPic}}
+                       @disabled={{this.uploader.uploading}}>
+          {{#if this.uploader.uploading}}
+            <BsProgress as |pg|>
+              <pg.bar @value={{this.uploader.progress}} />
+            </BsProgress>
+            Uploading... <span class="loading-spinner"></span> {{this.uploader.progress}}% <br>
+            <small class="text-muted">You will be redirected once upload is complete</small>
 
-        {{!-- {{#if this.me.user.profileUri}}
-      <img class="rounded-circle" width="300px" alt="" src={{this.me.user.profileUri}}>
-    {{else}}
-      <img class="rounded-circle" width="300px" alt="" src={{profileImage}}>
+          {{else}}
+            Upload Thumbnail
+          {{/if}}
 
-    {{/if}} --}}
+        </Forms::Upload>
+      </File-drop-zone>
 
+      <p><em>*Max image file size allowed is 8mb</em></p>
+      <p><em>*Accepted file types: jpg, png, svg</em></p>
+    </div>
 
-        <div class="bg-primary text-center p-3 text-white mb-4 ">
-          UPLOAD THUMBNAIL
-        </div>
+    <LinkTo @route="teach.tag" @model={{this.model.id}}>
+      <button type="button" class="btn btn-warning btn-lg btn-block">Skip</button>
+    </LinkTo>
 
-        <br>
+  {{else}}
 
-        <div class="p-5   mb-5 ml-5 mr-5 ">
-          <Forms::Upload @multiple="false" @accept="image/*" @filesSelected={{action "uploadPic"}}
-            @disabled={{uploader.uploading}}>
-            {{#if uploader.uploading}}
-              <BsProgress as |pg|>
-                <pg.bar @value={{uploader.progress}} />
-              </BsProgress>
-              Uploading... <span class="loading-spinner"></span> {{uploader.progress}}% <br>
-              <small class="text-muted">You will be redirected once upload is complete</small>
+    <Warning @message="You do not have permission to view this page"/>
 
-            {{else}}
-              Upload Thumbnail
-            {{/if}}
-
-
-          </Forms::Upload>
-        </div>
-
-        {{#if signup}}
-
-          <br><br>
-          {{#link-to "profile"}}
-            {{#if complete}}
-              <button type="button" class="btn btn-success">Proceed to profile</button>
-            {{else}}
-              Skip
-            {{/if}}
-
-          {{/link-to}}
-
-        {{/if}}
-      </div>
-
-
-    {{else}}
-
-      <Warning @message="You do not have permission to view this page" />
-
-    {{/if}}
-  </div>
+  {{/if}}
 </div>

@@ -1,7 +1,5 @@
-import DS from 'ember-data';
-import { belongsTo } from 'ember-data/relationships';
+import Model, { belongsTo, attr } from '@ember-data/model';
 
-const { Model, attr } = DS;
 export default class EnrollmentModel extends Model {
   @attr() course_id;
 

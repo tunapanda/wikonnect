@@ -1,17 +1,18 @@
 <nav
-        class="main-header mb-1 navbar navbar-expand-lg navbar-light text-{{config.content.APP.header_text}} secondary-color bg-{{config.content.APP.header_background}} shadow-sm ">
+        class="main-header mb-1 navbar navbar-expand-lg navbar-light text-{{this.config.content.APP.header_text}}
+         secondary-color bg-{{this.config.content.APP.header_background}} shadow-sm ">
   <LinkTo @route="index" class="pr-4">
 
     {{svg-jar "wikonnect-logo-white"   height="40"}}
   </LinkTo>
 
-  <a class="nav-link text-{{config.content.APP.header_text}} lang-selector m-0 p-1" href="#"
-    {{action "translate"  "en-us" }}>
+  <a class="nav-link text-{{this.config.content.APP.header_text}} lang-selector m-0 p-1" href="#"
+    {{on "click" (fn this.translate "en-us")}}>
     EN
   </a>
   <span class="lang-selector-divider">/</span>
-  <a class="nav-link text-{{config.content.APP.header_text}} lang-selector m-0 p-1" href="#"
-    {{action "translate" "sw-ke" }}>
+  <a class="nav-link text-{{this.config.content.APP.header_text}} lang-selector m-0 p-1" href="#"
+    {{on "click" (fn this.translate "sw-ke")}}>
     SW
   </a>
 
@@ -22,33 +23,33 @@
   </button>
 
   <div class="collapse navbar-collapse" id="mainTopNav">
-    <ul class="navbar-nav ml-auto text-{{config.content.APP.header_text}} ">
-      {{#if me.user.id}}
+    <ul class="navbar-nav ml-auto text-{{this.config.content.APP.header_text}} ">
+      {{#if this.me.user.id}}
 
-        <li class="nav-item text-{{config.content.APP.header_text}}">
+        <li class="nav-item text-{{this.config.content.APP.header_text}}">
 
-          {{#link-to "home"  class="nav-link" }}
+          <LinkTo @route="home" class="nav-link">
             {{t "buttons.learn"}}
-          {{/link-to}}
+          </LinkTo>
         </li>
 
-        <li class="nav-item text-{{config.content.APP.header_text}}">
-          <a class="nav-link" href="https://teach.wikonnect.org/api/auth?token={{token}}&user={{me.user.username}}">
-            Teach
-          </a>
+        <li class="nav-item text-{{this.config.content.APP.header_text}}">
+          <LinkTo @route="teach" class="nav-link">
+            {{t "buttons.teach"}}
+          </LinkTo>
         </li>
-        <li class="nav-item text-{{config.content.APP.header_text}}">
-          {{#link-to "index" class="nav-link" }}
+        <li class="nav-item text-{{this.config.content.APP.header_text}}">
+          <LinkTo @route="index" class="nav-link">
             {{t "buttons.about"}}
-          {{/link-to}}
+          </LinkTo>
         </li>
       {{else}}
-        <li class="nav-item text-{{config.content.APP.header_text}}">
-          {{#link-to "home" class="nav-link" }}
+        <li class="nav-item text-{{this.config.content.APP.header_text}}">
+          <LinkTo @route="home" class="nav-link">
             {{t "buttons.learn"}}
-          {{/link-to}}
+          </LinkTo>
         </li>
-        <li class="nav-item text-{{config.content.APP.header_text}}">
+        <li class="nav-item text-{{this.config.content.APP.header_text}}">
           <a class="nav-link" href="https://wikonnect.org">
             {{t "buttons.about"}}
           </a>
@@ -56,9 +57,9 @@
         </li>
       {{/if}}
     </ul>
-    <form class="form-inline ml-md-5 search-form" {{action "search" on="submit" }}>
-      <Input @id="search" @class="form-control mr-sm-2 search-input" @type="text" @value={{search_term}} />
-      {{#if searchLoading}}
+    <form class="form-inline ml-md-5 search-form" {{on "submit" this.search}}>
+      <Input @id="search" @class="form-control mr-sm-2 search-input" @type="text" @value={{this.search_term}} />
+      {{#if this.searchLoading}}
         <button class="btn form-control search-button search-loading" type="button">
           <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
           Searching...
@@ -73,13 +74,13 @@
     </form>
     <ul class="navbar-nav ml-auto nav-flex-icons">
 
-      {{#if me.user.id}}
+      {{#if this.me.user.id}}
 
-        <li class="nav-item avatar dropdown text-{{config.content.APP.header_text}}">
-          <a class="nav-link dropdown-toggle mh-50" id="navbarDropdownMenuLink-55" data-toggle="dropdown"
+        <li class="nav-item avatar dropdown text-{{this.config.content.APP.header_text}}">
+          <a href="#" class="nav-link dropdown-toggle mh-50" id="navbarDropdownMenuLink-55" data-toggle="dropdown"
              aria-haspopup="true" aria-expanded="false">
-            {{#if me.user.profileUri}}
-              <img src={{me.user.profileUri}} class="rounded-circle h40" alt="avatar image">
+            {{#if this.me.user.profileUri}}
+              <img src={{this.me.user.profileUri}} class="rounded-circle h40" alt="avatar">
             {{else}}
               <span aria-hidden="true">&times;</span>
             {{/if}}
@@ -87,16 +88,15 @@
           <div class="dropdown-menu dropdown-menu-lg-right dropdown-secondary"
                aria-labelledby="navbarDropdownMenuLink-55">
 
-            {{#link-to "profile" class="dropdown-item" }}
+            <LinkTo @route="profile" class="dropdown-item">
               {{this.name}}'s {{t "labels.profile"}}
+            </LinkTo>
 
-            {{/link-to}}
-
-            {{#link-to "profile"  (query-params view="Settings")
-                       class="dropdown-item"  }}
+            <LinkTo @route="profile" @query={{hash view="Settings"}}  class="dropdown-item">
               {{t "buttons.settings"}}
-            {{/link-to}}
-            <a class="dropdown-item" href="#" {{action this.logout }}>
+            </LinkTo>
+
+            <a class="dropdown-item" href="#" {{on "click" @logout }}>
               {{t "buttons.logout"}}
             </a>
           </div>
