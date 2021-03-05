@@ -419,7 +419,7 @@ router.post('/:id/chapter-image', async (ctx, next) => {
     let buffer = await resizer.toBuffer();
     const params = {
       Bucket: s3.config.bucket, // pass your bucket name
-      Key: `uploads/chapters/${fileNameBase}.jpg`, // key for saving filename
+      Key: `/uploads/chapters/${fileNameBase}.jpg`, // key for saving filename
       Body: buffer, //image to be uploaded
       ACL: 'public-read'
     };
