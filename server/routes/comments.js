@@ -118,8 +118,6 @@ router.get('/', requireAuth, async ctx => {
  *
  */
 router.get('/:id', requireAuth, async ctx => {
-  console.log(ctx.params.id);
-
   let comment;
   try {
     comment = await Comment.query()

@@ -27,7 +27,7 @@ exports.seed = function (knex) {
             created_at: faker.date.past(),
             updated_at: faker.date.recent(),
             tags: faker.random.arrayElements(tags),
-            approved: faker.random.boolean(),
+            approved: true,
             verified: faker.random.boolean()
           });
         }
@@ -76,7 +76,7 @@ exports.seed = function (knex) {
           created_at: '2017-12-20 19:17:10',
           updated_at: '2017-12-20 19:17:10',
           tags: ['university'],
-          approved: false,
+          approved: true,
           verified: false,
         },
         {

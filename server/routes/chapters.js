@@ -128,8 +128,6 @@ router.get('/', permController.requireAuth, validateGetChapter, async ctx => {
     throw e;
   }
 
-  console.log(chapter.total);
-
   chapter = {
     meta: {
       total_pages: chapter.total / per_page
