@@ -57,6 +57,7 @@
     "ember-drag-drop": "^0.7.0",
     "ember-drag-drop-polyfill": "^1.0.0",
     "ember-export-application-global": "^2.0.1",
+    "ember-fetch": "^8.0.4",
     "ember-file-drop-zone": "^0.2.1",
     "ember-infinity": "^2.1.2",
     "ember-intl": "^5.5.0",
