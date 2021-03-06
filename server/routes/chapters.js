@@ -40,6 +40,9 @@ const router = new Router({
  * @apiSuccessExample {json} Success-Response:
  *     HTTP/1.1 200 OK
  *      {
+ *        "meta": {
+ *            "total_pages": 20.2
+ *        },
  *        "chapter": [{
  *            "id": "chapter1",
  *            "lessonId": "lesson1",
@@ -83,6 +86,10 @@ const router = new Router({
 
 router.get('/', permController.requireAuth, validateGetChapter, async ctx => {
   let stateUserId = ctx.state.user.id == undefined ? ctx.state.user.data.id : ctx.state.user.id;
+
+  let { page, per_page } = ctx.query;
+  delete ctx.query.page;
+  delete ctx.query.per_page;
   let chapter;
   try {
     // View counter for each chapter
@@ -109,18 +116,30 @@ router.get('/', permController.requireAuth, validateGetChapter, async ctx => {
           .as('authenticated_user_reaction_id')
       ])
       .where(ctx.query)
+      .page(page, per_page)
       .withGraphFetched(
         '[reaction(reactionAggregate), flag(selectFlag),author(selectNameAndProfile)]'
-      );
+      )
+      .orderBy('id');
   } catch (e) {
     if (e.statusCode) {
       ctx.throw(e.statusCode, null, { errors: [e.message] });
     } else { ctx.throw(400, null, { errors: [e.message] }); }
     throw e;
   }
+
+  console.log(chapter.total);
+
+  chapter = {
+    meta: {
+      total_pages: chapter.total / per_page
+    },
+    chapter: chapter.results,
+  };
+
   ctx.assert(chapter, 404, 'No chapter by that ID');
   ctx.status = 200;
-  ctx.body = { 'chapter': chapter };
+  ctx.body = chapter;
 
 });
 
@@ -247,7 +266,7 @@ router.get('/:id', permController.requireAuth, async ctx => {
 
 
   ctx.status = 200;
-  ctx.body = { chapter};
+  ctx.body = { chapter };
 });
 
 
