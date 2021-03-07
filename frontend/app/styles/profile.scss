@@ -5,6 +5,10 @@
   align-content: flex-start;
 }
 
+.btn.active {
+  background-color: #F57010;
+}
+
 .profile-title {
   display: flex;
   justify-content: space-between;
@@ -16,7 +20,7 @@
 
 }
 
-.achievement .card{
+.achievement .card {
   margin: 15px 0;
   background: #FAFAF5 0% 0% no-repeat padding-box;
   border-radius: 11px;
@@ -24,15 +28,17 @@
   flex-direction: row;
   border: 1px solid #FAFAF5;
 
-  .card-header{
+  .card-header {
     display: unset;
     border-bottom: unset;
     background: #FAFAF5 0% 0% no-repeat padding-box;
   }
+
   img {
     margin: 10px 0 0 10px;
   }
-  p{
+
+  p {
     margin-bottom: 3px;
   }
 
@@ -43,19 +49,22 @@
     color: #08BC87;
     opacity: 1;
   }
-  .description{
+
+  .description {
     text-align: left;
     font: "Semi Bold 15px/16px Inter";
     letter-spacing: 0px;
     color: #201C2F;
     opacity: 1;
   }
-  .created{
+
+  .created {
     font: "Regular 14px/18px Inter";
     letter-spacing: 0px;
     color: #9DA3A2;
     opacity: 1;
   }
+
   .fa-share-square {
     opacity: 1;
     color: #F57010;
@@ -117,4 +126,65 @@
   flex-direction: column;
   justify-content: center;
 
+}
+
+.main {
+  background: #F9F9F9;
+
+  li {
+
+    color: #636363;
+    font-weight: 500;
+    padding: 5px 20px;
+    position: relative;
+    transition: all 0.2s ease;
+    overflow: hidden;
+    margin-left: -3em;
+    min-height: 2.5em;
+
+    &:hover {
+      background-color: #cfc4bc;
+
+      &:after {
+        bottom: 0;
+      }
+    }
+
+    button.copy-btn {
+      opacity: 1;
+      border-image: none;
+      box-sizing: unset;
+      margin-left: 1em;
+      position: absolute;
+      right: 4px;
+      bottom: 4px;
+      display: inline-block;
+      padding: 6px 12px;
+      font-size: 13px;
+      font-weight: bold;
+      line-height: 20px;
+      color: #333;
+      white-space: nowrap;
+      vertical-align: middle;
+      cursor: pointer;
+      background-color: #eee;
+      background-image: linear-gradient(#fcfcfc, #eee);
+      border: 1px solid #d5d5d5;
+      border-radius: 3px;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+      -webkit-appearance: none;
+      -webkit-transition: opacity .3s ease-in-out;
+      -o-transition: opacity .3s ease-in-out;
+      transition: opacity .3s ease-in-out;
+
+      img {
+        margin-top: -3px;
+        position: relative;
+        top: 3px;
+      }
+    }
+  }
 }

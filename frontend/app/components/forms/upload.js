@@ -1,20 +1,25 @@
 import { action } from '@ember/object';
-import { classNames } from '@ember-decorators/component';
-import Component from '@ember/component';
+import Component from '@glimmer/component';
+import { tracked } from '@glimmer/tracking';
 
+export default class UploadComponent extends Component {
+  @tracked
+  fileControl;
 
-export default
-@classNames('upload-button')
-class UploadComponent extends Component {
   @action
   select() {
-    this.element.querySelector('input').click();
+    this.fileControl.click();
   }
 
   @action
-  inputChange() {
-    let files = this.element.querySelector('input').files;
-    // this.set('files', files);
-    this.filesSelected(files);
+  inputChange(evt) {
+    evt.preventDefault();
+    evt.stopPropagation();
+    this.args.filesSelected(this.fileControl.files);
+  }
+
+  @action
+  initFileControl(elem) {
+    this.fileControl = elem;
   }
 }

@@ -8,8 +8,6 @@ const Router = require('koa-router');
 const User = require('../models/user');
 const Oauth2 = require('../models/oauth2');
 
-const { updatedAt } = require('../utils/timestamp');
-
 const router = new Router({
   prefix: '/oauth2s'
 });
@@ -33,16 +31,15 @@ async function download(url, fn) {
 router.post('/', async ctx => {
   const googleToken = ctx.request.body.oauth2.googleToken;
   const provider = ctx.request.body.oauth2.provider;
-  // const response = await fetch(`https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=${googleToken}`);
-  const response = await fetch(`https://www.googleapis.com/oauth2/v1/userinfo?alt=json&access_token=${googleToken}`);
+  const response = await fetch(`https://people.googleapis.com/v1/people/me?access_token=${googleToken}&personFields=names,emailAddresses`);
   const data = await response.text();
   const gData = JSON.parse(data);
 
   const hashPassword = await bcrypt.hash(googleToken, 10);
   const username = shortid.generate().toLowerCase();
-  const extension = gData.picture.match(/\.[0-9a-z]+$/i);
+//   const extension = gData.picture.match(/\.[0-9a-z]+$/i);
 
-  await download(gData.picture, `gData.id.${extension}`);
+//   await download(gData.picture, `gData.id.${extension}`);
 
   // const url = gData.picture;
   // const path = './';
@@ -50,12 +47,19 @@ router.post('/', async ctx => {
   //   console.log('✅ Done!');
   // });
 
+  // const username = gData.names[0].displayName.split(' ').join('').replace(/^[\s\uFEFF\xAO] + |[\s\uFEFF\xAO] + $ /g, ' ');
   let newUser = {
-    email: gData.email,
+    email: gData.emailAddresses[0].value,
     hash: hashPassword,
     username: username,
-    lastSeen: await updatedAt(),
-    metadata: { 'profileComplete': 'false', 'oneInviteComplete': 'false' }
+    firstName: gData.names[0].familyName,
+    lastName: gData.names[0].givenName,
+    metadata: {
+      'profileComplete': 'false',
+      'oneInviteComplete': 'false',
+      'firstName': gData.names[0].familyName,
+      'lastName': gData.names[0].givenName
+    }
   };
 
   try {

@@ -31,7 +31,8 @@ const data = {
 const putData = {
   chapter: {
     'name': 'PUT update works',
-    'description': 'PUT update works'
+    'description': 'PUT update works',
+    'verified': true
   }
 };
 
@@ -51,7 +52,7 @@ const userComment = {
     'creatorId': 'user3',
     'comment': 'testing comment',
     'metadata': '',
-    'chapterId': 'chapter778'
+    'chapterId': 'chapter1'
   }
 };
 
@@ -188,7 +189,6 @@ describe('CHAPTER ROUTE', () => {
         res.should.be.json;
         res.body.should.be.a('object');
         res.body.should.have.property('errors');
-        res.body.errors[0].should.eql('Bad Request');
         done();
       });
   });
@@ -203,18 +203,18 @@ describe('CHAPTER ROUTE', () => {
         res.status.should.eql(400);
         res.should.be.json;
         res.body.should.be.a('object');
-        res.body.should.have.property('errors');
-        res.body.errors.should.eql(['Body contains id, remove it']);
+        res.body.errors.should.eql(['Bad Request']);
         done();
       });
   });
-  it('Should throw an ERROR on GET req using invalid query', done => {
+  it('Should return an empty list on GET req using invalid query', done => {
     chai
       .request(server)
       .get(route + '?slug=a-learning')
       .set(tokens.headersSuperAdmin1)
       .end((err, res) => {
         res.should.have.status(200);
+        res.body.should.have.property('chapter');
         done();
       });
   });
@@ -227,6 +227,21 @@ describe('CHAPTER ROUTE', () => {
       .end((err, res) => {
         res.status.should.eql(400);
         res.should.be.json;
+        done();
+      });
+  });
+  it('Should throw an ERROR on PUT when not admin or superadmin for verified', (done) => {
+    chai
+      .request(server)
+      .put(route + itemID)
+      .set('Content-Type', 'application/json')
+      .set(tokens.headerBasicUser2)
+      .send(putData)
+      .end((err, res) => {
+        res.status.should.eql(400);
+        res.should.be.json;
+        res.body.should.be.a('object');
+        res.body.errors.should.eql(['Bad Request']);
         done();
       });
   });

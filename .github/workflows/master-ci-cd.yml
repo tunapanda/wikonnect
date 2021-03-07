@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: ['12.x']
+        node-version: ['14.x']
 
     steps:
       - uses: actions/checkout@v2
@@ -42,7 +42,7 @@ jobs:
     strategy:
       matrix:
         python-version: [3.8]
-        node-version: ['12.x']
+        node-version: ['14.x']
         appname: ['aws-codedeploy']
         deploy-group: ['wikonnect-production']
         s3-bucket: ['wikonnect-codedeploy-deployments']
@@ -73,7 +73,7 @@ jobs:
 
       # Install project dependencies, test and build
       - name: Install dependencies
-        run: cd server && yarn install
+        run: yarn --frozen-lockfile install
 
       # Install AWS CLI 2
       - name: Install AWS CLI 2

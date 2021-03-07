@@ -1,73 +1,68 @@
-import Component from '@ember/component';
-import { inject } from '@ember/service';
+import Component from '@glimmer/component';
+import { inject as service } from '@ember/service';
 import { action } from '@ember/object';
 import UserValidation from '../../validations/user';
 
 export default class AuthenticationSignupComponent extends Component {
   UserValidation = UserValidation;
 
-  @inject
-  me;
-
-  @inject
-  notify;
-
-  @inject
-  session;
-
-  @inject
-  store;
-
-  @inject
-  config
-
-  @inject
-  torii
+  @service me;
+  @service notify;
+  @service session;
+  @service store;
+  @service config;
 
   @action
-  sessionRequiresAuthentication() {
-    this.notify.info('Signing up...', { closeAfter: 5000 });
-
-    const me = this.me;
-    this.get('torii')
-      .open('google-oauth2-bearer')
-      .then(function (googleAuth) {
-        const googleToken = googleAuth.authorizationToken.access_token;
-
-        me.registerWithGoogle({ googleToken: googleToken, provider: 'google' })
-          .then((user) => me.authenticate(user.get('username'), googleToken).then(() => this.success()));
-      }, function (error) {
-        this.notify.info(`Google auth failed: ${error.message}`);
-      });
+  authenticateWithGoogleImplicitGrant() {
+    let clientId = this.config.get('google').apiKey;
+    let redirectURI = `${window.location.origin}/callback`;
+    let responseType = 'token';
+    let scope = 'profile email';
+    window.location.replace(
+      'https://accounts.google.com/o/oauth2/v2/auth?' +
+        `client_id=${clientId}` +
+        `&redirect_uri=${redirectURI}` +
+        `&response_type=${responseType}` +
+        `&scope=${scope}`
+    );
   }
 
   @action
   createUser(model) {
-    let fields = model.getProperties('username', 'email', 'password', 'inviteCode');
+    let fields = model.getProperties(
+      'username',
+      'email',
+      'password',
+      'inviteCode'
+    );
     this.notify.info('Signing up...', { closeAfter: 5000 });
 
-
-    this.me.register(fields).then(() => this.me.authenticate(model.get('username'), model.get('password')).then(() => this.success()), err => {
-      if (err && err.errors) {
-        Object.keys(err.errors).forEach(key => {
-          let constraint = err.errors[key].constraint.split('_');
-
-          let error_message;
-          switch (constraint[1]) {
-          case 'email':
-            error_message = 'This email is already in use';
-            break;
-          case 'username':
-            error_message = 'This username already exists';
-            break;
-          default:
-            error_message = err.errors[key].errors;
-            break;
-          }
-          model.addError(constraint[1], error_message);
-        });
-      }
-    });
+    this.me
+      .register(fields)
+      .then(() =>
+        this.me
+          .authenticate(model.get('username'), model.get('password'))
+          .then(() => this.args.success())
+      )
+      .catch((err) => {
+        if (err && err.errors) {
+          Object.keys(err.errors).forEach((key) => {
+            let constraint = err.errors[key].constraint.split('_');
+            let error_message;
+            switch (constraint[1]) {
+              case 'email':
+                error_message = err.errors[key].detail;
+                break;
+              case 'username':
+                error_message = 'This username already exists';
+                break;
+              default:
+                error_message = err.errors[key].errors;
+                break;
+            }
+            model.addError(constraint[1], error_message);
+          });
+        }
+      });
   }
-
 }

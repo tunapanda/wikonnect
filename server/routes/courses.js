@@ -66,7 +66,7 @@ const router = new Router({
 
 router.get('/', permController.requireAuth, async ctx => {
   try {
-    const course = await Course.query().where(ctx.query).eager('[modules(selectNameAndId), enrollments(selectNameAndId)]');
+    const course = await Course.query().where(ctx.query).withGraphFetched('[modules(selectNameAndId), enrollments(selectNameAndId)]');
     if (ctx.state.user.data.id !== 'anonymous') {
       // get all achievements of a user
       await userProgress(course, ctx.state.user.data.id);
@@ -148,7 +148,7 @@ router.get('/', permController.requireAuth, async ctx => {
  */
 
 router.get('/:id', permController.requireAuth, async ctx => {
-  const course = await Course.query().findById(ctx.params.id).eager('modules(selectNameAndId)');
+  const course = await Course.query().findById(ctx.params.id).withGraphFetched('modules(selectNameAndId)');
   ctx.assert(course, 404, 'no lesson by that ID');
 
   await returnType(course);

@@ -2,70 +2,6 @@ const s3 = require('../s3Util');
 const bcrypt = require('bcrypt');
 const fetch = require('node-fetch');
 
-
-const User = require('../../models/user');
-const AchievementAward = require('../../models/achievement_awards');
-
-const log = require('../logger');
-const knex = require('../knexUtil');
-const { wikonnectUser } = require('../mojaCampaigns/mojaEndpoint');
-
-
-async function achievementAwardsType(parent) {
-  try {
-    if (parent.length == undefined) {
-      parent.achievementAwards.forEach(award => {
-        return award.type = 'achievementAward';
-      });
-    } else {
-      parent.forEach(mod => {
-        mod.achievementAwards.forEach(award => {
-          return award.type = 'achievementAward';
-        });
-      });
-    }
-  } catch (error) {
-    log.error(error);
-  }
-}
-
-async function userRoles(parent) {
-  try {
-    if (parent.length == undefined) {
-      parent.roles.forEach(role => {
-        return role.type = 'roles';
-      });
-    } else {
-      parent.forEach(roles => {
-        roles.roles.forEach(role => {
-          return role.type = 'roles';
-        });
-      });
-    }
-  } catch (error) {
-    log.error(error);
-  }
-}
-
-async function enrolledCoursesType(parent) {
-  try {
-    if (parent.length == undefined) {
-      parent.enrolledCourses.forEach(lesson => {
-        return lesson.type = 'course';
-      });
-    } else {
-      parent.forEach(mod => {
-        mod.enrolledCourses.forEach(lesson => {
-          return lesson.type = 'course';
-        });
-      });
-    }
-  } catch (error) {
-    log.error(error);
-  }
-}
-
-
 function encode(data) {
   let buf = Buffer.from(data);
   let base64 = buf.toString('base64');
@@ -85,10 +21,10 @@ async function getProfileImage(id) {
       let image = 'data:image/(png|jpg);base64,' + encode(getImage.Body);
       return image;
     } else {
-      return 'images/profile-placeholder.gif';
+      return '/uploads/images/profile-placeholder.gif';
     }
   } catch (e) {
-    return 'images/profile-placeholder.gif';
+    return '/uploads/images/profile-placeholder.gif';
   }
 }
 async function createPasswordHash(ctx, next) {
@@ -121,46 +57,8 @@ async function getGoogleToken(ctx, next) {
   await next();
 }
 
-async function profileCompleteBoolean(params) {
-  const keys = ['profileUri', 'email'];
-  keys.forEach((key, index) => {
-    if (params[key] != null) {
-      log.info(index);
-      return 'false';
-    } else {
-      return 'true';
-    }
-  });
-}
-
-async function inviteUserAward(params) {
-  let completed = await knex('user_invite')
-    .count('invited_by')
-    .select('invited_by')
-    .where({ 'invited_by': params.invitedBy })
-    .groupBy('invited_by')
-    .having(knex.raw('count(invited_by) > 0'));
-
-  await AchievementAward.query().insert({
-    'name': 'Invited 1 users',
-    'achievementId': 'achievements12',
-    'userId': completed[0].invited_by
-  });
-
-  if (params.metadata.oneInviteComplete == 'false' && completed > 0) {
-    await User.query().patchAndFetchById(params.id, { 'metadata:oneInviteComplete': 'true' });
-    await wikonnectUser(params.id);
-  }
-}
-
-
 module.exports = {
-  achievementAwardsType,
-  userRoles,
-  enrolledCoursesType,
   createPasswordHash,
-  profileCompleteBoolean,
-  inviteUserAward,
   getProfileImage,
   getGoogleToken
 };

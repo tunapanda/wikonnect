@@ -1,68 +1,49 @@
 import { action } from '@ember/object';
 import { inject } from '@ember/service';
-import Component from '@ember/component';
+import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
-
-// import { tagName } from '@ember-decorators/component';
 import LoginValidations from '../../validations/login';
 
-export default
-// @tagName('')
-class LoginComponent extends Component {
+export default class LoginComponent extends Component {
   LoginValidations = LoginValidations;
 
-  @inject
-  me;
-
-  @inject
-  store;
-
-  @inject
-  notify;
-
-  @inject
-  torii;
-
-  @inject
-  session;
+  @inject me;
+  @inject store;
+  @inject notify;
+  @inject config;
+  @inject session;
 
   @tracked loading = false;
 
   @action
-  sessionRequiresAuthentication() {
-    this.notify.info('Signing up...', { closeAfter: 5000 });
-    const me = this.me;
-    this.get('torii')
-      .open('google-oauth2-bearer')
-      .then(function (googleAuth) {
-        const googleToken = googleAuth.authorizationToken.access_token;
-
-        me.registerWithGoogle({ googleToken: googleToken, provider: 'google' })
-          .then((user) => me.authenticate(user.get('username'), googleToken).then(() => {
-            this.transitionToRoute('home');
-          }))
-      }, function (error) {
-        this.notify.info(`Google auth failed: ${error.message}`);
-      });
+  authenticateWithGoogleImplicitGrant() {
+    let clientId = this.config.get('google').apiKey;
+    let redirectURI = `${window.location.origin}/callback`;
+    let responseType = 'token';
+    let scope = 'profile email';
+    window.location.replace(
+      'https://accounts.google.com/o/oauth2/v2/auth?' +
+        `client_id=${clientId}` +
+        `&redirect_uri=${redirectURI}` +
+        `&response_type=${responseType}` +
+        `&scope=${scope}`
+    );
   }
-
 
   @action
   login(model) {
     this.loading = true;
-    this.me.authenticate(model.get('username'), model.get('password')).then(() => {
-
-      this.authenticationSuccessful();
-    }).catch(() => {
-      this.loading = false;
-      this.notify.alert('Login failed, Check your username and password and try again', { closeAfter: 6000 });
-      // if (err.json && err.json.errors) {
-      //   Object.keys(err.json.errors).forEach(field => {
-      //     model.addError(err.json.errors[field].constraint, err.json.errors[field].name);
-      //   });
-      // }
-    });
-
-
+    this.me
+      .authenticate(model.get('username'), model.get('password'))
+      .then(() => {
+        this.args.authenticationSuccessful();
+      })
+      .catch(() => {
+        this.loading = false;
+        this.notify.alert(
+          'Login failed, Check your username and password and try again',
+          { closeAfter: 6000 }
+        );
+      });
   }
 }

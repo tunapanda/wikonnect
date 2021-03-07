@@ -28,7 +28,6 @@ const putData = {
   },
 };
 
-// it('', done => { chai.request().post().set().send().end((err, res) => { done(); }); });
 
 describe('MODULES route', () => {
   it('should GET all MODULES with valid token and show user progress', done => {
@@ -91,7 +90,7 @@ describe('MODULES route', () => {
       .send(putData)
       .end((err, res) => {
         res.status.should.eql(400);
-        res.body.errors[0].should.eql('invalid signature');
+        res.body.errors.should.eql(['Bad Request']);
         done();
       });
   });

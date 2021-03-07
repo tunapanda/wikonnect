@@ -1,25 +1,21 @@
 import Route from '@ember/routing/route';
-import { inject } from '@ember/service';
+import { inject as service } from '@ember/service';
 
 export default class TeachThumbnailUploadRoute extends Route {
+  @service me;
 
-  @inject me;
-
-  model(params) {
-
-
-    return this.store.findRecord('chapter', params.id);
-
-
-
-
+  beforeModel(transition) {
+    if (!this.me.isAuthenticated) {
+      if (!this.me.isAuthenticated) {
+        // eslint-disable-next-line ember/no-controller-access-in-routes
+        let loginController = this.controllerFor('login');
+        loginController.set('previousTransition', transition);
+      }
+      this.transitionTo('login');
+    }
   }
 
-
-  setupController(controller, model) {
-    // Call _super for default behavior
-    super.setupController(controller, model);
-    // Implement your custom setup after
-    controller.set('chapter_id', this.get('chapter_id'));
+  model(params) {
+    return this.store.findRecord('chapter', params.id);
   }
 }

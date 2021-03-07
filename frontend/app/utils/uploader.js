@@ -1,51 +1,52 @@
 import EmberObject from '@ember/object';
 import Evented from '@ember/object/evented';
 import { run } from '@ember/runloop';
-
+import { tracked } from '@glimmer/tracking';
 
 export default class UploaderEmberObject extends EmberObject.extend(Evented) {
+  @tracked reject;
+  @tracked resolve;
+  @tracked xhr;
+  @tracked progress = 0;
+
   attempts = 0;
   started = false;
   finished = false;
   uploading = false;
   error = false;
-  progress = 0;
 
   startUpload(url) {
-    return new Promise(function (resolve, reject) {
-      this.set('reject', reject);
-      this.set('resolve', resolve);
-
+    return new Promise((resolve, reject) => {
+      this.reject = reject;
+      this.resolve = resolve;
       this._uploadFile(url);
-    }.bind(this));
+    });
   }
 
   reset() {
-    this.setProperties({
-      started: false,
-      finished: false,
-      uploading: false,
-      error: false,
-      progress: 0
-    });
+    this.started = false;
+    this.finished = false;
+    this.uploading = false;
+    this.error = false;
+    this.progress = 0;
   }
 
   _uploadFile(urlOveride) {
     const xhr = new XMLHttpRequest();
-    const url = this.get('uploadUrl') || urlOveride;
+    const url = this.uploadUrl || urlOveride;
 
     xhr.open('post', url, true);
 
-    xhr.withCredentials = !!this.get('withCredentials');
+    xhr.withCredentials = !!this.withCredentials;
 
     let headers = {
-      'Accept': 'application/json',
+      Accept: 'application/json',
       'Cache-Control': 'no-cache',
-      'X-Requested-With': 'XMLHttpRequest'
+      'X-Requested-With': 'XMLHttpRequest',
     };
 
-    if (this.get('auth')) {
-      headers.Authorization = this.get('auth');
+    if (this.auth) {
+      headers.Authorization = this.auth;
     }
 
     let headerValue;
@@ -57,16 +58,14 @@ export default class UploaderEmberObject extends EmberObject.extend(Evented) {
 
     const formData = new FormData();
 
-    const file = this.get('file');
+    const file = this.file;
 
     formData.append('file', file, file.name);
 
-    this.setProperties({
-      'status': 'sending',
-      'started': true,
-      'finished': false,
-      'uploading': true
-    });
+    this.status = 'sending';
+    this.started = true;
+    this.finished = false;
+    this.uploading = true;
 
     xhr.onload = () => run(() => this._onFinish());
     xhr.upload.onprogress = (e) => run(() => this._onProgress(e));
@@ -74,19 +73,19 @@ export default class UploaderEmberObject extends EmberObject.extend(Evented) {
 
     xhr.send(formData);
 
-    this.set('xhr', xhr);
+    this.xhr = xhr;
   }
 
   _onProgress(e) {
     if (e) {
-      let progress = Math.ceil(100 * e.loaded / e.total);
-      this.set('progress', progress);
+      let progress = Math.ceil((100 * e.loaded) / e.total);
+      this.progress = progress;
       this.trigger('progress', progress);
     }
   }
 
   _onFinish() {
-    const xhr = this.get('xhr');
+    const xhr = this.xhr;
 
     if (xhr.readyState !== 4) {
       return this._onError('Network Error');
@@ -106,47 +105,43 @@ export default class UploaderEmberObject extends EmberObject.extend(Evented) {
       }
     }
 
-    this.setProperties({
-      'progress': 100,
-      'status': 'finished',
-      'finished': true,
-      'uploading': false
-    });
+    this.progress = 100;
+    this.status = 'finished';
+    this.finished = true;
+    this.uploading = false;
 
-    this.get('resolve')(response);
+    this.resolve(response);
     this.trigger('finish', response);
   }
 
   _onError(err) {
     let msg = err;
     if (typeof err !== 'string') {
-      switch (this.get('xhr').status) {
-      case 404:
-        msg = 'File not found';
-        break;
-      case 500:
-        msg = 'Server error';
-        break;
-      case 0:
-        msg = 'Request aborted';
-        break;
-      default:
-        msg = 'Unknown error ' + this.get('xhr').status;
+      switch (this.xhr.status) {
+        case 404:
+          msg = 'File not found';
+          break;
+        case 500:
+          msg = 'Server error';
+          break;
+        case 0:
+          msg = 'Request aborted';
+          break;
+        default:
+          msg = 'Unknown error ' + this.xhr.status;
       }
     }
 
-    if (this.get('attempts') < 3 && msg !== 'Request aborted') {
-      this.incrementProperty('attempts');
+    if (this.attempts < 3 && msg !== 'Request aborted') {
+      ++this.attempts;
       this.reset();
       return this._uploadFile();
     }
 
-    this.setProperties({
-      status: 'error',
-      uploading: false,
-      error: true
-    });
+    this.status = 'error';
+    this.uploading = false;
+    this.error = true;
 
-    this.get('reject')();
+    this.reject();
   }
 }

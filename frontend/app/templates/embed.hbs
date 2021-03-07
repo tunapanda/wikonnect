@@ -1,32 +1,34 @@
-{{outlet}}
-{{model.name}}
-{{!-- {{callbackUrl}} --}}
+{{this.model.name}}
 <br>
-{{#if callbackUrl}}
-  <span class="badge badge-primary">Progress updates sent to: {{callbackUrl}}</span>
+{{#if this.callbackUrl}}
+  <span class="badge badge-primary">Progress updates sent to: {{this.callbackUrl}}</span>
 
 {{/if}}
 
-<H5p @location={{model.contentUri}} />
-{{#if me.isAuthenticated}}
-  Logged in as : {{me.user.username}}
-  <a name="" {{action logout}} id="" class="btn btn-primary" href="#" role="button">Logout</a>
+<H5p @location={{this.model.contentUri}} />
+{{#if this.me.isAuthenticated}}
+  Logged in as : {{this.me.user.username}}
+  <a name="" {{on "click" this.logout}} id="" class="btn btn-primary" href="#" role="button">Logout</a>
 
 {{else}}
-  <a name="" {{action (mut showLoginModal) true}} id="" class="btn btn-primary" href="#" role="button">Login</a>
-  <a name="" {{action (mut showRegistrationModal) true}} id="" class="btn btn-primary" href="#" role="button">Signup</a>
+  <a name="" {{on "click" (fn this.openLoginModal true)}} id="" class="btn btn-primary" href="#" role="button">
+    Login
+  </a>
+  <a name="" {{on "click" (fn this.openSignUpModal true)}} id="" class="btn btn-primary" href="#" role="button">
+    Signup
+  </a>
 {{/if}}
 
 
-<BsModalSimple @open={{showLoginModal}} @title="Login" @size="sm" @onHidden={{action (mut showLoginModal) false}}>
-  <Authentication::Login @registeredUser={{changeset model LoginValidations}} @authenticationSuccessful={{action "login"
-    }} />
+<BsModalSimple @open={{this.showLoginModal}} @title="Login" @size="sm" @onHidden={{fn this.openLoginModal false}}>
+  <Authentication::Login @registeredUser={{changeset @model this.LoginValidations}}
+                         @authenticationSuccessful={{this.login}} />
 </BsModalSimple>
 
 
+<BsModalSimple @open={{this.showRegistrationModal}} @title="Login" @size="sm"
+               @onHidden={{fn this.openSignUpModal false}}>
 
-<BsModalSimple @open={{showRegistrationModal}} @title="Login" @size="sm" @onHidden={{action (mut showRegistrationModal)
-  false}}>
-  <Authentication::Signup @newUser={{changeset model UserValidation}} @inviteCode={{invite_code}}
-    @success={{action "signup" }} />
+  <Authentication::Signup @newUser={{changeset @model this.UserValidation}} @inviteCode={{this.invite_code}}
+                          @success={{this.signup }} />
 </BsModalSimple>

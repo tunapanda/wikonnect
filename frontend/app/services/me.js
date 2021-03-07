@@ -1,15 +1,14 @@
-import { alias } from '@ember/object/computed';
 import Service, { inject as service } from '@ember/service';
 import { getOwner } from '@ember/application';
-import RSVP from 'rsvp';
-
+import { tracked } from '@glimmer/tracking';
 
 export default class MeService extends Service {
-  @service
-  session;
+  @service session;
+  @service store;
+  @tracked user;
 
-  @service
-  store;
+  @tracked
+  isAuthenticated = this.session.isAuthenticated;
 
   async load() {
     const authenticator = getOwner(this).lookup('authenticator:jwt');
@@ -19,22 +18,18 @@ export default class MeService extends Service {
     if (session && session.token) {
       tokenData = authenticator.getTokenData(session.token);
       try {
-        const user = await this.store.findRecord('user', tokenData.data.id);
-        this.set('user', user);
+        this.user = await this.store.findRecord('user', tokenData.data.id);
       } catch (e) {
         return this.session.invalidate();
       }
     }
-    return RSVP.resolve();
+    return Promise.resolve();
   }
 
-  @alias('session.isAuthenticated')
-  isAuthenticated;
-
-  register(fields) {
+  async register(fields) {
     let user = this.store.createRecord('user', fields);
 
-    return user.save();
+    return await user.save();
   }
 
   registerWithGoogle(fields) {
@@ -42,15 +37,31 @@ export default class MeService extends Service {
     return oauth2.save();
   }
 
-
   authenticate(username, password) {
     let credentials = { username, password };
-    return this.session.authenticate('authenticator:jwt', credentials).then(() => {
-      return this.load();
-    });
+    return this.session
+      .authenticate('authenticator:jwt', credentials)
+      .then(() => {
+        return this.load();
+      });
   }
 
   logout() {
     return this.session.invalidate();
+  }
+
+  get name() {
+    if (!this.user.metadata) {
+      return this.user.username;
+    }
+    if (this.user.metadata.firstName && this.user.metadata.lastName) {
+      return `${this.user.metadata.firstName} ${this.user.metadata.lastName}`;
+    } else if (this.user.metadata.firstName && !this.user.metadata.lastName) {
+      return this.user.metadata.firstName;
+    } else if (!this.user.metadata.firstName && this.user.metadata.lastName) {
+      return this.user.metadata.lastName;
+    } else {
+      return this.user.username;
+    }
   }
 }
