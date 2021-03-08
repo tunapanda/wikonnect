@@ -28,10 +28,14 @@ export default class H5pPlayerComponent extends Component {
         });
     };
     elem.addEventListener('initialized', (event) => {
-      console.info('ooh year', event);
+      if (this.args.onInitialization) {
+        this.args.onInitialization(event);
+      }
     });
     elem.addEventListener('xAPI', (event) => {
-      console.log(event);
+      if (this.args.onxAPIStatement) {
+        this.args.onxAPIStatement(event);
+      }
     });
   }
 }
