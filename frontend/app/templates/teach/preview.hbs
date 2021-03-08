@@ -16,8 +16,12 @@
       {{/if}}
       <br>
       {{#if this.model.contentId}}
-      <H5p::Player @contentId={{this.model.contentId}}>
-      </H5p::Player>
+        {{#if this.model.contentUri}}
+          <H5p @location={{this.model.contentUri}} />
+        {{else}}
+          <H5p::Player @contentId={{this.model.contentId}}>
+          </H5p::Player>
+        {{/if}}
         <br>
         <LinkTo class="btn bg-orange" @route="teach.h5p-upload" @model={{this.model.id}}>
           <button type="button" class="btn btn-primary">Change H5P</button>
