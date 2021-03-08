@@ -1399,6 +1399,13 @@
   resolved "https://registry.yarnpkg.com/@iarna/toml/-/toml-2.2.5.tgz#b32366c89b43c6f8cefbdefac778b9c828e3ba8c"
   integrity sha512-trnsAYxU3xnS1gPHPyU961coFyLkh4gAD/0zQ5mymY4yOZ+CYvsPqUbOFSw0aDM4y0tV7tiFxL/1XfXPNC6IPg==
 
+"@lumieducation/h5p-webcomponents@^7.2.0":
+  version "7.2.0"
+  resolved "https://registry.yarnpkg.com/@lumieducation/h5p-webcomponents/-/h5p-webcomponents-7.2.0.tgz#4e773a95e7c9c21af7e8ddff58477db3c33f244c"
+  integrity sha512-AnWxnrexKMXgmnf2taTtepeCJq6mMMUS9JIfPYPVZKBjKF0bceGNLdlUiXQ5zgYuyDSYdBI/kHb0aNXHIGiEvg==
+  dependencies:
+    await-lock "^2.1.0"
+
 "@mrmlnc/readdir-enhanced@^2.2.1":
   version "2.2.1"
   resolved "https://registry.yarnpkg.com/@mrmlnc/readdir-enhanced/-/readdir-enhanced-2.2.1.tgz#524af240d1a360527b730475ecfa1344aa540dde"
@@ -2538,6 +2545,11 @@ atob@^2.1.2:
   version "2.1.2"
   resolved "https://registry.yarnpkg.com/atob/-/atob-2.1.2.tgz#6d9517eb9e030d2436666651e86bd9f6f13533c9"
   integrity sha512-Wm6ukoaOGJi/73p/cl2GvLjTI5JM1k/O14isD73YML8StrH/7/lRFgmg8nICZgD3bZZvjwCGxtMOD3wWNAu8cg==
+
+await-lock@^2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/await-lock/-/await-lock-2.1.0.tgz#bc78c51d229a34d5d90965a1c94770e772c6145e"
+  integrity sha512-t7Zm5YGgEEc/3eYAicF32m/TNvL+XOeYZy9CvBUeJY/szM7frLolFylhrlZNWV/ohWhcUXygrBGjYmoQdxF4CQ==
 
 aws-sign2@~0.7.0:
   version "0.7.0"
