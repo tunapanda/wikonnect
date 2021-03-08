@@ -13,7 +13,7 @@
   <div class="row">
     <div class="col">
       <InfinityLoader @infinityModel={{this.chapters}} @loadingText="Loading more awesome records..."
-        @loadedText="Loaded all the records!" @triggerOffset={{500}} />
+        @loadedText="Loaded all the records!" @triggerOffset={{500}} @eventDebounce={{1000}}/>
     </div>
   </div>
 
