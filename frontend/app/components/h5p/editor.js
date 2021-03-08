@@ -11,9 +11,6 @@ export default class H5pEditorComponent extends Component {
   @tracked
   contentId = this.args.contentId || 'new';
 
-  @tracked
-  loading = false;
-
   baseUrl = '/api/v1/h5p';
 
   constructor(owner, args) {
@@ -42,8 +39,10 @@ export default class H5pEditorComponent extends Component {
       )
         .then((res) => res.json())
         .then((rs) => {
+          if (this.args.onEditorInit) {
+            this.args.onEditorInit(element);
+          }
           this.editor = element; //initialize the editor now
-          console.log(rs);
           return rs.model;
         });
     };

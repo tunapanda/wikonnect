@@ -10,7 +10,7 @@ export default class TeachH5pUploadController extends Controller {
   @tracked editor;
 
   @action
-  editorLoaded(elem) {
+  onEditorInitialized(elem) {
     this.editor = elem;
   }
 
