@@ -126,7 +126,7 @@ router.post('/ajax', requireAuth, async (ctx) => {
     const result = await new H5PAjaxEndpoint(editor)
       .postAjax(action, body, language, user, uploadedContentFile, id, translator, uploadedLibraryFile);
 
-    ctx.status = 201;
+    ctx.status = action === 'libraries' || action === 'translations' || action === 'filter' ? 200 : 201;
     ctx.body = result;
 
   } catch (e) {
@@ -285,7 +285,7 @@ router.get('/player/:contentId', async (ctx) => {
     const editor = await H5PEditor();
     const user = H5PUser(ctx.state.user);
 
-    const player =await H5PPlayer(editor);
+    const player = await H5PPlayer(editor);
 
     const results = await player.render(contentId, user);
 
