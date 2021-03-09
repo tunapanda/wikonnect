@@ -16,6 +16,8 @@ export default class ChapterIndexController extends Controller {
   @tracked ratingModal = false;
   queryParams = ['callbackUrl', 'ref'];
 
+
+
   get embedCode() {
     let baseURL = window.location.host;
     if (this.callbackUrl) {
@@ -107,57 +109,62 @@ export default class ChapterIndexController extends Controller {
     }
   }
 
-  // @action
-  // async dataLoad(el) {
-  //   let chapter_id = await this.target.currentRoute.params.chapter_slug;
-  //   let score;
-  //   window.H5P.externalDispatcher.on('xAPI', function (event) {
-  //     if (event.getScore() === event.getMaxScore() && event.getMaxScore() > 0) {
-  //       score = event.data.statement.result.duration;
-  //     }
-  //   });
-  //   if (score != 'undefined') {
-  //     let achievement = await this.store.createRecord('achievement', {
-  //       description: 'completed' + chapter_id,
-  //       targetStatus: 'completed',
-  //       target: chapter_id
-  //     });
+  @action
+  async dataLoad() {
+    let chapter_id = await this.target.currentRoute.params.chapter_slug;
+    let score;
+    // eslint-disable-next-line no-undef
+    H5P.externalDispatcher.on('xAPI', function (event) {
+      console.log(event);
+      if (event.getScore() === event.getMaxScore() && event.getMaxScore() > 0) {
+        score = event.data.statement.result.duration;
+      }
+    });
+    console.log(score, chapter_id);
+    // if (score != 'undefined') {
+    //   let achievement = await this.store.createRecord('achievement', {
+    //     description: 'completed' + chapter_id,
+    //     targetStatus: 'completed',
+    //     target: chapter_id,
+    //   });
 
-  //     // if user completes chapters create record
-  //     let counter = await this.store.createRecord('counter', {
-  //       counter: 1,
-  //       chapterId: chapter_id,
-  //       trigger: 'chapterCompletion'
-  //     });
+    //   // if user completes chapters create record
+    //   let counter = await this.store.createRecord('counter', {
+    //     counter: 1,
+    //     chapterId: chapter_id,
+    //     trigger: 'chapterCompletion',
+    //   });
 
-  //     await achievement.save();
-  //     await counter.save();
-  //   }
-  // }
+    //   await achievement.save();
+    //   await counter.save();
+    // }
+  }
 
-  // @action
-  // async counterTimer(el) {
-  //   let chapter_id = await this.target.currentRoute.params.chapter_slug;
-  //   // record every page view
-  //   let counter = await this.store.createRecord('counter', {
-  //     counter: 1,
-  //     chapterId: chapter_id,
-  //     trigger: 'pageLanding'
-  //   });
-  //   await counter.save();
+  @action
+  async counterTimer() {
+    let chapter_id = await this.target.currentRoute.params.chapter_slug;
+    // record every page view
+    // let counter = await this.store.createRecord('counter', {
+    //   counter: 1,
+    //   chapterId: chapter_id,
+    //   trigger: 'pageLanding',
+    // });
+    // await counter.save();
 
-  //   // After 10 secs record page view
-  //   let counterDelay = await this.store.createRecord('counter', {
-  //     counter: 1,
-  //     chapterId: chapter_id,
-  //     trigger: 'timerDelay'
-  //   });
-  //   setTimeout(function () {
-  //     let data = {
-  //       counter: 1,
-  //       trigger: 'timerDelay'
-  //     };
-  //     alert(data.counter, data.trigger);
-  //   }, 100);
-  // }
+    // After 10 secs record page view
+    // await this.store.createRecord('counter', {
+    //   counter: 1,
+    //   chapterId: chapter_id,
+    //   trigger: 'timerDelay',
+    // });
+
+    setTimeout(function () {
+      let data = {
+        counter: 1,
+        chapterId: chapter_id,
+        trigger: 'timerDelay',
+      };
+      alert(data.counter, data.trigger, data.chapterId);
+    }, 100);
+  }
 }

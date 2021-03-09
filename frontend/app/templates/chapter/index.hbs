@@ -1,4 +1,5 @@
 <div id="chapter" class="p-4">
+<div {{did-insert (fn this.dataLoad)}}></div>
   <h4>{{this.model.name}} </h4>
   <div class="chapter-content ">
     {{#if this.model.contentUri}}
