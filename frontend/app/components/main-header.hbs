@@ -28,24 +28,24 @@
 
         <li class="nav-item text-{{this.config.content.APP.header_text}}">
 
-          <LinkTo @route="home" class="nav-link" data-toggle="collapse" data-target="#mainTopNav">
+          <LinkTo @route="home" class="nav-link" data-toggle="collapse" data-target="#mainTopNav.show">
             {{t "buttons.learn"}}
           </LinkTo>
         </li>
 
         <li class="nav-item text-{{this.config.content.APP.header_text}}">
-          <LinkTo @route="teach" class="nav-link" data-toggle="collapse" data-target="#mainTopNav">
+          <LinkTo @route="teach" class="nav-link" data-toggle="collapse" data-target="#mainTopNav.show">
             {{t "buttons.teach"}}
           </LinkTo>
         </li>
         <li class="nav-item text-{{this.config.content.APP.header_text}}">
-          <LinkTo @route="index" class="nav-link" data-toggle="collapse" data-target="#mainTopNav">
+          <LinkTo @route="index" class="nav-link" data-toggle="collapse" data-target="#mainTopNav.show">
             {{t "buttons.about"}}
           </LinkTo>
         </li>
       {{else}}
         <li class="nav-item text-{{this.config.content.APP.header_text}}">
-          <LinkTo @route="home" class="nav-link" data-toggle="collapse" data-target="#mainTopNav">
+          <LinkTo @route="home" class="nav-link" data-toggle="collapse" data-target="#mainTopNav.show">
             {{t "buttons.learn"}}
           </LinkTo>
         </li>
@@ -88,16 +88,17 @@
           <div class="dropdown-menu dropdown-menu-lg-right dropdown-secondary"
                aria-labelledby="navbarDropdownMenuLink-55">
 
-            <LinkTo @route="profile" class="dropdown-item" data-toggle="collapse" data-target="#mainTopNav">
+            <LinkTo @route="profile" class="dropdown-item" data-toggle="collapse" data-target="#mainTopNav.show">
               {{this.name}}'s {{t "labels.profile"}}
             </LinkTo>
 
             <LinkTo @route="profile" @query={{hash view="Settings"}}  class="dropdown-item"
-                    data-toggle="collapse" data-target="#mainTopNav">
+                    data-toggle="collapse" data-target="#mainTopNav.show">
               {{t "buttons.settings"}}
             </LinkTo>
 
-            <a class="dropdown-item" href="#" {{on "click" @logout }} data-toggle="collapse" data-target="#mainTopNav">
+            <a class="dropdown-item" href="#" {{on "click" @logout }}
+               data-toggle="collapse" data-target="#mainTopNav.show">
               {{t "buttons.logout"}}
             </a>
           </div>
@@ -105,13 +106,13 @@
       {{else}}
         <li class="text-light nav-item">
           <LinkTo @route="login" class="nav-link text-light action-btn signin"
-                  data-toggle="collapse" data-target="#mainTopNav">
+                  data-toggle="collapse" data-target="#mainTopNav.show">
             {{t "buttons.login"}}
           </LinkTo>
         </li>
         <li class="text-light nav-item ml-lg-3">
           <LinkTo @route="signup" class="nav-link text-light action-btn signup"
-                  data-toggle="collapse" data-target="#mainTopNav">
+                  data-toggle="collapse" data-target="#mainTopNav.show">
             {{t "buttons.signup"}}
           </LinkTo>
 
