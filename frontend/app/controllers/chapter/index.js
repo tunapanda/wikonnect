@@ -14,9 +14,9 @@ export default class ChapterIndexController extends Controller {
   @tracked copied = false;
   @tracked flaggingModal = false;
   @tracked ratingModal = false;
+  @tracked score;
+
   queryParams = ['callbackUrl', 'ref'];
-
-
 
   get embedCode() {
     let baseURL = window.location.host;
@@ -112,59 +112,55 @@ export default class ChapterIndexController extends Controller {
   @action
   async dataLoad() {
     let chapter_id = await this.target.currentRoute.params.chapter_slug;
-    let score;
     // eslint-disable-next-line no-undef
-    H5P.externalDispatcher.on('xAPI', function (event) {
-      console.log(event);
+    H5P.externalDispatcher.on('xAPI', async (event) => {
       if (event.getScore() === event.getMaxScore() && event.getMaxScore() > 0) {
-        score = event.data.statement.result.duration;
+        this.score = event.getMaxScore();
+      }
+
+      if (this.score != 'undefined') {
+        if (this.me.isAuthenticated) {
+          let achievement = await this.store.createRecord('achievement', {
+            description: 'completed' + chapter_id,
+            targetStatus: 'completed',
+            target: chapter_id,
+          });
+          await achievement.save();
+        }
+
+        // if user completes chapters create record
+        let counter = await this.store.createRecord('counter', {
+          counter: 1,
+          chapterId: chapter_id,
+          trigger: 'chapterCompletion',
+        });
+        await counter.save();
       }
     });
-    console.log(score, chapter_id);
-    // if (score != 'undefined') {
-    //   let achievement = await this.store.createRecord('achievement', {
-    //     description: 'completed' + chapter_id,
-    //     targetStatus: 'completed',
-    //     target: chapter_id,
-    //   });
-
-    //   // if user completes chapters create record
-    //   let counter = await this.store.createRecord('counter', {
-    //     counter: 1,
-    //     chapterId: chapter_id,
-    //     trigger: 'chapterCompletion',
-    //   });
-
-    //   await achievement.save();
-    //   await counter.save();
-    // }
   }
 
   @action
   async counterTimer() {
+    const sleep = (m) => new Promise((r) => setTimeout(r, m));
     let chapter_id = await this.target.currentRoute.params.chapter_slug;
     // record every page view
-    // let counter = await this.store.createRecord('counter', {
-    //   counter: 1,
-    //   chapterId: chapter_id,
-    //   trigger: 'pageLanding',
-    // });
-    // await counter.save();
+    let pageLanding = await this.store.createRecord('counter', {
+      counter: 1,
+      chapterId: chapter_id,
+      trigger: 'pageLanding',
+    });
+    await pageLanding.save();
 
     // After 10 secs record page view
-    // await this.store.createRecord('counter', {
-    //   counter: 1,
-    //   chapterId: chapter_id,
-    //   trigger: 'timerDelay',
-    // });
-
-    setTimeout(function () {
+    (async () => {
+      await sleep(6000);
       let data = {
         counter: 1,
         chapterId: chapter_id,
         trigger: 'timerDelay',
       };
-      alert(data.counter, data.trigger, data.chapterId);
-    }, 100);
+      let timerDelay = await this.store.createRecord('counter', data);
+      await timerDelay.save();
+    })();
   }
 }

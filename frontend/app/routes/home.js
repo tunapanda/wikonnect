@@ -26,6 +26,10 @@ export default class HomeRoute extends Route {
   }
 
   model() {
-    return this.infinity.model('chapter', { approved: true });
+    return this.infinity.model('chapter', {
+      approved: true,
+      perPage: 10,
+      startingPage: 0,
+    });
   }
 }
