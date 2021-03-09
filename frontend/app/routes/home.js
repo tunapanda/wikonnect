@@ -5,6 +5,7 @@ export default class HomeRoute extends Route {
   @service me;
   @service config;
   @service headData;
+  @service infinity;
 
   async afterModel() {
     this.headData.title = 'Wikonnect - Chapters';
@@ -12,6 +13,6 @@ export default class HomeRoute extends Route {
   }
 
   model() {
-    return this.store.query('chapter', { approved: true });
+    return this.infinity.model('chapter', { approved: true });
   }
 }

@@ -1,6 +1,6 @@
 <nav
-        class="main-header mb-1 navbar navbar-expand-lg navbar-light text-{{this.config.content.APP.header_text}}
-         secondary-color bg-{{this.config.content.APP.header_background}} shadow-sm ">
+        class="main-header navbar navbar-expand-lg navbar-light text-{{this.config.content.APP.header_text}}
+         secondary-color bg-{{this.config.content.APP.header_background}}">
   <LinkTo @route="index" class="pr-4">
 
     {{svg-jar "wikonnect-logo-white"   height="40"}}
@@ -28,24 +28,24 @@
 
         <li class="nav-item text-{{this.config.content.APP.header_text}}">
 
-          <LinkTo @route="home" class="nav-link">
+          <LinkTo @route="home" class="nav-link" data-toggle="collapse" data-target="#mainTopNav.show">
             {{t "buttons.learn"}}
           </LinkTo>
         </li>
 
         <li class="nav-item text-{{this.config.content.APP.header_text}}">
-          <LinkTo @route="teach" class="nav-link">
+          <LinkTo @route="teach" class="nav-link" data-toggle="collapse" data-target="#mainTopNav.show">
             {{t "buttons.teach"}}
           </LinkTo>
         </li>
         <li class="nav-item text-{{this.config.content.APP.header_text}}">
-          <LinkTo @route="index" class="nav-link">
+          <LinkTo @route="index" class="nav-link" data-toggle="collapse" data-target="#mainTopNav.show">
             {{t "buttons.about"}}
           </LinkTo>
         </li>
       {{else}}
         <li class="nav-item text-{{this.config.content.APP.header_text}}">
-          <LinkTo @route="home" class="nav-link">
+          <LinkTo @route="home" class="nav-link" data-toggle="collapse" data-target="#mainTopNav.show">
             {{t "buttons.learn"}}
           </LinkTo>
         </li>
@@ -57,7 +57,7 @@
         </li>
       {{/if}}
     </ul>
-    <form class="form-inline ml-md-5 search-form" {{on "submit" this.search}}>
+    <form class="form-inline ml-lg-5 search-form" {{on "submit" this.search}}>
       <Input @id="search" @class="form-control mr-sm-2 search-input" @type="text" @value={{this.search_term}} />
       {{#if this.searchLoading}}
         <button class="btn form-control search-button search-loading" type="button">
@@ -88,27 +88,31 @@
           <div class="dropdown-menu dropdown-menu-lg-right dropdown-secondary"
                aria-labelledby="navbarDropdownMenuLink-55">
 
-            <LinkTo @route="profile" class="dropdown-item">
+            <LinkTo @route="profile" class="dropdown-item" data-toggle="collapse" data-target="#mainTopNav.show">
               {{this.name}}'s {{t "labels.profile"}}
             </LinkTo>
 
-            <LinkTo @route="profile" @query={{hash view="Settings"}}  class="dropdown-item">
+            <LinkTo @route="profile" @query={{hash view="Settings"}}  class="dropdown-item"
+                    data-toggle="collapse" data-target="#mainTopNav.show">
               {{t "buttons.settings"}}
             </LinkTo>
 
-            <a class="dropdown-item" href="#" {{on "click" @logout }}>
+            <a class="dropdown-item" href="#" {{on "click" @logout }}
+               data-toggle="collapse" data-target="#mainTopNav.show">
               {{t "buttons.logout"}}
             </a>
           </div>
         </li>
       {{else}}
         <li class="text-light nav-item">
-          <LinkTo @route="login" class="nav-link text-light action-btn signin">
+          <LinkTo @route="login" class="nav-link text-light action-btn signin"
+                  data-toggle="collapse" data-target="#mainTopNav.show">
             {{t "buttons.login"}}
           </LinkTo>
         </li>
-        <li class="text-light nav-item ml-md-3">
-          <LinkTo @route="signup" class="nav-link text-light action-btn signup">
+        <li class="text-light nav-item ml-lg-3">
+          <LinkTo @route="signup" class="nav-link text-light action-btn signup"
+                  data-toggle="collapse" data-target="#mainTopNav.show">
             {{t "buttons.signup"}}
           </LinkTo>
 

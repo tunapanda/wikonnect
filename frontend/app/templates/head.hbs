@@ -7,3 +7,8 @@
 <meta name="theme-color" content={{this.model.theme}}>
 <link rel="icon" sizes="192x192" href="assets/favicon.png">
 <link rel="shortcut icon" type="image/png" href="assets/favicon.ico">
+<meta content="{{this.model.environment}}" name="environmemt">
+{{#if (eq this.model.environment 'production')}}
+  <script async defer data-website-id="c26dbf53-65c9-4ad6-b0f5-edcae7b37f54"
+          src="https://analytics.wikonnect.org/umami.js"></script>
+{{/if}}

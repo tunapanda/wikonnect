@@ -91,7 +91,7 @@ async function chapterCompletionAward(params) {
 router.get('/', requireAuth, async ctx => {
   try {
     let achievement = await Achievement.query().where(ctx.query);
-    achievement.imageUrl = 'images/profile-placeholder.gif';
+    achievement.imageUrl = '/uploads/images/profile-placeholder.gif';
     ctx.status = 200;
     ctx.body = { achievement };
   } catch (error) {

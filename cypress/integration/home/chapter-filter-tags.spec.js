@@ -25,6 +25,22 @@ describe("Chapters filter tags ", () => {
         });
         return Object.values(tags)
     }
+    it('Selected tags should filter chapters', () => {
+        const tag = getSeedChaptersTags()[1];
+
+        const filteredChapters = chapters.filter((chapter) => chapter.tags.includes(tag));
+
+
+        getFilterButton()
+            .click();
+
+        getFilterDropdownMenu()
+            .find('.tag-select-item label')
+            .contains(tag, { ignoreCase: true })
+            .find('input[type="checkbox"]')
+            .check();
+
+    });
 
     it('Tags filter should exists', () => {
         getFilterButton()
@@ -50,7 +66,7 @@ describe("Chapters filter tags ", () => {
         getFilterDropdownMenu()
             .find('.tag-select-item')
             .find('label')
-            .contains(tags[0], {ignoreCase: true})
+            .contains(tags[0], { ignoreCase: true })
     });
 
     it('Selected tags should be visible', () => {
@@ -61,13 +77,13 @@ describe("Chapters filter tags ", () => {
 
         getFilterDropdownMenu()
             .find('.tag-select-item label')
-            .contains(tags[0], {ignoreCase: true})
+            .contains(tags[0], { ignoreCase: true })
             .find('input[type="checkbox"]')
             .check();
 
         cy.get('.chapter-filters-section .selected-tags')
             .find('button.tag-button')
-            .contains(tags[0], {ignoreCase: true});
+            .contains(tags[0], { ignoreCase: true });
     });
 
 
@@ -87,36 +103,7 @@ describe("Chapters filter tags ", () => {
     });
 
 
-    it('Selected tags should filter chapters', () => {
-        const tag = getSeedChaptersTags()[2];
 
-        const filteredChapters = chapters.filter((chapter) => chapter.tags.includes(tag));
-
-
-        getFilterButton()
-            .click();
-
-        getFilterDropdownMenu()
-            .find('.tag-select-item label')
-            .contains(tag, {ignoreCase: true})
-            .find('input[type="checkbox"]')
-            .check();
-
-        cy.get('a')
-            .as('pageLinks');
-
-
-        cy.log(filteredChapters);
-
-        for (const chapter of filteredChapters) {
-            cy.log(chapter);
-
-            cy.get('@pageLinks')
-                .filter(`[href="/chapter/${chapter.id}"]`)
-                .should('be.visible')
-        }
-
-    });
 
 
 })
