@@ -58,7 +58,7 @@
       <div class="float-right">
         <button type="button" class="btn btn-danger" {{on "click" this.showDeleteModal }}>Delete</button>
         {{#if (eq this.model.status "draft")}}
-          {{#if (and this.model.imageUrl this.model.contentUri)}}
+          {{#if (and this.model.imageUrl (or this.model.contentUri this.model.contentId))}}
             <button type="button" class="btn btn-success" {{on "click" (fn (mut this.publishModal) true)}}>
               Publish
             </button>
