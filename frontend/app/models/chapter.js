@@ -5,6 +5,7 @@ export default class ChapterModel extends Model {
   @attr slug;
   @attr description;
   @attr status;
+  @attr contentId;
   @attr contentType;
   @attr contentUri;
   @attr('boolean') approved;

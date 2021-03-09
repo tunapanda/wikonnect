@@ -1,8 +1,12 @@
 <div id="chapter" class="p-4">
   <h4>{{this.model.name}} </h4>
   <div class="chapter-content ">
-    <H5p @location={{this.model.contentUri}} />
-
+    {{#if this.model.contentUri}}
+      <H5p @location={{this.model.contentUri}} />
+    {{else}}
+      <H5p::Player @contentId={{this.model.contentId}}>
+      </H5p::Player>
+    {{/if}}
     <div class="section d-flex justify-content-between pt-2 pb-2">
       <div class="reactions">
         <Reaction::ChapterReaction @chapter={{this.model}} @canReact={{true}}>
@@ -68,7 +72,7 @@
         Un Approve This
       </button>
     {{else}}
-      <button type="button"  class="btn form-control btn-success"
+      <button type="button" class="btn form-control btn-success"
         {{on "click" (fn this.toggleApproval this.model.id true )}}>
         Approve This
       </button>
@@ -80,9 +84,9 @@
 </div>
 
 
-<BsModalSimple  @title="Report Chapter" @closeTitle="Close" @submitTitle="Submit Report" @size="" @closeButton={{true}}
-                @fade={{true}} @backdrop={{true}} @backdropClose={{true}} @onSubmit={{this.saveFlag }}
-                @open={{this.flaggingModal}} @onHidden={{this.toggleFlaggingModal }} @renderInPlace={{true}}>
+<BsModalSimple @title="Report Chapter" @closeTitle="Close" @submitTitle="Submit Report" @size="" @closeButton={{true}}
+               @fade={{true}} @backdrop={{true}} @backdropClose={{true}} @onSubmit={{this.saveFlag }}
+               @open={{this.flaggingModal}} @onHidden={{this.toggleFlaggingModal }} @renderInPlace={{true}}>
 
   <BsForm @model={{this.flagModel}} @onSubmit={{this.saveFlag }} as |form|>
     <form.element @controlType="textarea" @label="Reason for reporting" @property="comment"/>

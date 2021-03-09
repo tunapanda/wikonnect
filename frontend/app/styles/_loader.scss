@@ -1,0 +1,22 @@
+$palette: (
+  primary: #007bff,
+  lightGray: #B0BABF
+);
+
+.circular-loader {
+  border: 6px solid map-get($palette, lightGray);
+  border-top: 6px solid map-get($palette, primary);
+  border-radius: 50%;
+  width: 120px;
+  height: 120px;
+  animation: circularSpin 2s linear infinite;
+}
+
+@keyframes circularSpin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
