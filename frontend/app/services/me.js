@@ -7,8 +7,9 @@ export default class MeService extends Service {
   @service store;
   @tracked user;
 
-  @tracked
-  isAuthenticated = this.session.isAuthenticated;
+  get isAuthenticated() {
+    return this.session.isAuthenticated;
+  }
 
   async load() {
     const authenticator = getOwner(this).lookup('authenticator:jwt');
