@@ -128,7 +128,19 @@
   dependencies:
     vary "^1.1.2"
 
-"@lumieducation/h5p-server@^7.1.0":
+"@kyleshockey/object-assign-deep@^0.4.2":
+  version "0.4.2"
+  resolved "https://registry.yarnpkg.com/@kyleshockey/object-assign-deep/-/object-assign-deep-0.4.2.tgz#84900f0eefc372798f4751b5262830b8208922ec"
+  integrity sha1-hJAPDu/DcnmPR1G1JigwuCCJIuw=
+
+"@kyleshockey/xml@^1.0.2":
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/@kyleshockey/xml/-/xml-1.0.2.tgz#81fad3d7c33da2ba2639db095db3db24c2921f70"
+  integrity sha512-iMo32MPLcI9cPxs3YL5kmKxKgDmkSZDCFEqIT5eRk7d/Ll8r4X3SwGYSigzALd6+RHWlFEmjL1QyaQ15xDZFlw==
+  dependencies:
+    stream "^0.0.2"
+
+"@lumieducation/h5p-server@^7.2.0":
   version "7.2.0"
   resolved "https://registry.yarnpkg.com/@lumieducation/h5p-server/-/h5p-server-7.2.0.tgz#26a8dc5e03144d82c887e71fe15cccd7220cf403"
   integrity sha512-vNW+bEG00qxpI+rPLjiV7zzbCv+eLzO9EJNQKOOJGGoehXEK5sB8gRs2cuV4RhiRPtMGkIOLlLKaLXWXQHdg9Q==
