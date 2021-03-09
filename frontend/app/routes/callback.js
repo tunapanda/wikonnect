@@ -40,7 +40,6 @@ export default class CallbackRoute extends Route {
     this.me
       .registerWithGoogle({ googleToken: googleToken, provider: 'google' })
       .then((user) => {
-        console.log(user.get('isNew'));
         if (user.get('isNew')) {
           this.signupSuccess();
         } else {
