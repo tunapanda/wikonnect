@@ -9,7 +9,9 @@ const schemaGet = Joi.object({
   creatorId: Joi.string(),
   q: Joi.string(),
   name: Joi.string(),
-  tags: Joi.string()
+  tags: Joi.string(),
+  page: Joi.number(),
+  per_page: Joi.number()
 });
 
 module.exports =  async (ctx, next) => {

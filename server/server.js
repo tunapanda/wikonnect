@@ -38,13 +38,6 @@ router.use(require('./routes/users'));
 
 router.use(require('./routes/oauth2s'));
 
-router.use(jwt.authenticate, require('./routes/paths'));
-
-router.use(jwt.authenticate, require('./routes/modules'));
-
-router.use(jwt.authenticate, require('./routes/courses'));
-
-router.use(jwt.authenticate, require('./routes/lessons'));
 
 router.use(jwt.authenticate, require('./routes/chapters'));
 
@@ -71,6 +64,8 @@ router.use(jwt.authenticate, require('./routes/dashboard'));
 router.use(jwt.authenticate, require('./routes/admin'));
 
 router.use(jwt.authenticate, require('./routes/achievement_awards'));
+
+router.use(jwt.authenticate, require('./routes/h5p'));
 
 router.use(require('./routes/search'));
 
