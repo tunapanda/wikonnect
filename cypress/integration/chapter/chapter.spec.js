@@ -5,9 +5,11 @@ describe('Chapter view', () => {
     });
 
     it('should display chapter details', () => {
-        cy.visit('/chapter/chapter1');
+        cy.visit('/home');
+        cy.get(':nth-child(1) > .card > .card-body > .card-title a').click();
+        cy.wait(10000);
 
-        cy.get('#chapter h4').contains('A Chapter');
+        cy.get('#chapter > h4').should('exist').should('be.visible');
     });
 
 

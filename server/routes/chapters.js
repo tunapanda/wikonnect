@@ -161,7 +161,35 @@ router.get('/', permController.requireAuth, validateGetChapter, async ctx => {
  *            "rating": null,
  *            "verified": true,
  *            "comment": [{
- *            }],
+*               "id": "IwAfzOqAAI4",
+*               "chapterId": "chapter1",
+*               "creatorId": "user2",
+*               "comment": "Dolores aut ut.",
+*               "metadata": null,
+*               "createdAt": "2020-07-08T13:25:44.710Z",
+*               "updatedAt": "2021-03-03T19:58:48.806Z",
+*               "children": [{
+*                   "id": "IwAfzOuAAME",
+*                   "chapterId": "chapter4",
+*                   "creatorId": "user1",
+*                   "comment": "Architecto voluptatem quaerat et dolores aut consequatur et.",
+*                   "metadata": null,
+*                   "createdAt": "2020-10-08T06:19:39.434Z",
+*                   "updatedAt": "2021-03-04T03:43:11.647Z",
+*                   "type": "comment"
+*                  },
+*                  {
+*                   "id": "IwAfzOuAALc",
+*                   "chapterId": "chapter4",
+*                   "creatorId": "user2",
+*                   "comment": "Omnis sequi architecto quod voluptas aut.",
+*                   "metadata": null,
+*                   "createdAt": "2020-04-17T08:55:33.210Z",
+*                   "updatedAt": "2021-03-04T14:36:27.525Z",
+*                   "type": "comment"
+*                 }],
+*                 "type": "comment"
+*               }],
  *            "author": {
  *              "username": "user1",
  *              "profileUri": null,
@@ -179,17 +207,6 @@ router.get('/', permController.requireAuth, validateGetChapter, async ctx => {
  * @apiErrorExample {json} List error
  *    HTTP/1.1 500 Internal Server Error
  */
-
-
-/** TODO:
-* Add reactions List<>Objects
-* "reaction": [{
-*     "likes": 3,
-*     "authenticated_user": "like",
-*     "id": "",
-*     "dislikes": 1
-* }]
-*/
 
 router.get('/:id', permController.requireAuth, async ctx => {
 
@@ -216,7 +233,7 @@ router.get('/:id', permController.requireAuth, async ctx => {
       ])
       .where({ 'chapters.id': ctx.params.id })
       .withGraphFetched(
-        '[comment, reaction(reactionAggregate), flag(selectFlag),author(selectNameAndProfile)]'
+        '[comment.[children], reaction(reactionAggregate), flag(selectFlag),author(selectNameAndProfile)]'
       );
 
   } catch (e) {
@@ -326,7 +343,7 @@ router.post('/', permController.requireAuth, async ctx => {
 router.put('/:id', permController.requireAuth, async ctx => {
   let chapterData = ctx.request.body.chapter;
   if (chapterData.id) delete chapterData.id;
-  
+
   const stateUserRole = ctx.state.user.role == undefined
     ? ctx.state.user.data.role
     : ctx.state.user.role;
@@ -335,7 +352,7 @@ router.put('/:id', permController.requireAuth, async ctx => {
     ctx.throw(400, null, { errors: ['Not enough permissions'] });
     chapterData.verified = 'false';
   }
-  
+
   const chapterCheck = await Chapter.query().findById(ctx.params.id);
   ctx.assert(chapterCheck, 400, 'Invalid data provided');
 
@@ -402,7 +419,7 @@ router.post('/:id/chapter-image', async (ctx, next) => {
     let buffer = await resizer.toBuffer();
     const params = {
       Bucket: s3.config.bucket, // pass your bucket name
-      Key: `uploads/chapters/${fileNameBase}.jpg`, // key for saving filename
+      Key: `/uploads/chapters/${fileNameBase}.jpg`, // key for saving filename
       Body: buffer, //image to be uploaded
       ACL: 'public-read'
     };

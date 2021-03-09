@@ -38,13 +38,6 @@ router.use(require('./routes/users'));
 
 router.use(require('./routes/oauth2s'));
 
-router.use(jwt.authenticate, require('./routes/paths'));
-
-router.use(jwt.authenticate, require('./routes/modules'));
-
-router.use(jwt.authenticate, require('./routes/courses'));
-
-router.use(jwt.authenticate, require('./routes/lessons'));
 
 router.use(jwt.authenticate, require('./routes/chapters'));
 

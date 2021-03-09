@@ -13,7 +13,10 @@
     "contentType": "h5p",
     "contentUri": "/uploads/h5p/chapter1",
     "imageUrl": null,
-    "tags": ["highschool", "university"],
+    "tags": [
+      "highschool",
+      "university"
+    ],
     "contentId": null,
     "approved": "true",
     "topics": null,
@@ -82,18 +85,23 @@
     "contentType": "h5p",
     "contentUri": "/uploads/h5p/chapter2",
     "imageUrl": null,
-    "tags": ["highschool", "university"],
+    "tags": [
+      "highschool",
+      "university"
+    ],
     "contentId": null,
     "approved": "true",
     "topics": null,
     "rating": null,
     "flag": [],
     "authenticatedUser": "dislike",
-    "reaction": [{
-      "likes": 0,
-      "totalLikes": 3,
-      "dislikes": 3
-    }],
+    "reaction": [
+      {
+        "likes": 0,
+        "totalLikes": 3,
+        "dislikes": 3
+      }
+    ],
     "achievement": [
       {
         "id": "achievements1",
@@ -137,7 +145,10 @@
     "contentType": "h5p",
     "contentUri": "/uploads/h5p/chapter4",
     "imageUrl": null,
-    "tags": ["highschool", "university"],
+    "tags": [
+      "highschool",
+      "university"
+    ],
     "contentId": null,
     "approved": "true",
     "topics": null,
@@ -169,7 +180,10 @@
     "contentType": "h5p",
     "contentUri": "/uploads/h5p/chapter5",
     "imageUrl": null,
-    "tags": ["primary", "university"],
+    "tags": [
+      "primary",
+      "university"
+    ],
     "contentId": null,
     "approved": "true",
     "topics": null,

@@ -8,7 +8,6 @@ const router = new Router({
   prefix: '/comments'
 });
 
-
 /**
  * @api {get} / GET a comment
  * @apiName GetChapterComment
@@ -19,32 +18,56 @@ const router = new Router({
  *     HTTP/1.1 201 OK
  *     {
  *      "comment": [{
- *         "id": String,
- *         "comment": String,
- *         "chapterId": String,
- *         "creatorId": String,
- *         "createdAt": DateTime,
- *         "updatedAt": DateTime
- *        }]
- *      }
+ *           "id": "IwAfzOoAAIE",
+ *           "chapterId": "chapter5",
+ *           "creatorId": "user3",
+ *           "comment": "Eligendi inventore placeat repellendus reiciendis sint nesciunt fuga.",
+ *           "metadata": null,
+ *           "createdAt": "2020-06-15T09:45:18.031Z",
+ *           "updatedAt": "2021-03-03T15:46:34.456Z",
+ *           "children": [{
+ *               "id": "IwAfzOwAANc",
+ *               "chapterId": "chapter2",
+ *               "creatorId": "user1",
+ *               "comment": "Quo aut eum qui omnis id.",
+ *               "metadata": null,
+ *               "createdAt": "2020-08-29T02:40:56.161Z",
+ *               "updatedAt": "2021-03-04T01:56:56.855Z",
+ *               "type": "comment"
+ *             },
+ *             {
+ *               "id": "IwAfzOuAALw",
+ *               "chapterId": "chapter2",
+ *               "creatorId": "user1",
+ *               "comment": "Excepturi modi qui qui.",
+ *               "metadata": null,
+ *               "createdAt": "2020-10-24T21:09:29.287Z",
+ *                "updatedAt": "2021-03-04T11:58:38.484Z",
+ *               "type": "comment"
+ *             }],
+ *             "type": "comment"
+ *           }]
+ *     }
  *
  */
 router.get('/', requireAuth, async ctx => {
 
-  let comment;
   try {
-    comment = await Comment.query().where(ctx.query);
+    const comment = await Comment.query()
+      .where(ctx.query)
+      .allowGraph('[children]')
+      .withGraphFetched('children');
+
+    ctx.assert(comment, 401, 'Something went wrong');
+    ctx.status = 201;
+    ctx.body = {comment};
   } catch (e) {
     if (e.statusCode) {
       ctx.throw(e.statusCode, null, { errors: [e] });
     } else { ctx.throw(400, null, { errors: [e] }); }
     throw e;
   }
-  if (!comment) {
-    ctx.assert(comment, 401, 'Something went wrong');
-  }
-  ctx.status = 201;
-  ctx.body = { comment };
+
 
 });
 
@@ -59,22 +82,51 @@ router.get('/', requireAuth, async ctx => {
  *
  * @apiSuccessExample {json} Success-Response:
  *     HTTP/1.1 201 OK
- *     {"comment": [{
- *          "id": String,
- *          "chapterId": String,
- *          "creatorId": String,
- *          "comment": String,
- *          "createdAt": DateTime,
- *          "updatedAt": DateTime
- *        }]
- *      }
+ *      {
+ *        "comment": {
+ *           "id": "IwAfzOoAAIE",
+ *           "chapterId": "chapter5",
+ *           "creatorId": "user3",
+ *           "comment": "Eligendi inventore placeat repellendus reiciendis sint nesciunt fuga.",
+ *           "metadata": null,
+ *           "createdAt": "2020-06-15T09:45:18.031Z",
+ *           "updatedAt": "2021-03-03T15:46:34.456Z",
+ *           "children": [{
+ *               "id": "IwAfzOwAANc",
+ *               "chapterId": "chapter2",
+ *               "creatorId": "user1",
+ *               "comment": "Quo aut eum qui omnis id.",
+ *               "metadata": null,
+ *               "createdAt": "2020-08-29T02:40:56.161Z",
+ *               "updatedAt": "2021-03-04T01:56:56.855Z",
+ *               "type": "comment"
+ *             },
+ *             {
+ *               "id": "IwAfzOuAALw",
+ *               "chapterId": "chapter2",
+ *               "creatorId": "user1",
+ *               "comment": "Excepturi modi qui qui.",
+ *               "metadata": null,
+ *               "createdAt": "2020-10-24T21:09:29.287Z",
+ *                "updatedAt": "2021-03-04T11:58:38.484Z",
+ *               "type": "comment"
+ *             }],
+ *             "type": "comment"
+ *           }
+ *        }
+ *
  *
  */
 router.get('/:id', requireAuth, async ctx => {
+  console.log(ctx.params.id);
 
   let comment;
   try {
-    comment = await Comment.query().where({ id: ctx.params.id });
+    comment = await Comment.query()
+      .where({ id: ctx.params.id })
+      .andWhere(ctx.query)
+      .allowGraph('[replies]')
+      .withGraphFetched('replies');
   } catch (e) {
     if (e.statusCode) {
       ctx.throw(e.statusCode, null, { errors: [e] });
@@ -115,7 +167,7 @@ router.post('/', requireAuth, async ctx => {
 
   const checked = await profaneCheck(newChapterComment.comment);
 
-  if (checked !== null) {
+  if (typeof checked != 'undefined' && checked){
     ctx.throw(400, null, { errors: [checked] });
   }
 
