@@ -42,7 +42,7 @@ class Comment extends Model {
         }
       },
 
-      parents: {
+      parent: {
         relation: Model.ManyToManyRelation,
         modelClass: Comment,
         join: {

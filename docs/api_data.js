@@ -912,6 +912,7 @@ define({ "api": [
         "name": "authenticated user"
       }
     ],
+    "description": "<p>If posting a reply, add <code>&quot;parent&quot;: [{&quot;id&quot;: &quot;Iw7mxw0AAiY&quot;}]</code> to the comment object you are post</p>",
     "success": {
       "examples": [
         {
@@ -923,12 +924,7 @@ define({ "api": [
     },
     "version": "0.0.0",
     "filename": "server/routes/comments.js",
-    "groupTitle": "ChapterComments",
-    "sampleRequest": [
-      {
-        "url": "/"
-      }
-    ]
+    "groupTitle": "ChapterComments"
   },
   {
     "type": "put",
@@ -943,12 +939,7 @@ define({ "api": [
     ],
     "version": "0.0.0",
     "filename": "server/routes/comments.js",
-    "groupTitle": "ChapterComments",
-    "sampleRequest": [
-      {
-        "url": "https://app.wikonnect.org/:comment_id"
-      }
-    ]
+    "groupTitle": "ChapterComments"
   },
   {
     "type": "delete",
@@ -963,12 +954,7 @@ define({ "api": [
     ],
     "version": "0.0.0",
     "filename": "server/routes/ratings.js",
-    "groupTitle": "ChapterRatings",
-    "sampleRequest": [
-      {
-        "url": "https://app.wikonnect.org/:rating_id"
-      }
-    ]
+    "groupTitle": "ChapterRatings"
   },
   {
     "type": "get",
@@ -1050,12 +1036,7 @@ define({ "api": [
     },
     "version": "0.0.0",
     "filename": "server/routes/ratings.js",
-    "groupTitle": "ChapterRatings",
-    "sampleRequest": [
-      {
-        "url": "/"
-      }
-    ]
+    "groupTitle": "ChapterRatings"
   },
   {
     "type": "put",
@@ -1070,12 +1051,7 @@ define({ "api": [
     ],
     "version": "0.0.0",
     "filename": "server/routes/ratings.js",
-    "groupTitle": "ChapterRatings",
-    "sampleRequest": [
-      {
-        "url": "https://app.wikonnect.org/:rating_id"
-      }
-    ]
+    "groupTitle": "ChapterRatings"
   },
   {
     "type": "get",

@@ -117,6 +117,7 @@ router.get('/', async ctx => {
  *         "updatedAt": DateTime
  *        }
  *      }
+ * @apiSampleRequest off
  *
  */
 
@@ -151,6 +152,7 @@ router.post('/', requireAuth, validateRating, grantAccess('createAny', 'path'), 
  * @apiName PutAChapterRating
  * @apiGroup ChapterRatings
  * @apiPermission authenticated user
+ * @apiSampleRequest off
  *
  */
 
@@ -174,6 +176,7 @@ router.put('/:id', requireAuth, grantAccess('updateOwn', 'path'), async ctx => {
  * @apiName DeleteAChapterRating
  * @apiGroup ChapterRatings
  * @apiPermission authenticated user
+ * @apiSampleRequest off
  *
  */
 router.delete('/:id', grantAccess('deleteOwn', 'path'), async ctx => {
