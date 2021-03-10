@@ -81,9 +81,9 @@ export default class ChapterIndexController extends Controller {
 
   @action
   async saveFlag(model) {
-    let slug = this.target.currentRoute.params.chapter_slug;
+    let chapterId = this.model.id;
 
-    let chap = this.store.peekRecord('chapter', slug);
+    let chap = this.store.peekRecord('chapter', chapterId);
     model.setProperties({
       chapter: chap,
     });
@@ -91,9 +91,9 @@ export default class ChapterIndexController extends Controller {
   }
 
   @action
-  deleteChapter(chapter_id) {
+  async deleteChapter(chapter_id) {
     let chapter = this.store.peekRecord('chapter', chapter_id);
-    chapter.destroyRecord();
+    await chapter.destroyRecord();
     this.router.transitionTo('manage');
   }
 
@@ -111,19 +111,19 @@ export default class ChapterIndexController extends Controller {
 
   @action
   async dataLoad() {
-    let chapter_id = await this.target.currentRoute.params.chapter_slug;
+    let chapterId = this.model.id;
     // eslint-disable-next-line no-undef
     H5P.externalDispatcher.on('xAPI', async (event) => {
       if (event.getScore() === event.getMaxScore() && event.getMaxScore() > 0) {
         this.score = event.getMaxScore();
       }
 
-      if (this.score != 'undefined') {
+      if (this.score !== undefined) {
         if (this.me.isAuthenticated) {
           let achievement = await this.store.createRecord('achievement', {
-            description: 'completed' + chapter_id,
+            description: 'completed' + chapterId,
             targetStatus: 'completed',
-            target: chapter_id,
+            target: chapterId,
           });
           await achievement.save();
         }
@@ -131,7 +131,7 @@ export default class ChapterIndexController extends Controller {
         // if user completes chapters create record
         let counter = await this.store.createRecord('counter', {
           counter: 1,
-          chapterId: chapter_id,
+          chapterId: chapterId,
           trigger: 'chapterCompletion',
         });
         await counter.save();
@@ -152,7 +152,7 @@ export default class ChapterIndexController extends Controller {
     await pageLanding.save();
 
     // After 10 secs record page view
-    (async () => {
+    await (async () => {
       await sleep(6000);
       let data = {
         counter: 1,
