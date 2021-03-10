@@ -25,7 +25,7 @@ const router = new Router({
  *           "metadata": null,
  *           "createdAt": "2020-06-15T09:45:18.031Z",
  *           "updatedAt": "2021-03-03T15:46:34.456Z",
- *           "children": [{
+ *           "replies": [{
  *               "id": "IwAfzOwAANc",
  *               "chapterId": "chapter2",
  *               "creatorId": "user1",
@@ -55,8 +55,8 @@ router.get('/', requireAuth, async ctx => {
   try {
     const comment = await Comment.query()
       .where(ctx.query)
-      .allowGraph('[children]')
-      .withGraphFetched('children');
+      .allowGraph('[replies]')
+      .withGraphFetched('replies');
 
     ctx.assert(comment, 401, 'Something went wrong');
     ctx.status = 201;
@@ -91,7 +91,7 @@ router.get('/', requireAuth, async ctx => {
  *           "metadata": null,
  *           "createdAt": "2020-06-15T09:45:18.031Z",
  *           "updatedAt": "2021-03-03T15:46:34.456Z",
- *           "children": [{
+ *           "replies": [{
  *               "id": "IwAfzOwAANc",
  *               "chapterId": "chapter2",
  *               "creatorId": "user1",

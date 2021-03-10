@@ -177,36 +177,6 @@ router.get('/', permController.requireAuth, validateGetChapter, async ctx => {
  *            "dislikes": "0",
  *            "rating": null,
  *            "verified": true,
- *            "comment": [{
-*               "id": "IwAfzOqAAI4",
-*               "chapterId": "chapter1",
-*               "creatorId": "user2",
-*               "comment": "Dolores aut ut.",
-*               "metadata": null,
-*               "createdAt": "2020-07-08T13:25:44.710Z",
-*               "updatedAt": "2021-03-03T19:58:48.806Z",
-*               "children": [{
-*                   "id": "IwAfzOuAAME",
-*                   "chapterId": "chapter4",
-*                   "creatorId": "user1",
-*                   "comment": "Architecto voluptatem quaerat et dolores aut consequatur et.",
-*                   "metadata": null,
-*                   "createdAt": "2020-10-08T06:19:39.434Z",
-*                   "updatedAt": "2021-03-04T03:43:11.647Z",
-*                   "type": "comment"
-*                  },
-*                  {
-*                   "id": "IwAfzOuAALc",
-*                   "chapterId": "chapter4",
-*                   "creatorId": "user2",
-*                   "comment": "Omnis sequi architecto quod voluptas aut.",
-*                   "metadata": null,
-*                   "createdAt": "2020-04-17T08:55:33.210Z",
-*                   "updatedAt": "2021-03-04T14:36:27.525Z",
-*                   "type": "comment"
-*                 }],
-*                 "type": "comment"
-*               }],
  *            "author": {
  *              "username": "user1",
  *              "profileUri": null,
@@ -250,7 +220,7 @@ router.get('/:id', permController.requireAuth, async ctx => {
       ])
       .where({ 'chapters.id': ctx.params.id })
       .withGraphFetched(
-        '[comment.[children], reaction(reactionAggregate), flag(selectFlag),author(selectNameAndProfile)]'
+        '[reaction(reactionAggregate), flag(selectFlag),author(selectNameAndProfile)]'
       );
 
   } catch (e) {
