@@ -29,7 +29,7 @@ class Comment extends Model {
 
   static get relationMappings() {
     return {
-      children: {
+      replies: {
         relation: Model.ManyToManyRelation,
         modelClass: Comment,
         join: {
@@ -42,7 +42,7 @@ class Comment extends Model {
         }
       },
 
-      parents: {
+      parent: {
         relation: Model.ManyToManyRelation,
         modelClass: Comment,
         join: {

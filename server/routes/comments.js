@@ -25,7 +25,7 @@ const router = new Router({
  *           "metadata": null,
  *           "createdAt": "2020-06-15T09:45:18.031Z",
  *           "updatedAt": "2021-03-03T15:46:34.456Z",
- *           "children": [{
+ *           "replies": [{
  *               "id": "IwAfzOwAANc",
  *               "chapterId": "chapter2",
  *               "creatorId": "user1",
@@ -55,8 +55,8 @@ router.get('/', requireAuth, async ctx => {
   try {
     const comment = await Comment.query()
       .where(ctx.query)
-      .allowGraph('[children]')
-      .withGraphFetched('children');
+      .allowGraph('[replies]')
+      .withGraphFetched('replies');
 
     ctx.assert(comment, 401, 'Something went wrong');
     ctx.status = 201;
@@ -91,7 +91,7 @@ router.get('/', requireAuth, async ctx => {
  *           "metadata": null,
  *           "createdAt": "2020-06-15T09:45:18.031Z",
  *           "updatedAt": "2021-03-03T15:46:34.456Z",
- *           "children": [{
+ *           "replies": [{
  *               "id": "IwAfzOwAANc",
  *               "chapterId": "chapter2",
  *               "creatorId": "user1",
@@ -143,7 +143,7 @@ router.get('/:id', requireAuth, async ctx => {
  * @apiName PostAChapterComment
  * @apiGroup ChapterComments
  * @apiPermission authenticated user
- *
+ * @apiDescription If posting a reply, add <code>"parent": [{"id": "Iw7mxw0AAiY"}]</code> to the comment object you are post
  * @apiSuccessExample {json} Success-Response:
  *     HTTP/1.1 201 OK
  *     {
@@ -154,7 +154,7 @@ router.get('/:id', requireAuth, async ctx => {
  *        "chapterId": { type: String }
  *      }
  *    }
- *
+ * @apiSampleRequest off
  */
 
 
@@ -171,7 +171,7 @@ router.post('/', requireAuth, async ctx => {
 
   let comment;
   try {
-    comment = await Comment.query().insertAndFetch(newChapterComment);
+    comment = await Comment.query().insertGraphAndFetch([newChapterComment], { relate: true });
   } catch (e) {
     if (e.statusCode) {
       ctx.throw(e.statusCode, null, { errors: [e.data] });
@@ -190,6 +190,7 @@ router.post('/', requireAuth, async ctx => {
  * @apiName PutAChapterComment
  * @apiGroup ChapterComments
  * @apiPermission authenticated user
+ * @apiSampleRequest off
  *
  */
 

@@ -185,7 +185,7 @@ router.get('/', permController.requireAuth, validateGetChapter, async ctx => {
 *               "metadata": null,
 *               "createdAt": "2020-07-08T13:25:44.710Z",
 *               "updatedAt": "2021-03-03T19:58:48.806Z",
-*               "children": [{
+*               "replies": [{
 *                   "id": "IwAfzOuAAME",
 *                   "chapterId": "chapter4",
 *                   "creatorId": "user1",
