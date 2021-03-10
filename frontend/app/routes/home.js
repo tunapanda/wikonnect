@@ -14,17 +14,6 @@ export default class HomeRoute extends Route {
     this.headData.theme = '#FF5722';
   }
 
-  @action
-  loading(transition) {
-    let start = new Date();
-    transition.promise.finally(() => {
-      this.notify.info(`Took ${new Date() - start}ms to load`, {
-        radius: true,
-      });
-    });
-    return true;
-  }
-
   model() {
     return this.infinity.model('chapter', {
       approved: true,
