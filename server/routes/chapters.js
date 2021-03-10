@@ -250,7 +250,7 @@ router.get('/:id', permController.requireAuth, async ctx => {
       ])
       .where({ 'chapters.id': ctx.params.id })
       .withGraphFetched(
-        '[comment.[children], reaction(reactionAggregate), flag(selectFlag),author(selectNameAndProfile)]'
+        '[comment.[replies], reaction(reactionAggregate), flag(selectFlag),author(selectNameAndProfile)]'
       );
 
   } catch (e) {
