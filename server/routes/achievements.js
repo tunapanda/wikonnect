@@ -7,7 +7,6 @@ const log = require('../utils/logger');
 
 const knex = require('../utils/knexUtil');
 const { requireAuth } = require('../middleware/permController');
-const customWebhook = require('../utils/customWebhook');
 
 const router = new Router({
   prefix: '/achievements'
@@ -200,15 +199,12 @@ router.post('/', requireAuth, async ctx => {
 
   const newAchievement = ctx.request.body.achievement;
   newAchievement.userId = ctx.state.user.id == undefined ? ctx.state.user.data.id : ctx.state.user.id;
-  const achievement = await Achievement.query().insertAndFetch(newAchievement);
+  let achievement;
 
   if (stateUserRole != 'anonymous') {
+    achievement = await Achievement.query().insertAndFetch(newAchievement);
     chapterCompletionAward(newAchievement);
   }
-
-  // trigger webhook util, currently sending data to webhook.site
-  await customWebhook('https://webhook.site/d1f35372-7cbb-4d55-9169-38e9d4a3402d', newAchievement);
-
 
   ctx.status = 201;
   ctx.body = { achievement };
