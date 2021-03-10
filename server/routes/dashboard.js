@@ -1,9 +1,6 @@
 const Router = require('koa-router');
 const { requireAuth, grantAccess } = require('../middleware/permController');
 const knex = require('../utils/knexUtil');
-// const compareAsc = require('date-fns/compareAsc');
-// const startOfQuarter = require('date-fns/startOfQuarter');
-// const User = require('../models/user');
 const fallback = 0;
 
 const router = new Router({
