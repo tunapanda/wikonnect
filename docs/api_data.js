@@ -858,7 +858,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "HTTP/1.1 201 OK\n {\n   \"comment\": {\n      \"id\": \"IwAfzOoAAIE\",\n      \"chapterId\": \"chapter5\",\n      \"creatorId\": \"user3\",\n      \"comment\": \"Eligendi inventore placeat repellendus reiciendis sint nesciunt fuga.\",\n      \"metadata\": null,\n      \"createdAt\": \"2020-06-15T09:45:18.031Z\",\n      \"updatedAt\": \"2021-03-03T15:46:34.456Z\",\n      \"children\": [{\n          \"id\": \"IwAfzOwAANc\",\n          \"chapterId\": \"chapter2\",\n          \"creatorId\": \"user1\",\n          \"comment\": \"Quo aut eum qui omnis id.\",\n          \"metadata\": null,\n          \"createdAt\": \"2020-08-29T02:40:56.161Z\",\n          \"updatedAt\": \"2021-03-04T01:56:56.855Z\",\n          \"type\": \"comment\"\n        },\n        {\n          \"id\": \"IwAfzOuAALw\",\n          \"chapterId\": \"chapter2\",\n          \"creatorId\": \"user1\",\n          \"comment\": \"Excepturi modi qui qui.\",\n          \"metadata\": null,\n          \"createdAt\": \"2020-10-24T21:09:29.287Z\",\n           \"updatedAt\": \"2021-03-04T11:58:38.484Z\",\n          \"type\": \"comment\"\n        }],\n        \"type\": \"comment\"\n      }\n   }",
+          "content": "HTTP/1.1 201 OK\n {\n   \"comment\": {\n      \"id\": \"IwAfzOoAAIE\",\n      \"chapterId\": \"chapter5\",\n      \"creatorId\": \"user3\",\n      \"comment\": \"Eligendi inventore placeat repellendus reiciendis sint nesciunt fuga.\",\n      \"metadata\": null,\n      \"createdAt\": \"2020-06-15T09:45:18.031Z\",\n      \"updatedAt\": \"2021-03-03T15:46:34.456Z\",\n      \"replies\": [{\n          \"id\": \"IwAfzOwAANc\",\n          \"chapterId\": \"chapter2\",\n          \"creatorId\": \"user1\",\n          \"comment\": \"Quo aut eum qui omnis id.\",\n          \"metadata\": null,\n          \"createdAt\": \"2020-08-29T02:40:56.161Z\",\n          \"updatedAt\": \"2021-03-04T01:56:56.855Z\",\n          \"type\": \"comment\"\n        },\n        {\n          \"id\": \"IwAfzOuAALw\",\n          \"chapterId\": \"chapter2\",\n          \"creatorId\": \"user1\",\n          \"comment\": \"Excepturi modi qui qui.\",\n          \"metadata\": null,\n          \"createdAt\": \"2020-10-24T21:09:29.287Z\",\n           \"updatedAt\": \"2021-03-04T11:58:38.484Z\",\n          \"type\": \"comment\"\n        }],\n        \"type\": \"comment\"\n      }\n   }",
           "type": "json"
         }
       ]
@@ -887,7 +887,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "HTTP/1.1 201 OK\n{\n \"comment\": [{\n      \"id\": \"IwAfzOoAAIE\",\n      \"chapterId\": \"chapter5\",\n      \"creatorId\": \"user3\",\n      \"comment\": \"Eligendi inventore placeat repellendus reiciendis sint nesciunt fuga.\",\n      \"metadata\": null,\n      \"createdAt\": \"2020-06-15T09:45:18.031Z\",\n      \"updatedAt\": \"2021-03-03T15:46:34.456Z\",\n      \"children\": [{\n          \"id\": \"IwAfzOwAANc\",\n          \"chapterId\": \"chapter2\",\n          \"creatorId\": \"user1\",\n          \"comment\": \"Quo aut eum qui omnis id.\",\n          \"metadata\": null,\n          \"createdAt\": \"2020-08-29T02:40:56.161Z\",\n          \"updatedAt\": \"2021-03-04T01:56:56.855Z\",\n          \"type\": \"comment\"\n        },\n        {\n          \"id\": \"IwAfzOuAALw\",\n          \"chapterId\": \"chapter2\",\n          \"creatorId\": \"user1\",\n          \"comment\": \"Excepturi modi qui qui.\",\n          \"metadata\": null,\n          \"createdAt\": \"2020-10-24T21:09:29.287Z\",\n           \"updatedAt\": \"2021-03-04T11:58:38.484Z\",\n          \"type\": \"comment\"\n        }],\n        \"type\": \"comment\"\n      }]\n}",
+          "content": "HTTP/1.1 201 OK\n{\n \"comment\": [{\n      \"id\": \"IwAfzOoAAIE\",\n      \"chapterId\": \"chapter5\",\n      \"creatorId\": \"user3\",\n      \"comment\": \"Eligendi inventore placeat repellendus reiciendis sint nesciunt fuga.\",\n      \"metadata\": null,\n      \"createdAt\": \"2020-06-15T09:45:18.031Z\",\n      \"updatedAt\": \"2021-03-03T15:46:34.456Z\",\n      \"replies\": [{\n          \"id\": \"IwAfzOwAANc\",\n          \"chapterId\": \"chapter2\",\n          \"creatorId\": \"user1\",\n          \"comment\": \"Quo aut eum qui omnis id.\",\n          \"metadata\": null,\n          \"createdAt\": \"2020-08-29T02:40:56.161Z\",\n          \"updatedAt\": \"2021-03-04T01:56:56.855Z\",\n          \"type\": \"comment\"\n        },\n        {\n          \"id\": \"IwAfzOuAALw\",\n          \"chapterId\": \"chapter2\",\n          \"creatorId\": \"user1\",\n          \"comment\": \"Excepturi modi qui qui.\",\n          \"metadata\": null,\n          \"createdAt\": \"2020-10-24T21:09:29.287Z\",\n           \"updatedAt\": \"2021-03-04T11:58:38.484Z\",\n          \"type\": \"comment\"\n        }],\n        \"type\": \"comment\"\n      }]\n}",
           "type": "json"
         }
       ]
@@ -912,6 +912,7 @@ define({ "api": [
         "name": "authenticated user"
       }
     ],
+    "description": "<p>If posting a reply, add <code>&quot;parent&quot;: [{&quot;id&quot;: &quot;Iw7mxw0AAiY&quot;}]</code> to the comment object you are post</p>",
     "success": {
       "examples": [
         {
@@ -923,12 +924,7 @@ define({ "api": [
     },
     "version": "0.0.0",
     "filename": "server/routes/comments.js",
-    "groupTitle": "ChapterComments",
-    "sampleRequest": [
-      {
-        "url": "/"
-      }
-    ]
+    "groupTitle": "ChapterComments"
   },
   {
     "type": "put",
@@ -943,12 +939,7 @@ define({ "api": [
     ],
     "version": "0.0.0",
     "filename": "server/routes/comments.js",
-    "groupTitle": "ChapterComments",
-    "sampleRequest": [
-      {
-        "url": "https://app.wikonnect.org/:comment_id"
-      }
-    ]
+    "groupTitle": "ChapterComments"
   },
   {
     "type": "delete",
@@ -963,12 +954,7 @@ define({ "api": [
     ],
     "version": "0.0.0",
     "filename": "server/routes/ratings.js",
-    "groupTitle": "ChapterRatings",
-    "sampleRequest": [
-      {
-        "url": "https://app.wikonnect.org/:rating_id"
-      }
-    ]
+    "groupTitle": "ChapterRatings"
   },
   {
     "type": "get",
@@ -1050,12 +1036,7 @@ define({ "api": [
     },
     "version": "0.0.0",
     "filename": "server/routes/ratings.js",
-    "groupTitle": "ChapterRatings",
-    "sampleRequest": [
-      {
-        "url": "/"
-      }
-    ]
+    "groupTitle": "ChapterRatings"
   },
   {
     "type": "put",
@@ -1070,12 +1051,7 @@ define({ "api": [
     ],
     "version": "0.0.0",
     "filename": "server/routes/ratings.js",
-    "groupTitle": "ChapterRatings",
-    "sampleRequest": [
-      {
-        "url": "https://app.wikonnect.org/:rating_id"
-      }
-    ]
+    "groupTitle": "ChapterRatings"
   },
   {
     "type": "get",
@@ -1131,7 +1107,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "HTTP/1.1 200 OK\n{\n   \"chapter\": {\n       \"id\": \"chapter1\",\n       \"lessonId\": \"lesson1\",\n       \"name\": \"A Chapter\",\n       \"slug\": \"a-chapter\",\n       \"description\": \"An H5P Chapter.\",\n       \"status\": \"published\",\n       \"creatorId\": \"user1\",\n       \"createdAt\": \"2017-12-20T16:17:10.000Z\",\n       \"updatedAt\": \"2017-12-20T16:17:10.000Z\",\n       \"contentType\": \"h5p\",\n       \"contentUri\": \"/uploads/h5p/chapter1\",\n       \"imageUrl\": \"/uploads/images/content/chapters/chapter1.jpeg\",\n       \"contentId\": null,\n       \"tags\": [],\n       \"likes\": \"0\",\n       \"dislikes\": \"0\",\n       \"rating\": null,\n       \"verified\": true,\n       \"comment\": [{\n          \"id\": \"IwAfzOqAAI4\",\n          \"chapterId\": \"chapter1\",\n          \"creatorId\": \"user2\",\n          \"comment\": \"Dolores aut ut.\",\n          \"metadata\": null,\n          \"createdAt\": \"2020-07-08T13:25:44.710Z\",\n          \"updatedAt\": \"2021-03-03T19:58:48.806Z\",\n          \"children\": [{\n              \"id\": \"IwAfzOuAAME\",\n              \"chapterId\": \"chapter4\",\n              \"creatorId\": \"user1\",\n              \"comment\": \"Architecto voluptatem quaerat et dolores aut consequatur et.\",\n              \"metadata\": null,\n              \"createdAt\": \"2020-10-08T06:19:39.434Z\",\n              \"updatedAt\": \"2021-03-04T03:43:11.647Z\",\n              \"type\": \"comment\"\n             },\n             {\n              \"id\": \"IwAfzOuAALc\",\n              \"chapterId\": \"chapter4\",\n              \"creatorId\": \"user2\",\n              \"comment\": \"Omnis sequi architecto quod voluptas aut.\",\n              \"metadata\": null,\n              \"createdAt\": \"2020-04-17T08:55:33.210Z\",\n              \"updatedAt\": \"2021-03-04T14:36:27.525Z\",\n              \"type\": \"comment\"\n            }],\n            \"type\": \"comment\"\n          }],\n       \"author\": {\n         \"username\": \"user1\",\n         \"profileUri\": null,\n         \"lastSeen\": \"2021-02-22T11:57:10.468Z\"\n       },\n       \"reaction\": [{\n         \"likes\": 3,\n         \"authenticated_user\": \"like\",\n         \"reaction.id\": \"\",\n         \"dislikes\": 1\n       }]\n    }\n }",
+          "content": "HTTP/1.1 200 OK\n{\n   \"chapter\": {\n       \"id\": \"chapter1\",\n       \"lessonId\": \"lesson1\",\n       \"name\": \"A Chapter\",\n       \"slug\": \"a-chapter\",\n       \"description\": \"An H5P Chapter.\",\n       \"status\": \"published\",\n       \"creatorId\": \"user1\",\n       \"createdAt\": \"2017-12-20T16:17:10.000Z\",\n       \"updatedAt\": \"2017-12-20T16:17:10.000Z\",\n       \"contentType\": \"h5p\",\n       \"contentUri\": \"/uploads/h5p/chapter1\",\n       \"imageUrl\": \"/uploads/images/content/chapters/chapter1.jpeg\",\n       \"contentId\": null,\n       \"tags\": [],\n       \"likes\": \"0\",\n       \"dislikes\": \"0\",\n       \"rating\": null,\n       \"verified\": true,\n       \"comment\": [{\n          \"id\": \"IwAfzOqAAI4\",\n          \"chapterId\": \"chapter1\",\n          \"creatorId\": \"user2\",\n          \"comment\": \"Dolores aut ut.\",\n          \"metadata\": null,\n          \"createdAt\": \"2020-07-08T13:25:44.710Z\",\n          \"updatedAt\": \"2021-03-03T19:58:48.806Z\",\n          \"replies\": [{\n              \"id\": \"IwAfzOuAAME\",\n              \"chapterId\": \"chapter4\",\n              \"creatorId\": \"user1\",\n              \"comment\": \"Architecto voluptatem quaerat et dolores aut consequatur et.\",\n              \"metadata\": null,\n              \"createdAt\": \"2020-10-08T06:19:39.434Z\",\n              \"updatedAt\": \"2021-03-04T03:43:11.647Z\",\n              \"type\": \"comment\"\n             },\n             {\n              \"id\": \"IwAfzOuAALc\",\n              \"chapterId\": \"chapter4\",\n              \"creatorId\": \"user2\",\n              \"comment\": \"Omnis sequi architecto quod voluptas aut.\",\n              \"metadata\": null,\n              \"createdAt\": \"2020-04-17T08:55:33.210Z\",\n              \"updatedAt\": \"2021-03-04T14:36:27.525Z\",\n              \"type\": \"comment\"\n            }],\n            \"type\": \"comment\"\n          }],\n       \"author\": {\n         \"username\": \"user1\",\n         \"profileUri\": null,\n         \"lastSeen\": \"2021-02-22T11:57:10.468Z\"\n       },\n       \"reaction\": [{\n         \"likes\": 3,\n         \"authenticated_user\": \"like\",\n         \"reaction.id\": \"\",\n         \"dislikes\": 1\n       }]\n    }\n }",
           "type": "json"
         }
       ]
