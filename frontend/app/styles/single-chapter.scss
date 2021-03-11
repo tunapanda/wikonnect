@@ -1,0 +1,21 @@
+.chapter-actions {
+  width: 100px;
+}
+
+.single-chapter-creator {
+  display: flex;
+  align-items: center;
+  font-size: 15px;
+
+  .verified-icon {
+    fill: #F57010;
+  }
+
+  p {
+    margin: 0;
+  }
+
+  img {
+    width: 40px;
+  }
+}
