@@ -19,6 +19,7 @@
     "lint:js": "eslint . --cache",
     "lint:js:fix": "eslint . --fix",
     "start": "ember serve  --proxy http://localhost:3000",
+    "docker:start": "ember serve  --proxy http://backend:3000",
     "ci:start": "ember serve --path dist --proxy http://localhost:3000",
     "test": "npm-run-all lint test:*",
     "test:ember": "ember test"

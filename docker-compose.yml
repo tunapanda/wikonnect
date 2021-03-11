@@ -1,14 +1,121 @@
-version: '2'
+version: "3.8"
+
 services:
-  postgres:
-    image: postgres
+  wikonnect-redis:
+    container_name: redis
+    image: "redis:alpine"
+    restart: "on-failure"
+    volumes:
+      - ./data/redis/:/data
     ports:
-      - '15432:5432'
-  elasticsearch:
-    image: 'elasticsearch:7.4.2'
+      - "6379"
+    healthcheck:
+      test: [ "CMD-SHELL", "redis-cli ping" ]
+      start_period: 10s
+      retries: 10
+      interval: 2s
+      timeout: 1m
+
+    networks:
+      - wikonnect
+
+  wikonnect-postgres:
+    container_name: postgres
+    image: "postgres"
+    restart: always
+    volumes:
+      - ./data/postgres/:/var/lib/postgresql/data/
+    env_file: .env
     ports:
-      - '19200:9200'
-      - '19300:9300'
-    environment:
-      - discovery.type=single-node
-    mem_limit: 1g
+      - '5432'
+    networks:
+      - wikonnect
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+    # Uncomment this if you need to enable elastic search.
+    # Don't forget to also uncomment server service dependencies & at volumes level
+
+  # wikonnect-elastic:
+  #   container_name: elasticsearch
+  #   image: 'elasticsearch:7.11.1'
+  #   restart: "always"
+  #   volumes:
+  #     - elasticsearch:/usr/share/elasticsearch/data
+  #   ports:
+  #     - '9200'
+  #   environment:
+  #     - discovery.type=single-node
+  #   mem_limit: 1g
+  #   logging:
+  #     driver: none
+  #   healthcheck:
+  #     test: [ "CMD-SHELL", "curl --silent --fail localhost:9200/_cluster/health || exit 1" ]
+  #     interval: 30s
+  #     timeout: 30s
+  #     retries: 3
+  #   networks:
+  #     - wikonnect
+
+  backend:
+    build:
+      context: ./server/
+      dockerfile: Dockerfile
+      args:
+        NODE_ENV: ${NODE_ENV}
+    restart: "always"
+    env_file:
+      - .env
+    ports:
+      - "${SERVER_PORT}:${SERVER_PORT}"
+    volumes:
+      - backend-deps:/usr/src/app/node_modules
+      - ./server:/usr/src/app/
+    depends_on:
+      wikonnect-redis:
+        condition: service_healthy
+      wikonnect-postgres:
+        condition: service_healthy
+      # wikonnect-elastic:
+      #   condition: service_healthy
+
+    networks:
+      - wikonnect
+
+  frontend:
+    build:
+      context: ./frontend/
+      dockerfile: Dockerfile
+    restart: "always"
+    env_file: .env
+    ports:
+      - "${FRONTED_PORT}:${FRONTED_PORT}"
+    volumes:
+      - frontend-deps:/usr/src/app/node_modules
+      - ./frontend:/usr/src/app/
+    depends_on:
+      backend:
+        condition: service_started
+    networks:
+      - wikonnect
+
+volumes:
+  frontend-deps:
+    name: wikonnect-frontend-deps
+    driver: local
+
+  backend-deps:
+    name: wikonnect-backend-deps
+    driver: local
+
+  # elasticsearch:
+  #   name: wikonnect-elasticsearch
+  #   driver: local
+
+networks:
+  wikonnect:
+    name: wikonnect
+    driver: bridge
