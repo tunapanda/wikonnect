@@ -1,0 +1,54 @@
+<div class="reply-actions d-flex justify-content-between">
+  <div>
+    {{!-- pluralize helper from ember-inflector package --}}
+    <span class="mr-2">{{pluralize this.numOfReplies "reply"}}</span>
+    {{#if @parent.replies }}
+      {{#if this.shouldRepliesShow}}
+        <a {{on "click" this.toggleReplies}}>
+          Hide Replies {{svg-jar "expand_less_black_24dp"}}
+        </a>
+      {{else}}
+      <a {{on "click" this.toggleReplies}}>
+        Show Replies {{svg-jar "expand_more_black_24dp"}}
+      </a>
+      {{/if}}
+    {{/if}}
+  </div>
+  <div>
+    {{#if this.me.isAuthenticated}}
+      <a {{on "click" this.toggleForm}}>
+        {{svg-jar "reply_black_24dp"}} {{if this.shouldFormShow "Reply" "Reply"}}
+      </a>
+    {{/if}}
+    {{svg-jar "favorite_border_black_24dp" height="20px"}}
+  </div>
+</div>
+
+{{#if this.me.isAuthenticated}}
+  {{#if this.shouldFormShow}}
+    <BsForm @model={{this.replyModel}} @onSubmit={{this.saveReply}} as |form|>
+      <form.element @controlType="textarea" @property="comment" />
+      {{#each this.commentModel.errors as |err| }}
+        {{#if (eq err.key "comment")}}
+          <BsAlert @type="danger" @fade={{true}}>
+            {{err.message}}
+          </BsAlert>
+        {{/if}}
+      {{/each}}
+      <BsButton @type="primary" @defaultText="Reply" @buttonType="submit" />
+    </BsForm>
+  {{/if}}
+{{/if}}
+
+{{#if this.shouldRepliesShow}}
+  {{#if @parent.replies }}
+    {{#each @parent.replies as |reply|}}
+      <div class="media mt-4">
+        <div class="replies">
+          <p class="mt-2"><strong>{{reply.creator.username}}</strong></p>
+          {{nl2br reply.comment}}
+        </div>
+      </div>
+    {{/each}}
+  {{/if}}
+{{/if}}
