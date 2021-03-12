@@ -1,3 +1,16 @@
+.breadcrumbs {
+  color: #829199;
+  font-size: small;
+  font-weight: bold;
+
+  p {
+    margin: 0 0.7rem;
+    span.chapter-name {
+      margin-left: 0.5rem;
+    }
+  }
+}
+
 .chapter-actions {
   width: 100px;
 }
@@ -8,7 +21,7 @@
   font-size: 15px;
 
   .verified-icon {
-    fill: #F57010;
+    fill: #f57010;
   }
 
   p {
@@ -17,5 +30,11 @@
 
   img {
     width: 40px;
+  }
+}
+
+.chapter-content {
+  .chapter-description {
+    color: #829199;
   }
 }
