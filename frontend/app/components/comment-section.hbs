@@ -2,9 +2,16 @@
   <p><strong>{{this.numOfComments}} Comments</strong></p>
 
   {{#if this.me.isAuthenticated}}
-
+    <div class="d-flex align-items-center">
+      {{#if this.me.profileUri}}
+        <img alt="profile" class="mr-3 rounded-circle" width="30px" src={{this.me.profileUri}}>
+      {{else}}
+        <img alt="profile" class="mr-3 rounded-circle" width="30px" src="/uploads/images/profile-placeholder.gif">
+      {{/if}}
+      <small>You are commenting publicly as {{this.me.name}}</small>
+    </div>
     <BsForm @model={{this.commentModel}} @onSubmit={{this.saveComment}} as |form|>
-      <form.element @controlType="textarea" @label="Comment" @property="comment"/>
+      <form.element @controlType="textarea" @label="Comment" @placeholder="Add a comment" @property="comment"/>
       {{#each this.commentModel.errors as |err| }}
         {{#if (eq err.key "comment")}}
           <BsAlert @type="danger" @fade={{true}}>
@@ -23,7 +30,7 @@
     {{#if item.creator.profileUri}}
       <img alt="profile" class="mr-3 rounded-circle" width="40px" src={{item.creator.profileUri}}>
     {{else}}
-      <img alt="profile" class="mr-3 rounded-circle" width="80px" src="/uploads/images/profile-placeholder.gif">
+      <img alt="profile" class="mr-3 rounded-circle" width="40px" src="/uploads/images/profile-placeholder.gif">
     {{/if}}
     <div class="media-body">
       <p class="mt-2"><strong>{{item.creator.username}}</strong></p>
