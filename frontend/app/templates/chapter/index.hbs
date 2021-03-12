@@ -2,116 +2,118 @@
   <div {{did-insert (fn this.dataLoad)}}></div>
   <div {{did-insert (fn this.counterTimer)}}></div>
 
-  <div class="breadcrumbs">
+  <div class="breadcrumbs d-flex align-items-center">
     <LinkTo @route="home">
       {{svg-jar "home_black_24dp"}}
     </LinkTo>
-    <p class="d-inline">Chapters / {{this.model.name}}</p>
+    <p class="m0">Chapters / <span class="chapter-name">{{this.model.name}}</span></p>
   </div>
   <hr>
-  <div class="chapter-content ">
-    {{#if this.model.contentUri}}
+  {{#if this.model.contentUri}}
     <H5p @location={{this.model.contentUri}} />
-    {{else}}
-    <H5p::Player @contentId={{this.model.contentId}}>
-    </H5p::Player>
-    {{/if}}
-    <div class="d-flex justify-content-between pt-2 pb-2">
-      <div class="chapter-title">
-        <h4>
-          {{this.model.name}}
-        </h4>
-      </div>
-
-      <div class="d-flex align-items-baseline">
-        <Reaction::ChapterReaction @chapter={{this.model}} @canReact={{true}} />
-<div class="chapter-actions d-flex justify-content-between">
-        {{svg-jar "message" height="20px"}}
-        {{svg-jar "tuna" height="21px"}}
-        {{svg-jar "more_vert_black_24dp"}}
-</div>
-      </div>
-    </div>
-    <div class="chapter-metadata">
-      <p> {{this.model.views}} views &middot; {{format-date this.model.createdAt day="numeric" month="short" year="numeric"}}</p>
-    </div>
-    {{!-- <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modelId">
-      Embed
-    </button> --}}
-
-    <div class="modal fade" id="modelId" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title">Embed</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
+  {{else}}
+    <H5p::Player @contentId={{this.model.contentId}} />
+  {{/if}}
+  <div class="row">
+    <div class="col-lg-8">
+      <div class="chapter-content ">
+        <div class="d-flex justify-content-between pt-2 pb-2">
+          <div class="chapter-title">
+            <h4>
+              {{this.model.name}}
+            </h4>
           </div>
-          <div class="modal-body">
-            <div class="form-group ">
-              <pre id="frame" name="frame">{{this.embedCode}}</pre>
-              <CopyButton @clipboardTarget="#frame" @success={{this.onSuccess}} @error={{this.onError}}>
-                Copy Embed Code
-              </CopyButton>
-              {{#if this.copied}}
-              <span class="badge badge-primary pt-2">Copied</span>
 
-              {{/if}}
+          <div class="d-flex align-items-center">
+            <Reaction::ChapterReaction @chapter={{this.model}} @canReact={{true}} />
+            <div class="chapter-actions d-flex justify-content-between">
+              <a href="#comments-section">{{svg-jar "message" height="20px"}}</a>
+              {{svg-jar "tuna" height="21px"}}
+              {{svg-jar "more_vert_black_24dp"}}
             </div>
           </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+        <div class="chapter-metadata">
+          <p> {{this.model.views}} views &middot; {{format-date this.model.createdAt day="numeric" month="short"
+            year="numeric"}}</p>
+        </div>
+        {{!-- <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modelId">
+          Embed
+        </button> --}}
+
+        <div class="modal fade" id="modelId" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title">Embed</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <div class="form-group ">
+                  <pre id="frame" name="frame">{{this.embedCode}}</pre>
+                  <CopyButton @clipboardTarget="#frame" @success={{this.onSuccess}} @error={{this.onError}}>
+                    Copy Embed Code
+                  </CopyButton>
+                  {{#if this.copied}}
+                  <span class="badge badge-primary pt-2">Copied</span>
+
+                  {{/if}}
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              </div>
+            </div>
           </div>
         </div>
+
+        <hr>
+        <div class="single-chapter-creator mb-3">
+          {{#if this.model.creator.profileUri}}
+            <img src={{this.model.creator.profileUri}} alt="Lesson creator avatar" class="rounded-circle mr-2">
+          {{else}}
+            <img src="/uploads/images/profile-placeholder.gif" alt="Lesson creator avatar" class="rounded-circle mr-2">
+          {{/if}}
+          <div>
+            {{!-- TODO: Add "verified" & "likes" to user model --}}
+            <p>{{this.model.creator.username}} {{svg-jar "verified-black-24dp" class="verified-icon" height="20px"}}</p>
+            <p>134 likes</p>
+          </div>
+        </div>
+
+        <h5>What you will learn</h5>
+        <div class="chapter-description">
+          {{#if this.config.content.APP.linkify_description}}
+            <p class="add-pre"> {{linkify this.model.description class="btn btn-primary replaced"}}</p>
+          {{else}}
+            <p class="add-pre"> {{this.model.description}}</p>
+          {{/if}}
+        </div>
+        <hr>
+
+        <CommentSection @selectedChapter={{this.model.id}} @chapterComments={{this.model.comments}} />
+
       </div>
     </div>
-
-    <hr>
-    <div class="single-chapter-creator mb-3">
-      {{#if this.model.creator.profileUri}}
-        <img src={{this.model.creator.profileUri}} alt="Lesson creator avatar" class="rounded-circle mr-2">
-      {{else}}
-        <img src="/uploads/images/profile-placeholder.gif" alt="Lesson creator avatar" class="rounded-circle mr-2">
-      {{/if}}
-      <div>
-        {{!-- TODO: Add "verified" & "likes" to user model  --}}
-        <p>{{this.model.creator.username}} {{svg-jar "verified-black-24dp" class="verified-icon" height="20px"}}</p>
-        <p>134 likes</p>
-      </div>
-    </div>
-
-    <h5>What you will learn</h5>
-    {{#if this.config.content.APP.linkify_description}}
-      <p class="add-pre"> {{linkify this.model.description class="btn btn-primary replaced"}}</p>
-    {{else}}
-      <p class="add-pre"> {{this.model.description}}</p>
-    {{/if}}
-<hr>
-
-    <CommentSection @selectedChapter={{this.model.id}} @chapterComments={{this.model.comments}} />
-
   </div>
+
 </div>
 
 <div class="text-center">
   {{#if (eq this.me.user.username "daph")}}
-
-  {{#if (eq this.model.approved "true")}}
-
-  <button type="button" class="btn form-control btn-danger" {{on "click" (fn this.toggleApproval this.model.id false
-    )}}>
-    Un Approve This
-  </button>
-  {{else}}
-  <button type="button" class="btn form-control btn-success" {{on "click" (fn this.toggleApproval this.model.id true
-    )}}>
-    Approve This
-  </button>
-  {{/if}}
-
-
-
+    {{#if (eq this.model.approved "true")}}
+      <button type="button" class="btn form-control btn-danger" {{on "click" (fn this.toggleApproval this.model.id false
+        )}}>
+        Un Approve This
+    </button>
+    {{else}}
+      <button type="button" class="btn form-control btn-success" {{on "click" (fn this.toggleApproval this.model.id true
+        )}}>
+        Approve This
+      </button>
+    {{/if}}
   {{/if}}
 </div>
 
