@@ -18,6 +18,10 @@ export default class CommentSectionComponent extends Component {
     });
   }
 
+  get numOfComments() {
+    return this.args.chapterComments.length;
+  }
+
   get profileUri() {
     return this.me.user.profileUri;
   }
