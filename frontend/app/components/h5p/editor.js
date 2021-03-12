@@ -39,9 +39,6 @@ export default class H5pEditorComponent extends Component {
       )
         .then((res) => res.json())
         .then((rs) => {
-          if (this.args.onEditorInit) {
-            this.args.onEditorInit(element);
-          }
           this.editor = element; //initialize the editor now
           return rs.model;
         });
@@ -56,5 +53,30 @@ export default class H5pEditorComponent extends Component {
         body: JSON.stringify(requestBody),
       }).then((res) => res.json());
     };
+    if (this.args.onEditorInit) {
+      this.pollUntilIframeIsDrawn(element);
+    }
+  }
+
+  pollUntilIframeIsDrawn(elem) {
+    const editorIframe = elem.querySelector(
+      '.h5p-editor-component-root  .h5p-create iframe'
+    );
+
+    const editorSearchInput = editorIframe?.contentWindow.document.querySelector(
+      '.h5p-hub'
+    );
+
+    if (!editorIframe && !this.elementVisible(editorSearchInput)) {
+      setTimeout(() => this.pollUntilIframeIsDrawn(elem), 40);
+    } else {
+      this.args.onEditorInit(elem);
+    }
+  }
+
+  elementVisible(e) {
+    return e
+      ? !!(e.offsetWidth || e.offsetHeight || e.getClientRects().length)
+      : false;
   }
 }
