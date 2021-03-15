@@ -36,4 +36,7 @@ Router.map(function () {
   this.route('tag', { path: '/tag/:id' });
   this.route('embed', { path: '/embed/:chapter_id' });
   this.route('callback');
+
+  // 404 page should always be the last
+  this.route('not-found', { path: '*path' });
 });
