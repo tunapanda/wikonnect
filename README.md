@@ -4,7 +4,7 @@
   <img  height="200" src="https://app.wikonnect.org/images/icons/wikonnect-primary.svg">
 
 
-<h1 align="center">Welcome to wikonnect 👋</h1>
+<h1 align="center">Welcome to Wikonnect 👋</h1>
 <p align="center">
   <img alt="Version" src="https://img.shields.io/badge/version-0.1.0-blue.svg?cacheSeconds=2592000" />
   <a href="https://docs.wikonnect.org/" target="_blank">
@@ -26,48 +26,113 @@
   </a>
 </p>
 
-
-
 # Wikonnect
 
-Wikonnect is an open-source e-learning platform that is designed to allow anyone to learn, create content, and contribute to the code. The initial courses offered on the platform will be around digital literacy, to get more people using the internet in more productive ways. Developed by Tunapanda Institute in Nairobi, Kenya. The original platform (called 'swag') was used to provide technology, design, and business training in low-income communities with low bandwidth.
+Wikonnect is an open-source e-learning platform designed to allow anyone to learn, create educational content, and
+contribute to building the platform as a designer or a software developer. The initial courses offered on the platform will be around digital literacy, to get more people
+using the internet in more productive ways. Developed by Tunapanda Institute in Nairobi, Kenya. The original platform (
+called 'swag') was used to provide technology, design, and business training in low-income communities with low
+bandwidth.
 
 
 Getting Started
 --
-The front-end is developed using Ember.js. We recommend [getting started](https://guides.emberjs.com/release/getting-started/quick-start/) with Ember by going through the tutorials.
+The frontend is developed using Ember.js. We
+recommend [getting started](https://guides.emberjs.com/release/getting-started/quick-start/) with Ember by going through
+the tutorials.
 
-The back-end is developed using [KoaJS](https://koajs.com/). API doc is hosted at [tunapanda.github.io/wikonnect)](https://tunapanda.github.io/wikonnect)
+The backend is developed using [KoaJS](https://koajs.com/). The API docs are hosted
+at [tunapanda.github.io/wikonnect)](https://tunapanda.github.io/wikonnect)
 
-## Prerequisites
+## Wikonnect Tech Stack
 
-### Tech Stack
+- [EmberJS](https://guides.emberjs.com) for frontend.
+- [KoaJS](https://koajs.com/) for backend API.
+- [Objection.js](https://vincit.github.io/objection.js/) as an ORM
+  and [Knex.js](https://gist.github.com/NigelEarle/80150ff1c50031e59b872baf0e474977) for building SQL queries
+- [PostgreSQL](https://www.postgresql.org/) for main persistence storage.
+- [Redis](https://redis.io/) for in-memory data cache.
+- [chai](https://www.chaijs.com/) for backend unit tests.
+- [Cypress](https://cypress.io) for frontend integration tests.
+- [Yarn](https://yarnpkg.com/) project package manager.
 
-- [EmberJS](https://guides.emberjs.com) for frontend
-- [Postgres](https://www.postgresql.org/) with [Objection.js](https://vincit.github.io/objection.js/) and [knex](https://gist.github.com/NigelEarle/80150ff1c50031e59b872baf0e474977) for database management
-- [KoaJS](https://koajs.com/) a node.js web framework for building the API(server)
-- [chai](https://www.chaijs.com/) for writing unit tests.
-  - chai-http
-- [Cypress](https://cypress.io) for integration testing
-- [Yarn](https://yarnpkg.com/) project package manager
-- [ElasticSearch](https://www.elastic.co/) search and indexing tool
+  #### Optional:
+- [ElasticSearch](https://www.elastic.co/) for search and indexing services
+- [Docker](https://www.docker.com/) for containerization
 
-## Development Setup
+## Development setup
 
-### Installing Node.js
+- Manually [download](https://codeload.github.com/tunapanda/wikonnect/zip/master) or clone the project
+  using [Git](https://git-scm.com/) into your workspace:
 
-Follow instructions for downloading and [installing Node.js](https://nodejs.org/en/download/) for your operating system from the official Node.js website.
+```
+  git clone https://github.com/tunapanda/wikonnect.git
+ ```
 
-Ensure you are installing Node 10 or greater.
+- Proceed to set up the development environment manually or using Docker.
 
-### Set up PostgreSQL
+### Docker project setup
+
+---
+
+#### Prerequisites
+
+- Docker Engine
+
+##### Docker engine installation
+
+- [Ubuntu installation](https://docs.docker.com/engine/install/ubuntu/)
+- [Fedora installation](https://docs.docker.com/engine/install/fedora/)
+- [Debian installation](https://docs.docker.com/engine/install/debian/)
+- [Mac installation](https://docs.docker.com/docker-for-mac/install/) -Installed as docker desktop
+- [Windows installation](https://docs.docker.com/docker-for-windows/install/)  -Installed as docker desktop
+
+#### Starting a development server
+
+1) If your Docker engine instance is running on your terminal, navigate into the **project root directory**:
+
+```
+cd wikonnect/
+```
+
+2) Rename the `.env-sample` configuration file to `.env`. (Never commit this file)
+
+3) Update the above `.env` file configurations to match your desired setup.
+
+4) Build and run the project container services using the `docker-compose` command:
+    ```
+      docker-compose up --build
+    ````
+
+**NOTE** The ``NODE_ENV`` should be set as ``development`` to allow live reload on code changes.
+
+
+### Manual project setup
+
+---
+
+#### Prerequisites
+
+- Node.js v14.16.0
+- PostgreSQL database server
+- Redis database server
+
+##### Setting up Node.js
+
+Follow instructions on how to download and install Node.js based on your operating system from
+the [official Node.js website](https://nodejs.org/en/download/).
+
+Ensure you install Node v14.16.0
+
+##### Setting up PostgreSQL
 
 - [Ubuntu installation](https://www.digitalocean.com/community/tutorials/how-to-install-and-use-postgresql-on-ubuntu-18-04)
 - [Fedora installation](https://fedoraproject.org/wiki/PostgreSQL)
 - [OSX installation](https://www.codementor.io/engineerapart/getting-started-with-postgresql-on-mac-osx-are8jcopb)
 - [Windows installation](http://www.postgresqltutorial.com/install-postgresql/)
 
-You should create a postgres user (with password), and set up database. (Don't forget to grant privileges to your user on the database!)
+Create a postgres user (with password), and set up a database for the project (Don't forget to grant privileges to the user
+on the database!). :
 
 ```SQL
 =# CREATE USER my_user WITH PASSWORD 'my_password';
@@ -75,89 +140,114 @@ You should create a postgres user (with password), and set up database. (Don't f
 =# GRANT ALL PRIVILEGES ON DATABASE my_database TO my_user;
 ```
 
-## Starting the Development Server
+##### Setting up a Redis server
 
-Open up Terminal/Powershell/bash and navigate to the directory where you want the project to live.
+For macOS and Windows systems, check out the [download page](https://redis.io/download) on how to download and install a
+Redis server.
 
-Clone this repository:
+To install on a Linux system, run the command below:
 
 ```
-git clone https://github.com/tunapanda/wikonnect.git
+sudo apt-get install redis-server
 ```
 
-Install the node packages in the **main project directory**...
+After successful installation, confirm that the service is up and ready  using the following command:
+
+```
+sudo service redis-server status
+```
+
+If the service is not running, use the command below to start it:
+
+```
+sudo service redis-server start
+```
+
+#### Starting a development server
+
+Install the project-wide dependencies on the **root project directory**...
 
 ```
 cd wikonnect/
 yarn
 ```
 
-### Server (API) setup
+##### Backend (API) setup
 
 ---
 
-Now let's set up the **server**. First, go into the server directory and install the node packages.
+Backend set up steps:
 
+1) Navigate into the **server** directory
+    ```
+    cd server/
+    ```
+2) Install the backend dependencies
+    ```
+    yarn
+    ```
+
+3) Rename the database configuration file `server/config/db.example.js` to `server/config/db.js`
+
+4) Replace the database configuration to match your development database. (Do not use the development database in a
+   production environment)
+
+    ```js
+    development: {
+        host: 'localhost',
+        database: 'my_database',
+        user: 'my_user',
+        password: 'my_password',
+      }
+    ```
+
+5) Assuming the Postgres server is ready and above [configuration](server/config/db.js) credentials are correct, run the
+   latest migrations (defined in `server/migrations`):
+    ```
+    knex migrate:latest
+    ```
+
+6) **Optionally**, one can populate the database with dummy data (defined in `server/db/seeds`) by running:
+    ```
+       knex seed:run
+    ```
+
+7) If the above steps were successful, you can finally start the backend server
+   ```
+   yarn start
+   ```
+
+**NOTE**: You can safely ignore any Elasticsearch connection error.
+
+##### Frontend setup
+
+---
+Frontend set up steps:
+
+1) Navigate into the **frontend** directory
+    ```
+    cd server/
+    ```
+2) Install the frontend dependencies
+    ```
+    yarn
+    ```
+3) Start the frontend server
+   ```
+   yarn start
+   ```
+4) If the above steps were successful, navigate to your favorite browser and go to http://localhost:4200/ to see the running
+   app.
+
+***NOTE***: For easy Ember addons installation and project files generation using available blueprints, we highly
+recommend installing [Ember CLI](https://github.com/ember-cli/ember-cli) globally:
 ```
-cd server/
-yarn
+yarn install -g ember-cli
 ```
 
-Then, rename the file `server/config/db.example.js` to `server/config/db.js`, then edit the credentials that will provide access to your development database. (Do not use the development database in a production environment)
+## Designs
 
-```js
-development: {
-    host: 'localhost',
-    database: 'my_database',
-    user: 'my_user',
-    password: 'my_password',
-  },
-```
-
-#### Next, you will want to set up your database and start your server.
-
-Ensure that you have redis-server running locally in your pc.
-
-For Macos and Windows systems, check out the [Download page](https://redis.io/download) to download redis-server.
-
-To install it in a linux system, run the command below:
-```
-sudo apt-get install redis-server
-```
-To confirm that the service is active, use the command below:
-```
-sudo service redis-server status
-```
-If the service is not running, use the command below to start it:
-```
-sudo service redis-server start
-```
-
-To run the knex commands that follow later, there are 2 possible options:
-- Install knex CLI globally
-- prefix all the knex commands with npx e.g `npx knex migrate:latest`  (If you have [npx](https://www.npmjs.com/package/npx) installed)
-
-To check if knex CLI is installed globally, run the command below which shows the Knex CLI version:
-```
-knex --version
-```
-If knex CLI is not installed globally, install it using the command below and make sure to confirm that the installation was successful using the command above:
-```
-npm install -g knex
-```
-
-Running `knex migrate:latest` in the `server/` directory will use the migration files in `server/migrations` to create and format the tables so that they will work with wikonnect.
-
-To populate the database with dummy data (defined in `server/db/seeds`), run `knex seed:run`.
-
-Now start your server! `yarn start`
-
-If you see an Elasticsearch error, don't worry, you don't need Elasticsearch to run the app.
-
-
-
-### Designs
-
+---
 
 <table>
 
@@ -168,37 +258,29 @@ If you see an Elasticsearch error, don't worry, you don't need Elasticsearch to 
   </tr>
  </table>
 
-Head over to [Adobe XD](https://xd.adobe.com/view/4373354a-a52e-4413-4a61-8831bd731d75-3542/grid) to see the complete design.
-
-### Front End set-up
-
----
-
-#### Get Ember up and running
-
-Install the node packages for the Ember app. Run `yarn` in wikonnect/frontend.
-
-Now start your server!
-
-```
-yarn start
-```
-
-Now point your favorite browser to http://localhost:4200/ and you will be able to see the app.
+Head over to [Adobe XD](https://xd.adobe.com/view/4373354a-a52e-4413-4a61-8831bd731d75-3542/grid) to see the complete
+design.
 
 ## Contributing
 
-- You should join our [Discord](https://discord.gg/tT9Ug6D) server to get connected with people interested in this project and to be aware of our future announcements.
-- Please read the suggested [steps to contribute code to the Wikonnect project](https://github.com/tunapanda/wikonnect/blob/master/CONTRIBUTING.md) before creating issues, forking, or submitting any pull requests.
+- You should join our [Discord](https://discord.gg/tT9Ug6D) server to get connected with people interested in this
+  project and to be aware of our future announcements.
+- Please read the
+  suggested [steps to contribute code to the Wikonnect project](https://github.com/tunapanda/wikonnect/blob/master/CONTRIBUTING.md)
+  before creating issues, forking, or submitting any pull requests.
+
+## License
+
+This project is licensed under MIT. See the [license](license) file for details
 
 ## Authors 🧙
 
-### Lead Developers
+### Lead developers
 
 - **[Moses Okemwa](https://github.com/mosesokemwa)** - _Lead developer and maintainer_
 - **[Proverbial Ninja](https://github.com/proverbial-ninja)** - _Lead developer and maintainer_
 
-## Contributors ✨
+### Contributors ✨
 
 Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
 
