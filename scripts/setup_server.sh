@@ -1,2 +1,2 @@
 #!/bin/bash
-yarn --cwd ~/wikonnect/server postinstall
+sudo yarn --cwd ~/wikonnect/server postinstall
