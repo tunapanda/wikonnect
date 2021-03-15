@@ -1,0 +1,36 @@
+version: "3.8"
+
+services:
+  backend:
+    build:
+      context: ./server/
+      dockerfile: Dockerfile
+      args:
+        NODE_ENV: 'production' #override just to be safe
+    restart: "always"
+    environment:
+      NODE_ENV: 'production' #override just to be safe
+    env_file:
+      - .env
+    ports:
+      - "$SERVER_PORT:$SERVER_PORT"
+    networks:
+      - wikonnect
+
+  frontend:
+
+    build:
+      context: ./frontend/
+      dockerfile: Dockerfile-prod
+    restart: "on-failure"
+    env_file: .env
+    ports:
+      - "$FRONTED_PORT:80"
+
+    networks:
+      - wikonnect
+
+networks:
+  wikonnect:
+    name: wikonnect
+    driver: bridge
