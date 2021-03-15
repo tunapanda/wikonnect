@@ -1,0 +1,20 @@
+<div class="chapter-filters-section">
+  <div class="container pb-3 pt-3">
+    <ChapterTags::TagsList @tagsList={{this.tagsList}} @toggleTagSelection={{this.toggleTagSelection}}
+                           @selectedFilterTags={{this.selectedFilterTags}} @clearAllTagFilters={{this.clearAllTagFilters}} />
+  </div>
+</div>
+
+<div class="container">
+  <div class="row mt-5 " id="chapters-container">
+    <Home::Chapters @chapters={{this.chapters}}>
+    </Home::Chapters>
+  </div>
+  <div class="row">
+    <div class="col">
+      <InfinityLoader @infinityModel={{this.chapters}} @loadingText="Loading more awesome records..."
+                      @loadedText="Loaded all the records!" @triggerOffset={{500}} @eventDebounce={{1000}}/>
+    </div>
+  </div>
+
+</div>
