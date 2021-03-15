@@ -9,8 +9,11 @@
   font-size: small;
   color: #aaa;
   fill:#aaa;
-  a {
-    cursor: pointer;
+
+  button {
     color: #aaa;
+    border: none;
+    outline: none;
+    background-color: inherit;
   }
 }
