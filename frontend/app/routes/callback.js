@@ -45,7 +45,7 @@ export default class CallbackRoute extends Route {
         } else {
           this.me
             .authenticate(user.get('username'), googleToken)
-            .then(() => this.transitionTo('home'));
+            .then(() => this.transitionTo('index'));
         }
       });
   }

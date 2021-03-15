@@ -2,8 +2,7 @@ describe('Chapter comments when authenticated', () => {
 
     beforeEach(() => {
         cy.login();
-        cy.visit('/home')
-        // cy.get('a .card-title .title-section').first().click()
+        cy.visit('/')
         cy.get(':nth-child(5) > .card > .card-body > .card-title a').click()
     });
 
@@ -74,7 +73,7 @@ describe('Chapter comments when authenticated', () => {
 describe('Chapter comments without authentication', () => {
 
     beforeEach(() => {
-        cy.visit('/home')
+        cy.visit('/')
         cy.get(':nth-child(5) > .card > .card-body > .card-title a').click()
     });
 
