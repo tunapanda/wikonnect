@@ -78,10 +78,10 @@ jobs:
             ${{ runner.os }}-yarn-
 
       # Frontend tests
-      - name: Ember Lint:js
-        run: yarn  --cwd ./frontend lint:js
       - name: Lint Ember hbs
         run: yarn --cwd ./frontend lint:hbs
+      - name: Ember Lint:js
+        run: yarn  --cwd ./frontend lint:js
       - name: Test Ember
         run: yarn test:ember
 
@@ -146,7 +146,7 @@ jobs:
 
       # Backend migrate database nad seed
       - name: Backend database set-up
-        run: yarn --cwd .server db:init; yarn --cwd .server db:seed
+        run: yarn --cwd ./server db:init; yarn --cwd ./server db:seed
         env:
           POSTGRES_HOST: localhost
           POSTGRES_PORT: 5432
