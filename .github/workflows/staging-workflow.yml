@@ -79,7 +79,7 @@ jobs:
 
       # Frontend tests
       - name: Ember Lint:js
-        run: yarn  --frozen-lockfile --cwd ./frontend lint:js
+        run: yarn  --cwd ./frontend lint:js
       - name: Lint Ember hbs
         run: yarn --cwd ./frontend lint:hbs
       - name: Test Ember
@@ -146,7 +146,7 @@ jobs:
 
       # Backend migrate database nad seed
       - name: Backend database set-up
-        run: cd server;$(yarn bin)/knex migrate:latest; $(yarn bin)/knex seed:run; cd ../
+        run: yarn --cwd .server db:init; yarn --cwd .server db:seed
         env:
           POSTGRES_HOST: localhost
           POSTGRES_PORT: 5432
