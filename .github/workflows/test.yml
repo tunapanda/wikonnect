@@ -90,6 +90,7 @@ jobs:
           REDIS_HOST: localhost
           REDIS_PORT: 6379
         with:
+          wait-on: "http://localhost:3000"
           start: yarn --cwd ./server start, yarn --cwd ./frontend start
 
       - uses: actions/upload-artifact@v1
