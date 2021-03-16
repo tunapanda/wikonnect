@@ -1,0 +1,102 @@
+name: Staging Deployment
+
+on:
+  push:
+    branches:
+      - staging
+jobs:
+  cypress-run:
+    name: Integration Test
+    runs-on: ubuntu-latest
+    services:
+      # Label used to access the service container
+      postgres:
+        # Docker Hub image
+        image: postgres
+        # Provide the password for postgres
+        env:
+          POSTGRES_PASSWORD: postgres
+        # Set health checks to wait until postgres has started
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          # Maps tcp port 5432 on service container to the host
+          - 5432:5432
+      redis:
+        # Docker Hub image
+        image: redis
+        # Set health checks to wait until redis has started
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          # Maps port 6379 on service container to the host
+          - 6379:6379
+    steps:
+      - uses: actions/checkout@v2
+
+      # Initialize Node.js
+      - name: Install Node.js 14.x
+        uses: actions/setup-node@v1
+        with:
+          node-version: '14.x'
+
+      # Install YARN dependencies, cache them correctly
+      - name: Get yarn cache directory path
+        id: yarn-cache-dir-path
+        run: echo "::set-output name=dir::$(yarn cache dir)"
+
+      - uses: actions/cache@v2
+        id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
+        with:
+          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+
+      # Install project dependencies, test and build
+      - name: Install Wikonnect dependencies
+        run: yarn  --frozen-lockfile
+
+      # Install project dependencies, test and build
+      - name: Install frontend dependencies
+        run: yarn  --frozen-lockfile --cwd ./frontend
+      - name: Run build
+        run: yarn  --frozen-lockfile --cwd ./frontend build --prod
+
+      # Install project dependencies, test and build
+      - name: Install backend dependencies
+        run: yarn  --frozen-lockfile --cwd ./server
+
+      - name: Running build
+        run:  yarn --cwd ./frontend build
+
+      # Backend migrate database nad seed
+      - name: Backend database set-up
+        run: yarn --cwd ./server db:init; yarn --cwd ./server db:seed
+        env:
+          POSTGRES_HOST: localhost
+          POSTGRES_PORT: 5432
+          SEEDS: 25
+          NODE_ENV: action
+
+      # Run all Cypress tests
+      - name: Cypress run
+        uses: cypress-io/github-action@v2
+        env:
+          NODE_ENV: action
+          REDIS_HOST: localhost
+          REDIS_PORT: 6379
+        with:
+          start: yarn --cwd ./server start, yarn --cwd ./frontend start
+
+      - uses: actions/upload-artifact@v1
+        if: failure()
+        with:
+          name: cypress-screenshots
+          path: cypress/screenshots
