@@ -38,3 +38,55 @@
     color: #829199;
   }
 }
+
+.share {
+  button {
+    border: none;
+    outline: none;
+    background-color: inherit;
+  }
+}
+
+.social-share-icon {
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  outline: none;
+}
+
+#facebook-share-icon {
+  background-color: #4267B2;
+}
+
+
+#twitter-share-icon {
+  background-color: #1DA1F2;
+}
+
+#email-share-icon {
+  background-color: grey;
+}
+
+#reddit-share-icon {
+  background-color: #FF4500;
+}
+
+#facebook-share-icon svg path,
+#twitter-share-icon svg path,
+#reddit-share-icon svg path
+ {
+  fill: white !important;
+}
+
+.share-modal-container {
+    background: #222;
+    color: white;
+    margin-left: -25px;
+    margin-top: 10px;
+    width: 300px;
+    border-radius: 0;
+}

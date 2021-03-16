@@ -37,17 +37,17 @@ export default class ReplySectionComponent extends Component {
 
   @action
   saveReply(model) {
-    // model.chapter = this.store.peekRecord('chapter', this.args.selectedChapter);
-    // model
-    //   .save()
-    //   .then(() => {
-    //     this.reply = '';
-    //     this.notify.success('Comment added successfully', { closeAfter: 6000 });
-    //   })
-    //   .catch(() => {
-    //     this.reply = model.comment;
-    //     model.deleteRecord();
-    //     this.notify.alert('Be mindful of your comments', { closeAfter: 6000 });
-    //   });
+    model.chapter = this.store.peekRecord('chapter', this.args.selectedChapter);
+    model
+      .save()
+      .then(() => {
+        this.reply = '';
+        this.notify.success('Comment added successfully', { closeAfter: 6000 });
+      })
+      .catch(() => {
+        this.reply = model.comment;
+        model.deleteRecord();
+        this.notify.alert('Be mindful of your comments', { closeAfter: 6000 });
+      });
   }
 }
