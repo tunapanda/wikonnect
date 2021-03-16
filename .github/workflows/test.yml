@@ -73,9 +73,6 @@ jobs:
       - name: Install backend dependencies
         run: yarn  --frozen-lockfile --cwd ./server
 
-      - name: Running build
-        run:  yarn --cwd ./frontend build
-
       # Backend migrate database nad seed
       - name: Backend database set-up
         run: yarn --cwd ./server db:init; yarn --cwd ./server db:seed
