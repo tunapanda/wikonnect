@@ -1,4 +1,4 @@
-name: CI/CD
+name: Staging Deployment
 
 on:
   push:
@@ -10,16 +10,10 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: ['12.x']
+        node-version: ['14.x']
 
     steps:
       - uses: actions/checkout@v2
-
-      # cache node_modules in our monorepo project instead of caching the yarn cache
-      - uses: actions/cache@v2
-        with:
-          path: '**/node_modules'
-          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
 
       # Initialize Node.js
       - name: Install Node.js ${{ matrix.node-version }}
@@ -27,134 +21,87 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
 
-      # Wikonnect root install dependencies
-      - name: Wikonnect root install dependencies
-        run: yarn --frozen-lockfile
+      # Yarn cache dir
+      - name: Get yarn cache directory path
+        id: yarn-cache-dir-path
+        run: echo "::set-output name=dir::$(yarn cache dir)"
 
-      # Frontend install dependencies
-      - name: Frontend install dependencies
-        run: yarn --frozen-lockfile --cwd ./frontend
-
-      # Frontend run build
-      - name: Frontend run build
-        run: yarn --cwd ./frontend build --prod
-
-      # Frontend lint Ember JS
-      - name: Frontend lint Ember JS
-        run: yarn --cwd ./frontend lint:js
-
-  test:
-    name: Server-side Tests
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: ['12.x']
-
-    # Service containers to run with `container-job`
-    services:
-      # Label used to access the service container
-      postgres:
-        # Docker Hub image
-        image: postgres
-        # Provide the password for postgres
-        env:
-          POSTGRES_PASSWORD: postgres
-        # Set health checks to wait until postgres has started
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-        ports:
-          # Maps tcp port 5432 on service container to the host
-          - 5432:5432
-      redis:
-        # Docker Hub image
-        image: redis
-        # Set health checks to wait until redis has started
-        options: >-
-          --health-cmd "redis-cli ping"
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-        ports:
-          # Maps port 6379 on service container to the host
-          - 6379:6379
-
-    needs: buildAndTest
-    steps:
-      - uses: actions/checkout@v2
-
-      # Backend install dependencies
-      - name: Backend install dependencies
-        run: yarn --frozen-lockfile --cwd ./server
-
-      # Backend migrate database nad seed
-      - name: Backend database set-up
-        run: cd server;$(yarn bin)/knex migrate:latest; $(yarn bin)/knex seed:run; cd ../
-        env:
-          POSTGRES_HOST: localhost
-          POSTGRES_PORT: 5432
-          NODE_ENV: action
+      - uses: actions/cache@v2
+        id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
+        with:
+          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
 
       # Install project dependencies, test and build
-      - name: Backend testing
-        run: yarn --cwd ./server test:local
-        env:
-          NODE_ENV: action
-          REDIS_HOST: localhost
-          # The default Redis port
-          REDIS_PORT: 6379
+      - name: Install dependencies
+        run: npm install
+
+      # Install project dependencies, test and build
+      - name: Install dependencies
+        run: cd frontend && yarn install
+      - name: Run build
+        run: cd frontend && yarn build --prod
+
+      # Install project dependencies, test and build
+      - name: Install dependencies
+        run: cd server && yarn install
+
   deploy:
     name: CD Pipeline
     runs-on: ubuntu-latest
     strategy:
       matrix:
         python-version: [3.8]
-        node-version: ['12.x']
+        node-version: ['14.x']
         appname: ['aws-codedeploy']
         deploy-group: ['wikonnect-staging']
         s3-bucket: ['wikonnect-codedeploy-deployments']
         s3-filename: ['staging-wikonnect-codedeploy-${{ github.sha }}']
 
-    needs: test
+    needs: buildAndTest
     steps:
       - uses: actions/checkout@v2
-
-      # cache node_modules in our monorepo project instead of caching the yarn cache
-      - uses: actions/cache@v2
-        with:
-          path: '**/node_modules'
-          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
 
       # Initialize Node.js
       - name: Install Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
+       # Yarn cache dir
+      - name: Get yarn cache directory path
+        id: yarn-cache-dir-path
+        run: echo "::set-output name=dir::$(yarn cache dir)"
 
-      # Wikonnect root install dependencies
-      - name: Wikonnect root install dependencies
-        run: yarn --frozen-lockfile
+      - uses: actions/cache@v2
+        id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
+        with:
+          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
 
-      # Frontend install dependencies
-      - name: Frontend install dependencies
-        run: yarn --frozen-lockfile --cwd ./frontend
-
-      # Frontend run build
-      - name: Frontend run build
-        run: yarn --cwd ./frontend build --prod
+      # Install project dependencies and build
+      - name: Install dependencies
+        run: yarn install
 
       # Install project dependencies, test and build
       - name: Install dependencies
-        run: yarn --frozen-lockfile --cwd ./server
+        run: cd frontend && yarn install
+      - name: Run build
+        run: cd frontend && yarn build --prod
+
+      # Install project dependencies, test and build
+      - name: Install dependencies
+        run: cd server && yarn install
 
       # Install AWS CLI 2
       - name: Install AWS CLI 2
         run: |
           curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
           unzip awscliv2.zip
-          sudo ./aws/install --update
+          sudo ./aws/install
       # Configure AWS credentials
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
