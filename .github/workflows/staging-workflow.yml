@@ -46,7 +46,7 @@ jobs:
         run: yarn  --frozen-lockfile --cwd ./server
 
   FrontendTest:
-    name: Test Wikonnect
+    name: Test Wikonnect Frontend
     runs-on: ubuntu-latest
     needs: Build
     steps:
@@ -92,7 +92,7 @@ jobs:
         run: yarn  --cwd ./frontend lint:js
 
   BackendTest:
-    name: Test Wikonnect
+    name: Test Wikonnect Backend
     runs-on: ubuntu-latest
     needs: Build
     services:
