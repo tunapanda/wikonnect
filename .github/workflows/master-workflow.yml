@@ -36,6 +36,10 @@ jobs:
       - name: Frontend install dependencies
         run: yarn --frozen-lockfile --cwd ./frontend
 
+      # Backend install dependencies
+      - name: Frontend install dependencies
+        run: yarn --frozen-lockfile --cwd ./server
+
       # Frontend run build
       - name: Frontend run build
         run: yarn --cwd ./frontend build --prod
