@@ -26,10 +26,10 @@
 
           <div class="d-flex align-items-center">
             <Reaction::ChapterReaction @chapter={{this.model}} @canReact={{true}} />
-            <div class="chapter-actions d-flex justify-content-between">
+            <div class="chapter-actions d-flex">
               <a href="#comments-section">{{svg-jar "message" height="20px"}}</a>
-              {{svg-jar "tuna" height="21px"}}
-              {{svg-jar "more_vert_black_24dp"}}
+              <Share @chapterName={{this.model.name}}/>
+              {{!-- {{svg-jar "more_vert_black_24dp"}} --}}
             </div>
           </div>
         </div>
@@ -37,9 +37,6 @@
           <p> {{this.model.views}} views &middot; {{format-date this.model.createdAt day="numeric" month="short"
             year="numeric"}}</p>
         </div>
-        {{!-- <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modelId">
-          Embed
-        </button> --}}
 
         <div class="modal fade" id="modelId" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
           <div class="modal-dialog" role="document">
