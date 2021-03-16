@@ -97,7 +97,7 @@ jobs:
       - name: Ember Lint:js
         run: yarn  --cwd ./frontend lint:js
       - name: Test Ember
-        run: yarn test:ember
+        run: yarn --cwd ./frontend test:ember
 
   BackendTest:
     name: Test Wikonnect
