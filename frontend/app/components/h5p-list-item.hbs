@@ -1,12 +1,11 @@
 <div class="col-lg-4 col-md-6 mb-4 ">
   <div class="card h-100 shadow-sm">
-
-    <LinkTo @route="chapter" @model={{@chapter.id}}>
+    <LinkTo @route="chapter" @model={{@chapter.id}} class="chapter-thumbnail">
       {{#if (eq @chapter.imageUrl null)}}
-        <img class="card-img-top" src="https://placehold.jp/20/{{this.color}}/ffffff/328x200.png?text={{@chapter.name}}"
+      <img class="card-img-top" src="https://placehold.jp/20/{{this.color}}/ffffff/328x200.png?text={{@chapter.name}}"
         alt="" role="presentation">
       {{else}}
-        <img class="card-img-top" alt="" src={{@chapter.imageUrl}} role="presentation">
+      <img class="card-img-top" alt="" src={{@chapter.imageUrl}} role="presentation">
       {{/if}}
     </LinkTo>
     <div class="card-body chapter-body">
@@ -27,24 +26,30 @@
         </LinkTo>
       </h5>
 
-      {{#if this.config.content.APP.linkify_description}}
-        <p class="card-text">
-          {{linkify @chapter.description class="btn btn-primary mt-3 replaced"}}
-        </p>
-      {{else}}
+      <div class="chapter-metadata">
+        {{#if @chapter.verified }}
+        <div class="d-inline mr-2">
+          {{svg-jar "verified-black-24dp" class="verified-icon"}}
+        </div>
+        {{/if}}
+        <div class="d-inline mr-3">
+          {{svg-jar "watch" class="watch-icon"}} {{relative-time @chapter.createdAt}}
+        </div>
+        {{svg-jar "visibility" class="eye-icon"}} {{@chapter.views}}
+      </div>
+
+      <div class="chapter-description mt-1 mb-3">
+        {{#if this.config.content.APP.linkify_description}}
+        <p class="card-text">{{linkify @chapter.description class="btn btn-primary mt-3 replaced"}}</p>
+        {{else}}
         <p class="card-text">{{@chapter.description}}</p>
+        {{/if}}
+      </div>
 
-      {{/if}}
-
-      <br>
-      {{#each @chapter.tags as |tag|}}
-        <LinkTo @route="tag" @model={{tag}}>
-          <span class="badge badge-pill badge-primary btn-lg">
-            {{tag}}
-          </span>
-        </LinkTo>
-
-      {{/each}}
+      <div class="chapter-creator">
+        <img src={{@chapter.creator.profileUri}} alt="Chapter creator avatar" class="rounded-circle">
+        {{@chapter.creator.username}}
+      </div>
     </div>
 
   </div>

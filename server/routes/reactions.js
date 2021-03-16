@@ -148,7 +148,7 @@ router.post('/', validateReaction, requireAuth, async ctx => {
     }
   } catch (error) {
     if (error instanceof TypeError) {
-      console.log(error);
+      log.error(error);
     }
   }
   ctx.status = 201;

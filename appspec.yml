@@ -11,6 +11,11 @@ permissions:
       - directory
       - file
 hooks:
+  AfterInstall:
+    - location: scripts/setup_server.sh
+      timeout: 100
+      runas: ubuntu
+
   ApplicationStart:
     - location: scripts/start_server.sh
       timeout: 300

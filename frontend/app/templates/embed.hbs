@@ -1,3 +1,4 @@
+<div {{did-insert (fn this.dataLoad)}}></div>
 {{this.model.name}}
 <br>
 {{#if this.callbackUrl}}
@@ -5,7 +6,12 @@
 
 {{/if}}
 
-<H5p @location={{this.model.contentUri}} />
+{{#if this.model.contentUri}}
+  <H5p @location={{this.model.contentUri}} />
+{{else}}
+  <H5p::Player @contentId={{this.model.contentId}}>
+  </H5p::Player>
+{{/if}}
 {{#if this.me.isAuthenticated}}
   Logged in as : {{this.me.user.username}}
   <a name="" {{on "click" this.logout}} id="" class="btn btn-primary" href="#" role="button">Logout</a>

@@ -1,4 +1,3 @@
-const knex = require('knex');
 const env = process.env.NODE_ENV || 'test';
 const knexfile = require('../../server/knexfile')[env];
 

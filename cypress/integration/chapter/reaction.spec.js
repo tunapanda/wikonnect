@@ -1,38 +1,31 @@
-import chapters from "../../fixtures/chapters.json";
-
 describe("Chapter Reaction Without Auth", () => {
-  function newChapter() {
-    return chapters.find((chapter) => !chapter.reaction[0]);
-  }
+  beforeEach(() => {
+    cy.visit('/home')
+    cy.get(':nth-child(5) > .card > .card-body > .card-title a').click()
+  });
 
   it("Should see chapter reactions", () => {
-    const { id } = newChapter();
-
-    cy.visit(`/chapter/${id}`);
-
     cy.get(".reactions .reaction-btn.like-button").should("be.visible");
-
     cy.get(".reactions .reaction-btn.dislike-button").should("be.visible");
   });
 
   it("Should not like a chapter", () => {
-    const { id } = newChapter();
-
-    cy.visit(`/chapter/${id}`);
-
-    cy.get(".reactions .like-button").click();
-
-    cy.get(".reactions .like-button .count").contains(0);
+    cy.get(".reactions .like-button").then(($btn) => {
+      const txt = $btn.text()
+      cy.get(".reactions .like-button").click().should(($btn2) => {
+        expect($btn2.text()).to.eq(txt)
+      })
+    })
   });
 
   it("Should not dislike a chapter", () => {
-    const { id } = newChapter();
 
-    cy.visit(`/chapter/${id}`);
-
-    cy.get(".reactions .dislike-button").click();
-
-    cy.get(".reactions .dislike-button .count").contains(0);
+    cy.get(".reactions .dislike-button").then(($btn) => {
+      const txt = $btn.text()
+      cy.get(".reactions .dislike-button").click().should(($btn2) => {
+        expect($btn2.text()).to.eq(txt)
+      })
+    })
   });
 });
 
@@ -41,102 +34,95 @@ describe("Chapter Reaction After Auth", () => {
     cy.login();
   });
 
-  function likedChapter() {
-    return chapters.find(
-      (chapter) => chapter.authenticatedUser === "like"
-    );
-  }
-
-  function dislikedChapter() {
-    return chapters.find(
-      (chapter) => chapter.authenticatedUser === "dislike"
-    );
-  }
-
-  function newChapter() {
-    return chapters.find((chapter) => !chapter.reaction[0]);
-  }
-
   it("Should see chapter reactions", () => {
-    const { id } = newChapter();
-    cy.visit(`/chapter/${id}`);
+    cy.visit('/home')
+    cy.get(':nth-child(5) > .card > .card-body > .card-title a').click()
 
-    cy.get(".reactions .reaction-btn.like-button")
-      .should("be.visible")
-      .contains(0);
-
-    cy.get(".reactions .reaction-btn.dislike-button")
-      .should("be.visible")
-      .contains(0);
+    cy.get(".reactions .reaction-btn.like-button").then(($btn) => {
+      const txt = $btn.text()
+      cy.get(".reactions .reaction-btn.like-button").should(($btn2) => {
+        expect($btn2.text()).to.eq(txt)
+      })
+    })
+    cy.get(".reactions .reaction-btn.dislike-button").then(($btn) => {
+      const txt = $btn.text()
+      cy.get(".reactions .reaction-btn.dislike-button").should(($btn2) => {
+        expect($btn2.text()).to.eq(txt)
+      })
+    })
   });
 
   it("Should like a chapter", () => {
-    const { id, reaction } = newChapter();
-    cy.visit(`/chapter/${id}`);
-
-    cy.get(".reactions .reaction-btn.like-button")
-      .click()
-      .find(".count")
-      .contains(1);
+    cy.visit('/home')
+    cy.get(':nth-child(5) > .card > .card-body > .card-title a').click()
+    cy.get(".reactions .reaction-btn.like-button").invoke('text').then(parseFloat).then((txt) => {
+      cy.get(".reactions .reaction-btn.like-button").click().invoke('text').then(parseFloat).should('be.gte', txt)
+    })
   });
 
   it("Should dislike a chapter", () => {
-    const { id, reaction } = newChapter();
-    cy.visit(`/chapter/${id}`);
-
-    cy.get(".reactions .reaction-btn.dislike-button")
-      .click()
-      .find(".count")
-      .contains(1);
+    cy.visit('/home')
+    cy.get(':nth-child(5) > .card > .card-body > .card-title a').click()
+    cy.get(".reactions .reaction-btn.dislike-button").invoke('text').then(parseFloat).then((txt) => {
+      cy.get(".reactions .reaction-btn.dislike-button").click().invoke('text').then(parseFloat).should('be.gte', txt)
+    })
   });
 
   it("Should switch disliked chapter reaction", () => {
-    const { id, reaction } = dislikedChapter();
-
-    cy.visit(`/chapter/${id}`);
-
-    cy.get(".reactions .reaction-btn.like-button").click();
-
-    cy.get(".reactions .like-button .count").contains(reaction[0].likes + 1);
-
-    cy.get(".reactions .dislike-button .count").contains(reaction[0].dislikes - 1);
+    cy.chapters().then((item) => {
+      item.filter(function (item) {
+        if (item.authenticatedUser === 'dislike') {
+          cy.visit(`/chapter/${item.id}`);
+          cy.get(".reactions .reaction-btn.like-button").click();
+          cy.get(".reactions .like-button .count").contains(parseFloat(item.reaction[0].likes) + 1);
+          cy.get(".reactions .dislike-button .count").contains(parseFloat(item.reaction[0].dislikes) - 1);
+          return false;
+        }
+      })
+    });
   });
 
   it("Should switch liked chapter reaction", () => {
-    const { id, reaction } = likedChapter();
-
-    cy.visit(`/chapter/${id}`);
-
-    cy.get(".reactions .reaction-btn.dislike-button").click();
-
-    cy.get(".reactions .like-button .count").contains(reaction[0].likes - 1);
-
-    cy.get(".reactions .dislike-button .count").contains(reaction[0].dislikes + 1);
+    cy.chapters().then((item) => {
+      item.filter(function (item) {
+        if (item.authenticatedUser === 'like') {
+          cy.visit(`/chapter/${item.id}`);
+          cy.get(".reactions .reaction-btn.dislike-button").click();
+          cy.get(".reactions .like-button .count").contains(parseFloat(item.reaction[0].likes) - 1);
+          cy.get(".reactions .dislike-button .count").contains(parseFloat(item.reaction[0].dislikes) + 1);
+          return false;
+        }
+      })
+    });
   });
 
   it("Should retract previous liked chapter reaction", () => {
-    const { id, reaction } = likedChapter();
-
-    cy.visit(`/chapter/${id}`);
-
-    cy.get(".reactions .reaction-btn.like-button")
-      .click()
-      .find(" .count")
-      .contains(reaction[0].likes - 1);
-
-    cy.get(".reactions .dislike-button .count").contains(reaction[0].dislikes);
+    cy.chapters().then((item) => {
+      item.filter(function (item) {
+        if (item.authenticatedUser === 'like') {
+          cy.visit(`/chapter/${item.id}`);
+          cy.get(".reactions .reaction-btn.like-button").click()
+            .find(" .count")
+            .contains(parseFloat(item.reaction[0].likes) - 1);
+          cy.get(".reactions .dislike-button .count").contains(item.reaction[0].dislikes);
+          return false;
+        }
+      })
+    });
   });
 
   it("Should retract previous disliked chapter reaction", () => {
-    const { id, reaction } = dislikedChapter();
-
-    cy.visit(`/chapter/${id}`);
-
-    cy.get(".reactions .reaction-btn.dislike-button")
-      .click()
-      .find(" .count")
-      .contains(reaction[0].dislikes - 1);
-
-    cy.get(".reactions .like-button .count").contains(reaction[0].likes);
+    cy.chapters().then((item) => {
+      item.filter(function (item) {
+        if (item.authenticatedUser === 'dislike') {
+          cy.visit(`/chapter/${item.id}`);
+          cy.get(".reactions .reaction-btn.dislike-button").click()
+            .find(" .count")
+            .contains(parseFloat(item.reaction[0].dislikes) - 1);
+          cy.get(".reactions .like-button .count").contains(item.reaction[0].likes);
+          return false;
+        }
+      })
+    });
   });
 });
