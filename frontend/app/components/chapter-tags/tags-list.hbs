@@ -4,25 +4,26 @@
       <BsDropdown @closeOnMenuClick={{false}} as |dd|>
         <dd.button @type="primary" class="tags-filter-dropdown-button">
           Filter
-          <MdIcon @icon="filter-variant" @size={{20}} />
+          {{svg-jar "filter-variant" width="20" height="20"}}
+
         </dd.button>
         <dd.menu class="tags-filter-dropdown-menu" as |ddm|>
 
           <div class="filter-tags-search input-group">
             <div class="input-group-prepend">
               <span class="input-group-text">
-                <MdIcon @icon="magnify" @size={{28}} @fill="black"/>
+                {{svg-jar "magnify" width="28" height="28"}}
               </span>
             </div>
 
-            <Input @type="search" class="form-control search-input" @value={{filterTagsSearchTerm}}
+            <Input @type="search" class="form-control search-input" @value={{this.filterTagsSearchTerm}}
                    placeholder="Search filters"/>
           </div>
 
           <div class="header d-flex justify-content-between">
             <span class="title">Select to filter</span>
-            <button class="btn btn-clear {{if this.hasSelectedFilterTags "active" "" }}" {{on "click"
-                                                                                              @clearAllTagFilters}}>
+            <button type="button" class="btn btn-clear {{if this.hasSelectedFilterTags "active" "" }}"
+              {{on "click" @clearAllTagFilters}}>
               Clear
             </button>
           </div>
@@ -45,17 +46,17 @@
     <div class="selected-tags tag-list d-flex col-sm ">
       {{#each @selectedFilterTags as |tag|}}
 
-        <button class="btn tag-button btn-outline-primary"
+        <button type="button" class="btn tag-button btn-outline-primary"
           {{on "click" (fn @toggleTagSelection tag)}}>
           <span class="mr-1"> {{tag.name}}</span>
-          <MdIcon @icon="close-circle" @size={{16}} @fill="#b0babf"/>
+          {{svg-jar "close-circle" width="16" height="16"}}
         </button>
 
       {{/each}}
       {{#if  this.hasSelectedFilterTags }}
         <BsButton @type="primary" @outline="true"
                   class="text-sm-center d-none d-sm-none d-md-flex clear-tags-btn hidden-sm"
-                  @onClick={{action @clearAllTagFilters}}>
+                  @onClick={{@clearAllTagFilters}}>
           Clear all filters
         </BsButton>
       {{/if}}
@@ -65,7 +66,7 @@
   {{#if this.hasSelectedFilterTags}}
     <div class="d-flex justify-content-center pt-2">
       <BsButton @type="primary" @outline="true" class="clear-tags-btn d-md-none"
-                @onClick={{action @clearAllTagFilters}}>
+                @onClick={{@clearAllTagFilters}}>
         Clear all filters
       </BsButton>
     </div>

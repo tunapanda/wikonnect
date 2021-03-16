@@ -1,112 +1,120 @@
-{{!-- {{outlet}} --}}
-{{outlet}}
-
-
-
-{{!-- {{outlet}} --}}
 <div class="p-4">
 
-  <div id="chapter">
-    <div class="row">
-      <h4><b>Chapter Name: </b>{{model.name}} </h4>
-
-
-    </div>
-    {{#if (eq model.approved "true")}}
-
-      <span class="badge badge-pill badge-success float right">Approved</span>
-    {{else}}
-      <span class="badge badge-pill badge-danger float right">Not Yet Approved</span>
-
-    {{/if}}
-
-    <div class="chapter-content mt-2">
-      {{#if model.contentUri}}
-        <H5p @location={{model.contentUri}} />
-        <div class="mt-2">
-          {{#link-to "teach.h5p-upload" model.id class="btn bg-orange"}}
-
-            Upload H5P
-          {{/link-to}}
-        </div>
-      {{else}}
-        <div class="mt-2">
-          <BsAlert @visible={{true}} @fade={{true}} @type="success" @dismissible={{false}}>
-            <strong> H5P Missing! </strong> You need to upload a H5P file.
-
-            {{#link-to "teach.h5p-upload" model.id class="btn bg-orange"}}
-
-              Upload H5P
-            {{/link-to}}
-          </BsAlert>
-
-        </div>
-
-      {{/if}}
-
-      {{#if model.imageUrl}}
-        <div class="mt-2">
-          {{#link-to "teach.thumbnail-upload" model.id}}
-            <button type="button" class="btn btn-primary">Change Thumbnail</button>
-          {{/link-to}}
-
-        </div>
-      {{else}}
-        <BsAlert @visible={{true}} @fade={{true}} @type="success" @dismissible={{false}}>
-          <strong> No Thumbnail! </strong> You need to upload a thumbnail.
-          {{#link-to "teach.thumbnail-upload" model.id class="btn bg-orange"}}
-
-            Upload Thumbnail
-          {{/link-to}}
-
-        </BsAlert>
-
-      {{/if}}
-
-      <p> <b>Description: </b>{{model.description}}</p>
-      <p> <b>Tags: </b></p>
-      {{#each model.tags as |tag|}}
-        {{#link-to "tag" tag}}
-
-          <span class="badge badge-pill badge-primary btn-lg">
-            {{tag}}
-          </span>
-        {{/link-to}}
-
-      {{/each}}
-      <br>
-      {{#link-to "teach.tag" model.id}}
-        <button type="button" class="btn btn-primary mt-1 mb-1">Modify Tags</button>
-
-      {{/link-to}}
-
-
-    </div>
+  <div class="d-flex justify-content-center">
+    <Toc @page="5"/>
   </div>
+  <div class="row p-5">
+    <div class="col-lg-6">
+      <h4><b>Chapter Name: </b>{{this.model.name}}({{this.model.status}}) </h4>
 
-  <div class="text-center">
-    {{#if (and model.contentUri model.imageUrl) }}
-
-
-      {{#if (eq model.status "published")}}
-
-        <button {{on "click" (fn this.unpublish model.id )}} type="button" class="btn form-control btn-danger">
-          UnPublish {{model.name}}
-        </button>
-      {{else}}
-        <button {{on "click" (fn this.publish model.id )}} type="button" class="btn form-control btn-success">
-          Publish {{model.name}}
-        </button>
+      {{#if (eq this.model.status "published")}}
+        {{#if this.model.approved}}
+          <span class="badge badge-pill badge-success">approved</span>
+        {{else}}
+          <span class="badge badge-pill badge-danger">not approved</span>
+        {{/if}}
       {{/if}}
-    {{else}}
-      <b>Publishing: </b>
-      <div class="alert alert-primary" role="alert">
-        <strong>Thumbnail and H5P required before publishing</strong>
+      <br>
+      {{#if this.model.contentUri}}
+        <H5p @location={{this.model.contentUri}} />
+        <br>
+        <LinkTo class="btn bg-orange" @route="teach.h5p-upload" @model={{this.model.id}}>
+          <button type="button" class="btn btn-primary">Change H5P</button>
+        </LinkTo>
+      {{else}}
+        <LinkTo class="btn bg-orange" @route="teach.h5p-upload" @model={{this.model.id}}>
+          <button type="button" class="btn btn-primary">Upload H5P</button>
+        </LinkTo>
+      {{/if}}
+
+      <div class=" mt-1 bg-light m-0 p-4 pt-3">
+        <p>{{this.model.description}}</p>
+        <b>Tags</b>
+
+        <div class="row ">
+          {{#each this.model.tags as |tag|}}
+            <LinkTo @route="tag" @model={{tag}}>
+              <span class="badge badge-pill badge-primary btn-lg m-1">
+                {{tag}}
+              </span>
+            </LinkTo>
+          {{/each}}
+          <br>
+        </div>
+        <LinkTo @route="teach.tag" @model={{this.model.id}}>
+          <button type="button" class="btn-sm btn-primary">Modify Tags</button>
+        </LinkTo>
+
       </div>
-      <a href="#" class="btn  disabled form-control" role="button">Publish</a>
+    </div>
 
 
-    {{/if}}
+    <div class="col-lg-6  border rounded-lg pl-4 pr-4 pt-3">
+      <div class="float-right">
+        <button type="button" class="btn btn-danger" {{on "click" this.showDeleteModal }}>Delete</button>
+        {{#if (eq this.model.status "draft")}}
+          {{#if (and this.model.imageUrl this.model.contentUri)}}
+            <button type="button" class="btn btn-success" {{on "click" (fn (mut this.publishModal) true)}}>
+              Publish
+            </button>
+          {{else}}
+            <small>*upload thumbnail and h5p to publish</small>
+            <button type="button" class="btn  bg-light" disabled>Publish</button>
+          {{/if}}
+        {{else}}
+          <button type="button" class="btn btn-danger" {{on "click" (fn (mut this.unpublishModal) true)}}>
+            Unpublish
+          </button>
+        {{/if}}
+      </div>
 
+      <BsModalSimple @open={{this.publishModal}} @onSubmit={{ fn this.publish this.model.id }} @closeTitle="Cancel"
+                     @submitTitle="Publish" @title="Publish" @size="sm"
+                     @onHidden={{fn (mut this.publishModal) false}}>
+        Are you sure you want to publish ?
+      </BsModalSimple>
+
+      <BsModalSimple @open={{this.unpublishModal}} @onSubmit={{ fn this.unpublish this.model.id }} @closeTitle="Cancel"
+                     @submitTitle="Unpublish" @title="Unpublish" @size="sm"
+                     @onHidden={{fn (mut this.unpublishModal) false}}>
+        Are you sure you want to unpublish ?
+      </BsModalSimple>
+
+      <BsModalSimple @open={{this.deleteModal}} @onSubmit={{fn this.delete this.model.id }} @closeTitle="Cancel"
+                     @submitTitle="Delete" @title="Delete" @size="sm" @onHidden={{fn (mut this.deleteModal) false}}>
+        Are you sure you want to delete {{this.model.name}} ?
+      </BsModalSimple>
+      <br>
+      <div class="form-group ">
+        <label for="t">Chapter Name</label>
+        <input value={{this.model.name}} type="text" class="form-control bg-light" id="t" disabled>
+      </div>
+      <div class="form-group">
+        <label for="">Chapter Description</label>
+        <textarea class="form-control bg-light" name="" id="" rows="3" disabled>{{this.model.description}}</textarea>
+      </div>
+
+      <LinkTo @route="teach.edit" @model={{this.model.id}}>
+        <button type="button" class="btn btn-primary form-control">Change Chapter Details</button>
+      </LinkTo>
+      <hr>
+      <div>
+
+        {{#if this.model.imageUrl}}
+          <img src="/{{this.model.imageUrl}}" class="img-thumbnail img-fluid rounded h-50 d-inline-block" alt="Chapter">
+          <br>
+          <LinkTo @route="teach.thumbnail-upload" @model={{this.model.id}}>
+            <button type="button" class="btn btn-primary">Edit Thumbail</button>
+          </LinkTo>
+
+        {{else}}
+          <LinkTo @route="teach.thumbnail-upload" @model={{this.model.id}}>
+            <button type="button" class="btn btn-primary">Upload thumbail</button>
+          </LinkTo>
+
+        {{/if}}
+      </div>
+
+    </div>
   </div>
 </div>

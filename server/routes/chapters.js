@@ -56,7 +56,8 @@ const router = new Router({
  *            "imageUrl": null,
  *            "tags": [ "highschool", "university" ],
  *            "contentId": null,
- *            "approved": "true",
+ *            "approved": true,
+ *            "verified": true,
  *            "topics": null,
  *            "views": "3",
  *            "ratings": "3.6666666666666667",
@@ -158,6 +159,7 @@ router.get('/', permController.requireAuth, validateGetChapter, async ctx => {
  *            "likes": "0",
  *            "dislikes": "0",
  *            "rating": null,
+ *            "verified": true,
  *            "comment": [{
  *            }],
  *            "author": {
@@ -228,7 +230,7 @@ router.get('/:id', permController.requireAuth, async ctx => {
 
 
   ctx.status = 200;
-  ctx.body = { chapter };
+  ctx.body = { chapter};
 });
 
 
@@ -324,6 +326,16 @@ router.post('/', permController.requireAuth, async ctx => {
 router.put('/:id', permController.requireAuth, async ctx => {
   let chapterData = ctx.request.body.chapter;
   if (chapterData.id) delete chapterData.id;
+  
+  const stateUserRole = ctx.state.user.role == undefined
+    ? ctx.state.user.data.role
+    : ctx.state.user.role;
+  const roles = ['admin', 'superadmin'];
+  if (!roles.includes(stateUserRole)) {
+    ctx.throw(400, null, { errors: ['Not enough permissions'] });
+    chapterData.verified = 'false';
+  }
+  
   const chapterCheck = await Chapter.query().findById(ctx.params.id);
   ctx.assert(chapterCheck, 400, 'Invalid data provided');
 

@@ -1,5 +1,5 @@
 <div class="container">
-  {{#if (eq me.user.username "daph")}}
+  {{#if (eq this.me.user.username "daph")}}
     <table class="table">
       <thead>
         <tr>
@@ -13,34 +13,29 @@
         </tr>
       </thead>
       <tbody>
-        {{#each chapters as |item index|}}
+        {{#each this.chapters as |item index|}}
           <tr>
             <th scope="row">{{index}}</th>
-            <td><img src={{ item.imageUrl}} class="mr-3 rounded-circle" width="80px" alt="chapter image"></td>
+            <td><img src={{ item.imageUrl}} class="mr-3 rounded-circle" width="80px" alt="chapter"></td>
             <td>{{item.name}}</td>
             <td>{{item.description}}</td>
             <td>{{item.status}}</td>
-            {{#link-to "chapter" item.id }}
-              {{#if (eq item.approved "true")}}
-                {{!-- <td><span class="badge badge-success badge-pill">Approved</span></td> --}}
-                <td>
-                  <BsButton @type="success" @defaultText="Approved" />
-                </td>
-
-              {{else}}
-                <td>
-                  {{!-- <span class="badge badge-warning badge-pill"></span> --}}
-                  <BsButton @type="primary" @defaultText="Not Approved" />
-                </td>
-              {{/if}}
-            {{/link-to}}
+            <td>
+              <LinkTo @route="chapter" @model={{item.id}}>
+                {{#if (eq item.approved "true")}}
+                  <BsButton @type="success" @defaultText="Approved"/>
+                {{else}}
+                  <BsButton @type="primary" @defaultText="Not Approved"/>
+                {{/if}}
+              </LinkTo>
+            </td>
           </tr>
         {{/each}}
       </tbody>
     </table>
   {{else}}
 
-    <Warning @message="You do not have permission to view this page" />
+    <Warning @message="You do not have permission to view this page"/>
 
   {{/if}}
 

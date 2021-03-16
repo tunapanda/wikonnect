@@ -14,7 +14,7 @@
 @import 'profile';
 @import "cms-desktop";
 @import "common/utils";
-@import "ember-mdi";
+@import 'toc-component';
 
 // @import "ember-modal-dialog/ember-modal-structure";
 // @import "ember-modal-dialog/ember-modal-appearance";
@@ -114,6 +114,29 @@ pre {
   /* Opera 7 */
   word-wrap: break-word;
   /* Internet Explorer 5.5+ */
+}
+
+.sub-link {
+  color: orange;
+  margin-right: 1em;
+  font-weight: bold;
+}
+
+.ember-file-drop-zone {
+  width: 20em;
+  height: 10em;
+  border: 2px dashed #707070;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 10px 0;
+}
+
+.drop-area {
+  background-color: #EBF0F2;
+  height: 300px;
 }
 
 //@import "ember-bootstrap/bootstrap";
