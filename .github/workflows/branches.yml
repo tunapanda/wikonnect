@@ -2,9 +2,9 @@ name: Testing Branches
 
 on:
   push:
-    branches:
-      - '!master'
-      - '!staging'
+    branches-ignore:
+      - 'master'
+      - 'staging'
 
 jobs:
   Build:
