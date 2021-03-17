@@ -285,7 +285,7 @@ jobs:
         s3-bucket: ['wikonnect-codedeploy-deployments']
         s3-filename: ['staging-wikonnect-codedeploy-${{ github.sha }}']
 
-    needs: [FrontendTest, BackendTest]
+    needs: ['IntegrationTest', 'BackendTest']
     steps:
       - uses: actions/checkout@v2
 
