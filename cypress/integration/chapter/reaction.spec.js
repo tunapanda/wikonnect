@@ -1,6 +1,6 @@
 describe("Chapter Reaction Without Auth", () => {
   beforeEach(() => {
-    cy.visit('/home')
+    cy.visit('/')
     cy.get(':nth-child(5) > .card > .card-body > .card-title a').click()
   });
 
@@ -35,7 +35,7 @@ describe("Chapter Reaction After Auth", () => {
   });
 
   it("Should see chapter reactions", () => {
-    cy.visit('/home')
+    cy.visit('/')
     cy.get(':nth-child(5) > .card > .card-body > .card-title a').click()
 
     cy.get(".reactions .reaction-btn.like-button").then(($btn) => {
@@ -53,7 +53,7 @@ describe("Chapter Reaction After Auth", () => {
   });
 
   it("Should like a chapter", () => {
-    cy.visit('/home')
+    cy.visit('/')
     cy.get(':nth-child(5) > .card > .card-body > .card-title a').click()
     cy.get(".reactions .reaction-btn.like-button").invoke('text').then(parseFloat).then((txt) => {
       cy.get(".reactions .reaction-btn.like-button").click().invoke('text').then(parseFloat).should('be.gte', txt)
@@ -61,7 +61,7 @@ describe("Chapter Reaction After Auth", () => {
   });
 
   it("Should dislike a chapter", () => {
-    cy.visit('/home')
+    cy.visit('/')
     cy.get(':nth-child(5) > .card > .card-body > .card-title a').click()
     cy.get(".reactions .reaction-btn.dislike-button").invoke('text').then(parseFloat).then((txt) => {
       cy.get(".reactions .reaction-btn.dislike-button").click().invoke('text').then(parseFloat).should('be.gte', txt)
