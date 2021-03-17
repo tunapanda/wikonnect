@@ -45,9 +45,9 @@ module.exports = {
       directory: path.join(BASE_PATH, 'seeds/dev')
     }
   },
-  test: {
+  action: {
     client: 'pg',
-    connection: env_credentials || connections.test,
+    connection: env_credentials || connections.action,
     migrations: {
       directory: path.join(BASE_PATH, 'migrations')
     },
@@ -55,9 +55,9 @@ module.exports = {
       directory: path.join(BASE_PATH, 'seeds/dev')
     }
   },
-  action: {
+  test: {
     client: 'pg',
-    connection: env_credentials || connections.action,
+    connection: env_credentials || connections.test,
     migrations: {
       directory: path.join(BASE_PATH, 'migrations')
     },
