@@ -1,0 +1,35 @@
+.wik-checkbox {
+  position: relative;
+  -webkit-appearance: none;
+  outline: 0;
+  width: 18px;
+  height: 18px;
+  background-color: #fff;
+  border: solid 1px #d9dadc;
+  border-radius: 3px;
+  cursor: pointer;
+
+  &:before {
+
+  }
+
+  &:after {
+    content: "\2714";
+    position: absolute;
+    top: -4px;
+    width: 14px;
+    height: 14px;
+    background-color: transparent;
+    color: white;
+    font-size: 16px;
+  }
+
+  &:checked {
+    border-color: $primary;
+    box-shadow: inset 20px 0 0 0 $primary;
+
+    &:after {
+      left: 2px
+    }
+  }
+}

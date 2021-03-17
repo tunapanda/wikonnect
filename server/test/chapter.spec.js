@@ -31,7 +31,8 @@ const data = {
 const putData = {
   chapter: {
     'name': 'PUT update works',
-    'description': 'PUT update works'
+    'description': 'PUT update works',
+    'verified': true
   }
 };
 
@@ -48,10 +49,9 @@ const invalidData = {
 
 const userComment = {
   'comment': {
-    'creatorId': 'user3',
     'comment': 'testing comment',
     'metadata': '',
-    'chapterId': 'chapter778'
+    'chapterId': itemID
   }
 };
 
@@ -78,11 +78,11 @@ describe('CHAPTER ROUTE', () => {
       });
   });
   // comments tests
-  it('Should POST a chapter on POST /comments and return a JSON object', done => {
+  it('Should POST a comment on POST /comments and return a JSON object', done => {
     chai
       .request(server)
       .post('/api/v1/comments')
-      .set(tokens.headerAdminUser)
+      .set(tokens.headersSuperAdmin1)
       .set('Content-Type', 'application/json')
       .send(userComment)
       .end((err, res) => {
@@ -187,7 +187,6 @@ describe('CHAPTER ROUTE', () => {
         res.should.be.json;
         res.body.should.be.a('object');
         res.body.should.have.property('errors');
-        res.body.errors[0].should.eql('Bad Request');
         done();
       });
   });
@@ -202,18 +201,18 @@ describe('CHAPTER ROUTE', () => {
         res.status.should.eql(400);
         res.should.be.json;
         res.body.should.be.a('object');
-        res.body.should.have.property('errors');
         res.body.errors.should.eql(['Bad Request']);
         done();
       });
   });
-  it('Should throw an ERROR on GET req using invalid query', done => {
+  it('Should return an empty list on GET req using invalid query', done => {
     chai
       .request(server)
       .get(route + '?slug=a-learning')
       .set(tokens.headersSuperAdmin1)
       .end((err, res) => {
         res.should.have.status(200);
+        res.body.should.have.property('chapter');
         done();
       });
   });
@@ -227,6 +226,21 @@ describe('CHAPTER ROUTE', () => {
         res.status.should.eql(200);
         res.should.be.json;
         res.body.should.have.property('chapter');
+        done();
+      });
+  });
+  it('Should throw an ERROR on PUT when not admin or superadmin for verified', (done) => {
+    chai
+      .request(server)
+      .put(route + itemID)
+      .set('Content-Type', 'application/json')
+      .set(tokens.headerBasicUser2)
+      .send(putData)
+      .end((err, res) => {
+        res.status.should.eql(400);
+        res.should.be.json;
+        res.body.should.be.a('object');
+        res.body.errors.should.eql(['Bad Request']);
         done();
       });
   });

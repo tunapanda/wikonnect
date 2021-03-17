@@ -1,53 +1,35 @@
-{{outlet}}
 <div class=" d-flex row text-center p-4 shadow-sm justify-content-center">
-  <h3><b>Tag Content</b></h3>
+  <h3><b>{{t "messages.create_h5p_chapter"}}</b></h3>
 </div>
 
-<div class=" row d-flex justify-content-center">
-  <div class="p-4 col-sm-6">
+<div class="d-flex flex-column align-items-center">
+  <Toc @page="2"/>
+  {{#if this.me.isAuthenticated}}
 
-    {{#if me.isAuthenticated}}
-
-      <div class="text-center">
-
-
-
-        <div class="bg-primary text-center p-3 text-white mb-4 ">
-          UPLOAD H5P
-        </div>
-
-
-        <Forms::Upload @multiple="false" @accept=".h5p" @filesSelected={{action "uploadPic"}}
-          @disabled={{uploader.uploading}}>
-
-          {{#if uploader.uploading}}
-            Uploading... <span class="loading-spinner"></span> {{uploader.progress}}% <br>
-            <small class="text-muted">You will be redirected once upload is complete</small>
-          {{else}}
-            Upload H5P
-          {{/if}}
-        </Forms::Upload>
-
-
-
-        {{#if signup}}
-
-          <br><br>
-          {{#link-to "teach.thumbnail-upload" chapter.id}}
-            <button type="button" class="btn btn-success">Add Thumbnail</button>
-
-
-          {{/link-to}}
-
-        {{/if}}
+      <div class="text-center pt-4 pb-4 {{if this.editor 'd-none' ''}}">
+        <p class="text-center">Initializing editor</p>
+        <Loader::Circular></Loader::Circular>
       </div>
 
+      <div class="container {{if this.editor '' 'h5p-editor-hidden'}}">
+        <div class="h5p-editor-section pl-lg-5 pb-3">
+          <H5p::Editor @onEditorInit={{this.onEditorInitialized}} @contentId={{this.model.contentId}}>
+          </H5p::Editor>
+        </div>
 
-    {{else}}
+        <div class="action-buttons d-flex justify-content-lg-end pr-lg-5 mr-lg-5">
+          <LinkTo @route="teach.edit" @model={{this.model.id}}
+                  class="btn btn-outline-primary mr-2 d-none">
+            Back
+          </LinkTo>
+          <button type="button" class="btn btn-primary" {{on "click" this.saveH5PContent}} >
+            Continue
+          </button>
+        </div>
+      </div>
+  {{else}}
 
-      <Warning @message="You do not have permission to view this page" />
+    <Warning @message="You do not have permission to view this page"/>
 
-    {{/if}}
-
-  </div>
+  {{/if}}
 </div>

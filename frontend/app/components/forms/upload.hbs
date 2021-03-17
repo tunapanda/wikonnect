@@ -1,2 +1,3 @@
-<button class="btn btn-primary" {{action "select"}} disabled={{disabled}}>{{yield}}</button>
-<input type="file" class="hide" aria-hidden="true" {{action "inputChange" on="change"}} multiple={{multiple}} accept={{accept}}>
+<button type="button" class="btn btn-primary" {{on "click" this.select}} disabled={{@disabled}}>{{yield}}</button>
+<input type="file" class="hide" aria-hidden="true" {{on "change" this.inputChange}}
+       multiple={{@multiple}} accept={{@accept}} {{did-insert this.initFileControl}}>

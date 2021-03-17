@@ -3,14 +3,16 @@
   "version": "0.4.0",
   "description": "Wikonnect community docs",
   "title": "Wikonnect community docs",
-  "url": "https://kkl.wikonnect.org",
-  "sampleUrl": "https://kkl.wikonnect.org",
+  "url": "https://app.wikonnect.org",
+  "sampleUrl": "https://app.wikonnect.org",
   "order": [
     "Authentication",
     "Chapters",
-    "Learning_Path",
-    "Courses",
-    "Modules"
+    "Reactions",
+    "PostAReaction",
+    "GetAReAction",
+    "GetReactions",
+    "DeleteARection"
   ],
   "header": {
     "title": "Getting Started",
@@ -18,6 +20,6 @@
   },
   "footer": {
     "title": "Contributing Guidelines",
-    "filename": "CONTRIBUTING.md"
+    "filename": "../CONTRIBUTING.md"
   }
 }

@@ -1,7 +1,8 @@
-buttons: 
+buttons:
   teach: Fundisha
   learn: Soma
   login: Ingia
+  logout: Toka
   signup: Jisajili
   profile: Profaili
   about: Kuhusu

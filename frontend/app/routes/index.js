@@ -1,18 +1,23 @@
 import Route from '@ember/routing/route';
-import { inject, inject as service } from '@ember/service';
-import { set } from '@ember/object';
+import { inject as service } from '@ember/service';
 
 export default class IndexRoute extends Route {
+  @service me;
+  @service config;
+  @service headData;
+  @service infinity;
+  @service notify;
 
-    @inject
-    me;
+  async afterModel() {
+    this.headData.title = 'Wikonnect - Chapters';
+    this.headData.theme = '#FF5722';
+  }
 
-    @service
-    headData;
-
-    async afterModel() {
-      set(this, 'headData.title', 'Wikonnect - Home');
-      set(this, 'headData.theme', '#534897');
-    }
-
+  model() {
+    return this.infinity.model('chapter', {
+      approved: true,
+      perPage: 10,
+      startingPage: 0,
+    });
+  }
 }

@@ -1,5 +1,4 @@
 const Router = require('koa-router');
-const log = require('../utils/logger');
 const Activity = require('../models/activity');
 const validateActivity = require('../middleware/validateRoutePostSchema/validateActivity');
 
@@ -54,15 +53,11 @@ router.post('/', validateActivity, async ctx => {
 router.put('/:id', async ctx => {
 
   const activity_record = await Activity.query().findById(ctx.params.id);
-
-  if (!activity_record) {
-    log.error('The user path accessed does not exist');
-    ctx.throw(400, null, { errors: ['Bad Request'] });
-  }
+  ctx.assert(activity_record, 400, null, { errors: ['Bad Request'] });
 
   let activity;
   try {
-    activity = await Activity.query().patchAndFetchById(ctx.params.id, ctx.request.body.activity);
+    activity = await activity_record.$query().patchAndFetchById(ctx.params.id, ctx.request.body.activity);
   } catch (e) {
     if (e.statusCode) {
       ctx.throw(e.statusCode, null, { errors: [e.message] });
@@ -76,7 +71,7 @@ router.delete('/:id', async ctx => {
   const activity = await Activity.query().findById(ctx.params.id);
 
   ctx.assert(activity, 400, 'No ID was found');
-  await Activity.query().delete().where({ id: ctx.params.id });
+  await activity.$query().delete().where({ id: ctx.params.id });
 
 
   ctx.status = 200;

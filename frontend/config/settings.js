@@ -1,8 +1,8 @@
 const settings = {
   moja: false,
-  app_name: 'Keep kenya Learning'
+  app_name: 'Wikonnect',
 };
 
 module.exports = {
-  settings
+  settings,
 };

@@ -21,7 +21,7 @@ const registerUser = {
 };
 
 const loginUserData = {
-  'username': userId,
+  'username': 'user9',
   'email': 'user9@wikonnect.com',
   'password': 'tunapanda',
   'role': 'admin'

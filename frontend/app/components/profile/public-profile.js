@@ -1,21 +1,15 @@
-import Component from '@ember/component';
-import { computed } from '@ember/object';
+import Component from '@glimmer/component';
 
 export default class ProfilePublicProfileComponent extends Component {
-
-  @computed('model.{firstName,lastName}')
   get name() {
-    if (this.model.firstName && this.model.lastName) {
-      return `${this.model.firstName} ${this.model.lastName}`;
-    }
-    else if (this.model.firstName && !this.model.lastName) {
-      return this.model.firstName;
-    }
-    else if (!this.model.firstName && this.model.lastName) {
-      return this.model.lastName;
-    }
-    else {
-      return this.model.username;
+    if (this.args.model.firstName && this.args.model.lastName) {
+      return `${this.args.model.firstName} ${this.args.model.lastName}`;
+    } else if (this.args.model.firstName && !this.args.model.lastName) {
+      return this.args.model.firstName;
+    } else if (!this.args.model.firstName && this.args.model.lastName) {
+      return this.args.model.lastName;
+    } else {
+      return this.args.model.username;
     }
   }
 }

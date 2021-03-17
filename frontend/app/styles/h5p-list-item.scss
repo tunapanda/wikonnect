@@ -1,0 +1,54 @@
+$palette: (
+  primary: #F57010,
+  white: #FFFFFF,
+  gray30: #3F484D,
+  gray45: rgb(94, 108, 115),
+  gray60: #829199,
+  gray75: #B0BABF,
+  gray95: #EBF0F2,
+  black: #000000,
+);
+
+.chapter-thumbnail{
+  min-height: 175px;
+  background-color: lighten(map-get($palette,primary),30%);
+}
+.chapter-metadata {
+  .verified-icon {
+    fill: map-get($palette, primary);
+  }
+
+  .watch-icon, .eye-icon {
+    fill: map-get($palette, gray75);
+  }
+
+  font-size: 12px;
+  font-family: 'Inter', serif;
+  color: map-get($palette, gray75);
+}
+
+.chapter-description {
+  .card-text {
+    display: block;
+    display: -webkit-box;
+    max-width: 100%;
+    height: 38px;
+    margin: 0 auto;
+    font-size: 14px;
+    line-height: 1.3;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
+.chapter-creator {
+  img {
+    width: 30px;
+  }
+
+  font-size: 15px;
+  font-family: 'Inter', serif;
+  color: map-get($palette, gray75);
+}

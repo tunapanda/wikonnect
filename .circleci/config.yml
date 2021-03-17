@@ -17,7 +17,7 @@ with_db: &with_db
   working_directory: ~/ember-circleci
 without_db: &without_db
   docker:
-    - image: circleci/node:10-browsers
+    - image: circleci/node:14-browsers
       environment:
         JOBS: 1
         NODE_ENV: ci
@@ -69,7 +69,7 @@ jobs:
           at: ~/
       - run:
           name: Build Ember
-          command: cd frontend && $(yarn bin)/ember build --prod; cd ../
+          command: cd frontend && $(yarn bin)/ember build; cd ../
       - persist_to_workspace:
           root: ~/
           paths:
@@ -91,6 +91,9 @@ jobs:
           name: migrate db
           command: cd server && $(yarn bin)/knex migrate:latest; cd ../
       - run:
+          name: seed db
+          command: cd server && $(yarn bin)/knex seed:run; cd ../
+      - run:
           name: Test API
           command: yarn --cwd ./server test
       - store_test_results:
@@ -110,7 +113,7 @@ jobs:
           at: ~/
       - run:
           name: Lint Ember hbs
-          command: yarn --cwd ./frontend lint:js
+          command: yarn --cwd ./frontend lint:hbs
   integration_test:
     <<: *with_db
     steps:
@@ -119,6 +122,9 @@ jobs:
       - run:
           name: migrate db
           command: cd server && $(yarn bin)/knex migrate:latest; cd ../
+      - run:
+          name: seed db
+          command: cd server && $(yarn bin)/knex seed:run; cd ../
       - run:
           name: Start API
           command: node server/index.js
@@ -157,29 +163,4 @@ workflows:
       - integration_test:
           requires:
             - build
-      # - aws-code-deploy/deploy:
-      #     # Deployment steps to staging
-      #     requires:
-      #       - integration_test
-      #       - test_server
-      #     filters:
-      #       branches:
-      #         only: kkl_automated
-      #     application-name: aws-codedeploy
-      #     bundle-bucket: wikonnect-codedeploy-deployments
-      #     bundle-key: 'staging-wikonnect-${CIRCLE_SHA1}'
-      #     deployment-group: wikonnect-staging
-      #     service-role-arn: CodeDeployServiceRole
-      # - aws-code-deploy/deploy:
-      #     # Deployment to kkl.wikonnect.org using custom branch
-      #     requires:
-      #       - integration_test
-      #       - test_server
-      #     filters:
-      #       branches:
-      #         only: kkl_automated
-      #     application-name: aws-codedeploy
-      #     bundle-bucket: wikonnect-codedeploy-deployments
-      #     bundle-key: 'kkl-deployment-${CIRCLE_SHA1}'
-      #     deployment-group: staging
-      #     service-role-arn: CodeDeployServiceRole
+

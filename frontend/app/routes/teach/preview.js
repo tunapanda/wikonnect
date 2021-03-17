@@ -1,20 +1,10 @@
 import Route from '@ember/routing/route';
-import { inject } from '@ember/service';
-// import { tracked } from '@glimmer/tracking';
+import { inject as service } from '@ember/service';
 
 export default class TeachPreviewRoute extends Route {
-
-  @inject
-  me
-
-
-
+  @service me;
 
   model(params) {
-
-
     return this.store.findRecord('chapter', params.id);
-
-
   }
 }

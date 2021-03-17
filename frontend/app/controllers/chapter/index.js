@@ -1,43 +1,47 @@
 import Controller from '@ember/controller';
 import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
-import { inject } from '@ember/service';
-
+import { inject as service } from '@ember/service';
 
 export default class ChapterIndexController extends Controller {
+  @service store;
+  @service router;
+  @service me;
+  @service notify;
 
-  @inject notify;
-
-  @inject
-  store;
-
-  @inject
-  router;
-
-  @inject
-  me
-
-
-  @inject
-  notify;
-
-  flaggingModal = false
-  ratingModal = false
-  @tracked enabled = false
+  @tracked enabled = false;
   @tracked rates = 0;
+  @tracked copied = false;
+  @tracked flaggingModal = false;
+  @tracked ratingModal = false;
+  @tracked score;
+
+  queryParams = ['callbackUrl', 'ref'];
+
+  get embedCode() {
+    let baseURL = window.location.host;
+    if (this.callbackUrl) {
+      return (
+        `<iframe width="600" height="450"  src="http://${baseURL}/embed/${this.model.id}?` +
+        `callbackUrl=${this.callbackUrl}" frameBorder="0" scrolling="no"></iframe>`
+      );
+    } else {
+      return (
+        `<iframe width="600" height="450" src="http://${baseURL}/embed/${this.model.id}" ` +
+        'frameBorder="0" scrolling="no"></iframe>'
+      );
+    }
+  }
 
   @action
   async ratingSubmit(val) {
     if (!this.enabled) {
       let slug = await this.target.currentRoute.params.chapter_slug;
-      let chap = await this.store.findRecord('chapter', slug);
-
-      console.log('slug ' + slug);
-      console.log('ssuser : ' + this.me.user.id);
+      let chap = this.store.peekRecord('chapter', slug);
 
       let rating = await this.store.createRecord('rating', {
         rating: val,
-        user: this.me.get('user'),
+        user: this.me.user,
         chapter: chap,
       });
       await rating.save();
@@ -45,138 +49,118 @@ export default class ChapterIndexController extends Controller {
       this.rates = val;
       // this.notify.info('Submitted your ' + val + ' star rating');
       this.notify.info('Submitted your ' + val + ' star rating ' + val);
-      this.toggleProperty('ratingModal');
-
+      this.ratingModal = !this.ratingModal;
 
       this.enabled = true;
     }
   }
 
+  @action
+  onSuccess() {
+    this.copied = true;
+  }
 
   @action
-  reportSubmit() {
-
-  }
+  reportSubmit() {}
 
   @action
   toggleFlaggingModal() {
-    this.toggleProperty('flaggingModal');
+    this.flaggingModal = !this.flaggingModal;
   }
-
 
   @action
   toggleRatingModal() {
-    this.toggleProperty('ratingModal');
+    this.ratingModal = !this.ratingModal;
   }
+
   get flagModel() {
     return this.store.createRecord('flag', {
-      creator: this.me.get('user')
+      creator: this.me.get('user'),
     });
   }
 
   @action
   async saveFlag(model) {
+    let chapterId = this.model.id;
 
-
-    let slug = this.target.currentRoute.params.chapter_slug;
-
-    // console.log(this.params['chapter_slug'])
-    let chap = await this.store.findRecord('chapter', slug);
+    let chap = this.store.peekRecord('chapter', chapterId);
     model.setProperties({
       chapter: chap,
     });
-    model.save();
-
+    await model.save();
   }
 
   @action
-  deleteChapter(chapter_id) {
+  async deleteChapter(chapter_id) {
     let chapter = this.store.peekRecord('chapter', chapter_id);
-    chapter.destroyRecord();
+    await chapter.destroyRecord();
     this.router.transitionTo('manage');
-
   }
 
-
   @action
-  toggleApproval(chapter_id, a) {
-    if (a == 'true') {
-      this.store.findRecord('chapter', chapter_id).then(function (chap) {
-        // ...after the record has loaded
-
-        chap.set('approved', false);
-        chap.set('contentType', 'false');
-        chap.save();
-      });
-    } else {
-      this.store.findRecord('chapter', chapter_id).then(function (chap) {
-        // ...after the record has loaded
-        chap.set('approved', true);
-        chap.set('contentType', 'false');
-
-        chap.save();
-
-      });
-
+  async toggleApproval(chapterId, choice) {
+    try {
+      let chapter = this.store.peekRecord('chapter', chapterId);
+      chapter.approved = choice;
+      await chapter.save();
+      this.notify.alert('Chapter approval status updated successfully');
+    } catch (e) {
+      this.notify.alert('Could not update chapter approval status');
     }
   }
 
   @action
-  async dataLoad(el) {
-    let chapter_id = await this.target.currentRoute.params.chapter_slug;
-    console.log(chapter_id);
-    let score;
-    window.H5P.externalDispatcher.on('xAPI', function (event) {
+  async dataLoad() {
+    let chapterId = this.model.id;
+    // eslint-disable-next-line no-undef
+    H5P.externalDispatcher.on('xAPI', async (event) => {
       if (event.getScore() === event.getMaxScore() && event.getMaxScore() > 0) {
-        console.log(event.data.statement.result.duration);
-        score = event.data.statement.result.duration;
+        this.score = event.getMaxScore();
+      }
+
+      if (this.score !== undefined) {
+        if (this.me.isAuthenticated) {
+          let achievement = await this.store.createRecord('achievement', {
+            description: 'completed' + chapterId,
+            targetStatus: 'completed',
+            target: chapterId,
+          });
+          await achievement.save();
+        }
+
+        // if user completes chapters create record
+        let counter = await this.store.createRecord('counter', {
+          counter: 1,
+          chapterId: chapterId,
+          trigger: 'chapterCompletion',
+        });
+        await counter.save();
       }
     });
-    if (score != 'undefined') {
-      let achievement = await this.store.createRecord('achievement', {
-        description: 'completed' + chapter_id,
-        targetStatus: 'completed',
-        target: chapter_id
-      });
-
-      // if user completes chapters create record
-      let counter = await this.store.createRecord('counter', {
-        counter: 1,
-        chapterId: chapter_id,
-        trigger: 'chapterCompletion'
-      });
-
-      await achievement.save();
-      await counter.save();
-    }
-    console.log(el);
   }
 
   @action
-  async counterTimer(el) {
+  async counterTimer() {
+    const sleep = (m) => new Promise((r) => setTimeout(r, m));
     let chapter_id = await this.target.currentRoute.params.chapter_slug;
     // record every page view
-    let counter = await this.store.createRecord('counter', {
+    let pageLanding = await this.store.createRecord('counter', {
       counter: 1,
       chapterId: chapter_id,
-      trigger: 'pageLanding'
+      trigger: 'pageLanding',
     });
-    await counter.save();
+    await pageLanding.save();
 
     // After 10 secs record page view
-    let counterDelay = await this.store.createRecord('counter', {
-      counter: 1,
-      chapterId: chapter_id,
-      trigger: 'timerDelay'
-    });
-    setTimeout(function () {
+    await (async () => {
+      await sleep(6000);
       let data = {
         counter: 1,
-        trigger: 'timerDelay'
+        chapterId: chapter_id,
+        trigger: 'timerDelay',
       };
-      alert(data.counter, data.trigger);
-    }, 100);
-    console.log(el);
-    console.log(counterDelay, counter);
+      let timerDelay = await this.store.createRecord('counter', data);
+      await timerDelay.save();
+    })();
   }
 }

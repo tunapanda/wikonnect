@@ -41,10 +41,56 @@ async function chapterCompletionAward(params) {
   }
 }
 
-router.get('/', async ctx => {
+
+/**
+* @api {get} /api/v1/achievements GET all achievements.
+* @apiName GetAchievements
+* @apiGroup Achievements
+*
+* @apiParam {string} achievement[description] optional achievement description
+* @apiParam {string} achievement[user_id] optional user id
+* @apiParam {string} achievement[target] optional chapter id for the achievement given
+* @apiParam {string} achievement[target_status] optional either completed, started or attempted
+* @apiParam {string} achievement[metadata] optional
+*
+* @apiPermission none
+* @apiSampleRequest off
+*
+
+ *
+ * @apiSuccessExample {json} Success-Response:
+ *     HTTP/1.1 200 OK
+ *     {
+        "achievement": [
+          {
+            "id": "achievements1",
+            "description": "completed chapter 2",
+            "metadata": null,
+            "createdAt": "2017-12-20T16:17:10.000Z",
+            "updatedAt": "2017-12-20T16:17:10.000Z",
+            "userId": "user1",
+            "target": "chapter2",
+            "targetStatus": "completed"
+          },
+          {
+            "id": "achievements2",
+            "description": "completed chapter1",
+            "metadata": null,
+            "createdAt": "2017-12-20T16:17:10.000Z",
+            "updatedAt": "2017-12-20T16:17:10.000Z",
+            "userId": "user1",
+            "target": "chapter1",
+            "targetStatus": "completed"
+          },
+        ]
+      }
+ * @apiError {String} errors Bad Request.
+ */
+
+router.get('/', requireAuth, async ctx => {
   try {
     let achievement = await Achievement.query().where(ctx.query);
-    achievement.imageUrl = 'images/profile-placeholder.gif';
+    achievement.imageUrl = '/uploads/images/profile-placeholder.gif';
     ctx.status = 200;
     ctx.body = { achievement };
   } catch (error) {
@@ -83,7 +129,32 @@ router.get('/date/:startDate/:endDate', requireAuth, async ctx => {
   ctx.body = { achievement: achievement.length };
 });
 
-router.get('/:id', async ctx => {
+/**
+* @api {get} /api/v1/achievements/:id GET an achievement.
+* @apiName GetAnAchievement
+* @apiGroup Achievements
+*
+* @apiPermission none
+*
+
+*
+* @apiSuccessExample {json} Success-Response:
+*     HTTP/1.1 200 OK
+*     {
+*        "achievement": {
+*          "id": "achievements1",
+*          "description": "completed chapter 2",
+*          "metadata": null,
+*          "createdAt": "2017-12-20T16:17:10.000Z",
+*          "updatedAt": "2017-12-20T16:17:10.000Z",
+*          "userId": "user1",
+*          "target": "chapter2",
+*          "targetStatus": "completed"
+*        }
+*      }
+*
+*/
+router.get('/:id', requireAuth, async ctx => {
   const achievement = await Achievement.query().findById(ctx.params.id);
   if (!achievement) {
     ctx.assert(achievement, 404, 'no achievement by that ID');
@@ -92,22 +163,86 @@ router.get('/:id', async ctx => {
   ctx.body = { achievement };
 });
 
+/**
+* @api {post} /api/v1/achievements POST create a achievements.
+* @apiName PostAnAchievement
+* @apiGroup Achievements
+*
+* @apiParam {string} achievement[description] achievement description
+* @apiParam {string} achievement[user_id] user id
+* @apiParam {string} achievement[target] chapter id for the achievement given
+* @apiParam {string} achievement[target_status] either completed, started or attempted
+* @apiParam {string} achievement[metadata] optional
+*
+* @apiPermission none
+* @apiSampleRequest off
+*
+* @apiSuccessExample {json} Success-Response:
+*     HTTP/1.1 201 OK
+*     {
+*        "achievement": {
+*          "id": "string",
+*          "description": "string",
+*          "metadata": "jsonb",
+*          "user_id": "string",
+*          "target": "chapter id",
+*          "target_status": "either completed, started or attempted"
+*        }
+*     }
+*
+* @apiError {String} errors Bad Request.
+*/
+
+
 router.post('/', requireAuth, async ctx => {
   let stateUserRole = ctx.state.user.role == undefined ? ctx.state.user.data.role : ctx.state.user.role;
 
   const newAchievement = ctx.request.body.achievement;
   newAchievement.userId = ctx.state.user.id == undefined ? ctx.state.user.data.id : ctx.state.user.id;
-  const achievement = await Achievement.query().insertAndFetch(newAchievement);
+  let achievement;
 
   if (stateUserRole != 'anonymous') {
+    achievement = await Achievement.query().insertAndFetch(newAchievement);
     chapterCompletionAward(newAchievement);
   }
-
 
   ctx.status = 201;
   ctx.body = { achievement };
 });
-router.put('/:id', async ctx => {
+
+/**
+* @api {put} /api/v1/achievements/:id PUT an achievement.
+* @apiName PutAnAchievement
+* @apiGroup Achievements
+*
+* @apiParam {string} achievement[description] optional achievement description
+* @apiParam {string} achievement[user_id] optional user id
+* @apiParam {string} achievement[target] optional chapter id for the achievement given
+* @apiParam {string} achievement[target_status] optional either completed, started or attempted
+* @apiParam {string} achievement[metadata] optional
+*
+* @apiPermission none
+* @apiSampleRequest off
+*
+* @apiSuccessExample {json} Success-Response:
+*     HTTP/1.1 201 OK
+*     {
+*        "achievement": {
+*          "id": "string",
+*          "description": "string",
+*          "metadata": "jsonb",
+*          "user_id": "string",
+*          "target": "chapter id",
+*          "target_status": "either completed, started or attempted",
+*          "createdAt": "2020-11-25T12:56:52.895Z",
+ *         "updatedAt": "2020-11-25T12:56:52.895Z"
+*        }
+*     }
+*
+* @apiError {String} errors Bad Request.
+*/
+
+router.put('/:id', requireAuth, async ctx => {
   let putAchievement = ctx.request.body.achievement;
   const achievement_record = await Achievement.query().findById(ctx.params.id);
 
@@ -119,7 +254,33 @@ router.put('/:id', async ctx => {
   ctx.status = 201;
   ctx.body = { achievement };
 });
-router.delete('/:id', async ctx => {
+
+/**
+* @api {delete} /api/v1/achievements/:id DELETE an achievement.
+* @apiName DeleteAnAchievement
+* @apiGroup Achievements
+*
+* @apiPermission none
+* @apiSampleRequest off
+*
+* @apiSuccessExample {json} Success-Response:
+*     HTTP/1.1 201 OK
+*     {
+*        "achievement": {
+*          "id": "string",
+*          "description": "string",
+*          "metadata": "jsonb",
+*          "user_id": "string",
+*          "target": "chapter id",
+*          "target_status": "either completed, started or attempted",
+*          "createdAt": "2020-11-25T12:56:52.895Z",
+ *         "updatedAt": "2020-11-25T12:56:52.895Z"
+*        }
+*     }
+*
+* @apiError {String} errors Bad Request.
+*/
+router.delete('/:id', requireAuth, async ctx => {
   const achievement = await Achievement.query().findById(ctx.params.id);
 
   if (!achievement) {

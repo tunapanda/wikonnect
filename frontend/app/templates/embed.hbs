@@ -1,0 +1,40 @@
+<div {{did-insert (fn this.dataLoad)}}></div>
+{{this.model.name}}
+<br>
+{{#if this.callbackUrl}}
+  <span class="badge badge-primary">Progress updates sent to: {{this.callbackUrl}}</span>
+
+{{/if}}
+
+{{#if this.model.contentUri}}
+  <H5p @location={{this.model.contentUri}} />
+{{else}}
+  <H5p::Player @contentId={{this.model.contentId}}>
+  </H5p::Player>
+{{/if}}
+{{#if this.me.isAuthenticated}}
+  Logged in as : {{this.me.user.username}}
+  <a name="" {{on "click" this.logout}} id="" class="btn btn-primary" href="#" role="button">Logout</a>
+
+{{else}}
+  <a name="" {{on "click" (fn this.openLoginModal true)}} id="" class="btn btn-primary" href="#" role="button">
+    Login
+  </a>
+  <a name="" {{on "click" (fn this.openSignUpModal true)}} id="" class="btn btn-primary" href="#" role="button">
+    Signup
+  </a>
+{{/if}}
+
+
+<BsModalSimple @open={{this.showLoginModal}} @title="Login" @size="sm" @onHidden={{fn this.openLoginModal false}}>
+  <Authentication::Login @registeredUser={{changeset @model this.LoginValidations}}
+                         @authenticationSuccessful={{this.login}} />
+</BsModalSimple>
+
+
+<BsModalSimple @open={{this.showRegistrationModal}} @title="Login" @size="sm"
+               @onHidden={{fn this.openSignUpModal false}}>
+
+  <Authentication::Signup @newUser={{changeset @model this.UserValidation}} @inviteCode={{this.invite_code}}
+                          @success={{this.signup }} />
+</BsModalSimple>

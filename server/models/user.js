@@ -20,6 +20,14 @@ class User extends Model {
     return ['hash', 'lastIp'];
   }
 
+  $beforeInsert() {
+    this.lastSeen = new Date().toISOString();
+  }
+
+  $afterFind() {
+    this.lastSeen = new Date().toISOString();
+  }
+
   async $indexForSearch() {
     return null;
   }
@@ -47,6 +55,14 @@ class User extends Model {
           to: 'achievement_awards.userId'
         }
       },
+      oauth2: {
+        relation: Model.HasManyRelation,
+        modelClass: __dirname + '/oauth2',
+        join: {
+          from: 'users.id',
+          to: 'oauth2.userId'
+        }
+      },
       userRoles: {
         relation: Model.ManyToManyRelation,
         modelClass: __dirname + '/group',
@@ -66,6 +82,9 @@ class User extends Model {
     return {
       selectNameAndId: (builder) => {
         builder.select('users.id', 'name');
+      },
+      selectNameAndProfile: (builder) => {
+        builder.select('username', 'profileUri');
       }
     };
   }

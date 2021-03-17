@@ -9,3 +9,8 @@ cypress/videos
 cypress/screenshots
 TODO
 .vscode
+dump.rdb
+.idea
+yarn-error.log
+*.envrc
+.env

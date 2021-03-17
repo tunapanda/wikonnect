@@ -1,7 +1,13 @@
-{{!-- <HeadLayout /> --}}
-<MainHeader @style={{headerStyle}} @logout={{action "logout"}} />
-<div class="container-fluid m-0 p-0 ">
+{{#if (not-eq this.route "embed")}}
+  <HeadLayout/>
+  <MainHeader @style={{this.headerStyle}} @logout={{this.logout}} />
+  <div class="container-fluid m-0 p-0 ">
+    {{outlet}}
+  </div>
+  <EmberNotify @closeAfter={{4000}} />
+  <AuthPrompt />
+{{else}}
+
   {{outlet}}
-</div>
-<EmberNotify @closeAfter={{4000}} />
-<AuthPrompt />
+
+{{/if}}

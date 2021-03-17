@@ -1,17 +1,13 @@
-import RESTAdapter from 'ember-data/adapters/rest';
-import TokenAuthorizerMixin from 'ember-simple-auth-token/mixins/token-authorizer';
+import RESTAdapter from '@ember-data/adapter/rest';
+import { inject as service } from '@ember/service';
 
-export default class ApplicationEmberObject extends RESTAdapter.extend(TokenAuthorizerMixin) {
-  namespace = 'api/v1'
+export default class ApplicationAdapter extends RESTAdapter {
+  @service session;
 
-  ajaxOptions(...args) {
-    const hash = super.ajaxOptions(...args);
-
-    let token = this.get('session.data.authenticated.token');
-
-    hash.headers['Authorization'] = `Bearer ${token}`;
-    hash.headers['mojaHeader'] = window.localStorage.getItem('moja_campaign');
-
-    return hash;
-  }
+  namespace = 'api/v1';
+  headers = {
+    Authorization: `Bearer ${this.session?.data?.authenticated?.token}`,
+    mojaHeader: window.localStorage.getItem('moja_campaign'),
+    achievement: window.localStorage.getItem('achievement'),
+  };
 }

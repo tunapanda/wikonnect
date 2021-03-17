@@ -1,38 +1,35 @@
 import Controller from '@ember/controller';
-import { inject } from '@ember/service';
+import { inject as service } from '@ember/service';
 import { action } from '@ember/object';
-import Uploader from '../../utils/uploader';
+import { tracked } from '@glimmer/tracking';
 
 export default class TeachH5pUploadController extends Controller {
-  @inject me;
+  @service me;
+  @service notify;
 
-  complete = false;
-
-
+  @tracked editor;
 
   @action
-  async uploadPic(files) {
+  onEditorInitialized(elem) {
+    this.editor = elem;
+  }
 
-    let id = this.get('model').id;
-    console.log(id);
-    const uploader = Uploader.create({
-      file: files[0],
-      filename: files[0].name,
-    });
-
-    this.set('uploader', uploader);
-
-    const host = '/' + this.store.adapterFor('application').urlPrefix();
-
-
-    await uploader.startUpload([host, 'chapters', id, 'upload'].join('/'));
-
-    //upload
-    this.set('complete', true);
-
-    if (this.complete === true) {
-      this.transitionToRoute('teach.preview', id);
+  @action
+  async saveH5PContent() {
+    if (!this.editor) {
+      this.notify.info('You need to create content first to proceed');
+      return;
     }
-
+    try {
+      const res = await this.editor.save();
+      this.model.contentId = res.id;
+      await this.model.save();
+      this.transitionToRoute('teach.thumbnail-upload', this.model.id);
+    } catch (e) {
+      console.log(e);
+      this.notify.alert(
+        'Unexpected error encountered and we could not save the content'
+      );
+    }
   }
 }
