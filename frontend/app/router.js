@@ -9,7 +9,7 @@ export default class Router extends EmberRouter {
 Router.map(function () {
   this.route('signup');
   this.route('login');
-  this.route('home');
+  this.route('about');
 
   this.route('profile');
   this.route('search', { path: '/search/:id' });
@@ -36,4 +36,7 @@ Router.map(function () {
   this.route('tag', { path: '/tag/:id' });
   this.route('embed', { path: '/embed/:chapter_id' });
   this.route('callback');
+
+  // 404 page should always be the last
+  this.route('not-found', { path: '*path' });
 });

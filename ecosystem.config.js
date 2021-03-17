@@ -2,6 +2,8 @@ module.exports = {
   apps: [{
     "name": 'api',
     "script": 'server/index.js',
+    "log_date_format": "YYYY-MM-DD HH:mm Z",
+    "time": true,
     "watch": true,
     "watch": ['frontend'],
     "watch_delay": 10000,

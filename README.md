@@ -204,12 +204,12 @@ Backend set up steps:
 5) Assuming the Postgres server is ready and above [configuration](server/config/db.js) credentials are correct, run the
    latest migrations (defined in `server/migrations`):
     ```
-    knex migrate:latest
+     yarn db:init
     ```
 
 6) **Optionally**, one can populate the database with dummy data (defined in `server/db/seeds`) by running:
     ```
-       knex seed:run
+     yarn db:seed
     ```
 
 7) If the above steps were successful, you can finally start the backend server
