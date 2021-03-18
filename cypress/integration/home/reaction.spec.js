@@ -2,7 +2,7 @@ describe('Homepage Chapter Reactions After Auth', () => {
 
     beforeEach(() => {
         cy.login();
-        cy.visit('/home');
+        cy.visit('/');
     })
 
     it('Should see chapter reactions', () => {
@@ -55,7 +55,7 @@ describe('Homepage Chapter Reactions After Auth', () => {
 
 describe('Homepage Chapter Reactions Without Auth', () => {
     beforeEach(() => {
-        cy.visit('/home')
+        cy.visit('/')
     })
 
     it('Should see chapter reactions', () => {

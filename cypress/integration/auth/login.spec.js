@@ -6,23 +6,6 @@ describe('Login page', () => {
         cy.visit('/login');
     });
 
-    it('should sign in user with correct credentials', () => {
-
-        const {password, username} = user;
-
-        cy.get('.login-form-fields #username input[type="text"]')
-            .type(username)
-            .should('have.value', username);
-
-        cy.get('.login-form-fields #password input[type="password"]')
-            .type(password)
-            .should('have.value', password);
-
-        cy.get('.form button[type="submit"]')
-            .click()
-            .url()
-            .should('include', '/home');
-    })
 
     it('should not sign in user without credentials', () => {
         cy.get('.form button[type="submit"]')
@@ -69,5 +52,22 @@ describe('Login page', () => {
             .should('be.visible');
     });
 
+    it('should sign in user with correct credentials', () => {
+
+        const {password, username} = user;
+
+        cy.get('.login-form-fields #username input[type="text"]')
+            .type(username)
+            .should('have.value', username);
+
+        cy.get('.login-form-fields #password input[type="password"]')
+            .type(password)
+            .should('have.value', password);
+
+        cy.get('.form button[type="submit"]')
+            .click()
+            .url()
+            .should('include', '/');
+    })
 
 })

@@ -6,56 +6,97 @@ on:
       - master
 
 jobs:
-  buildAndTest:
-    name: CI Pipeline
+  Build:
+    name: Build Wikonnect
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: ['14.x']
 
     steps:
       - uses: actions/checkout@v2
 
-      # cache node_modules in our monorepo project instead of caching the yarn cache
-      - uses: actions/cache@v2
-        with:
-          path: '**/node_modules'
-          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
-
       # Initialize Node.js
-      - name: Install Node.js ${{ matrix.node-version }}
+      - name: Install Node.js 14.x
         uses: actions/setup-node@v1
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: '14.x'
 
-      # Wikonnect root install dependencies
-      - name: Wikonnect root install dependencies
-        run: yarn --frozen-lockfile
+      # Yarn cache dir
+      - name: Get yarn cache directory path
+        id: yarn-cache-dir-path
+        run: echo "::set-output name=dir::$(yarn cache dir)"
 
-      # Frontend install dependencies
-      - name: Frontend install dependencies
-        run: yarn --frozen-lockfile --cwd ./frontend
+      - uses: actions/cache@v2
+        id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
+        with:
+          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
 
-      # Backend install dependencies
-      - name: Frontend install dependencies
-        run: yarn --frozen-lockfile --cwd ./server
+      # Install project dependencies, test and build
+      - name: Install Wikonnect dependencies
+        run: yarn  --frozen-lockfile
 
-      # Frontend run build
-      - name: Frontend run build
-        run: yarn --cwd ./frontend build --prod
+      # Install project dependencies, test and build
+      - name: Install frontend dependencies
+        run: yarn  --frozen-lockfile --cwd ./frontend
 
-      # Frontend lint Ember JS
-      - name: Frontend lint Ember JS
-        run: yarn --cwd ./frontend lint:js
+      - name: Run build
+        run: yarn  --frozen-lockfile --cwd ./frontend build --prod
 
-  test:
-    name: Server-side Tests
+      # Install project dependencies, test and build
+      - name: Install backend dependencies
+        run: yarn  --frozen-lockfile --cwd ./server
+
+  FrontendTest:
+    name: Test Wikonnect Frontend
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: ['14.x']
+    needs: Build
+    steps:
+      - uses: actions/checkout@v2
 
-    # Service containers to run with `container-job`
+      # Initialize Node.js
+      - name: Install Node.js 14.x
+        uses: actions/setup-node@v1
+        with:
+          node-version: '14.x'
+
+      # Yarn cache dir
+      - name: Get yarn cache directory path
+        id: yarn-cache-dir-path
+        run: echo "::set-output name=dir::$(yarn cache dir)"
+
+      - uses: actions/cache@v2
+        id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
+        with:
+          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+
+      # Install project dependencies, test and build
+      - name: Install Wikonnect dependencies
+        run: yarn  --frozen-lockfile
+
+      # Install project dependencies, test and build
+      - name: Install frontend dependencies
+        run: yarn  --frozen-lockfile --cwd ./frontend
+      - name: Run build
+        run: yarn  --frozen-lockfile --cwd ./frontend build --prod
+
+      # Install project dependencies, test and build
+      - name: Install backend dependencies
+        run: yarn  --frozen-lockfile --cwd ./server
+
+      # Frontend tests
+      - name: Lint Ember hbs
+        run: yarn --cwd ./frontend lint:hbs
+      - name: Ember Lint:js
+        run: yarn  --cwd ./frontend lint:js
+
+  BackendTest:
+    name: Test Wikonnect Backend
+    runs-on: ubuntu-latest
+    needs: Build
     services:
       # Label used to access the service container
       postgres:
@@ -86,19 +127,48 @@ jobs:
           # Maps port 6379 on service container to the host
           - 6379:6379
 
-    needs: buildAndTest
     steps:
       - uses: actions/checkout@v2
 
-      # Backend install dependencies
-      - name: Backend install dependencies
-        run: yarn --frozen-lockfile --cwd ./server
+      # Initialize Node.js
+      - name: Install Node.js 14.x
+        uses: actions/setup-node@v1
+        with:
+          node-version: '14.x'
+
+      # Yarn cache dir
+      - name: Get yarn cache directory path
+        id: yarn-cache-dir-path
+        run: echo "::set-output name=dir::$(yarn cache dir)"
+
+      - uses: actions/cache@v2
+        id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
+        with:
+          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+
+      # Install project dependencies, test and build
+      - name: Install Wikonnect dependencies
+        run: yarn  --frozen-lockfile
+
+      # Install project dependencies, test and build
+      - name: Install frontend dependencies
+        run: yarn  --frozen-lockfile --cwd ./frontend
+      - name: Run build
+        run: yarn  --frozen-lockfile --cwd ./frontend build --prod
+
+      # Install project dependencies, test and build
+      - name: Install backend dependencies
+        run: yarn  --frozen-lockfile --cwd ./server
 
       # Backend migrate database nad seed
       - name: Backend database set-up
-        run: cd server;$(yarn bin)/knex migrate:latest; $(yarn bin)/knex seed:run; cd ../
+        run: yarn --cwd ./server db:init; yarn --cwd ./server db:seed
         env:
           POSTGRES_HOST: localhost
+          SEEDS: 25
           POSTGRES_PORT: 5432
           NODE_ENV: action
 
@@ -111,19 +181,113 @@ jobs:
           # The default Redis port
           REDIS_PORT: 6379
 
+  IntegrationTest:
+    name: Integration Test
+    runs-on: ubuntu-latest
+    services:
+      # Label used to access the service container
+      postgres:
+        # Docker Hub image
+        image: postgres
+        # Provide the password for postgres
+        env:
+          POSTGRES_PASSWORD: postgres
+        # Set health checks to wait until postgres has started
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          # Maps tcp port 5432 on service container to the host
+          - 5432:5432
+      redis:
+        # Docker Hub image
+        image: redis
+        # Set health checks to wait until redis has started
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          # Maps port 6379 on service container to the host
+          - 6379:6379
+    needs: FrontendTest
+    steps:
+      - uses: actions/checkout@v2
+
+      # Initialize Node.js
+      - name: Install Node.js 14.x
+        uses: actions/setup-node@v1
+        with:
+          node-version: '14.x'
+
+      # Install YARN dependencies, cache them correctly
+      - name: Get yarn cache directory path
+        id: yarn-cache-dir-path
+        run: echo "::set-output name=dir::$(yarn cache dir)"
+
+      - uses: actions/cache@v2
+        id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
+        with:
+          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+
+      # Install project dependencies, test and build
+      - name: Install Wikonnect dependencies
+        run: yarn  --frozen-lockfile
+
+      # Install project dependencies, test and build
+      - name: Install frontend dependencies
+        run: yarn  --frozen-lockfile --cwd ./frontend
+      - name: Run build
+        run: yarn  --frozen-lockfile --cwd ./frontend build --prod
+
+      # Install project dependencies, test and build
+      - name: Install backend dependencies
+        run: yarn  --frozen-lockfile --cwd ./server
+
+      # Backend migrate database nad seed
+      - name: Backend database set-up
+        run: yarn --cwd ./server db:init; yarn --cwd ./server db:seed
+        env:
+          POSTGRES_HOST: localhost
+          POSTGRES_PORT: 5432
+          SEEDS: 25
+          NODE_ENV: action
+
+      # Run all Cypress tests
+      - name: Cypress run
+        uses: cypress-io/github-action@v2
+        env:
+          NODE_ENV: action
+          REDIS_HOST: localhost
+          REDIS_PORT: 6379
+        with:
+          start: yarn --cwd ./server start, yarn --cwd ./frontend start
+          wait-on: "http://localhost:4200"
+
+      - uses: actions/upload-artifact@v1
+        if: failure()
+        with:
+          name: cypress-screenshots
+          path: cypress/screenshots
+
   deploy:
     name: CD Pipeline
     runs-on: ubuntu-latest
     strategy:
       matrix:
         python-version: [3.8]
-        node-version: ['12.x']
         appname: ['aws-codedeploy']
         deploy-group: ['wikonnect-production']
         s3-bucket: ['wikonnect-codedeploy-deployments']
         s3-filename: ['master-wikonnect-codedeploy-${{ github.sha }}']
 
-    needs: test
+    needs: ['IntegrationTest', 'BackendTest']
     steps:
       - uses: actions/checkout@v2
 
@@ -134,10 +298,10 @@ jobs:
           key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
 
       # Initialize Node.js
-      - name: Install Node.js ${{ matrix.node-version }}
+      - name: Install Node.js 14.x
         uses: actions/setup-node@v1
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: '14.x'
 
       # Wikonnect root install dependencies
       - name: Wikonnect root install dependencies

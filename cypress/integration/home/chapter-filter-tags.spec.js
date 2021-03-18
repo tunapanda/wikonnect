@@ -3,7 +3,7 @@ import chapters from '../../fixtures/chapters.json';
 describe("Chapters filter tags ", () => {
 
     beforeEach(() => {
-        cy.visit('/home');
+        cy.visit('/');
     })
 
     function getFilterButton() {

@@ -34,6 +34,6 @@ export default class ApplicationController extends Controller {
   logout() {
     this.me.logout();
     document.location.reload();
-    this.router.transitionTo('home');
+    this.router.transitionTo('index');
   }
 }
