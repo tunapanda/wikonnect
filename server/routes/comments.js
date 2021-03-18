@@ -54,13 +54,11 @@ router.get('/', requireAuth, async ctx => {
 
   try {
     const comment = await Comment.query()
-      .where(ctx.query)
-      .allowGraph('[replies]')
-      .withGraphFetched('replies');
+      .where(ctx.query);
 
     ctx.assert(comment, 401, 'Something went wrong');
     ctx.status = 201;
-    ctx.body = {comment};
+    ctx.body = { comment };
   } catch (e) {
     if (e.statusCode) {
       ctx.throw(e.statusCode, null, { errors: [e] });
@@ -122,9 +120,7 @@ router.get('/:id', requireAuth, async ctx => {
   try {
     comment = await Comment.query()
       .where({ id: ctx.params.id })
-      .andWhere(ctx.query)
-      .allowGraph('[replies]')
-      .withGraphFetched('replies');
+      .andWhere(ctx.query);
   } catch (e) {
     if (e.statusCode) {
       ctx.throw(e.statusCode, null, { errors: [e] });
@@ -143,7 +139,6 @@ router.get('/:id', requireAuth, async ctx => {
  * @apiName PostAChapterComment
  * @apiGroup ChapterComments
  * @apiPermission authenticated user
- * @apiDescription If posting a reply, add <code>"parent": [{"id": "Iw7mxw0AAiY"}]</code> to the comment object you are post
  * @apiSuccessExample {json} Success-Response:
  *     HTTP/1.1 201 OK
  *     {
@@ -165,17 +160,17 @@ router.post('/', requireAuth, async ctx => {
 
   const checked = await profaneCheck(newChapterComment.comment);
 
-  if (typeof checked != 'undefined' && checked){
+  if (typeof checked != 'undefined' && checked) {
     ctx.throw(400, null, { errors: [checked] });
   }
 
   let comment;
   try {
-    comment = await Comment.query().insertGraphAndFetch([newChapterComment], { relate: true });
+    comment = await Comment.query().insertAndFetch(newChapterComment);
   } catch (e) {
     if (e.statusCode) {
       ctx.throw(e.statusCode, null, { errors: [e.data] });
-    } else { ctx.throw(400, null, { errors: [e.nativeError.detail] }); }
+    } else { ctx.throw(400, null, { errors: [e.nativeError] }); }
     throw e;
   }
   ctx.assert(comment, 401, 'Something went wrong');
