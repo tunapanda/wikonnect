@@ -1,7 +1,11 @@
 import Route from '@ember/routing/route';
 import { queryParam } from 'ember-query-params-service';
+import { inject as service } from '@ember/service';
 
 export default class SearchRoute extends Route {
+  @service router;
+  @service SeoTags;
+
   @queryParam q;
   async model(params) {
     let filtered = [];
@@ -21,5 +25,12 @@ export default class SearchRoute extends Route {
     });
 
     return await filtered;
+  }
+
+  afterModel() {
+    this.headTags = this.SeoTags.build(
+      `You searched for ${this.paramsFor('search')} - Wikonnect`,
+      '/search'
+    );
   }
 }
