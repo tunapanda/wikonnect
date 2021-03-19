@@ -1,17 +1,16 @@
 <div class="reply-actions d-flex justify-content-between mb-2">
   <div>
+    {{!-- {{log this.numOfReplies}} --}}
     {{!-- pluralize helper from ember-inflector package --}}
     <span class="mr-2">{{pluralize this.numOfReplies "reply"}}</span>
-    {{#if @parent.replies }}
-      {{#if this.shouldRepliesShow}}
+    {{#if this.replies}}
         <button type="button" {{on "click" this.toggleReplies}}>
+      {{#if this.shouldRepliesShow}}
           Hide Replies {{svg-jar "expand_less_black_24dp"}}
-        </button>
       {{else}}
-      <button type="button" {{on "click" this.toggleReplies}}>
         Show Replies {{svg-jar "expand_more_black_24dp"}}
-      </button>
       {{/if}}
+        </button>
     {{/if}}
   </div>
   <div>
@@ -41,8 +40,8 @@
 {{/if}}
 
 {{#if this.shouldRepliesShow}}
-  {{#if @parent.replies }}
-    {{#each @parent.replies as |reply|}}
+  {{#if this.replies }}
+    {{#each this.replies as |reply|}}
       <div class="media mt-4">
         <div class="replies">
           <p class="mt-2"><strong>{{reply.creator.username}}</strong></p>

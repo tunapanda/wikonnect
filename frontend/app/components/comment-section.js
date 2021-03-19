@@ -18,7 +18,7 @@ export default class CommentSectionComponent extends Component {
     });
   }
 
-  get numOfComments() {
+  get commentsTotal() {
     return this.args.chapterComments.length;
   }
 

@@ -17,13 +17,29 @@ export default class ReplySectionComponent extends Component {
       creator: this.me.user,
       chapter: this.args.selectedChapter,
       comment: this.reply,
-      parent: [{ id: this.args.parent.id }],
+      parentId: this.args.comment.id,
     });
   }
 
   get numOfReplies() {
-    return this.args.parent.replies.length;
+    return this.replies.length;
   }
+
+  get replies() {
+    return this.args.chapterReplies.filter(
+      (reply) => reply.parentId === this.args.comment.id
+    );
+  }
+
+  // @action
+  // async getReplies() {
+  //   const replies = await this.store.query('comment', { 
+  //     chapterId: this.args.selectedChapter.id, 
+  //     parentId: this.args.parent.id 
+  //   });
+  //   console.log(replies);
+  //   // return this.args.parent.replies.length;
+  // }
 
   @action
   toggleReplies() {
@@ -44,9 +60,10 @@ export default class ReplySectionComponent extends Component {
         this.reply = '';
         this.notify.success('Comment added successfully', { closeAfter: 6000 });
       })
-      .catch(() => {
+      .catch((err) => {
+        console.log(err);
         this.reply = model.comment;
-        model.deleteRecord();
+        // model.deleteRecord();
         this.notify.alert('Be mindful of your comments', { closeAfter: 6000 });
       });
   }

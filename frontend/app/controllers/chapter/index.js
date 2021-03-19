@@ -18,6 +18,22 @@ export default class ChapterIndexController extends Controller {
 
   queryParams = ['callbackUrl', 'ref'];
 
+  get comments() {
+    return this.store
+      .peekAll('comment')
+      .filter((comment) => comment.parentId === 'false');
+  }
+
+  get replies() {
+    console.log(this.store
+      .peekAll('comment')
+      .filter((comment) => comment.parentId !== 'false'));
+      
+    return this.store
+      .peekAll('comment')
+      .filter((comment) => comment.parentId !== 'false');
+  }
+
   get embedCode() {
     let baseURL = window.location.host;
     if (this.callbackUrl) {

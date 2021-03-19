@@ -2,7 +2,7 @@
 exports.up = knex => {
   return knex.schema
     .table('comments', table => {
-      table.text('parent_id');
+      table.text('parent_id').defaultTo(false);
     })
     .dropTableIfExists('parent_child_comments');
 };

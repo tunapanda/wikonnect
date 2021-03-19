@@ -201,6 +201,7 @@ router.put('/:id', requireAuth, grantAccess('updateOwn', 'path'), async ctx => {
   try {
     comment = await Comment.query().patchAndFetchById(ctx.params.id, commentData);
   } catch (e) {
+    console.log(e);
     if (e.statusCode) {
       ctx.throw(e.statusCode, null, { errors: [e.message] });
     } else { ctx.throw(400, null, { errors: ['Bad Request'] }); }

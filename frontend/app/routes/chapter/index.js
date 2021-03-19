@@ -8,9 +8,9 @@ export default class ChapterIndexRoute extends Route {
     return this.store.findRecord('chapter', params.chapter_slug);
   }
 
-  afterModel(model) {
+  async afterModel(model) {
     return {
-      comments: this.store.query('comment', { chapterId: model.id }),
+      comments: await this.store.query('comment', { chapterId: model.id }),
     };
   }
 }

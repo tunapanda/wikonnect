@@ -3,7 +3,7 @@
   <div {{did-insert (fn this.counterTimer)}}></div>
 
   <div class="breadcrumbs d-flex align-items-center">
-    <LinkTo @route="home">
+    <LinkTo @route="index">
       {{svg-jar "home_black_24dp"}}
     </LinkTo>
     <p class="m0">Chapters / <span class="chapter-name">{{this.model.name}}</span></p>
@@ -90,7 +90,7 @@
         </div>
         <hr>
 
-        <CommentSection @selectedChapter={{this.model.id}} @chapterComments={{this.model.comments}} />
+        <CommentSection @selectedChapter={{this.model.id}} @chapterComments={{this.comments}} @chapterReplies={{this.replies}}/>
 
       </div>
     </div>
