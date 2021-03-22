@@ -1,7 +1,8 @@
 describe("Chapter Reaction Without Auth", () => {
   beforeEach(() => {
-    cy.visit('/')
-    cy.get(':nth-child(5) > .card > .card-body > .card-title a').click()
+    cy.visit("/");
+    cy.get(':nth-child(1) > .card > .card-body > .card-title a').click()
+    cy.wait(1000);
   });
 
   it("Should see chapter reactions", () => {

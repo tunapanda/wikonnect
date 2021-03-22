@@ -15,39 +15,22 @@ describe('Homepage Chapter Reactions After Auth', () => {
 
 
     it('Should not like a chapter', () => {
-
-        cy.chapters().then((item) => {
-
-            item.filter(function (item) {
-                if (item.authenticatedUser === null) {
-                    cy.get(`:nth-child(1) > .card a[href="/chapter/${item.id}"]:first`)
-                        .siblings()
-                        .find('.reactions')
-                        .find('.like-button')
-                        .click()
-                        .find('.count')
-                        .contains(0);
-                    return false;
-                }
-            })
+        cy.get(
+          ":nth-child(1) > .card > .card-body > .actions-section > :nth-child(1) > .reactions > .like-button"
+        ).then(($like) => {
+          const count = $like.find(".count").text();
+          $like.click();
+          expect($like.find(".count").text()).to.equal(count);
         });
     });
 
     it('Should not dislike a chapter', () => {
-
-        cy.chapters().then((item) => {
-            item.filter(function (item) {
-                if (item.authenticatedUser === null) {
-                    cy.get(`:nth-child(1) > .card a[href="/chapter/${item.id}"]:first`)
-                        .siblings()
-                        .find('.reactions')
-                        .find('.dislike-button')
-                        .click()
-                        .find('.count')
-                        .contains(0);
-                    return false;
-                }
-            })
+        cy.get(
+          ":nth-child(1) > .card > .card-body > .actions-section > :nth-child(1) > .reactions > .dislike-button"
+        ).then(($dislike) => {
+          const count = $dislike.find(".count").text();
+          $dislike.click();
+          expect($dislike.find(".count").text()).to.equal(count);
         });
     });
 

@@ -1,11 +1,13 @@
-<button type="button" class="reaction-btn {{if this.hasLiked "active" ""}} like-button"
-  {{on "click" (fn this.userChapterReaction this.chapter true)}}>
-  {{svg-jar "thumb-up" width="24" height="24"}}
-  <span class="count"> {{this.likes}} </span>
-</button>
+<div class="reactions">
+  <button type="button" class="reaction-btn {{if this.hasLiked "active" ""}} like-button"
+    {{on "click" (fn this.userChapterReaction this.chapter true)}}>
+    {{svg-jar "thumb-up" width="24" height="24"}}
+    <span class="count"> {{this.likes}} </span>
+  </button>
 
-<button type="button" class="reaction-btn {{if this.hasDisliked "active" ""}} dislike-button"
-  {{on "click" (fn this.userChapterReaction this.chapter false)}}>
-  {{svg-jar "thumb-down" width="24" height="24" role="img"}}
-  <span class="count"> {{this.dislikes}}</span>
-</button>
+  <button type="button" class="reaction-btn {{if this.hasDisliked "active" ""}} dislike-button"
+    {{on "click" (fn this.userChapterReaction this.chapter false)}}>
+    {{svg-jar "thumb-down" width="24" height="24" role="img"}}
+    <span class="count"> {{this.dislikes}}</span>
+  </button>
+</div>

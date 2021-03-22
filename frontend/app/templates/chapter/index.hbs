@@ -6,7 +6,7 @@
     <LinkTo @route="index">
       {{svg-jar "home_black_24dp"}}
     </LinkTo>
-    <p class="m0">Chapters / <span class="chapter-name">{{this.model.name}}</span></p>
+    <p class="m0"><LinkTo @route="index">Chapters</LinkTo> / <span class="chapter-name">{{this.model.name}}</span></p>
   </div>
   <hr>
   {{#if this.model.contentUri}}

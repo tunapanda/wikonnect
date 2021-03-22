@@ -8,18 +8,10 @@ export default class ReplySectionComponent extends Component {
   @service session;
   @service store;
   @service notify;
+
   @tracked reply;
   @tracked shouldRepliesShow = false;
   @tracked shouldFormShow = false;
-
-  get replyModel() {
-    return this.store.createRecord('comment', {
-      creator: this.me.user,
-      chapter: this.args.selectedChapter,
-      comment: this.reply,
-      parentId: this.args.comment.id,
-    });
-  }
 
   get numOfReplies() {
     return this.replies.length;
@@ -31,16 +23,6 @@ export default class ReplySectionComponent extends Component {
     );
   }
 
-  // @action
-  // async getReplies() {
-  //   const replies = await this.store.query('comment', { 
-  //     chapterId: this.args.selectedChapter.id, 
-  //     parentId: this.args.parent.id 
-  //   });
-  //   console.log(replies);
-  //   // return this.args.parent.replies.length;
-  // }
-
   @action
   toggleReplies() {
     this.shouldRepliesShow = !this.shouldRepliesShow;
@@ -49,10 +31,21 @@ export default class ReplySectionComponent extends Component {
   @action
   toggleForm() {
     this.shouldFormShow = !this.shouldFormShow;
+    if (this.shouldFormShow) {
+      this.shouldRepliesShow = true;
+    }
   }
 
   @action
-  saveReply(model) {
+  saveReply(e) {
+    e.preventDefault();
+
+    const model = this.store.createRecord('comment', {
+      creator: this.me.user,
+      comment: this.reply,
+      parentId: this.args.comment.id,
+    });
+
     model.chapter = this.store.peekRecord('chapter', this.args.selectedChapter);
     model
       .save()

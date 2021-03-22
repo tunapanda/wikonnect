@@ -10,17 +10,11 @@
       {{/if}}
       <small>You are commenting publicly as {{this.me.name}}</small>
     </div>
-    <BsForm @model={{this.commentModel}} @onSubmit={{this.saveComment}} as |form|>
-      <form.element @controlType="textarea" @label="Comment" @placeholder="Add a comment" @property="comment"/>
-      {{#each this.commentModel.errors as |err| }}
-        {{#if (eq err.key "comment")}}
-          <BsAlert @type="danger" @fade={{true}}>
-            {{err.message}}
-          </BsAlert>
-        {{/if}}
-      {{/each}}
-      <BsButton @type="primary" @defaultText="Comment" @buttonType="submit"/>
-    </BsForm>
+    <form {{on "submit" this.saveComment}} class="my-3">
+      <label for="comment-area">Comment</label>
+      <Textarea @id="comment-area" @value={{this.comment}} @class="form-control" @placeholder="Add a comment"/>
+      <button type="submit" class="btn btn-primary my-1">Comment</button>
+    </form>
   {{/if}}
 </div>
 

@@ -8,15 +8,8 @@ export default class CommentSectionComponent extends Component {
   @service session;
   @service store;
   @service notify;
-  @tracked comment;
 
-  get commentModel() {
-    return this.store.createRecord('comment', {
-      creator: this.me.user,
-      chapter: this.args.selectedChapter,
-      comment: this.comment,
-    });
-  }
+  @tracked comment;
 
   get commentsTotal() {
     return this.args.chapterComments.length;
@@ -27,8 +20,15 @@ export default class CommentSectionComponent extends Component {
   }
 
   @action
-  saveComment(model) {
-    model.chapter = this.store.peekRecord('chapter', this.args.selectedChapter);
+  saveComment(e) {
+    e.preventDefault();
+    const model = this.store.createRecord('comment', {
+      creator: this.me.user,
+      chapter: this.store.peekRecord('chapter', this.args.selectedChapter),
+      comment: this.comment,
+    });
+
+    // model.chapter = this.store.peekRecord('chapter', this.args.selectedChapter);
     model
       .save()
       .then(() => {
