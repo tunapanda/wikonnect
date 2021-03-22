@@ -13,4 +13,15 @@ export default class SignupRoute extends Route {
   model() {
     return this.store.createRecord('user');
   }
+
+  afterModel(resolvedModel, transition) {
+    this.headTags = [
+      {
+        type: 'title',
+        tagId: 'title',
+        content: 'Sign Up - Wikonnect',
+      },
+    ];
+    return super.afterModel(resolvedModel, transition);
+  }
 }
