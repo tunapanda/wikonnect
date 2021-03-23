@@ -63,8 +63,7 @@ describe('Chapter comments when authenticated', () => {
 
     it('should display comments', () => {
         cy.get('div#comments-section')
-            .should('exist')
-            .should('be.visible');
+            .should('exist');
     });
 
 })
@@ -85,7 +84,7 @@ describe('Chapter comments without authentication', () => {
 
     it('should display available comments', () => {
         cy.get('#chapter .media-body')
-            .should('be.visible')
+            .should('exist')
     });
 
 });
