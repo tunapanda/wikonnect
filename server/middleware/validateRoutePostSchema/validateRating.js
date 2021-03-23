@@ -1,12 +1,3 @@
-/**
- *
- * @param id
- * @param chapterId
- * @param userId
- * @param rating
- *
- */
-
 const validate = require('validate.js');
 
 async function validateRating(ctx, next) {
@@ -16,17 +7,19 @@ async function validateRating(ctx, next) {
       chapterId: {
         presence: true,
       },
-      userId: {
+      reaction: {
         presence: true,
       },
-      rating: {
+      metadata: {
         presence: true,
       }
     });
   } catch (e) {
     if (e.statusCode) {
-      ctx.throw(e.statusCode, null, { errors: e });
-    } else { ctx.throw(400, null, { errors: e }); }
+      ctx.throw(e.statusCode, null, {errors: e});
+    } else {
+      ctx.throw(400, null, {errors: e});
+    }
     throw e;
   }
   await next();
