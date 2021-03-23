@@ -67,6 +67,8 @@ router.use(jwt.authenticate, require('./routes/achievement_awards'));
 
 router.use(jwt.authenticate, require('./routes/h5p'));
 
+router.use(jwt.authenticate, require('./routes/reviews'));
+
 router.use(require('./routes/search'));
 
 
