@@ -43,7 +43,7 @@ const router = new Router({
  *        "meta": {
  *            "total_pages": 20.2
  *        },
- *        "chapter": [{
+ *        "chapters": [{
  *            "id": "chapter1",
  *            "lessonId": "lesson1",
  *            "name": "A Chapter",
@@ -102,7 +102,8 @@ router.get('/', permController.requireAuth, validateGetChapter, async ctx => {
           .as('views'),
         Rating.query()
           .where('chapterId', ref('chapters.id'))
-          .avg('ratings.rating')
+          .where('isDeleted',false)
+          .avg('ratings.average_rating')
           .as('ratings'),
         Reaction.query()
           .select('reaction')
@@ -132,7 +133,7 @@ router.get('/', permController.requireAuth, validateGetChapter, async ctx => {
     meta: {
       total_pages: chapter.total / per_page
     },
-    chapter: chapter.results,
+    chapters: chapter.results,
   };
 
   ctx.assert(chapter, 404, 'No chapter by that ID');
@@ -209,7 +210,7 @@ router.get('/:id', permController.requireAuth, async ctx => {
           .as('views'),
         Rating.query()
           .where('chapterId', ref('chapters.id'))
-          .avg('ratings.rating')
+          .avg('ratings.average_rating')
           .as('ratings'),
         Reaction.query()
           .select('reaction')
