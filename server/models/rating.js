@@ -1,18 +1,23 @@
 const Model = require('./_model');
-const knex = require('../db/db');
 
 class Rating extends Model {
   static get tableName() {
     return 'ratings';
   }
-  static get modifiers() {
+
+  static  get relationMappings(){
     return {
-      selectRating: (builder) => {
-        builder.select('id', 'rating', 'chapter_id', 'user_id', 'labels', 'comment');
+      review:{
+        relation: Model.BelongsToOneRelation,
+        modelClass:`${__dirname}/review`,
+        join: {
+          to: 'ratings.id',
+          from: 'reviews.ratingId'
+        }
       }
     };
   }
+
 }
 
-Rating.knex(knex);
 module.exports = Rating;
