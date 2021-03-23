@@ -51,7 +51,7 @@ export default class ReplySectionComponent extends Component {
       .save()
       .then(() => {
         this.reply = '';
-        this.notify.success('Comment added successfully', { closeAfter: 6000 });
+        this.notify.success('Reply added successfully', { closeAfter: 6000 });
       })
       .catch((err) => {
         console.log(err);

@@ -1,5 +1,5 @@
-<div class="padded" id="comments-section">
-  <p><strong>{{this.commentsTotal}} Comments</strong></p>
+<div class="padded" id="comments-form">
+  <p><strong>{{pluralize this.commentsTotal "Comments"}}</strong></p>
 
   {{#if this.me.isAuthenticated}}
     <div class="d-flex align-items-center">
@@ -18,19 +18,21 @@
   {{/if}}
 </div>
 
-{{#each @chapterComments as |item|}}
-  <div id="comments" class="media mt-4">
-    {{#if item.creator.profileUri}}
-      <img alt="profile" class="mr-3 rounded-circle" width="40px" src={{item.creator.profileUri}}>
-    {{else}}
-      <img alt="profile" class="mr-3 rounded-circle" width="40px" src="/uploads/images/profile-placeholder.gif">
-    {{/if}}
-    <div class="media-body">
-      <p class="mt-2"><strong>{{item.creator.username}}</strong></p>
-      {{nl2br item.comment}}
+<div id="comments-section">
+  {{#each @chapterComments as |item|}}
+    <div class="media mt-4">
+      {{#if item.creator.profileUri}}
+        <img alt="profile" class="mr-3 rounded-circle" width="40px" src={{item.creator.profileUri}}>
+      {{else}}
+        <img alt="profile" class="mr-3 rounded-circle" width="40px" src="/uploads/images/profile-placeholder.gif">
+      {{/if}}
+      <div class="media-body">
+        <p class="mt-2"><strong>{{item.creator.username}}</strong></p>
+        {{nl2br item.comment}}
 
-      <Reply-Section @comment={{item}} @selectedChapter={{@selectedChapter}} @chapterReplies={{@chapterReplies}}/>
+        <Reply-Section @comment={{item}} @selectedChapter={{@selectedChapter}} @chapterReplies={{@chapterReplies}}/>
+      </div>
+      <hr>
     </div>
-    <hr>
-  </div>
-{{/each}}
+  {{/each}}
+</div>

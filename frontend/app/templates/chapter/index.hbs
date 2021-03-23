@@ -73,10 +73,11 @@
           {{else}}
             <img src="/uploads/images/profile-placeholder.gif" alt="Lesson creator avatar" class="rounded-circle mr-2">
           {{/if}}
-          <div>
+          <div class="chapter-author">
+            <p>{{this.model.creator.username}}</p>
             {{!-- TODO: Add "verified" & "likes" to user model --}}
-            <p>{{this.model.creator.username}} {{svg-jar "verified-black-24dp" class="verified-icon" height="20px"}}</p>
-            <p>134 likes</p>
+            {{!-- {{svg-jar "verified-black-24dp" class="verified-icon" height="20px"}} --}}
+            {{!-- <p>134 likes</p> --}}
           </div>
         </div>
 
