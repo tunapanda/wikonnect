@@ -3,6 +3,7 @@ import { inject as service } from '@ember/service';
 
 export default class TeachRoute extends Route {
   @service me;
+  @service SeoTags;
 
   beforeModel(transition) {
     if (!this.me.isAuthenticated) {
@@ -12,5 +13,15 @@ export default class TeachRoute extends Route {
       this.transitionTo('login');
     }
     return super.beforeModel(transition);
+  }
+
+  afterModel() {
+    this.headTags = this.SeoTags.build(
+      'Teach - Wikonnect',
+      '/teach',
+      undefined,
+      false,
+      false
+    );
   }
 }

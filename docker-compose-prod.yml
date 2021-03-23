@@ -25,8 +25,9 @@ services:
     restart: "on-failure"
     env_file: .env
     ports:
-      - "$FRONTED_PORT:80"
-
+      - "${FRONTED_PORT}:80"
+    volumes:
+      - public:/usr/src/app/public
     networks:
       - wikonnect
 
@@ -34,3 +35,7 @@ networks:
   wikonnect:
     name: wikonnect
     driver: bridge
+
+volumes:
+  public:
+    name: wikonnect-public
