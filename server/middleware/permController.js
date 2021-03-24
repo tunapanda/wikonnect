@@ -22,15 +22,25 @@ exports.requireAuth = async function (ctx, next) {
     log.info('Access granted to Anonymous user');
     await next();
   } else if (ctx.request.header.authorization.split(' ')[0] === 'Bearer') {
-    const accessToken = ctx.request.header.authorization.split(/\s+/)[1];
-    const {exp, ...data} = jwToken.verify(accessToken, secret);
+    const accessToken = ctx.request.header.authorization.split(' ')[1];
+    ctx.assert(accessToken,401,{errors:['Access token not found']});
+   
+    try {
+      const {exp, ...data} = jwToken.verify(accessToken, secret);
 
-    // Check if token has expired
-    if (exp < Date.now().valueOf() / 1000) {
-      ctx.throw(400, null, {errors: ['Expired Token']});
+      // Check if token has expired
+      if (exp < Date.now().valueOf() / 1000) {
+        ctx.throw(401, null, {errors: ['Expired Token']});
+      }
+      ctx.state.user = data;
+      log.info('Access granted to %s user', ctx.state.user.data.username);
+    }catch (e) {
+      if (e.statusCode) {
+        ctx.throw(e.statusCode, null, {errors: [e.message]});
+      } else {
+        ctx.throw(400, null, {errors: [e.message]});
+      }
     }
-    ctx.state.user = data;
-    log.info('Access granted to %s user', ctx.state.user.data.username);
     await next();
   }
 
