@@ -110,7 +110,6 @@ router.post('/', requireAuth, async ctx => {
     } else {
       ctx.throw(400, null, {errors: [e.message]});
     }
-    throw e;
   }
 
 });
