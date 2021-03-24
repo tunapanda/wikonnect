@@ -1,7 +1,8 @@
 describe("Chapter Reaction Without Auth", () => {
   beforeEach(() => {
-    cy.visit('/')
-    cy.get(':nth-child(5) > .card > .card-body > .card-title a').click()
+    cy.visit("/");
+    cy.get(':nth-child(1) > .card > .card-body > .card-title a').click()
+    cy.wait(1000);
   });
 
   it("Should see chapter reactions", () => {
@@ -35,21 +36,22 @@ describe("Chapter Reaction After Auth", () => {
   });
 
   it("Should see chapter reactions", () => {
-    cy.visit('/')
-    cy.get(':nth-child(5) > .card > .card-body > .card-title a').click()
-
+    cy.visit('/');
+    cy.get(':nth-child(5) > .card > .card-body > .card-title a').click();
+    
     cy.get(".reactions .reaction-btn.like-button").then(($btn) => {
       const txt = $btn.text()
+      // cy.log(txt);
       cy.get(".reactions .reaction-btn.like-button").should(($btn2) => {
         expect($btn2.text()).to.eq(txt)
       })
-    })
+    });
     cy.get(".reactions .reaction-btn.dislike-button").then(($btn) => {
       const txt = $btn.text()
       cy.get(".reactions .reaction-btn.dislike-button").should(($btn2) => {
         expect($btn2.text()).to.eq(txt)
       })
-    })
+    });
   });
 
   it("Should like a chapter", () => {

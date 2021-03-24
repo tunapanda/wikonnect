@@ -1,34 +1,38 @@
-<div class="padded">
-  {{#if this.me.isAuthenticated}}
+<div class="padded" id="comments-form">
+  <p><strong>{{pluralize this.commentsTotal "Comments"}}</strong></p>
 
-    <BsForm @model={{this.commentModel}} @onSubmit={{this.saveComment}} as |form|>
-      <form.element @controlType="textarea" @label="Comment" @property="comment"/>
-      {{#each this.commentModel.errors as |err| }}
-        {{#if (eq err.key "comment")}}
-          <BsAlert @type="danger" @fade={{true}}>
-            {{err.message}}
-          </BsAlert>
-        {{/if}}
-      {{/each}}
-      <BsButton @type="primary" @defaultText="Comment" @buttonType="submit"/>
-    </BsForm>
+  {{#if this.me.isAuthenticated}}
+    <div class="d-flex align-items-center">
+      {{#if this.me.profileUri}}
+        <img alt="profile" class="mr-3 rounded-circle" width="30px" src={{this.me.profileUri}}>
+      {{else}}
+        <img alt="profile" class="mr-3 rounded-circle" width="30px" src="/uploads/images/profile-placeholder.gif">
+      {{/if}}
+      <small>You are commenting publicly as {{this.me.name}}</small>
+    </div>
+    <form {{on "submit" this.saveComment}} class="my-3">
+      <label for="comment-area">Comment</label>
+      <Textarea @id="comment-area" @value={{this.comment}} @class="form-control" @placeholder="Add a comment"/>
+      <button type="submit" class="btn btn-primary my-1">Comment</button>
+    </form>
   {{/if}}
 </div>
-<hr>
 
-{{#each @chapterComments as |item|}}
+<div id="comments-section">
+  {{#each @chapterComments as |item|}}
+    <div class="media mt-4">
+      {{#if item.creator.profileUri}}
+        <img alt="profile" class="mr-3 rounded-circle" width="40px" src={{item.creator.profileUri}}>
+      {{else}}
+        <img alt="profile" class="mr-3 rounded-circle" width="40px" src="/uploads/images/profile-placeholder.gif">
+      {{/if}}
+      <div class="media-body">
+        <p class="mt-2"><strong>{{item.creator.username}}</strong></p>
+        {{nl2br item.comment}}
 
-  <div id="comments" class="media mt-4">
-    {{#if item.creator.profileUri}}
-      <img alt="profile" class="mr-3 rounded-circle" width="80px" src={{item.creator.profileUri}}>
-    {{else}}
-      <img alt="profile" class="mr-3 rounded-circle" width="80px" src="/uploads/images/profile-placeholder.gif">
-    {{/if}}
-    <div class="media-body">
-      <h5 class="mt-2">{{item.creator.username}}</h5>
-      {{nl2br item.comment}}
+        <Reply-Section @comment={{item}} @selectedChapter={{@selectedChapter}} @chapterReplies={{@chapterReplies}}/>
+      </div>
+      <hr>
     </div>
-    <br>
-    <hr>
-  </div>
-{{/each}}
+  {{/each}}
+</div>

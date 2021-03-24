@@ -42,8 +42,6 @@ exports.requireAuth = async function (ctx, next) {
       ctx.throw(error.statusCode, null, { errors: error });
     }
     // ctx.throw(400, null, { errors: ['Bad Request'] });
-    ctx.throw(error.statusCode, null, { errors: error });
-
   }
 };
 
