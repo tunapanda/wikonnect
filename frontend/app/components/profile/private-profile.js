@@ -34,10 +34,10 @@ export default class ProfilePrivateProfileComponent extends Component {
   }
 
   @action
-  onSuccess() { }
+  onSuccess() {}
 
   @action
-  onError() { }
+  onError() {}
 
   @action
   updateEmail() {

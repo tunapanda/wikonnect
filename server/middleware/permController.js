@@ -37,11 +37,11 @@ exports.requireAuth = async function (ctx, next) {
     }
   } catch (error) {
     log.error(`The following error ${error} with message ${error.message}`);
-    const envs = ['test', 'development'];
-    if (envs.includes(process.env.NODE_ENV)) {
-      ctx.throw(error.statusCode, null, { errors: error });
-    }
-    // ctx.throw(400, null, { errors: ['Bad Request'] });
+    // const envs = ['test', 'development'];
+    // if (envs.includes(process.env.NODE_ENV)) {
+    //   ctx.throw(error.statusCode, null, { errors: error });
+    // }
+    ctx.throw(400, null, { errors: ['Bad Request'] });
   }
 };
 
