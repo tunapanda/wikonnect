@@ -261,10 +261,9 @@ router.get('/', permController.requireAuth, permController.grantAccess('readAny'
  */
 
 router.put('/:id', jwt.authenticate, permController.requireAuth, async ctx => {
-
-
   let { metadata, ...data } = ctx.request.body.user;
 
+  //  check for profane language in user bios
   if (metadata.aboutMe) {
     const checked = await profaneCheck(metadata.aboutMe);
     console.log(metadata.aboutMe);
@@ -273,6 +272,7 @@ router.put('/:id', jwt.authenticate, permController.requireAuth, async ctx => {
     }
   }
 
+  //  update json_b metadata without deleting existing content
   if (metadata) {
     for (let key in metadata) {
       data[`metadata:${key}`] = metadata[key];
