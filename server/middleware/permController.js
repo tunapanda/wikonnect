@@ -22,7 +22,7 @@ exports.requireAuth = async function (ctx, next) {
     log.info('Access granted to Anonymous user');
     await next();
   } else if (ctx.request.header.authorization.split(' ')[0] === 'Bearer') {
-    const accessToken = ctx.request.header.authorization.split(' ')[1];
+    const accessToken = ctx.request.header.authorization.split(/\s+/)[1];
     const {exp, ...data} = jwToken.verify(accessToken, secret);
 
     // Check if token has expired
