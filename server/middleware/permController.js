@@ -11,38 +11,29 @@ const log = require('../utils/logger');
  * @param {*} next
  */
 exports.requireAuth = async function (ctx, next) {
-  try {
-    if (ctx.request.header.authorization === undefined || ctx.request.header.authorization.split(' ')[1] === 'undefined') {
-      const data = {
-        data: {
-          user: 'anonymous',
-          id: 'anonymous',
-          role: 'anonymous'
-        }
-      };
-      ctx.state.user = data;
-      log.info('Access granted to Anonymous user');
-      await next();
-    } else if (ctx.request.header.authorization.split(' ')[0] === 'Bearer') {
-      const accessToken = ctx.request.header.authorization.split(' ')[1];
-      const { exp, ...data } = jwToken.verify(accessToken, secret);
-
-      // Check if token has expired
-      if (exp < Date.now().valueOf() / 1000) {
-        ctx.throw(400, null, { errors: ['Expired Token'] });
+  if (ctx.request.header.authorization === undefined || ctx.request.header.authorization.split(' ')[1] === 'undefined') {
+    ctx.state.user = {
+      data: {
+        user: 'anonymous',
+        id: 'anonymous',
+        role: 'anonymous'
       }
-      ctx.state.user = data;
-      log.info('Access granted to %s user', ctx.state.user.data.username);
-      await next();
+    };
+    log.info('Access granted to Anonymous user');
+    await next();
+  } else if (ctx.request.header.authorization.split(' ')[0] === 'Bearer') {
+    const accessToken = ctx.request.header.authorization.split(' ')[1];
+    const {exp, ...data} = jwToken.verify(accessToken, secret);
+
+    // Check if token has expired
+    if (exp < Date.now().valueOf() / 1000) {
+      ctx.throw(400, null, {errors: ['Expired Token']});
     }
-  } catch (error) {
-    log.error(`The following error ${error} with message ${error.message}`);
-    const envs = ['test', 'development'];
-    if (envs.includes(process.env.NODE_ENV)) {
-      ctx.throw(400, null, { errors: [error.message] });
-    }
-    ctx.throw(400, null, { errors: ['Bad Request'] });
+    ctx.state.user = data;
+    log.info('Access granted to %s user', ctx.state.user.data.username);
+    await next();
   }
+
 };
 
 /**
@@ -54,18 +45,18 @@ exports.grantAccess = function (action, resource) {
 
   return async (ctx, next) => {
     try {
-      let roleName = ctx.state.user.role == undefined ? ctx.state.user.data.role : ctx.state.user.role;
+      let roleName = ctx.state.user.role === undefined ? ctx.state.user.data.role : ctx.state.user.role;
 
       const permission = roles.can(roleName)[action](resource);
 
       if (!permission.granted) {
-        ctx.throw(400, null, { errors: ['Bad Request'] });
+        ctx.throw(400, null, {errors: ['Bad Request']});
       }
 
       await next();
     } catch (error) {
       log.error(`Bad request with the following message ${error}`);
-      ctx.throw(400, null, { errors: ['Bad Request'] });
+      ctx.throw(400, null, {errors: ['Bad Request']});
     }
   };
 };
