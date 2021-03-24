@@ -64,7 +64,7 @@ router.get('/', requireAuth, async (ctx) => {
     const {include} = ctx.query;
     delete ctx.query.include;
 
-    const includeRatings = include ? include.toLowerCase().includes('ratings') : false;
+    const includeRatings = include ? include.toLowerCase().includes('rating') : false;
 
     let reviews = includeRatings ?
       await Review.query()

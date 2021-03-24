@@ -20,7 +20,6 @@ async function validateRating(ctx, next) {
     } else {
       ctx.throw(400, null, {errors: e});
     }
-    throw e;
   }
   await next();
 }
