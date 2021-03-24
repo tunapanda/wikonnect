@@ -14,6 +14,7 @@ const jwt = require('../middleware/jwt');
 const permController = require('../middleware/permController');
 const validateAuthRoutes = require('../middleware/validateRoutePostSchema/validateAuthRoutes');
 
+const profaneCheck = require('../utils/profaneCheck');
 const knex = require('../utils/knexUtil');
 const log = require('../utils/logger');
 const s3 = require('../utils/s3Util');
@@ -189,7 +190,7 @@ router.get('/:id', permController.requireAuth, async ctx => {
 
   if (user.id != stateUserId || stateUserId === 'anonymous') {
     // If profile is private, return specific data
-    if(user.private) user = _.assign(user, new Private);
+    if (user.private) user = _.assign(user, new Private);
     user = _.pick(user, publicData);
   } else {
     // get all verification data
@@ -261,14 +262,31 @@ router.get('/', permController.requireAuth, permController.grantAccess('readAny'
 
 router.put('/:id', jwt.authenticate, permController.requireAuth, async ctx => {
 
+
+  let { metadata, ...data } = ctx.request.body.user;
+
+  if (metadata.aboutMe) {
+    const checked = await profaneCheck(metadata.aboutMe);
+    console.log(metadata.aboutMe);
+    if (typeof checked != 'undefined' && checked) {
+      ctx.throw(401, `Mind you language - ${checked}`, { errors: `Mind you language - ${checked}` });
+    }
+  }
+
+  if (metadata) {
+    for (let key in metadata) {
+      data[`metadata:${key}`] = metadata[key];
+    }
+  }
+
   let user;
   try {
-    user = await User.query().patchAndFetchById(ctx.params.id, ctx.request.body.user);
+    user = await User.query().patchAndFetchById(ctx.params.id, data);
     ctx.assert(user, 404, 'That user does not exist.');
   } catch (e) {
     if (e.statusCode) {
       ctx.throw(e.statusCode, null, { errors: [e.message] });
-    } else { ctx.throw(400, null, { errors: [e.message, e.message] }); }
+    } else { ctx.throw(400, null, { errors: [e.message] }); }
     throw e;
   }
 

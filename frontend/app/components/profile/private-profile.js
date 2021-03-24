@@ -34,10 +34,10 @@ export default class ProfilePrivateProfileComponent extends Component {
   }
 
   @action
-  onSuccess() {}
+  onSuccess() { }
 
   @action
-  onError() {}
+  onError() { }
 
   @action
   updateEmail() {
@@ -80,11 +80,10 @@ export default class ProfilePrivateProfileComponent extends Component {
       user.aboutMe = this.about;
       await user.save();
       this.notify.info('Profile Updated', { closeAfter: 10000 });
-    } catch (e) {
-      this.notify.notify(
-        'Unexpected error encountered while updating the profile.',
-        { closeAfter: 10000 }
-      );
+    } catch (err) {
+      if (err && err.errors) {
+        this.notify.error('Mind your language', { closeAfter: 10000 });
+      }
     }
   }
 }
