@@ -41,7 +41,14 @@ class Comment extends Model {
           to: 'comments.id'
         }
       },
-
+      children: {
+        relation: Model.HasManyRelation,
+        modelClass: Comment,
+        join: {
+          from: 'comments.id',
+          to: 'comments.parentId'
+        }
+      },
       parent: {
         relation: Model.ManyToManyRelation,
         modelClass: Comment,

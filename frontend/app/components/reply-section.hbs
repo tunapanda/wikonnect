@@ -1,0 +1,46 @@
+<div class="reply-actions d-flex justify-content-between mb-2">
+  <div>
+    {{!-- pluralize helper from ember-inflector package --}}
+    <span class="mr-2">{{pluralize this.numOfReplies "reply"}}</span>
+    {{#if this.replies}}
+        <button type="button" {{on "click" this.toggleReplies}}>
+          {{#if this.shouldRepliesShow}}
+              Hide Replies {{svg-jar "expand_less_black_24dp"}}
+          {{else}}
+            Show Replies {{svg-jar "expand_more_black_24dp"}}
+          {{/if}}
+        </button>
+    {{/if}}
+  </div>
+  <div>
+    {{#if this.me.isAuthenticated}}
+      <button type="button" {{on "click" this.toggleForm}}>
+        {{svg-jar "reply_black_24dp"}} {{if this.shouldFormShow "Reply" "Reply"}}
+      </button>
+    {{/if}}
+    {{!-- TODO: Add functionality to like a comment --}}
+    {{!-- {{svg-jar "favorite_border_black_24dp" height="20px"}} --}}
+  </div>
+</div>
+
+{{#if this.me.isAuthenticated}}
+  {{#if this.shouldFormShow}}
+    <form class="reply-form" {{on "submit" this.saveReply}}>
+      <Textarea @value={{this.reply}} @class="form-control" @placeholder="Reply here"/>
+      <button type="submit" class="btn btn-primary my-1">Reply</button>
+    </form>
+  {{/if}}
+{{/if}}
+
+{{#if this.shouldRepliesShow}}
+  {{#if this.replies }}
+    {{#each this.replies as |reply|}}
+      <div class="media mt-4">
+        <div class="replies">
+          <p class="mt-2"><strong>{{reply.creator.username}}</strong></p>
+          {{nl2br reply.comment}}
+        </div>
+      </div>
+    {{/each}}
+  {{/if}}
+{{/if}}
