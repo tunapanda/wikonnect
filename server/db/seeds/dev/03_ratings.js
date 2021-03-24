@@ -8,19 +8,18 @@ exports.seed = async function (knex) {
   const chapterIds = await knex('chapters').pluck('id');
   const userIds = await knex('users').pluck('id');
   const ratings = [];
-  const contentTypes = ['interactiveVideo', 'multipleChoice', 'singleChoiceSet'];
+  const categories = questions.map((d) => d.category);
 
 
   for (let index = 0; index < seed_number; index++) {
-    const selectedContentType = faker.random.arrayElement(contentTypes);
-
     let totalRating = 0;
-    const metadata = questions[selectedContentType].reduce((acc, question) => {
-      acc[question.key] = Math.floor(Math.random() * Math.floor(5));
-      totalRating += acc[question.key];
+
+    const metadata = faker.random.arrayElements(categories, 3).reduce((acc, category) => {
+      acc[category] = Math.floor(Math.random() * Math.floor(5));
+      totalRating += acc[category];
       return acc;
     }, {});
-    const averageRating = totalRating / questions[selectedContentType].length;
+    const averageRating = totalRating / categories.length;
 
     const reaction = faker.random.arrayElement(['like', 'dislike', null]);
 
@@ -30,7 +29,7 @@ exports.seed = async function (knex) {
       average_rating: averageRating,
       reaction,
       metadata,
-      is_deleted: reaction===null,
+      is_deleted: reaction === null,
       created_at: faker.date.past(),
       updated_at: faker.date.recent(),
     });
