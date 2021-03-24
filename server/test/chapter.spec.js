@@ -198,7 +198,6 @@ describe('CHAPTER ROUTE', () => {
       .set(tokens.headersSuperAdmin1)
       .send(putData)
       .end((err, res) => {
-        console.log(err.status,res.body)
         res.status.should.eql(400);
         res.should.be.json;
         res.body.should.be.a('object');
