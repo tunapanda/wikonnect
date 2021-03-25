@@ -8,28 +8,47 @@ const router = new Router({
   prefix: '/ratings'
 });
 
+
 /**
- * @api {get} /:rating_id GET a rating
- * @apiName GetAChapterRating
- * @apiGroup ChapterRatings
+ * @api {get} /api/v1/ratings/:id GET chapter rating by Id
+ * @apiName Get rating by Id
+ * @apiGroup Ratings and Review
  * @apiPermission authenticated user
+ * @apiVersion 0.4.0
+ *
+ * @apiHeader {String} Authorization Bearer << JWT here>>
+ *
+ * @apiParam (URI Param) {String} id rating id
+ *
+ * @apiParam (Query Params) {Boolean} isDeleted filter by deleted status (optional)
+ * @apiParam (Query Params) {String} include relationships to eager load (comma separated & optional)
+ *
+ * @apiSuccess {Object} rating Top level object
+ * @apiSuccess {String} rating[id] rating id
+ * @apiSuccess {String} rating[chapterId] associated chapter Id
+ * @apiSuccess {Object} rating[metadata] rating metadata
+ * @apiSuccess {String} rating[userId] rating owner
+ * @apiSuccess {String} rating[averageRating] average record rating
+ * @apiSuccess {Boolean} rating[isDeleted]  if record was deleted
+ * @apiSuccess {String} rating[createdAt] date created
+ * @apiSuccess {String} rating[updatedAt] date updated
  *
  * @apiSuccessExample {json} Success-Response:
- *     HTTP/1.1 200 OK
+ *     HTTP/1.1 201 OK
  *     {
- *      rating:{
- *         "id": String,
- *         "chapterId": String,
- *         "userId": String,
- *         "metadata":Object,
- *         "reviewId": null,
- *         "averageRating": String,
- *         "reaction": String,
- *         "isDeleted": boolean,
- *         "createdAt": DateTime,
- *         "updatedAt": DateTime,
- *        }
- *    }
+ *       "rating":{
+ *           "id": "IzM6odwAASI",
+ *           "chapterId": "IzMs75WAAA0",
+ *           "reaction": "like",
+ *           "metadata":{"language": 2, "audioQuality": 1, "contentAccuracy": 1},
+ *           "userId": "user1",
+ *           "averageRating": "1.33",
+ *           "isDeleted": false,
+ *           "createdAt": "2021-03-24T11:51:33.520Z",
+ *           "updatedAt": "2021-03-24T11:51:33.520Z"
+ *         }
+ *      }
+ *
  *
  */
 
@@ -65,28 +84,45 @@ router.get('/:id', requireAuth, async ctx => {
   }
 });
 
+
 /**
- * @api {get} / GET ratings
- * @apiName GetChapterRatings
- * @apiGroup ChapterRatings
+ * @api {get} /api/v1/ratings GET all chapter ratings
+ * @apiName Get all ratings
+ * @apiGroup Ratings and Review
  * @apiPermission authenticated user
+ * @apiVersion 0.4.0
+ *
+ * @apiHeader {String} Authorization Bearer << JWT here>>
+ *
+ * @apiParam (Query Params) {Boolean} isDeleted filter by deleted status (optional)
+ * @apiParam (Query Params) {String} include relationships to eager load (comma separated & optional)
+ *
+ * @apiSuccess {Object[]} ratings Top level object
+ * @apiSuccess {String} rating[id] rating id
+ * @apiSuccess {String} rating[chapterId] associated chapter Id
+ * @apiSuccess {Object} rating[metadata] rating metadata
+ * @apiSuccess {String} rating[userId] rating owner
+ * @apiSuccess {String} rating[averageRating] average record rating
+ * @apiSuccess {Boolean} rating[isDeleted]  if record was deleted
+ * @apiSuccess {String} rating[createdAt] date created
+ * @apiSuccess {String} rating[updatedAt] date updated
  *
  * @apiSuccessExample {json} Success-Response:
- *     HTTP/1.1 200 OK
+ *     HTTP/1.1 201 OK
  *     {
- *      ratings:[{
- *         "id": String,
- *         "chapterId": String,
- *         "userId": String,
- *         "metadata":Object,
- *         "reviewId": null,
- *         "averageRating": String,
- *         "reaction": String,
- *         "isDeleted": boolean,
- *         "createdAt": DateTime,
- *         "updatedAt": DateTime,
- *        }]
- *    }
+ *       "ratings":[{
+ *           "id": "IzM6odwAASI",
+ *           "chapterId": "IzMs75WAAA0",
+ *           "reaction": "like",
+ *           "metadata":{"language": 2, "audioQuality": 1, "contentAccuracy": 1},
+ *           "userId": "user1",
+ *           "averageRating": "1.33",
+ *           "isDeleted": false,
+ *           "createdAt": "2021-03-24T11:51:33.520Z",
+ *           "updatedAt": "2021-03-24T11:51:33.520Z"
+ *         }]
+ *      }
+ *
  *
  */
 
@@ -119,33 +155,46 @@ router.get('/', requireAuth, async ctx => {
 });
 
 /**
- * @api {post} / POST ratings
- * @apiName Post Chapter Rating
- * @apiGroup Chapter Ratings & Review
+ * @api {post} /api/v1/ratings POST a chapter rating
+ * @apiName Post a chapter rating
+ * @apiGroup Ratings and Review
  * @apiPermission authenticated user
+ * @apiVersion 0.4.0
+ *
+ * @apiHeader {String} Authorization Bearer << JWT here>>
+ *
+ * @apiParam (Request Body) {Object} rating[metadata] rating metadata
+ * @apiParam (Request Body) {String} rating[chapterId] chapter being rated
+ * @apiParam (Request Body) {String} rating[reaction] chapter reaction
+ *
+ * @apiSuccess {Object} rating Top level object
+ * @apiSuccess {String} rating[id] rating id
+ * @apiSuccess {String} rating[chapterId] associated chapter Id
+ * @apiSuccess {Object} rating[metadata] rating metadata
+ * @apiSuccess {String} rating[userId] rating owner
+ * @apiSuccess {String} rating[averageRating] average record rating
+ * @apiSuccess {Boolean} rating[isDeleted]  if record was deleted
+ * @apiSuccess {String} rating[createdAt] date created
+ * @apiSuccess {String} rating[updatedAt] date updated
  *
  * @apiSuccessExample {json} Success-Response:
  *     HTTP/1.1 201 OK
- *    {
- *      rating:{
- *         "id": String,
- *         "chapterId": String,
- *         "userId": String,
- *         "metadata":Object,
- *         "reviewId": null,
- *         "averageRating": String,
- *         "reaction": String,
- *         "isDeleted": boolean,
- *         "createdAt": DateTime,
- *         "updatedAt": DateTime,
- *        }
- *    }
+ *     {
+ *       "rating":{
+ *           "id": "IzM6odwAASI",
+ *           "chapterId": "IzMs75WAAA0",
+ *           "reaction": "like",
+ *           "metadata":{"language": 2, "audioQuality": 1, "contentAccuracy": 1},
+ *           "userId": "user1",
+ *           "averageRating": "1.33",
+ *           "isDeleted": false,
+ *           "createdAt": "2021-03-24T11:51:33.520Z",
+ *           "updatedAt": "2021-03-24T11:51:33.520Z"
+ *         }
+ *      }
  *
- * @apiSampleRequest on
  *
  */
-
-
 router.post('/', requireAuth, validateRating, async ctx => {
 
   const obj = ctx.request.body.rating;
@@ -190,14 +239,50 @@ router.post('/', requireAuth, validateRating, async ctx => {
 
 
 /**
- * @api {put} /:rating_id PUT comment
- * @apiName PutAChapterRating
- * @apiGroup ChapterRatings
+ * @api {put} /api/v1/ratings/:id PUT a chapter rating
+ * @apiName PUT a chapter rating
+ * @apiGroup Ratings and Review
  * @apiPermission authenticated user
- * @apiSampleRequest off
+ * @apiVersion 0.4.0
+ *
+ * @apiHeader {String} Authorization Bearer << JWT here>>
+ *
+ * @apiParam (URI Param) {String} id Id of the rating to update
+ *
+ * @apiParam (Request Body) {Object} rating Top level object
+ * @apiParam (Request Body) {String} rating[id] rating id
+ * @apiParam (Request Body) {String} rating[chapterId] associated chapter Id
+ * @apiParam (Request Body) {Object} rating[metadata] rating metadata
+ * @apiParam (Request Body) {String} rating[userId] rating owner
+ *
+ * @apiSuccess {Object} rating Top level object
+ * @apiSuccess {String} rating[id] rating id
+ * @apiSuccess {String} rating[chapterId] associated chapter Id
+ * @apiSuccess {Object} rating[metadata] rating metadata
+ * @apiSuccess {String} rating[userId] rating owner
+ * @apiSuccess {String} rating[averageRating] average record rating
+ * @apiSuccess {Boolean} rating[isDeleted] if record was deleted
+ * @apiSuccess {String} rating[createdAt] date created
+ * @apiSuccess {String} rating[updatedAt] date updated
+ *
+ * @apiSuccessExample {json} Success-Response:
+ *     HTTP/1.1 201 OK
+ *     {
+ *       "rating":{
+ *           "id": "IzM6odwAASI",
+ *           "chapterId": "IzMs75WAAA0",
+ *           "reaction": "like",
+ *           "metadata":{"language": 2, "audioQuality": 1, "contentAccuracy": 1},
+ *           "userId": "user1",
+ *           "averageRating": "1.33",
+ *           "isDeleted": false,
+ *           "createdAt": "2021-03-24T11:51:33.520Z",
+ *           "updatedAt": "2021-03-24T11:51:33.520Z"
+ *         }
+ *      }
+ *
  *
  */
-
 router.put('/:id', requireAuth, async ctx => {
   const userId = ctx.state.user.data.id;
 
@@ -239,12 +324,22 @@ router.put('/:id', requireAuth, async ctx => {
   }
 
 });
+
 /**
- * @api {delete} /:rating_id DELETE a rating
- * @apiName DeleteAChapterRating
- * @apiGroup ChapterRatings
+ * @api {delete} /api/v1/ratings/:id Delete a chapter rating
+ * @apiName DELETE ratings by Id
+ * @apiGroup Ratings and Review
  * @apiPermission authenticated user
- * @apiSampleRequest off
+ * @apiVersion 0.4.0
+ *
+ * @apiHeader {String} Authorization Bearer << JWT here>>
+ *
+ * @apiParam (URI Param) {String} id rating id
+ *
+ * @apiSuccessExample {json} Success-Response:
+ *     HTTP/1.1 201 OK
+ *     { }
+ *
  *
  */
 router.delete('/:id', requireAuth, async ctx => {
