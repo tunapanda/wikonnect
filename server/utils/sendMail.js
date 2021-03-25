@@ -34,3 +34,4 @@ module.exports = async function sendMail(email, token) {
     }
   });
 };
+
