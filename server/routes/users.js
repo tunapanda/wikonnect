@@ -5,7 +5,7 @@ const busboy = require('async-busboy');
 const shortid = require('shortid');
 const sharp = require('sharp');
 const _ = require('lodash');
-
+const crypto = require('crypto');
 
 const User = require('../models/user');
 const Oauth2 = require('../models/oauth2');
@@ -14,6 +14,7 @@ const jwt = require('../middleware/jwt');
 const permController = require('../middleware/permController');
 const validateAuthRoutes = require('../middleware/validateRoutePostSchema/validateAuthRoutes');
 
+const sendMail = require('../utils/sendMail');
 const knex = require('../utils/knexUtil');
 const log = require('../utils/logger');
 const s3 = require('../utils/s3Util');
@@ -357,5 +358,96 @@ router.post('/:id/profile-image', permController.requireAuth, async (ctx, next) 
     };
   }
 });
+
+
+
+/**
+ * @api {post} /api/v1/users/verify POST user's email to validate.
+ * @apiName PostLoginAUserEmail
+ * @apiGroup Authentication
+ *
+ * @apiParam {string} user[email] emailAddress
+ *
+ * @apiPermission basic
+ * @apiSampleRequest https://localhost:3000/api/v1/users/verify
+ *
+ * @apiSuccessExample {json} Success-Response:
+ *     HTTP/1.1 201 OK
+ *     {
+ *       "user":{
+ *          "email": "emailAddress",
+ *          "emailVerified": "true",
+ *        }
+ *     }
+ *
+ * @apiError {String} errors Bad Request.
+ */
+
+router.post('/verify', async ctx => {
+  const email = ctx.request.body.user.email;
+  const user = await User.query().findOne({ 'email': email, 'emailVerified': false });
+
+  try {
+    const token = crypto.randomBytes(64).toString('hex');
+    const buf = Buffer.from(email, 'ascii').toString('base64');
+
+    const userData = await user.$query().patchAndFetch({
+      'resetPasswordExpires': new Date(+new Date() + 1.8e6),
+      'resetPasswordToken': token,
+    });
+    // sending email
+    sendMail(buf, token);
+    log.info('Email verification sent to %s', email);
+    ctx.status = 201;
+    ctx.body = userData;
+
+  } catch (e) {
+    log.info('Email verification already requested');
+    if (e.statusCode) {
+      ctx.throw(e.statusCode, null, { errors: [e.message] });
+    } else { ctx.throw(400, null, { errors: [e.message] }); }
+    throw e;
+  }
+});
+
+/**
+ * @api {get} /api/v1/users/verify Validate a users email.
+ * @apiName ValidateAUsersEmail
+ * @apiGroup Authentication
+ *
+ * @apiVersion 0.4.0
+ * @apiDescription Validate a users email using token sent via email
+ * @apiPermission [admin, superadmin]
+ * @apiHeader (Header) {String} authorization Bearer <<YOUR_API_KEY_HERE>>
+ *
+ * @apiParam (Required Params) {string} user[token] username
+ * @apiParam (Required Params) {string} user[email] Unique email
+ *
+ */
+router.get('/verify', async ctx => {
+  const decodedMail = Buffer.from(ctx.query.email, 'base64').toString('ascii');
+  const user = await User.query().findOne({ 'email': decodedMail, 'resetPasswordToken': ctx.query.token });
+  ctx.assert(user, 'No email found');
+  let message;
+  try {
+    if (new Date() < user.resetPasswordExpires) {
+      message = await user.$query().patchAndFetch({
+        'emailVerified': true,
+        'resetPasswordExpires': new Date()
+      });
+    }
+
+  } catch (e) {
+    log.info('Email verification already requested');
+    if (e.statusCode) {
+      ctx.throw(e.statusCode, null, { errors: [e.message] });
+    } else { ctx.throw(400, null, { errors: [e.message] }); }
+    throw e;
+  }
+
+  ctx.status = 200;
+  ctx.body = message;
+});
+
 
 module.exports = router.routes();

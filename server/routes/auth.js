@@ -3,11 +3,9 @@ const Router = require('koa-router');
 const jsonwebtoken = require('jsonwebtoken');
 
 const User = require('../models/user');
-const sendMail = require('../utils/sendMail');
 const log = require('../utils/logger');
 const { secret } = require('../middleware/jwt');
 const validateAuthRoutes = require('../middleware/validateRoutePostSchema/validateAuthRoutes');
-const crypto = require('crypto');
 
 const router = new Router({
   prefix: '/auth'
@@ -73,59 +71,5 @@ router.post('/', validateAuthRoutes.validateUserLogin, async ctx => {
     });
   }
 });
-
-
-router.post('/verify', async ctx => {
-  const email = ctx.request.body.user.email;
-  const user = await User.query().findOne({ 'email': email, 'emailVerified': false });
-
-  try {
-    const token = crypto.randomBytes(64).toString('hex');
-    const buf = Buffer.from(email, 'ascii').toString('base64');
-
-    const userData = await user.$query().patchAndFetch({
-      'resetPasswordExpires': new Date(+new Date() + 1.8e6),
-      'resetPasswordToken': token,
-    });
-    // sending email
-    sendMail(buf, token);
-    log.info('Email verification sent to %s', email);
-    ctx.status = 201;
-    ctx.body = userData;
-
-  } catch (e) {
-    log.info('Email verification already requested');
-    if (e.statusCode) {
-      ctx.throw(e.statusCode, null, { errors: [e.message] });
-    } else { ctx.throw(400, null, { errors: [e.message] }); }
-    throw e;
-  }
-});
-
-router.get('/verify', async ctx => {
-  const decodedMail = Buffer.from(ctx.query.email, 'base64').toString('ascii');
-  const user = await User.query().findOne({ 'email': decodedMail, 'resetPasswordToken': ctx.query.token });
-  ctx.assert(user, 'No email found');
-  let message;
-  try {
-    if (new Date() < user.resetPasswordExpires) {
-      message = await user.$query().patchAndFetch({
-        'emailVerified': true,
-        'resetPasswordExpires': new Date()
-      });
-    }
-
-  } catch (e) {
-    log.info('Email verification already requested');
-    if (e.statusCode) {
-      ctx.throw(e.statusCode, null, { errors: [e.message] });
-    } else { ctx.throw(400, null, { errors: [e.message] }); }
-    throw e;
-  }
-
-  ctx.status = 200;
-  ctx.body = message;
-});
-
 
 module.exports = router.routes();
