@@ -37,6 +37,7 @@ router.post('/', async ctx => {
   try {
     const user = await User.query().insertAndFetch(newUser);
     await Oauth2.query().insertAndFetch({ provider: provider, email: newUser.email, user_id: user.id });
+    // await UserVerification.query().insert({ user_id: user.id, email: true });
     ctx.body = { oauth2: user };
   } catch (err) {
     if (err.constraint == 'users_email_unique') {

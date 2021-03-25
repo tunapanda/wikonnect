@@ -192,9 +192,6 @@ router.get('/:id', permController.requireAuth, async ctx => {
     if(user.private) user = _.assign(user, new Private);
     user = _.pick(user, publicData);
   } else {
-    // get all verification data
-    const userVerification = await knex('user_verification').where({ 'user_id': userId });
-    user.userVerification = userVerification;
     profileCompleteBoolean(user, ctx.params.id);
     log.info('Got a request from %s for %s', ctx.request.ip, ctx.path);
   }

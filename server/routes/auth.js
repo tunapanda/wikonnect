@@ -3,13 +3,11 @@ const Router = require('koa-router');
 const jsonwebtoken = require('jsonwebtoken');
 
 const User = require('../models/user');
-const sendMAil = require('../utils/sendMail');
+const sendMail = require('../utils/sendMail');
 const log = require('../utils/logger');
 const { secret } = require('../middleware/jwt');
-const redisClient = require('../utils/redisConfig');
-const UserVerification = require('../models/user_verification');
 const validateAuthRoutes = require('../middleware/validateRoutePostSchema/validateAuthRoutes');
-
+const crypto = require('crypto');
 
 const router = new Router({
   prefix: '/auth'
@@ -77,37 +75,45 @@ router.post('/', validateAuthRoutes.validateUserLogin, async ctx => {
 });
 
 
-async function verifyEmail(email) {
-  const rand = Math.floor((Math.random() * 100) + 54);
-  const resetMail = email;
-
-  const reply = redisClient.exists(resetMail);
-  if (reply !== true) {
-    return true;
-  }
-
-  redisClient.set(resetMail, rand);
-  redisClient.expire(resetMail, 600);
-
-  const buf = Buffer.from(resetMail, 'ascii').toString('base64');
-  sendMAil(buf, rand);
-}
-router.get('/reset/:mail', async ctx => {
-  let confirmEmail = await User.query().where('email', ctx.params.mail);
-  confirmEmail = confirmEmail[0];
-
-  if (confirmEmail == undefined) {
-    log.info('criminal', { error: { errors: ['User email not found'] } });
-    throw new Error({ error: { errors: ['User email not found'] } });
-  }
+router.post('/verify', async ctx => {
+  const email = ctx.request.body.user.email;
+  const user = await User.query().findOne({ 'email': email, 'emailVerified': false });
 
   try {
-    await verifyEmail(confirmEmail.email);
+    const token = crypto.randomBytes(64).toString('hex');
+    const buf = Buffer.from(email, 'ascii').toString('base64');
 
-
-    log.info('Email verification sent to %s', confirmEmail.email);
+    const userData = await user.$query().patchAndFetch({
+      'resetPasswordExpires': new Date(+new Date() + 1.8e6),
+      'resetPasswordToken': token,
+    });
+    // sending email
+    sendMail(buf, token);
+    log.info('Email verification sent to %s', email);
     ctx.status = 201;
-    ctx.body = { confirmEmail };
+    ctx.body = userData;
+
+  } catch (e) {
+    log.info('Email verification already requested');
+    if (e.statusCode) {
+      ctx.throw(e.statusCode, null, { errors: [e.message] });
+    } else { ctx.throw(400, null, { errors: [e.message] }); }
+    throw e;
+  }
+});
+
+router.get('/verify', async ctx => {
+  const decodedMail = Buffer.from(ctx.query.email, 'base64').toString('ascii');
+  const user = await User.query().findOne({ 'email': decodedMail, 'resetPasswordToken': ctx.query.token });
+  ctx.assert(user, 'No email found');
+  let message;
+  try {
+    if (new Date() < user.resetPasswordExpires) {
+      message = await user.$query().patchAndFetch({
+        'emailVerified': true,
+        'resetPasswordExpires': new Date()
+      });
+    }
 
   } catch (e) {
     log.info('Email verification already requested');
@@ -117,46 +123,8 @@ router.get('/reset/:mail', async ctx => {
     throw e;
   }
 
-
-});
-
-router.get('/validate', async ctx => {
-  const decodedMail = Buffer.from(ctx.query.mail, 'base64').toString('ascii');
-
-  const getEmail = redisClient.get(decodedMail);
-  if (getEmail === false) {
-    ctx.throw(401, 'Invalid email address');
-  }
-  const delEmail = redisClient.del(decodedMail, ctx.query.id);
-  if (delEmail !== true) {
-    ctx.throw(401, 'Token error');
-  }
-
-  // after validation update user verification table with current data
-  const confirmEmail = await User.query().where('email', decodedMail);
-  if (!confirmEmail[0]) {
-    ctx.throw(401, 'No user with that email');
-  }
-  let userId = confirmEmail[0].id;
-  const data = {
-    userId: userId,
-    email: true,
-    phoneNumber: true
-  };
-
-  // check if validation record already exists
-  // if it does then update the record and avid making a new one
-  let verifiedData = await UserVerification.query().where('user_id', userId);
-  let veedData;
-  if (!verifiedData[0]) {
-    veedData = await UserVerification.query().insertAndFetch(data);
-  } else {
-    veedData = await UserVerification.query().patchAndFetchById(verifiedData[0].id, data);
-  }
-
   ctx.status = 200;
-  ctx.body = { message: 'Email has been verified', veedData };
-
+  ctx.body = message;
 });
 
 
