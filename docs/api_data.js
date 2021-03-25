@@ -765,7 +765,7 @@ define({ "api": [
   {
     "type": "post",
     "url": "/api/v1/users/verify",
-    "title": "POST user's email or phone number to validate.",
+    "title": "POST user's email to validate.",
     "name": "PostLoginAUserEmail",
     "group": "Authentication",
     "parameter": {
@@ -795,7 +795,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "HTTP/1.1 201 OK\n{\n  \"username\": \"string\",\n  \"password\": \"string\",\n}",
+          "content": "HTTP/1.1 201 OK\n{\n  \"user\":{\n     \"email\": \"emailAddress\",\n     \"emailVerified\": \"true\",\n   }\n}",
           "type": "json"
         }
       ]
@@ -901,11 +901,11 @@ define({ "api": [
   {
     "type": "get",
     "url": "/api/v1/users/verify",
-    "title": "Validate a users email or phone number.",
-    "name": "ValidateAUsersEmailOrPhoneNumber",
+    "title": "Validate a users email.",
+    "name": "ValidateAUsersEmail",
     "group": "Authentication",
     "version": "0.4.0",
-    "description": "<p>Validate a users email using token</p>",
+    "description": "<p>Validate a users email using token sent via email</p>",
     "permission": [
       {
         "name": "[admin, superadmin]"
