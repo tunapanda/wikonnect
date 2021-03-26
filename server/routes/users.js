@@ -14,7 +14,7 @@ const jwt = require('../middleware/jwt');
 const permController = require('../middleware/permController');
 const validateAuthRoutes = require('../middleware/validateRoutePostSchema/validateAuthRoutes');
 
-const sendMail = require('../utils/sendMail');
+const sendMailMessage = require('../utils/sendMailMessage');
 const knex = require('../utils/knexUtil');
 const log = require('../utils/logger');
 const s3 = require('../utils/s3Util');
@@ -168,14 +168,6 @@ router.post('/', validateAuthRoutes.validateNewUser, createPasswordHash, async c
  *    }
  */
 
-
-function Private() {
-  // this.a = 1;
-  this.username = 'private';
-  this.profileUri = '/uploads/images/profile-placeholder.gif';
-  return this;
-}
-
 router.get('/:id', permController.requireAuth, async ctx => {
 
   let stateUserId = ctx.state.user.id == undefined ? ctx.state.user.data.id : ctx.state.user.id;
@@ -189,8 +181,6 @@ router.get('/:id', permController.requireAuth, async ctx => {
   let publicData = ['username', 'profileUri', 'id', 'private'];
 
   if (user.id != stateUserId || stateUserId === 'anonymous') {
-    // If profile is private, return specific data
-    if(user.private) user = _.assign(user, new Private);
     user = _.pick(user, publicData);
   } else {
     profileCompleteBoolean(user, ctx.params.id);
@@ -359,8 +349,6 @@ router.post('/:id/profile-image', permController.requireAuth, async (ctx, next) 
   }
 });
 
-
-
 /**
  * @api {post} /api/v1/users/verify POST user's email to validate.
  * @apiName PostLoginAUserEmail
@@ -383,9 +371,10 @@ router.post('/:id/profile-image', permController.requireAuth, async (ctx, next) 
  * @apiError {String} errors Bad Request.
  */
 
-router.post('/verify', async ctx => {
+router.post('/verify', permController.requireAuth, async ctx => {
   const email = ctx.request.body.user.email;
   const user = await User.query().findOne({ 'email': email, 'emailVerified': false });
+  ctx.assert(user, 404, user);
 
   try {
     const token = crypto.randomBytes(64).toString('hex');
@@ -396,7 +385,7 @@ router.post('/verify', async ctx => {
       'resetPasswordToken': token,
     });
     // sending email
-    sendMail(buf, token);
+    await sendMailMessage(buf, userData.username, token, 'forgot-password-email');
     log.info('Email verification sent to %s', email);
     ctx.status = 201;
     ctx.body = userData;
@@ -404,8 +393,8 @@ router.post('/verify', async ctx => {
   } catch (e) {
     log.info('Email verification already requested');
     if (e.statusCode) {
-      ctx.throw(e.statusCode, null, { errors: [e.message] });
-    } else { ctx.throw(400, null, { errors: [e.message] }); }
+      ctx.throw(e.statusCode, e, { errors: [e.message] });
+    } else { ctx.throw(400, e, { errors: [e.message] }); }
     throw e;
   }
 });
@@ -424,30 +413,30 @@ router.post('/verify', async ctx => {
  * @apiParam (Required Params) {string} user[email] Unique email
  *
  */
-router.get('/verify', async ctx => {
+
+router.get('/verify', permController.requireAuth, async ctx => {
   const decodedMail = Buffer.from(ctx.query.email, 'base64').toString('ascii');
-  const user = await User.query().findOne({ 'email': decodedMail, 'resetPasswordToken': ctx.query.token });
-  ctx.assert(user, 'No email found');
-  let message;
+  let user = await User.query().findOne({ 'email': decodedMail });
+  ctx.assert(user, 404, 'No email found');
+  let verifiedData;
   try {
     if (new Date() < user.resetPasswordExpires) {
-      message = await user.$query().patchAndFetch({
+      verifiedData = await user.$query().patchAndFetch({
         'emailVerified': true,
         'resetPasswordExpires': new Date()
       });
     }
 
   } catch (e) {
-    log.info('Email verification already requested');
+    log.info('Email verification has expired');
     if (e.statusCode) {
-      ctx.throw(e.statusCode, null, { errors: [e.message] });
-    } else { ctx.throw(400, null, { errors: [e.message] }); }
+      ctx.throw(e.statusCode, e, { errors: [e.message] });
+    } else { ctx.throw(400, e, { errors: [e.message] }); }
     throw e;
   }
 
   ctx.status = 200;
-  ctx.body = message;
+  ctx.body = { verifiedData };
 });
-
 
 module.exports = router.routes();

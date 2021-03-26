@@ -83,7 +83,7 @@ describe('Chapter comments without authentication', () => {
     });
 
     it('should display available comments', () => {
-        cy.get('#chapter .media-body')
+        cy.get('#chapter #comments-section')
             .should('exist')
     });
 
@@ -103,7 +103,7 @@ describe('Comment Replies', () => {
             .click();
 
         cy.get('.reply-form textarea').should('be.visible');
-       
+
         cy.get('.reply-form textarea').type(reply);
         cy.get('.reply-form button').click();
 
