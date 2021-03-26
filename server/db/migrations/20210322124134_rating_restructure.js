@@ -2,7 +2,6 @@
 exports.up = function(knex) {
   return knex.schema
     .table('ratings',table=>{
-      table.text('review_id');
       table.decimal('average_rating');
       table.text('reaction');
       table.boolean('is_deleted').defaultTo(false);
@@ -19,7 +18,6 @@ exports.down = function(knex) {
 
   return knex.schema
     .table('ratings',table=>{
-      table.dropColumn('review_id');
       table.dropColumn('average_rating');
       table.dropColumn('reaction');
       table.dropColumn('is_deleted');

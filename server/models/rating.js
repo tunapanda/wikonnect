@@ -8,11 +8,11 @@ class Rating extends Model {
   static  get relationMappings(){
     return {
       review:{
-        relation: Model.BelongsToOneRelation,
+        relation: Model.HasOneRelation,
         modelClass:`${__dirname}/review`,
         join: {
-          to: 'ratings.id',
-          from: 'reviews.ratingId'
+          from: 'ratings.id',
+          to: 'reviews.ratingId'
         }
       }
     };

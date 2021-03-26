@@ -1,4 +1,5 @@
 const Router = require('koa-router');
+
 const log = require('../utils/logger');
 const Rating = require('../models/rating');
 const {requireAuth} = require('../middleware/permController');
@@ -166,6 +167,7 @@ router.get('/', requireAuth, async ctx => {
  * @apiParam (Request Body) {Object} rating[metadata] rating metadata
  * @apiParam (Request Body) {String} rating[chapterId] chapter being rated
  * @apiParam (Request Body) {String} rating[reaction] chapter reaction
+ * @apiParam (Request Body) {Object} review optional related review
  *
  * @apiSuccess {Object} rating Top level object
  * @apiSuccess {String} rating[id] rating id
@@ -218,10 +220,21 @@ router.post('/', requireAuth, validateRating, async ctx => {
 
   const averageRating = totalRating / ratings.length;
 
-
   try {
-    const rating = await Rating.query()
-      .insertAndFetch({...obj, userId, averageRating});
+    const review = obj.review;
+    delete obj.review;
+
+    let rating;
+    if (review) {
+
+      rating = await Rating.query().insertGraphAndFetch({
+        ...obj, userId, averageRating,
+        review: {...review, userId},
+      });
+    } else {
+      rating = await Rating.query()
+        .insertAndFetch({...obj, userId, averageRating});
+    }
 
     ctx.assert(rating, 401, 'Something went wrong');
 
@@ -253,7 +266,7 @@ router.post('/', requireAuth, validateRating, async ctx => {
  * @apiParam (Request Body) {String} rating[id] rating id
  * @apiParam (Request Body) {String} rating[chapterId] associated chapter Id
  * @apiParam (Request Body) {Object} rating[metadata] rating metadata
- * @apiParam (Request Body) {String} rating[userId] rating owner
+ * @apiParam (Request Body) {Object} review optional related review
  *
  * @apiSuccess {Object} rating Top level object
  * @apiSuccess {String} rating[id] rating id
@@ -310,8 +323,19 @@ router.put('/:id', requireAuth, async ctx => {
   }
 
   try {
-    const rating = await Rating.query()
+    const review = obj.review;
+    delete obj.review;
+
+    let rating = await Rating.query()
       .patchAndFetchById(ctx.params.id, obj);
+
+    if (review) {
+      /*Update related review*/
+      await rating.$relatedQuery('review')
+        .patch(review);
+      rating = await rating.$query().withGraphFetched('review');
+
+    }
 
     ctx.status = 200;
     ctx.body = {rating};
@@ -326,8 +350,8 @@ router.put('/:id', requireAuth, async ctx => {
 });
 
 /**
- * @api {delete} /api/v1/ratings/:id Delete a chapter rating
- * @apiName DELETE ratings by Id
+ * @api {delete} /api/v1/ratings/:id Delete a chapter rating and review
+ * @apiName DELETE ratings and review by Id
  * @apiGroup Ratings and Review
  * @apiPermission authenticated user
  * @apiVersion 0.4.0
@@ -348,14 +372,26 @@ router.delete('/:id', requireAuth, async ctx => {
     .findById(ctx.params.id);
 
   if (!rating) {
-    ctx.throw(401, 'No record with id');
+    ctx.throw(400, 'No record with id');
   }
-  await Rating.query()
-    .findById(ctx.params.id)
-    .patch({isDeleted: true});
 
-  ctx.status = 200;
-  ctx.body = {};
+  try {
+    const rating = await Rating.query()
+      .patchAndFetchById(ctx.params.id, {isDeleted: true});
+
+    /*Update related review*/
+    await rating.$relatedQuery('review')
+      .patch({isDeleted: true});
+
+    ctx.status = 200;
+    ctx.body = {};
+  } catch (e) {
+    if (e.statusCode) {
+      ctx.throw(e.statusCode, null, {errors: [e.message]});
+    } else {
+      ctx.throw(400, null, {errors: ['Bad Request']});
+    }
+  }
 });
 
 module.exports = router.routes();
