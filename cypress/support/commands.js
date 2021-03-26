@@ -49,7 +49,7 @@ Cypress.Commands.add('chapters', function () {
             'Authorization': `Bearer ${res.token}`
           }
         })
-          .its('body.chapter')
+          .its('body.chapters')
       .then((chapters) => {
         chapters.filter(function (item) {
           return item.authenticatedUser === 'like';
