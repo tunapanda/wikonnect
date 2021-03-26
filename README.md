@@ -229,7 +229,7 @@ Frontend set up steps:
 
 1) Navigate into the **frontend** directory
     ```
-    cd frontend/
+    cd fronts
     ```
 2) Install the frontend dependencies
     ```
