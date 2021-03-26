@@ -37,7 +37,7 @@ describe("Chapter Reaction After Auth", () => {
 
   it("Should see chapter reactions", () => {
     cy.visit('/');
-    cy.get(':nth-child(5) > .card > .card-body > .card-title a').click();
+    cy.get(':nth-child(5) > .card > .card-body > .card-title a').first().click();
     
     cy.get(".reactions .reaction-btn.like-button").then(($btn) => {
       const txt = $btn.text()
