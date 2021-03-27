@@ -17,17 +17,19 @@
   <div class="row">
     <div class="col-lg-8">
       <div class="chapter-content ">
-        <div class="d-flex justify-content-between pt-2 pb-2">
+        <div class="d-flex justify-content-between pt-2 pb-2 flex-wrap">
           <div class="chapter-title">
             <h4>
               {{this.model.name}}
             </h4>
           </div>
 
-          <div class="d-flex align-items-center">
-            <Reaction::ChapterReaction @chapter={{this.model}} @canReact={{true}} />
+          <div class="d-flex align-items-center flex-nowrap">
+            <span class="pt-1">
+            <Reaction::ChapterReaction  @chapter={{this.model}} @canReact={{true}} />
+            </span>
             <div class="chapter-actions d-flex">
-              <a href="#comments-section">{{svg-jar "message" height="20px"}}</a>
+              <a href="#comments-section" class="pt-1 mr-1">{{svg-jar "message" height="21px"}}</a>
               <Share @chapterName={{this.model.name}}/>
               {{!-- {{svg-jar "more_vert_black_24dp"}} --}}
             </div>
