@@ -240,9 +240,8 @@ router.get('/', permController.requireAuth, validateGetChapter, async ctx => {
 router.get('/:id', permController.requireAuth, async ctx => {
 
   let stateUserId = ctx.state.user.id == undefined ? ctx.state.user.data.id : ctx.state.user.id;
-  let chapter;
   try {
-    chapter = await Chapter.query()
+    let results = await Chapter.query()
       .select([
         'chapters.*',
         Counter.query()
@@ -264,6 +263,8 @@ router.get('/:id', permController.requireAuth, async ctx => {
       .withGraphFetched(
         '[reaction(reactionAggregate), flag(selectFlag),author()]'
       );
+    ctx.assert(results[0],404,'Chapter not found');
+    const chapter=results[0];
     //retrieve correct user image
     if (chapter.author) {
       chapter.author = {
@@ -273,6 +274,8 @@ router.get('/:id', permController.requireAuth, async ctx => {
         profileUri: await  getProfileImage(chapter.author)
       };
     }
+    ctx.status = 200;
+    ctx.body = { chapter };
   } catch (e) {
     if (e.statusCode) {
       ctx.throw(e.statusCode, null, { errors: [e.message] });
@@ -280,11 +283,7 @@ router.get('/:id', permController.requireAuth, async ctx => {
     throw e;
   }
 
-  ctx.assert(chapter, 404, 'No chapter by that ID');
 
-
-  ctx.status = 200;
-  ctx.body = { chapter };
 });
 
 
