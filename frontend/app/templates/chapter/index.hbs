@@ -70,13 +70,13 @@
 
         <hr>
         <div class="single-chapter-creator mb-3">
-          {{#if this.model.creator.profileUri}}
-            <img src={{this.model.creator.profileUri}} alt="Lesson creator avatar" class="rounded-circle mr-2">
+          {{#if this.model.author.profileUri}}
+            <img src={{this.model.author.profileUri}} alt="Lesson creator avatar" class="rounded-circle mr-2">
           {{else}}
             <img src="/uploads/images/profile-placeholder.gif" alt="Lesson creator avatar" class="rounded-circle mr-2">
           {{/if}}
           <div class="chapter-author">
-            <p>{{this.model.creator.username}}</p>
+            <p>{{this.model.author.name}}</p>
             {{!-- TODO: Add "verified" & "likes" to user model --}}
             {{!-- {{svg-jar "verified-black-24dp" class="verified-icon" height="20px"}} --}}
             {{!-- <p>134 likes</p> --}}
