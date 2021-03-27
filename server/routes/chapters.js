@@ -16,6 +16,7 @@ const Counter = require('../models/counter');
 const permController = require('../middleware/permController');
 const validateGetChapter = require('../middleware/validateRequests/chapterGetValidation');
 const Reaction = require('../models/reaction');
+const { getProfileImage } = require('../utils/routesUtils/userRouteUtils');
 
 const router = new Router({
   prefix: '/chapters'
@@ -118,9 +119,25 @@ router.get('/', permController.requireAuth, validateGetChapter, async ctx => {
       .where(ctx.query)
       .page(page, per_page)
       .withGraphFetched(
-        '[reaction(reactionAggregate), flag(selectFlag),author(selectNameAndProfile)]'
+        '[reaction(reactionAggregate), flag(selectFlag),author()]'
       )
       .orderBy('id');
+
+    //retrieve correct user image
+    const promises = chapter.results.map(async (chap)=>{
+
+      if (chap.author) {
+        chap.author = {
+          id: chap.author.id,
+          name: chap.author.name,
+          username: chap.author.username,
+          profileUri: await  getProfileImage(chap.author)
+        }; 
+      }
+      return chap;
+    });
+    chapter.results =await Promise.all(promises);
+    
   } catch (e) {
     if (e.statusCode) {
       ctx.throw(e.statusCode, null, { errors: [e.message] });
@@ -220,9 +237,17 @@ router.get('/:id', permController.requireAuth, async ctx => {
       ])
       .where({ 'chapters.id': ctx.params.id })
       .withGraphFetched(
-        '[reaction(reactionAggregate), flag(selectFlag),author(selectNameAndProfile)]'
+        '[reaction(reactionAggregate), flag(selectFlag),author()]'
       );
-
+    //retrieve correct user image
+    if (chapter.author) {
+      chapter.author = {
+        id: chapter.author.id,
+        name: chapter.author.name,
+        username: chapter.author.username,
+        profileUri: await  getProfileImage(chapter.author)
+      };
+    }
   } catch (e) {
     if (e.statusCode) {
       ctx.throw(e.statusCode, null, { errors: [e.message] });
