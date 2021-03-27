@@ -123,21 +123,46 @@ router.get('/', permController.requireAuth, validateGetChapter, async ctx => {
       )
       .orderBy('id');
 
-    //retrieve correct user image
-    const promises = chapter.results.map(async (chap)=>{
+    /**retrieve correct user image**/
+    //so not to re-fetch the profile, remove duplicates (handy if network requests to S3 are being done ),
+    const authors = [];
+    let authorIds={};
+    for (let i = 0; i < chapter.results.length; i++) {
+      if(!chapter.results[i].author){
+        continue;
+      }
+      if(!authorIds[chapter.results[i].author.id]){
+        authors.push(chapter.results[i].author);
+        authorIds[chapter.results[i].author.id]=true;
+      }
 
-      if (chap.author) {
-        chap.author = {
-          id: chap.author.id,
-          name: chap.author.name,
-          username: chap.author.username,
-          profileUri: await  getProfileImage(chap.author)
-        }; 
+    }
+    const promises = authors.map(async (author)=>{
+      return  {
+        id: author.id,
+        name: author.name,
+        username: author.username,
+        profileUri: await getProfileImage(author)
+      };
+    });
+    const authorProfiles =await Promise.all(promises);
+    //now map above profiles
+    chapter.results = chapter.results.map((chap)=>{
+      if(!chap.author){
+        //just in case 😁
+        chap.author={name:'Private',username:'Private',id:'Private',profileUri: 'anonymous'};
+        return chap;
+      }
+      const profile=authorProfiles.find((p)=>p.id===chap.author.id);
+      if(profile){
+        chap.author=profile;
+      }else{
+        //just in case 👽
+        chap.author={name:'Private',username:'Private',id:'Private',profileUri: 'anonymous'};
       }
       return chap;
     });
-    chapter.results =await Promise.all(promises);
-    
+
   } catch (e) {
     if (e.statusCode) {
       ctx.throw(e.statusCode, null, { errors: [e.message] });
