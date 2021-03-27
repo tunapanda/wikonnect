@@ -5,18 +5,6 @@ function freshChapter() {
     });
 }
 
-function likedChapter() {
-    return cy.chapters({approved: true}).then((chapters) => {
-        return chapters.filter((chapter) => chapter.authenticatedUser === 'like')[0]
-    });
-}
-
-function dislikedChapter() {
-    return cy.chapters({approved: true}).then((chapters) => {
-        return chapters.filter((chapter) => chapter.authenticatedUser === 'dislike')[0]
-    })
-}
-
 describe('Homepage Chapter Reactions After Auth', () => {
 
     beforeEach(() => {
@@ -44,7 +32,7 @@ describe('Homepage Chapter Reactions After Auth', () => {
                     .find('.like-button')
                     .click()
                     .find('.count')
-                    .contains((chapter.reaction[0].likes) || 0);
+                    .contains(chapter.reaction[0].likes);
 
             })
     });
@@ -59,7 +47,7 @@ describe('Homepage Chapter Reactions After Auth', () => {
                     .find('.dislike-button')
                     .click()
                     .find('.count')
-                    .contains((chapter.reaction[0].likes) || 0);
+                    .contains(chapter.reaction[0].dislikes);
 
             })
     });
