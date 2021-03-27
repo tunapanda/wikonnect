@@ -29,7 +29,7 @@ class User extends Model {
     if(this.metadata.lastName){
       return `${this.metadata.lastName}`;
     }
-    return this.metadata.username;
+    return this.username;
   }
   get $virtualFields() {
     return ['firstName', 'lastName', 'aboutMe'];
