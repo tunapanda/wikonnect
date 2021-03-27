@@ -39,7 +39,9 @@ export default class ReplySectionComponent extends Component {
   @action
   saveReply(e) {
     e.preventDefault();
-
+    if (!this.reply) {
+      return;
+    }
     const model = this.store.createRecord('comment', {
       creator: this.me.user,
       comment: this.reply,
