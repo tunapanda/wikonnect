@@ -1,3 +1,22 @@
+function freshChapter() {
+    return cy.chapters({approved: true, page: 0, per_page: 10}).then((chapters) => {
+        return chapters
+            .filter((chapter) => chapter.authenticatedUser === null || chapter.authenticatedUser === 'null')[0]
+    });
+}
+
+function likedChapter() {
+    return cy.chapters({approved: true}).then((chapters) => {
+        return chapters.filter((chapter) => chapter.authenticatedUser === 'like')[0]
+    });
+}
+
+function dislikedChapter() {
+    return cy.chapters({approved: true}).then((chapters) => {
+        return chapters.filter((chapter) => chapter.authenticatedUser === 'dislike')[0]
+    })
+}
+
 describe('Homepage Chapter Reactions After Auth', () => {
 
     beforeEach(() => {
@@ -15,23 +34,34 @@ describe('Homepage Chapter Reactions After Auth', () => {
 
 
     it('Should not like a chapter', () => {
-        cy.get(
-          ":nth-child(1) > .card > .card-body > .actions-section > :nth-child(1) > .reactions > .like-button"
-        ).then(($like) => {
-          const count = $like.find(".count").text();
-          $like.click();
-          expect($like.find(".count").text()).to.equal(count);
-        });
+
+        freshChapter()
+            .then((chapter) => {
+
+                cy.get(`.card a[href="/chapter/${chapter.id}"].chapter-thumbnail:first`)
+                    .siblings()
+                    .find('.reactions')
+                    .find('.like-button')
+                    .click()
+                    .find('.count')
+                    .contains((chapter.reaction[0].likes) || 0);
+
+            })
     });
 
     it('Should not dislike a chapter', () => {
-        cy.get(
-          ":nth-child(1) > .card > .card-body > .actions-section > :nth-child(1) > .reactions > .dislike-button"
-        ).then(($dislike) => {
-          const count = $dislike.find(".count").text();
-          $dislike.click();
-          expect($dislike.find(".count").text()).to.equal(count);
-        });
+        freshChapter()
+            .then((chapter) => {
+
+                cy.get(`.card a[href="/chapter/${chapter.id}"].chapter-thumbnail:first`)
+                    .siblings()
+                    .find('.reactions')
+                    .find('.dislike-button')
+                    .click()
+                    .find('.count')
+                    .contains((chapter.reaction[0].likes) || 0);
+
+            })
     });
 
 })
