@@ -185,10 +185,10 @@ router.get('/:id', permController.requireAuth, async ctx => {
 
     if (user.id !== stateUserId || stateUserId === 'anonymous') {
       // If profile is private, return specific data
-      if (user.private){
-        user = {...user,username :'private',profileUri : '/uploads/images/profile-placeholder.gif'};
+      if (user.private ===true) {
+        user = {...user, username: 'private', profileUri: '/uploads/images/profile-placeholder.gif'};
+        user = {username: user.username, profileUri: user.profileUri, id: user.id, private: user.private};
       }
-      user = {username:user.username,profileUri:user.profileUri,id:user.id,private:user.private};
     } else {
       // get all verification data
       user.userVerification = await knex('user_verification').where({'user_id': userId});

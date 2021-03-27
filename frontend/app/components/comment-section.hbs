@@ -3,8 +3,8 @@
 
   {{#if this.me.isAuthenticated}}
     <div class="d-flex align-items-center">
-      {{#if this.me.profileUri}}
-        <img alt="profile" class="mr-3 rounded-circle" width="30px" src={{this.me.profileUri}}>
+      {{#if this.me.user.profileUri}}
+        <img alt="profile" class="mr-3 rounded-circle" width="30px" src={{this.me.user.profileUri}}>
       {{else}}
         <img alt="profile" class="mr-3 rounded-circle" width="30px" src="/uploads/images/profile-placeholder.gif">
       {{/if}}
@@ -27,7 +27,7 @@
         <img alt="profile" class="mr-3 rounded-circle" width="40px" src="/uploads/images/profile-placeholder.gif">
       {{/if}}
       <div class="media-body">
-        <p class="mt-2"><strong>{{item.creator.username}}</strong></p>
+        <p class="mt-2"><strong>{{item.creator.name}}</strong></p>
         {{nl2br item.comment}}
 
         <Reply-Section @comment={{item}} @selectedChapter={{@selectedChapter}} @chapterReplies={{@chapterReplies}}/>
