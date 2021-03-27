@@ -15,9 +15,11 @@ describe('Learner Navigation Menu', () => {
       .should('be.visible');
   });
 
-  it('Should link to about', () => {
-    cy.get('.main-header.navbar a[href="/about"]')
-      .should('be.visible');
+  it('About link should link to wikonnect.org', () => {
+      cy.get('.main-header.navbar a.about-link-item')
+          .should('be.visible')
+          .invoke('attr','href')
+          .should('contain','wikonnect.org')
   });
 
   it('Should link to homepage', () => {

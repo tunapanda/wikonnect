@@ -34,11 +34,10 @@ export default class UploadController extends Controller {
 
       const host = '/' + this.store.adapterFor('application').urlPrefix();
 
-      const uploadRes = await this.uploader.startUpload(
+      await this.uploader.startUpload(
         [host, 'users', this.me.user.id, 'profile-image'].join('/')
       );
 
-      this.userImage = window.location.origin + uploadRes.path;
       this.complete = true;
       this.transitionToRoute('profile');
     } catch (e) {
