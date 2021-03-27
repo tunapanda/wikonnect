@@ -1,10 +1,3 @@
-function freshChapter() {
-    return cy.chapters({approved: true, page: 0, per_page: 10}).then((chapters) => {
-        return chapters
-            .filter((chapter) => chapter.authenticatedUser === null || chapter.authenticatedUser === 'null')[0]
-    });
-}
-
 describe('Homepage Chapter Reactions After Auth', () => {
 
     beforeEach(() => {
@@ -22,34 +15,21 @@ describe('Homepage Chapter Reactions After Auth', () => {
 
 
     it('Should not like a chapter', () => {
-
-        freshChapter()
-            .then((chapter) => {
-
-                cy.get(`.card a[href="/chapter/${chapter.id}"].chapter-thumbnail:first`)
-                    .siblings()
-                    .find('.reactions')
-                    .find('.like-button')
-                    .click()
-                    .find('.count')
-                    .contains(chapter.reaction[0].likes);
-
-            })
+        cy.get(":nth-child(1) > .card > .card-body > .actions-section > :nth-child(1) > .reactions > .like-button")
+            .then(($like) => {
+                const count = $like.find(".count").text();
+                cy.get($like).click();
+                cy.expect($like.find(".count").text()).to.equal(count);
+            });
     });
 
     it('Should not dislike a chapter', () => {
-        freshChapter()
-            .then((chapter) => {
-
-                cy.get(`.card a[href="/chapter/${chapter.id}"].chapter-thumbnail:first`)
-                    .siblings()
-                    .find('.reactions')
-                    .find('.dislike-button')
-                    .click()
-                    .find('.count')
-                    .contains(chapter.reaction[0].dislikes);
-
-            })
+        cy.get(":nth-child(1) > .card > .card-body > .actions-section > :nth-child(1) > .reactions > .dislike-button")
+            .then(($dislike) => {
+                const count = $dislike.find(".count").text();
+                cy.get($dislike).click();
+                expect($dislike.find(".count").text()).to.equal(count);
+            });
     });
 
 })
