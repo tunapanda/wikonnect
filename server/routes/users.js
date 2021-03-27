@@ -4,7 +4,6 @@ const path = require('path');
 const busboy = require('async-busboy');
 const shortid = require('shortid');
 const sharp = require('sharp');
-const _ = require('lodash');
 
 
 const User = require('../models/user');
@@ -168,13 +167,6 @@ router.post('/', validateAuthRoutes.validateNewUser, createPasswordHash, async c
  */
 
 
-function Private() {
-  // this.a = 1;
-  this.username = 'private';
-  this.profileUri = '/uploads/images/profile-placeholder.gif';
-  return this;
-}
-
 router.get('/:id', permController.requireAuth, async ctx => {
 
   try {
@@ -190,12 +182,13 @@ router.get('/:id', permController.requireAuth, async ctx => {
     ctx.assert(user, 404, 'No User With that Id');
 
     user.profileUri = await getProfileImage(user);
-    let publicData = ['username', 'profileUri', 'id', 'private'];
 
     if (user.id !== stateUserId || stateUserId === 'anonymous') {
       // If profile is private, return specific data
-      if (user.private) user = _.assign(user, new Private);
-      user = _.pick(user, publicData);
+      if (user.private){
+        user = {...user,username :'private',profileUri : '/uploads/images/profile-placeholder.gif'};
+      }
+      user = {username:user.username,profileUri:user.profileUri,id:user.id,private:user.private};
     } else {
       // get all verification data
       user.userVerification = await knex('user_verification').where({'user_id': userId});
@@ -208,8 +201,8 @@ router.get('/:id', permController.requireAuth, async ctx => {
   }catch (e) {
     if (e.statusCode) {
       ctx.throw(e.statusCode, null, { errors: [e.message] });
-    } else { 
-      ctx.throw(400, null, { errors: [e.message] }); 
+    } else {
+      ctx.throw(400, null, { errors: [e.message] });
     }
   }
 });
@@ -231,25 +224,25 @@ router.get('/:id', permController.requireAuth, async ctx => {
  * @apiParam (Optional Params) {string} user[metadata] json data
  *
  */
-router.get('/', permController.requireAuth, permController.grantAccess('readAny', 'profile'), async ctx => {
-  let user = User.query();
+router.get('/', permController.requireAuth, permController.grantAccess('readAny', 'profile'),
+  async ctx => {
 
-  if (ctx.query.username) {
-    user.where('username', ctx.query.username);
-    ctx.assert(user, 404, 'No User With that username');
-  }
-  try {
-    user = await user.withGraphFetched('[achievementAwards(selectBadgeNameAndId), userRoles(selectName), enrolledCourses(selectNameAndId)]');
-  } catch (e) {
-    if (e.statusCode) {
-      ctx.throw(e.statusCode, { message: 'The query key does not exist' });
-      ctx.throw(e.statusCode, null, { errors: [e.message] });
-    } else { ctx.throw(406, null, { errors: [e.message] }); }
-    throw e;
-  }
+    try {
+      const users = await User.query()
+        .where(ctx.query)
+        .withGraphFetched('[achievementAwards(selectBadgeNameAndId), userRoles(selectName),'+
+          ' enrolledCourses(selectNameAndId)]');
 
-  ctx.body = { user };
-});
+      ctx.assert(users, 404, 'No User With that username');
+
+      ctx.body = { users };
+    } catch (e) {
+      if (e.statusCode) {
+        ctx.throw(e.statusCode, { message: 'The query key does not exist' });
+      } else { ctx.throw(406, null, { errors: [e.message] }); }
+    }
+
+  });
 
 /**
  * @api {put} /users/:id PUT users data.
