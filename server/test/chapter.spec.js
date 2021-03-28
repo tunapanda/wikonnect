@@ -140,8 +140,8 @@ describe('CHAPTER ROUTE', () => {
       .end((err, res) => {
         res.should.have.status(200);
         res.should.be.json;
-        res.body.chapter[0].should.have.property('tags');
-        res.body.chapter[0].tags.should.eql(['primary']);
+        res.body.chapter.should.have.property('tags');
+        res.body.chapter.tags.should.eql(['primary']);
         done();
       });
   });
