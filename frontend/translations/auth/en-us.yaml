@@ -7,3 +7,10 @@ login:
   password: Password
   enter_password: Enter Password
   login_third_party: Login with {authProvider}
+
+signup:
+  email: Email
+  repeat_password: Repeat Password
+  invite_code: Invite Code
+  signup: Sign Up
+  signup_third_party: Sign up with {authProvider}
