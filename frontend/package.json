@@ -62,7 +62,6 @@
     "ember-fetch": "^8.0.4",
     "ember-file-drop-zone": "^0.2.1",
     "ember-infinity": "^2.1.2",
-    "ember-inflector": "^4.0.1",
     "ember-intl": "^5.5.0",
     "ember-linkify": "^4.1.2",
     "ember-load-initializers": "^2.1.2",
