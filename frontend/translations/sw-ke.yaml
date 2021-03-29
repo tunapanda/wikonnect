@@ -28,6 +28,8 @@ buttons:
   change_profile_pic: "Badilisha picha ya profaili"
   upload_profile_pic: "Pakia picha ya profaili"
   copy_embed_code: Nakili msimbo wa kupachika
+  proceed_to_profile: Endelea kwa profaili
+  skip_to_profile: Ruka kwa profaili
 
 labels:
   username: Jina La Mtumiaji
@@ -53,7 +55,7 @@ labels:
   english: EN
   kiswahili: SW
   toggle_nav: Geuza urambazaji
-  user_profile_link: "Profaili ya {user}""
+  user_profile_link: "Profaili ya {user}"
 
 profile:
   profile_picture : Picha ya Profaili
@@ -65,6 +67,24 @@ messages:
   upload_profile_pic: "Pakia Picha ya Profaili"
   create_h5p_chapter: "Unda Sura ya H5P"
   authenticating: "Inathibitisha ..."
+  uploading: Inapakia
 
 feedback:
   message: Mada zilizo chini zinaeleweka vyema ukimaliza zile zilizotangulia
+
+four_oh_four:
+  header: Samahani, hatukuweza kupata unachotafuta
+  sub_header: Bonyeza '<'a href="{url}"'>' hapa '</a>' kwenda kwenye ukurasa wa kwanza
+
+embed:
+  updates: "Sasisho za maendeleo zimetumwa kwa: {url}"
+  logged_in_as: "Umeingia kama {user}"
+
+manage:
+  image: Picha
+  name: Jina
+  description: Maelezo
+  status: Hali
+  approved: Imeidhinishwa
+  not_approved: Haijaidhinishwa
+  chapter: Sura

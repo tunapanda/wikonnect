@@ -28,6 +28,8 @@ buttons:
   change_profile_pic: "Change profile picture"
   upload_profile_pic: "Upload profile picture"
   copy_embed_code: Copy embed code
+  proceed_to_profile: Proceed to profile
+  skip_to_profile: Skip to profile
 
 labels:
   username: Username
@@ -65,6 +67,24 @@ messages:
   upload_profile_pic: "Upload Profile Picture"
   create_h5p_chapter: "Create H5P Chapter"
   authenticating: "Authenticating ..."
+  uploading: "Uploading ..."  
 
 feedback:
   message: The topics below are best understood if you finish the ones before
+
+four_oh_four:
+  header: Sorry we could not find what you are looking for
+  sub_header: Click '<'a href="{url}"'>' here '</a>' to go to the homepage
+
+embed:
+  updates: "Progress updates sent to: {url}"
+  logged_in_as: "Logged in as {user}"
+
+manage:
+  image: Image
+  name: Name
+  description: Description
+  status: Status
+  approved: Approved
+  not_approved: Not Approved
+  chapter: Chapter
