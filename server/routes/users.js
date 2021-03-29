@@ -4,7 +4,6 @@ const path = require('path');
 const busboy = require('async-busboy');
 const shortid = require('shortid');
 const sharp = require('sharp');
-const _ = require('lodash');
 
 
 const User = require('../models/user');
@@ -167,40 +166,33 @@ router.post('/', validateAuthRoutes.validateNewUser, createPasswordHash, async c
  *    }
  */
 
-
-function Private() {
-  // this.a = 1;
-  this.username = 'private';
-  this.profileUri = '/uploads/images/profile-placeholder.gif';
-  return this;
-}
-
 router.get('/:id', permController.requireAuth, async ctx => {
 
-  let stateUserId = ctx.state.user.id == undefined ? ctx.state.user.data.id : ctx.state.user.id;
+  try {
+    let stateUserId = ctx.state.user.id === undefined ? ctx.state.user.data.id : ctx.state.user.id;
 
-  let userId = ctx.params.id != 'current' ? ctx.params.id : stateUserId;
-  let user = await User.query().findById(userId).withGraphFetched('[achievementAwards(selectBadgeNameAndId), userRoles(selectName), enrolledCourses(selectNameAndId)]');
-  user.profileUri = await getProfileImage(user.profileUri);
+    let userId = (ctx.params.id !== 'current' || ctx.params.id !== 'me') ? ctx.params.id : stateUserId;
 
-  ctx.assert(user, 404, 'No User With that Id');
+    let user = await User.query()
+      .findById(userId)
+      .withGraphFetched('[achievementAwards(selectBadgeNameAndId), userRoles(selectName),' +
+        ' enrolledCourses(selectNameAndId)]');
 
-  let publicData = ['username', 'profileUri', 'id', 'private'];
+    ctx.assert(user, 404, 'No User With that Id');
 
-  if (user.id != stateUserId || stateUserId === 'anonymous') {
-    // If profile is private, return specific data
-    if(user.private) user = _.assign(user, new Private);
-    user = _.pick(user, publicData);
-  } else {
-    // get all verification data
-    const userVerification = await knex('user_verification').where({ 'user_id': userId });
-    user.userVerification = userVerification;
+    user.profileUri = await getProfileImage(user);
     profileCompleteBoolean(user, ctx.params.id);
     log.info('Got a request from %s for %s', ctx.request.ip, ctx.path);
-  }
 
-  ctx.status = 200;
-  ctx.body = { user: user };
+    ctx.status = 200;
+    ctx.body = { user: user };
+  } catch (e) {
+    if (e.statusCode) {
+      ctx.throw(e.statusCode, null, { errors: [e.message] });
+    } else {
+      ctx.throw(400, null, { errors: [e.message] });
+    }
+  }
 });
 /**
  * @api {get} /users GET all users.
@@ -220,25 +212,25 @@ router.get('/:id', permController.requireAuth, async ctx => {
  * @apiParam (Optional Params) {string} user[metadata] json data
  *
  */
-router.get('/', permController.requireAuth, permController.grantAccess('readAny', 'profile'), async ctx => {
-  let user = User.query();
+router.get('/', permController.requireAuth, permController.grantAccess('readAny', 'profile'),
+  async ctx => {
 
-  if (ctx.query.username) {
-    user.where('username', ctx.query.username);
-    ctx.assert(user, 404, 'No User With that username');
-  }
-  try {
-    user = await user.withGraphFetched('[achievementAwards(selectBadgeNameAndId), userRoles(selectName), enrolledCourses(selectNameAndId)]');
-  } catch (e) {
-    if (e.statusCode) {
-      ctx.throw(e.statusCode, { message: 'The query key does not exist' });
-      ctx.throw(e.statusCode, null, { errors: [e.message] });
-    } else { ctx.throw(406, null, { errors: [e.message] }); }
-    throw e;
-  }
+    try {
+      const users = await User.query()
+        .where(ctx.query)
+        .withGraphFetched('[achievementAwards(selectBadgeNameAndId), userRoles(selectName),' +
+          ' enrolledCourses(selectNameAndId)]');
 
-  ctx.body = { user };
-});
+      ctx.assert(users, 404, 'No User With that username');
+
+      ctx.body = { users };
+    } catch (e) {
+      if (e.statusCode) {
+        ctx.throw(e.statusCode, { message: 'The query key does not exist' });
+      } else { ctx.throw(406, null, { errors: [e.message] }); }
+    }
+
+  });
 
 /**
  * @api {put} /users/:id PUT users data.
@@ -312,8 +304,7 @@ router.post('/invite/:id', async ctx => {
  * @apiError {String} errors Bad Request.
  */
 
-router.post('/:id/profile-image', permController.requireAuth, async (ctx, next) => {
-  if ('POST' != ctx.method) return await next();
+router.post('/:id/profile-image', permController.requireAuth, async (ctx) => {
 
   const { files } = await busboy(ctx.req);
   const fileNameBase = shortid.generate();
@@ -322,6 +313,11 @@ router.post('/:id/profile-image', permController.requireAuth, async (ctx, next) 
 
   ctx.assert(files.length, 400, 'No files sent.');
   ctx.assert(files.length === 1, 400, 'Too many files sent.');
+
+  const fileExtension = path.extname(files[0].path);
+  if (!['.webp', '.svg', '.png', '.jpeg', '.gif', '.avif'].includes(fileExtension)) {
+    ctx.throw(400, { error: 'Image format not supported' });
+  }
 
   const resizer = sharp().resize(500, 500).jpeg({ quality: 70 });
 
@@ -352,12 +348,23 @@ router.post('/:id/profile-image', permController.requireAuth, async (ctx, next) 
   }
 
   else {
-    await resizer.toFile(`${uploadDir}/${fileNameBase}.jpg`);
-    await User.query().findById(ctx.params.id).patchAndFetchById({ profile_uri: `${uploadPath}/${fileNameBase}.jpg` });
-    ctx.body = {
-      host: ctx.host,
-      path: `${uploadPath}/${fileNameBase}.jpg`
-    };
+    try {
+      await resizer.toFile(`${uploadDir}/${fileNameBase}.jpg`);
+      await User.query()
+        .patchAndFetchById(ctx.params.id, { profileUri: `/${uploadPath}/${fileNameBase}.jpg` });
+
+      ctx.status = 200;
+      ctx.body = {
+        host: ctx.host,
+        path: `/${uploadPath}/${fileNameBase}.jpg`,
+      };
+    } catch (e) {
+      if (e.statusCode) {
+        ctx.throw(e.statusCode, null, { errors: [e.message] });
+      } else {
+        ctx.throw(400, null, { errors: [e.message] });
+      }
+    }
   }
 });
 

@@ -1,9 +1,11 @@
-import chapters from '../../fixtures/chapters.json';
+function fetchFirstPageChapters() {
+    return cy.chapters({approved: true, page: 0, per_page: 10});
+}
 
 describe("Chapters filter tags ", () => {
 
     beforeEach(() => {
-        cy.visit('/home');
+        cy.visit('/');
     })
 
     function getFilterButton() {
@@ -18,58 +20,53 @@ describe("Chapters filter tags ", () => {
 
     function getSeedChaptersTags() {
         let tags = {};
-        chapters.map(chapter => {
-            chapter.tags.map(tag => {
-                tags[tag] = tag;
+        return fetchFirstPageChapters().then((chapters) => {
+            chapters.map(chapter => {
+                chapter.tags.map(tag => {
+                    tags[tag] = tag;
+                });
             });
-        });
-        return Object.values(tags)
+            return Object.values(tags)
+        })
     }
-
-    it('Tags filter should exists', () => {
-        getFilterButton()
-            .should('be.visible')
-            .click();
-
-        getFilterDropdownMenu()
-            .should('be.visible');
-
-    });
 
     it('Should search existing tags', () => {
 
-        const tags = getSeedChaptersTags();
+        getSeedChaptersTags()
+            .then((tags) => {
 
-        getFilterButton()
-            .click();
+                getFilterButton()
+                    .click();
 
-        getFilterDropdownMenu()
-            .find('input.search-input')
-            .type(tags[0]);
+                getFilterDropdownMenu()
+                    .find('input.search-input')
+                    .type(tags[0]);
 
-        getFilterDropdownMenu()
-            .find('.tag-select-item')
-            .find('label')
-            .contains(tags[0], {ignoreCase: true})
+                getFilterDropdownMenu()
+                    .find('.tag-select-item')
+                    .find('label')
+                    .contains(tags[0], {ignoreCase: true});
+            });
     });
 
     it('Selected tags should be visible', () => {
-        const tags = getSeedChaptersTags();
+        getSeedChaptersTags()
+            .then((tags) => {
 
-        getFilterButton()
-            .click();
+                getFilterButton()
+                    .click();
 
-        getFilterDropdownMenu()
-            .find('.tag-select-item label')
-            .contains(tags[0], {ignoreCase: true})
-            .find('input[type="checkbox"]')
-            .check();
+                getFilterDropdownMenu()
+                    .find('.tag-select-item label')
+                    .contains(tags[0], {ignoreCase: true})
+                    .find('input[type="checkbox"]')
+                    .check();
 
-        cy.get('.chapter-filters-section .selected-tags')
-            .find('button.tag-button')
-            .contains(tags[0], {ignoreCase: true});
+                cy.get('.chapter-filters-section .selected-tags')
+                    .find('button.tag-button')
+                    .contains(tags[0], {ignoreCase: true});
+            });
     });
-
 
     it('Clear all filters buttons should unselect all tags', () => {
         getFilterButton()
@@ -86,35 +83,37 @@ describe("Chapters filter tags ", () => {
             .should('not.exist')
     });
 
-
     it('Selected tags should filter chapters', () => {
-        const tag = getSeedChaptersTags()[2];
 
-        const filteredChapters = chapters.filter((chapter) => chapter.tags.includes(tag));
+        getSeedChaptersTags()
+            .then((tags) => {
+                const tag = tags[0];
 
+                getFilterButton()
+                    .click();
 
-        getFilterButton()
-            .click();
-
-        getFilterDropdownMenu()
-            .find('.tag-select-item label')
-            .contains(tag, {ignoreCase: true})
-            .find('input[type="checkbox"]')
-            .check();
-
-        cy.get('a')
-            .as('pageLinks');
+                getFilterDropdownMenu()
+                    .find('.tag-select-item label')
+                    .contains(tag, {ignoreCase: true})
+                    .find('input[type="checkbox"]')
+                    .check()
 
 
-        cy.log(filteredChapters);
+                cy.get('a')
+                    .as('pageLinks');
 
-        for (const chapter of filteredChapters) {
-            cy.log(chapter);
 
-            cy.get('@pageLinks')
-                .filter(`[href="/chapter/${chapter.id}"]`)
-                .should('be.visible')
-        }
+                fetchFirstPageChapters()
+                    .then((chapters) => {
+                        const filteredChapters = chapters.filter((chapter) => chapter.tags.includes(tag));
+
+                        for (const chapter of filteredChapters) {
+                            cy.get('@pageLinks')
+                                .filter(`[href="/chapter/${chapter.id}"]`)
+                                .should('be.visible')
+                        }
+                    })
+            })
 
     });
 

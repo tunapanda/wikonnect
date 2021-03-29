@@ -4,6 +4,7 @@ import { inject as service } from '@ember/service';
 export default class ApplicationRoute extends Route {
   @service session;
   @service me;
+  @service SeoTags;
 
   queryParams = { campaign_id: '', points: '', enduser_id: '', partner_id: '' };
 
@@ -23,6 +24,10 @@ export default class ApplicationRoute extends Route {
 
   beforeModel() {
     return this._loadMe();
+  }
+
+  afterModel() {
+    this.headTags = this.SeoTags.build();
   }
 
   _loadMe() {

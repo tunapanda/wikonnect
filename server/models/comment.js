@@ -27,6 +27,43 @@ class Comment extends Model {
     };
   }
 
+  static get relationMappings() {
+    return {
+      replies: {
+        relation: Model.ManyToManyRelation,
+        modelClass: Comment,
+        join: {
+          from: 'comments.id',
+          through: {
+            from: 'parent_child_comments.parentId',
+            to: 'parent_child_comments.childId'
+          },
+          to: 'comments.id'
+        }
+      },
+      children: {
+        relation: Model.HasManyRelation,
+        modelClass: Comment,
+        join: {
+          from: 'comments.id',
+          to: 'comments.parentId'
+        }
+      },
+      parent: {
+        relation: Model.ManyToManyRelation,
+        modelClass: Comment,
+        join: {
+          from: 'comments.id',
+          through: {
+            from: 'parent_child_comments.childId',
+            to: 'parent_child_comments.parentId'
+          },
+          to: 'comments.id'
+        }
+      }
+    };
+  }
+
   static get modifiers() {
     return {
       selectComment: (builder) => {
@@ -38,13 +75,3 @@ class Comment extends Model {
 
 Comment.knex(knex);
 module.exports = Comment;
-
-
-
-// "id": "It4DF0EAAB0",
-// "chapterId": "chapter1",
-// "creatorId": "user1",
-// "comment": "chapter1",
-// "metadata": null,
-// "createdAt": null,
-// "updatedAt": null,

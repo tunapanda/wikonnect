@@ -1,11 +1,11 @@
-<div class="col-lg-4 col-md-6 mb-4 ">
+<div class="col-lg-4 col-md-6 mb-4 chapter-card">
   <div class="card h-100 shadow-sm">
-    <LinkTo @route="chapter" @model={{@chapter.id}}>
+    <LinkTo @route="chapter" @model={{@chapter.id}} class="chapter-thumbnail">
       {{#if (eq @chapter.imageUrl null)}}
-      <img class="card-img-top" src="https://placehold.jp/20/{{this.color}}/ffffff/328x200.png?text={{@chapter.name}}"
-        alt="" role="presentation">
+      <img class="card-img-top chapter-thumbnail" alt="" role="presentation"
+           src="https://placehold.jp/20/{{this.color}}/ffffff/328x200.png?text={{@chapter.name}}" >
       {{else}}
-      <img class="card-img-top" alt="" src={{@chapter.imageUrl}} role="presentation">
+      <img class="card-img-top chapter-thumbnail" alt="" src={{@chapter.imageUrl}} role="presentation" >
       {{/if}}
     </LinkTo>
     <div class="card-body chapter-body">
@@ -21,7 +21,7 @@
       </div>
 
       <h5 class="card-title title-section">
-        <LinkTo @route="chapter" @model={{@chapter.id}}>
+        <LinkTo @route="chapter" @model={{@chapter.id}} class="chapter-title">
           {{@chapter.name}}
         </LinkTo>
       </h5>
@@ -47,8 +47,8 @@
       </div>
 
       <div class="chapter-creator">
-        <img src={{@chapter.creator.profileUri}} alt="Chapter creator avatar" class="rounded-circle">
-        {{@chapter.creator.username}}
+        <img src={{@chapter.author.profileUri}} alt="Chapter creator avatar" class="rounded-circle">
+        {{@chapter.author.name}}
       </div>
     </div>
 

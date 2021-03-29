@@ -12,3 +12,6 @@ TODO
 dump.rdb
 .idea
 yarn-error.log
+*.envrc
+.env
+data/*

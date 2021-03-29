@@ -21,6 +21,8 @@ buttons:
   skip: Skip
   done: Done
   next: Next
+  change_profile_pic: "Change profile picture"
+  upload_profile_pic: "Upload profile picture"
 
 labels:
   username: Username

@@ -1,5 +1,11 @@
 const redis = require('redis');
-const redisClient = redis.createClient(); // default setting.
+
+const options = {
+  host: process.env.REDIS_HOST || 'localhost',
+  port: process.env.REDIS_PORT || 6379
+};
+
+const redisClient = redis.createClient(options); // default setting.
 
 
 redisClient.on('connect', function () {

@@ -9,6 +9,10 @@ $palette: (
   black: #000000,
 );
 
+.chapter-thumbnail{
+  min-height: 175px;
+  background-color: lighten(map-get($palette,primary),30%);
+}
 .chapter-metadata {
   .verified-icon {
     fill: map-get($palette, primary);

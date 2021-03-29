@@ -1,16 +1,9 @@
-import chapters from "../../fixtures/chapters.json";
-
 describe('Homepage Chapter Reactions After Auth', () => {
 
     beforeEach(() => {
         cy.login();
-        cy.visit('/home');
+        cy.visit('/');
     })
-
-    function newChapter() {
-        return chapters.find((chapter) => !chapter.reaction[0]);
-    }
-
 
     it('Should see chapter reactions', () => {
         cy.get('.reactions .reaction-btn.like-button')
@@ -22,38 +15,31 @@ describe('Homepage Chapter Reactions After Auth', () => {
 
 
     it('Should not like a chapter', () => {
-        const {id, reaction} = newChapter();
-        cy.get(`.card a[href="/chapter/${id}"]:first`)
-            .siblings()
-            .find('.reactions')
-            .find('.like-button')
-            .click()
-            .find('.count')
-            .contains(0);
+        cy.get(":nth-child(1) > .card > .card-body > .actions-section > :nth-child(1) > .reactions > .like-button")
+            .then(($like) => {
+                const count = $like.find(".count").text();
+                cy.get($like).click();
+                cy.expect($like.find(".count").text()).to.equal(count);
+            });
     });
 
     it('Should not dislike a chapter', () => {
-        const {id, reaction} = newChapter();
-
-        cy.get(`.card a[href="/chapter/${id}"]:first`)
-            .siblings()
-            .find('.reactions')
-            .find('.dislike-button')
-            .click()
-            .find('.count')
-            .contains(0);
+        cy.get(":nth-child(1) > .card > .card-body > .actions-section > :nth-child(1) > .reactions > .dislike-button")
+            .then(($dislike) => {
+                const count = $dislike.find(".count").text();
+                cy.get($dislike).click();
+                expect($dislike.find(".count").text()).to.equal(count);
+            });
     });
 
 })
 
 describe('Homepage Chapter Reactions Without Auth', () => {
-
     beforeEach(() => {
-        cy.visit('/home')
+        cy.visit('/')
     })
 
     it('Should see chapter reactions', () => {
-
         cy.get('.reactions .reaction-btn.like-button')
             .should('be.visible');
 

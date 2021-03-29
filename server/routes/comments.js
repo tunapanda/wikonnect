@@ -8,7 +8,6 @@ const router = new Router({
   prefix: '/comments'
 });
 
-
 /**
  * @api {get} / GET a comment
  * @apiName GetChapterComment
@@ -19,32 +18,54 @@ const router = new Router({
  *     HTTP/1.1 201 OK
  *     {
  *      "comment": [{
- *         "id": String,
- *         "comment": String,
- *         "chapterId": String,
- *         "creatorId": String,
- *         "createdAt": DateTime,
- *         "updatedAt": DateTime
- *        }]
- *      }
+ *           "id": "IwAfzOoAAIE",
+ *           "chapterId": "chapter5",
+ *           "creatorId": "user3",
+ *           "comment": "Eligendi inventore placeat repellendus reiciendis sint nesciunt fuga.",
+ *           "metadata": null,
+ *           "createdAt": "2020-06-15T09:45:18.031Z",
+ *           "updatedAt": "2021-03-03T15:46:34.456Z",
+ *           "replies": [{
+ *               "id": "IwAfzOwAANc",
+ *               "chapterId": "chapter2",
+ *               "creatorId": "user1",
+ *               "comment": "Quo aut eum qui omnis id.",
+ *               "metadata": null,
+ *               "createdAt": "2020-08-29T02:40:56.161Z",
+ *               "updatedAt": "2021-03-04T01:56:56.855Z",
+ *               "type": "comment"
+ *             },
+ *             {
+ *               "id": "IwAfzOuAALw",
+ *               "chapterId": "chapter2",
+ *               "creatorId": "user1",
+ *               "comment": "Excepturi modi qui qui.",
+ *               "metadata": null,
+ *               "createdAt": "2020-10-24T21:09:29.287Z",
+ *                "updatedAt": "2021-03-04T11:58:38.484Z",
+ *               "type": "comment"
+ *             }],
+ *             "type": "comment"
+ *           }]
+ *     }
  *
  */
 router.get('/', requireAuth, async ctx => {
 
-  let comment;
   try {
-    comment = await Comment.query().where(ctx.query);
+    const comment = await Comment.query()
+      .where(ctx.query);
+
+    ctx.assert(comment, 401, 'Something went wrong');
+    ctx.status = 201;
+    ctx.body = { comment };
   } catch (e) {
     if (e.statusCode) {
       ctx.throw(e.statusCode, null, { errors: [e] });
     } else { ctx.throw(400, null, { errors: [e] }); }
     throw e;
   }
-  if (!comment) {
-    ctx.assert(comment, 401, 'Something went wrong');
-  }
-  ctx.status = 201;
-  ctx.body = { comment };
+
 
 });
 
@@ -59,22 +80,47 @@ router.get('/', requireAuth, async ctx => {
  *
  * @apiSuccessExample {json} Success-Response:
  *     HTTP/1.1 201 OK
- *     {"comment": [{
- *          "id": String,
- *          "chapterId": String,
- *          "creatorId": String,
- *          "comment": String,
- *          "createdAt": DateTime,
- *          "updatedAt": DateTime
- *        }]
- *      }
+ *      {
+ *        "comment": {
+ *           "id": "IwAfzOoAAIE",
+ *           "chapterId": "chapter5",
+ *           "creatorId": "user3",
+ *           "comment": "Eligendi inventore placeat repellendus reiciendis sint nesciunt fuga.",
+ *           "metadata": null,
+ *           "createdAt": "2020-06-15T09:45:18.031Z",
+ *           "updatedAt": "2021-03-03T15:46:34.456Z",
+ *           "replies": [{
+ *               "id": "IwAfzOwAANc",
+ *               "chapterId": "chapter2",
+ *               "creatorId": "user1",
+ *               "comment": "Quo aut eum qui omnis id.",
+ *               "metadata": null,
+ *               "createdAt": "2020-08-29T02:40:56.161Z",
+ *               "updatedAt": "2021-03-04T01:56:56.855Z",
+ *               "type": "comment"
+ *             },
+ *             {
+ *               "id": "IwAfzOuAALw",
+ *               "chapterId": "chapter2",
+ *               "creatorId": "user1",
+ *               "comment": "Excepturi modi qui qui.",
+ *               "metadata": null,
+ *               "createdAt": "2020-10-24T21:09:29.287Z",
+ *                "updatedAt": "2021-03-04T11:58:38.484Z",
+ *               "type": "comment"
+ *             }],
+ *             "type": "comment"
+ *           }
+ *        }
+ *
  *
  */
 router.get('/:id', requireAuth, async ctx => {
-
   let comment;
   try {
-    comment = await Comment.query().where({ id: ctx.params.id });
+    comment = await Comment.query()
+      .where({ id: ctx.params.id })
+      .andWhere(ctx.query);
   } catch (e) {
     if (e.statusCode) {
       ctx.throw(e.statusCode, null, { errors: [e] });
@@ -93,7 +139,6 @@ router.get('/:id', requireAuth, async ctx => {
  * @apiName PostAChapterComment
  * @apiGroup ChapterComments
  * @apiPermission authenticated user
- *
  * @apiSuccessExample {json} Success-Response:
  *     HTTP/1.1 201 OK
  *     {
@@ -104,7 +149,7 @@ router.get('/:id', requireAuth, async ctx => {
  *        "chapterId": { type: String }
  *      }
  *    }
- *
+ * @apiSampleRequest off
  */
 
 
@@ -115,7 +160,7 @@ router.post('/', requireAuth, async ctx => {
 
   const checked = await profaneCheck(newChapterComment.comment);
 
-  if (checked !== null) {
+  if (typeof checked != 'undefined' && checked) {
     ctx.throw(400, null, { errors: [checked] });
   }
 
@@ -125,7 +170,7 @@ router.post('/', requireAuth, async ctx => {
   } catch (e) {
     if (e.statusCode) {
       ctx.throw(e.statusCode, null, { errors: [e.data] });
-    } else { ctx.throw(400, null, { errors: [e.nativeError.detail] }); }
+    } else { ctx.throw(400, null, { errors: [e.nativeError] }); }
     throw e;
   }
   ctx.assert(comment, 401, 'Something went wrong');
@@ -140,6 +185,7 @@ router.post('/', requireAuth, async ctx => {
  * @apiName PutAChapterComment
  * @apiGroup ChapterComments
  * @apiPermission authenticated user
+ * @apiSampleRequest off
  *
  */
 
@@ -155,6 +201,7 @@ router.put('/:id', requireAuth, grantAccess('updateOwn', 'path'), async ctx => {
   try {
     comment = await Comment.query().patchAndFetchById(ctx.params.id, commentData);
   } catch (e) {
+    console.log(e);
     if (e.statusCode) {
       ctx.throw(e.statusCode, null, { errors: [e.message] });
     } else { ctx.throw(400, null, { errors: ['Bad Request'] }); }

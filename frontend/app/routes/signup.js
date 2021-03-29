@@ -6,11 +6,22 @@ export default class SignupRoute extends Route {
 
   beforeModel() {
     if (this.me.user) {
-      this.transitionTo('home');
+      this.transitionTo('index');
     }
   }
 
   model() {
     return this.store.createRecord('user');
+  }
+
+  afterModel(resolvedModel, transition) {
+    this.headTags = [
+      {
+        type: 'title',
+        tagId: 'title',
+        content: 'Sign Up - Wikonnect',
+      },
+    ];
+    return super.afterModel(resolvedModel, transition);
   }
 }

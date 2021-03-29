@@ -3,10 +3,15 @@ import { inject as service } from '@ember/service';
 
 export default class IndexRoute extends Route {
   @service me;
-  @service headData;
+  @service config;
+  @service infinity;
+  @service notify;
 
-  async afterModel() {
-    this.headData.title = 'Wikonnect - Home';
-    this.headData.theme = '#534897';
+  model() {
+    return this.infinity.model('chapter', {
+      approved: true,
+      perPage: 10,
+      startingPage: 0,
+    });
   }
 }

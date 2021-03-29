@@ -21,6 +21,8 @@ buttons:
   skip: Ruka
   done: Maliza
   next: Ijayo
+  change_profile_pic: "Badilisha picha ya profaili"
+  upload_profile_pic: "Pakia picha ya profaili"
 
 labels:
   username: Jina La Mtumiaji

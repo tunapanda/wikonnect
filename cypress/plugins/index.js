@@ -1,4 +1,3 @@
-const knex = require('knex');
 const env = process.env.NODE_ENV || 'test';
 const knexfile = require('../../server/knexfile')[env];
 
@@ -21,6 +20,7 @@ module.exports = (on, config) => {
 
   on('task', {
     'db:reset': async function () {
+      knexfile.debug = false;
       const db = require('knex')(knexfile);
       // console.log('rolling back db');
       await db.migrate.rollback();

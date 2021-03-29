@@ -1,8 +1,18 @@
+function parentComment() {
+    return cy.comments({parentId: false}).then((comments) => {
+        return comments
+            .filter((comment) => comment.chapterId !== undefined)[0]
+    });
+}
+
 describe('Chapter comments when authenticated', () => {
 
     beforeEach(() => {
         cy.login();
-        cy.visit('/chapter/chapter1')
+        parentComment()
+            .then((comment) => {
+                cy.visit(`/chapter/${comment.chapterId}`)
+            });
     });
 
 
@@ -61,10 +71,32 @@ describe('Chapter comments when authenticated', () => {
     });
 
     it('should display comments', () => {
-        cy.get('#chapter #comments')
-            .should('exist')
+        cy.get('div#comments-section .media-body')
+            .should('exist');
+    });
+
+
+    it('should be able to reply to a comment', () => {
+        const reply = `Test reply randomly at ${Math.random() * 1000000}`;
+
+        cy.get('#chapter .padded form textarea').type('Memento Mori');
+        cy.get('#chapter .padded form button[type="submit"]').click();
+
+        cy.get('#comments-section > :nth-child(1) > .media-body > .reply-actions > :nth-child(2) > button')
+            .click();
+
+        cy.get('.reply-form textarea').should('be.visible');
+
+        cy.get('.reply-form textarea').type(reply);
+        cy.get('.reply-form button').click();
+
+        cy.get(
+            "#comments-section > :nth-child(1) > .media-body > .media > .replies"
+        )
+            .contains(reply)
             .should('be.visible');
     });
+
 
 })
 
@@ -72,7 +104,10 @@ describe('Chapter comments when authenticated', () => {
 describe('Chapter comments without authentication', () => {
 
     beforeEach(() => {
-        cy.visit('/chapter/chapter1')
+        parentComment()
+            .then((comment) => {
+                cy.visit(`/chapter/${comment.chapterId}`)
+            });
     });
 
 
@@ -82,8 +117,9 @@ describe('Chapter comments without authentication', () => {
     });
 
     it('should display available comments', () => {
-        cy.get('#chapter .media-body')
-            .should('be.visible')
+        cy.get('#chapter #comments-section .media-body')
+            .should('exist')
     });
 
-})
+});
+
