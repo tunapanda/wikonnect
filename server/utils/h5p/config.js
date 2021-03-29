@@ -7,7 +7,7 @@ const H5P = require('@lumieducation/h5p-server');
  */
 exports.H5PConfig = (async () => new H5P.H5PConfig(
   new H5P.fsImplementations.JsonStorage(
-    path.resolve('config/h5p.json')
+    path.resolve(__dirname,'../../config/h5p.json')
   )).load());
 
 exports.H5PUser = (user) => {

@@ -5,9 +5,11 @@ export default class ApplicationAdapter extends RESTAdapter {
   @service session;
 
   namespace = 'api/v1';
-  headers = {
-    Authorization: `Bearer ${this.session?.data?.authenticated?.token}`,
-    mojaHeader: window.localStorage.getItem('moja_campaign'),
-    achievement: window.localStorage.getItem('achievement'),
-  };
+  get headers() {
+    return {
+      Authorization: `Bearer ${this.session?.data?.authenticated?.token}`,
+      mojaHeader: window.localStorage.getItem('moja_campaign'),
+      achievement: window.localStorage.getItem('achievement'),
+    };
+  }
 }
