@@ -37,7 +37,7 @@ exports.requireAuth = async function (ctx, next) {
     }
   } catch (error) {
     log.error(`The following error ${error} with message ${error.message}`);
-    const envs = ['test', 'development'];
+    const envs = ['test', 'development',];
     if (envs.includes(process.env.NODE_ENV)) {
       ctx.throw(400, null, { errors: [error.message] });
     }
