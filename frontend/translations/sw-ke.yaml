@@ -14,22 +14,26 @@ buttons:
   edit: Hariri
   settings: Mipangilio
   search: Tafuta
-  comment: Toa Maoni
+  submit: Wasilisha
+  comment: Maoni
   rate: Pima
   copy: Nakala
   close: Funga
   skip: Ruka
+  cancel: Ghairi
   done: Maliza
   next: Ijayo
   change_profile_pic: "Badilisha picha ya profaili"
   upload_profile_pic: "Pakia picha ya profaili"
+  copy_embed_code: Nakili msimbo wa kupachika
 
 labels:
   username: Jina La Mtumiaji
+  password: Neno La Siri
   email: Barua Pepe
   name: Jina
   description: Maelezo
-  tags: Vitambulisho
+  tags: Lebo
   achievements: Mafanikio Yangu
   first_name: Jina la kwanza
   last_name: Jina la mwisho
@@ -40,6 +44,10 @@ labels:
   h5p: H5P
   chapter: Sura
   profile: Profaili
+  share: Shiriki
+  comment: Maoni
+  embed: Pachika
+  copied: Imenakiliwa
 
 profile:
   profile_picture : Picha ya Profaili

@@ -1,13 +1,12 @@
 <div class="reply-actions d-flex justify-content-between mb-2">
   <div>
-    {{!-- pluralize helper from ember-inflector package --}}
-    <span class="mr-2">{{pluralize this.numOfReplies "reply"}}</span>
+    <span class="mr-2">{{t "single_chapter.comments.num_replies" numReplies=this.numOfReplies}}</span>
     {{#if this.replies}}
         <button type="button" {{on "click" this.toggleReplies}}>
           {{#if this.shouldRepliesShow}}
-              Hide Replies {{svg-jar "expand_less_black_24dp"}}
+            {{t "single_chapter.comments.hide_replies"}} {{svg-jar "expand_less_black_24dp"}}
           {{else}}
-            Show Replies {{svg-jar "expand_more_black_24dp"}}
+            {{t "single_chapter.comments.show_replies"}} {{svg-jar "expand_more_black_24dp"}}
           {{/if}}
         </button>
     {{/if}}
@@ -15,7 +14,7 @@
   <div>
     {{#if this.me.isAuthenticated}}
       <button type="button" {{on "click" this.toggleForm}}>
-        {{svg-jar "reply_black_24dp"}} {{if this.shouldFormShow "Reply" "Reply"}}
+        {{svg-jar "reply_black_24dp"}} {{t "single_chapter.comments.reply"}}
       </button>
     {{/if}}
     {{!-- TODO: Add functionality to like a comment --}}
@@ -26,8 +25,9 @@
 {{#if this.me.isAuthenticated}}
   {{#if this.shouldFormShow}}
     <form class="reply-form" {{on "submit" this.saveReply}}>
-      <Textarea @value={{this.reply}} @class="form-control" @placeholder="Reply here"/>
-      <button type="submit" class="btn btn-primary my-1">Reply</button>
+      <Textarea @value={{this.reply}} @class="form-control" @placeholder={{t "single_chapter.comments.reply_here"}}/>
+      <button type="submit" class="btn btn-primary my-1">{{t "single_chapter.comments.reply"}}</button>
+      <button type="button" class="btn btn-light my-1" {{on "click" this.toggleForm}}>{{t "buttons.cancel"}}</button>
     </form>
   {{/if}}
 {{/if}}

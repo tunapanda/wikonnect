@@ -14,18 +14,22 @@ buttons:
   edit: Edit
   settings: Edit
   search: Search
+  submit: Submit
   comment: Comment
   rate: Rate
   copy: Copy
   close: Close
   skip: Skip
+  cancel: Cancel
   done: Done
   next: Next
   change_profile_pic: "Change profile picture"
   upload_profile_pic: "Upload profile picture"
+  copy_embed_code: Copy embed code
 
 labels:
   username: Username
+  password: Password
   email: Email
   name: Name
   description: Description
@@ -40,6 +44,10 @@ labels:
   h5p: H5P
   chapter: Chapter
   profile: Profile
+  share: Share
+  comment: Comment
+  embed: Embed
+  copied: Copied
 
 profile:
   profile_picture : Profile Picture
