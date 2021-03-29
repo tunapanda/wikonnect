@@ -113,18 +113,6 @@ jobs:
         ports:
           # Maps tcp port 5432 on service container to the host
           - 5432:5432
-      redis:
-        # Docker Hub image
-        image: redis
-        # Set health checks to wait until redis has started
-        options: >-
-          --health-cmd "redis-cli ping"
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-        ports:
-          # Maps port 6379 on service container to the host
-          - 6379:6379
 
     steps:
       - uses: actions/checkout@v2
@@ -176,9 +164,6 @@ jobs:
         run: yarn --cwd ./server test:local
         env:
           NODE_ENV: action
-          REDIS_HOST: localhost
-          # The default Redis port
-          REDIS_PORT: 6379
 
   IntegrationTest:
     name: Integration Test
@@ -200,18 +185,7 @@ jobs:
         ports:
           # Maps tcp port 5432 on service container to the host
           - 5432:5432
-      redis:
-        # Docker Hub image
-        image: redis
-        # Set health checks to wait until redis has started
-        options: >-
-          --health-cmd "redis-cli ping"
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-        ports:
-          # Maps port 6379 on service container to the host
-          - 6379:6379
+
     needs: FrontendTest
     steps:
       - uses: actions/checkout@v2
@@ -263,8 +237,6 @@ jobs:
         uses: cypress-io/github-action@v2
         env:
           NODE_ENV: action
-          REDIS_HOST: localhost
-          REDIS_PORT: 6379
         with:
           start: yarn --cwd ./server start, yarn --cwd ./frontend start
           wait-on: "http://localhost:4200"
