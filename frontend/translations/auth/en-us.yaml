@@ -1,0 +1,9 @@
+login:
+  login: Login
+  logout: Logout
+  authenticating: Authenticating ...
+  username: Username
+  enter_username: Enter Username
+  password: Password
+  enter_password: Enter Password
+  login_third_party: Login with {authProvider}

@@ -1,0 +1,9 @@
+login:
+  login: Ingia
+  logout: Toka
+  authenticating: Inathibitisha ...
+  username: Jina La Mtumiaji
+  enter_username: Andika jina la mtumiaji hapa
+  password: Neno La Siri
+  enter_password: Andika neno la siri hapa
+  login_third_party: Ingia na {authProvider}
