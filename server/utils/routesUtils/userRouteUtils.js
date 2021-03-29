@@ -16,7 +16,7 @@ async function getProfileImage(user) {
     if (s3.config) {
       const params = {
         Bucket: s3.config.bucket, // pass your bucket name
-        Key: `uploads/profiles/${user.id}.jpg`, // key for saving filename
+        Key: `uploads/profiles/${user.profileUri}.jpg`, // key for retrieving a filename
       };
 
       const getImage = await s3.s3.getObject(params).promise();
