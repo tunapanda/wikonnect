@@ -30,6 +30,7 @@ const router = new Router({
   prefix: '/users'
 });
 
+const DOMAIN_NAME = process.env.DOMAIN_NAME || 'http://localhost:3000/api/v1';
 
 
 /**
@@ -405,7 +406,7 @@ router.post('/verify', permController.requireAuth, async ctx => {
       'resetPasswordToken': token,
     });
     // sending email
-    const link = `http://localhost:3000/api/v1/users/verify?email=${email}&token=${token}`;
+    const link = `${DOMAIN_NAME}/users/verify?email=${email}&token=${token}`;
     await sendMailMessage(buf, userData.username, link, 'confirm-email');
     log.info('Email verification sent to %s', email);
     ctx.status = 201;

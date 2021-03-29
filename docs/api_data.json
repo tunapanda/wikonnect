@@ -413,6 +413,119 @@
     "groupTitle": "Achievements"
   },
   {
+    "type": "post",
+    "url": "/api/v1/auth/forgot_password",
+    "title": "POST forgot user route.",
+    "name": "ForgotPasswordRoute",
+    "group": "Authentication",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "auth[email]",
+            "description": "<p>emailAddress</p>"
+          }
+        ]
+      }
+    },
+    "permission": [
+      {
+        "name": "basic"
+      }
+    ],
+    "sampleRequest": [
+      {
+        "url": "https://localhost:3000/api/v1/auth/forgot_password"
+      }
+    ],
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "errors",
+            "description": "<p>Bad Request.</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "server/routes/auth.js",
+    "groupTitle": "Authentication"
+  },
+  {
+    "type": "post",
+    "url": "/api/v1/auth/reset_password",
+    "title": "POST new password.",
+    "name": "ForgotPasswordRoute",
+    "group": "Authentication",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "auth[new_password]",
+            "description": "<p>newPassword</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "auth[verify_password]",
+            "description": "<p>verifyPassword</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "auth[token]",
+            "description": "<p>token</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "auth[email]",
+            "description": "<p>email</p>"
+          }
+        ]
+      }
+    },
+    "permission": [
+      {
+        "name": "basic"
+      }
+    ],
+    "sampleRequest": [
+      {
+        "url": "https://localhost:3000/api/v1/auth/reset_password"
+      }
+    ],
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "errors",
+            "description": "<p>Bad Request.</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "server/routes/auth.js",
+    "groupTitle": "Authentication"
+  },
+  {
     "type": "get",
     "url": "/api/v1/users/:id",
     "title": "GET a single user using id.",

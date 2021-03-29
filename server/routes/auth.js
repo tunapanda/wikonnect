@@ -15,6 +15,9 @@ const router = new Router({
   prefix: '/auth'
 });
 
+
+const DOMAIN_NAME = process.env.DOMAIN_NAME || 'http://localhost:3000/api/v1';
+
 /**
  * @api {post} /api/v1/auth POST login a user.
  * @apiName PostLoginAUser
@@ -103,7 +106,7 @@ router.post('/forgot_password', async ctx => {
       'resetPasswordToken': token,
     });
     // sending email
-    const link = `http://localhost:3000/api/v1/auth/reset_password?email=${email}&token=${token}`;
+    const link = `${DOMAIN_NAME}/auth/reset_password?email=${email}&token=${token}`;
     await sendMailMessage(buf, userData.username, link, 'forgot-password-email');
     log.info('Email verification sent to %s', email);
 

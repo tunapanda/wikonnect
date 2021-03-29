@@ -15,7 +15,7 @@ module.exports = {
     },
     defaultFrom: process.env.FROM_EMAIL_ADDRESS,
   },
-  actor: {
+  action: {
     provider: process.env.SMTP_HOSTNAME,
     auth: {
       user: process.env.SMTP_USERNAME,
