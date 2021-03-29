@@ -14,4 +14,4 @@ index:
   copy: Nakili
   copied: Imenakiliwa
   user_completed_courses: "Kozi {user} amemaliza"
-    no_completed_courses: "{user} hajamaliza kozi yoyote"
+  no_completed_courses: "{user} hajamaliza kozi yoyote"

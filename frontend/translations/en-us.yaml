@@ -50,6 +50,10 @@ labels:
   comment: Comment
   embed: Embed
   copied: Copied
+  english: EN
+  kiswahili: SW
+  toggle_nav: Toggle Navigation
+  user_profile_link: "{user}'s profile"
 
 profile:
   profile_picture : Profile Picture
@@ -61,3 +65,6 @@ messages:
   upload_profile_pic: "Upload Profile Picture"
   create_h5p_chapter: "Create H5P Chapter"
   authenticating: "Authenticating ..."
+
+feedback:
+  message: The topics below are best understood if you finish the ones before

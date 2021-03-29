@@ -50,6 +50,10 @@ labels:
   comment: Maoni
   embed: Pachika
   copied: Imenakiliwa
+  english: EN
+  kiswahili: SW
+  toggle_nav: Geuza urambazaji
+  user_profile_link: "Profaili ya {user}""
 
 profile:
   profile_picture : Picha ya Profaili
@@ -61,3 +65,6 @@ messages:
   upload_profile_pic: "Pakia Picha ya Profaili"
   create_h5p_chapter: "Unda Sura ya H5P"
   authenticating: "Inathibitisha ..."
+
+feedback:
+  message: Mada zilizo chini zinaeleweka vyema ukimaliza zile zilizotangulia
