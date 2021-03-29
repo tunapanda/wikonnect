@@ -18,10 +18,34 @@ const router = new Router({
 
 
 /**
- * Get H5P Editor model for specific existing H5P content (assets & integration settings)
+ * @api {get} /api/v1/h5p/editor/:contentId GET H5P editor & content model
+ * @apiName GET H5P editor model with content
+ * @apiGroup H5P
+ * @apiPermission [authenticated user]
+ * @apiVersion 0.4.0
+ *
+ * @apiHeader {String} Authorization Bearer << JWT here>>
+ *
+ * @apiParam (URI Param) {String} contentId Id of the content to preload
+ *
+ * @apiSuccess {Object} integration
+ * @apiSuccess {Object} integration[editor]
+ * @apiSuccess {Object} integration[user]
+ * @apiSuccess {Object} integration[ajax]
+ * @apiSuccess {Object} integration[l10n]
+ * @apiSuccess {String} integration[ajaxPath]
+ * @apiSuccess {String} integration[libraryUrl]
+ * @apiSuccess {String} integration[url]
+ * @apiSuccess {Integer} integration[fullscreenDisabled]
+ * @apiSuccess {Boolean} integration[saveFreq]
+ * @apiSuccess {Boolean} integration[postUserStatistics]
+ * @apiSuccess {String[]} scripts
+ * @apiSuccess {String[]} styles
+ * @apiSuccess {Object} urlGenerator
+ * @apiSuccess {Object} urlGenerator[config]
+ *
  *
  */
-
 router.get('/editor/:contentId', requireAuth, async (ctx) => {
   try {
 
@@ -45,7 +69,33 @@ router.get('/editor/:contentId', requireAuth, async (ctx) => {
 });
 
 /**
- * Get H5P Editor model (assets & integration settings)
+ * @api {get} /api/v1/h5p/editor/ GET H5P editor model
+ * @apiName GET H5P editor model
+ * @apiGroup H5P
+ * @apiPermission [authenticated user]
+ * @apiVersion 0.4.0
+ *
+ * @apiHeader {String} Authorization Bearer << JWT here>>
+ *
+ * @apiParam (Query Params) {String} [language]
+ *
+ * @apiSuccess {Object} integration
+ * @apiSuccess {Object} integration[editor]
+ * @apiSuccess {Object} integration[user]
+ * @apiSuccess {Object} integration[ajax]
+ * @apiSuccess {Object} integration[l10n]
+ * @apiSuccess {String} integration[ajaxPath]
+ * @apiSuccess {String} integration[libraryUrl]
+ * @apiSuccess {String} integration[url]
+ * @apiSuccess {Integer} integration[fullscreenDisabled]
+ * @apiSuccess {Boolean} integration[saveFreq]
+ * @apiSuccess {Boolean} integration[postUserStatistics]
+ * @apiSuccess {String[]} scripts
+ * @apiSuccess {String[]} styles
+ * @apiSuccess {Object} urlGenerator
+ * @apiSuccess {Object} urlGenerator[config]
+ *
+ *
  *
  */
 router.get('/editor', requireAuth, async (ctx) => {
@@ -302,3 +352,5 @@ router.get('/player/:contentId', async (ctx) => {
 
 
 module.exports = router.routes();
+
+
