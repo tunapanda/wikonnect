@@ -27,7 +27,7 @@ exports.H5PUser = (user) => {
     name: user.username || 'Anonymous',
     type: 'local',
     canCreateRestricted: false,
-    canInstallRecommended: false,
+    canInstallRecommended: true,
     canUpdateAndInstallLibraries: true
   };
 };
