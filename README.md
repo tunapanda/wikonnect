@@ -30,9 +30,10 @@
 
 Wikonnect is an open-source e-learning platform designed to allow anyone to learn, create educational content, and
 contribute to building the platform as a designer or a software developer. The initial courses offered on the platform will be around digital literacy, to get more people
-using the internet in more productive ways. Developed by Tunapanda Institute in Nairobi, Kenya. The original platform (
-called 'swag') was used to provide technology, design, and business training in low-income communities with low
+using the internet in more productive ways. Developed by [Tunapanda Institute](https://tunapanda.org/) in Nairobi, Kenya. The original platform (called 'Swag') was used to provide technology, design, and business training in low-income communities with low
 bandwidth.
+
+Come say hi 👋 on our [Wikonnect Community Discord Server!](https://discord.gg/tT9Ug6D)
 
 
 Getting Started
@@ -42,7 +43,7 @@ recommend [getting started](https://guides.emberjs.com/release/getting-started/q
 the tutorials.
 
 The backend is developed using [KoaJS](https://koajs.com/). The API docs are hosted
-at [tunapanda.github.io/wikonnect)](https://tunapanda.github.io/wikonnect)
+at [tunapanda.github.io/wikonnect](https://tunapanda.github.io/wikonnect)
 
 ## Wikonnect Tech Stack
 
@@ -84,8 +85,8 @@ at [tunapanda.github.io/wikonnect)](https://tunapanda.github.io/wikonnect)
 - [Ubuntu installation](https://docs.docker.com/engine/install/ubuntu/)
 - [Fedora installation](https://docs.docker.com/engine/install/fedora/)
 - [Debian installation](https://docs.docker.com/engine/install/debian/)
-- [Mac installation](https://docs.docker.com/docker-for-mac/install/) -Installed as docker desktop
-- [Windows installation](https://docs.docker.com/docker-for-windows/install/)  -Installed as docker desktop
+- [Mac installation](https://docs.docker.com/docker-for-mac/install/) - Installed as docker desktop
+- [Windows installation](https://docs.docker.com/docker-for-windows/install/)  - Installed as docker desktop
 
 #### Starting a development server
 
@@ -226,7 +227,7 @@ Frontend set up steps:
 
 1) Navigate into the **frontend** directory
     ```
-    cd server/
+    cd frontend/
     ```
 2) Install the frontend dependencies
     ```
@@ -275,11 +276,17 @@ This project is licensed under MIT. See the [license](license) file for details
 
 ## Authors 🧙
 
-### Lead developers
+### Developers
 
-- **[Moses Okemwa](https://github.com/mosesokemwa)** - _Lead developer and maintainer_
-- **[Proverbial Ninja](https://github.com/proverbial-ninja)** - _Lead developer and maintainer_
+- **[Moses Okemwa](https://github.com/mosesokemwa)** - _Lead Backend developer and maintainer_
+- **[Proverbial Ninja](https://github.com/proverbial-ninja)** - _Lead Frontend developer and maintainer_
+- **[Murage Martin](https://github.com/mimidotsuser)** - _Full Stack Developer_
+- **[Brian Marete](https://github.com/brianmarete)** - _Frontend Developer_
 
+
+### UI/UX Designers
+- **[Yego Kelvins](https://www.behance.net/kevinsyego)**
+- **[Nathan Macharia](https://www.linkedin.com/in/nathan-macharia-50608a14/)**
 ### Contributors ✨
 
 Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
