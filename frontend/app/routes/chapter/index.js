@@ -101,7 +101,7 @@ export default class ChapterIndexRoute extends Route {
       },
     ];
     this.headTags = this.SeoTags.build(
-      'View Chapter - Wikonnect',
+      `${model.name.substr(0, 60)} - Wikonnect`,
       chapterUrl,
       headers
     );

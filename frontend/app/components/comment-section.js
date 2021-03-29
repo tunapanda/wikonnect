@@ -22,6 +22,9 @@ export default class CommentSectionComponent extends Component {
   @action
   saveComment(e) {
     e.preventDefault();
+    if (!this.comment) {
+      return;
+    }
     const model = this.store.createRecord('comment', {
       creator: this.me.user,
       chapter: this.store.peekRecord('chapter', this.args.selectedChapter),

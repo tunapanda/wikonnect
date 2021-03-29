@@ -8,16 +8,18 @@
     <br>
 
     <br>
-    {{#unless this.complete}}
       <Forms::Upload @multiple="false" @accept="image/*" @filesSelected={{this.uploadPic}}
                      @disabled={{this.uploader.uploading}}>
         {{#if this.uploader.uploading}}
           Uploading... <span class="loading-spinner"></span> {{this.uploader.progress}}%
         {{else}}
-          {{t "messages.upload_profile_pic"}}
+          {{#if this.profileImage}}
+            {{t "buttons.change_profile_pic"}}
+          {{else}}
+            {{t "buttons.upload_profile_pic"}}
+          {{/if}}
         {{/if}}
       </Forms::Upload>
-    {{/unless}}
     {{#if this.signup}}
 
       <br><br>
