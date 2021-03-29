@@ -2,16 +2,16 @@
   <img class="profile-picture" alt="" src="/uploads/images/profile-placeholder.gif" role="presentation">
   <h2 class="profile-name"></h2>
   <div class="profile-data">
-    <h3><strong>First Name:</strong> {{@model.firstName}}</h3>
-    <h3><strong>Last Name:</strong> {{@model.lastName}}</h3>
-    <h3><strong>About Me:</strong> {{@model.aboutMe}}</h3>
+    <h3><strong>{{t "profile.index.first_name"}}:</strong> {{@model.firstName}}</h3>
+    <h3><strong>{{t "profile.index.last_name"}}:</strong> {{@model.lastName}}</h3>
+    <h3><strong>{{t "profile.index.about"}}:</strong> {{@model.aboutMe}}</h3>
   </div>
 </div>
-<h4>{{this.name}}'s completed courses</h4>
+<h4>{{t "profile.index.user_completed_courses" user=this.name}}</h4>
 {{#if @model.achievements.length}}
   {{#each @model.achievements as  |achievement|}}
     {{achievement.name}}
   {{/each}}
 {{else}}
-  {{@model.username}} has not completed any courses
+  {{t "profile.index.no_completed_courses" user=@model.username}}
 {{/if}}

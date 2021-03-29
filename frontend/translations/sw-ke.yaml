@@ -6,7 +6,7 @@ buttons:
   signup: Jisajili
   profile: Profaili
   about: Kuhusu
-  publish: Hadhiri
+  publish: Chapisha
   unpublish: Ondoa
   create: Unda
   delete: Futa
@@ -14,22 +14,30 @@ buttons:
   edit: Hariri
   settings: Mipangilio
   search: Tafuta
-  comment: Toa Maoni
+  submit: Wasilisha
+  comment: Maoni
+  continue: Endelea
   rate: Pima
   copy: Nakala
   close: Funga
   skip: Ruka
+  cancel: Ghairi
   done: Maliza
   next: Ijayo
+  back: Uliyopita
   change_profile_pic: "Badilisha picha ya profaili"
   upload_profile_pic: "Pakia picha ya profaili"
+  copy_embed_code: Nakili msimbo wa kupachika
+  proceed_to_profile: Endelea kwa profaili
+  skip_to_profile: Ruka kwa profaili
 
 labels:
   username: Jina La Mtumiaji
+  password: Neno La Siri
   email: Barua Pepe
   name: Jina
   description: Maelezo
-  tags: Vitambulisho
+  tags: Lebo
   achievements: Mafanikio Yangu
   first_name: Jina la kwanza
   last_name: Jina la mwisho
@@ -40,6 +48,14 @@ labels:
   h5p: H5P
   chapter: Sura
   profile: Profaili
+  share: Shiriki
+  comment: Maoni
+  embed: Pachika
+  copied: Imenakiliwa
+  english: EN
+  kiswahili: SW
+  toggle_nav: Geuza urambazaji
+  user_profile_link: "Profaili ya {user}"
 
 profile:
   profile_picture : Picha ya Profaili
@@ -50,3 +66,25 @@ messages:
   searching: "Inatafuta ..."
   upload_profile_pic: "Pakia Picha ya Profaili"
   create_h5p_chapter: "Unda Sura ya H5P"
+  authenticating: "Inathibitisha ..."
+  uploading: Inapakia
+
+feedback:
+  message: Mada zilizo chini zinaeleweka vyema ukimaliza zile zilizotangulia
+
+four_oh_four:
+  header: Samahani, hatukuweza kupata unachotafuta
+  sub_header: Bonyeza '<'a href="{url}"'>' hapa '</a>' kwenda kwenye ukurasa wa kwanza
+
+embed:
+  updates: "Sasisho za maendeleo zimetumwa kwa: {url}"
+  logged_in_as: "Umeingia kama {user}"
+
+manage:
+  image: Picha
+  name: Jina
+  description: Maelezo
+  status: Hali
+  approved: Imeidhinishwa
+  not_approved: Haijaidhinishwa
+  chapter: Sura

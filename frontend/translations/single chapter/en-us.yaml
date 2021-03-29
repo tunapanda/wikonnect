@@ -1,0 +1,21 @@
+h5p:
+  chapters: Chapters
+  views: "{numViews, plural, =1 {1 view} other {# views}}" 
+  description: What you will learn
+  creator_avatar: Lesson creator avatar
+
+comments:
+  num_comments: "{numComments, plural, =1 {1 Comment} other {# Comments}}"
+  commenting_publicly: You are commenting publicly as {commenter}
+  add_comment: Add a comment
+  comment_added: Comment added successfully
+  reply_added: Reply added successfully
+  reply: Reply
+  reply_here: Reply here
+  num_replies: "{numReplies, plural, =1 {1 reply} other {# replies}}"
+  hide_replies: Hide Replies
+  show_replies: Show Replies
+
+admin:
+  approve: Approve this
+  unapprove: Unapprove this

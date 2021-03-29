@@ -7,7 +7,7 @@
   {{#if this.me.isAuthenticated}}
 
       <div class="text-center pt-4 pb-4 {{if this.editor 'd-none' ''}}">
-        <p class="text-center">Initializing editor</p>
+        <p class="text-center">{{t "teach.h5p.init"}}</p>
         <Loader::Circular></Loader::Circular>
       </div>
 
@@ -20,16 +20,16 @@
         <div class="action-buttons d-flex justify-content-lg-end pr-lg-5 mr-lg-5">
           <LinkTo @route="teach.edit" @model={{this.model.id}}
                   class="btn btn-outline-primary mr-2 d-none">
-            Back
+            {{t "buttons.back"}}
           </LinkTo>
           <button type="button" class="btn btn-primary" {{on "click" this.saveH5PContent}} >
-            Continue
+            {{t "buttons.continue"}}
           </button>
         </div>
       </div>
   {{else}}
 
-    <Warning @message="You do not have permission to view this page"/>
+    <Warning @message={{t "teach.index.no_permission"}}/>
 
   {{/if}}
 </div>

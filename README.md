@@ -286,7 +286,7 @@ This project is licensed under MIT. See the [license](license) file for details
 
 ### UI/UX Designers
 - **[Yego Kelvins](https://www.behance.net/kevinsyego)**
-- **[Nathan Macharia](https://www.linkedin.com/in/nathan-macharia-50608a14/)**
+- **[Nathan Macharia](https://github.com/macharian8)**
 ### Contributors ✨
 
 Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
