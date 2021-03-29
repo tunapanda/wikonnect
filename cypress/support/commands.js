@@ -52,26 +52,8 @@ Cypress.Commands.add('chapters', (queryParams = {}) => {
         url: `/api/v1/chapters?${qs}`,
         headers: headers
     })
-      .its('body')
-      .then(res => {
-        this.token = res.token;
-        cy.request({
-          method: 'GET',
-          url: '/api/v1/chapters',
-          headers: {
-            'Authorization': `Bearer ${res.token}`
-          }
-        })
-          .its('body.chapters')
-      .then((chapters) => {
-        chapters.filter(function (item) {
-          return item.authenticatedUser === 'like';
-        })
-      })
-      });
-  });
-        .its('body.chapter')
-        .then((chapters) => chapters);
+    .its('body.chapters')
+    .then((chapters) => chapters);
 });
 
 Cypress.Commands.add('comments', (queryParams = {}) => {

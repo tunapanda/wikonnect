@@ -38,6 +38,7 @@ describe('Chapter comments when authenticated', () => {
 
 
         cy.get('#chapter .media-body')
+            .wait(100)
             .contains(comment.text)
             .should('be.visible')
     });
@@ -75,29 +76,6 @@ describe('Chapter comments when authenticated', () => {
             .should('exist');
     });
 
-})
-
-
-describe('Chapter comments without authentication', () => {
-
-    beforeEach(() => {
-        cy.visit('/')
-        cy.get(':nth-child(5) > .card > .card-body > .card-title a').click()
-    });
-
-
-    it('should not display comment form', () => {
-        cy.get('#chapter .padded form')
-            .should('not.exist');
-    });
-
-    it('should display available comments', () => {
-        cy.get('#chapter #comments-section')
-            .should('exist')
-    });
-
-});
-
     it('should be able to reply to a comment', () => {
         const reply = `Test reply randomly at ${Math.random() * 1000000}`;
 
@@ -119,7 +97,6 @@ describe('Chapter comments without authentication', () => {
             .should('be.visible');
     });
 
-
 })
 
 
@@ -132,16 +109,13 @@ describe('Chapter comments without authentication', () => {
             });
     });
 
-
     it('should not display comment form', () => {
         cy.get('#chapter .padded form')
             .should('not.exist');
     });
 
     it('should display available comments', () => {
-        cy.get('#chapter #comments-section .media-body')
+        cy.get('#chapter #comments-section')
             .should('exist')
     });
-
-});
-
+})
