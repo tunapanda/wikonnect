@@ -30,7 +30,7 @@
 
 Wikonnect is an open-source e-learning platform designed to allow anyone to learn, create educational content, and
 contribute to building the platform as a designer or a software developer. The initial courses offered on the platform will be around digital literacy, to get more people
-using the internet in more productive ways. Developed by [Tunapanda Institute](https://tunapanda.org/) in Nairobi, Kenya. The original platform (called 'swag') was used to provide technology, design, and business training in low-income communities with low
+using the internet in more productive ways. Developed by [Tunapanda Institute](https://tunapanda.org/) in Nairobi, Kenya. The original platform (called 'Swag') was used to provide technology, design, and business training in low-income communities with low
 bandwidth.
 
 Come say hi 👋 on our [Wikonnect Community Discord Server!](https://discord.gg/tT9Ug6D)
