@@ -4,7 +4,6 @@ const path = require('path');
 const busboy = require('async-busboy');
 const shortid = require('shortid');
 const sharp = require('sharp');
-const _ = require('lodash');
 const crypto = require('crypto');
 
 const User = require('../models/user');
