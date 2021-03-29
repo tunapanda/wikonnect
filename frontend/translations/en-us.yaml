@@ -7,7 +7,7 @@ buttons:
   profile: Profile
   about: About
   publish: Publish
-  unpublish: Un Publish
+  unpublish: Unpublish
   create: Create
   delete: Delete
   modify: Modify
@@ -16,6 +16,7 @@ buttons:
   search: Search
   submit: Submit
   comment: Comment
+  continue: Continue
   rate: Rate
   copy: Copy
   close: Close
@@ -23,6 +24,7 @@ buttons:
   cancel: Cancel
   done: Done
   next: Next
+  back: Back
   change_profile_pic: "Change profile picture"
   upload_profile_pic: "Upload profile picture"
   copy_embed_code: Copy embed code

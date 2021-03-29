@@ -3,20 +3,20 @@
   <div class="container bg-white">
     <div class="d-flex justify-content-between pt-3 mt-0">
 
-      <h3>My Content</h3>
+      <h3>{{t "teach.index.my_content"}}</h3>
       <LinkTo @route="teach.create" class="btn bg-primary" role="button">
-        Get started
+        {{t "teach.index.get_started"}}
       </LinkTo>
 
     </div>
 
     <div class="row ml-1">
       <LinkTo @route="teach.index">
-        <div class="sub-link">Drafts</div>
+        <div class="sub-link">{{t "teach.index.drafts"}}</div>
       </LinkTo>
 
       <LinkTo @route="teach.published">
-        <div class="sub-link">Published</div>
+        <div class="sub-link">{{t "teach.index.published"}}</div>
       </LinkTo>
       <hr>
     </div>
@@ -30,12 +30,12 @@
           <TeachListItem @chapter={{chapter}} />
         {{/each}}
       {{else}}
-        Nothing published yet
+        {{t "teach.index.no_published"}}
       {{/if}}
     </div>
   </div>
 {{else}}
 
-  <Warning @message="You do not have permission to view this page"/>
+  <Warning @message={{t "teach.index.no_permission"}}/>
 
 {{/if}}
