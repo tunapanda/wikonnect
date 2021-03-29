@@ -6,10 +6,10 @@
   <Toc @page="1"/>
   <div class="p-4 col-lg-8">
     <BsForm @model={{this.model}} @onSubmit={{this.saveChapter}} as |form|>
-      <form.element @controlType="text" @label="CHAPTER NAME" @property="name" />
-      <form.element @controlType="textarea" @label="CHAPTER DESCRIPTION" @property="description" />
+      <form.element @controlType="text" @label={{t "teach.create.chapter_name"}} @property="name" />
+      <form.element @controlType="textarea" @label={{t "teach.create.chapter_desc"}} @property="description" />
 
-      <BsButton @type="primary" class="form-control" @defaultText="Save Chapter Details" @buttonType="submit" />
+      <BsButton @type="primary" class="form-control" @defaultText={{t "teach.create.save"}} @buttonType="submit" />
 
     </BsForm>
   </div>

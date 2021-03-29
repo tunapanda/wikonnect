@@ -117,7 +117,7 @@ module.exports = /** @class */ (function () {
       return '' + _this.ajaxBaseUrl() + _this.config.setFinishedUrl;
     };
     this.temporaryFiles = function () {
-      return _this.staticFileBaseUrl() + _this.config.temporaryFilesUrl;
+      return _this.staticFileBaseUrl() + '/temporary-storage/1000';
     };
   }
 

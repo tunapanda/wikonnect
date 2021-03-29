@@ -1,0 +1,10 @@
+tags:
+  filter: Chuja
+  search_filters: Tafuta Vichuji
+  select_to_filter: Chagua kuchuja
+  clear: Futa
+  clear_all_filters: Futa vichuji
+
+loading:
+  loading_more_records: Inapakia rekodi nyingine...
+  loaded_all_the_records: Imepakia rekodi zote
