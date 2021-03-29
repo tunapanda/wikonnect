@@ -1,0 +1,17 @@
+index:
+  change_pic: Change picture
+  profile: Profile
+  learning: Learning
+  settings: Settings
+  details: Details
+  first_name: First Name
+  last_name: Last Name
+  about: About
+  achievements: My Achievements
+  invite_link: Invite Link
+  update_email: Update Email
+  copy_to_clipboard: Copy to clipboard
+  copy: Copy
+  copied: Copied
+  user_completed_courses: "{user}'s completed courses"
+  no_completed_courses: "{user} has not completed any courses"

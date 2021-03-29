@@ -11,7 +11,7 @@
       <Forms::Upload @multiple="false" @accept="image/*" @filesSelected={{this.uploadPic}}
                      @disabled={{this.uploader.uploading}}>
         {{#if this.uploader.uploading}}
-          Uploading... <span class="loading-spinner"></span> {{this.uploader.progress}}%
+          {{t "messages.uploading"}} <span class="loading-spinner"></span> {{this.uploader.progress}}%
         {{else}}
           {{#if this.profileImage}}
             {{t "buttons.change_profile_pic"}}
@@ -25,9 +25,9 @@
       <br><br>
       <LinkTo @route="profile">
         {{#if this.complete}}
-          <button type="button" class="btn btn-success">Proceed to profile</button>
+          <button type="button" class="btn btn-success">{{t "buttons.proceed_to_profile"}}</button>
         {{else}}
-          Skip to profile
+          {{t "buttons.skip_to_profile"}}
         {{/if}}
       </LinkTo>
     {{/if}}
@@ -36,6 +36,6 @@
 
 {{else}}
 
-  <Warning @message="You do not have permission to view this page"/>
+  <Warning @message={{t "teach.index.no_permission"}}/>
 
 {{/if}}
