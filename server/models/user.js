@@ -12,6 +12,25 @@ class User extends Model {
     return userSchema;
   }
 
+  static get virtualAttributes() {
+    return ['name'];
+  }
+
+  get name(){
+    if(!this.metadata ){
+      return this.username;
+    }
+    if(this.metadata.firstName && this.metadata.lastName){
+      return `${this.metadata.firstName} ${this.metadata.lastName}`;
+    }
+    if(this.metadata.firstName){
+      return `${this.metadata.firstName}`;
+    }
+    if(this.metadata.lastName){
+      return `${this.metadata.lastName}`;
+    }
+    return this.username;
+  }
   get $virtualFields() {
     return ['firstName', 'lastName', 'aboutMe'];
   }

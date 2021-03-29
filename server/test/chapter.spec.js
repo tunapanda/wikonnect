@@ -114,10 +114,10 @@ describe('CHAPTER ROUTE', () => {
 
         res.should.have.status(200);
         res.should.be.json;
-        res.body.chapter[0].should.have.property('id');
-        res.body.chapter[0].should.have.property('name');
-        res.body.chapter[0].should.have.property('slug');
-        res.body.chapter[0].should.have.property('creatorId');
+        res.body.chapter.should.have.property('id');
+        res.body.chapter.should.have.property('name');
+        res.body.chapter.should.have.property('slug');
+        res.body.chapter.should.have.property('creatorId');
         done();
       });
   });
@@ -140,8 +140,8 @@ describe('CHAPTER ROUTE', () => {
       .end((err, res) => {
         res.should.have.status(200);
         res.should.be.json;
-        res.body.chapter[0].should.have.property('tags');
-        res.body.chapter[0].tags.should.eql(['primary']);
+        res.body.chapter.should.have.property('tags');
+        res.body.chapter.tags.should.eql(['primary']);
         done();
       });
   });
@@ -201,7 +201,6 @@ describe('CHAPTER ROUTE', () => {
         res.status.should.eql(400);
         res.should.be.json;
         res.body.should.be.a('object');
-        res.body.errors.should.eql(['Bad Request']);
         done();
       });
   });

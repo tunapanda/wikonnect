@@ -16,6 +16,7 @@ const Counter = require('../models/counter');
 const permController = require('../middleware/permController');
 const validateGetChapter = require('../middleware/validateRequests/chapterGetValidation');
 const Reaction = require('../models/reaction');
+const { getProfileImage } = require('../utils/routesUtils/userRouteUtils');
 
 const router = new Router({
   prefix: '/chapters'
@@ -118,9 +119,50 @@ router.get('/', permController.requireAuth, validateGetChapter, async ctx => {
       .where(ctx.query)
       .page(page, per_page)
       .withGraphFetched(
-        '[reaction(reactionAggregate), flag(selectFlag),author(selectNameAndProfile)]'
+        '[reaction(reactionAggregate), flag(selectFlag),author()]'
       )
       .orderBy('id');
+
+    /**retrieve correct user image**/
+    //so not to re-fetch the profile, remove duplicates (handy if network requests to S3 are being done ),
+    const authors = [];
+    let authorIds={};
+    for (let i = 0; i < chapter.results.length; i++) {
+      if(!chapter.results[i].author){
+        continue;
+      }
+      if(!authorIds[chapter.results[i].author.id]){
+        authors.push(chapter.results[i].author);
+        authorIds[chapter.results[i].author.id]=true;
+      }
+
+    }
+    const promises = authors.map(async (author)=>{
+      return  {
+        id: author.id,
+        name: author.name,
+        username: author.username,
+        profileUri: await getProfileImage(author)
+      };
+    });
+    const authorProfiles =await Promise.all(promises);
+    //now map above profiles
+    chapter.results = chapter.results.map((chap)=>{
+      if(!chap.author){
+        //just in case 😁
+        chap.author={name:'Private',username:'Private',id:'Private',profileUri: 'anonymous'};
+        return chap;
+      }
+      const profile=authorProfiles.find((p)=>p.id===chap.author.id);
+      if(profile){
+        chap.author=profile;
+      }else{
+        //just in case 👽
+        chap.author={name:'Private',username:'Private',id:'Private',profileUri: 'anonymous'};
+      }
+      return chap;
+    });
+
   } catch (e) {
     if (e.statusCode) {
       ctx.throw(e.statusCode, null, { errors: [e.message] });
@@ -198,9 +240,8 @@ router.get('/', permController.requireAuth, validateGetChapter, async ctx => {
 router.get('/:id', permController.requireAuth, async ctx => {
 
   let stateUserId = ctx.state.user.id == undefined ? ctx.state.user.data.id : ctx.state.user.id;
-  let chapter;
   try {
-    chapter = await Chapter.query()
+    let results = await Chapter.query()
       .select([
         'chapters.*',
         Counter.query()
@@ -220,9 +261,21 @@ router.get('/:id', permController.requireAuth, async ctx => {
       ])
       .where({ 'chapters.id': ctx.params.id })
       .withGraphFetched(
-        '[reaction(reactionAggregate), flag(selectFlag),author(selectNameAndProfile)]'
+        '[reaction(reactionAggregate), flag(selectFlag),author()]'
       );
-
+    ctx.assert(results[0],404,'Chapter not found');
+    const chapter=results[0];
+    //retrieve correct user image
+    if (chapter.author) {
+      chapter.author = {
+        id: chapter.author.id,
+        name: chapter.author.name,
+        username: chapter.author.username,
+        profileUri: await  getProfileImage(chapter.author)
+      };
+    }
+    ctx.status = 200;
+    ctx.body = { chapter };
   } catch (e) {
     if (e.statusCode) {
       ctx.throw(e.statusCode, null, { errors: [e.message] });
@@ -230,11 +283,7 @@ router.get('/:id', permController.requireAuth, async ctx => {
     throw e;
   }
 
-  ctx.assert(chapter, 404, 'No chapter by that ID');
 
-
-  ctx.status = 200;
-  ctx.body = { chapter };
 });
 
 

@@ -18,6 +18,7 @@ export default class ChapterModel extends Model {
   @attr authenticatedUser;
   @attr views;
   @hasMany('comment') comment;
+  @attr author;
 
   @belongsTo('user') creator;
   // @belongsTo('lesson') lesson;
