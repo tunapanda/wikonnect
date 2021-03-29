@@ -379,18 +379,19 @@ router.post('/', permController.requireAuth, async ctx => {
 router.put('/:id', permController.requireAuth, async ctx => {
   let chapterData = ctx.request.body.chapter;
   if (chapterData.id) delete chapterData.id;
+  //TODO: enable permissions checking
 
-  const stateUserRole = ctx.state.user.role == undefined
-    ? ctx.state.user.data.role
-    : ctx.state.user.role;
-  const roles = ['admin', 'superadmin'];
-  if (!roles.includes(stateUserRole)) {
-    ctx.throw(400, null, { errors: ['Not enough permissions'] });
-    chapterData.verified = 'false';
-  }
+  // const stateUserRole = ctx.state.user.role == undefined
+  //   ? ctx.state.user.data.role
+  //   : ctx.state.user.role;
+  // const roles = ['admin', 'superadmin'];
+  // if (!roles.includes(stateUserRole)) {
+  //   ctx.throw(403, null, { errors: ['Not enough permissions'] });
+  //   chapterData.verified = 'false';
+  // }
 
   const chapterCheck = await Chapter.query().findById(ctx.params.id);
-  ctx.assert(chapterCheck, 400, 'Invalid data provided');
+  ctx.assert(chapterCheck, 404, 'Invalid data provided');
 
   try {
     const chapter = await chapterCheck.$query().patchAndFetchById(ctx.params.id, chapterData);
