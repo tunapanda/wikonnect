@@ -1,4 +1,20 @@
 module.exports = {
+  test: {
+    provider: process.env.SMTP_HOSTNAME,
+    auth: {
+      user: process.env.SMTP_USERNAME,
+      pass: process.env.SMTP_PASSWORD
+    },
+    defaultFrom: process.env.FROM_EMAIL_ADDRESS,
+  },
+  actor: {
+    provider: process.env.SMTP_HOSTNAME,
+    auth: {
+      user: process.env.SMTP_USERNAME,
+      pass: process.env.SMTP_PASSWORD
+    },
+    defaultFrom: process.env.FROM_EMAIL_ADDRESS,
+  },
   development: {
     provider: process.env.SMTP_HOSTNAME,
     auth: {
@@ -14,6 +30,5 @@ module.exports = {
       pass: process.env.SMTP_PASSWORD
     },
     defaultFrom: process.env.FROM_EMAIL_ADDRESS,
-
   }
 };
