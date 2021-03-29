@@ -912,7 +912,6 @@
         "name": "authenticated user"
       }
     ],
-    "description": "<p>If posting a reply, add <code>&quot;parent&quot;: [{&quot;id&quot;: &quot;Iw7mxw0AAiY&quot;}]</code> to the comment object you are post</p>",
     "success": {
       "examples": [
         {
@@ -943,115 +942,58 @@
   },
   {
     "type": "delete",
-    "url": "/:rating_id",
-    "title": "DELETE a rating",
-    "name": "DeleteAChapterRating",
-    "group": "ChapterRatings",
+    "url": "/api/v1/review/:id",
+    "title": "Delete a chapter",
+    "name": "DELETE_a_chapter_by_Id",
+    "group": "Chapters",
     "permission": [
       {
         "name": "authenticated user"
       }
     ],
-    "version": "0.0.0",
-    "filename": "server/routes/ratings.js",
-    "groupTitle": "ChapterRatings"
-  },
-  {
-    "type": "get",
-    "url": "/:rating_id",
-    "title": "GET a rating",
-    "name": "GetAChapterRating",
-    "group": "ChapterRatings",
-    "permission": [
-      {
-        "name": "authenticated user"
+    "version": "0.4.0",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Bearer &lt;&lt; JWT here&gt;&gt;</p>"
+          }
+        ]
       }
-    ],
+    },
+    "parameter": {
+      "fields": {
+        "URI Param": [
+          {
+            "group": "URI Param",
+            "type": "String",
+            "optional": false,
+            "field": "id",
+            "description": "<p>Id of the chapter to delete</p>"
+          }
+        ]
+      }
+    },
     "success": {
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "HTTP/1.1 201 OK\n{\n \"rating\": [{\n    \"id\": String,\n    \"rating\": String,\n    \"comment\": String,\n    \"chapter_id\": String,\n    \"user_id\": String,\n    \"labels\": Array,\n    \"category\": String,\n    \"createdAt\": DateTime,\n    \"updatedAt\": DateTime\n   }]\n }",
+          "content": "HTTP/1.1 201 OK\n{ }",
           "type": "json"
         }
       ]
     },
-    "version": "0.0.0",
-    "filename": "server/routes/ratings.js",
-    "groupTitle": "ChapterRatings",
+    "filename": "server/routes/chapters.js",
+    "groupTitle": "Chapters",
     "sampleRequest": [
       {
-        "url": "https://app.wikonnect.org/:rating_id"
+        "url": "https://app.wikonnect.org/api/v1/review/:id"
       }
     ]
-  },
-  {
-    "type": "get",
-    "url": "/",
-    "title": "GET ratings",
-    "name": "GetChapterRatings",
-    "group": "ChapterRatings",
-    "permission": [
-      {
-        "name": "authenticated user"
-      }
-    ],
-    "success": {
-      "examples": [
-        {
-          "title": "Success-Response:",
-          "content": "HTTP/1.1 201 OK\n{\n \"ratings\": [{\n    \"id\": String,\n    \"rating\": String,\n    \"comment\": String,\n    \"chapter_id\": String,\n    \"user_id\": String,\n    \"labels\": Array,\n    \"category\": String,\n    \"createdAt\": DateTime,\n    \"updatedAt\": DateTime\n   }]\n }",
-          "type": "json"
-        }
-      ]
-    },
-    "version": "0.0.0",
-    "filename": "server/routes/ratings.js",
-    "groupTitle": "ChapterRatings",
-    "sampleRequest": [
-      {
-        "url": "/"
-      }
-    ]
-  },
-  {
-    "type": "post",
-    "url": "/",
-    "title": "POST rating",
-    "name": "PostAChapterRating",
-    "group": "ChapterRatings",
-    "permission": [
-      {
-        "name": "authenticated user"
-      }
-    ],
-    "success": {
-      "examples": [
-        {
-          "title": "Success-Response:",
-          "content": "HTTP/1.1 201 OK\n{\n \"ratings\": {\n    \"id\": String,\n    \"rating\": String,\n    \"comment\": String,\n    \"chapter_id\": String,\n    \"user_id\": String,\n    \"labels\": Array,\n    \"category\": String,\n    \"createdAt\": DateTime,\n    \"updatedAt\": DateTime\n   }\n }",
-          "type": "json"
-        }
-      ]
-    },
-    "version": "0.0.0",
-    "filename": "server/routes/ratings.js",
-    "groupTitle": "ChapterRatings"
-  },
-  {
-    "type": "put",
-    "url": "/:rating_id",
-    "title": "PUT comment",
-    "name": "PutAChapterRating",
-    "group": "ChapterRatings",
-    "permission": [
-      {
-        "name": "authenticated user"
-      }
-    ],
-    "version": "0.0.0",
-    "filename": "server/routes/ratings.js",
-    "groupTitle": "ChapterRatings"
   },
   {
     "type": "get",
@@ -1065,15 +1007,28 @@
       }
     ],
     "version": "0.4.0",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": true,
+            "field": "Authorization",
+            "description": "<p>Bearer &lt;&lt; JWT here&gt;&gt;</p>"
+          }
+        ]
+      }
+    },
     "parameter": {
       "fields": {
-        "Parameter": [
+        "URI Param": [
           {
-            "group": "Parameter",
+            "group": "URI Param",
             "type": "String",
             "optional": false,
             "field": "id",
-            "description": "<p>Chapter unique ID</p>"
+            "description": "<p>Id of the chapter to update</p>"
           }
         ]
       }
@@ -1083,24 +1038,10 @@
         "Success 200": [
           {
             "group": "Success 200",
-            "type": "Object[]",
+            "type": "Object",
             "optional": false,
-            "field": "chapter",
-            "description": "<p>list</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "String",
-            "optional": false,
-            "field": "chapter.id",
-            "description": "<p>Chapter id</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "Object[]",
-            "optional": false,
-            "field": "Chapter[object]",
-            "description": "<p>Object data</p>"
+            "field": "chapter[object]",
+            "description": "<p>Chapter data</p>"
           }
         ]
       },
@@ -1140,53 +1081,50 @@
         "name": "none"
       }
     ],
-    "description": "<p>Get all chapter and filter using multiple query params</p>",
+    "description": "<p>Get all chapters. Filter enabled through query params using available chapter properties</p>",
     "parameter": {
       "fields": {
-        "Parameter": [
+        "Query Params": [
           {
-            "group": "Parameter",
+            "group": "Query Params",
             "type": "String",
             "optional": true,
-            "field": "id",
-            "description": "<p>Optional id</p>"
+            "field": "chapter[name]",
+            "description": "<p>Query by chapter</p>"
           },
           {
-            "group": "Parameter",
+            "group": "Query Params",
             "type": "String",
             "optional": true,
-            "field": "name",
-            "description": "<p>Optional name</p>"
+            "field": "chapter[status]",
+            "description": "<p>Query by chapter status - published | draft</p>"
           },
           {
-            "group": "Parameter",
+            "group": "Query Params",
             "type": "String",
             "optional": true,
-            "field": "status",
-            "description": "<p>Optional chapter status - published | draft</p>"
+            "field": "chapter[creatorId]",
+            "description": "<p>Query by author of a chapter</p>"
           },
           {
-            "group": "Parameter",
-            "type": "String",
-            "optional": true,
-            "field": "creatorId",
-            "description": "<p>Optional author of a chapter</p>"
-          },
-          {
-            "group": "Parameter",
+            "group": "Query Params",
             "type": "Boolean",
             "optional": true,
-            "field": "approved",
-            "description": "<p>Optional boolean with default being false</p>"
+            "field": "chapter[approved]",
+            "description": "<p>Query by approval status</p>"
           }
-        ],
-        "Authentication": [
+        ]
+      }
+    },
+    "header": {
+      "fields": {
+        "Header": [
           {
-            "group": "Authentication",
-            "type": "String[]",
+            "group": "Header",
+            "type": "String",
             "optional": true,
-            "field": "tags",
-            "description": "<p>Optional tags list</p>"
+            "field": "Authorization",
+            "description": "<p>Bearer &lt;&lt; JWT here&gt;&gt;</p>"
           }
         ]
       }
@@ -1195,7 +1133,7 @@
       "examples": [
         {
           "title": "Success-Response:",
-          "content": " HTTP/1.1 200 OK\n  {\n    \"meta\": {\n        \"total_pages\": 20.2\n    },\n    \"chapter\": [{\n        \"id\": \"chapter1\",\n        \"lessonId\": \"lesson1\",\n        \"name\": \"A Chapter\",\n        \"slug\": \"a-chapter\",\n        \"description\": \"An H5P Chapter.\",\n        \"status\": \"published\",\n        \"creatorId\": \"user1\",\n        \"metadata\": null,\n        \"createdAt\": \"2017-12-20T16:17:10.000Z\",\n        \"updatedAt\": \"2017-12-20T16:17:10.000Z\",\n        \"contentType\": \"h5p\",\n        \"contentUri\": \"/uploads/h5p/chapter1\",\n        \"imageUrl\": null,\n        \"tags\": [ \"highschool\", \"university\" ],\n        \"contentId\": null,\n        \"approved\": true,\n        \"verified\": true,\n        \"topics\": null,\n        \"views\": \"3\",\n        \"ratings\": \"3.6666666666666667\",\n        \"authenticatedUser\": null,\n        \"authenticatedUserReactionId\": null,\n        \"reaction\": [{\n            \"totalLikes\": \"4\",\n            \"likes\": \"3\",\n            \"dislikes\": \"1\"\n           }],\n        \"flag\": [],\n        \"author\": {\n            \"username\": \"user1\",\n            \"profileUri\": null,\n            \"lastSeen\": \"2021-02-25T09:19:08.239Z\"\n        }\n    }]\n}",
+          "content": " HTTP/1.1 200 OK\n  {\n    \"meta\": {\n        \"total_pages\": 20.2\n    },\n    \"chapters\": [{\n        \"id\": \"chapter1\",\n        \"lessonId\": \"lesson1\",\n        \"name\": \"A Chapter\",\n        \"slug\": \"a-chapter\",\n        \"description\": \"An H5P Chapter.\",\n        \"status\": \"published\",\n        \"creatorId\": \"user1\",\n        \"metadata\": null,\n        \"createdAt\": \"2017-12-20T16:17:10.000Z\",\n        \"updatedAt\": \"2017-12-20T16:17:10.000Z\",\n        \"contentType\": \"h5p\",\n        \"contentUri\": \"/uploads/h5p/chapter1\",\n        \"imageUrl\": null,\n        \"tags\": [ \"highschool\", \"university\" ],\n        \"contentId\": null,\n        \"approved\": true,\n        \"verified\": true,\n        \"topics\": null,\n        \"views\": \"3\",\n        \"ratings\": \"3.6666666666666667\",\n        \"authenticatedUser\": null,\n        \"authenticatedUserReactionId\": null,\n        \"reaction\": [{\n            \"totalLikes\": \"4\",\n            \"likes\": \"3\",\n            \"dislikes\": \"1\"\n           }],\n        \"flag\": [],\n        \"author\": {\n            \"username\": \"user1\",\n            \"profileUri\": null,\n            \"lastSeen\": \"2021-02-25T09:19:08.239Z\"\n        }\n    }]\n}",
           "type": "json"
         }
       ]
@@ -1221,39 +1159,52 @@
       }
     ],
     "version": "0.4.0",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Bearer &lt;&lt; JWT here&gt;&gt;</p>"
+          }
+        ]
+      }
+    },
     "parameter": {
       "fields": {
-        "Parameter": [
+        "Request Body": [
           {
-            "group": "Parameter",
+            "group": "Request Body",
             "type": "String",
             "optional": false,
             "field": "chapter[name]",
-            "description": "<p>Name - Unique.</p>"
+            "description": "<p>Name of the chapter.</p>"
           },
           {
-            "group": "Parameter",
+            "group": "Request Body",
             "type": "String",
             "optional": false,
             "field": "chapter[description]",
-            "description": "<p>Description.</p>"
+            "description": "<p>Description of the chapter.</p>"
           },
           {
-            "group": "Parameter",
+            "group": "Request Body",
             "type": "String",
             "optional": false,
             "field": "chapter[status]",
-            "description": "<p>modules status - options[published | draft]</p>"
+            "description": "<p>Chapter status - published | draft</p>"
           },
           {
-            "group": "Parameter",
+            "group": "Request Body",
             "type": "Boolean",
             "optional": false,
             "field": "chapter[approved]",
-            "description": "<p>defaults is false</p>"
+            "description": "<p>If chapter has been approved: Default is false</p>"
           },
           {
-            "group": "Parameter",
+            "group": "Request Body",
             "type": "Object[]",
             "optional": false,
             "field": "chapter[tags]",
@@ -1284,6 +1235,9 @@
     "groupTitle": "Chapters"
   },
   {
+    "deprecated": {
+      "content": "use now (#HP5:Save H5P)."
+    },
     "type": "post",
     "url": "/api/v1/chapters/:id/upload",
     "title": "upload H5P chapter",
@@ -1295,6 +1249,19 @@
       }
     ],
     "version": "0.4.0",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Bearer &lt;&lt; JWT here&gt;&gt;</p>"
+          }
+        ]
+      }
+    },
     "success": {
       "examples": [
         {
@@ -1307,10 +1274,17 @@
         "Success 200": [
           {
             "group": "Success 200",
-            "type": "Object[]",
+            "type": "String",
             "optional": false,
-            "field": "chapter[object]",
-            "description": "<p>Object data</p>"
+            "field": "host",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "path",
+            "description": ""
           }
         ]
       }
@@ -1344,6 +1318,19 @@
       }
     ],
     "version": "0.4.0",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Bearer &lt;&lt; JWT here&gt;&gt;</p>"
+          }
+        ]
+      }
+    },
     "success": {
       "examples": [
         {
@@ -1356,10 +1343,17 @@
         "Success 200": [
           {
             "group": "Success 200",
-            "type": "Object[]",
+            "type": "String",
             "optional": false,
-            "field": "chapter[object]",
-            "description": "<p>Object data</p>"
+            "field": "host",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "path",
+            "description": ""
           }
         ]
       }
@@ -1393,6 +1387,19 @@
       }
     ],
     "version": "0.4.0",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Bearer &lt;&lt; JWT here&gt;&gt;</p>"
+          }
+        ]
+      }
+    },
     "sampleRequest": [
       {
         "url": "https://app.wikonnect.org/api/v1/chapters/:id"
@@ -1400,49 +1407,48 @@
     ],
     "parameter": {
       "fields": {
-        "Parameter": [
+        "URI Param": [
           {
-            "group": "Parameter",
+            "group": "URI Param",
             "type": "String",
             "optional": false,
             "field": "id",
-            "description": "<p>Id - Unique.</p>"
-          },
+            "description": "<p>Id of the chapter to update</p>"
+          }
+        ],
+        "Request Body": [
           {
-            "group": "Parameter",
+            "group": "Request Body",
             "type": "String",
-            "optional": false,
+            "optional": true,
             "field": "chapter[name]",
-            "description": "<p>Name - Unique.</p>"
+            "description": "<p>Name of the chapter.</p>"
           },
           {
-            "group": "Parameter",
+            "group": "Request Body",
             "type": "String",
-            "optional": false,
+            "optional": true,
             "field": "chapter[description]",
-            "description": "<p>Description.</p>"
+            "description": "<p>Description of the chapter.</p>"
           },
           {
-            "group": "Parameter",
+            "group": "Request Body",
             "type": "String",
-            "optional": false,
+            "optional": true,
             "field": "chapter[status]",
-            "description": "<p>modules status - published | draft</p>"
+            "description": "<p>Chapter status - published | draft</p>"
           },
           {
-            "group": "Parameter",
+            "group": "Request Body",
             "type": "Boolean",
-            "allowedValues": [
-              "\"false\""
-            ],
-            "optional": false,
+            "optional": true,
             "field": "chapter[approved]",
-            "description": "<p>defaults is false</p>"
+            "description": "<p>If chapter has been approved: Default is false</p>"
           },
           {
-            "group": "Parameter",
+            "group": "Request Body",
             "type": "Object[]",
-            "optional": false,
+            "optional": true,
             "field": "chapter[tags]",
             "description": "<p>Tags list.</p>"
           }
@@ -1766,17 +1772,29 @@
             "group": "Parameter",
             "type": "String",
             "optional": true,
-            "field": "absolute_url",
+            "field": "url",
             "description": "<p>absolute_url to chapter id</p>"
-          }
-        ],
-        "Authentication": [
+          },
           {
-            "group": "Authentication",
-            "type": "String[]",
+            "group": "Parameter",
+            "type": "String",
             "optional": true,
-            "field": "tags",
-            "description": "<p>Optional tags list</p>"
+            "field": "format",
+            "description": "<p>Optional either xml or json (default).</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Integer",
+            "optional": true,
+            "field": "maxwidth",
+            "description": "<p>Optional iframe width</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Integer",
+            "optional": true,
+            "field": "minheight",
+            "description": "<p>Optional iframe height</p>"
           }
         ]
       }
@@ -1858,6 +1876,1327 @@
     "version": "0.0.0",
     "filename": "server/routes/oembed.js",
     "groupTitle": "Oembed"
+  },
+  {
+    "type": "delete",
+    "url": "/api/v1/review/:id",
+    "title": "Delete a chapter review",
+    "name": "DELETE_a_chapter_review_by_Id",
+    "group": "Ratings_and_Review",
+    "permission": [
+      {
+        "name": "authenticated user"
+      }
+    ],
+    "version": "0.4.0",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Bearer &lt;&lt; JWT here&gt;&gt;</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "URI Param": [
+          {
+            "group": "URI Param",
+            "type": "String",
+            "optional": false,
+            "field": "id",
+            "description": "<p>Id of the review to delete</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 201 OK\n{ }",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "server/routes/reviews.js",
+    "groupTitle": "Ratings_and_Review",
+    "sampleRequest": [
+      {
+        "url": "https://app.wikonnect.org/api/v1/review/:id"
+      }
+    ]
+  },
+  {
+    "type": "delete",
+    "url": "/api/v1/ratings/:id",
+    "title": "Delete a chapter rating and review",
+    "name": "DELETE_ratings_and_review_by_Id",
+    "group": "Ratings_and_Review",
+    "permission": [
+      {
+        "name": "authenticated user"
+      }
+    ],
+    "version": "0.4.0",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Bearer &lt;&lt; JWT here&gt;&gt;</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "URI Param": [
+          {
+            "group": "URI Param",
+            "type": "String",
+            "optional": false,
+            "field": "id",
+            "description": "<p>rating id</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 201 OK\n{ }",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "server/routes/ratings.js",
+    "groupTitle": "Ratings_and_Review",
+    "sampleRequest": [
+      {
+        "url": "https://app.wikonnect.org/api/v1/ratings/:id"
+      }
+    ]
+  },
+  {
+    "type": "get",
+    "url": "/api/v1/ratings",
+    "title": "GET all chapter ratings",
+    "name": "Get_all_ratings",
+    "group": "Ratings_and_Review",
+    "permission": [
+      {
+        "name": "authenticated user"
+      }
+    ],
+    "version": "0.4.0",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Bearer &lt;&lt; JWT here&gt;&gt;</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Query Params": [
+          {
+            "group": "Query Params",
+            "type": "Boolean",
+            "optional": true,
+            "field": "isDeleted",
+            "description": "<p>filter by deleted status</p>"
+          },
+          {
+            "group": "Query Params",
+            "type": "String",
+            "optional": true,
+            "field": "include",
+            "description": "<p>relationships to eager load (comma separated)</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Object[]",
+            "optional": false,
+            "field": "ratings",
+            "description": "<p>Top level object</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "rating[id]",
+            "description": "<p>rating id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "rating[chapterId]",
+            "description": "<p>associated chapter Id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "rating[metadata]",
+            "description": "<p>rating metadata</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "rating[userId]",
+            "description": "<p>rating owner</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "rating[averageRating]",
+            "description": "<p>average record rating</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Boolean",
+            "optional": false,
+            "field": "rating[isDeleted]",
+            "description": "<p>if record was deleted</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "rating[createdAt]",
+            "description": "<p>date created</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "rating[updatedAt]",
+            "description": "<p>date updated</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 201 OK\n{\n  \"ratings\":[{\n      \"id\": \"IzM6odwAASI\",\n      \"chapterId\": \"IzMs75WAAA0\",\n      \"reaction\": \"like\",\n      \"metadata\":{\"language\": 2, \"audioQuality\": 1, \"contentAccuracy\": 1},\n      \"userId\": \"user1\",\n      \"averageRating\": \"1.33\",\n      \"isDeleted\": false,\n      \"createdAt\": \"2021-03-24T11:51:33.520Z\",\n      \"updatedAt\": \"2021-03-24T11:51:33.520Z\"\n    }]\n }",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "server/routes/ratings.js",
+    "groupTitle": "Ratings_and_Review",
+    "sampleRequest": [
+      {
+        "url": "https://app.wikonnect.org/api/v1/ratings"
+      }
+    ]
+  },
+  {
+    "type": "get",
+    "url": "/api/v1/reviews",
+    "title": "GET all chapter reviews",
+    "name": "Get_all_reviews",
+    "group": "Ratings_and_Review",
+    "permission": [
+      {
+        "name": "authenticated user"
+      }
+    ],
+    "version": "0.4.0",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Bearer &lt;&lt; JWT here&gt;&gt;</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Query Params": [
+          {
+            "group": "Query Params",
+            "type": "Boolean",
+            "optional": false,
+            "field": "isDeleted",
+            "description": "<p>filter by deleted status (optional)</p>"
+          },
+          {
+            "group": "Query Params",
+            "type": "String",
+            "optional": false,
+            "field": "include",
+            "description": "<p>relationships to eager load (comma separated &amp; optional)</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Object[]",
+            "optional": false,
+            "field": "review",
+            "description": "<p>Top level object</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "review[id]",
+            "description": "<p>review id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "review[chapterId]",
+            "description": "<p>associated chapter Id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "review[ratingId]",
+            "description": "<p>associated rating Id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "review[metadata]",
+            "description": "<p>rating metadata</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "review[userId]",
+            "description": "<p>rating owner</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Boolean",
+            "optional": false,
+            "field": "review[isDeleted]",
+            "description": "<p>if record was deleted</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "review[createdAt]",
+            "description": "<p>date created</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "review[updatedAt]",
+            "description": "<p>date updated</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"review\":[{\n      \"id\": \"IzLEIXSAASc\",\n      \"chapterId\": \"IzMs75WAAA0\",\n      \"reaction\": \"like\",\n      \"ratingId\": \"IzLDvwGAASY\",\n      \"metadata\":{\"language\": \"Great\", \"audioQuality\": \"Good\", \"contentAccuracy\":[\"Citations provided\",\"Good\"]},,\n      \"userId\": \"user1\",\n      \"isDeleted\": false,\n      \"createdAt\": \"2021-03-24T11:51:33.520Z\",\n      \"updatedAt\": \"2021-03-24T11:51:33.520Z\"\n    }]\n }",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "server/routes/reviews.js",
+    "groupTitle": "Ratings_and_Review",
+    "sampleRequest": [
+      {
+        "url": "https://app.wikonnect.org/api/v1/reviews"
+      }
+    ]
+  },
+  {
+    "type": "get",
+    "url": "/api/v1/ratings/:id",
+    "title": "GET chapter rating by Id",
+    "name": "Get_rating_by_Id",
+    "group": "Ratings_and_Review",
+    "permission": [
+      {
+        "name": "authenticated user"
+      }
+    ],
+    "version": "0.4.0",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Bearer &lt;&lt; JWT here&gt;&gt;</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "URI Param": [
+          {
+            "group": "URI Param",
+            "type": "String",
+            "optional": false,
+            "field": "id",
+            "description": "<p>rating id</p>"
+          }
+        ],
+        "Query Params": [
+          {
+            "group": "Query Params",
+            "type": "Boolean",
+            "optional": true,
+            "field": "isDeleted",
+            "description": "<p>filter by deleted status</p>"
+          },
+          {
+            "group": "Query Params",
+            "type": "String",
+            "optional": true,
+            "field": "include",
+            "description": "<p>relationships to eager load (comma separated)</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "rating",
+            "description": "<p>Top level object</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "rating[id]",
+            "description": "<p>rating id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "rating[chapterId]",
+            "description": "<p>associated chapter Id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "rating[metadata]",
+            "description": "<p>rating metadata</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "rating[userId]",
+            "description": "<p>rating owner</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "rating[averageRating]",
+            "description": "<p>average record rating</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Boolean",
+            "optional": false,
+            "field": "rating[isDeleted]",
+            "description": "<p>if record was deleted</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "rating[createdAt]",
+            "description": "<p>date created</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "rating[updatedAt]",
+            "description": "<p>date updated</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 201 OK\n{\n  \"rating\":{\n      \"id\": \"IzM6odwAASI\",\n      \"chapterId\": \"IzMs75WAAA0\",\n      \"reaction\": \"like\",\n      \"metadata\":{\"language\": 2, \"audioQuality\": 1, \"contentAccuracy\": 1},\n      \"userId\": \"user1\",\n      \"averageRating\": \"1.33\",\n      \"isDeleted\": false,\n      \"createdAt\": \"2021-03-24T11:51:33.520Z\",\n      \"updatedAt\": \"2021-03-24T11:51:33.520Z\"\n    }\n }",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "server/routes/ratings.js",
+    "groupTitle": "Ratings_and_Review",
+    "sampleRequest": [
+      {
+        "url": "https://app.wikonnect.org/api/v1/ratings/:id"
+      }
+    ]
+  },
+  {
+    "type": "get",
+    "url": "/api/v1/reviews/:id",
+    "title": "GET chapter review by Id",
+    "name": "Get_review_by_Id",
+    "group": "Ratings_and_Review",
+    "permission": [
+      {
+        "name": "authenticated user"
+      }
+    ],
+    "version": "0.4.0",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Bearer &lt;&lt; JWT here&gt;&gt;</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "URI Param": [
+          {
+            "group": "URI Param",
+            "type": "String",
+            "optional": false,
+            "field": "id",
+            "description": "<p>review id</p>"
+          }
+        ],
+        "Query Params": [
+          {
+            "group": "Query Params",
+            "type": "Boolean",
+            "optional": true,
+            "field": "isDeleted",
+            "description": "<p>filter by deleted status</p>"
+          },
+          {
+            "group": "Query Params",
+            "type": "String",
+            "optional": true,
+            "field": "include",
+            "description": "<p>relationships to eager load (comma separated)</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "review",
+            "description": "<p>Top level object</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "review[id]",
+            "description": "<p>review id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "review[chapterId]",
+            "description": "<p>associated chapter Id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "review[ratingId]",
+            "description": "<p>associated rating Id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "review[metadata]",
+            "description": "<p>rating metadata</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "review[userId]",
+            "description": "<p>rating owner</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Boolean",
+            "optional": false,
+            "field": "review[isDeleted]",
+            "description": "<p>if record was deleted</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "review[createdAt]",
+            "description": "<p>date created</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "review[updatedAt]",
+            "description": "<p>date updated</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"review\":{\n      \"id\": \"IzLEIXSAASc\",\n      \"chapterId\": \"IzMs75WAAA0\",\n      \"reaction\": \"like\",\n      \"ratingId\": \"IzLDvwGAASY\",\n      \"metadata\":{\"language\": \"Great\", \"audioQuality\": \"Good\", \"contentAccuracy\":[\"Citations provided\",\"Good\"]},,\n      \"userId\": \"user1\",\n      \"isDeleted\": false,\n      \"createdAt\": \"2021-03-24T11:51:33.520Z\",\n      \"updatedAt\": \"2021-03-24T11:51:33.520Z\"\n    }\n }",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "server/routes/reviews.js",
+    "groupTitle": "Ratings_and_Review",
+    "sampleRequest": [
+      {
+        "url": "https://app.wikonnect.org/api/v1/reviews/:id"
+      }
+    ]
+  },
+  {
+    "type": "get",
+    "url": "/api/v1/reviews/questions",
+    "title": "GET review questions",
+    "name": "Get_review_questions",
+    "group": "Ratings_and_Review",
+    "permission": [
+      {
+        "name": "authenticated user"
+      }
+    ],
+    "version": "0.4.0",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Bearer &lt;&lt; JWT here&gt;&gt;</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Query Params": [
+          {
+            "group": "Query Params",
+            "type": "string",
+            "optional": true,
+            "field": "categories",
+            "description": "<p>categories to filter (comma separated)</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Object[]",
+            "optional": false,
+            "field": "reviewQuestions",
+            "description": "<p>Top level array of question objects</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "reviewQuestions[category]",
+            "description": "<p>category unique identifier</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "reviewQuestions[title]",
+            "description": "<p>category title</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n{\n   \"reviewQuestions\": [\n       {\n           \"category\": \"audioVideoQuality\",\n           \"title\": \"Audio & video quality\"\n       },\n       {\n           \"category\": \"soundQuality\",\n           \"title\": \"Sound quality\"\n       }\n\n     ]\n }",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "server/routes/reviews.js",
+    "groupTitle": "Ratings_and_Review",
+    "sampleRequest": [
+      {
+        "url": "https://app.wikonnect.org/api/v1/reviews/questions"
+      }
+    ]
+  },
+  {
+    "type": "put",
+    "url": "/api/v1/ratings/:id",
+    "title": "PUT a chapter rating",
+    "name": "PUT_a_chapter_rating",
+    "group": "Ratings_and_Review",
+    "permission": [
+      {
+        "name": "authenticated user"
+      }
+    ],
+    "version": "0.4.0",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Bearer &lt;&lt; JWT here&gt;&gt;</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "URI Param": [
+          {
+            "group": "URI Param",
+            "type": "String",
+            "optional": false,
+            "field": "id",
+            "description": "<p>Id of the rating to update</p>"
+          }
+        ],
+        "Request Body": [
+          {
+            "group": "Request Body",
+            "type": "Object",
+            "optional": false,
+            "field": "rating",
+            "description": "<p>Top level object</p>"
+          },
+          {
+            "group": "Request Body",
+            "type": "String",
+            "optional": true,
+            "field": "rating[id]",
+            "description": "<p>rating id</p>"
+          },
+          {
+            "group": "Request Body",
+            "type": "String",
+            "optional": true,
+            "field": "rating[chapterId]",
+            "description": "<p>associated chapter Id</p>"
+          },
+          {
+            "group": "Request Body",
+            "type": "Object",
+            "optional": true,
+            "field": "rating[metadata]",
+            "description": "<p>rating metadata</p>"
+          },
+          {
+            "group": "Request Body",
+            "type": "Object",
+            "optional": true,
+            "field": "rating[review]",
+            "description": "<p>related review object (check POST review docs)</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "rating",
+            "description": "<p>Top level object</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "rating[id]",
+            "description": "<p>rating id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "rating[chapterId]",
+            "description": "<p>associated chapter Id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "rating[metadata]",
+            "description": "<p>rating metadata</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "rating[userId]",
+            "description": "<p>rating owner</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "rating[averageRating]",
+            "description": "<p>average record rating</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Boolean",
+            "optional": false,
+            "field": "rating[isDeleted]",
+            "description": "<p>if record was deleted</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "rating[createdAt]",
+            "description": "<p>date created</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "rating[updatedAt]",
+            "description": "<p>date updated</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 201 OK\n{\n  \"rating\":{\n      \"id\": \"IzM6odwAASI\",\n      \"chapterId\": \"IzMs75WAAA0\",\n      \"reaction\": \"like\",\n      \"metadata\":{\"language\": 2, \"audioQuality\": 1, \"contentAccuracy\": 1},\n      \"userId\": \"user1\",\n      \"averageRating\": \"1.33\",\n      \"isDeleted\": false,\n      \"createdAt\": \"2021-03-24T11:51:33.520Z\",\n      \"updatedAt\": \"2021-03-24T11:51:33.520Z\"\n    }\n }",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "server/routes/ratings.js",
+    "groupTitle": "Ratings_and_Review",
+    "sampleRequest": [
+      {
+        "url": "https://app.wikonnect.org/api/v1/ratings/:id"
+      }
+    ]
+  },
+  {
+    "type": "put",
+    "url": "/api/v1/review",
+    "title": "PUT a chapter review",
+    "name": "PUT_a_chapter_review_by_Id",
+    "group": "Ratings_and_Review",
+    "permission": [
+      {
+        "name": "authenticated user"
+      }
+    ],
+    "version": "0.4.0",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Bearer &lt;&lt; JWT here&gt;&gt;</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "URI Param": [
+          {
+            "group": "URI Param",
+            "type": "String",
+            "optional": false,
+            "field": "id",
+            "description": "<p>review id to update</p>"
+          }
+        ],
+        "Request Body": [
+          {
+            "group": "Request Body",
+            "type": "Object",
+            "optional": true,
+            "field": "review[metadata]",
+            "description": "<p>rating metadata</p>"
+          },
+          {
+            "group": "Request Body",
+            "type": "String",
+            "optional": true,
+            "field": "review[chapterId]",
+            "description": "<p>chapter being rated</p>"
+          },
+          {
+            "group": "Request Body",
+            "type": "String",
+            "optional": true,
+            "field": "review[reaction]",
+            "description": "<p>chapter reaction</p>"
+          },
+          {
+            "group": "Request Body",
+            "type": "String",
+            "optional": true,
+            "field": "review[ratingId]",
+            "description": "<p>related chapter rating Id</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "review",
+            "description": "<p>Top level object</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "review[id]",
+            "description": "<p>review id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "review[chapterId]",
+            "description": "<p>associated chapter Id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "review[ratingId]",
+            "description": "<p>associated rating Id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "review[metadata]",
+            "description": "<p>rating metadata</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "review[userId]",
+            "description": "<p>rating owner</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Boolean",
+            "optional": false,
+            "field": "review[isDeleted]",
+            "description": "<p>if record was deleted</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "review[createdAt]",
+            "description": "<p>date created</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "review[updatedAt]",
+            "description": "<p>date updated</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"review\":{\n      \"id\": \"IzLEIXSAASc\",\n      \"chapterId\": \"IzMs75WAAA0\",\n      \"reaction\": \"like\",\n      \"ratingId\": \"IzLDvwGAASY\",\n      \"metadata\":{\"language\": \"Great\", \"audioQuality\": \"Good\", \"contentAccuracy\":[\"Citations provided\",\"Good\"]},,\n      \"userId\": \"user1\",\n      \"isDeleted\": false,\n      \"createdAt\": \"2021-03-24T11:51:33.520Z\",\n      \"updatedAt\": \"2021-03-24T11:51:33.520Z\"\n    }\n }",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "server/routes/reviews.js",
+    "groupTitle": "Ratings_and_Review",
+    "sampleRequest": [
+      {
+        "url": "https://app.wikonnect.org/api/v1/review"
+      }
+    ]
+  },
+  {
+    "type": "post",
+    "url": "/api/v1/ratings",
+    "title": "POST a chapter rating",
+    "name": "Post_a_chapter_rating",
+    "group": "Ratings_and_Review",
+    "permission": [
+      {
+        "name": "authenticated user"
+      }
+    ],
+    "version": "0.4.0",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Bearer &lt;&lt; JWT here&gt;&gt;</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Request Body": [
+          {
+            "group": "Request Body",
+            "type": "Object",
+            "optional": false,
+            "field": "rating[metadata]",
+            "description": "<p>rating metadata</p>"
+          },
+          {
+            "group": "Request Body",
+            "type": "String",
+            "optional": false,
+            "field": "rating[chapterId]",
+            "description": "<p>chapter being rated</p>"
+          },
+          {
+            "group": "Request Body",
+            "type": "String",
+            "optional": false,
+            "field": "rating[reaction]",
+            "description": "<p>chapter reaction</p>"
+          },
+          {
+            "group": "Request Body",
+            "type": "Object",
+            "optional": true,
+            "field": "rating[review]",
+            "description": "<p>related review object  (check POST review docs)</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "rating",
+            "description": "<p>Top level object</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "rating[id]",
+            "description": "<p>rating id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "rating[chapterId]",
+            "description": "<p>associated chapter Id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "rating[metadata]",
+            "description": "<p>rating metadata</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "rating[userId]",
+            "description": "<p>rating owner</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "rating[averageRating]",
+            "description": "<p>average record rating</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Boolean",
+            "optional": false,
+            "field": "rating[isDeleted]",
+            "description": "<p>if record was deleted</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "rating[createdAt]",
+            "description": "<p>date created</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "rating[updatedAt]",
+            "description": "<p>date updated</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 201 OK\n{\n  \"rating\":{\n      \"id\": \"IzM6odwAASI\",\n      \"chapterId\": \"IzMs75WAAA0\",\n      \"reaction\": \"like\",\n      \"metadata\":{\"language\": 2, \"audioQuality\": 1, \"contentAccuracy\": 1},\n      \"userId\": \"user1\",\n      \"averageRating\": \"1.33\",\n      \"isDeleted\": false,\n      \"createdAt\": \"2021-03-24T11:51:33.520Z\",\n      \"updatedAt\": \"2021-03-24T11:51:33.520Z\"\n    }\n }",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "server/routes/ratings.js",
+    "groupTitle": "Ratings_and_Review",
+    "sampleRequest": [
+      {
+        "url": "https://app.wikonnect.org/api/v1/ratings"
+      }
+    ]
+  },
+  {
+    "type": "post",
+    "url": "/api/v1/review",
+    "title": "POST a chapter review",
+    "name": "Post_a_review",
+    "group": "Ratings_and_Review",
+    "permission": [
+      {
+        "name": "authenticated user"
+      }
+    ],
+    "version": "0.4.0",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Bearer &lt;&lt; JWT here&gt;&gt;</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Request Body": [
+          {
+            "group": "Request Body",
+            "type": "Object",
+            "optional": false,
+            "field": "review[metadata]",
+            "description": "<p>rating metadata</p>"
+          },
+          {
+            "group": "Request Body",
+            "type": "String",
+            "optional": false,
+            "field": "review[chapterId]",
+            "description": "<p>chapter being rated</p>"
+          },
+          {
+            "group": "Request Body",
+            "type": "String",
+            "optional": false,
+            "field": "review[reaction]",
+            "description": "<p>chapter reaction</p>"
+          },
+          {
+            "group": "Request Body",
+            "type": "String",
+            "optional": false,
+            "field": "review[ratingId]",
+            "description": "<p>related chapter rating Id</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "review",
+            "description": "<p>Top level object</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "review[id]",
+            "description": "<p>review id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "review[chapterId]",
+            "description": "<p>associated chapter Id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "review[ratingId]",
+            "description": "<p>associated rating Id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "review[metadata]",
+            "description": "<p>rating metadata</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "review[userId]",
+            "description": "<p>rating owner</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Boolean",
+            "optional": false,
+            "field": "review[isDeleted]",
+            "description": "<p>if record was deleted</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "review[createdAt]",
+            "description": "<p>date created</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "review[updatedAt]",
+            "description": "<p>date updated</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 201 OK\n{\n  \"review\":{\n      \"id\": \"IzLEIXSAASc\",\n      \"chapterId\": \"IzMs75WAAA0\",\n      \"reaction\": \"like\",\n      \"ratingId\": \"IzLDvwGAASY\",\n      \"metadata\":{\"language\": \"Great\", \"audioQuality\": \"Good\", \"contentAccuracy\":[\"Citations provided\",\"Good\"]},,\n      \"userId\": \"user1\",\n      \"isDeleted\": false,\n      \"createdAt\": \"2021-03-24T11:51:33.520Z\",\n      \"updatedAt\": \"2021-03-24T11:51:33.520Z\"\n    }\n }",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "server/routes/reviews.js",
+    "groupTitle": "Ratings_and_Review",
+    "sampleRequest": [
+      {
+        "url": "https://app.wikonnect.org/api/v1/review"
+      }
+    ]
   },
   {
     "type": "delete",

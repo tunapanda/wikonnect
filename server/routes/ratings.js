@@ -21,8 +21,8 @@ const router = new Router({
  *
  * @apiParam (URI Param) {String} id rating id
  *
- * @apiParam (Query Params) {Boolean} isDeleted filter by deleted status (optional)
- * @apiParam (Query Params) {String} include relationships to eager load (comma separated & optional)
+ * @apiParam (Query Params) {Boolean} [isDeleted] filter by deleted status
+ * @apiParam (Query Params) {String} [include] relationships to eager load (comma separated)
  *
  * @apiSuccess {Object} rating Top level object
  * @apiSuccess {String} rating[id] rating id
@@ -95,8 +95,8 @@ router.get('/:id', requireAuth, async ctx => {
  *
  * @apiHeader {String} Authorization Bearer << JWT here>>
  *
- * @apiParam (Query Params) {Boolean} isDeleted filter by deleted status (optional)
- * @apiParam (Query Params) {String} include relationships to eager load (comma separated & optional)
+ * @apiParam (Query Params) {Boolean} [isDeleted] filter by deleted status
+ * @apiParam (Query Params) {String} [include] relationships to eager load (comma separated)
  *
  * @apiSuccess {Object[]} ratings Top level object
  * @apiSuccess {String} rating[id] rating id
@@ -167,7 +167,7 @@ router.get('/', requireAuth, async ctx => {
  * @apiParam (Request Body) {Object} rating[metadata] rating metadata
  * @apiParam (Request Body) {String} rating[chapterId] chapter being rated
  * @apiParam (Request Body) {String} rating[reaction] chapter reaction
- * @apiParam (Request Body) {Object} review optional related review
+ * @apiParam (Request Body) {Object} [rating[review]]  related review object  (check POST review docs)
  *
  * @apiSuccess {Object} rating Top level object
  * @apiSuccess {String} rating[id] rating id
@@ -263,10 +263,10 @@ router.post('/', requireAuth, validateRating, async ctx => {
  * @apiParam (URI Param) {String} id Id of the rating to update
  *
  * @apiParam (Request Body) {Object} rating Top level object
- * @apiParam (Request Body) {String} rating[id] rating id
- * @apiParam (Request Body) {String} rating[chapterId] associated chapter Id
- * @apiParam (Request Body) {Object} rating[metadata] rating metadata
- * @apiParam (Request Body) {Object} review optional related review
+ * @apiParam (Request Body) {String} [rating[id]] rating id
+ * @apiParam (Request Body) {String} [rating[chapterId]] associated chapter Id
+ * @apiParam (Request Body) {Object} [rating[metadata]] rating metadata
+ * @apiParam (Request Body) {Object} [rating[review]] related review object (check POST review docs)
  *
  * @apiSuccess {Object} rating Top level object
  * @apiSuccess {String} rating[id] rating id

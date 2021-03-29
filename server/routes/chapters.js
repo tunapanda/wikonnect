@@ -27,16 +27,14 @@ const router = new Router({
  * @apiName GetChapters
  * @apiGroup Chapters
  * @apiPermission none
- * @apiDescription Get all chapter and filter using multiple query params
+ * @apiDescription Get all chapters. Filter enabled through query params using available chapter properties
  *
- * @apiParam {String} [id]  Optional id
- * @apiParam {String} [name]  Optional name
- * @apiParam {String} [status] Optional chapter status - published | draft
- * @apiParam {String} [creatorId] Optional author of a chapter
- * @apiParam {Boolean} [approved] Optional boolean with default being false
+ * @apiParam  (Query Params) {String} [chapter[name]] Query by chapter
+ * @apiParam  (Query Params) {String} [chapter[status]] Query by chapter status - published | draft
+ * @apiParam  (Query Params) {String} [chapter[creatorId]] Query by author of a chapter
+ * @apiParam  (Query Params) {Boolean} [chapter[approved]] Query by approval status
  *
- * @apiParam (Authentication) {String[]} [tags] Optional tags list
- *
+ * @apiHeader {String} [Authorization] Bearer << JWT here>>
  *
  * @apiSuccessExample {json} Success-Response:
  *     HTTP/1.1 200 OK
@@ -191,12 +189,11 @@ router.get('/', permController.requireAuth, validateGetChapter, async ctx => {
  * @apiPermission none
  * @apiVersion 0.4.0
  *
+ * @apiHeader {String} [Authorization] Bearer << JWT here>>
  *
- * @apiParam {String} id Chapter unique ID
+ * @apiParam (URI Param) {String} id Id of the chapter to update
  *
- * @apiSuccess {Object[]} chapter list
- * @apiSuccess {String} chapter.id Chapter id
- * @apiSuccess {Object[]} Chapter[object] Object data
+ * @apiSuccess {Object} chapter[object] Chapter data
  *
  * @apiSuccessExample {json} Success-Response:
  *     HTTP/1.1 200 OK
@@ -295,13 +292,15 @@ router.get('/:id', permController.requireAuth, async ctx => {
  * @apiPermission none
  * @apiVersion 0.4.0
  *
+ * @apiHeader {String} Authorization Bearer << JWT here>>
+ *
  * @apiSampleRequest off
  *
- * @apiParam {String} chapter[name] Name - Unique.
- * @apiParam {String} chapter[description] Description.
- * @apiParam {String} chapter[status] modules status - options[published | draft]
- * @apiParam {Boolean} chapter[approved] defaults is false
- * @apiParam {Object[]} chapter[tags] Tags list.
+ * @apiParam (Request Body) {String} chapter[name] Name of the chapter.
+ * @apiParam (Request Body) {String} chapter[description] Description of the chapter.
+ * @apiParam (Request Body) {String} chapter[status] Chapter status - published | draft
+ * @apiParam (Request Body) {Boolean} chapter[approved] If chapter has been approved: Default is false
+ * @apiParam (Request Body) {Object[]} chapter[tags] Tags list.
  *
  *
  * @apiSampleRequest off
@@ -362,14 +361,17 @@ router.post('/', permController.requireAuth, async ctx => {
  * @apiPermission none
  * @apiVersion 0.4.0
  *
+ * @apiHeader {String} Authorization Bearer << JWT here>>
+ *
  * @apiSampleRequest off
  *
- * @apiParam {String} id Id - Unique.
- * @apiParam {String} chapter[name] Name - Unique.
- * @apiParam {String} chapter[description] Description.
- * @apiParam {String} chapter[status] modules status - published | draft
- * @apiParam {Boolean="false"} chapter[approved] defaults is false
- * @apiParam {Object[]} chapter[tags] Tags list.
+ * @apiParam (URI Param) {String} id Id of the chapter to update
+ *
+ * @apiParam (Request Body) {String} [chapter[name]] Name of the chapter.
+ * @apiParam (Request Body) {String} [chapter[description]] Description of the chapter.
+ * @apiParam (Request Body) {String} [chapter[status]] Chapter status - published | draft
+ * @apiParam (Request Body) {Boolean} [chapter[approved]] If chapter has been approved: Default is false
+ * @apiParam (Request Body) {Object[]} [chapter[tags]] Tags list.
  *
  * @apiSampleRequest /api/v1/chapters/:id
  *
@@ -406,14 +408,29 @@ router.put('/:id', permController.requireAuth, async ctx => {
 });
 
 
-
+/**
+ * @api {delete} /api/v1/review/:id Delete a chapter
+ * @apiName DELETE a chapter by Id
+ * @apiGroup Chapters
+ * @apiPermission authenticated user
+ * @apiVersion 0.4.0
+ *
+ * @apiHeader {String} Authorization Bearer << JWT here>>
+ *
+ * @apiParam (URI Param) {String} id Id of the chapter to delete
+ *
+ * @apiSuccessExample {json} Success-Response:
+ *     HTTP/1.1 201 OK
+ *     { }
+ *
+ */
 router.delete('/:id', permController.requireAuth, async ctx => {
   const chapter = await Chapter.query().findById(ctx.params.id);
   ctx.assert(chapter, 401, 'No ID was found');
   await Chapter.query().delete().where({ id: ctx.params.id });
 
   ctx.status = 200;
-  ctx.body = { chapter };
+  ctx.body = { };
 });
 
 
@@ -424,6 +441,7 @@ router.delete('/:id', permController.requireAuth, async ctx => {
  * @apiPermission none
  * @apiVersion 0.4.0
  *
+ * @apiHeader {String} Authorization Bearer << JWT here>>
  *
  * @apiSuccessExample {json} Success-Response:
  *     HTTP/1.1 200 OK
@@ -432,7 +450,9 @@ router.delete('/:id', permController.requireAuth, async ctx => {
  *      "path": image path
  *    }
  *
- * @apiSuccess {Object[]} chapter[object] Object data
+ * @apiSuccess {String} host
+ * @apiSuccess {String} path
+ *
  * @apiErrorExample {json} List error
  *    HTTP/1.1 500 Internal Server Error
  */
@@ -497,18 +517,24 @@ router.post('/:id/chapter-image', async (ctx, next) => {
 
 
 /**
+ * @apiDeprecated use now (#HP5:Save H5P).
  * @api {post} /api/v1/chapters/:id/upload upload H5P chapter
  * @apiName PostAH5PChapter
  * @apiGroup Chapters
  * @apiPermission none
  * @apiVersion 0.4.0
+ *
+ * @apiHeader {String} Authorization Bearer << JWT here>>
+ *
  * @apiSuccessExample {json} Success-Response:
  *     HTTP/1.1 200 OK
  *     {
  *        host: ctx.host,
  *        path: uploadPath
  *      }
- * @apiSuccess {Object[]} chapter[object] Object data
+ * @apiSuccess {String} host
+ * @apiSuccess {String} path
+ *
  * @apiErrorExample {json} List error
  *    HTTP/1.1 500 Internal Server Error
  */

@@ -18,7 +18,7 @@ const router = new Router({
  *
  * @apiHeader {String} Authorization Bearer << JWT here>>
  *
- * @apiParam (Query Params) {string} categories categories to filter (comma separated & optional)
+ * @apiParam (Query Params) {string} [categories] categories to filter (comma separated)
  *
  * @apiSuccess {Object[]} reviewQuestions Top level array of question objects
  * @apiSuccess {String} reviewQuestions[category] category unique identifier
@@ -78,8 +78,8 @@ router.get('/questions', requireAuth, (ctx) => {
  *
  * @apiParam (URI Param) {String} id review id
  *
- * @apiParam (Query Params) {Boolean} isDeleted filter by deleted status (optional)
- * @apiParam (Query Params) {String} include relationships to eager load (comma separated & optional)
+ * @apiParam (Query Params) {Boolean} [isDeleted] filter by deleted status
+ * @apiParam (Query Params) {String} [include] relationships to eager load (comma separated)
  *
  * @apiSuccess {Object} review Top level object
  * @apiSuccess {String} review[id] review id
@@ -282,10 +282,10 @@ router.post('/', requireAuth, async ctx => {
  *
  * @apiParam (URI Param) {String} id review id to update
  *
- * @apiParam (Request Body) {Object} review[metadata] rating metadata
- * @apiParam (Request Body) {String} review[chapterId] chapter being rated
- * @apiParam (Request Body) {String} review[reaction] chapter reaction
- * @apiParam (Request Body) {String} review[ratingId] related chapter rating Id
+ * @apiParam (Request Body) {Object} [review[metadata]] rating metadata
+ * @apiParam (Request Body) {String} [review[chapterId]] chapter being rated
+ * @apiParam (Request Body) {String} [review[reaction]] chapter reaction
+ * @apiParam (Request Body) {String} [review[ratingId]] related chapter rating Id
  *
  * @apiSuccess {Object} review Top level object
  * @apiSuccess {String} review[id] review id
