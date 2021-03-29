@@ -4,20 +4,19 @@
       {{#if this.profileUri}}
         <img class="h80 mt-3 ml-3  rounded-circle" alt="" src={{this.profileUri}} role="presentation">
       {{else}}
-        <img class="h80 mt-3 ml-3  rounded-circle" alt=""
-             src="/uploads/images/profile-placeholder.gif" role="presentation">
+        <img class="h80 mt-3 ml-3  rounded-circle" alt="" src="/uploads/images/profile-placeholder.gif" role="presentation">
       {{/if}}
       <br>
-      <span class="ml-3">change pic</span>
+      <span class="ml-3">{{t "profile.index.change_pic"}}</span>
     </LinkTo>
     <div class="mt-4 ml-3">
-      <b>Username:</b> {{ this.name }} <br>
-      <b>Email:</b>
+      <b>{{t "labels.username"}}:</b> {{ this.name }} <br>
+      <b>{{t "labels.email"}}:</b>
       {{#if this.me.user.email}}
         <a href="#" {{on "click" this.showEmailModal}}>{{this.me.user.email}}</a>
       {{else}}
         <a name="" id="" class=" btn-primary btn-sm" href="#" {{on "click" this.showEmailModal}} role="button">
-          Update Email
+          {{t "profile.index.update_email"}}
         </a>
       {{/if}}
     </div>
@@ -36,22 +35,22 @@
     <hr>
     {{#if (eq @profileView "Profile")}}
       <div class="profile-title">
-        <h4>Details</h4>
+        <h4>{{t "profile.index.details"}}</h4>
       </div>
       <BsForm class="profile-data" @onSubmit={{this.saveProfile}} @disabled={{this.viewOnly}}>
-        <label for="fname">First Name</label>
+        <label for="fname">{{t "profile.index.first_name"}}</label>
         <Input @type="text" id="fname" class="form-control" placeholer="First Name" @value={{this.fname}} />
 
-        <label for="lname" class="mt-2">Last Name</label>
+        <label for="lname" class="mt-2">{{t "profile.index.last_name"}}</label>
         <Input @type="text" id="lname" class="form-control" placeholer="Last name" @value={{this.lname}} />
 
-        <label for="about" class="mt-2">About</label>
+        <label for="about" class="mt-2">{{t "profile.index.about"}}</label>
         <Textarea id="about" class="form-control" @value={{this.about}}/>
         <BsButton @defaultText="Update Profile" class="btn bg-primary mt-2" @buttonType="submit"/>
       </BsForm>
     {{/if}}
     {{#if (eq @profileView "Learning")}}
-      <h5>My Achievements</h5>
+      <h5>{{t "profile.index.achievements"}}</h5>
       <div class="row">
         {{#each this.model.achievementAwards as |achievement|}}
           <div class="col-md-6">
@@ -65,13 +64,13 @@
       <div class="main">
         <ul>
           <li>
-            Invite Link
+            {{t "profile.index.invite_link"}}
             <code>{{this.inviteCode}}</code>
             <CopyButton @class={{".btn"}} @clipboardText={{this.inviteCode}} @error={{this.onError}}
-                        title="copy to clipboard">
+                        title={{t "profile.index.copy_to_clipboard"}}>
               {{svg-jar "clipboard"}}
-              <BsTooltip @title="Copied" @triggerEvents="click"/>
-              <BsTooltip @title="Copy" @triggerEvents="hover"/>
+              <BsTooltip @title={{t "profile.index.copy"}} @triggerEvents="click"/>
+              <BsTooltip @title={{t "profile.index.copied"}} @triggerEvents="hover"/>
             </CopyButton>
           </li>
         </ul>
@@ -84,15 +83,15 @@
   <BsModal @open={{this.emailModalVisible}} @onHide={{this.hideEmailModal}} as |modal|>
     <modal.header>
       <h4 class="modal-title">
-        Update Email
+        {{t "profile.index.update_email"}}
       </h4>
     </modal.header>
     <modal.body>
       <Input @type="text" class="form-control" placeholder="eg email@example.com" @value={{this.email}}/>
     </modal.body>
     <modal.footer>
-      <BsButton {{on "click" modal.close}}>Cancel</BsButton>
-      <BsButton @type="success" {{on "click" this.updateEmail}}>Save</BsButton>
+      <BsButton {{on "click" modal.close}}>{{t "buttons.cancel"}}</BsButton>
+      <BsButton @type="success" {{on "click" this.updateEmail}}>{{t "buttons.submit"}}</BsButton>
     </modal.footer>
   </BsModal>
 
