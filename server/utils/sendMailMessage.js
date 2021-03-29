@@ -56,8 +56,7 @@ class GenerateEmail {
   }
 }
 
-module.exports = async (email, fullName, token, templateName) => {
-  const link = `http://localhost:3000/api/v1/auth/verify?email=${email}&token=${token}`;
+module.exports = async (email, fullName, link, templateName) => {
   const mailType = new GenerateEmail(email, fullName, link, templateName);
 
   transporter.sendMail(mailType.options, (err) => {
