@@ -2,7 +2,7 @@ const fs = require('fs');
 
 const Router = require('koa-router');
 const {H5PAjaxEndpoint} = require('@lumieducation/h5p-server');
-const busboy = require('async-busboy');
+const koaBody = require('koa-body');
 
 const {requireAuth} = require('../middleware/permController');
 const H5PEditor = require('../utils/h5p/editor');
@@ -10,7 +10,6 @@ const {H5PPlayer} = require('../utils/h5p/player');
 const {H5PUser} = require('../utils/h5p/config');
 const {Exporter} = require('../utils/h5p/download');
 const log = require('../utils/logger');
-
 
 const router = new Router({
   prefix: '/h5p'
@@ -140,35 +139,37 @@ router.get('/ajax', requireAuth, async (ctx) => {
  * Handle all H5P Editor POST AJAX requests
  *
  */
-router.post('/ajax', requireAuth, async (ctx) => {
+router.post('/ajax', requireAuth, async (ctx,next) => {
+
   try {
     const {action, id, language} = ctx.query;
     const user = H5PUser(ctx.state.user);
     const editor = await H5PEditor();
     let body = ctx.request.body;
-
     let uploadedLibraryFile = undefined;
     let uploadedContentFile = undefined;
 
     if (ctx.request.is('multipart/*')) {
-      const {files, fields} = await busboy(ctx.req);
-      body = fields;
+      await koaBody({multipart: true})(ctx,next);
+      const {h5p,file} =ctx.request.files;
 
-      if (files && files.length > 0) {
-        const {mimeType, filename, path, fieldname} = files[0];
+      body = ctx.request.body;
 
-        const fileMetadata = {
-          mimetype: mimeType, name: filename,
+      if(h5p){
+        const {path, name, type} = h5p;
+        uploadedLibraryFile = {
+          mimetype: type, name,
           size: fs.statSync(path).size, tempFilePath: path,
         };
-
-        if (fieldname.toLowerCase().trim() === 'h5p') {
-          uploadedLibraryFile = fileMetadata;
-        }
-        if (fieldname.toLowerCase().trim() === 'file') {
-          uploadedContentFile = fileMetadata;
-        }
       }
+      if(file){
+        const {path, name, type} = file;
+        uploadedContentFile = {
+          mimetype: type, name,
+          size: fs.statSync(path).size, tempFilePath: path,
+        };
+      }
+
     }
 
     const translator = null; //should be a function (stringId: string, replacements: )=>string
