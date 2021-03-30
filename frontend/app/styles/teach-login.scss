@@ -20,8 +20,8 @@ body {
       rgba(194, 199, 217, 1) 46%,
       rgba(255, 255, 255, 1) 97%
     );
-    // height: 40%;
     padding: 5% 15%;
+    fill: #F57010;
 
     h1 {
       color: white;
@@ -33,7 +33,7 @@ body {
     }
 
     .copy {
-      font-size: 0.93rem;
+      font-size: 1.2rem;
       font-weight: 300;
       line-height: 1.5;
       border-left: 4px solid white;
