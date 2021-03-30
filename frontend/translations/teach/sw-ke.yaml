@@ -1,3 +1,12 @@
+login:
+  title: Fundisha kitu poa
+  subtitle: Unda yaliyomo yenye athari
+  copy: Ingia ili uunde masomo kwa dakika chache tu. Ukitumia '<'a href="https://h5p.org/"'>'H5P'</a>', unaweza kuunda video zinazovutia, ngoma na mitihani, na usambaze kwa wanafunzi kote ulimwenguni.
+  login_below: Ingia hapa chini
+  login_subtitle: Anza kuunda masomo kwa dakika chache tu
+  sign_up: Ikiwa huna akaunti ya wikonnect, '<'a href="/signup"'>'jiandikishe hapa'</a>'
+  pic_alt: laptop with h5p
+
 index:
   my_content: Rekodi Zangu
   drafts: Sura ambazo hazijachapishwa
