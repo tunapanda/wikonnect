@@ -442,7 +442,7 @@ router.post('/:id/chapter-image', async (ctx, next) => {
 
   const { files } = await busboy(ctx.req);
   const fileNameBase = await nanoid(11);
-  const uploadPath = 'uploads/chapters';
+  const uploadPath = '/uploads/chapters';
   const uploadDir = path.resolve(__dirname, '../public/' + uploadPath);
 
   ctx.assert(files.length, 400, 'No files sent.');

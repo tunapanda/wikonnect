@@ -26,10 +26,15 @@ export default class TeachH5pEditorController extends Controller {
       await this.model.save();
       this.transitionToRoute('teach.thumbnail-upload', this.model.id);
     } catch (e) {
-      console.log(e);
-      this.notify.alert(
-        'Unexpected error encountered and we could not save the content'
-      );
+      if (e.message && e.message.startsWith('validation-error')) {
+        this.notify.alert(
+          e.message.replace('validation-error', '').replace(':', '')
+        );
+      } else {
+        this.notify.alert(
+          'Unexpected error encountered and we could not save the content'
+        );
+      }
     }
   }
 }

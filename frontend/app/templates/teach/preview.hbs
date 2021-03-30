@@ -119,7 +119,7 @@
       <div>
 
         {{#if this.model.imageUrl}}
-          <img src="/{{this.model.imageUrl}}" class="img-thumbnail img-fluid rounded h-50 d-inline-block" alt={{t
+          <img src="{{this.model.imageUrl}}" class="img-thumbnail img-fluid rounded h-50 d-inline-block" alt={{t
                   "teach.preview.chapter"}}>
           <br>
           <LinkTo @route="teach.thumbnail-upload" @model={{this.model.id}}>

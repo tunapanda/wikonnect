@@ -101,7 +101,7 @@
 
 <div class="text-center">
   {{#if (eq this.me.user.username "daph")}}
-    {{#if (eq this.model.approved "true")}}
+    {{#if (eq this.model.approved true)}}
       <button type="button" class="btn form-control btn-danger" {{on "click" (fn this.toggleApproval this.model.id false
         )}}>
         {{t "single_chapter.admin.unapprove"}}

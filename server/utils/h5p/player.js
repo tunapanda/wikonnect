@@ -10,7 +10,14 @@ exports.H5PPlayer = async (editor) => {
     editor.libraryStorage,
     editor.contentStorage,
     config,
-    new H5PUrlGenerator(config)
+    null,
+    new H5PUrlGenerator(config),
+    {
+      customization: {
+        global: {
+          styles: ['/h5p/h5p-player.css']
+        }
+      }}
   );
   return player.setRenderer((model => model));
 };

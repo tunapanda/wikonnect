@@ -121,12 +121,13 @@ export default class ChapterIndexController extends Controller {
 
   @action
   async toggleApproval(chapterId, choice) {
+    let chapter = this.store.peekRecord('chapter', chapterId);
     try {
-      let chapter = this.store.peekRecord('chapter', chapterId);
       chapter.approved = choice;
       await chapter.save();
-      this.notify.alert('Chapter approval status updated successfully');
+      this.notify.success('Chapter approval status updated successfully');
     } catch (e) {
+      chapter.approved = !choice;
       this.notify.alert('Could not update chapter approval status');
     }
   }
