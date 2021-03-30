@@ -8,16 +8,16 @@
 
   <a class="nav-link text-{{this.config.content.APP.header_text}} lang-selector m-0 p-1" href="#"
     {{on "click" (fn this.translate "en-us")}}>
-    EN
+    {{t "labels.english"}}
   </a>
   <span class="lang-selector-divider">/</span>
   <a class="nav-link text-{{this.config.content.APP.header_text}} lang-selector m-0 p-1" href="#"
     {{on "click" (fn this.translate "sw-ke")}}>
-    SW
+    {{t "labels.kiswahili"}}
   </a>
 
   <button class="navbar-toggler ml-auto" type="button" data-toggle="collapse" data-target="#mainTopNav"
-          aria-controls="navbarSupportedContent-555" aria-expanded="false" aria-label="Toggle navigation">
+          aria-controls="navbarSupportedContent-555" aria-expanded="false" aria-label={{t "labels.toggle_nav"}}>
     {{svg-jar "segment" width="27" height="27"}}
 
   </button>
@@ -39,9 +39,9 @@
         </li>
       {{/if}}
       <li class="nav-item text-{{this.config.content.APP.header_text}}">
-        <LinkTo @route="about" class="nav-link" data-toggle="collapse" data-target="#mainTopNav.show">
+        <a href="https://wikonnect.org?referrer=app.wikonnect.org" class="nav-link about-link-item"  rel="noopener">
           {{t "buttons.about"}}
-        </LinkTo>
+        </a>
       </li>
 
     </ul>
@@ -50,7 +50,7 @@
       {{#if this.searchLoading}}
         <button class="btn form-control search-button search-loading" type="button">
           <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-          Searching...
+          {{t "messages.searching"}}
         </button>
       {{else}}
         <button class="btn  my-2 my-sm-0 search-button" type="submit">
@@ -67,7 +67,7 @@
           <a href="#" class="nav-link dropdown-toggle mh-50" id="navbarDropdownMenuLink-55" data-toggle="dropdown"
              aria-haspopup="true" aria-expanded="false">
             {{#if this.me.user.profileUri}}
-              <img src={{this.me.user.profileUri}} class="rounded-circle h40" alt="avatar">
+              <img src={{this.me.user.profileUri}} class="rounded-circle h40" alt={{t "profile.profile_picture"}}>
             {{else}}
               <span aria-hidden="true">&times;</span>
             {{/if}}
@@ -76,7 +76,7 @@
                aria-labelledby="navbarDropdownMenuLink-55">
 
             <LinkTo @route="profile" class="dropdown-item" data-toggle="collapse" data-target="#mainTopNav.show">
-              {{this.name}}'s {{t "labels.profile"}}
+              {{t "labels.user_profile_link" user=this.name}}
             </LinkTo>
 
             <LinkTo @route="profile" @query={{hash view="Settings"}}  class="dropdown-item"

@@ -912,7 +912,6 @@ define({ "api": [
         "name": "authenticated user"
       }
     ],
-    "description": "<p>If posting a reply, add <code>&quot;parent&quot;: [{&quot;id&quot;: &quot;Iw7mxw0AAiY&quot;}]</code> to the comment object you are post</p>",
     "success": {
       "examples": [
         {
@@ -1107,7 +1106,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "HTTP/1.1 200 OK\n{\n   \"chapter\": {\n       \"id\": \"chapter1\",\n       \"lessonId\": \"lesson1\",\n       \"name\": \"A Chapter\",\n       \"slug\": \"a-chapter\",\n       \"description\": \"An H5P Chapter.\",\n       \"status\": \"published\",\n       \"creatorId\": \"user1\",\n       \"createdAt\": \"2017-12-20T16:17:10.000Z\",\n       \"updatedAt\": \"2017-12-20T16:17:10.000Z\",\n       \"contentType\": \"h5p\",\n       \"contentUri\": \"/uploads/h5p/chapter1\",\n       \"imageUrl\": \"/uploads/images/content/chapters/chapter1.jpeg\",\n       \"contentId\": null,\n       \"tags\": [],\n       \"likes\": \"0\",\n       \"dislikes\": \"0\",\n       \"rating\": null,\n       \"verified\": true,\n       \"comment\": [{\n          \"id\": \"IwAfzOqAAI4\",\n          \"chapterId\": \"chapter1\",\n          \"creatorId\": \"user2\",\n          \"comment\": \"Dolores aut ut.\",\n          \"metadata\": null,\n          \"createdAt\": \"2020-07-08T13:25:44.710Z\",\n          \"updatedAt\": \"2021-03-03T19:58:48.806Z\",\n          \"replies\": [{\n              \"id\": \"IwAfzOuAAME\",\n              \"chapterId\": \"chapter4\",\n              \"creatorId\": \"user1\",\n              \"comment\": \"Architecto voluptatem quaerat et dolores aut consequatur et.\",\n              \"metadata\": null,\n              \"createdAt\": \"2020-10-08T06:19:39.434Z\",\n              \"updatedAt\": \"2021-03-04T03:43:11.647Z\",\n              \"type\": \"comment\"\n             },\n             {\n              \"id\": \"IwAfzOuAALc\",\n              \"chapterId\": \"chapter4\",\n              \"creatorId\": \"user2\",\n              \"comment\": \"Omnis sequi architecto quod voluptas aut.\",\n              \"metadata\": null,\n              \"createdAt\": \"2020-04-17T08:55:33.210Z\",\n              \"updatedAt\": \"2021-03-04T14:36:27.525Z\",\n              \"type\": \"comment\"\n            }],\n            \"type\": \"comment\"\n          }],\n       \"author\": {\n         \"username\": \"user1\",\n         \"profileUri\": null,\n         \"lastSeen\": \"2021-02-22T11:57:10.468Z\"\n       },\n       \"reaction\": [{\n         \"likes\": 3,\n         \"authenticated_user\": \"like\",\n         \"reaction.id\": \"\",\n         \"dislikes\": 1\n       }]\n    }\n }",
+          "content": "HTTP/1.1 200 OK\n{\n   \"chapter\": {\n       \"id\": \"chapter1\",\n       \"lessonId\": \"lesson1\",\n       \"name\": \"A Chapter\",\n       \"slug\": \"a-chapter\",\n       \"description\": \"An H5P Chapter.\",\n       \"status\": \"published\",\n       \"creatorId\": \"user1\",\n       \"createdAt\": \"2017-12-20T16:17:10.000Z\",\n       \"updatedAt\": \"2017-12-20T16:17:10.000Z\",\n       \"contentType\": \"h5p\",\n       \"contentUri\": \"/uploads/h5p/chapter1\",\n       \"imageUrl\": \"/uploads/images/content/chapters/chapter1.jpeg\",\n       \"contentId\": null,\n       \"tags\": [],\n       \"likes\": \"0\",\n       \"dislikes\": \"0\",\n       \"rating\": null,\n       \"verified\": true,\n       \"author\": {\n         \"username\": \"user1\",\n         \"profileUri\": null,\n         \"lastSeen\": \"2021-02-22T11:57:10.468Z\"\n       },\n       \"reaction\": [{\n         \"likes\": 3,\n         \"authenticated_user\": \"like\",\n         \"reaction.id\": \"\",\n         \"dislikes\": 1\n       }]\n    }\n }",
           "type": "json"
         }
       ]
@@ -1475,6 +1474,320 @@ define({ "api": [
     "groupTitle": "Chapters"
   },
   {
+    "type": "get",
+    "url": "/api/v1/h5p/editor/",
+    "title": "GET H5P editor model",
+    "name": "GET_H5P_editor_model",
+    "group": "H5P",
+    "permission": [
+      {
+        "name": "[authenticated user]"
+      }
+    ],
+    "version": "0.4.0",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Bearer &lt;&lt; JWT here&gt;&gt;</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Query Params": [
+          {
+            "group": "Query Params",
+            "type": "String",
+            "optional": true,
+            "field": "language",
+            "description": ""
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "integration",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "integration[editor]",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "integration[user]",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "integration[ajax]",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "integration[l10n]",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "integration[ajaxPath]",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "integration[libraryUrl]",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "integration[url]",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "Integer",
+            "optional": false,
+            "field": "integration[fullscreenDisabled]",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "Boolean",
+            "optional": false,
+            "field": "integration[saveFreq]",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "Boolean",
+            "optional": false,
+            "field": "integration[postUserStatistics]",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "String[]",
+            "optional": false,
+            "field": "scripts",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "String[]",
+            "optional": false,
+            "field": "styles",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "urlGenerator",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "urlGenerator[config]",
+            "description": ""
+          }
+        ]
+      }
+    },
+    "filename": "server/routes/h5p.js",
+    "groupTitle": "H5P",
+    "sampleRequest": [
+      {
+        "url": "https://app.wikonnect.org/api/v1/h5p/editor/"
+      }
+    ]
+  },
+  {
+    "type": "get",
+    "url": "/api/v1/h5p/editor/:contentId",
+    "title": "GET H5P editor & content model",
+    "name": "GET_H5P_editor_model_with_content",
+    "group": "H5P",
+    "permission": [
+      {
+        "name": "[authenticated user]"
+      }
+    ],
+    "version": "0.4.0",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Bearer &lt;&lt; JWT here&gt;&gt;</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "URI Param": [
+          {
+            "group": "URI Param",
+            "type": "String",
+            "optional": false,
+            "field": "contentId",
+            "description": "<p>Id of the content to preload</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "integration",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "integration[editor]",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "integration[user]",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "integration[ajax]",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "integration[l10n]",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "integration[ajaxPath]",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "integration[libraryUrl]",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "integration[url]",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "Integer",
+            "optional": false,
+            "field": "integration[fullscreenDisabled]",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "Boolean",
+            "optional": false,
+            "field": "integration[saveFreq]",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "Boolean",
+            "optional": false,
+            "field": "integration[postUserStatistics]",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "String[]",
+            "optional": false,
+            "field": "scripts",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "String[]",
+            "optional": false,
+            "field": "styles",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "urlGenerator",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "urlGenerator[config]",
+            "description": ""
+          }
+        ]
+      }
+    },
+    "filename": "server/routes/h5p.js",
+    "groupTitle": "H5P",
+    "sampleRequest": [
+      {
+        "url": "https://app.wikonnect.org/api/v1/h5p/editor/:contentId"
+      }
+    ]
+  },
+  {
     "type": "delete",
     "url": "/lessons/:id",
     "title": "DELETE a lesson.",
@@ -1766,17 +2079,29 @@ define({ "api": [
             "group": "Parameter",
             "type": "String",
             "optional": true,
-            "field": "absolute_url",
+            "field": "url",
             "description": "<p>absolute_url to chapter id</p>"
-          }
-        ],
-        "Authentication": [
+          },
           {
-            "group": "Authentication",
-            "type": "String[]",
+            "group": "Parameter",
+            "type": "String",
             "optional": true,
-            "field": "tags",
-            "description": "<p>Optional tags list</p>"
+            "field": "format",
+            "description": "<p>Optional either xml or json (default).</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Integer",
+            "optional": true,
+            "field": "maxwidth",
+            "description": "<p>Optional iframe width</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Integer",
+            "optional": true,
+            "field": "minheight",
+            "description": "<p>Optional iframe height</p>"
           }
         ]
       }

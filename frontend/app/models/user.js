@@ -13,6 +13,7 @@ export default class UserModel extends Model {
   @attr() createdAt;
   @attr() profileUri;
   @attr() metadata;
+  @attr() name;
 
   @hasMany('group') groups;
   @hasMany('activity') activities;

@@ -5,13 +5,13 @@
   </div>
   <div class="row p-5">
     <div class="col-lg-6">
-      <h4><b>Chapter Name: </b>{{this.model.name}}({{this.model.status}}) </h4>
+      <h4><b>{{t "teach.create.chapter_name"}}: </b>{{this.model.name}}({{this.model.status}}) </h4>
 
       {{#if (eq this.model.status "published")}}
         {{#if this.model.approved}}
-          <span class="badge badge-pill badge-success">approved</span>
+          <span class="badge badge-pill badge-success">{{t "teach.preview.approved"}}</span>
         {{else}}
-          <span class="badge badge-pill badge-danger">not approved</span>
+          <span class="badge badge-pill badge-danger">{{t "teach.preview.unapproved"}}</span>
         {{/if}}
       {{/if}}
       <br>
@@ -23,98 +23,96 @@
           </H5p::Player>
         {{/if}}
         <br>
-        <LinkTo class="btn bg-orange" @route="teach.h5p-upload" @model={{this.model.id}}>
-          <button type="button" class="btn btn-primary">Change H5P</button>
+        <LinkTo class="btn  btn-primary mt-3 btn-sm" @route="teach.h5p-upload" @model={{this.model.id}}>
+          {{t "teach.preview.change_h5p"}}
         </LinkTo>
       {{else}}
-        <LinkTo class="btn bg-orange" @route="teach.h5p-upload" @model={{this.model.id}}>
-          <button type="button" class="btn btn-primary">Upload H5P</button>
+        <LinkTo class="btn btn-primary mt-3 btn-sm" @route="teach.h5p-upload" @model={{this.model.id}}>
+         {{t "teach.preview.upload_h5p"}}
         </LinkTo>
       {{/if}}
 
-      <div class=" mt-1 bg-light m-0 p-4 pt-3">
+      <div class="mt-1 bg-light m-0 p-4 pt-3">
         <p>{{this.model.description}}</p>
-        <b>Tags</b>
+        <b>{{t "teach.preview.tags"}}</b>
 
         <div class="row ">
           {{#each this.model.tags as |tag|}}
-            <LinkTo @route="tag" @model={{tag}}>
-              <span class="badge badge-pill badge-primary btn-lg m-1">
+              <span class="badge badge-pill badge-success btn-lg m-1">
                 {{tag}}
               </span>
-            </LinkTo>
           {{/each}}
           <br>
         </div>
-        <LinkTo @route="teach.tag" @model={{this.model.id}}>
-          <button type="button" class="btn-sm btn-primary">Modify Tags</button>
+        <LinkTo @route="teach.tag" @model={{this.model.id}} class="btn btn-sm btn-primary mt-4">
+         {{t "teach.preview.modify_tags"}}
         </LinkTo>
 
       </div>
     </div>
 
 
-    <div class="col-lg-6  border rounded-lg pl-4 pr-4 pt-3">
-      <div class="float-right">
-        <button type="button" class="btn btn-danger" {{on "click" this.showDeleteModal }}>Delete</button>
+    <div class="col-lg-6  border rounded-lg pl-4 pr-4 pt-3 pb-4">
+      <div class="float-right pb-3">
+        <button type="button" class="btn btn-outline-primary" {{on "click" this.showDeleteModal }}>{{t "buttons.delete"}}</button>
         {{#if (eq this.model.status "draft")}}
           {{#if (and this.model.imageUrl (or this.model.contentUri this.model.contentId))}}
-            <button type="button" class="btn btn-success" {{on "click" (fn (mut this.publishModal) true)}}>
-              Publish
+            <button type="button" class="btn btn-primary" {{on "click" (fn (mut this.publishModal) true)}}>
+              {{t "buttons.publish"}}
             </button>
           {{else}}
-            <small>*upload thumbnail and h5p to publish</small>
-            <button type="button" class="btn  bg-light" disabled>Publish</button>
+            <button type="button" class="btn  bg-light" disabled>{{t "buttons.publish"}}</button>
+            <small>*{{t "teach.preview.upload_thumbnail_h5p"}}</small>
           {{/if}}
         {{else}}
           <button type="button" class="btn btn-danger" {{on "click" (fn (mut this.unpublishModal) true)}}>
-            Unpublish
+            {{t "buttons.unpublish"}}
           </button>
         {{/if}}
       </div>
 
-      <BsModalSimple @open={{this.publishModal}} @onSubmit={{ fn this.publish this.model.id }} @closeTitle="Cancel"
-                     @submitTitle="Publish" @title="Publish" @size="sm"
+      <BsModalSimple @open={{this.publishModal}} @onSubmit={{ fn this.publish this.model.id }} @closeTitle={{t "buttons.cancel"}}
+                     @submitTitle={{t "teach.preview.publish"}} @title={{t "teach.preview.publish"}} @size="sm"
                      @onHidden={{fn (mut this.publishModal) false}}>
-        Are you sure you want to publish ?
+        {{t "teach.preview.publish_prompt"}}
       </BsModalSimple>
 
-      <BsModalSimple @open={{this.unpublishModal}} @onSubmit={{ fn this.unpublish this.model.id }} @closeTitle="Cancel"
-                     @submitTitle="Unpublish" @title="Unpublish" @size="sm"
+      <BsModalSimple @open={{this.unpublishModal}} @onSubmit={{ fn this.unpublish this.model.id }} @closeTitle={{t "buttons.cancel"}}
+                     @submitTitle={{t "teach.preview.unpublish"}} @title={{t "teach.preview.unpublish"}} @size="sm"
                      @onHidden={{fn (mut this.unpublishModal) false}}>
-        Are you sure you want to unpublish ?
+        {{t "teach.preview.unpublish_prompt"}}
       </BsModalSimple>
 
-      <BsModalSimple @open={{this.deleteModal}} @onSubmit={{fn this.delete this.model.id }} @closeTitle="Cancel"
-                     @submitTitle="Delete" @title="Delete" @size="sm" @onHidden={{fn (mut this.deleteModal) false}}>
-        Are you sure you want to delete {{this.model.name}} ?
+      <BsModalSimple @open={{this.deleteModal}} @onSubmit={{fn this.delete this.model.id }} @closeTitle={{t "buttons.cancel"}}
+                     @submitTitle={{t "teach.preview.delete"}} @title={{t "teach.preview.delete"}} @size="sm" @onHidden={{fn (mut this.deleteModal) false}}>
+        {{t "teach.preview.delete_prompt"}}: <b>{{this.model.name}}</b> ?
       </BsModalSimple>
       <br>
       <div class="form-group ">
-        <label for="t">Chapter Name</label>
+        <label for="t">{{t "teach.create.chapter_name"}}</label>
         <input value={{this.model.name}} type="text" class="form-control bg-light" id="t" disabled>
       </div>
       <div class="form-group">
-        <label for="">Chapter Description</label>
+        <label for="">{{t "teach.create.chapter_desc"}}</label>
         <textarea class="form-control bg-light" name="" id="" rows="3" disabled>{{this.model.description}}</textarea>
       </div>
 
-      <LinkTo @route="teach.edit" @model={{this.model.id}}>
-        <button type="button" class="btn btn-primary form-control">Change Chapter Details</button>
+      <LinkTo @route="teach.edit" @model={{this.model.id}} class="btn btn-sm btn-primary form-control">
+       {{t "teach.preview.change_chapter_details"}}
       </LinkTo>
       <hr>
       <div>
 
         {{#if this.model.imageUrl}}
-          <img src="/{{this.model.imageUrl}}" class="img-thumbnail img-fluid rounded h-50 d-inline-block" alt="Chapter">
+          <img src="/{{this.model.imageUrl}}" class="img-thumbnail img-fluid rounded h-50 d-inline-block" alt={{t "teach.preview.chapter"}}>
           <br>
           <LinkTo @route="teach.thumbnail-upload" @model={{this.model.id}}>
-            <button type="button" class="btn btn-primary">Edit Thumbail</button>
+            <button type="button" class="btn btn-primary btn-sm">{{t "teach.preview.edit_thumbnail"}}</button>
           </LinkTo>
 
         {{else}}
           <LinkTo @route="teach.thumbnail-upload" @model={{this.model.id}}>
-            <button type="button" class="btn btn-primary">Upload thumbail</button>
+            <button type="button" class="btn btn-primary btn-sm">{{t "teach.preview.upload_thumbnail"}}</button>
           </LinkTo>
 
         {{/if}}

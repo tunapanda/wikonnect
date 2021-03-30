@@ -16,6 +16,7 @@ const Counter = require('../models/counter');
 const permController = require('../middleware/permController');
 const validateGetChapter = require('../middleware/validateRequests/chapterGetValidation');
 const Reaction = require('../models/reaction');
+const { getProfileImage } = require('../utils/routesUtils/userRouteUtils');
 
 const router = new Router({
   prefix: '/chapters'
@@ -118,9 +119,50 @@ router.get('/', permController.requireAuth, validateGetChapter, async ctx => {
       .where(ctx.query)
       .page(page, per_page)
       .withGraphFetched(
-        '[reaction(reactionAggregate), flag(selectFlag),author(selectNameAndProfile)]'
+        '[reaction(reactionAggregate), flag(selectFlag),author()]'
       )
       .orderBy('id');
+
+    /**retrieve correct user image**/
+    //so not to re-fetch the profile, remove duplicates (handy if network requests to S3 are being done ),
+    const authors = [];
+    let authorIds={};
+    for (let i = 0; i < chapter.results.length; i++) {
+      if(!chapter.results[i].author){
+        continue;
+      }
+      if(!authorIds[chapter.results[i].author.id]){
+        authors.push(chapter.results[i].author);
+        authorIds[chapter.results[i].author.id]=true;
+      }
+
+    }
+    const promises = authors.map(async (author)=>{
+      return  {
+        id: author.id,
+        name: author.name,
+        username: author.username,
+        profileUri: await getProfileImage(author)
+      };
+    });
+    const authorProfiles =await Promise.all(promises);
+    //now map above profiles
+    chapter.results = chapter.results.map((chap)=>{
+      if(!chap.author){
+        //just in case 😁
+        chap.author={name:'Private',username:'Private',id:'Private',profileUri: 'anonymous'};
+        return chap;
+      }
+      const profile=authorProfiles.find((p)=>p.id===chap.author.id);
+      if(profile){
+        chap.author=profile;
+      }else{
+        //just in case 👽
+        chap.author={name:'Private',username:'Private',id:'Private',profileUri: 'anonymous'};
+      }
+      return chap;
+    });
+
   } catch (e) {
     if (e.statusCode) {
       ctx.throw(e.statusCode, null, { errors: [e.message] });
@@ -177,36 +219,6 @@ router.get('/', permController.requireAuth, validateGetChapter, async ctx => {
  *            "dislikes": "0",
  *            "rating": null,
  *            "verified": true,
- *            "comment": [{
-*               "id": "IwAfzOqAAI4",
-*               "chapterId": "chapter1",
-*               "creatorId": "user2",
-*               "comment": "Dolores aut ut.",
-*               "metadata": null,
-*               "createdAt": "2020-07-08T13:25:44.710Z",
-*               "updatedAt": "2021-03-03T19:58:48.806Z",
-*               "replies": [{
-*                   "id": "IwAfzOuAAME",
-*                   "chapterId": "chapter4",
-*                   "creatorId": "user1",
-*                   "comment": "Architecto voluptatem quaerat et dolores aut consequatur et.",
-*                   "metadata": null,
-*                   "createdAt": "2020-10-08T06:19:39.434Z",
-*                   "updatedAt": "2021-03-04T03:43:11.647Z",
-*                   "type": "comment"
-*                  },
-*                  {
-*                   "id": "IwAfzOuAALc",
-*                   "chapterId": "chapter4",
-*                   "creatorId": "user2",
-*                   "comment": "Omnis sequi architecto quod voluptas aut.",
-*                   "metadata": null,
-*                   "createdAt": "2020-04-17T08:55:33.210Z",
-*                   "updatedAt": "2021-03-04T14:36:27.525Z",
-*                   "type": "comment"
-*                 }],
-*                 "type": "comment"
-*               }],
  *            "author": {
  *              "username": "user1",
  *              "profileUri": null,
@@ -228,9 +240,8 @@ router.get('/', permController.requireAuth, validateGetChapter, async ctx => {
 router.get('/:id', permController.requireAuth, async ctx => {
 
   let stateUserId = ctx.state.user.id == undefined ? ctx.state.user.data.id : ctx.state.user.id;
-  let chapter;
   try {
-    chapter = await Chapter.query()
+    let results = await Chapter.query()
       .select([
         'chapters.*',
         Counter.query()
@@ -250,9 +261,21 @@ router.get('/:id', permController.requireAuth, async ctx => {
       ])
       .where({ 'chapters.id': ctx.params.id })
       .withGraphFetched(
-        '[comment.[replies], reaction(reactionAggregate), flag(selectFlag),author(selectNameAndProfile)]'
+        '[reaction(reactionAggregate), flag(selectFlag),author()]'
       );
-
+    ctx.assert(results[0],404,'Chapter not found');
+    const chapter=results[0];
+    //retrieve correct user image
+    if (chapter.author) {
+      chapter.author = {
+        id: chapter.author.id,
+        name: chapter.author.name,
+        username: chapter.author.username,
+        profileUri: await  getProfileImage(chapter.author)
+      };
+    }
+    ctx.status = 200;
+    ctx.body = { chapter };
   } catch (e) {
     if (e.statusCode) {
       ctx.throw(e.statusCode, null, { errors: [e.message] });
@@ -260,11 +283,7 @@ router.get('/:id', permController.requireAuth, async ctx => {
     throw e;
   }
 
-  ctx.assert(chapter, 404, 'No chapter by that ID');
 
-
-  ctx.status = 200;
-  ctx.body = { chapter };
 });
 
 
@@ -360,18 +379,19 @@ router.post('/', permController.requireAuth, async ctx => {
 router.put('/:id', permController.requireAuth, async ctx => {
   let chapterData = ctx.request.body.chapter;
   if (chapterData.id) delete chapterData.id;
+  //TODO: enable permissions checking
 
-  const stateUserRole = ctx.state.user.role == undefined
-    ? ctx.state.user.data.role
-    : ctx.state.user.role;
-  const roles = ['admin', 'superadmin'];
-  if (!roles.includes(stateUserRole)) {
-    ctx.throw(400, null, { errors: ['Not enough permissions'] });
-    chapterData.verified = 'false';
-  }
+  // const stateUserRole = ctx.state.user.role == undefined
+  //   ? ctx.state.user.data.role
+  //   : ctx.state.user.role;
+  // const roles = ['admin', 'superadmin'];
+  // if (!roles.includes(stateUserRole)) {
+  //   ctx.throw(403, null, { errors: ['Not enough permissions'] });
+  //   chapterData.verified = 'false';
+  // }
 
   const chapterCheck = await Chapter.query().findById(ctx.params.id);
-  ctx.assert(chapterCheck, 400, 'Invalid data provided');
+  ctx.assert(chapterCheck, 404, 'Invalid data provided');
 
   try {
     const chapter = await chapterCheck.$query().patchAndFetchById(ctx.params.id, chapterData);

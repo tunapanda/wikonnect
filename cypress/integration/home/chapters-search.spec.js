@@ -13,7 +13,7 @@ describe('Navigation Menu Chapters Search ', () => {
   });
 
   it('Should search chapters by title', () => {
-    cy.chapters().then((items)=>{
+    cy.chapters({approved:true}).then((items)=>{
     cy.get('.main-header.navbar .search-form #search')
       .type(items[0].name)
       .get('.main-header.navbar .search-form')

@@ -2,8 +2,8 @@
   <BsForm @class="form" @formLayout="vertical" @model={{@newUser}} @onSubmit={{this.createUser}} as |form|>
 
     <div class="signup-form-fields">
-      <form.element id="username" class="" @controlType="text" @label="Username" @property="username" as |el|>
-        <el.control autocomplete="username" placeholder="Username"></el.control>
+      <form.element id="username" class="" @controlType="text" @label={{t "auth.login.username"}} @property="username" as |el|>
+        <el.control autocomplete="username" placeholder={{t "auth.login.enter_username"}}></el.control>
       </form.element>
       {{#each @newUser.errors as |err| }}
         {{#if (eq err.key "username")}}
@@ -13,7 +13,7 @@
         {{/if}}
       {{/each}}
 
-      <form.element id="email" class="" @controlType="text" @label="Email address" @property="email" as |el|>
+      <form.element id="email" class="" @controlType="text" @label={{t "auth.signup.email"}} @property="email" as |el|>
         <el.control autocomplete="email" placeholder="example@mail.com"></el.control>
       </form.element>
       {{#each @newUser.errors as |err| }}
@@ -24,24 +24,24 @@
         {{/if}}
       {{/each}}
 
-      <form.element id="password" class="" @controlType="password" @label="Password" @property="password" as |el|>
-        <el.control autocomplete="new-password" placeholder="Enter Password"></el.control>
+      <form.element id="password" class="" @controlType="password" @label={{t "auth.login.password"}} @property="password" as |el|>
+        <el.control autocomplete="new-password" placeholder={{t "auth.login.enter_password"}}></el.control>
       </form.element>
 
-      <form.element id="confirm-password" class="" @controlType="password" @label="Repeat password"
+      <form.element id="confirm-password" class="" @controlType="password" @label={{t "auth.signup.repeat_password"}}
                     @property="passwordConfirmation" as |el|>
-        <el.control placeholder="Repeat Password"  autocomplete="new-password"></el.control>
+        <el.control placeholder={{t "auth.signup.repeat_password"}}  autocomplete="new-password"></el.control>
       </form.element>
 
-      <form.element id="invite-code" class="" @controlType="text" @label="Invite Code"  @property="inviteCode" as |el|>
-        <el.control placeholder="Invite Code"></el.control>
+      <form.element id="invite-code" class="" @controlType="text" @label={{t "auth.signup.invite_code"}}  @property="inviteCode" as |el|>
+        <el.control placeholder={{t "auth.signup.invite_code"}}></el.control>
       </form.element>
     </div>
 
-    <BsButton class="btn btn-primary form-control mb-2" @type="submit" @defaultText="Sign Up" @buttonType="submit"/>
+    <BsButton class="btn btn-primary form-control mb-2" @type="submit" @defaultText={{t "auth.signup.signup"}} @buttonType="submit"/>
 
     <BsButton class="bg-primary form-control" {{ on "click" this.authenticateWithGoogleImplicitGrant }}>
-      Sign up with Google
+      {{t "auth.signup.signup_third_party" authProvider="Google"}}
     </BsButton>
   </BsForm>
 </div>

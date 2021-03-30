@@ -1,9 +1,9 @@
 import Route from '@ember/routing/route';
-import { inject } from '@ember/service';
+import { inject as service } from '@ember/service';
 
 export default class ProfileRoute extends Route {
-  @inject
-  me;
+  @service me;
+  @service SeoTags;
 
   async beforeModel() {
     if (!this.me.isAuthenticated) {
@@ -14,5 +14,14 @@ export default class ProfileRoute extends Route {
 
   async model() {
     return await this.me.user;
+  }
+  afterModel() {
+    this.headTags = this.SeoTags.build(
+      'View User Profile - Wikonnect',
+      '/profile',
+      undefined,
+      false,
+      false
+    );
   }
 }

@@ -7,23 +7,33 @@ buttons:
   profile: Profile
   about: About
   publish: Publish
-  unpublish: Un Publish
+  unpublish: Unpublish
   create: Create
   delete: Delete
   modify: Modify
   edit: Edit
   settings: Edit
   search: Search
+  submit: Submit
   comment: Comment
+  continue: Continue
   rate: Rate
   copy: Copy
   close: Close
   skip: Skip
+  cancel: Cancel
   done: Done
   next: Next
+  back: Back
+  change_profile_pic: "Change profile picture"
+  upload_profile_pic: "Upload profile picture"
+  copy_embed_code: Copy embed code
+  proceed_to_profile: Proceed to profile
+  skip_to_profile: Skip to profile
 
 labels:
   username: Username
+  password: Password
   email: Email
   name: Name
   description: Description
@@ -38,13 +48,43 @@ labels:
   h5p: H5P
   chapter: Chapter
   profile: Profile
+  share: Share
+  comment: Comment
+  embed: Embed
+  copied: Copied
+  english: EN
+  kiswahili: SW
+  toggle_nav: Toggle Navigation
+  user_profile_link: "{user}'s profile"
 
 profile:
   profile_picture : Profile Picture
 
 messages:
   empty_search: "We could not find anything that matches your search query"
-  auth_prompt: "    For an enhanced experience please sign up or login"
+  auth_prompt: "For an enhanced experience please sign up or login"
   searching: "Searching ..."
   upload_profile_pic: "Upload Profile Picture"
   create_h5p_chapter: "Create H5P Chapter"
+  authenticating: "Authenticating ..."
+  uploading: "Uploading ..."  
+
+feedback:
+  message: The topics below are best understood if you finish the ones before
+
+four_oh_four:
+  header: Sorry we could not find what you are looking for
+  sub_header: Click '<'a href="{url}"'>' here '</a>' to go to the homepage
+
+embed:
+  updates: "Progress updates sent to: {url}"
+  logged_in_as: "Logged in as {user}"
+
+manage:
+  image: Image
+  name: Name
+  description: Description
+  status: Status
+  approved: Approved
+  not_approved: Not Approved
+  chapter: Chapter

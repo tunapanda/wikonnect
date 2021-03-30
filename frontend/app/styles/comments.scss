@@ -1,0 +1,19 @@
+.replies {
+  border-left: 2px solid transparentize(#F57010, 0.6);
+  background-color: transparentize(#F57010, 0.9);
+  width: 100%;
+  padding:3px;
+}
+
+.reply-actions {
+  font-size: small;
+  color: #aaa;
+  fill:#aaa;
+
+  button {
+    color: #aaa;
+    border: none;
+    outline: none;
+    background-color: inherit;
+  }
+}

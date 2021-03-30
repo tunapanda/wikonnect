@@ -1,0 +1,43 @@
+{{#if this.isShowingModal}}
+  {{!-- tagName attribute prevents button from disappering. Do not remove--}}
+  <ModalDialog
+    @tagName="div"
+    @onClose={{this.toggleModal}}
+    @tetherTarget='#share-button'
+    @targetAttachment='bottom right'
+    @attachment='top right'
+    @containerClass='share-modal-container'>
+    <div>
+      <small>{{t "labels.share"}}</small>
+      <div class="d-flex justify-content-between mt-2">
+        <button type="button" class="social-share-icon" data-toggle="modal" data-target="#modelId">
+          {{svg-jar "code_black_24dp"}}
+        </button>
+        <a href={{this.facebookShareUrl}} target="_blank" rel="noopener noreferrer">
+          <div class="social-share-icon" id="facebook-share-icon">
+            {{svg-jar "facebook" width="20px"}}
+          </div>
+        </a>
+        <a href={{this.twitterShareUrl}} target="_blank" rel="noopener noreferrer">
+          <div class="social-share-icon" id="twitter-share-icon">
+            {{svg-jar "twitter" width="20px"}}
+          </div>
+        </a>
+        <a href={{this.mailShareUrl}} target="_blank" rel="noopener noreferrer">
+          <div class="social-share-icon" id="email-share-icon">
+            {{svg-jar "email_white_24dp" width="20px"}}
+          </div>
+        </a>
+        <a href={{this.redditShareUrl}} target="_blank" rel="noopener noreferrer">
+          <div class="social-share-icon" id="reddit-share-icon">
+            {{svg-jar "reddit" width="20px"}}
+          </div>
+        </a>
+      </div>
+    </div>
+  </ModalDialog>
+{{/if}}
+
+<div class="share">
+  <button type="button" {{on "click" this.toggleModal}} id="share-button">{{svg-jar "tuna" height="22px"}}</button>
+</div>

@@ -1,99 +1,128 @@
 <div id="chapter" class="p-4">
-<div {{did-insert (fn this.dataLoad)}}></div>
-<div {{did-insert (fn this.counterTimer)}}></div>
+  <div {{did-insert (fn this.dataLoad)}}></div>
+  <div {{did-insert (fn this.counterTimer)}}></div>
 
-  <h4>{{this.model.name}} </h4>
-  <div class="chapter-content ">
-    {{#if this.model.contentUri}}
-      <H5p @location={{this.model.contentUri}} />
-    {{else}}
-      <H5p::Player @contentId={{this.model.contentId}}>
-      </H5p::Player>
-    {{/if}}
-    <div class="section d-flex justify-content-between pt-2 pb-2">
-      <div class="reactions">
-        <Reaction::ChapterReaction @chapter={{this.model}} @canReact={{true}}>
-
-        </Reaction::ChapterReaction>
-      </div>
-      <div class="popup-actions">
-        <p> {{this.model.counter}} views | {{format-date this.model.createdAt}}</p>
-      </div>
-    </div>
-
-    <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modelId">
-      Embed
-    </button>
-
-    <div class="modal fade" id="modelId" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title">Embed</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
+  <div class="breadcrumbs d-flex align-items-center">
+    <LinkTo @route="index">
+      {{svg-jar "home_black_24dp"}}
+    </LinkTo>
+    <p class="m0"><LinkTo @route="index">{{t "single_chapter.h5p.chapters"}}</LinkTo> / <span class="chapter-name">{{this.model.name}}</span></p>
+  </div>
+  <hr>
+  {{#if this.model.contentUri}}
+    <H5p @location={{this.model.contentUri}} />
+  {{else}}
+    <H5p::Player @contentId={{this.model.contentId}} />
+  {{/if}}
+  <div class="row">
+    <div class="col-lg-8">
+      <div class="chapter-content ">
+        <div class="d-flex justify-content-between pt-2 pb-2 flex-wrap">
+          <div class="chapter-title">
+            <h4>
+              {{this.model.name}}
+            </h4>
           </div>
-          <div class="modal-body">
-            <div class="form-group ">
-              <pre id="frame" name="frame">{{this.embedCode}}</pre>
-              <CopyButton @clipboardTarget="#frame" @success={{this.onSuccess}} @error={{this.onError}}>
-                Copy Embed Code
-              </CopyButton>
-              {{#if this.copied}}
-                <span class="badge badge-primary pt-2">Copied</span>
 
-              {{/if}}
+          <div class="d-flex align-items-center flex-nowrap">
+            <span class="pt-1">
+            <Reaction::ChapterReaction  @chapter={{this.model}} @canReact={{true}} />
+            </span>
+            <div class="chapter-actions d-flex">
+              <a href="#comments-section" class="pt-1 mr-1">{{svg-jar "message" height="21px"}}</a>
+              <Share @chapterName={{this.model.name}}/>
+              {{!-- {{svg-jar "more_vert_black_24dp"}} --}}
             </div>
           </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+        <div class="chapter-metadata">
+          <p> {{t "single_chapter.h5p.views" numViews=this.model.views}} &middot; {{format-date this.model.createdAt day="numeric" month="short" year="numeric"}}</p>
+        </div>
+
+        <div class="modal fade" id="modelId" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title">{{t "labels.embed"}}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label={{t "buttons.close"}}>
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <div class="form-group ">
+                  <pre id="frame" name="frame">{{this.embedCode}}</pre>
+                  <CopyButton @clipboardTarget="#frame" @success={{this.onSuccess}} @error={{this.onError}}>
+                    {{t "buttons.copy_embed_code"}}
+                  </CopyButton>
+                  {{#if this.copied}}
+                  <span class="badge badge-primary pt-2">{{t "labels.copied"}}</span>
+
+                  {{/if}}
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">{{t "buttons.close"}}</button>
+              </div>
+            </div>
           </div>
         </div>
+
+        <hr>
+        <div class="single-chapter-creator mb-3">
+          {{#if this.model.author.profileUri}}
+            <img src={{this.model.author.profileUri}} alt={{t "single_chapter.h5p.creator_avatar"}} class="rounded-circle mr-2">
+          {{else}}
+            <img src="/uploads/images/profile-placeholder.gif" alt={{t "single_chapter.h5p.creator_avatar"}} class="rounded-circle mr-2">
+          {{/if}}
+          <div class="chapter-author">
+            <p>{{this.model.author.name}}</p>
+            {{!-- TODO: Add "verified" & "likes" to user model --}}
+            {{!-- {{svg-jar "verified-black-24dp" class="verified-icon" height="20px"}} --}}
+            {{!-- <p>134 likes</p> --}}
+          </div>
+        </div>
+
+        <h5>{{t "single_chapter.h5p.description"}}</h5>
+        <div class="chapter-description">
+          {{#if this.config.content.APP.linkify_description}}
+            <p class="add-pre"> {{linkify this.model.description class="btn btn-primary replaced"}}</p>
+          {{else}}
+            <p class="add-pre"> {{this.model.description}}</p>
+          {{/if}}
+        </div>
+        <hr>
+
+        <CommentSection @selectedChapter={{this.model.id}} @chapterComments={{this.comments}} @chapterReplies={{this.replies}}/>
+
       </div>
     </div>
-
-    {{#if this.config.content.APP.linkify_description}}
-      <p class="add-pre"> {{linkify this.model.description class="btn btn-primary replaced"}}</p>
-    {{else}}
-      <p class="add-pre"> {{this.model.description}}</p>
-
-    {{/if}}
-
   </div>
-  <br>
-  <CommentSection @selectedChapter={{this.model.id}} @chapterComments={{this.model.comments}} />
 </div>
 
 <div class="text-center">
   {{#if (eq this.me.user.username "daph")}}
-
     {{#if (eq this.model.approved "true")}}
-
-      <button type="button" class="btn form-control btn-danger"
-        {{on "click" (fn this.toggleApproval this.model.id false )}}>
-        Un Approve This
-      </button>
+      <button type="button" class="btn form-control btn-danger" {{on "click" (fn this.toggleApproval this.model.id false
+        )}}>
+        {{t "single_chapter.admin.unapprove"}}
+    </button>
     {{else}}
-      <button type="button" class="btn form-control btn-success"
-        {{on "click" (fn this.toggleApproval this.model.id true )}}>
-        Approve This
+      <button type="button" class="btn form-control btn-success" {{on "click" (fn this.toggleApproval this.model.id true
+        )}}>
+        {{t "single_chapter.admin.approve"}}
       </button>
     {{/if}}
-
-
-
   {{/if}}
 </div>
 
 
 <BsModalSimple @title="Report Chapter" @closeTitle="Close" @submitTitle="Submit Report" @size="" @closeButton={{true}}
-               @fade={{true}} @backdrop={{true}} @backdropClose={{true}} @onSubmit={{this.saveFlag }}
-               @open={{this.flaggingModal}} @onHidden={{this.toggleFlaggingModal }} @renderInPlace={{true}}>
+  @fade={{true}} @backdrop={{true}} @backdropClose={{true}} @onSubmit={{this.saveFlag }} @open={{this.flaggingModal}}
+  @onHidden={{this.toggleFlaggingModal }} @renderInPlace={{true}}>
 
   <BsForm @model={{this.flagModel}} @onSubmit={{this.saveFlag }} as |form|>
-    <form.element @controlType="textarea" @label="Reason for reporting" @property="comment"/>
-    <form.element @controlType="hidden" @value={{this.model}} @name="chapter"/>
+    <form.element @controlType="textarea" @label="Reason for reporting" @property="comment" />
+    <form.element @controlType="hidden" @value={{this.model}} @name="chapter" />
 
 
   </BsForm>
@@ -101,13 +130,12 @@
 
 
 <BsModalSimple @open={{this.ratingModal}} @title="Rate This Module " @closeTitle="Close"
-               @submitTitle="Submit Optional Remark" @size="" @closeButton={{true}} @fade={{true}} @backdrop={{true}}
-               @backdropClose={{true}} @onSubmit={{this.ratingSubmit}} @onHidden={{this.toggleRatingModal}}
-               @renderInPlace={{true}}>
+  @submitTitle="Submit Optional Remark" @size="" @closeButton={{true}} @fade={{true}} @backdrop={{true}}
+  @backdropClose={{true}} @onSubmit={{this.ratingSubmit}} @onHidden={{this.toggleRatingModal}} @renderInPlace={{true}}>
 
   <BsForm @onSubmit={{this.ratingSubmit }} as |form|>
     <form.element @controlType="textarea" @label="Optional reason/remark for your {{this.rates}} star rating"
-                  @property="comment"/>
+      @property="comment" />
 
 
   </BsForm>
