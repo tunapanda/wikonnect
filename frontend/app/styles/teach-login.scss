@@ -1,0 +1,91 @@
+body {
+  margin: 0;
+}
+
+#teach-login {
+  .hero {
+    background: rgb(2, 252, 178);
+    background: linear-gradient(
+      90deg,
+      rgba(2, 252, 178, 1) 0%,
+      rgba(194, 199, 217, 1) 46%,
+      rgba(255, 255, 255, 1) 97%
+    );
+    padding: 5% 15%;
+    fill: #F57010;
+
+    h1 {
+      color: white;
+      font-weight: bold;
+    }
+
+    h3 {
+      font-weight: bold;
+    }
+
+    .copy {
+      font-size: 1.2rem;
+      font-weight: 300;
+      line-height: 1.5;
+      border-left: 4px solid white;
+      padding-left: 0.5rem;
+    }
+  }
+
+  .teach-login-body {
+    display: flex;
+    justify-content: center;
+    background-color: #eaf6f2;
+
+    #login-section {
+      text-align: left;
+      margin-top: 3%;
+      width: 400px;
+      margin: 20px;
+      -webkit-box-shadow: 0px 0px 13px 4px rgba(189, 182, 189, 0.34);
+      -moz-box-shadow: 0px 0px 13px 4px rgba(189, 182, 189, 0.34);
+      box-shadow: 0px 0px 13px 4px rgba(189, 182, 189, 0.34);
+      background-color: white;
+
+      input {
+        outline: none;
+        border: 0;
+        border-bottom: 1px solid black;
+        border-radius: 0;
+
+        &:focus {
+          border-bottom: 2px solid orange;
+        }
+      }
+
+      .login-heading {
+        background-color: rgba(50, 165, 131, 0.19);
+        color: black;
+        height: 20%;
+        padding: 3% 15% 5% 15%;
+
+        p {
+          font-weight: 300;
+        }
+
+        h3 {
+          font-weight: bold;
+        }
+      }
+
+      .sign-up {
+        text-align: center;
+      }
+    }
+  }
+
+  footer {
+    background-color: #eaf6f2;
+    color: #7d8597;
+    font-size: small;
+    height: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+  }
+}
