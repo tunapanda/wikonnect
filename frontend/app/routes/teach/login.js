@@ -16,6 +16,7 @@ export default class TeachLoginRoute extends Route {
   }
 
   afterModel() {
-    this.headTags = this.SeoTags.build('Teach - Wikonnect', '/teach/login');
+    console.log("after model");
+    // this.headTags = this.SeoTags.build('Teachih - Wikonnect', '/teach/login');
   }
 }

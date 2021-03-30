@@ -1,7 +1,17 @@
 body {
   margin: 0;
 }
+
 #teach-login {
+  nav {
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #32a583;
+    
+  }
+
   .hero {
     background: rgb(2, 252, 178);
     background: linear-gradient(
@@ -34,8 +44,8 @@ body {
   .teach-login-body {
     display: flex;
     justify-content: center;
-    background-color: #EAF6F2;
-    
+    background-color: #eaf6f2;
+
     #login-section {
       text-align: left;
       margin-top: 10%;
@@ -74,12 +84,12 @@ body {
   }
 
   footer {
-    background-color: #EAF6F2;
-    color: #7D8597;
+    background-color: #eaf6f2;
+    color: #7d8597;
     font-size: small;
     height: 100px;
     display: flex;
     justify-content: center;
-    align-items:flex-end;
+    align-items: flex-end;
   }
 }
