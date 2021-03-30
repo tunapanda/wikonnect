@@ -442,8 +442,8 @@ router.post('/:id/chapter-image', async (ctx, next) => {
 
   const { files } = await busboy(ctx.req);
   const fileNameBase = shortid.generate();
-  const uploadPath = 'uploads/chapters';
-  const uploadDir = path.resolve(__dirname, '../public/' + uploadPath);
+  const uploadPath = '/uploads/chapters';
+  const uploadDir = path.resolve(__dirname, '../public' + uploadPath);
 
   ctx.assert(files.length, 400, 'No files sent.');
   ctx.assert(files.length === 1, 400, 'Too many files sent.');
