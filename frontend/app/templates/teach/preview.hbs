@@ -15,20 +15,20 @@
         {{/if}}
       {{/if}}
       <br>
-      {{#if this.model.contentId}}
-        {{#if this.model.contentUri}}
-          <H5p @location={{this.model.contentUri}} />
-        {{else}}
+        {{#if this.model.contentId}}
           <H5p::Player @contentId={{this.model.contentId}}>
           </H5p::Player>
+        {{else}}
+          <H5p @location={{this.model.contentUri}} />
         {{/if}}
         <br>
+      {{#if (or this.model.contentUri this.model.contentId)}}
         <LinkTo class="btn  btn-primary mt-3 btn-sm" @route="teach.h5p-upload" @model={{this.model.id}}>
           {{t "teach.preview.change_h5p"}}
         </LinkTo>
       {{else}}
         <LinkTo class="btn btn-primary mt-3 btn-sm" @route="teach.h5p-upload" @model={{this.model.id}}>
-         {{t "teach.preview.upload_h5p"}}
+          {{t "teach.preview.upload_h5p"}}
         </LinkTo>
       {{/if}}
 
@@ -38,14 +38,14 @@
 
         <div class="row ">
           {{#each this.model.tags as |tag|}}
-              <span class="badge badge-pill badge-success btn-lg m-1">
-                {{tag}}
-              </span>
+            <span class="badge badge-pill badge-success btn-lg m-1">
+              {{tag}}
+            </span>
           {{/each}}
           <br>
         </div>
         <LinkTo @route="teach.tag" @model={{this.model.id}} class="btn btn-sm btn-primary mt-4">
-         {{t "teach.preview.modify_tags"}}
+          {{t "teach.preview.modify_tags"}}
         </LinkTo>
 
       </div>
@@ -54,7 +54,8 @@
 
     <div class="col-lg-6  border rounded-lg pl-4 pr-4 pt-3 pb-4">
       <div class="float-right pb-3">
-        <button type="button" class="btn btn-outline-primary" {{on "click" this.showDeleteModal }}>{{t "buttons.delete"}}</button>
+        <button type="button" class="btn btn-outline-primary" {{on "click" this.showDeleteModal }}>{{t
+                "buttons.delete"}}</button>
         {{#if (eq this.model.status "draft")}}
           {{#if (and this.model.imageUrl (or this.model.contentUri this.model.contentId))}}
             <button type="button" class="btn btn-primary" {{on "click" (fn (mut this.publishModal) true)}}>
@@ -71,20 +72,24 @@
         {{/if}}
       </div>
 
-      <BsModalSimple @open={{this.publishModal}} @onSubmit={{ fn this.publish this.model.id }} @closeTitle={{t "buttons.cancel"}}
+      <BsModalSimple @open={{this.publishModal}} @onSubmit={{ fn this.publish this.model.id }} @closeTitle={{t
+              "buttons.cancel"}}
                      @submitTitle={{t "teach.preview.publish"}} @title={{t "teach.preview.publish"}} @size="sm"
                      @onHidden={{fn (mut this.publishModal) false}}>
         {{t "teach.preview.publish_prompt"}}
       </BsModalSimple>
 
-      <BsModalSimple @open={{this.unpublishModal}} @onSubmit={{ fn this.unpublish this.model.id }} @closeTitle={{t "buttons.cancel"}}
+      <BsModalSimple @open={{this.unpublishModal}} @onSubmit={{ fn this.unpublish this.model.id }} @closeTitle={{t
+              "buttons.cancel"}}
                      @submitTitle={{t "teach.preview.unpublish"}} @title={{t "teach.preview.unpublish"}} @size="sm"
                      @onHidden={{fn (mut this.unpublishModal) false}}>
         {{t "teach.preview.unpublish_prompt"}}
       </BsModalSimple>
 
-      <BsModalSimple @open={{this.deleteModal}} @onSubmit={{fn this.delete this.model.id }} @closeTitle={{t "buttons.cancel"}}
-                     @submitTitle={{t "teach.preview.delete"}} @title={{t "teach.preview.delete"}} @size="sm" @onHidden={{fn (mut this.deleteModal) false}}>
+      <BsModalSimple @open={{this.deleteModal}} @onSubmit={{fn this.delete this.model.id }} @closeTitle={{t
+              "buttons.cancel"}}
+                     @submitTitle={{t "teach.preview.delete"}} @title={{t "teach.preview.delete"}} @size="sm"
+                     @onHidden={{fn (mut this.deleteModal) false}}>
         {{t "teach.preview.delete_prompt"}}: <b>{{this.model.name}}</b> ?
       </BsModalSimple>
       <br>
@@ -98,13 +103,14 @@
       </div>
 
       <LinkTo @route="teach.edit" @model={{this.model.id}} class="btn btn-sm btn-primary form-control">
-       {{t "teach.preview.change_chapter_details"}}
+        {{t "teach.preview.change_chapter_details"}}
       </LinkTo>
       <hr>
       <div>
 
         {{#if this.model.imageUrl}}
-          <img src="/{{this.model.imageUrl}}" class="img-thumbnail img-fluid rounded h-50 d-inline-block" alt={{t "teach.preview.chapter"}}>
+          <img src="/{{this.model.imageUrl}}" class="img-thumbnail img-fluid rounded h-50 d-inline-block" alt={{t
+                  "teach.preview.chapter"}}>
           <br>
           <LinkTo @route="teach.thumbnail-upload" @model={{this.model.id}}>
             <button type="button" class="btn btn-primary btn-sm">{{t "teach.preview.edit_thumbnail"}}</button>
