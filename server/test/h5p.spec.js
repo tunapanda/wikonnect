@@ -90,7 +90,8 @@ describe('H5P Route', () => {
     chai
       .request(server)
       .post(`${route}/ajax?${queryParams}`)
-      .field('libraries[]', 'H5P.ImageSlide 1.1')
+      .set('Content-Type', 'application/x-www-form-urlencoded')
+      .send({'libraries[]':'H5P.ImageSlide 1.1'})
       .end((err, res) => {
         res.should.have.status(200);
         res.should.be.json;

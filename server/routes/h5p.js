@@ -2,6 +2,7 @@ const fs = require('fs');
 
 const Router = require('koa-router');
 const {H5PAjaxEndpoint} = require('@lumieducation/h5p-server');
+const koaBody = require('koa-body');
 
 const {requireAuth} = require('../middleware/permController');
 const H5PEditor = require('../utils/h5p/editor');
@@ -9,8 +10,6 @@ const {H5PPlayer} = require('../utils/h5p/player');
 const {H5PUser} = require('../utils/h5p/config');
 const {Exporter} = require('../utils/h5p/download');
 const log = require('../utils/logger');
-
-const koaBody = require('koa-body')({multipart: true});
 
 const router = new Router({
   prefix: '/h5p'
@@ -140,18 +139,18 @@ router.get('/ajax', requireAuth, async (ctx) => {
  * Handle all H5P Editor POST AJAX requests
  *
  */
-router.post('/ajax', requireAuth,koaBody, async (ctx) => {
+router.post('/ajax', requireAuth, async (ctx,next) => {
+
   try {
     const {action, id, language} = ctx.query;
     const user = H5PUser(ctx.state.user);
     const editor = await H5PEditor();
     let body = ctx.request.body;
-
     let uploadedLibraryFile = undefined;
     let uploadedContentFile = undefined;
 
     if (ctx.request.is('multipart/*')) {
-
+      await koaBody({multipart: true})(ctx,next);
       const {h5p,file} =ctx.request.files;
 
       body = ctx.request.body;
