@@ -32,7 +32,7 @@ Router.map(function () {
     this.route('index', { path: '/' });
     this.route('published');
     this.route('edit', { path: '/edit/:chapter_id' });
-    this.route('h5p-editor', { path: '/h5p-editor/:id'});
+    this.route('h5p-editor', { path: '/h5p-editor/:id' });
   });
   this.route('embed', { path: '/embed/:chapter_id' });
   this.route('callback');
