@@ -25,7 +25,7 @@ edit:
 
 h5p:
   init: Initializing editor
-  
+
 thumbnail:
   upload: Upload Thumbnail
   drag_and_drop: Drag and drop here
@@ -52,7 +52,7 @@ preview:
   upload_thumbnail_h5p: Upload thumbnail and h5p to publish
   modify_tags: Modify Tags
   upload_h5p: Upload H5P
-  change_h5p: Change H5P
+  change_h5p: Edit H5P
   upload_thumbnail: Upload Thumbnail
   edit_thumbnail: Edit Thumbnail
   tags: Tags
