@@ -1,21 +1,17 @@
+<MainHeader @isTeach={{true}}/>
 <div id="teach-login">
-  <nav>
-    <div class="logo">
-      <LinkTo @route="index">{{svg-jar "wikonnect-logo-white"}}</LinkTo>
-    </div>
-  </nav>
   <div class="hero">
     <div class="row">
       <div class="col-md-6 col-sm-12">
-        <h1>Teach Something Cool</h1>
-        <h3 class="mb-3">Create impactful content</h3>
+        <h1>{{t "teach.login.title"}}</h1>
+        <h3 class="mb-3">{{t "teach.login.subtitle"}}</h3>
         <div class="copy ">
-          <p>Log in to create engaging learning content in minutes. Using <a href="#">H5P</a>, you can create interactive videos, audio &amp; quizzes, and share with learners all over the world.</p>
+          <p>{{t "teach.login.copy" htmlSafe=true}}</p>
         </div>
-        <p><a href="#login-section">{{svg-jar "arrow_downward_white_24dp"}} Login below</a></p>
+        <p><a href="#login-section">{{svg-jar "arrow_downward_white_24dp"}} {{t "teach.login.login_below"}}</a></p>
       </div>
       <div class="col-md-6">
-        <img src="/images/video-mockup.png" class="img-fluid" alt="laptop image with h5p">
+        <img src="/images/video-mockup.png" class="img-fluid" alt={{t "teach.login.pic_alt"}}>
       </div>
     </div>
   </div>
@@ -23,8 +19,8 @@
 <div class="teach-login-body">
   <div id="login-section">
     <div class="login-heading">
-      <h3>Log In</h3>
-      <p>Start creating content in minutes</p>
+      <h3>{{t "buttons.login"}}</h3>
+      <p>{{t "teach.login.login_subtitle"}}</p>
     </div>
       <BsForm @class="form" @formLayout="vertical" @model={{changeset this.model this.LoginValidations}} @onSubmit={{this.login}} as |form|>
         {{#each @registeredUser.errors as |err| }}
@@ -63,7 +59,9 @@
         {{/if}}
     
       </BsForm>
-      <p style="text-align: center;">New to Wikonnect? <LinkTo @route="signup">Sign Up</LinkTo></p>
+      <div class="sign-up">
+        <p>{{t "teach.login.sign_up" htmlSafe=true}}</p>
+      </div>
   </div>
 </div>
   <footer>

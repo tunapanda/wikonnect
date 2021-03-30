@@ -3,15 +3,6 @@ body {
 }
 
 #teach-login {
-  nav {
-    height: 50px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: #32a583;
-    
-  }
-
   .hero {
     background: rgb(2, 252, 178);
     background: linear-gradient(
@@ -48,8 +39,9 @@ body {
 
     #login-section {
       text-align: left;
-      margin-top: 10%;
+      margin-top: 3%;
       width: 400px;
+      margin: 20px;
       -webkit-box-shadow: 0px 0px 13px 4px rgba(189, 182, 189, 0.34);
       -moz-box-shadow: 0px 0px 13px 4px rgba(189, 182, 189, 0.34);
       box-shadow: 0px 0px 13px 4px rgba(189, 182, 189, 0.34);
@@ -69,8 +61,8 @@ body {
       .login-heading {
         background-color: rgba(50, 165, 131, 0.19);
         color: black;
-        height: 30%;
-        padding: 20% 15% 1% 15%;
+        height: 20%;
+        padding: 3% 15% 5% 15%;
 
         p {
           font-weight: 300;
@@ -79,6 +71,10 @@ body {
         h3 {
           font-weight: bold;
         }
+      }
+
+      .sign-up {
+        text-align: center;
       }
     }
   }
