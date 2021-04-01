@@ -65,6 +65,7 @@ const router = new Router({
  *            "ratings": "3.6666666666666667",
  *            "authenticatedUser": null,
  *            "authenticatedUserReactionId": null,
+ *            "reviewQuestions":["audioVideoQuality", "soundQuality", "videoQuality", "creativity"],
  *            "reaction": [{
  *                "totalLikes": "4",
  *                "likes": "3",
@@ -217,6 +218,7 @@ router.get('/', permController.requireAuth, validateGetChapter, async ctx => {
  *            "dislikes": "0",
  *            "rating": null,
  *            "verified": true,
+ *            "reviewQuestions":["audioVideoQuality", "soundQuality", "videoQuality", "creativity"],
  *            "author": {
  *              "username": "user1",
  *              "profileUri": null,
@@ -299,9 +301,9 @@ router.get('/:id', permController.requireAuth, async ctx => {
  * @apiParam (Request Body) {String} chapter[name] Name of the chapter.
  * @apiParam (Request Body) {String} chapter[description] Description of the chapter.
  * @apiParam (Request Body) {String} chapter[status] Chapter status - published | draft
- * @apiParam (Request Body) {Boolean} chapter[approved] If chapter has been approved: Default is false
- * @apiParam (Request Body) {Object[]} chapter[tags] Tags list.
- *
+ * @apiParam (Request Body) {Boolean} [chapter[approved]] If chapter has been approved: Default is false
+ * @apiParam (Request Body) {Object[]} [chapter[tags]] Tags list.
+ * @apiParam (Request Body) {Object[]} [chapter[reviewQuestions]] An array of review question categories.
  *
  * @apiSampleRequest off
  *
@@ -322,6 +324,7 @@ router.get('/:id', permController.requireAuth, async ctx => {
  *        "contentUri": "/uploads/h5p/chapter4",
  *        "imageUrl": null,
  *        "contentId": null,
+ *        "reviewQuestions":["audioVideoQuality", "soundQuality", "videoQuality", "creativity"],
  *        "tags": [],
  *        "approved": false
  *      }
@@ -336,6 +339,9 @@ router.post('/', permController.requireAuth, async ctx => {
   // Server side slug generator
   newChapter.slug = await slugGen(newChapter.name);
   newChapter.creatorId = stateUserId;
+  if(newChapter.approved === undefined){
+    newChapter.approved = false;
+  }
 
   let chapter;
   try {
@@ -372,6 +378,7 @@ router.post('/', permController.requireAuth, async ctx => {
  * @apiParam (Request Body) {String} [chapter[status]] Chapter status - published | draft
  * @apiParam (Request Body) {Boolean} [chapter[approved]] If chapter has been approved: Default is false
  * @apiParam (Request Body) {Object[]} [chapter[tags]] Tags list.
+ * @apiParam (Request Body) {Object[]} [chapter[reviewQuestions]] An array of review question categories.
  *
  * @apiSampleRequest /api/v1/chapters/:id
  *
