@@ -2,7 +2,7 @@ const Router = require('koa-router');
 const path = require('path');
 
 const busboy = require('async-busboy');
-const shortid = require('shortid');
+const { nanoid } = require('nanoid/async');
 const sharp = require('sharp');
 
 
@@ -68,7 +68,7 @@ router.post('/', validateAuthRoutes.validateNewUser, createPasswordHash, async c
   const invitedBy = ctx.request.body.user.inviteCode;
 
   let newUser = ctx.request.body.user;
-  newUser.inviteCode = shortid.generate();
+  newUser.inviteCode = await nanoid(11);
   newUser.lastIp = ctx.request.ip;
 
   const userCheck = await User.query();
@@ -324,7 +324,7 @@ router.post('/invite/:id', async ctx => {
 router.post('/:id/profile-image', permController.requireAuth, async (ctx) => {
 
   const { files } = await busboy(ctx.req);
-  const fileNameBase = shortid.generate();
+  const fileNameBase = await nanoid(11);
   const uploadPath = 'uploads/images/profile';
   const uploadDir = path.resolve(__dirname, '../public/' + uploadPath);
 

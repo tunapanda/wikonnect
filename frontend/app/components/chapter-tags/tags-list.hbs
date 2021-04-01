@@ -3,7 +3,7 @@
     <div class="tags-filter-dropdown">
       <BsDropdown @closeOnMenuClick={{false}} as |dd|>
         <dd.button @type="primary" class="tags-filter-dropdown-button">
-          Filter
+          {{t "home.tags.filter"}}
           {{svg-jar "filter-variant" width="20" height="20"}}
 
         </dd.button>
@@ -17,14 +17,14 @@
             </div>
 
             <Input @type="search" class="form-control search-input" @value={{this.filterTagsSearchTerm}}
-                   placeholder="Search filters"/>
+                   placeholder={{t "home.tags.search_filters"}}/>
           </div>
 
           <div class="header d-flex justify-content-between">
-            <span class="title">Select to filter</span>
+            <span class="title">{{t "home.tags.select_to_filter"}}</span>
             <button type="button" class="btn btn-clear {{if this.hasSelectedFilterTags "active" "" }}"
               {{on "click" @clearAllTagFilters}}>
-              Clear
+              {{t "home.tags.clear"}}
             </button>
           </div>
           {{#each this.filterTags as |tag|}}
@@ -57,7 +57,7 @@
         <BsButton @type="primary" @outline="true"
                   class="text-sm-center d-none d-sm-none d-md-flex clear-tags-btn hidden-sm"
                   @onClick={{@clearAllTagFilters}}>
-          Clear all filters
+          {{t "home.tags.clear_all_filters"}}
         </BsButton>
       {{/if}}
     </div>
@@ -67,7 +67,7 @@
     <div class="d-flex justify-content-center pt-2">
       <BsButton @type="primary" @outline="true" class="clear-tags-btn d-md-none"
                 @onClick={{@clearAllTagFilters}}>
-        Clear all filters
+        {{t "home.tags.clear_all_filters"}}
       </BsButton>
     </div>
   {{/if}}

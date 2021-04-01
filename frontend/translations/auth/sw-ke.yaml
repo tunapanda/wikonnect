@@ -1,0 +1,16 @@
+login:
+  login: Ingia
+  logout: Toka
+  authenticating: Inathibitisha ...
+  username: Jina La Mtumiaji
+  enter_username: Andika jina la mtumiaji hapa
+  password: Neno La Siri
+  enter_password: Andika neno la siri hapa
+  login_third_party: Ingia Ukitumia {authProvider}
+
+signup:
+  email: Barua Pepe
+  repeat_password: Rudia neno siri
+  invite_code: Nambari ya Kukaribisha
+  signup: Jisajili
+  signup_third_party: Jisajili Ukitumia {authProvider}

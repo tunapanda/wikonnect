@@ -6,7 +6,7 @@
     <LinkTo @route="index">
       {{svg-jar "home_black_24dp"}}
     </LinkTo>
-    <p class="m0"><LinkTo @route="index">Chapters</LinkTo> / <span class="chapter-name">{{this.model.name}}</span></p>
+    <p class="m0"><LinkTo @route="index">{{t "single_chapter.h5p.chapters"}}</LinkTo> / <span class="chapter-name">{{this.model.name}}</span></p>
   </div>
   <hr>
   {{#if this.model.contentUri}}
@@ -36,16 +36,15 @@
           </div>
         </div>
         <div class="chapter-metadata">
-          <p> {{this.model.views}} views &middot; {{format-date this.model.createdAt day="numeric" month="short"
-            year="numeric"}}</p>
+          <p> {{t "single_chapter.h5p.views" numViews=this.model.views}} &middot; {{format-date this.model.createdAt day="numeric" month="short" year="numeric"}}</p>
         </div>
 
         <div class="modal fade" id="modelId" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
           <div class="modal-dialog" role="document">
             <div class="modal-content">
               <div class="modal-header">
-                <h5 class="modal-title">Embed</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <h5 class="modal-title">{{t "labels.embed"}}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label={{t "buttons.close"}}>
                   <span aria-hidden="true">&times;</span>
                 </button>
               </div>
@@ -53,16 +52,16 @@
                 <div class="form-group ">
                   <pre id="frame" name="frame">{{this.embedCode}}</pre>
                   <CopyButton @clipboardTarget="#frame" @success={{this.onSuccess}} @error={{this.onError}}>
-                    Copy Embed Code
+                    {{t "buttons.copy_embed_code"}}
                   </CopyButton>
                   {{#if this.copied}}
-                  <span class="badge badge-primary pt-2">Copied</span>
+                  <span class="badge badge-primary pt-2">{{t "labels.copied"}}</span>
 
                   {{/if}}
                 </div>
               </div>
               <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">{{t "buttons.close"}}</button>
               </div>
             </div>
           </div>
@@ -71,9 +70,9 @@
         <hr>
         <div class="single-chapter-creator mb-3">
           {{#if this.model.author.profileUri}}
-            <img src={{this.model.author.profileUri}} alt="Lesson creator avatar" class="rounded-circle mr-2">
+            <img src={{this.model.author.profileUri}} alt={{t "single_chapter.h5p.creator_avatar"}} class="rounded-circle mr-2">
           {{else}}
-            <img src="/uploads/images/profile-placeholder.gif" alt="Lesson creator avatar" class="rounded-circle mr-2">
+            <img src="/uploads/images/profile-placeholder.gif" alt={{t "single_chapter.h5p.creator_avatar"}} class="rounded-circle mr-2">
           {{/if}}
           <div class="chapter-author">
             <p>{{this.model.author.name}}</p>
@@ -83,7 +82,7 @@
           </div>
         </div>
 
-        <h5>What you will learn</h5>
+        <h5>{{t "single_chapter.h5p.description"}}</h5>
         <div class="chapter-description">
           {{#if this.config.content.APP.linkify_description}}
             <p class="add-pre"> {{linkify this.model.description class="btn btn-primary replaced"}}</p>
@@ -102,15 +101,15 @@
 
 <div class="text-center">
   {{#if (eq this.me.user.username "daph")}}
-    {{#if (eq this.model.approved "true")}}
+    {{#if (eq this.model.approved true)}}
       <button type="button" class="btn form-control btn-danger" {{on "click" (fn this.toggleApproval this.model.id false
         )}}>
-        Un Approve This
+        {{t "single_chapter.admin.unapprove"}}
     </button>
     {{else}}
       <button type="button" class="btn form-control btn-success" {{on "click" (fn this.toggleApproval this.model.id true
         )}}>
-        Approve This
+        {{t "single_chapter.admin.approve"}}
       </button>
     {{/if}}
   {{/if}}

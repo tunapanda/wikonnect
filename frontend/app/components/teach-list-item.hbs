@@ -6,7 +6,7 @@
         <img class="card-img-top" src="https://placehold.jp/20/{{this.color}}/ffffff/328x200.png?text={{@chapter.name}}"
         alt="" role="presentation">
       {{else}}
-        <img class="card-img-top" alt="" src="/{{@chapter.imageUrl}}" role="presentation">
+        <img class="card-img-top" alt="" src="{{@chapter.imageUrl}}" role="presentation">
       {{/if}}
     </LinkTo>
 
@@ -27,7 +27,7 @@
             <LinkTo @route="teach.preview" @model={{@chapter.id}}>
               {{svg-jar "pencil" width="20" height="20"}}
               <br>
-              <small>Edit</small>
+              <small>{{t "buttons.edit"}}</small>
             </LinkTo>
           </div>
         </span>

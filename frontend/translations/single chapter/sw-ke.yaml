@@ -1,0 +1,21 @@
+h5p:
+  chapters: Rekodi
+  views: Imetazamwa mara {numViews}
+  description: Utajifunza yafuatayo
+  creator_avatar: Picha ya mwandishi wa somo
+
+comments:
+  num_comments: Maoni {numComments}
+  commenting_publicly: Unatoa maoni hadharani ukitumia jina la {commenter}
+  add_comment: Toa maoni
+  comment_added: Maoni yako yamewasilishwa
+  reply_added: Jibu lako limewasilishwa
+  reply: Jibu
+  reply_here: Jibu hapa
+  num_replies: "{numReplies, plural, =1 {Jibu 1} other { Majibu # }}"
+  hide_replies: Ficha majibu
+  show_replies: Onyesha majibu
+
+admin:
+  approve: idhinisha sura hii
+  unapprove: thibitisha sura hii
