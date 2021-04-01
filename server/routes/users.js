@@ -14,6 +14,7 @@ const permController = require('../middleware/permController');
 const validateAuthRoutes = require('../middleware/validateRoutePostSchema/validateAuthRoutes');
 
 const sendMailMessage = require('../utils/sendMailMessage');
+const profaneCheck = require('../utils/profaneCheck');
 const knex = require('../utils/knexUtil');
 const log = require('../utils/logger');
 const s3 = require('../utils/s3Util');
@@ -181,7 +182,6 @@ router.get('/:id', permController.requireAuth, async ctx => {
         ' enrolledCourses(selectNameAndId)]');
 
     ctx.assert(user, 404, 'No User With that Id');
-
     user.profileUri = await getProfileImage(user);
     profileCompleteBoolean(user, ctx.params.id);
     log.info('Got a request from %s for %s', ctx.request.ip, ctx.path);
@@ -254,15 +254,32 @@ router.get('/', permController.requireAuth, permController.grantAccess('readAny'
  */
 
 router.put('/:id', jwt.authenticate, permController.requireAuth, async ctx => {
+  let { metadata, ...data } = ctx.request.body.user;
+
+  //  check for profane language in user bios
+  if (metadata.aboutMe) {
+    const checked = await profaneCheck(metadata.aboutMe);
+    console.log(metadata.aboutMe);
+    if (typeof checked != 'undefined' && checked) {
+      ctx.throw(401, `Mind you language - ${checked}`, { errors: `Mind you language - ${checked}` });
+    }
+  }
+
+  //  update json_b metadata without deleting existing content
+  if (metadata) {
+    for (let key in metadata) {
+      data[`metadata:${key}`] = metadata[key];
+    }
+  }
 
   let user;
   try {
-    user = await User.query().patchAndFetchById(ctx.params.id, ctx.request.body.user);
+    user = await User.query().patchAndFetchById(ctx.params.id, data);
     ctx.assert(user, 404, 'That user does not exist.');
   } catch (e) {
     if (e.statusCode) {
       ctx.throw(e.statusCode, null, { errors: [e.message] });
-    } else { ctx.throw(400, null, { errors: [e.message, e.message] }); }
+    } else { ctx.throw(400, null, { errors: [e.message] }); }
     throw e;
   }
 
