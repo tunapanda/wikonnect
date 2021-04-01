@@ -16,64 +16,64 @@ describe('Chapter comments when authenticated', () => {
     });
 
 
-    // it('should display comment form', () => {
-    //     cy.get('#chapter .padded form')
-    //         .should('exist');
+    it('should display comment form', () => {
+        cy.get('#chapter .padded form')
+            .should('exist');
 
-    //     cy.get('#chapter .padded form textarea')
-    //         .should('be.visible');
+        cy.get('#chapter .padded form textarea')
+            .should('be.visible');
 
-    //     cy.get('#chapter .padded form button[type="submit"]')
-    //         .should('be.visible');
-    // });
+        cy.get('#chapter .padded form button[type="submit"]')
+            .should('be.visible');
+    });
 
-    // it('should display created comment immediately', () => {
-    //     const comment = { text: `Test comment randomly at ${Math.random() * 1000000}` };
+    it('should display created comment immediately', () => {
+        const comment = { text: `Test comment randomly at ${Math.random() * 1000000}` };
 
-    //     cy.get('#chapter .padded form textarea')
-    //         .type(comment.text);
+        cy.get('#chapter .padded form textarea')
+            .type(comment.text);
 
-    //     cy.get('#chapter .padded form button[type="submit"]')
-    //         .click();
-
-
-    //     cy.get('#chapter .media-body')
-    //         .contains(comment.text)
-    //         .should('be.visible')
-    // });
-
-    // it('should notify on comment posting success', () => {
-    //     const comment = { text: `Test notification randomly at ${Math.random() * 1000000}` };
-
-    //     cy.get('#chapter .padded form textarea')
-    //         .type(comment.text);
-
-    //     cy.get('#chapter .padded form button[type="submit"]')
-    //         .click();
-
-    //     cy.get('.ember-notify.ember-notify-show.success .message')
-    //         .should('be.visible')
+        cy.get('#chapter .padded form button[type="submit"]')
+            .click();
 
 
-    // });
+        cy.get('#chapter .media-body')
+            .contains(comment.text)
+            .should('be.visible')
+    });
 
-    // it('should notify on comment posting error', () => {
-    //     const comment = { text: `What the hell randomly at ${Math.random() * 1000000}` };
+    it('should notify on comment posting success', () => {
+        const comment = { text: `Test notification randomly at ${Math.random() * 1000000}` };
 
-    //     cy.get('#chapter .padded form textarea')
-    //         .type(comment.text);
+        cy.get('#chapter .padded form textarea')
+            .type(comment.text);
 
-    //     cy.get('#chapter .padded form button[type="submit"]')
-    //         .click();
+        cy.get('#chapter .padded form button[type="submit"]')
+            .click();
 
-    //     cy.get('.ember-notify.ember-notify-show.alert .message')
-    //         .should('be.visible');
-    // });
+        cy.get('.ember-notify.ember-notify-show.success .message')
+            .should('be.visible')
 
-    // it('should display comments', () => {
-    //     cy.get('div#comments-section .media-body')
-    //         .should('exist');
-    // });
+
+    });
+
+    it('should notify on comment posting error', () => {
+        const comment = { text: `What the hell randomly at ${Math.random() * 1000000}` };
+
+        cy.get('#chapter .padded form textarea')
+            .type(comment.text);
+
+        cy.get('#chapter .padded form button[type="submit"]')
+            .click();
+
+        cy.get('.ember-notify.ember-notify-show.alert .message')
+            .should('be.visible');
+    });
+
+    it('should display comments', () => {
+        cy.get('div#comments-section .media-body')
+            .should('exist');
+    });
 
     it('should be able to reply to a comment', () => {
          const reply = `Test reply randomly at ${Math.random() * 1000000}`;
@@ -100,25 +100,25 @@ describe('Chapter comments when authenticated', () => {
 
 
 
-// describe('Chapter comments without authentication', () => {
+describe('Chapter comments without authentication', () => {
 
-//     beforeEach(() => {
-//         parentComment()
-//             .then((comment) => {
-//                 cy.visit(`/chapter/${comment.chapterId}`)
-//             });
-//     });
+    beforeEach(() => {
+        parentComment()
+            .then((comment) => {
+                cy.visit(`/chapter/${comment.chapterId}`)
+            });
+    });
 
 
-//     it('should not display comment form', () => {
-//         cy.get('#chapter .padded form')
-//             .should('not.exist');
-//     });
+    it('should not display comment form', () => {
+        cy.get('#chapter .padded form')
+            .should('not.exist');
+    });
 
-//     it('should display available comments', () => {
-//         cy.get('#chapter #comments-section .media-body')
-//             .should('exist')
-//     });
+    it('should display available comments', () => {
+        cy.get('#chapter #comments-section .media-body')
+            .should('exist')
+    });
 
-// });
+});
 
