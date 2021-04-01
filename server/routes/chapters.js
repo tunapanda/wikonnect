@@ -4,7 +4,7 @@ const unzipper = require('unzipper');
 const busboy = require('async-busboy');
 const { ref } = require('objection');
 
-const shortid = require('shortid');
+const { nanoid } = require('nanoid/async');
 const sharp = require('sharp');
 const s3 = require('../utils/s3Util');
 const log = require('../utils/logger');
@@ -382,18 +382,19 @@ router.post('/', permController.requireAuth, async ctx => {
 router.put('/:id', permController.requireAuth, async ctx => {
   let chapterData = ctx.request.body.chapter;
   if (chapterData.id) delete chapterData.id;
+  //TODO: enable permissions checking
 
-  const stateUserRole = ctx.state.user.role == undefined
-    ? ctx.state.user.data.role
-    : ctx.state.user.role;
-  const roles = ['admin', 'superadmin'];
-  if (!roles.includes(stateUserRole)) {
-    ctx.throw(400, null, { errors: ['Not enough permissions'] });
-    chapterData.verified = 'false';
-  }
+  // const stateUserRole = ctx.state.user.role == undefined
+  //   ? ctx.state.user.data.role
+  //   : ctx.state.user.role;
+  // const roles = ['admin', 'superadmin'];
+  // if (!roles.includes(stateUserRole)) {
+  //   ctx.throw(403, null, { errors: ['Not enough permissions'] });
+  //   chapterData.verified = 'false';
+  // }
 
   const chapterCheck = await Chapter.query().findById(ctx.params.id);
-  ctx.assert(chapterCheck, 400, 'Invalid data provided');
+  ctx.assert(chapterCheck, 404, 'Invalid data provided');
 
   try {
     const chapter = await chapterCheck.$query().patchAndFetchById(ctx.params.id, chapterData);
@@ -461,8 +462,8 @@ router.post('/:id/chapter-image', async (ctx, next) => {
   const chapter_id = ctx.params.id;
 
   const { files } = await busboy(ctx.req);
-  const fileNameBase = shortid.generate();
-  const uploadPath = 'uploads/chapters';
+  const fileNameBase = await nanoid(11);
+  const uploadPath = '/uploads/chapters';
   const uploadDir = path.resolve(__dirname, '../public/' + uploadPath);
 
   ctx.assert(files.length, 400, 'No files sent.');

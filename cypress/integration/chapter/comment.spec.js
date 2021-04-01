@@ -88,7 +88,7 @@ describe('Chapter comments when authenticated', () => {
         cy.get('.reply-form textarea').should('be.visible');
 
         cy.get('.reply-form textarea').type(reply);
-        cy.get('.reply-form button').click();
+        cy.get('.reply-form button[type=submit]').click();
 
         cy.get(
             "#comments-section > :nth-child(1) > .media-body > .media > .replies"

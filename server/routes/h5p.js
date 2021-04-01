@@ -2,7 +2,7 @@ const fs = require('fs');
 
 const Router = require('koa-router');
 const {H5PAjaxEndpoint} = require('@lumieducation/h5p-server');
-const busboy = require('async-busboy');
+const koaBody = require('koa-body');
 
 const {requireAuth} = require('../middleware/permController');
 const H5PEditor = require('../utils/h5p/editor');
@@ -11,17 +11,40 @@ const {H5PUser} = require('../utils/h5p/config');
 const {Exporter} = require('../utils/h5p/download');
 const log = require('../utils/logger');
 
-
 const router = new Router({
   prefix: '/h5p'
 });
 
 
 /**
- * Get H5P Editor model for specific existing H5P content (assets & integration settings)
+ * @api {get} /api/v1/h5p/editor/:contentId GET H5P editor & content model
+ * @apiName GET H5P editor model with content
+ * @apiGroup H5P
+ * @apiPermission [authenticated user]
+ * @apiVersion 0.4.0
+ *
+ * @apiHeader {String} Authorization Bearer << JWT here>>
+ *
+ * @apiParam (URI Param) {String} contentId Id of the content to preload
+ *
+ * @apiSuccess {Object} integration
+ * @apiSuccess {Object} integration[editor]
+ * @apiSuccess {Object} integration[user]
+ * @apiSuccess {Object} integration[ajax]
+ * @apiSuccess {Object} integration[l10n]
+ * @apiSuccess {String} integration[ajaxPath]
+ * @apiSuccess {String} integration[libraryUrl]
+ * @apiSuccess {String} integration[url]
+ * @apiSuccess {Integer} integration[fullscreenDisabled]
+ * @apiSuccess {Boolean} integration[saveFreq]
+ * @apiSuccess {Boolean} integration[postUserStatistics]
+ * @apiSuccess {String[]} scripts
+ * @apiSuccess {String[]} styles
+ * @apiSuccess {Object} urlGenerator
+ * @apiSuccess {Object} urlGenerator[config]
+ *
  *
  */
-
 router.get('/editor/:contentId', requireAuth, async (ctx) => {
   try {
 
@@ -45,7 +68,33 @@ router.get('/editor/:contentId', requireAuth, async (ctx) => {
 });
 
 /**
- * Get H5P Editor model (assets & integration settings)
+ * @api {get} /api/v1/h5p/editor/ GET H5P editor model
+ * @apiName GET H5P editor model
+ * @apiGroup H5P
+ * @apiPermission [authenticated user]
+ * @apiVersion 0.4.0
+ *
+ * @apiHeader {String} Authorization Bearer << JWT here>>
+ *
+ * @apiParam (Query Params) {String} [language]
+ *
+ * @apiSuccess {Object} integration
+ * @apiSuccess {Object} integration[editor]
+ * @apiSuccess {Object} integration[user]
+ * @apiSuccess {Object} integration[ajax]
+ * @apiSuccess {Object} integration[l10n]
+ * @apiSuccess {String} integration[ajaxPath]
+ * @apiSuccess {String} integration[libraryUrl]
+ * @apiSuccess {String} integration[url]
+ * @apiSuccess {Integer} integration[fullscreenDisabled]
+ * @apiSuccess {Boolean} integration[saveFreq]
+ * @apiSuccess {Boolean} integration[postUserStatistics]
+ * @apiSuccess {String[]} scripts
+ * @apiSuccess {String[]} styles
+ * @apiSuccess {Object} urlGenerator
+ * @apiSuccess {Object} urlGenerator[config]
+ *
+ *
  *
  */
 router.get('/editor', requireAuth, async (ctx) => {
@@ -90,35 +139,37 @@ router.get('/ajax', requireAuth, async (ctx) => {
  * Handle all H5P Editor POST AJAX requests
  *
  */
-router.post('/ajax', requireAuth, async (ctx) => {
+router.post('/ajax', requireAuth, async (ctx,next) => {
+
   try {
     const {action, id, language} = ctx.query;
     const user = H5PUser(ctx.state.user);
     const editor = await H5PEditor();
     let body = ctx.request.body;
-
     let uploadedLibraryFile = undefined;
     let uploadedContentFile = undefined;
 
     if (ctx.request.is('multipart/*')) {
-      const {files, fields} = await busboy(ctx.req);
-      body = fields;
+      await koaBody({multipart: true})(ctx,next);
+      const {h5p,file} =ctx.request.files;
 
-      if (files && files.length > 0) {
-        const {mimeType, filename, path, fieldname} = files[0];
+      body = ctx.request.body;
 
-        const fileMetadata = {
-          mimetype: mimeType, name: filename,
+      if(h5p){
+        const {path, name, type} = h5p;
+        uploadedLibraryFile = {
+          mimetype: type, name,
           size: fs.statSync(path).size, tempFilePath: path,
         };
-
-        if (fieldname.toLowerCase().trim() === 'h5p') {
-          uploadedLibraryFile = fileMetadata;
-        }
-        if (fieldname.toLowerCase().trim() === 'file') {
-          uploadedContentFile = fileMetadata;
-        }
       }
+      if(file){
+        const {path, name, type} = file;
+        uploadedContentFile = {
+          mimetype: type, name,
+          size: fs.statSync(path).size, tempFilePath: path,
+        };
+      }
+
     }
 
     const translator = null; //should be a function (stringId: string, replacements: )=>string
@@ -302,3 +353,5 @@ router.get('/player/:contentId', async (ctx) => {
 
 
 module.exports = router.routes();
+
+

@@ -1,0 +1,74 @@
+login:
+  title: Fundisha kitu poa
+  subtitle: Unda yaliyomo yenye athari
+  copy: Ingia ili uunde masomo kwa dakika chache tu. Ukitumia '<'a href="https://h5p.org/"'>'H5P'</a>', unaweza kuunda video zinazovutia, ngoma na mitihani, na usambaze kwa wanafunzi kote ulimwenguni.
+  login_below: Ingia hapa chini
+  login_subtitle: Anza kuunda masomo kwa dakika chache tu
+  sign_up: Ikiwa huna akaunti ya wikonnect, '<'a href="/signup"'>'jiandikishe hapa'</a>'
+  pic_alt: laptop with h5p
+
+index:
+  my_content: Rekodi Zangu
+  drafts: Sura ambazo hazijachapishwa
+  published: Sura zilizochapishwa
+  no_drafts: Hakuna sura zilizoundwa bado
+  no_published: Hakuna kilichochapishwa bado
+  get_started: Anza hapa
+  no_permission: Huna ruhusa ya kutazama ukurasa huu
+
+toc:
+  name_desc: Jina na Maelezo
+  h5p_content: Rekodi ya H5P
+  thumbnail: Kijipicha
+  tags: Lebo
+  preview_publish: Hakikisha halafu chapisha
+
+create:
+  chapter_name: Jina la Rekodi
+  chapter_desc: Maelezo ya Rekodi
+  save: Hifadhi
+
+edit:
+  page_title: Hariri Sura ya H5P
+  update: Sasisha
+
+h5p:
+  init: Inaanzisha mhariri
+
+thumbnail:
+  upload: Pakia kijipicha
+  drag_and_drop: Buruta na uangushe picha hapa
+  or: au
+  max_size: Faili isizidi 8mb
+  accepted_file_types: "Aina za faili zilizokubaliwa: jpg, png, svg"
+  uploading: Inapakia ...
+  redirect_mesg: Utaelekezwa mara baada ya kupakia kukamilika
+
+tag:
+  custom_tag: Ongeza lebo maalum
+  custom_tag_placeholder: Ongeza lebo maalum hapa
+  select: Chagua Lebo
+  topic: Mada
+  competency: Umahiri
+  level: Kiwango
+  platform: Jukwaa
+  kicd_status: Hali ya KICD
+
+preview:
+  chapter: Sura
+  approved: Imeidhinishwa
+  unapproved: Haijaidhinishwa
+  upload_thumbnail_h5p: Pakia kijipicha na h5p ili uchapishe
+  modify_tags: Rekebisha Lebo
+  upload_h5p: Pakia H5P
+  change_h5p: Hariri H5P
+  upload_thumbnail: Pakia kijipicha
+  edit_thumbnail: Hariri kijipicha
+  tags: Lebo
+  change_chapter_details: Badilisha maelezo ya sura
+  publish: Chapisha
+  unpublish: Ondoa
+  delete: Futa
+  publish_prompt: Una uhakika unataka kuchapisha sura hii?
+  unpublish_prompt: Una uhakika unataka kutoa chapisho?
+  delete_prompt: Una uhakika unataka kufuta

@@ -1,35 +1,51 @@
+{{! template-lint-disable no-bare-strings }}
 <div class=" d-flex row text-center p-4 shadow-sm justify-content-center">
   <h3><b>{{t "messages.create_h5p_chapter"}}</b></h3>
 </div>
 
-<div class="d-flex flex-column align-items-center">
+<div class="row d-flex flex-column justify-content-center align-items-center px-10">
   <Toc @page="2"/>
   {{#if this.me.isAuthenticated}}
+    <div class="bg-primary col-md-6 col-sm-12 text-center p-3 text-white rounded-top">
+      Upload H5P
+    </div>
 
-      <div class="text-center pt-4 pb-4 {{if this.editor 'd-none' ''}}">
-        <p class="text-center">Initializing editor</p>
-        <Loader::Circular></Loader::Circular>
-      </div>
+    <div class="drop-area col-md-6 col-sm-12 mb-5 d-flex flex-column justify-content-center align-items-center">
+      {{#if this.uploader.uploading}}
+        <BsProgress as |pg|>
+          <pg.bar @showLabel={{true}} @roundDigits={{0}} @type="default" @striped={{true}} @animate={{true}}
+                  @value={{this.uploader.progress}} />
+        </BsProgress>
+      {{/if}}
+      <br>
+      <File-drop-zone @onDrop={{this.uploadH5p}}>
+        <p>Drag and drop here</p>
+        <p>or</p>
+        <Forms::Upload @multiple="false" @accept=".h5p" @filesSelected={{this.uploadH5p}}
+                       @disabled={{this.uploader.uploading}}>
 
-      <div class="container {{if this.editor '' 'h5p-editor-hidden'}}">
-        <div class="h5p-editor-section pl-lg-5 pb-3">
-          <H5p::Editor @onEditorInit={{this.onEditorInitialized}} @contentId={{this.model.contentId}}>
-          </H5p::Editor>
-        </div>
+          {{#if this.uploader.uploading}}
+            <BsProgress as |pg|>
+              <pg.bar @showLabel={{true}} @roundDigits={{0}} @type="default" @striped={{true}} @animate={{true}}
+                      @value={{this.uploader.progress}} />
+            </BsProgress>
+            Uploading... <span class="loading-spinner"></span> {{this.uploader.progress}}% <br>
+            <small class="text-muted">You will be redirected once upload is complete</small>
+          {{else}}
+            Upload H5P
+          {{/if}}
+        </Forms::Upload>
+      </File-drop-zone>
+    </div>
 
-        <div class="action-buttons d-flex justify-content-lg-end pr-lg-5 mr-lg-5">
-          <LinkTo @route="teach.edit" @model={{this.model.id}}
-                  class="btn btn-outline-primary mr-2 d-none">
-            Back
-          </LinkTo>
-          <button type="button" class="btn btn-primary" {{on "click" this.saveH5PContent}} >
-            Continue
-          </button>
-        </div>
-      </div>
+    <LinkTo @route="teach.thumbnail-upload" @model={{this.model.id}}>
+      <button type="button" class="btn btn-warning btn-lg btn-block">Skip</button>
+    </LinkTo>
+
   {{else}}
 
     <Warning @message="You do not have permission to view this page"/>
 
   {{/if}}
+
 </div>

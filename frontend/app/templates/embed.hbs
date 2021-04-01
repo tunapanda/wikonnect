@@ -2,7 +2,7 @@
 {{this.model.name}}
 <br>
 {{#if this.callbackUrl}}
-  <span class="badge badge-primary">Progress updates sent to: {{this.callbackUrl}}</span>
+  <span class="badge badge-primary">{{t "embed.updates" url=this.callbackUrl}}</span>
 
 {{/if}}
 
@@ -13,26 +13,26 @@
   </H5p::Player>
 {{/if}}
 {{#if this.me.isAuthenticated}}
-  Logged in as : {{this.me.user.username}}
-  <a name="" {{on "click" this.logout}} id="" class="btn btn-primary" href="#" role="button">Logout</a>
+  {{t "embed.logged_in_as" user=this.me.user.username}}
+  <a name="" {{on "click" this.logout}} id="" class="btn btn-primary" href="#" role="button">{{t "buttons.logout"}}</a>
 
 {{else}}
   <a name="" {{on "click" (fn this.openLoginModal true)}} id="" class="btn btn-primary" href="#" role="button">
-    Login
+    {{t "buttons.login"}}
   </a>
   <a name="" {{on "click" (fn this.openSignUpModal true)}} id="" class="btn btn-primary" href="#" role="button">
-    Signup
+    {{t "buttons.signup"}}
   </a>
 {{/if}}
 
 
-<BsModalSimple @open={{this.showLoginModal}} @title="Login" @size="sm" @onHidden={{fn this.openLoginModal false}}>
+<BsModalSimple @open={{this.showLoginModal}} @title={{t "buttons.login"}} @size="sm" @onHidden={{fn this.openLoginModal false}}>
   <Authentication::Login @registeredUser={{changeset @model this.LoginValidations}}
                          @authenticationSuccessful={{this.login}} />
 </BsModalSimple>
 
 
-<BsModalSimple @open={{this.showRegistrationModal}} @title="Login" @size="sm"
+<BsModalSimple @open={{this.showRegistrationModal}} @title={{t "buttons.login"}} @size="sm"
                @onHidden={{fn this.openSignUpModal false}}>
 
   <Authentication::Signup @newUser={{changeset @model this.UserValidation}} @inviteCode={{this.invite_code}}

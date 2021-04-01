@@ -1,0 +1,10 @@
+tags:
+  filter: Filter
+  search_filters: Search Filters
+  select_to_filter: Select to filter
+  clear: Clear
+  clear_all_filters: Clear all filters
+
+loading:
+  loading_more_records: Loading more records...
+  loaded_all_the_records: Loaded all the records

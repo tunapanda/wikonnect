@@ -6,40 +6,40 @@
   <Toc @page="3"/>
   {{#if this.me.isAuthenticated}}
     <div class="bg-primary col-md-6 col-sm-12 text-center p-3 text-white rounded-top">
-      Upload Thumbnail
+      {{t "teach.thumbnail.upload"}}
     </div>
 
     <div class="drop-area col-md-6 col-sm-12 mb-5 d-flex flex-column justify-content-center align-items-center">
       <File-drop-zone @onDrop={{this.uploadPic}}>
-        <p>Drag and drop here</p>
-        <p>or</p>
+        <p>{{t "teach.thumbnail.drag_and_drop"}}</p>
+        <p>{{t "teach.thumbnail.or"}}</p>
         <Forms::Upload @multiple="false" @accept="image/*" @filesSelected={{this.uploadPic}}
                        @disabled={{this.uploader.uploading}}>
           {{#if this.uploader.uploading}}
             <BsProgress as |pg|>
               <pg.bar @value={{this.uploader.progress}} />
             </BsProgress>
-            Uploading... <span class="loading-spinner"></span> {{this.uploader.progress}}% <br>
-            <small class="text-muted">You will be redirected once upload is complete</small>
+            {{t "teach.thumbnail.uploading"}} <span class="loading-spinner"></span> {{this.uploader.progress}}% <br>
+            <small class="text-muted">{{t "teach.thumbnail.redirect_mesg"}}</small>
 
           {{else}}
-            Upload Thumbnail
+            {{t "teach.thumbnail.upload"}}
           {{/if}}
 
         </Forms::Upload>
       </File-drop-zone>
 
-      <p><em>*Max image file size allowed is 8mb</em></p>
-      <p><em>*Accepted file types: jpg, png, svg</em></p>
+      <p><em>*{{t "teach.thumbnail.max_size"}}</em></p>
+      <p><em>*{{t "teach.thumbnail.accepted_file_types"}}</em></p>
     </div>
 
     <LinkTo @route="teach.tag" @model={{this.model.id}}>
-      <button type="button" class="btn btn-warning btn-lg btn-block">Skip</button>
+      <button type="button" class="btn btn-warning btn-lg btn-block">{{t "buttons.skip"}}</button>
     </LinkTo>
 
   {{else}}
 
-    <Warning @message="You do not have permission to view this page"/>
+    <Warning @message={{t "teach.index.no_permission"}}/>
 
   {{/if}}
 </div>

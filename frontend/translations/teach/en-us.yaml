@@ -1,0 +1,74 @@
+login:
+  title: Teach Something Cool
+  subtitle: Create impactful content
+  copy: Log in to create engaging learning content in minutes. Using '<'a href="https://h5p.org/"'>'H5P'</a>', you can create interactive videos, audio &amp; quizzes, and share with learners all over the world.
+  login_below: Log in below
+  login_subtitle: Start creating content in minutes
+  sign_up: New to Wikonnect? '<'a href="/signup"'>'Sign Up'</a>'
+  pic_alt: laptop with h5p
+
+index:
+  my_content: My Content
+  drafts: Drafts
+  published: Published
+  no_drafts: No drafts yet
+  no_published: Nothing published yet
+  get_started: Get Started
+  no_permission: You do not have permission to view this page
+
+toc:
+  name_desc: Name & Description
+  h5p_content: H5P Content
+  thumbnail: Thumbnail
+  tags: Tags
+  preview_publish: Preview & Publish
+
+create:
+  chapter_name: Chapter Name
+  chapter_desc: Chapter Description
+  save: Save Chapter Details
+
+edit:
+  page_title: Edit H5P Chapter
+  update: Update Chapter Details
+
+h5p:
+  init: Initializing editor
+
+thumbnail:
+  upload: Upload Thumbnail
+  drag_and_drop: Drag and drop here
+  or: or
+  max_size: Max image file size allowed is 8mb
+  accepted_file_types: "Accepted file types: jpg, png, svg"
+  uploading: Uploading ...
+  redirect_mesg: You will be redirected once upload is complete
+
+tag:
+  custom_tag: Add a custom tag
+  custom_tag_placeholder: Add a custom tag here
+  select: Select tags
+  topic: Topic
+  competency: Competency
+  level: Level
+  platform: Platform
+  kicd_status: KICD Status
+
+preview:
+  chapter: Chapter
+  approved: Approved
+  unapproved: Unapproved
+  upload_thumbnail_h5p: Upload thumbnail and h5p to publish
+  modify_tags: Modify Tags
+  upload_h5p: Upload H5P
+  change_h5p: Edit H5P
+  upload_thumbnail: Upload Thumbnail
+  edit_thumbnail: Edit Thumbnail
+  tags: Tags
+  change_chapter_details: Change Chapter details
+  publish: Publish
+  unpublish: Unpublish
+  delete: Delete
+  publish_prompt: Are you sure you want to publish this chapter?
+  unpublish_prompt: Are you sure you want to unpublish this chapter?
+  delete_prompt: Are you sure you want to delete

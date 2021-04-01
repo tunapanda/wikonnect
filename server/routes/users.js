@@ -2,7 +2,7 @@ const Router = require('koa-router');
 const path = require('path');
 
 const busboy = require('async-busboy');
-const shortid = require('shortid');
+const { nanoid } = require('nanoid/async');
 const sharp = require('sharp');
 
 
@@ -67,7 +67,7 @@ router.post('/', validateAuthRoutes.validateNewUser, createPasswordHash, async c
   const invitedBy = ctx.request.body.user.inviteCode;
 
   let newUser = ctx.request.body.user;
-  newUser.inviteCode = shortid.generate();
+  newUser.inviteCode = await nanoid(11);
   newUser.lastIp = ctx.request.ip;
 
   const userCheck = await User.query();
@@ -166,7 +166,6 @@ router.post('/', validateAuthRoutes.validateNewUser, createPasswordHash, async c
  *    }
  */
 
-
 router.get('/:id', permController.requireAuth, async ctx => {
 
   try {
@@ -177,28 +176,17 @@ router.get('/:id', permController.requireAuth, async ctx => {
     let user = await User.query()
       .findById(userId)
       .withGraphFetched('[achievementAwards(selectBadgeNameAndId), userRoles(selectName),' +
-            ' enrolledCourses(selectNameAndId)]');
+        ' enrolledCourses(selectNameAndId)]');
 
     ctx.assert(user, 404, 'No User With that Id');
 
     user.profileUri = await getProfileImage(user);
-
-    if (user.id !== stateUserId || stateUserId === 'anonymous') {
-      // If profile is private, return specific data
-      if (user.private ===true) {
-        user = {...user, username: 'private', profileUri: '/uploads/images/profile-placeholder.gif'};
-        user = {username: user.username, profileUri: user.profileUri, id: user.id, private: user.private};
-      }
-    } else {
-      // get all verification data
-      user.userVerification = await knex('user_verification').where({'user_id': userId});
-      profileCompleteBoolean(user, ctx.params.id);
-      log.info('Got a request from %s for %s', ctx.request.ip, ctx.path);
-    }
+    profileCompleteBoolean(user, ctx.params.id);
+    log.info('Got a request from %s for %s', ctx.request.ip, ctx.path);
 
     ctx.status = 200;
-    ctx.body = {user: user};
-  }catch (e) {
+    ctx.body = { user: user };
+  } catch (e) {
     if (e.statusCode) {
       ctx.throw(e.statusCode, null, { errors: [e.message] });
     } else {
@@ -230,7 +218,7 @@ router.get('/', permController.requireAuth, permController.grantAccess('readAny'
     try {
       const users = await User.query()
         .where(ctx.query)
-        .withGraphFetched('[achievementAwards(selectBadgeNameAndId), userRoles(selectName),'+
+        .withGraphFetched('[achievementAwards(selectBadgeNameAndId), userRoles(selectName),' +
           ' enrolledCourses(selectNameAndId)]');
 
       ctx.assert(users, 404, 'No User With that username');
@@ -319,7 +307,7 @@ router.post('/invite/:id', async ctx => {
 router.post('/:id/profile-image', permController.requireAuth, async (ctx) => {
 
   const { files } = await busboy(ctx.req);
-  const fileNameBase = shortid.generate();
+  const fileNameBase = await nanoid(11);
   const uploadPath = 'uploads/images/profile';
   const uploadDir = path.resolve(__dirname, '../public/' + uploadPath);
 
@@ -327,8 +315,8 @@ router.post('/:id/profile-image', permController.requireAuth, async (ctx) => {
   ctx.assert(files.length === 1, 400, 'Too many files sent.');
 
   const fileExtension = path.extname(files[0].path);
-  if (!['.webp','.svg','.png','.jpeg','.gif','.avif'].includes(fileExtension)){
-    ctx.throw(400,{error:'Image format not supported'});
+  if (!['.webp', '.svg', '.png', '.jpeg', '.gif', '.avif'].includes(fileExtension)) {
+    ctx.throw(400, { error: 'Image format not supported' });
   }
 
   const resizer = sharp().resize(500, 500).jpeg({ quality: 70 });
@@ -360,17 +348,17 @@ router.post('/:id/profile-image', permController.requireAuth, async (ctx) => {
   }
 
   else {
-    try{
+    try {
       await resizer.toFile(`${uploadDir}/${fileNameBase}.jpg`);
       await User.query()
-        .patchAndFetchById(ctx.params.id,{profileUri: `/${uploadPath}/${fileNameBase}.jpg` });
+        .patchAndFetchById(ctx.params.id, { profileUri: `/${uploadPath}/${fileNameBase}.jpg` });
 
-      ctx.status=200;
+      ctx.status = 200;
       ctx.body = {
         host: ctx.host,
         path: `/${uploadPath}/${fileNameBase}.jpg`,
       };
-    }catch (e) {
+    } catch (e) {
       if (e.statusCode) {
         ctx.throw(e.statusCode, null, { errors: [e.message] });
       } else {

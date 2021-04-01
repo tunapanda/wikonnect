@@ -10,7 +10,7 @@ export default class TeachRoute extends Route {
       // eslint-disable-next-line ember/no-controller-access-in-routes
       let loginController = this.controllerFor('login');
       loginController.set('previousTransition', transition);
-      this.transitionTo('login');
+      this.transitionTo('teach.login');
     }
     return super.beforeModel(transition);
   }

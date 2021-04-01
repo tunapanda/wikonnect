@@ -1,0 +1,35 @@
+<div class=" d-flex row text-center p-4 shadow-sm justify-content-center">
+  <h3><b>{{t "messages.create_h5p_chapter"}}</b></h3>
+</div>
+
+<div class="d-flex flex-column align-items-center">
+  <Toc @page="2"/>
+  {{#if this.me.isAuthenticated}}
+
+    <div class="text-center pt-4 pb-4 {{if this.editor 'd-none' ''}}">
+      <p class="text-center">{{t "teach.h5p.init"}}</p>
+      <Loader::Circular></Loader::Circular>
+    </div>
+
+    <div class="container {{if this.editor '' 'h5p-editor-hidden'}}">
+      <div class="h5p-editor-section pl-lg-5 pb-3">
+        <H5p::Editor @onEditorInit={{this.onEditorInitialized}} @contentId={{this.model.contentId}}>
+        </H5p::Editor>
+      </div>
+
+      <div class="action-buttons d-flex justify-content-lg-end pr-lg-5 mr-lg-5">
+        <LinkTo @route="teach.edit" @model={{this.model.id}}
+                class="btn btn-outline-primary mr-2 d-none">
+          {{t "buttons.back"}}
+        </LinkTo>
+        <button type="button" class="btn btn-primary" {{on "click" this.saveH5PContent}} >
+          {{t "buttons.continue"}}
+        </button>
+      </div>
+    </div>
+  {{else}}
+
+    <Warning @message={{t "teach.index.no_permission"}}/>
+
+  {{/if}}
+</div>
