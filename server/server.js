@@ -69,6 +69,8 @@ router.use(jwt.authenticate, require('./routes/h5p'));
 
 router.use(jwt.authenticate, require('./routes/reviews'));
 
+router.use(jwt.authenticate, require('./routes/review-questions'));
+
 router.use(require('./routes/search'));
 
 
