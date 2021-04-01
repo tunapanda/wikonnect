@@ -1,3 +1,12 @@
+login:
+  title: Teach Something Cool
+  subtitle: Create impactful content
+  copy: Log in to create engaging learning content in minutes. Using '<'a href="https://h5p.org/"'>'H5P'</a>', you can create interactive videos, audio &amp; quizzes, and share with learners all over the world.
+  login_below: Log in below
+  login_subtitle: Start creating content in minutes
+  sign_up: New to Wikonnect? '<'a href="/signup"'>'Sign Up'</a>'
+  pic_alt: laptop with h5p
+
 index:
   my_content: My Content
   drafts: Drafts
@@ -25,7 +34,7 @@ edit:
 
 h5p:
   init: Initializing editor
-  
+
 thumbnail:
   upload: Upload Thumbnail
   drag_and_drop: Drag and drop here
@@ -52,7 +61,7 @@ preview:
   upload_thumbnail_h5p: Upload thumbnail and h5p to publish
   modify_tags: Modify Tags
   upload_h5p: Upload H5P
-  change_h5p: Change H5P
+  change_h5p: Edit H5P
   upload_thumbnail: Upload Thumbnail
   edit_thumbnail: Edit Thumbnail
   tags: Tags

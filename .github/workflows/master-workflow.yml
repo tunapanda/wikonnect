@@ -285,6 +285,8 @@ jobs:
 
       # Frontend run build
       - name: Frontend run build
+        env:
+          GOOGLE_KEY: ${{ secrets.GOOGLE_KEY }}
         run: yarn --cwd ./frontend build --prod
 
       # Install project dependencies, test and build

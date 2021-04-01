@@ -24,6 +24,7 @@ module.exports = function (environment) {
       instance_name: 'Wikonnect',
       header_logo: '/images/logo.png',
       header_background: 'orange',
+      teach_header_background: 'green',
       header_text: 'light',
       primary_color: 'orange',
       embeded_h5p_editor: false,
