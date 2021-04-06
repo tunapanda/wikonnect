@@ -3,13 +3,13 @@ const path = require('path');
 const unzipper = require('unzipper');
 const busboy = require('async-busboy');
 const { ref } = require('objection');
-
 const { nanoid } = require('nanoid/async');
 const sharp = require('sharp');
+const koaBody = require('koa-body')({multipart: true,multiples:false,keepExtensions:true});
+
 const s3 = require('../utils/s3Util');
 const log = require('../utils/logger');
 const slugGen = require('../utils/slugGen');
-
 const Chapter = require('../models/chapter');
 const Rating = require('../models/rating');
 const Counter = require('../models/counter');
@@ -436,21 +436,35 @@ router.delete('/:id', permController.requireAuth, async ctx => {
  * @apiErrorExample {json} List error
  *    HTTP/1.1 500 Internal Server Error
  */
-router.post('/:id/chapter-image', async (ctx, next) => {
-  if ('POST' != ctx.method) return await next();
+router.post('/:id/chapter-image', permController.requireAuth, koaBody, async (ctx) => {
   const chapter_id = ctx.params.id;
 
-  const { files } = await busboy(ctx.req);
+  ctx.assert(ctx.request.files.file, 400, 'No file image uploaded');
+
   const fileNameBase = await nanoid(11);
   const uploadPath = '/uploads/chapters';
   const uploadDir = path.resolve(__dirname, '../public/' + uploadPath);
 
-  ctx.assert(files.length, 400, 'No files sent.');
-  ctx.assert(files.length === 1, 400, 'Too many files sent.');
+  const {file} =ctx.request.files;
 
-  const resizer = sharp().resize(328, 200).jpeg({ quality: 70 });
+  const fileExtension = path.extname(file.name);
 
-  files[0].pipe(resizer);
+  if (!['.webp', '.svg', '.png', '.jpeg', '.gif', '.avif','.jpg'].includes(fileExtension)) {
+    ctx.throw(400, { error: 'Image format not supported' });
+  }
+
+  let resizer;
+  try{
+    resizer = await sharp(file.path)
+      .resize(328, 200)
+      .jpeg({ quality: 70 });
+  }catch (e) {
+    if (e.statusCode) {
+      ctx.throw(e.statusCode, null, { errors: [e.message] });
+    } else {
+      ctx.throw(500, null, { errors: [e.message] });
+    }
+  }
 
   if (s3.config) {
     let buffer = await resizer.toBuffer();
