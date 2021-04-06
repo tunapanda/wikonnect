@@ -1,0 +1,70 @@
+<div class="rating-review-section">
+  {{#if (eq @reaction "like")}}
+    <div class="gesture-icon pb-5">
+      {{svg-jar "review-thumbs-up" height="90"}}
+    </div>
+    <div class="title pb-3 text-center">
+      {{t "single_chapter.review_ratings.positive.title"}}
+    </div>
+    <div class="subtitle pb-3">
+      {{t "single_chapter.review_ratings.positive.subtitle"}}
+    </div>
+
+  {{else}}
+    <div class="gesture-icon pb-5">
+      {{svg-jar "review-thumbs-down" height="90"}}
+    </div>
+    <div class="title pb-3">
+      {{t "single_chapter.review_ratings.negative.title"}}
+    </div>
+    <div class="subtitle pb-3">
+      {{t "single_chapter.review_ratings.negative.subtitle"}}
+    </div>
+
+  {{/if}}
+
+  {{#each this.reviewQuestions as |question|}}
+    <div class="question form-group">
+      <label class="category-title pb-2" for={{question.category}}>{{question.title}}</label>
+      <div class="rating-section pb-2">
+        <Chapter::StarRating @rating={{question.rating}} @ref={{question}} @onChange={{this.updateQuestionRating}}>
+        </Chapter::StarRating>
+      </div>
+
+      {{#if question.options}}
+        <div class="preselect-options row pr-3 pl-3">
+          {{#if (eq @reaction "like")}}
+            {{#each question.options.positive as |opt|}}
+              <button type="button" class="badge preselected-option mr-1 mb-1 {{if opt.selected "selected"}}"
+                {{on "click" (fn this.toggleSelectionOption opt)}}>
+                {{opt.title}}
+              </button>
+            {{/each}}
+          {{else}}
+            {{#each question.options.negative as |opt|}}
+              <button type="button" class="badge preselected-option mr-1 mb-1 {{if opt.selected "selected"}}"
+                {{on "click" (fn this.toggleSelectionOption opt)}}>
+                {{opt.title}}
+              </button>
+            {{/each}}
+          {{/if}}
+        </div>
+      {{/if}}
+
+      <Textarea @value={{question.review}} id={{question.category}} class="form-control review-input"
+                placeholder="Add details"></Textarea>
+    </div>
+
+  {{/each}}
+
+  <div class="form-group question">
+    <label for="extra" class="category-title">{{t "single_chapter.review_ratings.extra_review_title"}}</label>
+    <Textarea @value={{this.extaReview}} id="extra" class="form-control review-input" placeholder="Add details">
+    </Textarea>
+  </div>
+  <div class="form-group">
+    <button type="button" class="btn btn-primary" {{on "click" this.submitRatingReview}}>
+      {{t "single_chapter.review_ratings.buttons.submit"}}
+    </button>
+  </div>
+</div>

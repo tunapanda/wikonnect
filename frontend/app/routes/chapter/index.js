@@ -106,6 +106,16 @@ export default class ChapterIndexRoute extends Route {
       headers
     );
 
+    if (model.reviewQuestions) {
+      const reviewQuestionsQuery = model.reviewQuestions.join(',');
+
+      return {
+        comments: await this.store.query('comment', { chapterId: model.id }),
+        reviewQuestions: await this.store.query('review-question', {
+          categories: reviewQuestionsQuery,
+        }),
+      };
+    }
     return {
       comments: await this.store.query('comment', { chapterId: model.id }),
     };

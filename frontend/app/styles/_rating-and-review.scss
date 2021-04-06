@@ -1,0 +1,112 @@
+$palette: (
+  white: #FFFF,
+  blue: #007bff,
+  gray45:#5E6C73,
+  dark: #1E2326,
+  terrible: #F05F56,
+  bad: #EA7900BC,
+  okay: #F1DF5B,
+  good: #9ACD32,
+  great: #03A543
+);
+
+.rating-review-section {
+  padding: 0;
+  margin: 0;
+
+  .gesture-icon {
+    text-align: center;
+  }
+
+  .title {
+    font-size: 20px;
+    line-height: 28px;
+    color: map-get($palette, gray45);
+  }
+
+  .subtitle {
+    font-size: 16px;
+    line-height: 20px;
+    font-weight: 600;
+    color: map-get($palette, dark);
+  }
+
+  .question .category-title {
+    color: map-get($palette, gray45);
+    font-size: 16px;
+  }
+
+  .question .review-input {
+    border-radius: 0;
+    border-top: transparent;
+    border-left: transparent;
+    border-right: transparent;
+    resize: none;
+  }
+}
+
+.preselect-options {
+  .preselected-option {
+    color: map-get($palette, white);
+    background-color: map-get($palette, gray45);
+    cursor: pointer;
+    box-shadow: none;
+    outline: none;
+    border: none;
+
+    &.selected {
+      background-color: map-get($palette, blue);
+
+    }
+  }
+}
+
+.rating-group {
+  .rating-star, .rating-emoji {
+    display: inline-block;
+    cursor: pointer;
+  }
+
+  .rating-emoji {
+    background: none;
+    border: none;
+    outline: none;
+
+    &:hover svg text,
+    &.active svg text {
+      fill: map-get($palette, dark);
+    }
+
+    &.terrible:hover svg g,
+    &.terrible.active svg g {
+      fill: map-get($palette, terrible);
+      stroke: map-get($palette, terrible);
+    }
+
+    &.bad:hover svg g,
+    &.bad.active svg g, {
+      fill: map-get($palette, bad);
+      stroke: map-get($palette, bad);
+    }
+
+    &.okay:hover svg g g,
+    &.okay.active svg g g {
+      fill: map-get($palette, okay);
+      stroke: map-get($palette, okay);
+    }
+
+    &.good:hover svg g,
+    &.good.active svg g {
+      fill: map-get($palette, good);
+      stroke: map-get($palette, good);
+    }
+
+    &.great:hover svg g g,
+    &.great.active svg g g {
+      fill: map-get($palette, great);
+      stroke: map-get($palette, great);
+
+    }
+  }
+
+}
