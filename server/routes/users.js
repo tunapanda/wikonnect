@@ -1,9 +1,9 @@
 const Router = require('koa-router');
 const path = require('path');
 
-const busboy = require('async-busboy');
 const { nanoid } = require('nanoid/async');
 const sharp = require('sharp');
+const koaBody = require('koa-body')({multipart: true,multiples:false,keepExtensions:true});
 
 
 const User = require('../models/user');
@@ -13,6 +13,7 @@ const jwt = require('../middleware/jwt');
 const permController = require('../middleware/permController');
 const validateAuthRoutes = require('../middleware/validateRoutePostSchema/validateAuthRoutes');
 
+const profaneCheck = require('../utils/profaneCheck');
 const knex = require('../utils/knexUtil');
 const log = require('../utils/logger');
 const s3 = require('../utils/s3Util');
@@ -179,7 +180,6 @@ router.get('/:id', permController.requireAuth, async ctx => {
         ' enrolledCourses(selectNameAndId)]');
 
     ctx.assert(user, 404, 'No User With that Id');
-
     user.profileUri = await getProfileImage(user);
     profileCompleteBoolean(user, ctx.params.id);
     log.info('Got a request from %s for %s', ctx.request.ip, ctx.path);
@@ -252,15 +252,32 @@ router.get('/', permController.requireAuth, permController.grantAccess('readAny'
  */
 
 router.put('/:id', jwt.authenticate, permController.requireAuth, async ctx => {
+  let { metadata, ...data } = ctx.request.body.user;
+
+  //  check for profane language in user bios
+  if (metadata.aboutMe) {
+    const checked = await profaneCheck(metadata.aboutMe);
+    console.log(metadata.aboutMe);
+    if (typeof checked != 'undefined' && checked) {
+      ctx.throw(401, `Mind you language - ${checked}`, { errors: `Mind you language - ${checked}` });
+    }
+  }
+
+  //  update json_b metadata without deleting existing content
+  if (metadata) {
+    for (let key in metadata) {
+      data[`metadata:${key}`] = metadata[key];
+    }
+  }
 
   let user;
   try {
-    user = await User.query().patchAndFetchById(ctx.params.id, ctx.request.body.user);
+    user = await User.query().patchAndFetchById(ctx.params.id, data);
     ctx.assert(user, 404, 'That user does not exist.');
   } catch (e) {
     if (e.statusCode) {
       ctx.throw(e.statusCode, null, { errors: [e.message] });
-    } else { ctx.throw(400, null, { errors: [e.message, e.message] }); }
+    } else { ctx.throw(400, null, { errors: [e.message] }); }
     throw e;
   }
 
@@ -304,24 +321,35 @@ router.post('/invite/:id', async ctx => {
  * @apiError {String} errors Bad Request.
  */
 
-router.post('/:id/profile-image', permController.requireAuth, async (ctx) => {
+router.post('/:id/profile-image',koaBody, permController.requireAuth, async (ctx) => {
 
-  const { files } = await busboy(ctx.req);
+  ctx.assert(ctx.request.files.file, 400, 'No file image uploaded');
+
   const fileNameBase = await nanoid(11);
   const uploadPath = 'uploads/images/profile';
   const uploadDir = path.resolve(__dirname, '../public/' + uploadPath);
 
-  ctx.assert(files.length, 400, 'No files sent.');
-  ctx.assert(files.length === 1, 400, 'Too many files sent.');
+  const {file} =ctx.request.files;
 
-  const fileExtension = path.extname(files[0].path);
-  if (!['.webp', '.svg', '.png', '.jpeg', '.gif', '.avif'].includes(fileExtension)) {
+  const fileExtension = path.extname(file.name);
+
+  if (!['.webp', '.svg', '.png', '.jpeg', '.gif', '.avif','.jpg'].includes(fileExtension)) {
     ctx.throw(400, { error: 'Image format not supported' });
   }
 
-  const resizer = sharp().resize(500, 500).jpeg({ quality: 70 });
+  let resizer;
+  try{
+    resizer = await sharp(file.path)
+      .resize(500, 500)
+      .jpeg({ quality: 70 });
+  }catch (e) {
+    if (e.statusCode) {
+      ctx.throw(e.statusCode, null, { errors: [e.message] });
+    } else {
+      ctx.throw(500, null, { errors: [e.message] });
+    }
+  }
 
-  files[0].pipe(resizer);
 
   if (s3.config) {
     let buffer = await resizer.toBuffer();
