@@ -227,6 +227,9 @@ router.post('/', requireAuth, validateRating, async ctx => {
     let rating;
     if (review) {
 
+      review.chapterId =obj.chapterId;
+      review.reaction =obj.reaction;
+
       rating = await Rating.query().insertGraphAndFetch({
         ...obj, userId, averageRating,
         review: {...review, userId},
