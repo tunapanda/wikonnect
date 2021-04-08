@@ -2,7 +2,7 @@ exports.seed = async function (knex) {
   // Deletes ALL existing entries
   await knex('reactions').del();
   const userIds = await knex('users').pluck('id');
-  const chapterIds = await knex('chapters').pluck('id');
+  const chapterIds = await knex('chapters').where('approved',true).pluck('id');
 
   const totalChapters = chapterIds.length;
   const partitionCount = Math.floor(totalChapters/3);
@@ -26,7 +26,7 @@ exports.seed = async function (knex) {
       reactions.push({
         reaction: 'dislike',
         chapter_id: chaptersToDislike[k],
-        user_id: userIds[k],
+        user_id: userIds[i],
       });
     }
 
