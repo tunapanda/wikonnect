@@ -16,7 +16,7 @@ const router = new Router({
 });
 
 
-const DOMAIN_NAME = process.env.DOMAIN_NAME || 'http://localhost:3000/api/v1';
+const DOMAIN_NAME = process.env.DOMAIN_NAME || "http://localhost:4200";
 
 /**
  * @api {post} /api/v1/auth POST login a user.
@@ -106,7 +106,7 @@ router.post('/forgot_password', async ctx => {
       'resetPasswordToken': token,
     });
     // sending email
-    const link = `${DOMAIN_NAME}/auth/reset_password?email=${email}&token=${token}`;
+    const link = `${DOMAIN_NAME}/reset_password?email=${buf}&token=${token}`;
     await sendMailMessage(buf, userData.username, link, 'forgot-password-email');
     log.info('Email verification sent to %s', email);
 
@@ -147,11 +147,12 @@ router.post('/reset_password', checkIfPasswordAreSame, async ctx => {
   const decodedMail = Buffer.from(auth.email, 'base64').toString('ascii');
 
   const user = await User.query().findOne(
-    'resetPasswordExpires', '>', Date.now(),
+    "resetPasswordExpires", ">", new Date(+new Date() + 0),
     {
       reset_password_token: auth.token,
-      email: decodedMail
-    });
+      email: decodedMail,
+    }
+  );
   ctx.assert(user, 404, user);
 
   try {
