@@ -46,33 +46,6 @@ describe('CHAPTER REVIEWS ROUTE', () => {
     return await knex.seed.run();
   });
 
-  it('Should fetch chapter reviews questions', done => {
-    chai
-      .request(server)
-      .get(`${route}/questions`)
-      .set(tokens.headersSuperAdmin1)
-      .end((err, res) => {
-        res.should.have.status(200);
-        res.should.be.json;
-        res.body.reviewQuestions[0].should.have.property('category');
-        res.body.reviewQuestions[0].should.have.property('title');
-        done();
-      });
-  });
-
-  it('Should query chapter reviews questions by category', done => {
-    chai
-      .request(server)
-      .get(`${route}/questions/?categories=language`)
-      .set(tokens.headersSuperAdmin1)
-      .end((err, res) => {
-        res.should.have.status(200);
-        res.should.be.json;
-        res.body.reviewQuestions[0].should.have.property('category');
-        res.body.reviewQuestions[0].should.have.property('title');
-        done();
-      });
-  });
 
   it('Should fetch existing chapter reviews', done => {
     chai
