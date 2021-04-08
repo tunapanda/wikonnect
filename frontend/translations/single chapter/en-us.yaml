@@ -20,6 +20,16 @@ admin:
   approve: Approve this
   unapprove: Unapprove this
 
+reaction_popover:
+  button:
+    close: x
+    prompt: Give us some feedback
+  positive:
+    title: Awesome! What did you like?
+  negative:
+    title: Oh no! What didn't you like?
+
+
 review_ratings:
   positive:
     title: Thank you
@@ -31,3 +41,6 @@ review_ratings:
   buttons:
     submit: Submit
     cancel: Skip
+  feedback:
+    title: Feedback sent!
+    message: Thanks for your feedback <br> We really appreciate it

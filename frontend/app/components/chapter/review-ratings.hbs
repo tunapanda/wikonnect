@@ -62,9 +62,10 @@
     <Textarea @value={{this.extaReview}} id="extra" class="form-control review-input" placeholder="Add details">
     </Textarea>
   </div>
-  <div class="form-group">
-    <button type="button" class="btn btn-primary" {{on "click" this.submitRatingReview}}>
-      {{t "single_chapter.review_ratings.buttons.submit"}}
-    </button>
-  </div>
 </div>
+<div class="form-group col-md-10">
+  <button type="button" class="btn btn-primary btn-block" {{on "click" this.submitRatingReview}}>
+    {{t "single_chapter.review_ratings.buttons.submit"}}
+  </button>
+</div>
+{{yield}}

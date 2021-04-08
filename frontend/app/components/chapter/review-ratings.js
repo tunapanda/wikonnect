@@ -84,7 +84,9 @@ export default class ChapterReviewRatingsComponent extends Component {
       ratings[q.category] = q.rating;
     });
 
-    console.log(reviews, ratings);
+    if (this.args.onSubmit) {
+      this.args.onSubmit(reviews, ratings);
+    }
   }
 }
 

@@ -1,4 +1,5 @@
 $palette: (
+  primary: #F57010,
   white: #FFFF,
   blue: #007bff,
   gray45:#5E6C73,
@@ -16,6 +17,10 @@ $palette: (
 
   .gesture-icon {
     text-align: center;
+
+    svg .a {
+      fill: map-get($palette, primary);
+    }
   }
 
   .title {
@@ -106,6 +111,63 @@ $palette: (
       fill: map-get($palette, great);
       stroke: map-get($palette, great);
 
+    }
+  }
+
+}
+
+.rating-review-feedback-modal {
+  .modal-header {
+    border: none;
+
+    .close {
+      font-weight: 400;
+    }
+  }
+
+  .modal-body {
+    text-align: center;
+
+    .gesture-icon {
+      .ok {
+        background-color: map-get($palette, primary);
+        border-radius: 50%;
+        height: 100px;
+        width: 100px;
+        display: inline-block;
+
+        &:after {
+          content: " ";
+          display: block;
+          border-color: map-get($palette, white);
+          border-style: solid;
+          width: 1.2em;
+          height: 2.7em;
+          border-width: 0 .4em 0.4em 0;
+          position: absolute;
+          left: 48%;
+          top: 12%;
+          margin-top: -0.2em;
+          -webkit-transform: rotate(45deg);
+          -moz-transform: rotate(45deg);
+          -o-transform: rotate(45deg);
+          transform: rotate(45deg);
+        }
+      }
+    }
+
+    .title {
+      font-size: 24px;
+      line-height: 20px;
+      letter-spacing: -0.24px;
+      font-weight: bold;
+      color: map-get($palette, primary);
+    }
+
+    .subtitle {
+      font-size: 15px;
+      font-weight: 500;
+      color: map-get($palette, gray45);
     }
   }
 

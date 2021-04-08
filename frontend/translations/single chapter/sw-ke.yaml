@@ -20,6 +20,14 @@ admin:
   approve: idhinisha sura hii
   unapprove: thibitisha sura hii
 
+reaction_popover:
+  button:
+    close: x
+    prompt: Tupe maoni
+  positive:
+    title: Je, umependa nini?
+  negative:
+    title: Je, haukupenda nini?
 
 review_ratings:
   positive:
@@ -32,3 +40,6 @@ review_ratings:
   buttons:
     submit: Wasilisha
     cancel: Ruka
+  feedback:
+    title: Maoni yametumwa!
+    message: Asante kwa maoni yako <br> Tunathamini sana

@@ -106,10 +106,20 @@ export default class ChapterIndexRoute extends Route {
       headers
     );
 
+    let reviews = undefined;
+    if (this.me.isAuthenticated) {
+      reviews = await this.store.query('rating', {
+        chapterId: model.id,
+        include: 'review',
+        userId: this.me?.user?.id, //since auth is optional at this level
+        isDeleted: false,
+      });
+    }
     if (model.reviewQuestions) {
       const reviewQuestionsQuery = model.reviewQuestions.join(',');
 
       return {
+        myReviews: reviews,
         comments: await this.store.query('comment', { chapterId: model.id }),
         reviewQuestions: await this.store.query('review-question', {
           categories: reviewQuestionsQuery,
@@ -117,6 +127,7 @@ export default class ChapterIndexRoute extends Route {
       };
     }
     return {
+      myReviews: reviews,
       comments: await this.store.query('comment', { chapterId: model.id }),
     };
   }
