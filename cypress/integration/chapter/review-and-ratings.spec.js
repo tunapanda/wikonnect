@@ -119,7 +119,7 @@ describe('Chapter ratings & review when authenticated', () => {
                     .click()
 
                 cy.get('.rating-review-section')
-                    .should('not.be.visible')
+                    .should('not.exist')
             });
     });
 
@@ -142,7 +142,7 @@ describe('Chapter ratings & review when authenticated', () => {
                     .click()
 
                 cy.get('.rating-review-section')
-                    .should('not.be.visible')
+                    .should('not.exist')
             });
     });
 })
