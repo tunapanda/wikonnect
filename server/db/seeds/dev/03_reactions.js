@@ -1,31 +1,37 @@
-const { faker } = require('../_seeds');
-
-exports.seed = function (knex) {
+exports.seed = async function (knex) {
   // Deletes ALL existing entries
-  return knex('reactions').del()
-    .then(() => {
-      return knex('chapters').pluck('id').then((chapterIds) => {
-        return knex('users').pluck('id').then((userIds) => {
-          const seed_number = chapterIds.length;
-          const users = userIds.length;
-          const reactions = [];
-          const reactionOptions = ['like', 'dislike',null];
-          for (let index = 0; index < seed_number; index++) {
-            for (let data = 0; data < users; data++) {
-              const reaction = faker.random.arrayElement(reactionOptions);
-              if(!reaction){
-                continue;
-              }
-              reactions.push({
-                reaction: reaction,
-                chapter_id: chapterIds[index],
-                user_id: userIds[data],
-              });
-            }
-          }
-          // Inserts seed entries
-          return knex('reactions').insert(reactions);
-        });
+  await knex('reactions').del();
+  const userIds = await knex('users').pluck('id');
+  const chapterIds = await knex('chapters').pluck('id');
+
+  const totalChapters = chapterIds.length;
+  const partitionCount = Math.floor(totalChapters/3);
+
+
+  const reactions = [];
+
+  for (let i = 0; i < userIds.length; i++) {
+    const shuffledChapterIds = chapterIds.sort(() => .5 - Math.random());
+    const chaptersToLike = shuffledChapterIds.slice(0, partitionCount);
+    const chaptersToDislike = shuffledChapterIds.slice(partitionCount, partitionCount + partitionCount);
+
+    for (let j = 0; j < chaptersToLike.length; j++) {
+      reactions.push({
+        reaction: 'like',
+        chapter_id: chaptersToLike[j],
+        user_id: userIds[i],
       });
-    });
+    }
+    for (let k = 0; k < chaptersToDislike.length; k++) {
+      reactions.push({
+        reaction: 'dislike',
+        chapter_id: chaptersToDislike[k],
+        user_id: userIds[k],
+      });
+    }
+
+  }
+
+  return knex('reactions').insert(reactions);
+
 };
