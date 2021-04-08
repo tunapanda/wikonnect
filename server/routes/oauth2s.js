@@ -18,12 +18,12 @@ router.post('/', async ctx => {
   const gData = JSON.parse(data);
 
   const hashPassword = await bcrypt.hash(googleToken, 10);
-  const username = await nanoid(11).toLowerCase();
+  const username = await nanoid(11);
   // const username = gData.names[0].displayName.split(' ').join('').replace(/^[\s\uFEFF\xAO] + |[\s\uFEFF\xAO] + $ /g, ' ');
   let newUser = {
     email: gData.emailAddresses[0].value,
     hash: hashPassword,
-    username: username,
+    username: username.toLowerCase(),
     firstName: gData.names[0].familyName,
     lastName: gData.names[0].givenName,
     emailVerified: true,
