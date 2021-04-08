@@ -1,17 +1,16 @@
-const {faker, seed_number} = require('../_seeds');
+const {faker} = require('../_seeds');
 
 exports.seed = function (knex) {
   // Deletes ALL existing entries
   return knex('reviews').del()
     .then(async () => {
-      const chapterIds = await knex('chapters').pluck('id');
-      const userIds = await knex('users').pluck('id');
 
-      const ratings = await knex('ratings').select('id', 'reaction', 'metadata', 'is_deleted');
+      const ratings = await knex('ratings')
+        .select('id', 'reaction', 'metadata', 'is_deleted','chapter_id','user_id');
 
       const reviews = [];
-      for (let index = 0; index < seed_number; index++) {
-        const rating = faker.random.arrayElement(ratings);
+      for (let index = 0; index < ratings.length; index++) {
+        const rating =ratings[index];
 
         const metadata = Object.keys(rating.metadata)
           .reduce((acc, key) => {
@@ -20,8 +19,8 @@ exports.seed = function (knex) {
           }, {});
 
         reviews.push({
-          chapter_id: faker.random.arrayElement(chapterIds),
-          user_id: faker.random.arrayElement(userIds),
+          chapter_id: rating.chapter_id,
+          user_id: rating.user_id,
           rating_id: rating.id,
           reaction: rating.reaction,
           metadata: metadata,

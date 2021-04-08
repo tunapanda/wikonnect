@@ -9,7 +9,7 @@ exports.seed = function (knex) {
           const seed_number = chapterIds.length;
           const users = userIds.length;
           const reactions = [];
-          const reaction = ['like', 'dislike', 'null'];
+          const reaction = ['like', 'dislike'];
           for (let index = 0; index < seed_number; index++) {
             for (let data = 0; data < users; data++) {
               reactions.push({
