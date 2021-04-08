@@ -9,11 +9,15 @@ exports.seed = function (knex) {
           const seed_number = chapterIds.length;
           const users = userIds.length;
           const reactions = [];
-          const reaction = ['like', 'dislike'];
+          const reactionOptions = ['like', 'dislike',null];
           for (let index = 0; index < seed_number; index++) {
             for (let data = 0; data < users; data++) {
+              const reaction = faker.random.arrayElement(reactionOptions);
+              if(!reaction){
+                continue;
+              }
               reactions.push({
-                reaction: faker.random.arrayElement(reaction),
+                reaction: reaction,
                 chapter_id: chapterIds[index],
                 user_id: userIds[data],
               });
