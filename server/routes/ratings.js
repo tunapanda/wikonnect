@@ -203,7 +203,7 @@ router.post('/', requireAuth, validateRating, async ctx => {
   const userId = ctx.state.user.data.id;
 
   //check they don't have existing rating
-  const selectedRatings = await Rating.query().where({isDeleted: false, userId});
+  const selectedRatings = await Rating.query().where({isDeleted: false, userId, chapterId: obj.chapterId});
   if (selectedRatings.length > 0) {
     ctx.throw(400, 'You have already rated the chapter');
   }
@@ -239,7 +239,7 @@ router.post('/', requireAuth, validateRating, async ctx => {
         .insertAndFetch({...obj, userId, averageRating});
     }
 
-    ctx.assert(rating, 401, 'Something went wrong');
+    ctx.assert(rating, 500, 'Something went wrong');
 
     ctx.status = 201;
     ctx.body = {rating};
@@ -306,7 +306,7 @@ router.put('/:id', requireAuth, async ctx => {
   const currentRating = await Rating.query()
     .where({isDeleted: false, id: ctx.params.id, userId});
 
-  ctx.assert(currentRating, 401, 'Rating does not exist');
+  ctx.assert(currentRating, 404, 'Rating does not exist');
 
   let obj = ctx.request.body.rating;
 

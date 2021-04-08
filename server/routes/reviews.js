@@ -188,7 +188,7 @@ router.post('/', requireAuth, async ctx => {
   const userId = ctx.state.user.data.id;
 
   //check they don't have existing review
-  const existingReview = await Review.query().where({isDeleted: false, userId});
+  const existingReview = await Review.query().where({isDeleted: false, userId,chapterId: obj.chapterId});
   if (existingReview.length > 0) {
     ctx.throw(400, 'You already have a review');
   }
@@ -197,7 +197,7 @@ router.post('/', requireAuth, async ctx => {
     const review = await Review.query()
       .insertAndFetch({...obj, userId});
 
-    ctx.assert(review, 401, 'Something went wrong');
+    ctx.assert(review, 404, 'Something went wrong');
 
     ctx.status = 201;
     ctx.body = {review};
@@ -261,7 +261,7 @@ router.put('/:id', requireAuth, async ctx => {
   const currentReview = await Review.query()
     .where({isDeleted: false, id: ctx.params.id});
 
-  ctx.assert(currentReview, 401, 'Review does not exist');
+  ctx.assert(currentReview, 404, 'Review does not exist');
 
   try {
     const review = await Review.query()
@@ -301,7 +301,7 @@ router.delete('/:id', requireAuth, async ctx => {
     .findById(ctx.params.id);
 
   if (!review) {
-    ctx.throw(401, 'No record with id');
+    ctx.throw(404, 'No record with id');
   }
   try {
     await Review.query()
