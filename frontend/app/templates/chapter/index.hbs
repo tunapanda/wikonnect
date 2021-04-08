@@ -183,7 +183,7 @@
   <modal.body>
     <Chapter::ReviewRatings @reaction={{this.userChapterReaction}} @onSubmit={{this.submitReviewRatings}} >
       <div class="form-group col-md-10">
-        <button type="button" class="btn btn-dark disabled btn-block" {{on "click" this.hideRRModal}}>
+        <button type="button" class="btn btn-dark disabled btn-block skip-ratings-and-review-btn" {{on "click" this.hideRRModal}}>
           {{t "single_chapter.review_ratings.buttons.cancel"}}
         </button>
       </div>
