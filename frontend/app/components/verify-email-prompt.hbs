@@ -1,0 +1,10 @@
+{{#if this.me.isAuthenticated}}
+  {{#unless this.me.isEmailVerified}}
+  
+  <footer>
+    <nav class="navbar fixed-bottom text-white mt-5  bg-red justify-content-between ">
+      <p>Please verify your email</p>
+    </nav>
+  </footer>
+  {{/unless}}
+{{/if}}

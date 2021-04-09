@@ -65,4 +65,8 @@ export default class MeService extends Service {
       return this.user.username;
     }
   }
+
+  get isEmailVerified() {
+    return this.user.emailVerified;
+  }
 }
