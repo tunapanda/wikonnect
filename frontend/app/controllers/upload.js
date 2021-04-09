@@ -13,7 +13,6 @@ export default class UploadController extends Controller {
   signup = false;
   @tracked uploader;
   @tracked userImage;
-  @tracked complete = false;
 
   get profileImage() {
     this.setDefaultUserImage();
@@ -37,8 +36,6 @@ export default class UploadController extends Controller {
       await this.uploader.startUpload(
         [host, 'users', this.me.user.id, 'profile-image'].join('/')
       );
-
-      this.complete = true;
       this.transitionToRoute('profile');
     } catch (e) {
       this.notify.alert(
