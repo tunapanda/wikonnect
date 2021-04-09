@@ -8,12 +8,13 @@ export default class UploaderEmberObject extends EmberObject.extend(Evented) {
   @tracked resolve;
   @tracked xhr;
   @tracked progress = 0;
+  @tracked uploadUrl;
 
-  attempts = 0;
-  started = false;
-  finished = false;
-  uploading = false;
-  error = false;
+  @tracked attempts = 0;
+  @tracked started = false;
+  @tracked finished = false;
+  @tracked uploading = false;
+  @tracked error = false;
 
   startUpload(url) {
     return new Promise((resolve, reject) => {
@@ -31,9 +32,9 @@ export default class UploaderEmberObject extends EmberObject.extend(Evented) {
     this.progress = 0;
   }
 
-  _uploadFile(urlOveride) {
+  _uploadFile(url) {
     const xhr = new XMLHttpRequest();
-    const url = this.uploadUrl || urlOveride;
+    this.uploadUrl = url;
 
     xhr.open('post', url, true);
 
@@ -135,7 +136,7 @@ export default class UploaderEmberObject extends EmberObject.extend(Evented) {
     if (this.attempts < 3 && msg !== 'Request aborted') {
       ++this.attempts;
       this.reset();
-      return this._uploadFile();
+      return this._uploadFile(this.uploadUrl);
     }
 
     this.status = 'error';
