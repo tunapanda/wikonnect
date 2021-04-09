@@ -22,6 +22,7 @@ toc:
   thumbnail: Thumbnail
   tags: Tags
   preview_publish: Preview & Publish
+  select_review_questions: Ratings & Review
 
 create:
   chapter_name: Chapter Name
@@ -54,6 +55,9 @@ tag:
   platform: Platform
   kicd_status: KICD Status
 
+review_questions:
+  title: Select review and rating questions
+
 preview:
   chapter: Chapter
   approved: Approved
@@ -64,7 +68,7 @@ preview:
   change_h5p: Edit H5P
   upload_thumbnail: Upload Thumbnail
   edit_thumbnail: Edit Thumbnail
-  tags: Tags
+  tags: Selected tags
   change_chapter_details: Change Chapter details
   publish: Publish
   unpublish: Unpublish
@@ -72,3 +76,7 @@ preview:
   publish_prompt: Are you sure you want to publish this chapter?
   unpublish_prompt: Are you sure you want to unpublish this chapter?
   delete_prompt: Are you sure you want to delete
+  section_titles:
+    reviewQuestions: Selected review & ratings questions categories
+  buttons:
+    modifyReviewQuestions: Modify questions

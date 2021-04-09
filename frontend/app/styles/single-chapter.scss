@@ -1,3 +1,9 @@
+$palette: (
+  primary: #F57010,
+  white: #FFF,
+  gray60: #829199,
+  lighterPrimary: #FDE9DA
+);
 .breadcrumbs {
   color: #829199;
   font-size: small;
@@ -81,8 +87,7 @@
 
 #facebook-share-icon svg path,
 #twitter-share-icon svg path,
-#reddit-share-icon svg path
- {
+#reddit-share-icon svg path {
   fill: white !important;
 }
 
@@ -93,4 +98,33 @@
     margin-top: 10px;
     width: 300px;
     border-radius: 0;
+}
+
+.reaction-feedback-popover {
+  background-color: map-get($palette,lighterPrimary);
+
+  .arrow:before,.arrow:after {
+    border-bottom-color: map-get($palette,lighterPrimary);
+  }
+
+  .btn-close {
+    padding: 0;
+    background-color: map-get($palette,white);
+    border-radius: 50%;
+    outline: 0;
+    border-color: transparent;
+    height: 20px;
+    width: 20px;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: map-get($palette,gray60);
+  }
+
+  .title{
+    font-weight: 600;
+    font-size: 16px;
+    color: map-get($palette,primary);
+  }
 }

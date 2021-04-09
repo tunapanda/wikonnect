@@ -6,7 +6,9 @@
     <LinkTo @route="index">
       {{svg-jar "home_black_24dp"}}
     </LinkTo>
-    <p class="m0"><LinkTo @route="index">{{t "single_chapter.h5p.chapters"}}</LinkTo> / <span class="chapter-name">{{this.model.name}}</span></p>
+    <p class="m0">
+      <LinkTo @route="index">{{t "single_chapter.h5p.chapters"}}</LinkTo>
+      / <span class="chapter-name">{{this.model.name}}</span></p>
   </div>
   <hr>
   {{#if this.model.contentUri}}
@@ -26,7 +28,8 @@
 
           <div class="d-flex align-items-center flex-nowrap">
             <span class="pt-1">
-            <Reaction::ChapterReaction  @chapter={{this.model}} @canReact={{true}} />
+            <Reaction::ChapterReaction @chapter={{this.model}} @canReact={{true}}
+                                       @onChapterReactionChange={{this.onChapterReactionChange}} />
             </span>
             <div class="chapter-actions d-flex">
               <a href="#comments-section" class="pt-1 mr-1">{{svg-jar "message" height="21px"}}</a>
@@ -36,10 +39,14 @@
           </div>
         </div>
         <div class="chapter-metadata">
-          <p> {{t "single_chapter.h5p.views" numViews=this.model.views}} &middot; {{format-date this.model.createdAt day="numeric" month="short" year="numeric"}}</p>
+          <p> {{t "single_chapter.h5p.views" numViews=this.model.views}} &middot; {{format-date this.model.createdAt
+                                                                                                day="numeric"
+                                                                                                month="short"
+                                                                                                year="numeric"}}</p>
         </div>
 
-        <div class="modal fade" id="modelId" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+        <div class="modal fade" id="modelId" tabindex="-1" role="dialog" aria-labelledby="modelTitleId"
+             aria-hidden="true">
           <div class="modal-dialog" role="document">
             <div class="modal-content">
               <div class="modal-header">
@@ -55,7 +62,7 @@
                     {{t "buttons.copy_embed_code"}}
                   </CopyButton>
                   {{#if this.copied}}
-                  <span class="badge badge-primary pt-2">{{t "labels.copied"}}</span>
+                    <span class="badge badge-primary pt-2">{{t "labels.copied"}}</span>
 
                   {{/if}}
                 </div>
@@ -70,9 +77,11 @@
         <hr>
         <div class="single-chapter-creator mb-3">
           {{#if this.model.author.profileUri}}
-            <img src={{this.model.author.profileUri}} alt={{t "single_chapter.h5p.creator_avatar"}} class="rounded-circle mr-2">
+            <img src={{this.model.author.profileUri}} alt={{t "single_chapter.h5p.creator_avatar"}}
+                 class="rounded-circle mr-2">
           {{else}}
-            <img src="/uploads/images/profile-placeholder.gif" alt={{t "single_chapter.h5p.creator_avatar"}} class="rounded-circle mr-2">
+            <img src="/uploads/images/profile-placeholder.gif" alt={{t "single_chapter.h5p.creator_avatar"}}
+                 class="rounded-circle mr-2">
           {{/if}}
           <div class="chapter-author">
             <p>{{this.model.author.name}}</p>
@@ -92,7 +101,8 @@
         </div>
         <hr>
 
-        <CommentSection @selectedChapter={{this.model.id}} @chapterComments={{this.comments}} @chapterReplies={{this.replies}}/>
+        <CommentSection @selectedChapter={{this.model.id}} @chapterComments={{this.comments}}
+                        @chapterReplies={{this.replies}}/>
 
       </div>
     </div>
@@ -103,12 +113,12 @@
   {{#if (eq this.me.user.username "daph")}}
     {{#if (eq this.model.approved true)}}
       <button type="button" class="btn form-control btn-danger" {{on "click" (fn this.toggleApproval this.model.id false
-        )}}>
+      )}}>
         {{t "single_chapter.admin.unapprove"}}
-    </button>
+      </button>
     {{else}}
       <button type="button" class="btn form-control btn-success" {{on "click" (fn this.toggleApproval this.model.id true
-        )}}>
+      )}}>
         {{t "single_chapter.admin.approve"}}
       </button>
     {{/if}}
@@ -117,12 +127,13 @@
 
 
 <BsModalSimple @title="Report Chapter" @closeTitle="Close" @submitTitle="Submit Report" @size="" @closeButton={{true}}
-  @fade={{true}} @backdrop={{true}} @backdropClose={{true}} @onSubmit={{this.saveFlag }} @open={{this.flaggingModal}}
-  @onHidden={{this.toggleFlaggingModal }} @renderInPlace={{true}}>
+               @fade={{true}} @backdrop={{true}} @backdropClose={{true}} @onSubmit={{this.saveFlag }}
+               @open={{this.flaggingModal}}
+               @onHidden={{this.toggleFlaggingModal }} @renderInPlace={{true}}>
 
   <BsForm @model={{this.flagModel}} @onSubmit={{this.saveFlag }} as |form|>
-    <form.element @controlType="textarea" @label="Reason for reporting" @property="comment" />
-    <form.element @controlType="hidden" @value={{this.model}} @name="chapter" />
+    <form.element @controlType="textarea" @label="Reason for reporting" @property="comment"/>
+    <form.element @controlType="hidden" @value={{this.model}} @name="chapter"/>
 
 
   </BsForm>
@@ -130,13 +141,70 @@
 
 
 <BsModalSimple @open={{this.ratingModal}} @title="Rate This Module " @closeTitle="Close"
-  @submitTitle="Submit Optional Remark" @size="" @closeButton={{true}} @fade={{true}} @backdrop={{true}}
-  @backdropClose={{true}} @onSubmit={{this.ratingSubmit}} @onHidden={{this.toggleRatingModal}} @renderInPlace={{true}}>
+               @submitTitle="Submit Optional Remark" @size="" @closeButton={{true}} @fade={{true}} @backdrop={{true}}
+               @backdropClose={{true}} @onSubmit={{this.ratingSubmit}} @onHidden={{this.toggleRatingModal}}
+               @renderInPlace={{true}}>
 
   <BsForm @onSubmit={{this.ratingSubmit }} as |form|>
     <form.element @controlType="textarea" @label="Optional reason/remark for your {{this.rates}} star rating"
-      @property="comment" />
+                  @property="comment"/>
 
 
   </BsForm>
 </BsModalSimple>
+
+<BsPopover @triggerElement=".reaction-btn.like-button" @triggerEvents="null" @visible={{this.showPositiveRFPopup}}
+           @placement="bottom" class="reaction-feedback-popover positive-feedback">
+  <div class="d-flex justify-content-between">
+    <div class="title pb-2">{{t "single_chapter.reaction_popover.positive.title"}}</div>
+    <button type="button" class="btn-close ml-1" {{on "click" this.closePositiveRFPopup}}>
+      {{t "single_chapter.reaction_popover.button.close"}}
+    </button>
+  </div>
+  <button type="button" class="btn btn-primary prompt-button" {{on "click" this.openRRPopup}}>
+    {{t "single_chapter.reaction_popover.button.prompt"}}
+  </button>
+</BsPopover>
+
+<BsPopover @triggerElement=".reaction-btn.dislike-button" @triggerEvents="null" @visible={{this.showNegativeRFPopup}}
+           @placement="bottom" class="reaction-feedback-popover negative-feedback">
+  <div class="d-flex justify-content-between">
+    <div class="title pb-2">{{t "single_chapter.reaction_popover.negative.title"}}</div>
+    <button type="button" class="btn-close ml-1" {{on "click" this.closeNegativeRFPopup}}>
+      {{t "single_chapter.reaction_popover.button.close"}}
+    </button>
+  </div>
+  <button type="button" class="btn btn-primary prompt-button" {{on "click" this.openRRPopup}}>
+    {{t "single_chapter.reaction_popover.button.prompt"}}
+  </button>
+</BsPopover>
+
+<BsModal @open={{this.showRRPopup}} @backdropClose={{false}} @size={{"sm"}} @onHide={{this.hideRRModal}} as |modal|>
+  <modal.body>
+    <Chapter::ReviewRatings @reaction={{this.userChapterReaction}} @onSubmit={{this.submitReviewRatings}} >
+      <div class="form-group col-md-10">
+        <button type="button" class="btn btn-dark disabled btn-block skip-ratings-and-review-btn" {{on "click" this.hideRRModal}}>
+          {{t "single_chapter.review_ratings.buttons.cancel"}}
+        </button>
+      </div>
+    </Chapter::ReviewRatings>
+
+  </modal.body>
+</BsModal>
+
+<BsModal @open={{this.showRRFeedbackModal}}  @closeButton={{true}} @size={{"sm"}} class="rating-review-feedback-modal"
+         @onHide={{this.hideRRFeedbackModal}} as |modal|>
+  <modal.header class="modal-header"></modal.header>
+  <modal.body class="modal-body">
+    <div class="gesture-icon">
+      <span class="ok"></span>
+    </div>
+    <div class="title pt-5">
+      {{t "single_chapter.review_ratings.feedback.title"}}
+
+    </div>
+    <div class="subtitle pt-4 pb-5">
+      {{html-safe (t "single_chapter.review_ratings.feedback.message")}}
+    </div>
+  </modal.body>
+</BsModal>

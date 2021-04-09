@@ -52,8 +52,8 @@ Cypress.Commands.add('chapters', (queryParams = {}) => {
         url: `/api/v1/chapters?${qs}`,
         headers: headers
     })
-        .its('body.chapter')
-        .then((chapters) => chapters);
+    .its('body.chapters')
+    .then((chapters) => chapters);
 });
 
 Cypress.Commands.add('comments', (queryParams = {}) => {

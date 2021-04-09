@@ -1,4 +1,4 @@
-<div class=" d-flex row text-center p-4 shadow-sm justify-content-center">
+<div class=" d-flex row text-center p-4 m-0 shadow-sm justify-content-center">
   <h3><b>{{t "messages.create_h5p_chapter"}}</b></h3>
 </div>
 
@@ -97,7 +97,7 @@
       <form method="post" {{on "submit" this.addtag}}>
         <Input @type="text" id="tag" @value={{this.tag}} aria-controls="existing-user-table" placeholder={{t "teach.tag.custom_tag_placeholder"}}
                class="form-control"/>
-        <button type="submit" class="btn btn-primary mt-2 ">{{t "buttons.submit"}}</button>
+        <button type="submit" class="btn btn-primary btn-sm mt-2 ">{{t "buttons.submit"}}</button>
       </form>
       <hr>
       {{#if this.config.content.APP.use_preset_tags}}
@@ -140,23 +140,25 @@
       {{/if}}
 
       {{#each this.custom_cart as |tag|}}
-        <button type="button" class="btn btn-primary m-1" {{on "click" (fn this.removeme tag "custom")}}>
+        <button type="button" class="btn btn-success btn-sm m-1" {{on "click" (fn this.removeme tag "custom")}}>
           {{tag}}
           <span aria-hidden="true">&times;</span>
         </button>
 
       {{/each}}
 
+      <div class="text-right">
       {{#if (or this.topic_cart this.custom_cart this.level_cart  this.competency_cart)}}
-        <button type="button" class="btn btn-primary form-control float-right" {{on "click" this.updateTags}}>
+        <button type="button" class="btn btn-primary" {{on "click" this.updateTags}}>
           {{t "buttons.continue"}}
         </button>
 
       {{else}}
-        <LinkTo @route="teach.preview" @model={{this.model.id}}>
-          <button type="button" class="btn btn-warning btn-lg btn-block">{{t "buttons.skip"}}</button>
+        <LinkTo @route="teach.review-questions" @model={{this.model.id}} class="btn btn-warning">
+          {{t "buttons.skip"}}
         </LinkTo>
       {{/if}}
+      </div>
 
     {{else}}
       <Warning @message={{t "teach.index.no_permission"}} />

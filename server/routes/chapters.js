@@ -5,7 +5,7 @@ const busboy = require('async-busboy');
 const { ref } = require('objection');
 const { nanoid } = require('nanoid/async');
 const sharp = require('sharp');
-const koaBody = require('koa-body')({multipart: true,multiples:false,keepExtensions:true});
+const koaBody = require('koa-body')({ multipart: true, multiples: false, keepExtensions: true });
 
 const s3 = require('../utils/s3Util');
 const log = require('../utils/logger');
@@ -27,16 +27,14 @@ const router = new Router({
  * @apiName GetChapters
  * @apiGroup Chapters
  * @apiPermission none
- * @apiDescription Get all chapter and filter using multiple query params
+ * @apiDescription Get all chapters. Filter enabled through query params using available chapter properties
  *
- * @apiParam {String} [id]  Optional id
- * @apiParam {String} [name]  Optional name
- * @apiParam {String} [status] Optional chapter status - published | draft
- * @apiParam {String} [creatorId] Optional author of a chapter
- * @apiParam {Boolean} [approved] Optional boolean with default being false
+ * @apiParam  (Query Params) {String} [chapter[name]] Query by chapter
+ * @apiParam  (Query Params) {String} [chapter[status]] Query by chapter status - published | draft
+ * @apiParam  (Query Params) {String} [chapter[creatorId]] Query by author of a chapter
+ * @apiParam  (Query Params) {Boolean} [chapter[approved]] Query by approval status
  *
- * @apiParam (Authentication) {String[]} [tags] Optional tags list
- *
+ * @apiHeader {String} [Authorization] Bearer << JWT here>>
  *
  * @apiSuccessExample {json} Success-Response:
  *     HTTP/1.1 200 OK
@@ -44,7 +42,7 @@ const router = new Router({
  *        "meta": {
  *            "total_pages": 20.2
  *        },
- *        "chapter": [{
+ *        "chapters": [{
  *            "id": "chapter1",
  *            "lessonId": "lesson1",
  *            "name": "A Chapter",
@@ -67,6 +65,7 @@ const router = new Router({
  *            "ratings": "3.6666666666666667",
  *            "authenticatedUser": null,
  *            "authenticatedUserReactionId": null,
+ *            "reviewQuestions":["audioVideoQuality", "soundQuality", "videoQuality", "creativity"],
  *            "reaction": [{
  *                "totalLikes": "4",
  *                "likes": "3",
@@ -103,7 +102,8 @@ router.get('/', permController.requireAuth, validateGetChapter, async ctx => {
           .as('views'),
         Rating.query()
           .where('chapterId', ref('chapters.id'))
-          .avg('ratings.rating')
+          .where('isDeleted', false)
+          .avg('ratings.average_rating')
           .as('ratings'),
         Reaction.query()
           .select('reaction')
@@ -126,39 +126,39 @@ router.get('/', permController.requireAuth, validateGetChapter, async ctx => {
     /**retrieve correct user image**/
     //so not to re-fetch the profile, remove duplicates (handy if network requests to S3 are being done ),
     const authors = [];
-    let authorIds={};
+    let authorIds = {};
     for (let i = 0; i < chapter.results.length; i++) {
-      if(!chapter.results[i].author){
+      if (!chapter.results[i].author) {
         continue;
       }
-      if(!authorIds[chapter.results[i].author.id]){
+      if (!authorIds[chapter.results[i].author.id]) {
         authors.push(chapter.results[i].author);
-        authorIds[chapter.results[i].author.id]=true;
+        authorIds[chapter.results[i].author.id] = true;
       }
 
     }
-    const promises = authors.map(async (author)=>{
-      return  {
+    const promises = authors.map(async (author) => {
+      return {
         id: author.id,
         name: author.name,
         username: author.username,
         profileUri: await getProfileImage(author)
       };
     });
-    const authorProfiles =await Promise.all(promises);
+    const authorProfiles = await Promise.all(promises);
     //now map above profiles
-    chapter.results = chapter.results.map((chap)=>{
-      if(!chap.author){
+    chapter.results = chapter.results.map((chap) => {
+      if (!chap.author) {
         //just in case 😁
-        chap.author={name:'Private',username:'Private',id:'Private',profileUri: 'anonymous'};
+        chap.author = { name: 'Private', username: 'Private', id: 'Private', profileUri: 'anonymous' };
         return chap;
       }
-      const profile=authorProfiles.find((p)=>p.id===chap.author.id);
-      if(profile){
-        chap.author=profile;
-      }else{
+      const profile = authorProfiles.find((p) => p.id === chap.author.id);
+      if (profile) {
+        chap.author = profile;
+      } else {
         //just in case 👽
-        chap.author={name:'Private',username:'Private',id:'Private',profileUri: 'anonymous'};
+        chap.author = { name: 'Private', username: 'Private', id: 'Private', profileUri: 'anonymous' };
       }
       return chap;
     });
@@ -174,7 +174,7 @@ router.get('/', permController.requireAuth, validateGetChapter, async ctx => {
     meta: {
       total_pages: chapter.total / per_page
     },
-    chapter: chapter.results,
+    chapters: chapter.results,
   };
 
   ctx.assert(chapter, 404, 'No chapter by that ID');
@@ -190,12 +190,11 @@ router.get('/', permController.requireAuth, validateGetChapter, async ctx => {
  * @apiPermission none
  * @apiVersion 0.4.0
  *
+ * @apiHeader {String} [Authorization] Bearer << JWT here>>
  *
- * @apiParam {String} id Chapter unique ID
+ * @apiParam (URI Param) {String} id Id of the chapter to update
  *
- * @apiSuccess {Object[]} chapter list
- * @apiSuccess {String} chapter.id Chapter id
- * @apiSuccess {Object[]} Chapter[object] Object data
+ * @apiSuccess {Object} chapter[object] Chapter data
  *
  * @apiSuccessExample {json} Success-Response:
  *     HTTP/1.1 200 OK
@@ -219,6 +218,7 @@ router.get('/', permController.requireAuth, validateGetChapter, async ctx => {
  *            "dislikes": "0",
  *            "rating": null,
  *            "verified": true,
+ *            "reviewQuestions":["audioVideoQuality", "soundQuality", "videoQuality", "creativity"],
  *            "author": {
  *              "username": "user1",
  *              "profileUri": null,
@@ -250,7 +250,7 @@ router.get('/:id', permController.requireAuth, async ctx => {
           .as('views'),
         Rating.query()
           .where('chapterId', ref('chapters.id'))
-          .avg('ratings.rating')
+          .avg('ratings.average_rating')
           .as('ratings'),
         Reaction.query()
           .select('reaction')
@@ -263,15 +263,15 @@ router.get('/:id', permController.requireAuth, async ctx => {
       .withGraphFetched(
         '[reaction(reactionAggregate), flag(selectFlag),author()]'
       );
-    ctx.assert(results[0],404,'Chapter not found');
-    const chapter=results[0];
+    ctx.assert(results[0], 404, 'Chapter not found');
+    const chapter = results[0];
     //retrieve correct user image
     if (chapter.author) {
       chapter.author = {
         id: chapter.author.id,
         name: chapter.author.name,
         username: chapter.author.username,
-        profileUri: await  getProfileImage(chapter.author)
+        profileUri: await getProfileImage(chapter.author)
       };
     }
     ctx.status = 200;
@@ -294,14 +294,16 @@ router.get('/:id', permController.requireAuth, async ctx => {
  * @apiPermission none
  * @apiVersion 0.4.0
  *
+ * @apiHeader {String} Authorization Bearer << JWT here>>
+ *
  * @apiSampleRequest off
  *
- * @apiParam {String} chapter[name] Name - Unique.
- * @apiParam {String} chapter[description] Description.
- * @apiParam {String} chapter[status] modules status - options[published | draft]
- * @apiParam {Boolean} chapter[approved] defaults is false
- * @apiParam {Object[]} chapter[tags] Tags list.
- *
+ * @apiParam (Request Body) {String} chapter[name] Name of the chapter.
+ * @apiParam (Request Body) {String} chapter[description] Description of the chapter.
+ * @apiParam (Request Body) {String} chapter[status] Chapter status - published | draft
+ * @apiParam (Request Body) {Boolean} [chapter[approved]] If chapter has been approved: Default is false
+ * @apiParam (Request Body) {Object[]} [chapter[tags]] Tags list.
+ * @apiParam (Request Body) {Object[]} [chapter[reviewQuestions]] An array of review question categories.
  *
  * @apiSampleRequest off
  *
@@ -322,6 +324,7 @@ router.get('/:id', permController.requireAuth, async ctx => {
  *        "contentUri": "/uploads/h5p/chapter4",
  *        "imageUrl": null,
  *        "contentId": null,
+ *        "reviewQuestions":["audioVideoQuality", "soundQuality", "videoQuality", "creativity"],
  *        "tags": [],
  *        "approved": false
  *      }
@@ -336,6 +339,9 @@ router.post('/', permController.requireAuth, async ctx => {
   // Server side slug generator
   newChapter.slug = await slugGen(newChapter.name);
   newChapter.creatorId = stateUserId;
+  if (newChapter.approved === undefined) {
+    newChapter.approved = false;
+  }
 
   let chapter;
   try {
@@ -361,14 +367,18 @@ router.post('/', permController.requireAuth, async ctx => {
  * @apiPermission none
  * @apiVersion 0.4.0
  *
+ * @apiHeader {String} Authorization Bearer << JWT here>>
+ *
  * @apiSampleRequest off
  *
- * @apiParam {String} id Id - Unique.
- * @apiParam {String} chapter[name] Name - Unique.
- * @apiParam {String} chapter[description] Description.
- * @apiParam {String} chapter[status] modules status - published | draft
- * @apiParam {Boolean="false"} chapter[approved] defaults is false
- * @apiParam {Object[]} chapter[tags] Tags list.
+ * @apiParam (URI Param) {String} id Id of the chapter to update
+ *
+ * @apiParam (Request Body) {String} [chapter[name]] Name of the chapter.
+ * @apiParam (Request Body) {String} [chapter[description]] Description of the chapter.
+ * @apiParam (Request Body) {String} [chapter[status]] Chapter status - published | draft
+ * @apiParam (Request Body) {Boolean} [chapter[approved]] If chapter has been approved: Default is false
+ * @apiParam (Request Body) {Object[]} [chapter[tags]] Tags list.
+ * @apiParam (Request Body) {Object[]} [chapter[reviewQuestions]] An array of review question categories.
  *
  * @apiSampleRequest /api/v1/chapters/:id
  *
@@ -406,7 +416,22 @@ router.put('/:id', permController.requireAuth, async ctx => {
 });
 
 
-
+/**
+ * @api {delete} /api/v1/review/:id Delete a chapter
+ * @apiName DELETE a chapter by Id
+ * @apiGroup Chapters
+ * @apiPermission authenticated user
+ * @apiVersion 0.4.0
+ *
+ * @apiHeader {String} Authorization Bearer << JWT here>>
+ *
+ * @apiParam (URI Param) {String} id Id of the chapter to delete
+ *
+ * @apiSuccessExample {json} Success-Response:
+ *     HTTP/1.1 201 OK
+ *     { }
+ *
+ */
 router.delete('/:id', permController.requireAuth, async ctx => {
   const chapter = await Chapter.query().findById(ctx.params.id);
   ctx.assert(chapter, 401, 'No ID was found');
@@ -424,6 +449,7 @@ router.delete('/:id', permController.requireAuth, async ctx => {
  * @apiPermission none
  * @apiVersion 0.4.0
  *
+ * @apiHeader {String} Authorization Bearer << JWT here>>
  *
  * @apiSuccessExample {json} Success-Response:
  *     HTTP/1.1 200 OK
@@ -432,7 +458,9 @@ router.delete('/:id', permController.requireAuth, async ctx => {
  *      "path": image path
  *    }
  *
- * @apiSuccess {Object[]} chapter[object] Object data
+ * @apiSuccess {String} host
+ * @apiSuccess {String} path
+ *
  * @apiErrorExample {json} List error
  *    HTTP/1.1 500 Internal Server Error
  */
@@ -445,20 +473,20 @@ router.post('/:id/chapter-image', permController.requireAuth, koaBody, async (ct
   const uploadPath = '/uploads/chapters';
   const uploadDir = path.resolve(__dirname, '../public/' + uploadPath);
 
-  const {file} =ctx.request.files;
+  const { file } = ctx.request.files;
 
   const fileExtension = path.extname(file.name);
 
-  if (!['.webp', '.svg', '.png', '.jpeg', '.gif', '.avif','.jpg'].includes(fileExtension)) {
+  if (!['.webp', '.svg', '.png', '.jpeg', '.gif', '.avif', '.jpg'].includes(fileExtension)) {
     ctx.throw(400, { error: 'Image format not supported' });
   }
 
   let resizer;
-  try{
+  try {
     resizer = await sharp(file.path)
       .resize(328, 200)
       .jpeg({ quality: 70 });
-  }catch (e) {
+  } catch (e) {
     if (e.statusCode) {
       ctx.throw(e.statusCode, null, { errors: [e.message] });
     } else {
@@ -511,18 +539,24 @@ router.post('/:id/chapter-image', permController.requireAuth, koaBody, async (ct
 
 
 /**
+ * @apiDeprecated use now (#HP5:Save H5P).
  * @api {post} /api/v1/chapters/:id/upload upload H5P chapter
  * @apiName PostAH5PChapter
  * @apiGroup Chapters
  * @apiPermission none
  * @apiVersion 0.4.0
+ *
+ * @apiHeader {String} Authorization Bearer << JWT here>>
+ *
  * @apiSuccessExample {json} Success-Response:
  *     HTTP/1.1 200 OK
  *     {
  *        host: ctx.host,
  *        path: uploadPath
  *      }
- * @apiSuccess {Object[]} chapter[object] Object data
+ * @apiSuccess {String} host
+ * @apiSuccess {String} path
+ *
  * @apiErrorExample {json} List error
  *    HTTP/1.1 500 Internal Server Error
  */

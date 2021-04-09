@@ -1,6 +1,6 @@
 h5p:
   chapters: Chapters
-  views: "{numViews, plural, =1 {1 view} other {# views}}" 
+  views: "{numViews, plural, =1 {1 view} other {# views}}"
   description: What you will learn
   creator_avatar: Lesson creator avatar
 
@@ -19,3 +19,28 @@ comments:
 admin:
   approve: Approve this
   unapprove: Unapprove this
+
+reaction_popover:
+  button:
+    close: x
+    prompt: Give us some feedback
+  positive:
+    title: Awesome! What did you like?
+  negative:
+    title: Oh no! What didn't you like?
+
+
+review_ratings:
+  positive:
+    title: Thank you
+    subtitle: Please let us know more about your experience
+  negative:
+    title: We are sorry you didn't like this
+    subtitle: Help creators improve by offering feedback
+  extra_review_title: Anything else?
+  buttons:
+    submit: Submit
+    cancel: Skip
+  feedback:
+    title: Feedback sent!
+    message: Thanks for your feedback <br> We really appreciate it

@@ -1,69 +1,23 @@
 <div class="p-4">
 
   <div class="d-flex justify-content-center">
-    <Toc @page="5"/>
+    <Toc @page="6"/>
   </div>
   <div class="row p-5">
-    <div class="col-lg-6">
-      <h4><b>{{t "teach.create.chapter_name"}}: </b>{{this.model.name}}({{this.model.status}}) </h4>
+    <div class="col-12 row">
+      <div class="chapter-title-section">
+        <h4><b>{{t "teach.create.chapter_name"}}: </b>{{this.model.name}}({{this.model.status}}) </h4>
 
-      {{#if (eq this.model.status "published")}}
-        {{#if this.model.approved}}
-          <span class="badge badge-pill badge-success">{{t "teach.preview.approved"}}</span>
-        {{else}}
-          <span class="badge badge-pill badge-danger">{{t "teach.preview.unapproved"}}</span>
+        {{#if (eq this.model.status "published")}}
+          {{#if this.model.approved}}
+            <span class="badge badge-pill badge-success">{{t "teach.preview.approved"}}</span>
+          {{else}}
+            <span class="badge badge-pill badge-danger">{{t "teach.preview.unapproved"}}</span>
+          {{/if}}
         {{/if}}
-      {{/if}}
-      <br>
-      {{#if (or this.model.contentUri this.model.contentId)}}
-
-        {{#if this.model.contentId}}
-          <H5p::Player @contentId={{this.model.contentId}}>
-          </H5p::Player>
-        {{else}}
-          <H5p @location={{this.model.contentUri}} />
-        {{/if}}
-      {{/if}}
-      <br>
-      {{#if (or this.model.contentUri this.model.contentId)}}
-        {{#if this.model.contentId}}
-          <LinkTo class="btn  btn-primary mt-3 btn-sm" @route="teach.h5p-editor" @model={{this.model.id}}>
-            {{t "teach.preview.change_h5p"}}
-          </LinkTo>
-        {{else}}
-          <LinkTo class="btn  btn-primary mt-3 btn-sm" @route="teach.h5p-upload" @model={{this.model.id}}>
-            {{t "teach.preview.change_h5p"}}
-          </LinkTo>
-        {{/if}}
-
-      {{else}}
-          <LinkTo class="btn btn-primary mt-3 btn-sm" @route="teach.h5p-editor" @model={{this.model.id}}>
-            {{t "teach.preview.upload_h5p"}}
-          </LinkTo>
-      {{/if}}
-
-      <div class="mt-1 bg-light m-0 p-4 pt-3">
-        <p>{{this.model.description}}</p>
-        <b>{{t "teach.preview.tags"}}</b>
-
-        <div class="row ">
-          {{#each this.model.tags as |tag|}}
-            <span class="badge badge-pill badge-success btn-lg m-1">
-              {{tag}}
-            </span>
-          {{/each}}
-          <br>
-        </div>
-        <LinkTo @route="teach.tag" @model={{this.model.id}} class="btn btn-sm btn-primary mt-4">
-          {{t "teach.preview.modify_tags"}}
-        </LinkTo>
-
       </div>
-    </div>
 
-
-    <div class="col-lg-6  border rounded-lg pl-4 pr-4 pt-3 pb-4">
-      <div class="float-right pb-3">
+      <div class="text-right ml-auto mb-3">
         <button type="button" class="btn btn-outline-primary" {{on "click" this.showDeleteModal }}>{{t
                 "buttons.delete"}}</button>
         {{#if (eq this.model.status "draft")}}
@@ -81,42 +35,89 @@
           </button>
         {{/if}}
       </div>
+    </div>
+    <div class="col-lg-6 ">
 
-      <BsModalSimple @open={{this.publishModal}} @onSubmit={{ fn this.publish this.model.id }} @closeTitle={{t
-              "buttons.cancel"}}
-                     @submitTitle={{t "teach.preview.publish"}} @title={{t "teach.preview.publish"}} @size="sm"
-                     @onHidden={{fn (mut this.publishModal) false}}>
-        {{t "teach.preview.publish_prompt"}}
-      </BsModalSimple>
+      <div class="h5p-content-section border p-4 mb-1">
+        {{#if (or this.model.contentUri this.model.contentId)}}
 
-      <BsModalSimple @open={{this.unpublishModal}} @onSubmit={{ fn this.unpublish this.model.id }} @closeTitle={{t
-              "buttons.cancel"}}
-                     @submitTitle={{t "teach.preview.unpublish"}} @title={{t "teach.preview.unpublish"}} @size="sm"
-                     @onHidden={{fn (mut this.unpublishModal) false}}>
-        {{t "teach.preview.unpublish_prompt"}}
-      </BsModalSimple>
+          {{#if this.model.contentId}}
+            <H5p::Player @contentId={{this.model.contentId}}>
+            </H5p::Player>
+          {{else}}
+            <H5p @location={{this.model.contentUri}} />
+          {{/if}}
+        {{/if}}
+        <br>
+        {{#if (or this.model.contentUri this.model.contentId)}}
+          {{#if this.model.contentId}}
+            <LinkTo class="btn  btn-primary mt-3 btn-sm" @route="teach.h5p-editor" @model={{this.model.id}}>
+              {{t "teach.preview.change_h5p"}}
+            </LinkTo>
+          {{else}}
+            <LinkTo class="btn  btn-primary mt-3 btn-sm" @route="teach.h5p-upload" @model={{this.model.id}}>
+              {{t "teach.preview.change_h5p"}}
+            </LinkTo>
+          {{/if}}
 
-      <BsModalSimple @open={{this.deleteModal}} @onSubmit={{fn this.delete this.model.id }} @closeTitle={{t
-              "buttons.cancel"}}
-                     @submitTitle={{t "teach.preview.delete"}} @title={{t "teach.preview.delete"}} @size="sm"
-                     @onHidden={{fn (mut this.deleteModal) false}}>
-        {{t "teach.preview.delete_prompt"}}: <b>{{this.model.name}}</b> ?
-      </BsModalSimple>
-      <br>
-      <div class="form-group ">
-        <label for="t">{{t "teach.create.chapter_name"}}</label>
-        <input value={{this.model.name}} type="text" class="form-control bg-light" id="t" disabled>
+        {{else}}
+          <LinkTo class="btn btn-primary mt-3 btn-sm" @route="teach.h5p-editor" @model={{this.model.id}}>
+            {{t "teach.preview.upload_h5p"}}
+          </LinkTo>
+        {{/if}}
       </div>
-      <div class="form-group">
-        <label for="">{{t "teach.create.chapter_desc"}}</label>
-        <textarea class="form-control bg-light" name="" id="" rows="3" disabled>{{this.model.description}}</textarea>
+
+      <div class="mb-1 bg-light m-0 p-4 border">
+        <b>{{t "teach.preview.tags"}}</b>
+
+        <div class="row ">
+          {{#each this.model.tags as |tag|}}
+            <span class="badge badge-pill badge-success btn-lg m-1">
+              {{tag}}
+            </span>
+          {{/each}}
+          <br>
+        </div>
+        <LinkTo @route="teach.tag" @model={{this.model.id}} class="btn btn-sm btn-primary mt-4">
+          {{t "teach.preview.modify_tags"}}
+        </LinkTo>
+
       </div>
 
-      <LinkTo @route="teach.edit" @model={{this.model.id}} class="btn btn-sm btn-primary form-control">
-        {{t "teach.preview.change_chapter_details"}}
-      </LinkTo>
-      <hr>
-      <div>
+      <div class="mb-1 border p-4 ">
+        <b>{{t "teach.preview.section_titles.reviewQuestions"}}</b>
+
+        <div class="row ">
+          {{#each this.model.reviewQuestions as |cat|}}
+            <span class="badge badge-pill badge-success btn-lg m-1">
+              {{cat}}
+            </span>
+          {{/each}}
+          <br>
+        </div>
+        <LinkTo @route="teach.review-questions" @model={{this.model.id}} class="btn btn-sm btn-primary mt-4">
+          {{t "teach.preview.buttons.modifyReviewQuestions"}}
+        </LinkTo>
+
+      </div>
+    </div>
+
+    <div class="col-lg-6 ">
+      <div class="border mb-1 p-4">
+        <div class="form-group ">
+          <label for="t">{{t "teach.create.chapter_name"}}</label>
+          <input value={{this.model.name}} type="text" class="form-control bg-light" id="t" disabled>
+        </div>
+        <div class="form-group">
+          <label for="">{{t "teach.create.chapter_desc"}}</label>
+          <textarea class="form-control bg-light" name="" id="" rows="3" disabled>{{this.model.description}}</textarea>
+        </div>
+
+        <LinkTo @route="teach.edit" @model={{this.model.id}} class="btn btn-sm btn-primary">
+          {{t "teach.preview.change_chapter_details"}}
+        </LinkTo>
+      </div>
+      <div class="border p-3 mb-1">
 
         {{#if this.model.imageUrl}}
           <img src="{{this.model.imageUrl}}" class="img-thumbnail img-fluid rounded h-50 d-inline-block" alt={{t
@@ -137,3 +138,25 @@
     </div>
   </div>
 </div>
+
+
+<BsModalSimple @open={{this.publishModal}} @onSubmit={{ fn this.publish this.model.id }} @closeTitle={{t
+        "buttons.cancel"}}
+               @submitTitle={{t "teach.preview.publish"}} @title={{t "teach.preview.publish"}} @size="sm"
+               @onHidden={{fn (mut this.publishModal) false}}>
+  {{t "teach.preview.publish_prompt"}}
+</BsModalSimple>
+
+<BsModalSimple @open={{this.unpublishModal}} @onSubmit={{ fn this.unpublish this.model.id }} @closeTitle={{t
+        "buttons.cancel"}}
+               @submitTitle={{t "teach.preview.unpublish"}} @title={{t "teach.preview.unpublish"}} @size="sm"
+               @onHidden={{fn (mut this.unpublishModal) false}}>
+  {{t "teach.preview.unpublish_prompt"}}
+</BsModalSimple>
+
+<BsModalSimple @open={{this.deleteModal}} @onSubmit={{fn this.delete this.model.id }} @closeTitle={{t
+        "buttons.cancel"}}
+               @submitTitle={{t "teach.preview.delete"}} @title={{t "teach.preview.delete"}} @size="sm"
+               @onHidden={{fn (mut this.deleteModal) false}}>
+  {{t "teach.preview.delete_prompt"}}: <b>{{this.model.name}}</b> ?
+</BsModalSimple>

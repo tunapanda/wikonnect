@@ -1,0 +1,22 @@
+<div class="rating-group">
+  <button type="button" class="rating-emoji terrible {{if (eq this.selected this.score.terrible) "active"}}"
+    {{on "click" (fn this.updateSelectedRating this.score.terrible) }}>
+    {{svg-jar "terrible-face-emoji"   height="50"}}
+  </button>
+  <button type="button" class="rating-emoji bad {{if (eq this.selected this.score.bad) "active"}}"
+    {{on "click" (fn this.updateSelectedRating this.score.bad) }}>
+    {{svg-jar "bad-face-emoji"   height="50"}}
+  </button>
+  <button type="button" class="rating-emoji okay {{if (eq this.selected this.score.okay) "active"}}"
+    {{on "click" (fn this.updateSelectedRating this.score.okay) }}>
+    {{svg-jar "okay-face-emoji"   height="50"}}
+  </button>
+  <button type="button" class="rating-emoji good {{if (eq this.selected this.score.good) "active"}}"
+    {{on "click" (fn this.updateSelectedRating this.score.good) }}>
+    {{svg-jar "good-face-emoji"   height="50"}}
+  </button>
+  <button type="button" class="rating-emoji great {{if (eq this.selected this.score.great) "active"}}"
+    {{on "click" (fn this.updateSelectedRating this.score.great) }}>
+    {{svg-jar "great-face-emoji"   height="50"}}
+  </button>
+</div>

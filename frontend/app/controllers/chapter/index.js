@@ -15,6 +15,11 @@ export default class ChapterIndexController extends Controller {
   @tracked flaggingModal = false;
   @tracked ratingModal = false;
   @tracked score;
+  @tracked showRRPopup = false;
+  @tracked userChapterReaction;
+  @tracked showPositiveRFPopup = false;
+  @tracked showNegativeRFPopup = false;
+  @tracked showRRFeedbackModal = false;
 
   queryParams = ['callbackUrl', 'ref'];
 
@@ -185,5 +190,74 @@ export default class ChapterIndexController extends Controller {
       let timerDelay = await this.store.createRecord('counter', data);
       await timerDelay.save();
     })();
+  }
+
+  @action
+  async onChapterReactionChange(previousReaction, currentReaction) {
+    if (previousReaction !== undefined || currentReaction === undefined) {
+      // delete any previous rating if reaction has been altered
+      await this.deleteUserRatingReview();
+    }
+    if (currentReaction) {
+      this.userChapterReaction = currentReaction;
+      if (currentReaction === 'like') {
+        this.showPositiveRFPopup = true;
+        this.showNegativeRFPopup = false;
+
+        return 1;
+      }
+
+      this.showPositiveRFPopup = false;
+      this.showNegativeRFPopup = true;
+    }
+  }
+
+  @action
+  closePositiveRFPopup() {
+    this.showPositiveRFPopup = false;
+  }
+
+  @action
+  closeNegativeRFPopup() {
+    this.showNegativeRFPopup = false;
+  }
+
+  @action
+  hideRRModal() {
+    this.showRRPopup = false;
+  }
+  @action
+  hideRRFeedbackModal() {
+    this.showRRFeedbackModal = false;
+  }
+
+  @action
+  openRRPopup() {
+    this.showPositiveRFPopup = false;
+    this.showNegativeRFPopup = false;
+    this.showRRPopup = true;
+  }
+
+  @action
+  async submitReviewRatings(review, ratings) {
+    const record = this.store.createRecord('rating', {
+      chapter: this.model,
+      reaction: this.userChapterReaction,
+      metadata: ratings,
+      review: { metadata: review },
+    });
+    try {
+      await record.save();
+      this.showRRPopup = false;
+      this.showRRFeedbackModal = true;
+    } catch (e) {
+      this.notify.error('Error encountered during submission.');
+    }
+  }
+  async deleteUserRatingReview() {
+    const ratings = this.store.peekAll('rating');
+    if (ratings.length > 0) {
+      await ratings.firstObject.destroyRecord();
+    }
   }
 }

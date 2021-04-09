@@ -49,6 +49,12 @@ export default class ReactionChapterReactionComponent extends Component {
         .then(() => {
           this.updateUserReaction(liked);
           this.updateReactionsCount(chapter, liked ? 1 : 0, liked ? 0 : 1);
+          if (this.args.onChapterReactionChange) {
+            this.args.onChapterReactionChange(
+              undefined,
+              liked ? 'like' : 'dislike'
+            );
+          }
         })
         .catch(() => {});
     }
@@ -56,7 +62,7 @@ export default class ReactionChapterReactionComponent extends Component {
     let previousReaction = (
       await this.store.query('reaction', {
         chapterId: this.chapter.id,
-        user_id: this.me.user.id,
+        user_id: this.me?.user?.id,
       })
     ).find((reactions) => reactions.chapter.get('id') === this.chapter.id);
 
@@ -69,6 +75,13 @@ export default class ReactionChapterReactionComponent extends Component {
         .then(() => {
           this.updateUserReaction();
           this.updateReactionsCount(chapter, liked ? -1 : 0, liked ? 0 : -1);
+
+          if (this.args.onChapterReactionChange) {
+            this.args.onChapterReactionChange(
+              liked ? 'like' : 'dislike',
+              undefined
+            );
+          }
         })
         .catch(() => {});
     }
@@ -78,6 +91,13 @@ export default class ReactionChapterReactionComponent extends Component {
       .then(() => {
         this.updateUserReaction(liked);
         this.updateReactionsCount(chapter, liked ? 1 : -1, liked ? -1 : 1);
+
+        if (this.args.onChapterReactionChange) {
+          this.args.onChapterReactionChange(
+            liked ? 'dislike' : 'like',
+            liked ? 'like' : 'dislike'
+          );
+        }
       })
       .catch(() => {});
   }
