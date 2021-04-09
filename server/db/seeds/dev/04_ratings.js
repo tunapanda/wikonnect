@@ -17,10 +17,9 @@ exports.seed = async function (knex) {
         .select(['id'])
         .andWhere('id', ref('reactions.chapterId'))
     );
-  
+
   const ratings = [];
   const categories = questions.map((d) => d.category);
-
   const selectedReactions=[];
 
   for (let index = 0; index < seed_number; index++) {
@@ -39,7 +38,7 @@ exports.seed = async function (knex) {
     const ratingExist = selectedReactions.findIndex((pred)=>{
       return  pred.chapterId ===reaction.chapterId && pred.userId ===reaction.userId;
     } ) >-1;
-    
+
     selectedReactions.push(reaction);
     ratings.push({
       chapter_id: reaction.chapterId,

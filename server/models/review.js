@@ -1,4 +1,5 @@
 const Model = require('./_model');
+const knex = require('../db/db');
 
 class Review extends Model {
 
@@ -20,4 +21,5 @@ class Review extends Model {
   }
 }
 
+Rating.knex(knex);
 module.exports = Review;

@@ -1,5 +1,13 @@
-const validate = require('validate.js');
 
+const validate = require('validate.js');
+/**
+ * Validate that ratings request has
+ *    - chapterId object
+ *    - metadata object
+ *    - reaction object
+ * @param {*} ctx
+ * @param {*} next
+ */
 async function validateRating(ctx, next) {
 
   try {

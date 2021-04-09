@@ -2,7 +2,7 @@ const Router = require('koa-router');
 
 const log = require('../utils/logger');
 const Rating = require('../models/rating');
-const {requireAuth} = require('../middleware/permController');
+const { requireAuth } = require('../middleware/permController');
 const validateRating = require('../middleware/validateRoutePostSchema/validateRating');
 
 const router = new Router({
@@ -57,7 +57,7 @@ router.get('/:id', requireAuth, async ctx => {
 
   const stateUserId = ctx.state.user.id === undefined ? ctx.state.user.data.id : ctx.state.user.id;
 
-  const {include} = ctx.query;
+  const { include } = ctx.query;
 
   const includeReview = include ? include.toLowerCase().includes('review') : false;
 
@@ -75,12 +75,12 @@ router.get('/:id', requireAuth, async ctx => {
     }
 
     ctx.status = 200;
-    ctx.body = {rating};
+    ctx.body = { rating };
   } catch (e) {
     if (e.statusCode) {
-      ctx.throw(e.statusCode, null, {errors: [e.message]});
+      ctx.throw(e.statusCode, null, { errors: [e.message] });
     } else {
-      ctx.throw(400, null, {errors: [e.message]});
+      ctx.throw(400, null, { errors: [e.message] });
     }
   }
 });
@@ -111,17 +111,17 @@ router.get('/:id', requireAuth, async ctx => {
  * @apiSuccessExample {json} Success-Response:
  *     HTTP/1.1 201 OK
  *     {
- *       "ratings":[{
- *           "id": "IzM6odwAASI",
- *           "chapterId": "IzMs75WAAA0",
- *           "reaction": "like",
- *           "metadata":{"language": 2, "audioQuality": 1, "contentAccuracy": 1},
- *           "userId": "user1",
- *           "averageRating": "1.33",
- *           "isDeleted": false,
- *           "createdAt": "2021-03-24T11:51:33.520Z",
- *           "updatedAt": "2021-03-24T11:51:33.520Z"
- *         }]
+ *      "ratings":[{
+ *         "id": "IzM6odwAASI",
+ *         "chapterId": "IzMs75WAAA0",
+ *         "reaction": "like",
+ *         "metadata": {"language": 2, "audioQuality": 1, "contentAccuracy": 1},
+ *         "userId": "user1",
+ *         "averageRating": "1.33",
+ *         "isDeleted": false,
+ *         "createdAt": "2021-03-24T11:51:33.520Z",
+ *         "updatedAt": "2021-03-24T11:51:33.520Z"
+ *        }]
  *      }
  *
  *
@@ -129,7 +129,7 @@ router.get('/:id', requireAuth, async ctx => {
 
 router.get('/', requireAuth, async ctx => {
 
-  const {include} = ctx.query;
+  const { include } = ctx.query;
   delete ctx.query.include;
 
   const includeReview = include ? include.toLowerCase().includes('review') : false;
@@ -143,12 +143,12 @@ router.get('/', requireAuth, async ctx => {
         .where(ctx.query);
 
     ctx.status = 200;
-    ctx.body = {ratings};
+    ctx.body = { ratings };
   } catch (e) {
     if (e.statusCode) {
-      ctx.throw(e.statusCode, null, {errors: [e.message]});
+      ctx.throw(e.statusCode, null, { errors: [e.message] });
     } else {
-      ctx.throw(400, null, {errors: [e.message]});
+      ctx.throw(400, null, { errors: [e.message] });
     }
   }
 
@@ -203,7 +203,7 @@ router.post('/', requireAuth, validateRating, async ctx => {
   const userId = ctx.state.user.data.id;
 
   //check they don't have existing rating
-  const selectedRatings = await Rating.query().where({isDeleted: false, userId, chapterId: obj.chapterId});
+  const selectedRatings = await Rating.query().where({ isDeleted: false, userId, chapterId: obj.chapterId });
   if (selectedRatings.length > 0) {
     ctx.throw(400, 'You have already rated the chapter');
   }
@@ -227,28 +227,28 @@ router.post('/', requireAuth, validateRating, async ctx => {
     let rating;
     if (review) {
 
-      review.chapterId =obj.chapterId;
-      review.reaction =obj.reaction;
+      review.chapterId = obj.chapterId;
+      review.reaction = obj.reaction;
 
       rating = await Rating.query().insertGraphAndFetch({
         ...obj, userId, averageRating,
-        review: {...review, userId},
+        review: { ...review, userId },
       });
     } else {
       rating = await Rating.query()
-        .insertAndFetch({...obj, userId, averageRating});
+        .insertAndFetch({ ...obj, userId, averageRating });
     }
 
     ctx.assert(rating, 500, 'Something went wrong');
 
     ctx.status = 201;
-    ctx.body = {rating};
+    ctx.body = { rating };
 
   } catch (e) {
     if (e.statusCode) {
-      ctx.throw(e.statusCode, null, {errors: [e.message]});
+      ctx.throw(e.statusCode, null, { errors: [e.message] });
     } else {
-      ctx.throw(400, null, {errors: [e.message]});
+      ctx.throw(400, null, { errors: [e.message] });
     }
   }
 });
@@ -304,7 +304,7 @@ router.put('/:id', requireAuth, async ctx => {
 
   //check if the rating exist
   const currentRating = await Rating.query()
-    .where({isDeleted: false, id: ctx.params.id, userId});
+    .where({ isDeleted: false, id: ctx.params.id, userId });
 
   ctx.assert(currentRating, 404, 'Rating does not exist');
 
@@ -322,7 +322,7 @@ router.put('/:id', requireAuth, async ctx => {
 
     const averageRating = totalRating / ratings.length;
 
-    obj = {...obj, averageRating};
+    obj = { ...obj, averageRating };
   }
 
   try {
@@ -341,12 +341,12 @@ router.put('/:id', requireAuth, async ctx => {
     }
 
     ctx.status = 200;
-    ctx.body = {rating};
+    ctx.body = { rating };
   } catch (e) {
     if (e.statusCode) {
-      ctx.throw(e.statusCode, null, {errors: [e.message]});
+      ctx.throw(e.statusCode, null, { errors: [e.message] });
     } else {
-      ctx.throw(400, null, {errors: ['Bad Request']});
+      ctx.throw(400, null, { errors: ['Bad Request'] });
     }
   }
 
@@ -371,7 +371,7 @@ router.put('/:id', requireAuth, async ctx => {
  */
 router.delete('/:id', requireAuth, async ctx => {
   const rating = await Rating.query()
-    .where({isDeleted: false})
+    .where({ isDeleted: false })
     .findById(ctx.params.id);
 
   if (!rating) {
@@ -380,19 +380,19 @@ router.delete('/:id', requireAuth, async ctx => {
 
   try {
     const rating = await Rating.query()
-      .patchAndFetchById(ctx.params.id, {isDeleted: true});
+      .patchAndFetchById(ctx.params.id, { isDeleted: true });
 
     /*Update related review*/
     await rating.$relatedQuery('review')
-      .patch({isDeleted: true});
+      .patch({ isDeleted: true });
 
     ctx.status = 200;
     ctx.body = {};
   } catch (e) {
     if (e.statusCode) {
-      ctx.throw(e.statusCode, null, {errors: [e.message]});
+      ctx.throw(e.statusCode, null, { errors: [e.message] });
     } else {
-      ctx.throw(400, null, {errors: ['Bad Request']});
+      ctx.throw(400, null, { errors: ['Bad Request'] });
     }
   }
 });

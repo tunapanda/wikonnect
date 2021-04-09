@@ -5,7 +5,7 @@ const busboy = require('async-busboy');
 const { ref } = require('objection');
 const { nanoid } = require('nanoid/async');
 const sharp = require('sharp');
-const koaBody = require('koa-body')({multipart: true,multiples:false,keepExtensions:true});
+const koaBody = require('koa-body')({ multipart: true, multiples: false, keepExtensions: true });
 
 const s3 = require('../utils/s3Util');
 const log = require('../utils/logger');
@@ -102,7 +102,7 @@ router.get('/', permController.requireAuth, validateGetChapter, async ctx => {
           .as('views'),
         Rating.query()
           .where('chapterId', ref('chapters.id'))
-          .where('isDeleted',false)
+          .where('isDeleted', false)
           .avg('ratings.average_rating')
           .as('ratings'),
         Reaction.query()
@@ -126,39 +126,39 @@ router.get('/', permController.requireAuth, validateGetChapter, async ctx => {
     /**retrieve correct user image**/
     //so not to re-fetch the profile, remove duplicates (handy if network requests to S3 are being done ),
     const authors = [];
-    let authorIds={};
+    let authorIds = {};
     for (let i = 0; i < chapter.results.length; i++) {
-      if(!chapter.results[i].author){
+      if (!chapter.results[i].author) {
         continue;
       }
-      if(!authorIds[chapter.results[i].author.id]){
+      if (!authorIds[chapter.results[i].author.id]) {
         authors.push(chapter.results[i].author);
-        authorIds[chapter.results[i].author.id]=true;
+        authorIds[chapter.results[i].author.id] = true;
       }
 
     }
-    const promises = authors.map(async (author)=>{
-      return  {
+    const promises = authors.map(async (author) => {
+      return {
         id: author.id,
         name: author.name,
         username: author.username,
         profileUri: await getProfileImage(author)
       };
     });
-    const authorProfiles =await Promise.all(promises);
+    const authorProfiles = await Promise.all(promises);
     //now map above profiles
-    chapter.results = chapter.results.map((chap)=>{
-      if(!chap.author){
+    chapter.results = chapter.results.map((chap) => {
+      if (!chap.author) {
         //just in case 😁
-        chap.author={name:'Private',username:'Private',id:'Private',profileUri: 'anonymous'};
+        chap.author = { name: 'Private', username: 'Private', id: 'Private', profileUri: 'anonymous' };
         return chap;
       }
-      const profile=authorProfiles.find((p)=>p.id===chap.author.id);
-      if(profile){
-        chap.author=profile;
-      }else{
+      const profile = authorProfiles.find((p) => p.id === chap.author.id);
+      if (profile) {
+        chap.author = profile;
+      } else {
         //just in case 👽
-        chap.author={name:'Private',username:'Private',id:'Private',profileUri: 'anonymous'};
+        chap.author = { name: 'Private', username: 'Private', id: 'Private', profileUri: 'anonymous' };
       }
       return chap;
     });
@@ -263,15 +263,15 @@ router.get('/:id', permController.requireAuth, async ctx => {
       .withGraphFetched(
         '[reaction(reactionAggregate), flag(selectFlag),author()]'
       );
-    ctx.assert(results[0],404,'Chapter not found');
-    const chapter=results[0];
+    ctx.assert(results[0], 404, 'Chapter not found');
+    const chapter = results[0];
     //retrieve correct user image
     if (chapter.author) {
       chapter.author = {
         id: chapter.author.id,
         name: chapter.author.name,
         username: chapter.author.username,
-        profileUri: await  getProfileImage(chapter.author)
+        profileUri: await getProfileImage(chapter.author)
       };
     }
     ctx.status = 200;
@@ -339,7 +339,7 @@ router.post('/', permController.requireAuth, async ctx => {
   // Server side slug generator
   newChapter.slug = await slugGen(newChapter.name);
   newChapter.creatorId = stateUserId;
-  if(newChapter.approved === undefined){
+  if (newChapter.approved === undefined) {
     newChapter.approved = false;
   }
 
@@ -438,7 +438,7 @@ router.delete('/:id', permController.requireAuth, async ctx => {
   await Chapter.query().delete().where({ id: ctx.params.id });
 
   ctx.status = 200;
-  ctx.body = { };
+  ctx.body = { chapter };
 });
 
 
@@ -473,20 +473,20 @@ router.post('/:id/chapter-image', permController.requireAuth, koaBody, async (ct
   const uploadPath = '/uploads/chapters';
   const uploadDir = path.resolve(__dirname, '../public/' + uploadPath);
 
-  const {file} =ctx.request.files;
+  const { file } = ctx.request.files;
 
   const fileExtension = path.extname(file.name);
 
-  if (!['.webp', '.svg', '.png', '.jpeg', '.gif', '.avif','.jpg'].includes(fileExtension)) {
+  if (!['.webp', '.svg', '.png', '.jpeg', '.gif', '.avif', '.jpg'].includes(fileExtension)) {
     ctx.throw(400, { error: 'Image format not supported' });
   }
 
   let resizer;
-  try{
+  try {
     resizer = await sharp(file.path)
       .resize(328, 200)
       .jpeg({ quality: 70 });
-  }catch (e) {
+  } catch (e) {
     if (e.statusCode) {
       ctx.throw(e.statusCode, null, { errors: [e.message] });
     } else {

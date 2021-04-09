@@ -8,15 +8,13 @@ exports.seed = function (knex) {
     .then(() => {
       return knex('users').pluck('id').then((userIds) => {
         const fakeChapters = [];
-        const reviewQuestionsCategories = reviewQuestions.map((question)=>question.category);
-
+        const reviewQuestionsCategories = reviewQuestions.map((question) => question.category);
         for (let index = 0; index < seed_number; index++) {
           const name = faker.lorem.words();
           const slug = faker.helpers.slugify(name);
           const status = ['published', 'drafts', 'archived'];
           const tags = ['highschool', 'university', 'all', 'data', 'test'];
           const chapterId = ['chapter1', 'chapter2'];
-
           fakeChapters.push({
             name: name,
             slug: slug,
@@ -30,8 +28,8 @@ exports.seed = function (knex) {
             updated_at: faker.date.recent(),
             tags: faker.random.arrayElements(tags),
             approved: true,
-            verified: faker.random.boolean(),
-            review_questions: faker.random.arrayElements(reviewQuestionsCategories,4)
+            verified: faker.datatype.boolean(),
+            review_questions: faker.random.arrayElements(reviewQuestionsCategories, 4)
           });
         }
         fakeChapters.push({
@@ -49,6 +47,7 @@ exports.seed = function (knex) {
           approved: true,
           verified: true,
           tags: ['highschool', 'university'],
+          review_questions: faker.random.arrayElements(reviewQuestionsCategories, 4)
         },
         {
           id: 'chapter2',
@@ -65,6 +64,7 @@ exports.seed = function (knex) {
           approved: true,
           verified: false,
           tags: ['highschool', 'university'],
+          review_questions: faker.random.arrayElements(reviewQuestionsCategories, 4)
         },
         {
           id: 'chapter3',
@@ -81,6 +81,7 @@ exports.seed = function (knex) {
           tags: ['university'],
           approved: true,
           verified: false,
+          review_questions: faker.random.arrayElements(reviewQuestionsCategories, 4)
         },
         {
           id: 'chapter4',
@@ -97,6 +98,7 @@ exports.seed = function (knex) {
           approved: true,
           verified: true,
           tags: ['highschool', 'university'],
+          review_questions: faker.random.arrayElements(reviewQuestionsCategories, 4)
         },
         {
           id: 'chapter5',
@@ -113,6 +115,7 @@ exports.seed = function (knex) {
           approved: true,
           verified: false,
           tags: ['primary', 'university'],
+          review_questions: faker.random.arrayElements(reviewQuestionsCategories, 4)
         });
         // Inserts seed entries
         return knex('chapters').insert(fakeChapters);

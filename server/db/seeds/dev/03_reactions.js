@@ -3,10 +3,8 @@ exports.seed = async function (knex) {
   await knex('reactions').del();
   const userIds = await knex('users').pluck('id');
   const chapterIds = await knex('chapters').where('approved',true).pluck('id');
-
   const totalChapters = chapterIds.length;
   const partitionCount = Math.floor(totalChapters/3);
-
 
   const reactions = [];
 

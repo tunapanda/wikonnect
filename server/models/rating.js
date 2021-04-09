@@ -1,4 +1,5 @@
 const Model = require('./_model');
+const knex = require('../db/db');
 
 class Rating extends Model {
   static get tableName() {
@@ -17,7 +18,7 @@ class Rating extends Model {
       }
     };
   }
-
 }
 
+Rating.knex(knex);
 module.exports = Rating;

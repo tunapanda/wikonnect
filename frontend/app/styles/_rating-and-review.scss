@@ -89,7 +89,7 @@ $palette: (
     }
 
     &.bad:hover svg g,
-    &.bad.active svg g, {
+    &.bad.active svg g {
       fill: map-get($palette, bad);
       stroke: map-get($palette, bad);
     }
