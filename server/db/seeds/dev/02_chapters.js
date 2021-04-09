@@ -28,7 +28,7 @@ exports.seed = function (knex) {
             updated_at: faker.date.recent(),
             tags: faker.random.arrayElements(tags),
             approved: true,
-            verified: faker.datatype.boolean(),
+            verified: faker.random.boolean(),
             review_questions: faker.random.arrayElements(reviewQuestionsCategories, 4)
           });
         }
@@ -47,7 +47,6 @@ exports.seed = function (knex) {
           approved: true,
           verified: true,
           tags: ['highschool', 'university'],
-          review_questions: faker.random.arrayElements(reviewQuestionsCategories, 4)
         },
         {
           id: 'chapter2',
@@ -64,7 +63,6 @@ exports.seed = function (knex) {
           approved: true,
           verified: false,
           tags: ['highschool', 'university'],
-          review_questions: faker.random.arrayElements(reviewQuestionsCategories, 4)
         },
         {
           id: 'chapter3',
@@ -81,7 +79,6 @@ exports.seed = function (knex) {
           tags: ['university'],
           approved: true,
           verified: false,
-          review_questions: faker.random.arrayElements(reviewQuestionsCategories, 4)
         },
         {
           id: 'chapter4',
@@ -98,7 +95,6 @@ exports.seed = function (knex) {
           approved: true,
           verified: true,
           tags: ['highschool', 'university'],
-          review_questions: faker.random.arrayElements(reviewQuestionsCategories, 4)
         },
         {
           id: 'chapter5',
@@ -115,7 +111,6 @@ exports.seed = function (knex) {
           approved: true,
           verified: false,
           tags: ['primary', 'university'],
-          review_questions: faker.random.arrayElements(reviewQuestionsCategories, 4)
         });
         // Inserts seed entries
         return knex('chapters').insert(fakeChapters);

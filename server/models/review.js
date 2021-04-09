@@ -21,5 +21,5 @@ class Review extends Model {
   }
 }
 
-Rating.knex(knex);
+Review.knex(knex);
 module.exports = Review;
