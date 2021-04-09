@@ -31,8 +31,9 @@ export default class ForgotPasswordComponent extends Component {
       if (response.status === 404) {
         this.error = { ...this.error, message: 'No user with this email' };
       }
+    } else {
+      this.showEmailForm = false;
     }
 
-    this.showEmailForm = false;
   }
 }
