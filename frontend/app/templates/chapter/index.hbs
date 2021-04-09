@@ -180,6 +180,7 @@
 </BsPopover>
 
 <BsModal @open={{this.showRRPopup}} @backdropClose={{false}} @size={{"sm"}} @onHide={{this.hideRRModal}} as |modal|>
+  <modal.header class="modal-header border-0"></modal.header>
   <modal.body>
     <Chapter::ReviewRatings @reaction={{this.userChapterReaction}} @onSubmit={{this.submitReviewRatings}} >
       <div class="form-group col-md-10">
