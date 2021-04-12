@@ -5,10 +5,16 @@ class Rating extends Model {
   static get tableName() {
     return 'ratings';
   }
-  static get modifiers() {
+
+  static  get relationMappings(){
     return {
-      selectRating: (builder) => {
-        builder.select('id', 'rating', 'chapter_id', 'user_id', 'labels', 'comment');
+      review:{
+        relation: Model.HasOneRelation,
+        modelClass:`${__dirname}/review`,
+        join: {
+          from: 'ratings.id',
+          to: 'reviews.ratingId'
+        }
       }
     };
   }

@@ -38,6 +38,7 @@ describe('Chapter comments when authenticated', () => {
 
 
         cy.get('#chapter .media-body')
+            .wait(1000) //TODO can we do better than this wait ?🤔
             .contains(comment.text)
             .should('be.visible')
     });
@@ -75,7 +76,6 @@ describe('Chapter comments when authenticated', () => {
             .should('exist');
     });
 
-
     it('should be able to reply to a comment', () => {
         const reply = `Test reply randomly at ${Math.random() * 1000000}`;
 
@@ -97,7 +97,6 @@ describe('Chapter comments when authenticated', () => {
             .should('be.visible');
     });
 
-
 })
 
 
@@ -110,16 +109,13 @@ describe('Chapter comments without authentication', () => {
             });
     });
 
-
     it('should not display comment form', () => {
         cy.get('#chapter .padded form')
             .should('not.exist');
     });
 
     it('should display available comments', () => {
-        cy.get('#chapter #comments-section .media-body')
+        cy.get('#chapter #comments-section')
             .should('exist')
     });
-
-});
-
+})

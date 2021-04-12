@@ -2,14 +2,14 @@ ul#toc {
     list-style-type: none;
     display: flex;
     justify-content: center;
-    
+
     li {
         display: inline;
         float: left;
         margin: 10px;
         padding-bottom: 5px;
         border-bottom: 4px solid #DAE2E6;
-
+        white-space: nowrap;
         &.active {
             border-bottom: 4px solid #07B788;
         }

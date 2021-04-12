@@ -1,0 +1,32 @@
+<div class=" d-flex row text-center p-4 m-0 shadow-sm justify-content-center">
+  <h3><b>{{t "messages.create_h5p_chapter"}}</b></h3>
+</div>
+
+<div class="d-flex flex-column align-items-center">
+  <Toc @page="5"/>
+
+  <div class="row col-md-8 col-sm-12 p-4">
+    <h5 class="col-12 pb-3">{{t "teach.review_questions.title"}}</h5>
+
+    {{#each this.reviewQuestions as |question|}}
+      <div class="form-group col-md-4 form-check">
+
+        <Input @type="checkbox" id={{question.category}} @checked={{exec this.categoryPreselected question.category}}
+          {{on "change" (fn this.toggleCategorySelection question.category)}} class="form-check-input"/>
+        <label for={{question.category}} class="form-check-label">
+          {{question.title}}
+        </label>
+      </div>
+    {{/each}}
+
+
+    <div class="col-8 ml-auto pt-2 text-right">
+
+      <button type="button" class="btn btn-primary"
+        {{on "click" this.updateChapterReviewQuestions}}>
+        {{t "buttons.continue"}}
+      </button>
+
+    </div>
+  </div>
+</div>

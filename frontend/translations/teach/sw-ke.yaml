@@ -54,6 +54,9 @@ tag:
   platform: Jukwaa
   kicd_status: Hali ya KICD
 
+review_questions:
+  title: Chagua maswali ya uhakiki na ukadiriaji
+
 preview:
   chapter: Sura
   approved: Imeidhinishwa
@@ -64,7 +67,7 @@ preview:
   change_h5p: Hariri H5P
   upload_thumbnail: Pakia kijipicha
   edit_thumbnail: Hariri kijipicha
-  tags: Lebo
+  tags: Lebo zilizochaguliwa
   change_chapter_details: Badilisha maelezo ya sura
   publish: Chapisha
   unpublish: Ondoa
@@ -72,3 +75,7 @@ preview:
   publish_prompt: Una uhakika unataka kuchapisha sura hii?
   unpublish_prompt: Una uhakika unataka kutoa chapisho?
   delete_prompt: Una uhakika unataka kufuta
+  section_titles:
+    reviewQuestions: Aina zilizochaguliwa za ukaguzi na ukadiriaji
+  buttons:
+    modifyReviewQuestions: Rekebisha maswali

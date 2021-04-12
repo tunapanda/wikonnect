@@ -19,3 +19,27 @@ comments:
 admin:
   approve: idhinisha sura hii
   unapprove: thibitisha sura hii
+
+reaction_popover:
+  button:
+    close: x
+    prompt: Tupe maoni
+  positive:
+    title: Je, umependa nini?
+  negative:
+    title: Je, haukupenda nini?
+
+review_ratings:
+  positive:
+    title: Asante
+    subtitle: Tafadhali tujulishe zaidi juu ya uzoefu wako
+  negative:
+    title: Samahani haukupenda hii
+    subtitle: Saidia waundaji kuboresha kwa kutoa maoni
+  extra_review_title: Chochote kingine?
+  buttons:
+    submit: Wasilisha
+    cancel: Ruka
+  feedback:
+    title: Maoni yametumwa!
+    message: Asante kwa maoni yako <br> Tunathamini sana
