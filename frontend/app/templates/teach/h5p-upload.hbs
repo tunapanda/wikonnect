@@ -1,51 +1,62 @@
-{{! template-lint-disable no-bare-strings }}
 <div class=" d-flex row text-center p-4 m-0 shadow-sm justify-content-center">
-  <h3><b>{{t "messages.create_h5p_chapter"}}</b></h3>
+  {{#if this.model.contentUri}}
+    <h3><b>{{t "messages.edit_h5p_chapter"}}</b></h3>
+  {{else}}
+    <h3><b>{{t "messages.create_h5p_chapter"}}</b></h3>
+  {{/if}}
 </div>
 
-<div class="row d-flex flex-column justify-content-center align-items-center px-10">
-  <Toc @page="2"/>
-  {{#if this.me.isAuthenticated}}
-    <div class="bg-primary col-md-6 col-sm-12 text-center p-3 text-white rounded-top">
-      Upload H5P
-    </div>
+<div class="row d-flex justify-content-center m-0 content-creation-section h5p-upload-section">
+  <div class="col-lg-8 col-md-12">
+    <Toc @page="2"/>
+  </div>
 
-    <div class="drop-area col-md-6 col-sm-12 mb-5 d-flex flex-column justify-content-center align-items-center">
-      {{#if this.uploader.uploading}}
-        <BsProgress as |pg|>
-          <pg.bar @showLabel={{true}} @roundDigits={{0}} @type="default" @striped={{true}} @animate={{true}}
-                  @value={{this.uploader.progress}} />
-        </BsProgress>
-      {{/if}}
-      <br>
-      <File-drop-zone @onDrop={{this.uploadH5p}}>
-        <p>Drag and drop here</p>
-        <p>or</p>
-        <Forms::Upload @multiple="false" @accept=".h5p" @filesSelected={{this.uploadH5p}}
-                       @disabled={{this.uploader.uploading}}>
+  <div class="bg-primary col-lg-6 col-sm-10 text-center p-3 text-white rounded-top">
+    {{t "teach.h5p.upload.title"}}
+  </div>
 
-          {{#if this.uploader.uploading}}
-            <BsProgress as |pg|>
-              <pg.bar @showLabel={{true}} @roundDigits={{0}} @type="default" @striped={{true}} @animate={{true}}
-                      @value={{this.uploader.progress}} />
-            </BsProgress>
-            Uploading... <span class="loading-spinner"></span> {{this.uploader.progress}}% <br>
-            <small class="text-muted">You will be redirected once upload is complete</small>
-          {{else}}
-            Upload H5P
-          {{/if}}
-        </Forms::Upload>
-      </File-drop-zone>
-    </div>
+  <div class="col-12"></div>
 
-    <LinkTo @route="teach.thumbnail-upload" @model={{this.model.id}}>
-      <button type="button" class="btn btn-warning btn-lg btn-block">Skip</button>
+  <div class="drop-area col-lg-6 col-sm-10 mb-5 d-flex flex-column justify-content-center align-items-center">
+    {{#if this.uploader.uploading}}
+      <BsProgress as |pg|>
+        <pg.bar @showLabel={{true}} @roundDigits={{0}} @type="default" @striped={{true}} @animate={{true}}
+                @value={{this.uploader.progress}} />
+      </BsProgress>
+    {{/if}}
+    <br>
+    <File-drop-zone @onDrop={{this.onH5PZipFileSelection}}>
+      <p>{{t "teach.h5p.upload.drag_and_drop"}}</p>
+      <p>{{t "teach.h5p.upload.or"}}</p>
+      <Forms::Upload @multiple="false" @accept=".h5p" @filesSelected={{this.onH5PZipFileSelection}}
+                     @disabled={{this.uploader.uploading}}>
+
+        {{#if this.uploader.uploading}}
+          <BsProgress as |pg|>
+            <pg.bar @showLabel={{true}} @roundDigits={{0}} @type="default" @striped={{true}} @animate={{true}}
+                    @value={{this.uploader.progress}} />
+          </BsProgress>
+          {{t "teach.h5p.upload.uploading"}} <span class="loading-spinner"></span> {{this.uploader.progress}}%
+          <br>
+          <small class="text-muted">{{t "teach.h5p.upload.redirect_message"}}</small>
+        {{else}}
+          {{t "teach.h5p.upload.browse_files"}}
+        {{/if}}
+      </Forms::Upload>
+    </File-drop-zone>
+  </div>
+
+  <div class="col-12"></div>
+  <div class="col-lg-6 col-sm-10 pb-5 d-flex justify-content-between mr-sm-3 ml-sm-3 action-buttons">
+
+    <LinkTo @route="teach.edit" @model={{this.model.id}}
+            class="btn btn-outline-primary btn-block mr-2 previous">
+      {{t "teach.buttons.previous"}}
     </LinkTo>
 
-  {{else}}
+    <button type="button" class="btn btn-primary btn-block next" {{on "click" this.uploadH5PFile}}>
+      {{t "teach.buttons.next"}}
+    </button>
 
-    <Warning @message="You do not have permission to view this page"/>
-
-  {{/if}}
-
+  </div>
 </div>

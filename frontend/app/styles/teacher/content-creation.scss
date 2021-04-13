@@ -1,0 +1,50 @@
+$palette: (
+  white: #FFFF,
+  warning: #FFD300,
+  dark: #343a40,
+  grey: grey
+);
+
+.content-creation-section {
+  .action-buttons {
+    .previous {
+      margin-top: 0;
+      background-color: transparent;
+      color: map-get($palette, dark);
+      border-color: map-get($palette, grey);
+    }
+
+    .next {
+      margin-top: 0;
+    }
+  }
+}
+
+//ratings and review section
+.review-question-section {
+
+  .review-question-option {
+    .btn {
+      min-height: 34px;
+      outline: none;
+      box-shadow: none;
+
+      &:hover, &:active {
+        outline: none;
+        box-shadow: none;
+        color: map-get($palette, dark);
+        background-color: lighten(map-get($palette, warning), 30%);
+      }
+
+      &.btn-warning {
+
+        &:hover,
+        &:focus {
+          color: map-get($palette, dark);
+          background-color: map-get($palette, warning);
+        }
+      }
+    }
+  }
+
+}

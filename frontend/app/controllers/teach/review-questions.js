@@ -5,7 +5,11 @@ import { A } from '@ember/array';
 
 export default class ReviewQuestionsController extends Controller {
   @tracked
-  selectedCategories = A(this.chapter.reviewQuestions || []);
+  selectedCategories = A(
+    this.chapter.reviewQuestions
+      ? this.chapter.reviewQuestions
+      : this.reviewQuestionsCategories
+  );
 
   get chapter() {
     return this.model[0];
@@ -15,11 +19,16 @@ export default class ReviewQuestionsController extends Controller {
     return this.model[1];
   }
 
+  get reviewQuestionsCategories() {
+    return this.model[1].map((q) => q.category);
+  }
+
   @action
   categoryPreselected(category) {
     if (
-      !this.chapter.reviewQuestions ||
-      this.chapter.reviewQuestions.length === 0
+      this.selectedCategories.length === 0 &&
+      (!this.chapter.reviewQuestions ||
+        this.chapter.reviewQuestions.length === 0)
     ) {
       return false;
     }

@@ -1,12 +1,10 @@
 @import 'common/forms';
-@import 'common/buttons';
 @import 'common/colors';
 //@import "bs4";
 //@import 'header';
 @import 'landing';
 @import 'home';
 @import 'courses';
-@import 'modules';
 @import 'nav';
 @import 'search';
 @import "warning-component";
@@ -139,6 +137,13 @@ pre {
   height: 300px;
 }
 
+.drop-area{
+  .preview-image{
+    max-height: 300px;
+    max-width: 300px;
+    display: flex;
+  }
+}
 //@import "ember-bootstrap/bootstrap";
 //@import "ember-power-select";
 
@@ -153,3 +158,4 @@ pre {
 @import "loader";
 @import "teach-login";
 @import "rating-and-review";
+@import "teacher/teacher";
