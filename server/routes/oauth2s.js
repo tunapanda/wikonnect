@@ -42,7 +42,7 @@ router.post('/', async ctx => {
       }
     };
   } else {
-    const response = await fetch(`https://graph.facebook.com/v10.0/oauth/access_token?client_id=275202293728439&client_secret=21ed08a381aa49fa387d65bca34a5489&code=${googleToken}&redirect_uri=https://e04692cc60a5.ngrok.io/login/torii/redirect.html&state=email`);
+    const response = await fetch(`https://graph.facebook.com/v10.0/oauth/access_token?client_id=${process.env.FACEBOOK_APP_ID}&client_secret=${process.env.FACEBOOK_CLIENT_SECRET}&code=${googleToken}&redirect_uri=${process.env.FACEBOOK_REDIRECT}&state=email`);
     const data = await response.json();
     const fData = await fetch(`https://graph.facebook.com/v10.0/me/?access_token=${data.access_token}&fields=id,name,email,birthday`);
     const userData = await fData.json();
