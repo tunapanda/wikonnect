@@ -52,7 +52,6 @@ at [tunapanda.github.io/wikonnect](https://tunapanda.github.io/wikonnect)
 - [Objection.js](https://vincit.github.io/objection.js/) as an ORM
   and [Knex.js](https://gist.github.com/NigelEarle/80150ff1c50031e59b872baf0e474977) for building SQL queries
 - [PostgreSQL](https://www.postgresql.org/) for main persistence storage.
-- [Redis](https://redis.io/) for in-memory data cache.
 - [chai](https://www.chaijs.com/) for backend unit tests.
 - [Cypress](https://cypress.io) for frontend integration tests.
 - [Yarn](https://yarnpkg.com/) project package manager.
@@ -116,7 +115,6 @@ cd wikonnect/
 
 - Node.js v14.16.0
 - PostgreSQL database server
-- Redis database server
 
 ##### Setting up Node.js
 
@@ -139,29 +137,6 @@ on the database!). :
 =# CREATE USER my_user WITH PASSWORD 'my_password';
 =# CREATE DATABASE my_database;
 =# GRANT ALL PRIVILEGES ON DATABASE my_database TO my_user;
-```
-
-##### Setting up a Redis server
-
-For macOS and Windows systems, check out the [download page](https://redis.io/download) on how to download and install a
-Redis server.
-
-To install on a Linux system, run the command below:
-
-```
-sudo apt-get install redis-server
-```
-
-After successful installation, confirm that the service is up and ready  using the following command:
-
-```
-sudo service redis-server status
-```
-
-If the service is not running, use the command below to start it:
-
-```
-sudo service redis-server start
 ```
 
 #### Starting a development server

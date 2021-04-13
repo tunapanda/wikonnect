@@ -60,6 +60,16 @@ module.exports = function (environment) {
       apiKey: process.env.GOOGLE_KEY,
     },
 
+    torii: {
+      allowUnsafeRedirects: true,
+      providers: {
+        'facebook-oauth2': {
+          apiKey: process.env.FACEBOOK_KEY,
+          scope: 'email',
+        },
+      },
+    },
+
     fastboot: {
       hostWhitelist: [/^localhost:\d+$/],
     },

@@ -38,7 +38,7 @@ export default class CallbackRoute extends Route {
     let googleToken = hash.access_token;
 
     this.me
-      .registerWithGoogle({ googleToken: googleToken, provider: 'google' })
+      .registerWithOauth2({ googleToken: googleToken, provider: 'google' })
       .then((user) => {
         if (user.get('isNew')) {
           this.signupSuccess();
