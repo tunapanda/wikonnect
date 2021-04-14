@@ -1,168 +1,168 @@
 <div class=" d-flex row text-center p-4 m-0 shadow-sm justify-content-center">
-  <h3><b>{{t "messages.create_h5p_chapter"}}</b></h3>
-</div>
+  {{#if this.model.tags}}
+    <h3><b>{{t "messages.edit_h5p_chapter"}}</b></h3>
+  {{else}}
+    <h3><b>{{t "messages.create_h5p_chapter"}}</b></h3>
+  {{/if}}</div>
 
-<div class=" row d-flex justify-content-center">
-  <Toc @page="4"/>
-  <div class="p-4 col-sm-8">
-    {{#if this.me.isAuthenticated}}
+<div class="row d-flex justify-content-center m-0  content-creation-section tags-selection-section">
+  <div class="col-lg-8 col-md-12">
+    <Toc @page="4"/>
+  </div>
 
-      {{#if this.config.content.APP.use_preset_tags}}
+  <div class="col-lg-6 col-sm-8 ">
 
-        <h5>{{t "teach.tag.select"}}</h5>
-        <hr>
-        <ul class="nav nav-tabs" id="myTab" role="tablist">
-          <li class="nav-item">
-            <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home"
-               aria-selected="true">
-              {{t "teach.tag.topic"}}
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile"
-               aria-selected="false">
-              {{t "teach.tag.competency"}}
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact"
-               aria-selected="false">
-              {{t "teach.tag.level"}}
-            </a>
-          </li>
+    {{#if this.config.content.APP.use_preset_tags}}
 
-          <li class="nav-item">
-            <a class="nav-link" id="contact-tab" data-toggle="tab" href="#platform" role="tab" aria-controls="platform"
-               aria-selected="false">
-              {{t "teach.tag.platform"}}
-            </a>
-          </li>
+      <h5>{{t "teach.tag.select"}}</h5>
+      <hr>
+      <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item">
+          <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home"
+             aria-selected="true">
+            {{t "teach.tag.topic"}}
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile"
+             aria-selected="false">
+            {{t "teach.tag.competency"}}
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact"
+             aria-selected="false">
+            {{t "teach.tag.level"}}
+          </a>
+        </li>
 
-          <li class="nav-item">
-            <a class="nav-link" id="contact-tab" data-toggle="tab" href="#kicd" role="tab" aria-controls="kicd"
-               aria-selected="false">
-              {{t "teach.tag.kicd_status"}}
-            </a>
-          </li>
-        </ul>
-        <div class="tab-content" id="myTabContent">
-          <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-            {{#each this.topic_list as |item|}}
-              <button type="button" class="btn btn-outline-primary m-1" {{on "click" (fn this.addme item "topic")}}>
-                {{item}}
-              </button>
-            {{/each}}
-          </div>
-          <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-            {{#each this.competency_list as |item|}}
-              <button type="button" class="btn btn-outline-primary m-1"
-                {{on "click" (fn this.addme item "competency")}}>
-                {{item}}
-              </button>
-            {{/each}}
-          </div>
-          <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
-            {{#each this.level_list as |item|}}
-              <button type="button" class="btn btn-outline-primary m-1" {{on "click" (fn this.addme item "level")}}>
-                {{item}}
-              </button>
-            {{/each}}
-          </div>
+        <li class="nav-item">
+          <a class="nav-link" id="contact-tab" data-toggle="tab" href="#platform" role="tab" aria-controls="platform"
+             aria-selected="false">
+            {{t "teach.tag.platform"}}
+          </a>
+        </li>
 
-          <div class="tab-pane fade" id="platform" role="tabpanel" aria-labelledby="platform-tab">
-
-            {{#each this.platform_list as |item|}}
-              <button type="button" class="btn btn-outline-primary m-1" {{on "click" (fn this.addme item "platform")}}>
-                {{item}}
-              </button>
-            {{/each}}
-          </div>
-
-
-          <div class="tab-pane fade" id="kicd" role="tabpanel" aria-labelledby="kicd-tab">
-
-            {{#each this.kicd_list as |item|}}
-              <button type="button" class="btn btn-outline-primary m-1" {{on "click" (fn this.addme item "kicd")}}>
-                {{item}}
-              </button>
-            {{/each}}
-          </div>
+        <li class="nav-item">
+          <a class="nav-link" id="contact-tab" data-toggle="tab" href="#kicd" role="tab" aria-controls="kicd"
+             aria-selected="false">
+            {{t "teach.tag.kicd_status"}}
+          </a>
+        </li>
+      </ul>
+      <div class="tab-content" id="myTabContent">
+        <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+          {{#each this.topic_list as |item|}}
+            <button type="button" class="btn btn-outline-primary m-1" {{on "click" (fn this.addme item "topic")}}>
+              {{item}}
+            </button>
+          {{/each}}
+        </div>
+        <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+          {{#each this.competency_list as |item|}}
+            <button type="button" class="btn btn-outline-primary m-1"
+              {{on "click" (fn this.addme item "competency")}}>
+              {{item}}
+            </button>
+          {{/each}}
+        </div>
+        <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
+          {{#each this.level_list as |item|}}
+            <button type="button" class="btn btn-outline-primary m-1" {{on "click" (fn this.addme item "level")}}>
+              {{item}}
+            </button>
+          {{/each}}
         </div>
 
-        <br>
-        <br>
-      {{/if}}
+        <div class="tab-pane fade" id="platform" role="tabpanel" aria-labelledby="platform-tab">
 
-      <h5>{{t "teach.tag.custom_tag"}}</h5>
-      <form method="post" {{on "submit" this.addtag}}>
-        <Input @type="text" id="tag" @value={{this.tag}} aria-controls="existing-user-table" placeholder={{t "teach.tag.custom_tag_placeholder"}}
-               class="form-control"/>
-        <button type="submit" class="btn btn-primary btn-sm mt-2 ">{{t "buttons.submit"}}</button>
-      </form>
-      <hr>
-      {{#if this.config.content.APP.use_preset_tags}}
+          {{#each this.platform_list as |item|}}
+            <button type="button" class="btn btn-outline-primary m-1" {{on "click" (fn this.addme item "platform")}}>
+              {{item}}
+            </button>
+          {{/each}}
+        </div>
 
-        {{#each this.competency_cart as |item|}}
-          <button type="button" class="btn btn-primary m-1" {{on "click" (fn this.removeme item "competency")}}>
-            {{item}}
-            <span aria-hidden="true">&times;</span>
-          </button>
-        {{/each}}
-        {{#each this.topic_cart as |tag|}}
-          <button type="button" class="btn btn-primary m-1" {{on "click" (fn this.removeme tag  "topic")}}>
-            {{tag}}
-            <span aria-hidden="true">&times;</span>
-          </button>
 
-        {{/each}}
+        <div class="tab-pane fade" id="kicd" role="tabpanel" aria-labelledby="kicd-tab">
 
-        {{#each this.level_cart as |tag|}}
-          <button type="button" class="btn btn-primary m-1" {{on "click" (fn this.removeme tag  "level")}}>
-            {{tag}}
-            <span aria-hidden="true">&times;</span>
-          </button>
+          {{#each this.kicd_list as |item|}}
+            <button type="button" class="btn btn-outline-primary m-1" {{on "click" (fn this.addme item "kicd")}}>
+              {{item}}
+            </button>
+          {{/each}}
+        </div>
+      </div>
 
-        {{/each}}
-        {{#each this.platform_cart as |tag|}}
-          <button type="button" class="btn btn-primary m-1" {{on "click" (fn this.removeme tag "platform")}}>
-            {{tag}}
-            <span aria-hidden="true">&times;</span>
-          </button>
+      <br>
+      <br>
+    {{/if}}
 
-        {{/each}}
-        {{#each this.kicd_cart as |tag|}}
-          <button type="button" class="btn btn-primary m-1" {{on "click" (fn this.removeme tag  "kicd")}}>
-            {{tag}}
-            <span aria-hidden="true">&times;</span>
-          </button>
+    <h5>{{t "teach.tag.custom_tag"}}</h5>
+    <form method="post" {{on "submit" this.addtag}}>
+      <Input @type="text" id="tag" @value={{this.tag}} aria-controls="existing-user-table" placeholder={{t
+              "teach.tag.custom_tag_placeholder"}}
+             class="form-control"/>
+      <button type="submit" class="btn btn-primary btn-sm mt-2 ">{{t "buttons.submit"}}</button>
+    </form>
+    <hr>
+    {{#if this.config.content.APP.use_preset_tags}}
 
-        {{/each}}
-      {{/if}}
-
-      {{#each this.custom_cart as |tag|}}
-        <button type="button" class="btn btn-success btn-sm m-1" {{on "click" (fn this.removeme tag "custom")}}>
+      {{#each this.competency_cart as |item|}}
+        <button type="button" class="btn btn-primary m-1" {{on "click" (fn this.removeme item "competency")}}>
+          {{item}}
+          <span aria-hidden="true">&times;</span>
+        </button>
+      {{/each}}
+      {{#each this.topic_cart as |tag|}}
+        <button type="button" class="btn btn-primary m-1" {{on "click" (fn this.removeme tag  "topic")}}>
           {{tag}}
           <span aria-hidden="true">&times;</span>
         </button>
 
       {{/each}}
 
-      <div class="text-right">
-      {{#if (or this.topic_cart this.custom_cart this.level_cart  this.competency_cart)}}
-        <button type="button" class="btn btn-primary" {{on "click" this.updateTags}}>
-          {{t "buttons.continue"}}
+      {{#each this.level_cart as |tag|}}
+        <button type="button" class="btn btn-primary m-1" {{on "click" (fn this.removeme tag  "level")}}>
+          {{tag}}
+          <span aria-hidden="true">&times;</span>
         </button>
 
-      {{else}}
-        <LinkTo @route="teach.review-questions" @model={{this.model.id}} class="btn btn-warning">
-          {{t "buttons.skip"}}
-        </LinkTo>
-      {{/if}}
-      </div>
+      {{/each}}
+      {{#each this.platform_cart as |tag|}}
+        <button type="button" class="btn btn-primary m-1" {{on "click" (fn this.removeme tag "platform")}}>
+          {{tag}}
+          <span aria-hidden="true">&times;</span>
+        </button>
 
-    {{else}}
-      <Warning @message={{t "teach.index.no_permission"}} />
+      {{/each}}
+      {{#each this.kicd_cart as |tag|}}
+        <button type="button" class="btn btn-primary m-1" {{on "click" (fn this.removeme tag  "kicd")}}>
+          {{tag}}
+          <span aria-hidden="true">&times;</span>
+        </button>
 
+      {{/each}}
     {{/if}}
+
+    {{#each this.selectedTags as |tag|}}
+      <button type="button" class="btn btn-success btn-sm m-1" {{on "click" (fn this.removeme tag "custom")}}>
+        {{tag}}
+        <span aria-hidden="true">&times;</span>
+      </button>
+
+    {{/each}}
   </div>
+
+
+  <div class="col-lg-6 col-sm-8 d-flex justify-content-between mr-sm-3 ml-sm-3 mt-3 action-buttons">
+    <LinkTo @route="teach.thumbnail-upload" @model={{this.model.id}} class="btn btn-outline-primary btn-block mr-2 previous">
+      {{t "teach.buttons.previous"}}
+    </LinkTo>
+
+    <button type="button" class="btn btn-primary btn-block mr-2 next"  {{on "click" this.updateTags}}>
+      {{t "teach.buttons.next"}}
+    </button>
+  </div>
+
 </div>
