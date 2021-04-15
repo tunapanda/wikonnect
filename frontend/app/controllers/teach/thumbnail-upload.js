@@ -54,7 +54,8 @@ export default class TeachH5pUploadController extends Controller {
       await this.uploader.startUpload(
         [host, 'chapters', id, 'chapter-image'].join('/')
       );
-
+      //reset the thumbnail local property
+      this.thumbnail = null;
       this.transitionToRoute('teach.tag', id);
     } catch (e) {
       this.notify.alert('Unexpected err encountered during thumbnail upload');
