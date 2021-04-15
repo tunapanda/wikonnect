@@ -45,6 +45,7 @@ $palette: (
       min-height: 34px;
       outline: none;
       box-shadow: none;
+      display: flex;
 
       &:hover, &:active {
         outline: none;
