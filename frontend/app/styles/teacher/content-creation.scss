@@ -22,17 +22,19 @@ $palette: (
   }
 }
 
-.thumbnail-upload-section{
-  .drop-area{
-    .preview-image{
+.thumbnail-upload-section {
+  .drop-area {
+    .preview-image {
       height: 170px;
       max-width: 310px;
-      img{
-        max-width: 100%;
-        height: auto;
+      border: solid 1px map-get($palette, grey);
+      img {
+        width: auto;
+        height: 100%;
       }
     }
   }
+
 }
 
 //ratings and review section
@@ -62,4 +64,16 @@ $palette: (
     }
   }
 
+}
+
+
+@media only screen and (max-width: 600px) {
+  .thumbnail-upload-section {
+    .drop-area {
+      height: 340px;
+      .ember-file-drop-zone {
+        max-width: 15em;
+      }
+    }
+  }
 }
