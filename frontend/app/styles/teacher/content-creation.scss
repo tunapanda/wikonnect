@@ -22,6 +22,19 @@ $palette: (
   }
 }
 
+.thumbnail-upload-section{
+  .drop-area{
+    .preview-image{
+      height: 170px;
+      max-width: 310px;
+      img{
+        max-width: 100%;
+        height: auto;
+      }
+    }
+  }
+}
+
 //ratings and review section
 .review-question-section {
 
