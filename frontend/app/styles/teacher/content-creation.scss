@@ -8,6 +8,7 @@ $palette: (
 .content-creation-section {
   .action-buttons {
     .previous {
+      white-space: nowrap;
       margin-top: 0;
       background-color: transparent;
       color: map-get($palette, dark);
@@ -15,6 +16,7 @@ $palette: (
     }
 
     .next {
+      white-space: nowrap;
       margin-top: 0;
     }
   }
