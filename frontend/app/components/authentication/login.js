@@ -36,6 +36,11 @@ export default class LoginComponent extends Component {
   }
 
   @action
+  authenticateWithGitHub() {
+    this.session.authenticate('authenticator:torii', 'github');
+  }
+
+  @action
   login(model) {
     this.loading = true;
     this.me

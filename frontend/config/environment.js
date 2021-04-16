@@ -67,6 +67,11 @@ module.exports = function (environment) {
           apiKey: process.env.FACEBOOK_KEY,
           scope: 'email',
         },
+        'github-oauth2': {
+          apiKey: process.env.GITHUB_CLIENT_ID,
+          redirectUri: process.env.GITHUB_REDIRECT_URI,
+          scope: 'repo user:email',
+        },
       },
     },
 

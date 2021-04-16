@@ -6,7 +6,7 @@ login:
   enter_username: Enter Username
   password: Password
   enter_password: Enter Password
-  login_third_party: Login with {authProvider}
+  login_third_party: Continue with {authProvider}
 
 signup:
   email: Email

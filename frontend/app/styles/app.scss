@@ -55,7 +55,7 @@ body {
   color: white;
   width: 100%;
   -webkit-mask-image: -webkit-gradient(linear, left top, left bottom,
-    from(rgba(252, 113, 0, 0)), to(rgba(0, 0, 0, 1)));
+      from(rgba(252, 113, 0, 0)), to(rgba(0, 0, 0, 1)));
 }
 
 body {
@@ -153,3 +153,5 @@ pre {
 @import "loader";
 @import "teach-login";
 @import "rating-and-review";
+@import "login";
+@import "signup";

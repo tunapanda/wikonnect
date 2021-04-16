@@ -1,0 +1,26 @@
+.signup-form {
+  text-align: left;
+  padding: 2rem;
+  width: 500px;
+  height: 100%;
+  margin: 2%;
+  margin-bottom: 30%;
+  border-radius: 5px;
+  -webkit-box-shadow: 0px 0px 13px 4px rgba(189, 182, 189, 0.34);
+  -moz-box-shadow: 0px 0px 13px 4px rgba(189, 182, 189, 0.34);
+  box-shadow: 0px 0px 13px 4px rgba(189, 182, 189, 0.34);
+  background-color: white;
+
+  h1 {
+    font-weight: bold;
+    font-size: 2rem;
+  }
+
+  header {
+    padding: 0.5rem;
+    height: 150px;
+    background-color: #faf1db;
+    display: flex;
+    align-items: center;
+  }
+}

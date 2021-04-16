@@ -1,47 +1,65 @@
-<div class="p-4">
-  <BsForm @class="form" @formLayout="vertical" @model={{@newUser}} @onSubmit={{this.createUser}} as |form|>
+<div class="d-flex justify-content-center align-items-center">
+  <div class="signup-form">
+    <BsForm @class="form" @formLayout="vertical" @model={{@newUser}} @onSubmit={{this.createUser}} as |form|>
 
-    <div class="signup-form-fields">
-      <form.element id="username" class="" @controlType="text" @label={{t "auth.login.username"}} @property="username" as |el|>
-        <el.control autocomplete="username" placeholder={{t "auth.login.enter_username"}}></el.control>
-      </form.element>
-      {{#each @newUser.errors as |err| }}
+      <div class="signup-form-fields">
+        <form.element id="username" class="" @controlType="text" @label={{t "auth.login.username" }}
+          @property="username" as |el|>
+          <el.control autocomplete="username" placeholder={{t "auth.login.enter_username" }}></el.control>
+        </form.element>
+        {{#each @newUser.errors as |err| }}
         {{#if (eq err.key "username")}}
-          <BsAlert @type="danger" @fade={{true}}>
-            {{err.validation}}
-          </BsAlert>
+        <BsAlert @type="danger" @fade={{true}}>
+          {{err.validation}}
+        </BsAlert>
         {{/if}}
-      {{/each}}
+        {{/each}}
 
-      <form.element id="email" class="" @controlType="text" @label={{t "auth.signup.email"}} @property="email" as |el|>
-        <el.control autocomplete="email" placeholder="example@mail.com"></el.control>
-      </form.element>
-      {{#each @newUser.errors as |err| }}
+        <form.element id="email" class="" @controlType="text" @label={{t "auth.signup.email" }} @property="email" as
+          |el|>
+          <el.control autocomplete="email" placeholder="example@mail.com"></el.control>
+        </form.element>
+        {{#each @newUser.errors as |err| }}
         {{#if (eq err.key "email")}}
-          <BsAlert @type="danger" @fade={{true}}>
-            {{err.validation}}
-          </BsAlert>
+        <BsAlert @type="danger" @fade={{true}}>
+          {{err.validation}}
+        </BsAlert>
         {{/if}}
-      {{/each}}
+        {{/each}}
 
-      <form.element id="password" class="" @controlType="password" @label={{t "auth.login.password"}} @property="password" as |el|>
-        <el.control autocomplete="new-password" placeholder={{t "auth.login.enter_password"}}></el.control>
-      </form.element>
+        <form.element id="password" class="" @controlType="password" @label={{t "auth.login.password" }}
+          @property="password" as |el|>
+          <el.control autocomplete="new-password" placeholder={{t "auth.login.enter_password" }}></el.control>
+        </form.element>
 
-      <form.element id="confirm-password" class="" @controlType="password" @label={{t "auth.signup.repeat_password"}}
-                    @property="passwordConfirmation" as |el|>
-        <el.control placeholder={{t "auth.signup.repeat_password"}}  autocomplete="new-password"></el.control>
-      </form.element>
+        <form.element id="confirm-password" class="" @controlType="password" @label={{t "auth.signup.repeat_password" }}
+          @property="passwordConfirmation" as |el|>
+          <el.control placeholder={{t "auth.signup.repeat_password" }} autocomplete="new-password"></el.control>
+        </form.element>
 
-      <form.element id="invite-code" class="" @controlType="text" @label={{t "auth.signup.invite_code"}}  @property="inviteCode" as |el|>
-        <el.control placeholder={{t "auth.signup.invite_code"}}></el.control>
-      </form.element>
-    </div>
+        <form.element id="invite-code" class="" @controlType="text" @label={{t "auth.signup.invite_code" }}
+          @property="inviteCode" as |el|>
+          <el.control placeholder={{t "auth.signup.invite_code" }}></el.control>
+        </form.element>
+      </div>
 
-    <BsButton class="btn btn-primary form-control mb-2" @type="submit" @defaultText={{t "auth.signup.signup"}} @buttonType="submit"/>
+      <BsButton class="btn btn-primary form-control mb-2" @type="submit" @defaultText={{t "auth.signup.signup" }}
+        @buttonType="submit" />
 
-    <BsButton class="bg-primary form-control" {{ on "click" this.authenticateWithGoogleImplicitGrant }}>
-      {{t "auth.signup.signup_third_party" authProvider="Google"}}
-    </BsButton>
-  </BsForm>
+      <BsButton type="button" class="bg-primary form-control mb-2" {{ on "click"
+        this.authenticateWithGoogleImplicitGrant}}>
+        <span class="px-2">{{svg-jar "google-icon"}}</span> {{t "auth.signup.signup_third_party" authProvider="Google"}}
+      </BsButton>
+
+      <BsButton type="button" class="bg-primary form-control mb-2" {{ on "click" this.authenticateWithFacebook}}>
+        <span class="px-2">{{svg-jar "facebook-icon"}}</span>{{t "auth.signup.signup_third_party"
+        authProvider="Facebook"}}
+      </BsButton>
+
+      <BsButton type="button" class="bg-primary form-control mb-2" {{ on "click" this.authenticateWithGitHub}}>
+        <span class="px-2">{{svg-jar "github-icon"}}</span>{{t "auth.signup.signup_third_party" authProvider="GitHub"}}
+      </BsButton>
+
+    </BsForm>
+  </div>
 </div>

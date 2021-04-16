@@ -9,7 +9,7 @@ export default Torii.extend({
     return this._super(...arguments).then((data) => {
       this.me
         .registerWithOauth2({
-          googleToken: data.authorizationCode,
+          code: data.authorizationCode,
           provider: data.provider,
         })
         .then((user) => {

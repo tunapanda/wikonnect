@@ -30,20 +30,20 @@
             </BsAlert>
           {{/if}}
         {{/each}}
-    
+
         <div class="login-form-fields">
           <form.element id="username" @controlType="text" @label={{t "auth.login.username" }} @property="username" as |el|>
             <el.control autocomplete="username" placeholder={{t "auth.login.enter_username" }}></el.control>
           </form.element>
-    
-    
+
+
           <form.element id="password" @controlType="password" @label={{t "auth.login.password" }} @property="password" as
             |el|>
             <el.control autocomplete="current-password" placeholder={{t "auth.login.enter_password" }}></el.control>
           </form.element>
-    
+
         </div>
-    
+
         {{#if this.loading}}
           <button class="bg-primary form-control" type="button">
             <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
@@ -52,12 +52,20 @@
         {{else}}
           <BsButton class="bg-primary form-control mb-2" @defaultText={{t "auth.login.login" }} type="submit">
           </BsButton>
-      
-          <BsButton type="button" class="bg-primary form-control" {{ on "click" this.authenticateWithGoogleImplicitGrant}}>
-            {{t "auth.login.login_third_party" authProvider="Google"}}
+
+          <BsButton type="button" class="bg-primary form-control mb-2" {{ on "click" this.authenticateWithGoogleImplicitGrant}}>
+            <span class="px-2">{{svg-jar "google-icon"}}</span> {{t "auth.login.login_third_party" authProvider="Google"}}
+          </BsButton>
+
+          <BsButton type="button" class="bg-primary form-control mb-2" {{ on "click" this.authenticateWithFacebook}}>
+            <span class="px-2">{{svg-jar "facebook-icon"}}</span>{{t "auth.login.login_third_party" authProvider="Facebook"}}
+          </BsButton>
+
+          <BsButton type="button" class="bg-primary form-control mb-2" {{ on "click" this.authenticateWithGitHub}}>
+            <span class="px-2">{{svg-jar "github-icon"}}</span>{{t "auth.login.login_third_party" authProvider="GitHub"}}
           </BsButton>
         {{/if}}
-    
+
       </BsForm>
       <div class="sign-up">
         <p>{{t "teach.login.sign_up" htmlSafe=true}}</p>
