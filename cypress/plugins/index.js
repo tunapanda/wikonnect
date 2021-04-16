@@ -20,14 +20,11 @@ module.exports = (on, config) => {
 
   on('task', {
     'db:reset': async function () {
-      knexfile.debug = false;
+      // knexfile.debug = false;
       const db = require('knex')(knexfile);
-      // console.log('rolling back db');
       await db.migrate.rollback();
       await db.migrate.latest();
       const files = await db.seed.run();
-      // console.log('seed files:');
-      // console.log(files);
       db.destroy();
       return files;
     }
