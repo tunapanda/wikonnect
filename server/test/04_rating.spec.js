@@ -10,7 +10,7 @@ chai.use(chaiHttp);
 chai.use(chaiJSON);
 chai.should();
 
-const route = '/api/v1/reviews';
+const route = '/api/v1/ratings';
 
 async function getSample(valid = true) {
 
@@ -20,34 +20,27 @@ async function getSample(valid = true) {
       .where({approved: true})
       .limit(1))[0];
 
-    const rating = (await knex('ratings')
-      .select(['ratings.id', 'ratings.reaction'])
-      .where({isDeleted: false})
-      .limit(1))[0];
-
     return {
       chapterId: chapter.id,
-      reaction: rating.reaction,
-      ratingId: rating.id,
+      reaction: 'like',
       metadata: {
-        audioQuality: 'It was good',
-        contentAccuracy: ['Zero accuracy'],
-        language: 'No profanity or cursing works'
+        audioQuality: 1,
+        contentAccuracy: 1,
+        language: 2
       }
     };
 
   }
 }
 
-describe('CHAPTER REVIEWS ROUTE', () => {
-  before(async () => {
-    await knex.migrate.rollback();
-    await knex.migrate.latest();
-    return await knex.seed.run();
-  });
+describe('CHAPTER RATINGS ROUTE', () => {
+  // before(async () => {
+  //   await knex.migrate.rollback();
+  //   await knex.migrate.latest();
+  //   return await knex.seed.run();
+  // });
 
-
-  it('Should fetch existing chapter reviews', done => {
+  it('Should fetch existing chapter ratings', done => {
     chai
       .request(server)
       .get(route)
@@ -55,67 +48,67 @@ describe('CHAPTER REVIEWS ROUTE', () => {
       .end((err, res) => {
         res.should.have.status(200);
         res.should.be.json;
-        res.body.reviews[0].should.have.property('id');
+        res.body.ratings[0].should.have.property('id');
         done();
       });
   });
 
-  it('Should query existing chapter reviews to include respective rating', done => {
+  it('Should query existing chapter ratings to include respective review', done => {
     chai
       .request(server)
-      .get(`${route}?include=rating`)
+      .get(`${route}?include=review`)
       .set(tokens.headersSuperAdmin1)
       .end((err, res) => {
         res.should.have.status(200);
         res.should.be.json;
-        res.body.reviews[0].should.have.property('id');
-        res.body.reviews[0].should.have.property('rating');
+        res.body.ratings[0].should.have.property('id');
+        res.body.ratings[0].should.have.property('review');
         done();
       });
   });
 
-  it('Should create chapter review', async () => {
+  it('Should create chapter ratings', async () => {
     //clear everything to avoid conflict
-    await knex('reviews').delete();
+    await knex('ratings').delete();
     const data = await getSample();
     return chai
       .request(server)
       .post(route)
       .set(tokens.headersSuperAdmin1)
       .set('Content-Type', 'application/json')
-      .send({review: data})
+      .send({rating: data})
       .then((res) => {
         res.status.should.eql(201);
         res.should.be.json;
-        res.body.should.have.property('review');
+        res.body.should.have.property('rating');
       });
   });
 
-  it('Should update a chapter review', async () => {
-    const review = (await knex('reviews').select().limit(1))[0];
+  it('Should update a chapter rating', async () => {
+    const rating = (await knex('ratings').select().limit(1))[0];
     const data = await getSample();
 
     return chai
       .request(server)
-      .put(`${route}/${review.id}`)
+      .put(`${route}/${rating.id}`)
       .set(tokens.headersSuperAdmin1)
       .set('Content-Type', 'application/json')
-      .send({review: data})
+      .send({rating: data})
       .then((res) => {
         res.should.have.status(200);
         res.should.be.json;
-        res.body.review.should.have.property('id');
-        res.body.review.should.have.property('metadata');
-        res.body.review.metadata.should.eql(data.metadata);
+        res.body.rating.should.have.property('id');
+        res.body.rating.should.have.property('metadata');
+        res.body.rating.metadata.should.eql(data.metadata);
       });
   });
 
-  it('Should delete a chapter review', async () => {
-    const review = (await knex('reviews').select().limit(1))[0];
+  it('Should delete a chapter rating', async () => {
+    const rating = (await knex('ratings').select().limit(1))[0];
 
     return chai
       .request(server)
-      .delete(`${route}/${review.id}`)
+      .delete(`${route}/${rating.id}`)
       .set(tokens.headersSuperAdmin1)
       .then((res) => {
         res.status.should.eql(200);

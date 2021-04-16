@@ -3,7 +3,6 @@ const chaiHttp = require('chai-http');
 const chaiJSON = require('chai-json-schema');
 const server = require('../index');
 const tokens = require('./_tokens');
-const knex = require('../db/db');
 
 chai.use(chaiHttp);
 chai.use(chaiJSON);
@@ -56,11 +55,6 @@ const userComment = {
 };
 
 describe('CHAPTER ROUTE', () => {
-  before(async () => {
-    await knex.migrate.rollback();
-    await knex.migrate.latest();
-    return await knex.seed.run();
-  });
 
   // Passing tests
   it('Should CREATE a chapter record on POST with valid data and return a JSON object', done => {
