@@ -16,7 +16,7 @@
 // Import commands.js using ES2015 syntax:
 import './commands'
 
-beforeEach(function resetDb() {
+before(function resetDb() {
   cy.task('db:reset');
 });
 
