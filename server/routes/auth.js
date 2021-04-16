@@ -3,11 +3,8 @@ const Router = require('koa-router');
 const jsonwebtoken = require('jsonwebtoken');
 
 const User = require('../models/user');
-const sendMAil = require('../utils/sendMail');
 const log = require('../utils/logger');
 const { secret } = require('../middleware/jwt');
-const redisClient = require('../utils/redisConfig');
-const UserVerification = require('../models/user_verification');
 const validateAuthRoutes = require('../middleware/validateRoutePostSchema/validateAuthRoutes');
 
 
@@ -76,88 +73,6 @@ router.post('/', validateAuthRoutes.validateUserLogin, async ctx => {
   }
 });
 
-
-async function verifyEmail(email) {
-  const rand = Math.floor((Math.random() * 100) + 54);
-  const resetMail = email;
-
-  const reply = redisClient.exists(resetMail);
-  if (reply !== true) {
-    return true;
-  }
-
-  redisClient.set(resetMail, rand);
-  redisClient.expire(resetMail, 600);
-
-  const buf = Buffer.from(resetMail, 'ascii').toString('base64');
-  sendMAil(buf, rand);
-}
-router.get('/reset/:mail', async ctx => {
-  let confirmEmail = await User.query().where('email', ctx.params.mail);
-  confirmEmail = confirmEmail[0];
-
-  if (confirmEmail == undefined) {
-    log.info('criminal', { error: { errors: ['User email not found'] } });
-    throw new Error({ error: { errors: ['User email not found'] } });
-  }
-
-  try {
-    await verifyEmail(confirmEmail.email);
-
-
-    log.info('Email verification sent to %s', confirmEmail.email);
-    ctx.status = 201;
-    ctx.body = { confirmEmail };
-
-  } catch (e) {
-    log.info('Email verification already requested');
-    if (e.statusCode) {
-      ctx.throw(e.statusCode, null, { errors: [e.message] });
-    } else { ctx.throw(400, null, { errors: [e.message] }); }
-    throw e;
-  }
-
-
-});
-
-router.get('/validate', async ctx => {
-  const decodedMail = Buffer.from(ctx.query.mail, 'base64').toString('ascii');
-
-  const getEmail = redisClient.get(decodedMail);
-  if (getEmail === false) {
-    ctx.throw(401, 'Invalid email address');
-  }
-  const delEmail = redisClient.del(decodedMail, ctx.query.id);
-  if (delEmail !== true) {
-    ctx.throw(401, 'Token error');
-  }
-
-  // after validation update user verification table with current data
-  const confirmEmail = await User.query().where('email', decodedMail);
-  if (!confirmEmail[0]) {
-    ctx.throw(401, 'No user with that email');
-  }
-  let userId = confirmEmail[0].id;
-  const data = {
-    userId: userId,
-    email: true,
-    phoneNumber: true
-  };
-
-  // check if validation record already exists
-  // if it does then update the record and avid making a new one
-  let verifiedData = await UserVerification.query().where('user_id', userId);
-  let veedData;
-  if (!verifiedData[0]) {
-    veedData = await UserVerification.query().insertAndFetch(data);
-  } else {
-    veedData = await UserVerification.query().patchAndFetchById(verifiedData[0].id, data);
-  }
-
-  ctx.status = 200;
-  ctx.body = { message: 'Email has been verified', veedData };
-
-});
 
 
 module.exports = router.routes();
