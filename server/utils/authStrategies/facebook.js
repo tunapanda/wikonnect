@@ -10,6 +10,7 @@ module.exports = async (code) => {
   const data = await response.json();
   const fData = await fetch(`https://graph.facebook.com/v10.0/me/?access_token=${data.access_token}&fields=id,name,email,birthday`);
   const userData = await fData.json();
+  
   return {
     email: userData.email,
     hash: hashPassword,
@@ -23,5 +24,4 @@ module.exports = async (code) => {
       'lastName': userData.name.split(' ')[1] || username.toLowerCase(),
     }
   };
-
-}
+};

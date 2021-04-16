@@ -11,7 +11,6 @@ const router = new Router({
 router.post('/', async ctx => {
   const { code, provider } = ctx.request.body.oauth2;
   const newUser = await authStrategies[provider](code);
-  console.log(newUser);
   try {
 
     const user = await User.query().insertAndFetch(newUser);
