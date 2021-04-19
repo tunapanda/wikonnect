@@ -45,8 +45,12 @@ export default class H5pEditorComponent extends Component {
     };
 
     element.saveContentCallback = async (contentId, requestBody) => {
-      return await fetch(`${this.baseUrl}/content`, {
-        method: 'PUT',
+      const url = contentId
+        ? `${this.baseUrl}/content/${contentId}`
+        : `${this.baseUrl}/content/`;
+
+      return await fetch(url, {
+        method: contentId ? 'PUT' : 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
