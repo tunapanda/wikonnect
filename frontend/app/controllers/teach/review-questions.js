@@ -5,11 +5,7 @@ import { A } from '@ember/array';
 
 export default class ReviewQuestionsController extends Controller {
   @tracked
-  selectedCategories = A(
-    this.chapter.reviewQuestions
-      ? this.chapter.reviewQuestions
-      : this.reviewQuestionsCategories
-  );
+  selectedCategories;
 
   get chapter() {
     return this.model[0];
@@ -23,8 +19,23 @@ export default class ReviewQuestionsController extends Controller {
     return this.model[1].map((q) => q.category);
   }
 
+  get selectedQuestions() {
+    if (this.selectedCategories) {
+      return this.selectedCategories;
+    }
+    return this.reviewQuestionsCategories;
+  }
+
   @action
   categoryPreselected(category) {
+    if (!this.selectedCategories && !this.chapter.reviewQuestions) {
+      //initialize the selected categories with all review questions
+      this.selectedCategories = A(this.reviewQuestionsCategories);
+    } else if (!this.selectedCategories && this.chapter.reviewQuestions) {
+      // initialize the selected categories with existing chapter review questions
+      this.selectedCategories = A(this.chapter.reviewQuestions);
+    }
+
     if (
       this.selectedCategories.length === 0 &&
       (!this.chapter.reviewQuestions ||
@@ -50,6 +61,9 @@ export default class ReviewQuestionsController extends Controller {
     try {
       this.chapter.reviewQuestions = this.selectedCategories;
       await this.chapter.save();
+      //reset the selected questions
+      this.selectedCategories = null;
+
       this.transitionToRoute('teach.preview', this.chapter.id);
     } catch (e) {
       this.notify.alert('Request not successful. Unexpected error encountered');
