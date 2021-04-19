@@ -34,6 +34,7 @@ Router.map(function () {
     this.route('edit', { path: '/edit/:chapter_id' });
     this.route('h5p-editor', { path: '/h5p-editor/:id' });
     this.route('login');
+    this.route('review-questions', { path: 'review-questions/:id' });
   });
   this.route('embed', { path: '/embed/:chapter_id' });
   this.route('callback');

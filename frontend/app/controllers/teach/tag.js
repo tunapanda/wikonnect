@@ -73,16 +73,27 @@ export default class TeachTagController extends Controller {
 
   @tracked custom_tags = [];
 
-  @tracked custom_cart = A([]);
+  @tracked custom_cart = this.model.tags ? A(this.model.tags) : A([]);
   @tracked tag;
+
+  get selectedTags() {
+    return this.custom_cart;
+  }
 
   @action
   addtag(evt) {
     evt.preventDefault();
     evt.stopPropagation();
     if (this.tag) {
-      this.custom_cart.pushObject(this.tag);
-      this.tag = '';
+      const index = this.custom_cart.findIndex(
+        (pred) => pred.toLowerCase() === this.tag.toLowerCase()
+      );
+      if (index > -1) {
+        this.tag = '';
+      } else {
+        this.custom_cart.pushObject(this.tag);
+        this.tag = '';
+      }
     }
   }
 
@@ -102,7 +113,7 @@ export default class TeachTagController extends Controller {
     let chapter = await this.store.peekRecord('chapter', id);
     chapter.tags = combined;
     await chapter.save();
-    this.transitionToRoute('teach.preview', id);
+    this.transitionToRoute('teach.review-questions', id);
   }
 
   @action

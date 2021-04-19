@@ -1,35 +1,34 @@
-<div class=" d-flex row text-center p-4 shadow-sm justify-content-center">
-  <h3><b>{{t "messages.create_h5p_chapter"}}</b></h3>
+<div class=" d-flex row text-center p-4 m-0 shadow-sm justify-content-center">
+  {{#if this.model.contentId}}
+    <h3><b>{{t "messages.edit_h5p_chapter"}}</b></h3>
+  {{else}}
+    <h3><b>{{t "messages.create_h5p_chapter"}}</b></h3>
+  {{/if}}
 </div>
 
-<div class="d-flex flex-column align-items-center">
-  <Toc @page="2"/>
-  {{#if this.me.isAuthenticated}}
+<div class="row d-flex justify-content-center m-0 content-creation-section h5p-content-section">
+  <div class="col-lg-8 col-md-12">
+    <Toc @page="2"/>
+  </div>
 
-    <div class="text-center pt-4 pb-4 {{if this.editor 'd-none' ''}}">
-      <p class="text-center">{{t "teach.h5p.init"}}</p>
-      <Loader::Circular></Loader::Circular>
-    </div>
+  <div class="h5p-editor-section text-center col-10 pt-4 pb-4 {{if this.editor 'd-none' ''}}">
+    <p class="text-center">{{t "teach.h5p.init"}}</p>
+    <Loader::Circular></Loader::Circular>
+  </div>
 
-    <div class="container {{if this.editor '' 'h5p-editor-hidden'}}">
-      <div class="h5p-editor-section pl-lg-5 pb-3">
-        <H5p::Editor @onEditorInit={{this.onEditorInitialized}} @contentId={{this.model.contentId}}>
-        </H5p::Editor>
-      </div>
+  <div class="pb-3 ml-3 mr-3 col-md-12 col-lg-7  {{if this.editor '' 'h5p-editor-hidden'}}">
+    <H5p::Editor @onEditorInit={{this.onEditorInitialized}} @contentId={{this.model.contentId}}>
+    </H5p::Editor>
+  </div>
 
-      <div class="action-buttons d-flex justify-content-lg-end pr-lg-5 mr-lg-5">
-        <LinkTo @route="teach.edit" @model={{this.model.id}}
-                class="btn btn-outline-primary mr-2 d-none">
-          {{t "buttons.back"}}
-        </LinkTo>
-        <button type="button" class="btn btn-primary" {{on "click" this.saveH5PContent}} >
-          {{t "buttons.continue"}}
-        </button>
-      </div>
-    </div>
-  {{else}}
+  <div class="col-md-12 col-lg-7 pt-3 pb-5 d-flex justify-content-between mx-auto action-buttons">
+    <LinkTo @route="teach.edit" @model={{this.model.id}}
+            class="btn btn-outline-primary btn-block mr-2 previous">
+      {{t "teach.buttons.previous"}}
+    </LinkTo>
 
-    <Warning @message={{t "teach.index.no_permission"}}/>
-
-  {{/if}}
+    <button type="button" class="btn btn-primary btn-block ml-2 next" {{on "click" this.saveH5PContent}} >
+      {{t "teach.buttons.next"}}
+    </button>
+  </div>
 </div>

@@ -21,7 +21,9 @@ toc:
   h5p_content: Rekodi ya H5P
   thumbnail: Kijipicha
   tags: Lebo
-  preview_publish: Hakikisha halafu chapisha
+  preview_publish: Hakikisha halafu hapisha
+  select_review_questions: Ukadiriaji na Uhakiki
+
 
 create:
   chapter_name: Jina la Rekodi
@@ -34,6 +36,13 @@ edit:
 
 h5p:
   init: Inaanzisha mhariri
+  upload:
+    title: Pakia faili ya zip ya H5P
+    drag_and_drop: Buruta na uangushe hapa
+    or: au
+    uploading: Inapakia...
+    redirect_message: Utaelekezwa mara baada ya kupakia kukamilika
+    browse_files: Vinjari faili
 
 thumbnail:
   upload: Pakia kijipicha
@@ -43,6 +52,8 @@ thumbnail:
   accepted_file_types: "Aina za faili zilizokubaliwa: jpg, png, svg"
   uploading: Inapakia ...
   redirect_mesg: Utaelekezwa mara baada ya kupakia kukamilika
+  browse_files: Vinjari faili
+  change_image: Badilisha picha
 
 tag:
   custom_tag: Ongeza lebo maalum
@@ -54,7 +65,12 @@ tag:
   platform: Jukwaa
   kicd_status: Hali ya KICD
 
+review_questions:
+  title: Chagua maswali ya uhakiki na ukadiriaji
+  subtitle: Mapitio na ukadiriaji kutoka kwa wanafunzi zitakusaidia kuboresha yaliyomo
+
 preview:
+  title: Chungulia Sura ya H5P
   chapter: Sura
   approved: Imeidhinishwa
   unapproved: Haijaidhinishwa
@@ -64,7 +80,7 @@ preview:
   change_h5p: Hariri H5P
   upload_thumbnail: Pakia kijipicha
   edit_thumbnail: Hariri kijipicha
-  tags: Lebo
+  tags: Lebo zilizochaguliwa
   change_chapter_details: Badilisha maelezo ya sura
   publish: Chapisha
   unpublish: Ondoa
@@ -72,3 +88,13 @@ preview:
   publish_prompt: Una uhakika unataka kuchapisha sura hii?
   unpublish_prompt: Una uhakika unataka kutoa chapisho?
   delete_prompt: Una uhakika unataka kufuta
+  section_titles:
+    reviewQuestions: Aina zilizochaguliwa za ukaguzi na ukadiriaji
+  buttons:
+    modifyReviewQuestions: Rekebisha maswali
+
+buttons:
+  cancel: Ghairi
+  previous: Nyuma
+  next: Hifadhi na Endelea
+  skip: Ruka kwa Sasa

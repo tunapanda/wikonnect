@@ -1,4 +1,5 @@
 const { faker, seed_number } = require('../_seeds');
+const reviewQuestions = require('../../../utils/review-questions');
 
 exports.seed = function (knex) {
   // Deletes ALL existing entries
@@ -6,9 +7,8 @@ exports.seed = function (knex) {
     .then(() => knex('chapters').del())
     .then(() => {
       return knex('users').pluck('id').then((userIds) => {
-        const fakeChapters = [
-
-        ];
+        const fakeChapters = [];
+        const reviewQuestionsCategories = reviewQuestions.map((question) => question.category);
         for (let index = 0; index < seed_number; index++) {
           const name = faker.lorem.words();
           const slug = faker.helpers.slugify(name);
@@ -28,7 +28,8 @@ exports.seed = function (knex) {
             updated_at: faker.date.recent(),
             tags: faker.random.arrayElements(tags),
             approved: true,
-            verified: faker.random.boolean()
+            verified: faker.random.boolean(),
+            review_questions: faker.random.arrayElements(reviewQuestionsCategories, 4)
           });
         }
         fakeChapters.push({

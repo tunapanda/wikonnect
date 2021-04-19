@@ -1,0 +1,45 @@
+<div class=" d-flex row text-center p-4 m-0 shadow-sm justify-content-center">
+  {{#if this.chapter.reviewQuestions}}
+    <h3><b>{{t "messages.edit_h5p_chapter"}}</b></h3>
+  {{else}}
+    <h3><b>{{t "messages.create_h5p_chapter"}}</b></h3>
+  {{/if}}
+</div>
+
+<div class="d-flex flex-column align-items-center  content-creation-section review-question-section">
+  <div class="col-md-8">
+    <Toc @page="5"/>
+  </div>
+
+  <div class="row col-md-6 pt-4 ">
+    <h5 class="col-12 pb-3 pl-0 ">{{t "teach.review_questions.title"}}
+      {{t "teach.review_questions.subtitle"}}
+    </h5>
+
+    {{#each this.reviewQuestions as |question|}}
+      <div class="form-group review-question-option">
+        <button type="button"    {{on "click" (fn this.toggleCategorySelection question.category)}}
+                class="btn btn-outline-dark text-nowrap btn-sm mr-2  {{if
+                        (exec this.categoryPreselected question.category) "btn-warning"}}">
+          {{question.title}}
+          {{#if (exec this.categoryPreselected question.category)}}
+            <span class="close pl-3"> {{svg-jar "close" width="19" height="19"}}</span>
+          {{/if}}
+        </button>
+      </div>
+    {{/each}}
+
+    <div class="col-lg-12 mt-4 pb-5 d-flex justify-content-between mr-sm-3 ml-sm-3 action-buttons">
+
+      <LinkTo @route="teach.tag" @model={{this.chapter.id}} class="btn btn-outline-primary btn-block mr-2 previous">
+        {{t "teach.buttons.previous"}}
+      </LinkTo>
+
+      <button type="button" class="btn btn-primary btn-block  mr-2 next"
+        {{on "click" this.updateChapterReviewQuestions}}>
+        {{t "teach.buttons.next"}}
+      </button>
+    </div>
+
+  </div>
+</div>
