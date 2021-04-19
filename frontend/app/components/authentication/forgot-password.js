@@ -34,6 +34,5 @@ export default class ForgotPasswordComponent extends Component {
     } else {
       this.showEmailForm = false;
     }
-
   }
 }

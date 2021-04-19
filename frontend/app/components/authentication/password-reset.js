@@ -19,16 +19,16 @@ export default class PasswordResetComponent extends Component {
 
     if (this.password !== this.passwordConfirm) {
       this.isInvalid = true;
-      this.error = { ...this.error, message: 'Password\'s don\'t match' };
+      this.error = { ...this.error, message: "Password's don't match" };
     } else {
-      const data = { 
-        auth: { 
+      const data = {
+        auth: {
           email: this.email,
           token: this.token,
           // TODO: Hash these!
           new_password: this.password,
-          verify_password: this.passwordConfirm 
-        } 
+          verify_password: this.passwordConfirm,
+        },
       };
 
       const response = await fetch('/api/v1/auth/reset_password', {
@@ -39,8 +39,11 @@ export default class PasswordResetComponent extends Component {
 
       if (!response.ok) {
         this.isInvalid = true;
-        this.error = { ...this.error, message: 'Something went wrong. Please try again.' };
-      } else {        
+        this.error = {
+          ...this.error,
+          message: 'Something went wrong. Please try again.',
+        };
+      } else {
         this.showPasswordForm = false;
       }
     }
