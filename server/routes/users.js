@@ -32,7 +32,21 @@ const router = new Router({
   prefix: '/users'
 });
 
-const DOMAIN_NAME = process.env.DOMAIN_NAME || 'http://localhost:3000/api/v1';
+const DOMAIN_NAME = process.env.DOMAIN_NAME || 'http://localhost:4200';
+
+const sendVerificationEmail = async (user, email) => {
+  const token = crypto.randomBytes(64).toString('hex');
+  const buf = Buffer.from(email, 'ascii').toString('base64');
+
+  const userData = await user.$query().patchAndFetch({
+    'resetPasswordExpires': new Date(+new Date() + 1.8e6),
+    'resetPasswordToken': token,
+  });
+  // sending email
+  const link = `${DOMAIN_NAME}/verify?email=${buf}&token=${token}`;
+  await sendMailMessage(buf, userData.username, link, 'confirm-email', 'Welcome to Wikonnect! Please confirm your email');
+  log.info('Email verification sent to %s', email);
+}
 
 
 /**
@@ -84,7 +98,8 @@ router.post('/', validateAuthRoutes.validateNewUser, createPasswordHash, async c
     inviteUserAward(invitedBy);
 
     log.info('Created a user with id %s with username %s with the invite code %s', user.id, user.username, user.inviteCode);
-
+    sendVerificationEmail(user, ctx.request.body.user.email);
+    
     ctx.status = 201;
     ctx.body = { user };
   } catch (e) {
@@ -427,17 +442,7 @@ router.post('/verify', permController.requireAuth, async ctx => {
   ctx.assert(user, 404, user);
 
   try {
-    const token = crypto.randomBytes(64).toString('hex');
-    const buf = Buffer.from(email, 'ascii').toString('base64');
-
-    const userData = await user.$query().patchAndFetch({
-      'resetPasswordExpires': new Date(+new Date() + 1.8e6),
-      'resetPasswordToken': token,
-    });
-    // sending email
-    const link = `${DOMAIN_NAME}/users/verify?email=${email}&token=${token}`;
-    await sendMailMessage(buf, userData.username, link, 'confirm-email');
-    log.info('Email verification sent to %s', email);
+    sendVerificationEmail(user, email);
     ctx.status = 201;
     ctx.body = userData;
 
@@ -465,7 +470,7 @@ router.post('/verify', permController.requireAuth, async ctx => {
  *
  */
 
-router.get('/verify', permController.requireAuth, async ctx => {
+router.get('/:id/verify', permController.requireAuth, async ctx => {
   const decodedMail = Buffer.from(ctx.query.email, 'base64').toString('ascii');
   let user = await User.query().findOne({ 'email': decodedMail });
   ctx.assert(user, 404, 'No email found');
@@ -474,10 +479,11 @@ router.get('/verify', permController.requireAuth, async ctx => {
     if (new Date() < user.resetPasswordExpires) {
       verifiedData = await user.$query().patchAndFetch({
         'emailVerified': true,
-        'resetPasswordExpires': new Date()
+        'resetPasswordExpires': new Date(),
+        'resetPasswordToken': null
       });
     }
-
+    
   } catch (e) {
     log.info('Email verification has expired');
     if (e.statusCode) {

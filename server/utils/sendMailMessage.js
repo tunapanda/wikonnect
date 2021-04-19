@@ -38,12 +38,12 @@ transporter.use('compile', hbs({
  */
 
 class GenerateEmail {
-  constructor(email, fullName, link, templateName) {
+  constructor(email, fullName, link, templateName, subject) {
     this.mailOptions = {
       from: emailAuth.defaultFrom,
       to: Buffer.from(email, 'base64').toString('ascii'),
       template: templateName,
-      subject: 'Password help has arrived!',
+      subject: subject,
       context: {
         url: link,
         name: fullName
@@ -56,8 +56,8 @@ class GenerateEmail {
   }
 }
 
-module.exports = async (email, fullName, link, templateName) => {
-  const mailType = new GenerateEmail(email, fullName, link, templateName);
+module.exports = async (email, fullName, link, templateName, subject) => {
+  const mailType = new GenerateEmail(email, fullName, link, templateName, subject);
 
   transporter.sendMail(mailType.options, (err) => {
     if (!err) {

@@ -41,6 +41,7 @@ Router.map(function () {
 
   this.route('forgot_password');
   this.route('reset_password');
+  this.route('verify');
   // 404 page should always be the last
   this.route('not-found', { path: '*path' });
 });

@@ -107,7 +107,7 @@ router.post('/forgot_password', async ctx => {
     });
     // sending email
     const link = `${DOMAIN_NAME}/reset_password?email=${buf}&token=${token}`;
-    await sendMailMessage(buf, userData.username, link, 'forgot-password-email');
+    await sendMailMessage(buf, userData.username, link, 'forgot-password-email', 'Password help has arrived!');
     log.info('Email verification sent to %s', email);
 
     ctx.status = 201;
@@ -158,7 +158,7 @@ router.post('/reset_password', checkIfPasswordAreSame, async ctx => {
   try {
     const userData = await user.$query().patchAndFetch({ 'resetPasswordExpires': new Date(), 'hash': auth.hash });
     // generate link and send email
-    await sendMailMessage(userData.username, 'reset-password-email');
+    await sendMailMessage(userData.username, 'reset-password-email', 'Password Reset Successfully');
     log.info('Password changed for user with email: %s', decodedMail);
 
     ctx.status = 201;
