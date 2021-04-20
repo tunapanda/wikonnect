@@ -1,6 +1,6 @@
 const jwt = require('koa-jwt');
 
-const secret = 'secret';
+const secret = process.env.SECRET;
 /**
  * validates and enforces token from all routes aside from users and auth
  */
