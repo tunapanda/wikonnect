@@ -1,12 +1,13 @@
 login:
   login: Login
+  or: or
   logout: Logout
   authenticating: Authenticating ...
   username: Username
   enter_username: Enter Username
   password: Password
   enter_password: Enter Password
-  login_third_party: Continue with {authProvider}
+  login_third_party: Login with {authProvider}
 
 signup:
   email: Email

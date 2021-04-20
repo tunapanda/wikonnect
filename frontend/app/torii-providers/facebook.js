@@ -6,17 +6,3 @@ export default class FacebookToriiProvider extends FacebookOauth2Provider {
     return data;
   }
 }
-// export default FacebookOauth2Provider.extend({
-//   redirectUri: computed(function () {
-//     return [
-//       window.location.protocol,
-//       '//',
-//       window.location.host,
-//       '/torii/redirect.html',
-//     ].join('');
-//   }),
-
-//   fetch(data) {
-//     return data;
-//   },
-// });

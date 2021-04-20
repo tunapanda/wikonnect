@@ -40,7 +40,7 @@ module.exports = async (code) => {
   return {
     email: userDataEmail[0].email,
     hash: hashPassword,
-    username: login,
+    username: login.toLowerCase(),
     profileUri: avatar_url,
     firstName: name.split(' ')[0] || username.toLowerCase(),
     lastName: name.split(' ')[1] || username.toLowerCase(),
