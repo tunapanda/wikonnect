@@ -20,14 +20,9 @@ toc:
   h5p_content: Rekodi ya H5P
   thumbnail: Kijipicha
   tags: Lebo
-<<<<<<< HEAD
   preview_publish: Hakikisha halafu chapisha
-  select_review_questions: Ukadiriaji na Pitia
-=======
-  preview_publish: Hakikisha halafu hapisha
   select_review_questions: Ukadiriaji na Uhakiki
 
->>>>>>> origin
 
 create:
   chapter_name: Jina la Rekodi
