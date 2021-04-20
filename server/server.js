@@ -71,6 +71,8 @@ router.use(jwt.authenticate, require('./routes/reviews'));
 
 router.use(jwt.authenticate, require('./routes/review-questions'));
 
+router.use(jwt.authenticate, require('./routes/notifications'));
+
 router.use(require('./routes/search'));
 
 
