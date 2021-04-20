@@ -1,9 +1,0 @@
-{
-    "version": 3,
-    "mappings": "AAAA,AAAA,YAAY,CAAC;EACX,OAAO,EAAE,IAAI;EACb,cAAc,EAAE,GAAG;EACnB,eAAe,EAAE,aAAa;EAC9B,SAAS,EAAE,UAAU;CAEtB;;AAED,AAAA,WAAW,CAAC;EACV,UAAU,EAAE,GAAG;EACf,MAAM,EAAE,GAAG;EACX,OAAO,EAAE,GAAG;EACZ,MAAM,EAAE,GAAG;EACX,WAAW,EAAE,aAAa;EAC1B,gBAAgB,EAAE,SAAS;CAE5B",
-    "sources": [
-        "cms-desktop.scss"
-    ],
-    "names": [],
-    "file": "cms-desktop.css"
-}

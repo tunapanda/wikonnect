@@ -204,7 +204,7 @@ describe('H5P Route', () => {
     };
     return chai
       .request(server)
-      .put(`${route}/content`)
+      .post(`${route}/content`)
       .set('content-type', 'application/json')
       .send(H5PSampleQuestion)
       .then((res) => {

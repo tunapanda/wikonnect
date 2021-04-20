@@ -10,6 +10,7 @@ $palette: (
   width: 120px;
   height: 120px;
   animation: circularSpin 2s linear infinite;
+  display: inline-block;
 }
 
 @keyframes circularSpin {

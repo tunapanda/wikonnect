@@ -27,14 +27,17 @@ describe('Chapter ratings & review when authenticated', () => {
                     .click();
 
                 cy.get('.reaction-feedback-popover.negative-feedback')
+                    .scrollIntoView()
                     .should('be.visible')
                     .find('.prompt-button')
                     .click()
                     .get('.reaction-feedback-popover')
                     .should('not.exist');
 
-                cy.get('.rating-review-section')
+                cy.get('.rating-review-section  .gesture-icon')
+                    .scrollIntoView()
                     .should('be.visible')
+                    .get('.rating-review-section')
                     .find('.question')
                     .then((questions) => {
                         const buttons = ["terrible", "bad", "okay", "good", "great"]
@@ -68,14 +71,17 @@ describe('Chapter ratings & review when authenticated', () => {
                     .click();
 
                 cy.get('.reaction-feedback-popover.positive-feedback')
+                    .scrollIntoView()
                     .should('be.visible')
                     .find('.prompt-button')
                     .click()
                     .get('.reaction-feedback-popover')
                     .should('not.exist');
 
-                cy.get('.rating-review-section')
+                cy.get('.rating-review-section .gesture-icon')
+                    .scrollIntoView()
                     .should('be.visible')
+                    .get('.rating-review-section')
                     .find('.question')
                     .then((questions) => {
                         const buttons = ["terrible", "bad", "okay", "good", "great"]
@@ -109,11 +115,13 @@ describe('Chapter ratings & review when authenticated', () => {
                     .click();
 
                 cy.get('.reaction-feedback-popover.negative-feedback')
+                    .scrollIntoView()
                     .should('be.visible')
                     .find('.prompt-button')
                     .click();
 
-                cy.get('.rating-review-section')
+                cy.get('.rating-review-section .gesture-icon')
+                    .scrollIntoView()
                     .should('be.visible')
                     .get('.skip-ratings-and-review-btn')
                     .click()
@@ -132,11 +140,13 @@ describe('Chapter ratings & review when authenticated', () => {
                     .click();
 
                 cy.get('.reaction-feedback-popover.positive-feedback')
+                    .scrollIntoView()
                     .should('be.visible')
                     .find('.prompt-button')
                     .click();
 
-                cy.get('.rating-review-section')
+                cy.get('.rating-review-section  .gesture-icon')
+                    .scrollIntoView()
                     .should('be.visible')
                     .get('.skip-ratings-and-review-btn')
                     .click()

@@ -66,8 +66,9 @@ messages:
   searching: "Searching ..."
   upload_profile_pic: "Upload Profile Picture"
   create_h5p_chapter: "Create H5P Chapter"
+  edit_h5p_chapter: Edit H5P Chapter
   authenticating: "Authenticating ..."
-  uploading: "Uploading ..."  
+  uploading: "Uploading ..."
 
 feedback:
   message: The topics below are best understood if you finish the ones before

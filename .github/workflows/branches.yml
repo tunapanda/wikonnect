@@ -158,13 +158,13 @@ jobs:
         env:
           POSTGRES_HOST: localhost
           POSTGRES_PORT: 5432
-          NODE_ENV: test
+          NODE_ENV: action
 
       # Install project dependencies, test and build
       - name: Backend testing
         run: yarn --cwd ./server test:local
         env:
-          NODE_ENV: test
+          NODE_ENV: action
 
   IntegrationTest:
     name: Integration Test
@@ -230,13 +230,13 @@ jobs:
         env:
           POSTGRES_HOST: localhost
           POSTGRES_PORT: 5432
-          NODE_ENV: test
+          NODE_ENV: action
 
       # Run all Cypress tests
       - name: Cypress run
         uses: cypress-io/github-action@v2
         env:
-          NODE_ENV: test
+          NODE_ENV: action
         with:
           start: yarn --cwd ./server start, yarn --cwd ./frontend start
           wait-on: "http://localhost:4200"

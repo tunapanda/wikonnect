@@ -1,20 +1,54 @@
 <div class=" d-flex row text-center p-4 m-0 shadow-sm justify-content-center">
-  <h3><b>{{t "messages.create_h5p_chapter"}}</b></h3>
+  {{#if this.model.imageUrl}}
+    <h3><b>{{t "messages.edit_h5p_chapter"}}</b></h3>
+  {{else}}
+    <h3><b>{{t "messages.create_h5p_chapter"}}</b></h3>
+  {{/if}}
 </div>
 
-<div class="row d-flex flex-column justify-content-center align-items-center m-0">
-  <Toc @page="3"/>
-  {{#if this.me.isAuthenticated}}
-    <div class="bg-primary col-md-6 col-sm-12 text-center p-3 text-white rounded-top">
-      {{t "teach.thumbnail.upload"}}
-    </div>
+<div class="row d-flex justify-content-center m-0  content-creation-section thumbnail-upload-section">
+  <div class="col-lg-8 col-md-12">
+    <Toc @page="3"/>
+  </div>
 
-    <div class="drop-area col-md-6 col-sm-12 mb-4 d-flex flex-column justify-content-center align-items-center">
-      <File-drop-zone @onDrop={{this.uploadPic}}>
+  <div class="bg-primary col-md-6 col-11 text-center p-3 text-white rounded-top">
+    {{t "teach.thumbnail.upload"}}
+  </div>
+  <div class="col-12"></div>
+
+  {{#if this.selectedImagePreviewSrc}}
+    <div class="drop-area col-md-6 col-11 mb-4 d-flex flex-column align-items-center">
+      <div class="preview-image mt-3">
+        <img src="{{this.selectedImagePreviewSrc}}" class="img-fluid" role="presentation" alt="">
+      </div>
+
+      <Forms::Upload @multiple="false" @accept="image/*" @filesSelected={{this.onFilesSelect}}
+                     @disabled={{this.uploader.uploading}} class="btn-sm mt-2">
+        {{#if this.uploader.uploading}}
+          <BsProgress as |pg|>
+            <pg.bar @value={{this.uploader.progress}} />
+          </BsProgress>
+          {{t "teach.thumbnail.uploading"}} <span class="loading-spinner"></span> {{this.uploader.progress}}% <br>
+          <small class="text-muted">{{t "teach.thumbnail.redirect_mesg"}}</small>
+
+        {{else}}
+          {{t "teach.thumbnail.change_image"}}
+        {{/if}}
+
+      </Forms::Upload>
+
+      <p><em>*{{t "teach.thumbnail.max_size"}}</em></p>
+      <p><em>*{{t "teach.thumbnail.accepted_file_types"}}</em></p>
+    </div>
+  {{else}}
+    <div
+            class="drop-area col-md-6 col-11 mb-4 d-flex align-items-center flex-column ">
+
+      <File-drop-zone @onDrop={{this.onFilesSelect}}>
         <p>{{t "teach.thumbnail.drag_and_drop"}}</p>
         <p>{{t "teach.thumbnail.or"}}</p>
-        <Forms::Upload @multiple="false" @accept="image/*" @filesSelected={{this.uploadPic}}
-                       @disabled={{this.uploader.uploading}}>
+        <Forms::Upload @multiple="false" @accept="image/*" @filesSelected={{this.onFilesSelect}}
+                       @disabled={{this.uploader.uploading}} class="btn-sm">
           {{#if this.uploader.uploading}}
             <BsProgress as |pg|>
               <pg.bar @value={{this.uploader.progress}} />
@@ -23,7 +57,7 @@
             <small class="text-muted">{{t "teach.thumbnail.redirect_mesg"}}</small>
 
           {{else}}
-            {{t "teach.thumbnail.upload"}}
+            {{t "teach.thumbnail.browse_files"}}
           {{/if}}
 
         </Forms::Upload>
@@ -32,16 +66,27 @@
       <p><em>*{{t "teach.thumbnail.max_size"}}</em></p>
       <p><em>*{{t "teach.thumbnail.accepted_file_types"}}</em></p>
     </div>
+  {{/if}}
+  <div class="col-12"></div>
 
-  <div class="text-right col-md-6 col-sm-12">
-    <LinkTo @route="teach.tag" @model={{this.model.id}} class="btn btn-warning">
-      {{t "buttons.skip"}}
-    </LinkTo>
+  <div class="col-md-6 col-11 pb-5 d-flex justify-content-between ml-2 mr-3 m-lg-0 action-buttons">
+    {{#if (or this.model.contentId (not this.model.contentUri))}}
+      <LinkTo @route="teach.h5p-editor" @model={{this.model.id}}
+              class="btn btn-outline-primary btn-block mr-2 previous">
+        {{t "teach.buttons.previous"}}
+      </LinkTo>
+    {{else}}
+      <LinkTo @route="teach.h5p-upload" @model={{this.model.id}}
+              class="btn btn-outline-primary btn-block mr-2 previous">
+        {{t "teach.buttons.previous"}}
+      </LinkTo>
+    {{/if}}
+
+
+    <button type="button" class="btn btn-primary btn-block next mr-2" {{on "click" this.saveThumbnail}}>
+      {{t "teach.buttons.next"}}
+    </button>
   </div>
 
-  {{else}}
 
-    <Warning @message={{t "teach.index.no_permission"}}/>
-
-  {{/if}}
 </div>

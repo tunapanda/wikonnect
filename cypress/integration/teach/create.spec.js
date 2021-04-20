@@ -11,11 +11,11 @@ describe('User can create chapter', () => {
     cy.get('a.btn.bg-primary').click();
 
     // Name and Description
-    cy.get('#create-chapter-form input.form-control')
+    cy.get('.basic-h5p-details-section form input.form-control')
       .type(chapter.name);
-    cy.get('#create-chapter-form textarea.form-control')
+    cy.get('.basic-h5p-details-section form textarea.form-control')
       .type(chapter.description);
-    cy.get('#create-chapter-form button[type="submit"]')
+    cy.get('.basic-h5p-details-section form button[type="submit"]')
       .click();
     
     // H5P Upload

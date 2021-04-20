@@ -73,21 +73,43 @@ export default class TeachTagController extends Controller {
 
   @tracked custom_tags = [];
 
-  @tracked custom_cart = A([]);
+  @tracked custom_cart;
   @tracked tag;
+
+  get selectedTags() {
+    if (this.custom_cart) {
+      return this.custom_cart;
+    }
+    return this.model.tags;
+  }
 
   @action
   addtag(evt) {
     evt.preventDefault();
     evt.stopPropagation();
+    if (!this.custom_cart) {
+      this.custom_cart = A(this.model.tags);
+    }
     if (this.tag) {
-      this.custom_cart.pushObject(this.tag);
-      this.tag = '';
+      const index = this.custom_cart.findIndex(
+        (pred) => pred.toLowerCase() === this.tag.toLowerCase()
+      );
+      if (index > -1) {
+        this.tag = '';
+      } else {
+        this.custom_cart.pushObject(this.tag);
+        this.tag = '';
+      }
     }
   }
 
   @action
   async updateTags() {
+    if (this.model.tags && !this.custom_cart) {
+      this.transitionToRoute('teach.review-questions', this.model.id);
+      return;
+    }
+
     let id = this.model.id;
     let combined = [];
 
@@ -102,7 +124,9 @@ export default class TeachTagController extends Controller {
     let chapter = await this.store.peekRecord('chapter', id);
     chapter.tags = combined;
     await chapter.save();
-    this.transitionToRoute('teach.preview', id);
+    //reset the local tags holder
+    this.custom_cart = null;
+    this.transitionToRoute('teach.review-questions', id);
   }
 
   @action
@@ -164,6 +188,9 @@ export default class TeachTagController extends Controller {
         this.kicd_list.addObject(item);
         break;
       case 'custom':
+        if (!this.custom_cart) {
+          this.custom_cart = A(this.model.tags);
+        }
         this.custom_cart.removeObject(item);
         break;
 

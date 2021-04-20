@@ -35,6 +35,13 @@ edit:
 
 h5p:
   init: Initializing editor
+  upload:
+    title: Upload H5P zip file
+    drag_and_drop: Drag and drop here
+    or: or
+    uploading: Uploading...
+    redirect_message: You will be redirected once upload is complete
+    browse_files: Browse files
 
 thumbnail:
   upload: Upload Thumbnail
@@ -44,6 +51,8 @@ thumbnail:
   accepted_file_types: "Accepted file types: jpg, png, svg"
   uploading: Uploading ...
   redirect_mesg: You will be redirected once upload is complete
+  browse_files: Browse files
+  change_image: Change image
 
 tag:
   custom_tag: Add a custom tag
@@ -56,9 +65,11 @@ tag:
   kicd_status: KICD Status
 
 review_questions:
-  title: Select review and rating questions
+  title: Select review and rating questions.
+  subtitle: Review and ratings from learners will help you improve your content
 
 preview:
+  title: Preview H5P Chapter
   chapter: Chapter
   approved: Approved
   unapproved: Unapproved
@@ -80,3 +91,9 @@ preview:
     reviewQuestions: Selected review & ratings questions categories
   buttons:
     modifyReviewQuestions: Modify questions
+
+buttons:
+  cancel: Cancel
+  previous: Back
+  next: Save and Continue
+  skip: Skip
