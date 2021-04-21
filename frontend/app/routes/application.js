@@ -5,6 +5,8 @@ export default class ApplicationRoute extends Route {
   @service session;
   @service me;
   @service SeoTags;
+  @service socket;
+  @service router;
 
   queryParams = { campaign_id: '', points: '', enduser_id: '', partner_id: '' };
 
@@ -43,6 +45,9 @@ export default class ApplicationRoute extends Route {
   }
 
   afterModel() {
+    this.socket.roleChanged();
+    this.socket.eventHandlers();
+
     this.headTags = this.SeoTags.build();
   }
 
