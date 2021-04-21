@@ -1,6 +1,7 @@
 <nav
         class="main-header navbar navbar-expand-lg navbar-light text-{{this.config.content.APP.header_text}}
-         secondary-color bg-{{if @isTeach this.config.content.APP.teach_header_background this.config.content.APP.header_background}}">
+         secondary-color bg-{{if @isTeach this.config.content.APP.teach_header_background
+                                 this.config.content.APP.header_background}}">
   <LinkTo @route="index" class="pr-4">
 
     {{svg-jar "wikonnect-logo-white"   height="40"}}
@@ -37,7 +38,7 @@
         </LinkTo>
       </li>
       <li class="nav-item text-{{this.config.content.APP.header_text}}">
-        <a href="https://wikonnect.org?referrer=app.wikonnect.org" class="nav-link about-link-item"  rel="noopener">
+        <a href="https://wikonnect.org?referrer=app.wikonnect.org" class="nav-link about-link-item" rel="noopener">
           {{t "buttons.about"}}
         </a>
       </li>
@@ -57,15 +58,64 @@
         </button>
       {{/if}}
     </form>
-    <ul class="navbar-nav ml-auto nav-flex-icons">
 
+    <ul class="navbar-nav ml-auto">
+
+      <BsDropdown class="nav-item mr-md-2 notifications-dropdown"  @closeOnMenuClick={{false}} as |dd|>
+        <dd.button @type="default" class="nav-link">
+          {{svg-jar "bell" height="27" width="27"}}
+          <span class="count">{{this.unreadNotificationsCount}}</span>
+        </dd.button>
+        <dd.menu class="dropdown-menu-lg-right" as |ddm|>
+          <a class="dropdown-item header-title" href="#">{{t "main_navbar.notifications.title"}}</a>
+          <ddm.divider class="DropdownMenuDivider"></ddm.divider>
+
+          {{#if @notifications}}
+            <div class="notification-items">
+              {{#each @notifications as |obj|}}
+                <div class="dropdown-item notification-item d-flex {{if obj.read "read" "unread"}}" href="#">
+                  <div class="notification-container row" role="button"
+                    {{on "click" (fn this.onNotificationSelect obj dd)}}>
+                    <div class="col-12 title">
+                      {{obj.title}}
+                    </div>
+                    <div class="col-12 body">
+                      {{obj.body}}
+                    </div>
+                    <div class="col-12 time">
+                      {{relative-time obj.createdAt}}
+                    </div>
+                  </div>
+                  <div class="notification-actions d-flex">
+                    <button type="button" class="btn-delete" {{on "click" (fn this.deleteNotification obj)}}>
+                      {{svg-jar "close" width="15" height="15"}}
+                    </button>
+                    <button type="button" class="btn-toggle-read-status"
+                      {{on "click" (fn this.toggleNotificationStatus obj )}}>
+                      <span class="circle"></span>
+                    </button>
+                  </div>
+                </div>
+              {{/each}}
+            </div>
+
+          {{else}}
+            <div class="dropdown-item notification-item">{{t "main_navbar.notifications.empty"}}</div>
+          {{/if}}
+        </dd.menu>
+      </BsDropdown>
+
+    </ul>
+    <ul class="navbar-nav">
       {{#if this.me.user.id}}
 
-        <li class="nav-item avatar dropdown text-{{this.config.content.APP.header_text}}">
-          <a href="#" class="nav-link dropdown-toggle mh-50" id="navbarDropdownMenuLink-55" data-toggle="dropdown"
+        <li class="nav-item avatar dropdown user-profile-dropdown text-{{this.config.content.APP.header_text}}">
+          <a href="#" class="nav-link dropdown-toggle mr-2" id="navbarDropdownMenuLink-55" data-toggle="dropdown"
              aria-haspopup="true" aria-expanded="false">
             {{#if this.me.user.profileUri}}
-              <img src={{this.me.user.profileUri}} class="rounded-circle h40" alt={{t "profile.profile_picture"}}>
+              <img src={{this.me.user.profileUri}} class="rounded-circle user-profile-image" alt={{t
+                      "profile.profile_picture"}}>
+              <span class="pl-2">{{this.me.name}}</span>
             {{else}}
               <span aria-hidden="true">&times;</span>
             {{/if}}

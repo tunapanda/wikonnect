@@ -8,7 +8,7 @@ export default class ApplicationRoute extends Route {
 
   queryParams = { campaign_id: '', points: '', enduser_id: '', partner_id: '' };
 
-  model(params) {
+  async model(params) {
     let mojaLocalStorage = {
       partner_id: params.campaign_id,
       enduser_id: params.points,
@@ -20,6 +20,11 @@ export default class ApplicationRoute extends Route {
       'moja_campaign',
       JSON.stringify(mojaLocalStorage)
     );
+    if (this.me.isAuthenticated) {
+      return await this.store.query('notification', {
+        recipientId: this.me.user.id,
+      });
+    }
   }
 
   beforeModel() {
