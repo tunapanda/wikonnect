@@ -61,7 +61,7 @@
 
     <ul class="navbar-nav ml-auto">
 
-      <BsDropdown class="nav-item mr-md-2 notifications-dropdown"  @closeOnMenuClick={{false}} as |dd|>
+      <BsDropdown class="nav-item notifications-dropdown d-lg-block d-none mr-4"  @closeOnMenuClick={{false}} as |dd|>
         <dd.button @type="default" class="nav-link">
           {{svg-jar "bell" height="27" width="27"}}
           <span class="count">{{this.unreadNotificationsCount}}</span>
