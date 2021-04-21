@@ -26,7 +26,7 @@ exports.seed = function (knex) {
       //paint the comments (maxSeed only) with chapter creator Id & other notification properties
       const notificationComments = comments.slice(0, maxSeed) //we only need a portion
         .map((comment) => {
-          const chapter = chapters.find((p) => p.id === comment.chapterId);
+          const chapter = chapters.find((p) => p.id === comment.chapter_id);
           const event_type = comment.parent_id === 'false' ?
             eventCodes.chapterComment.created :
             eventCodes.chapterComment.ReplyCreated;
@@ -37,7 +37,7 @@ exports.seed = function (knex) {
             item_id: chapter.id,
             event_type,
             model: 'comment',
-            recipient_id: chapter.creatorId,
+            recipient_id: chapter.creator_id,
             read: faker.random.boolean(),
             creator_id: faker.random.arrayElement(userIds),
             created_at: faker.date.past(),
@@ -50,7 +50,7 @@ exports.seed = function (knex) {
 
       const notificationRatings = ratings.slice(0, maxSeed) //we only need a portion
         .map((rating) => {
-          const chapter = chapters.find((p) => p.id === rating.chapterId);
+          const chapter = chapters.find((p) => p.id === rating.chapter_id);
           const event_type = rating.reaction === 'like' ?
             eventCodes.rating.positiveCreated :
             eventCodes.rating.negativeCreated;
@@ -61,7 +61,7 @@ exports.seed = function (knex) {
             item_id: chapter.id,
             event_type,
             model: 'rating',
-            recipient_id: chapter.creatorId,
+            recipient_id: chapter.creator_id,
             read: faker.random.boolean(),
             creator_id: faker.random.arrayElement(userIds),
             created_at: faker.date.past(),
@@ -79,7 +79,7 @@ exports.seed = function (knex) {
             item_id: chapter.id,
             event_type: eventCodes.chapter.approved,
             model: 'chapter',
-            recipient_id: chapter.creatorId,
+            recipient_id: chapter.creator_id,
             read: faker.random.boolean(),
             metadata: {sendEmail: faker.random.boolean()},
             creator_id: faker.random.arrayElement(userIds),
@@ -99,7 +99,7 @@ exports.seed = function (knex) {
             item_id: chapter.id,
             event_type: eventCodes.chapter.verified,
             model: 'chapter',
-            recipient_id: chapter.creatorId,
+            recipient_id: chapter.creator_id,
             read: faker.random.boolean(),
             metadata: {sendEmail: faker.random.boolean()},
             created_at: faker.date.past(),
