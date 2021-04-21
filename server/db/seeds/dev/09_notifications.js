@@ -26,7 +26,7 @@ exports.seed = function (knex) {
       //paint the comments (maxSeed only) with chapter creator Id & other notification properties
       const notificationComments = comments.slice(0, maxSeed) //we only need a portion
         .map((comment) => {
-          const chapter = chapters.find((p) => p.id === comment.chapter_id);
+          const chapter = chapters.find((p) => p.id === comment.chapterId);
           const event_type = comment.parent_id === 'false' ?
             eventCodes.chapterComment.created :
             eventCodes.chapterComment.ReplyCreated;
@@ -50,7 +50,7 @@ exports.seed = function (knex) {
 
       const notificationRatings = ratings.slice(0, maxSeed) //we only need a portion
         .map((rating) => {
-          const chapter = chapters.find((p) => p.id === rating.chapter_id);
+          const chapter = chapters.find((p) => p.id === rating.chapterId);
           const event_type = rating.reaction === 'like' ?
             eventCodes.rating.positiveCreated :
             eventCodes.rating.negativeCreated;
