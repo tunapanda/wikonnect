@@ -9,6 +9,7 @@ with_db: &with_db
         PG_HOST: localhost
         PG_PORT: 5432
         NODE_ENV: ci
+        SECRET: 'secret'
     - image: circleci/postgres:10.10
       environment:
         POSTGRES_USER: acbe
