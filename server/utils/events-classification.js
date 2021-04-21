@@ -56,5 +56,18 @@ exports.eventCodes = {
     created: 'new-badge-created',
     updated: 'badge-details-updated',
     deleted: 'badge-deleted',
+  },
+  approvedChapter: {
+    updated: 'approved-chapter-updated',
+    deleted: 'approved-chapter-deleted',
+  },
+  session: {
+    updated: 'auth-status-updated',
+    expired: 'auth-session-expired'
+  },
+  notification: {
+    created: 'notification-created',
+    updated: 'chapter-updated',
+    deleted: 'chapter-deleted'
   }
 };
