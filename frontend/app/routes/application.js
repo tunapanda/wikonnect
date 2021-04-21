@@ -8,6 +8,17 @@ export default class ApplicationRoute extends Route {
 
   queryParams = { campaign_id: '', points: '', enduser_id: '', partner_id: '' };
 
+  constructor(properties) {
+    super(properties);
+    this.router.on('routeDidChange', () => {
+      if (this.me.isAuthenticated) {
+        this.store.query('notification', {
+          recipientId: this.me.user.id,
+        });
+      }
+    });
+  }
+
   async model(params) {
     let mojaLocalStorage = {
       partner_id: params.campaign_id,
