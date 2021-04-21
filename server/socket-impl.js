@@ -78,5 +78,11 @@ module.exports = (io) => {
     io.to(socketChannel.learners).emit(eventCodes.approvedChapter.deleted, payload);
   });
 
+  /**
+   * on comment, push the update to all learners
+   */
+  eventEmitter.on(eventCodes.chapterComment.created, (payload) => {
+    io.to(socketChannel.learners).emit(eventCodes.chapterComment.created, payload);
+  });
   return io;
 };
