@@ -11,7 +11,7 @@ assignees: '@proverbial-ninja'
 <!-- eg Admin should be able to delete single or multiple users so that it is easier to manage users.  -->
 
 ### Tasks (where applicable)
-<!-- Please describe front-end tasks needed to accomplisd this-->
+<!-- Please describe front-end tasks needed to accomplished this-->
 - [ ]  eg. Fetch users from backend
 - [ ]  eg. List users on template with checkbox
 - [ ]  eg. Send delete request to backend with
@@ -22,7 +22,7 @@ assignees: '@proverbial-ninja'
 
 
 ### Acceptance Criteria
-<!-- Detailed checlist of acceptance criteria  -->
+<!-- Detailed checklist of acceptance criteria  -->
 - [ ] eg Admin Should see a list of all users
 - [ ] eg Admin Should be able to select single or multiple users
 - [ ] eg Admin Should be able to delete all selected users
