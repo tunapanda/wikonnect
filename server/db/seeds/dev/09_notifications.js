@@ -34,7 +34,7 @@ exports.seed = function (knex) {
           return {
             title: 'Your chapter just received a new comment',
             body: faker.lorem.words(),
-            item_id: comment.id,
+            item_id: chapter.id,
             event_type,
             model: 'comment',
             recipient_id: chapter.creator_id,
@@ -58,7 +58,7 @@ exports.seed = function (knex) {
           return {
             title: 'User rated your chapter ' + faker.random.arrayElement(['🎆', '🎉', '✳']),
             body: faker.lorem.words(),
-            item_id: rating.id,
+            item_id: chapter.id,
             event_type,
             model: 'rating',
             recipient_id: chapter.creator_id,
