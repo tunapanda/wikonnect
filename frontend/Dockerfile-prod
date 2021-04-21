@@ -8,7 +8,7 @@ RUN yarn global add ember-cli
 
 COPY package.json yarn.lock ./
 
-RUN yarn
+RUN yarn --frozen-lockfile
 
 COPY . .
 
