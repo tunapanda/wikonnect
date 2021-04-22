@@ -14,9 +14,7 @@ COPY package.json yarn.lock ./
 #Copy postinstall script
 COPY ./scripts/h5p-core-setup.js scripts/h5p-core-setup.js
 
-COPY ./.env .env
 
-RUN source .env
 
 RUN yarn --frozen-lockfile
 
