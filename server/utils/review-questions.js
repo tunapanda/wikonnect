@@ -15,11 +15,7 @@ module.exports = [
   },
   {
     category: 'contentAccuracy',
-    title: 'Accuracy of the content',
-    options: {
-      negative: ['Not enough references', 'No citations', 'Further reading required', 'Not understandable'],
-      positive: ['Easy to understand']
-    }
+    title: 'Accuracy of the content'
   },
   {
     category: 'language',
@@ -28,6 +24,14 @@ module.exports = [
   {
     category: 'creativity',
     title: 'Level of creativity & content originality'
+  },
+  {
+    category: 'educationalValue',
+    title: 'Educational Value'
+  },
+  {
+    category: 'learningInterest',
+    title: 'Learning Interest'
   },
 
 ];

@@ -26,4 +26,4 @@ HEALTHCHECK --interval=3s --timeout=13s\
 
 CMD if [ "$NODE_ENV" = "production" ]; then yarn db:init && yarn start;\
     elif  [ "$NODE_ENV" = "testing" ]; then yarn db:init && yarn db:seed && yarn start;\
-    else yarn --frozen-lockfile && yarn db:init && yarn db:seed && yarn start:dev; fi
+    else yarn db:init && yarn db:seed && yarn start:dev; fi
