@@ -19,13 +19,12 @@ export default class ForgotPasswordComponent extends Component {
     e.preventDefault();
 
     const data = { auth: { email: this.email } };
-    const response = await fetch('/api/v1/auth/forgot_password', {
+    await fetch('/api/v1/auth/forgot_password', {
       method: 'POST',
       body: JSON.stringify(data),
       headers: { 'Content-type': 'application/json; charset=UTF-8' },
     });
 
-    
     this.showEmailForm = false;
   }
 }
