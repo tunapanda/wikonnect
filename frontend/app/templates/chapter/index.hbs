@@ -11,7 +11,8 @@
   </div>
   <hr>
   {{#if (or this.model.contentId this.model.contentUri)}}
-    <H5p::Player @contentId={{this.model.contentId}} @location={{this.model.contentUri}} />
+    <H5p::Player @contentId={{this.model.contentId}} @location={{this.model.contentUri}}
+                 @onxAPIStatement={{this.onH5PPlayerXAPIEvent}} />
   {{/if}}
   <div class="row">
     <div class="col-lg-8">

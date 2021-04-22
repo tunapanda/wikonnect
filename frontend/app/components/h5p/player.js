@@ -36,7 +36,7 @@ export default class H5pPlayerComponent extends Component {
     // eslint-disable-next-line no-undef
     if (this.args.onxAPIStatement && H5P) {
       // eslint-disable-next-line no-undef
-      H5P.externalDispatcher.on('xAPI', function (event) {
+      H5P.externalDispatcher.on('xAPI', (event) => {
         this.args.onxAPIStatement(event);
       });
     }
