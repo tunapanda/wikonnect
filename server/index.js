@@ -6,7 +6,7 @@ if (!process.env.NODE_ENV) {
 console.log(`ENVIRONMENT: ${environment}`);
 
 const http = require('http');
-
+const socketIO = require('socket.io');
 /*
  * Express Setup
  */
@@ -27,6 +27,10 @@ const port = process.env.SERVER_PORT ? process.env.SERVER_PORT :
  */
 
 const server = http.createServer(app.callback());
+
+const io = socketIO(server);
+
+require('./socket-impl')(io);
 
 /*
  * Listen on provided port, on all network interfaces.

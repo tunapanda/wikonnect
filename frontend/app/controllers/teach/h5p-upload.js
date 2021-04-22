@@ -44,6 +44,9 @@ export default class TeachH5pUploadController extends Controller {
         [host, 'chapters', id, 'upload'].join('/')
       );
 
+      //reset local H5P property holder
+      this.H5PZipFile = null;
+
       this.transitionToRoute('teach.thumbnail-upload', id);
     } catch (e) {
       this.notify.alert(

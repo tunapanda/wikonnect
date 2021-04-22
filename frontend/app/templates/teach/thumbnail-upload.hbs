@@ -11,14 +11,14 @@
     <Toc @page="3"/>
   </div>
 
-  <div class="bg-primary col-lg-6 col-sm-10 text-center p-3 text-white rounded-top">
+  <div class="bg-primary col-md-6 col-11 text-center p-3 text-white rounded-top">
     {{t "teach.thumbnail.upload"}}
   </div>
   <div class="col-12"></div>
 
   {{#if this.selectedImagePreviewSrc}}
-    <div class="drop-area col-lg-6 col-sm-10 mb-4 d-flex flex-column justify-content-center align-items-center">
-      <div class="preview-image pt-3">
+    <div class="drop-area col-md-6 col-11 mb-4 d-flex flex-column align-items-center">
+      <div class="preview-image mt-3">
         <img src="{{this.selectedImagePreviewSrc}}" class="img-fluid" role="presentation" alt="">
       </div>
 
@@ -41,7 +41,8 @@
       <p><em>*{{t "teach.thumbnail.accepted_file_types"}}</em></p>
     </div>
   {{else}}
-    <div class="drop-area col-lg-6 col-sm-10 mb-4 d-flex flex-column justify-content-center align-items-center">
+    <div
+            class="drop-area col-md-6 col-11 mb-4 d-flex align-items-center flex-column ">
 
       <File-drop-zone @onDrop={{this.onFilesSelect}}>
         <p>{{t "teach.thumbnail.drag_and_drop"}}</p>
@@ -68,7 +69,7 @@
   {{/if}}
   <div class="col-12"></div>
 
-  <div class="col-lg-6 col-sm-10 pb-5 d-flex justify-content-between mr-sm-3 ml-sm-3 action-buttons">
+  <div class="col-md-6 col-11 pb-5 d-flex justify-content-between ml-2 mr-3 m-lg-0 action-buttons">
     {{#if (or this.model.contentId (not this.model.contentUri))}}
       <LinkTo @route="teach.h5p-editor" @model={{this.model.id}}
               class="btn btn-outline-primary btn-block mr-2 previous">

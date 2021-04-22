@@ -5,10 +5,23 @@ export default class ApplicationRoute extends Route {
   @service session;
   @service me;
   @service SeoTags;
+  @service socket;
+  @service router;
 
   queryParams = { campaign_id: '', points: '', enduser_id: '', partner_id: '' };
 
-  model(params) {
+  constructor(properties) {
+    super(properties);
+    this.router.on('routeDidChange', () => {
+      if (this.me.isAuthenticated) {
+        this.store.query('notification', {
+          recipientId: this.me.user.id,
+        });
+      }
+    });
+  }
+
+  async model(params) {
     let mojaLocalStorage = {
       partner_id: params.campaign_id,
       enduser_id: params.points,
@@ -20,6 +33,11 @@ export default class ApplicationRoute extends Route {
       'moja_campaign',
       JSON.stringify(mojaLocalStorage)
     );
+    if (this.me.isAuthenticated) {
+      return await this.store.query('notification', {
+        recipientId: this.me.user.id,
+      });
+    }
   }
 
   beforeModel() {
@@ -27,6 +45,9 @@ export default class ApplicationRoute extends Route {
   }
 
   afterModel() {
+    this.socket.roleChanged();
+    this.socket.eventHandlers();
+
     this.headTags = this.SeoTags.build();
   }
 
