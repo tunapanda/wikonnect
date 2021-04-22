@@ -16,7 +16,7 @@ const router = new Router({
 });
 
 
-const DOMAIN_NAME = process.env.DOMAIN_NAME || "http://localhost:4200";
+const DOMAIN_NAME = process.env.DOMAIN_NAME || 'http://localhost:4200';
 
 /**
  * @api {post} /api/v1/auth POST login a user.
@@ -147,7 +147,7 @@ router.post('/reset_password', checkIfPasswordAreSame, async ctx => {
   const decodedMail = Buffer.from(auth.email, 'base64').toString('ascii');
 
   const user = await User.query().findOne(
-    "resetPasswordExpires", ">", new Date(+new Date() + 0),
+    'resetPasswordExpires', '>', new Date(+new Date() + 0),
     {
       reset_password_token: auth.token,
       email: decodedMail,

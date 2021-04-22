@@ -25,14 +25,7 @@ export default class ForgotPasswordComponent extends Component {
       headers: { 'Content-type': 'application/json; charset=UTF-8' },
     });
 
-    if (!response.ok) {
-      this.isInvalid = true;
-
-      if (response.status === 404) {
-        this.error = { ...this.error, message: 'No user with this email' };
-      }
-    } else {
-      this.showEmailForm = false;
-    }
+    
+    this.showEmailForm = false;
   }
 }

@@ -46,7 +46,9 @@ const sendVerificationEmail = async (user, email) => {
   const link = `${DOMAIN_NAME}/verify?email=${buf}&token=${token}`;
   await sendMailMessage(buf, userData.username, link, 'confirm-email', 'Welcome to Wikonnect! Please confirm your email');
   log.info('Email verification sent to %s', email);
-}
+
+  return userData;
+};
 
 
 /**
@@ -442,7 +444,7 @@ router.post('/verify', permController.requireAuth, async ctx => {
   ctx.assert(user, 404, user);
 
   try {
-    sendVerificationEmail(user, email);
+    const userData = sendVerificationEmail(user, email);
     ctx.status = 201;
     ctx.body = userData;
 

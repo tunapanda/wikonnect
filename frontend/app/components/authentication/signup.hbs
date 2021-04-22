@@ -1,7 +1,7 @@
 <div class="d-flex justify-content-center align-items-center">
   <div class="signup-form">
     <header>
-      <h1>Sign Up</h1>
+      <h1>{{t 'auth.signup.signup'}}</h1>
     </header>
     <BsForm @class="form" @formLayout="vertical" @model={{@newUser}} @onSubmit={{this.createUser}} as |form|>
 
@@ -49,7 +49,7 @@
       </BsButton>
     </BsForm>
     <div class="d-flex justify-content-center mt-3">
-      <p>Already have an account? <LinkTo @route="login">Log in</LinkTo></p>
+      <p>{{t 'auth.signup.link_to_login' htmlSafe=true}}</p>
     </div>
   </div>
 </div>

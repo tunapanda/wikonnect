@@ -8,6 +8,7 @@ export default class VerifyEmailComponent extends Component {
   token = this.args.token;
 
   @inject me;
+  @inject store;
 
   @action
   async verify() {
@@ -23,8 +24,10 @@ export default class VerifyEmailComponent extends Component {
         message: 'Something went wrong. Please try again.',
       };
     } else {
-      console.log('email verified success!');
-      this.args.verificationSuccessful();
+      this.store.findRecord('user', this.me.id).then((user) => {
+        user.emailVerified = true;
+        this.args.verificationSuccessful();
+      });
     }
   }
 }
