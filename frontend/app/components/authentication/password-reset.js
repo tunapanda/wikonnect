@@ -8,7 +8,7 @@ export default class PasswordResetComponent extends Component {
   email = this.args.email;
 
   @tracked isInvalid = false;
-  @tracked showPasswordForm = false;
+  @tracked showPasswordForm = true;
   @tracked error = { message: '' };
   @tracked password = '';
   @tracked passwordConfirm = '';
