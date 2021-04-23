@@ -7950,10 +7950,10 @@ growly@^1.3.0:
   resolved "https://registry.yarnpkg.com/growly/-/growly-1.3.0.tgz#f10748cbe76af964b7c96c93c6bcc28af120c081"
   integrity sha1-8QdIy+dq+WS3yWyTxrzCivEgwIE=
 
-h5p-standalone@^3.0.3:
-  version "3.0.3"
-  resolved "https://registry.yarnpkg.com/h5p-standalone/-/h5p-standalone-3.0.3.tgz#3d9cf6cbefb3ca365b23729c58c3a65308df0cf4"
-  integrity sha512-eE4wztY4gijU6agn6/OgpDdZfehZz4KCkjtl+eNc/bBJQhNcRfifDKdgWTJ57vSDY/d1lEoIlj1m70E7WSro9A==
+h5p-standalone@^3.1.0:
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/h5p-standalone/-/h5p-standalone-3.1.0.tgz#8333cddb24f89e1ccab2f91b9fe2c633ec53e72e"
+  integrity sha512-XuYcQIolhQmXe9SFQb4hUPUjleeiZWKetnMmNUm1fcKh7s4fFxqKlJtUQ5mIi3CMxqeha+amqfBALFeTflOVEg==
   dependencies:
     "@babel/runtime" "^7.13.10"
     toposort-class "^1.0.1"
