@@ -53,7 +53,7 @@ body {
   color: white;
   width: 100%;
   -webkit-mask-image: -webkit-gradient(linear, left top, left bottom,
-    from(rgba(252, 113, 0, 0)), to(rgba(0, 0, 0, 1)));
+      from(rgba(252, 113, 0, 0)), to(rgba(0, 0, 0, 1)));
 }
 
 body {
@@ -137,6 +137,38 @@ pre {
   height: 300px;
 }
 
+#myDropdown .form-control {
+  width: 15rem;
+}
+
+
+.form-control:focus:not(.is-invalid) {
+  border-color: #6610f2;
+  box-shadow: 0 0 0 1px #c6bbf4;
+}
+
+.form-control:focus {
+  color: #495057;
+  background-color: #fff;
+  border-color: #b3a4f1;
+  outline: 0;
+  box-shadow: 0 0 0 0.2rem rgb(87 54 224 / 25%);
+}
+
+.search-input,
+.search-input:focus {
+  background-image: url(/images/icons/search.svg);
+  padding-right: calc(1.5em + .75rem);
+  background-repeat: no-repeat;
+  background-position: right calc(.375em + .1875rem) center;
+}
+
+#myDropdown .dropdown-menu {
+  width: 15rem;
+  max-height: 15rem;
+  // min-height: 4rem;
+  overflow: auto;
+}
 
 //@import "ember-bootstrap/bootstrap";
 //@import "ember-power-select";

@@ -24,7 +24,8 @@ export default class SearchRoute extends Route {
       });
     });
 
-    return await filtered;
+    console.log(filtered);
+    return filtered;
   }
 
   afterModel() {

@@ -34,10 +34,16 @@ export default class ApplicationRoute extends Route {
       JSON.stringify(mojaLocalStorage)
     );
     if (this.me.isAuthenticated) {
-      return await this.store.query('notification', {
-        recipientId: this.me.user.id,
-      });
+      return {
+        chapters: await this.store.query('chapter', { approved: true }),
+        notifications: await this.store.query('notification', {
+          recipientId: this.me.user.id,
+        }),
+      };
     }
+    return {
+      chapters: await this.store.query('chapter', { approved: true }),
+    };
   }
 
   beforeModel() {

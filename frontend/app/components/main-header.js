@@ -13,6 +13,7 @@ export default class MainHeaderComponent extends Component {
   @tracked token = this.session.data.authenticated.token;
   @tracked search_term;
   @tracked searchLoading = false;
+  @tracked searchQuery = '';
 
   @action
   search(evt) {
@@ -28,15 +29,34 @@ export default class MainHeaderComponent extends Component {
   }
 
   @action
+  async change(evt) {
+    // TODO: implement searchLoading false and true setters
+    this.searchQuery = evt;
+  }
+
+  get filterFunction() {
+    // TODO: check code complexity of regex filter vs indexOf
+    // c.name.match(new RegExp(params.id, 'i')) ||
+    // c.description.match(new RegExp(params.id, 'i'))
+    let c;
+    if (this.searchQuery) {
+      c = this.args.model.chapters.filter(
+        (c) => c.name.indexOf(this.searchQuery) > -1
+      );
+    }
+    return c;
+  }
+
+  @action
   translate(lang) {
     this.intl.setLocale([lang]);
   }
 
   get unreadNotificationsCount() {
-    if (!this.args.notifications) {
+    if (!this.args.model.notifications) {
       return 0;
     }
-    return this.args.notifications.filter((n) => n.read === false).length;
+    return this.args.model.notifications.filter((n) => n.read === false).length;
   }
 
   @action
