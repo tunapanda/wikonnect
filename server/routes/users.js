@@ -122,6 +122,7 @@ router.post('/', validateAuthRoutes.validateNewUser, createPasswordHash, async c
  *       "createdAt": "2017-12-20T16:17:10.000Z",
  *       "updatedAt": "2017-12-20T16:17:10.000Z",
  *       "profileUri": "image_url",
+ *       "flag": false,
  *       "private": boolean,
  *       "inviteCode": "invited_by",
  *       "achievementAwards": [
@@ -138,7 +139,8 @@ router.post('/', validateAuthRoutes.validateNewUser, createPasswordHash, async c
  *       ],
  *       "userRoles": [
  *         {
- *           "name": "basic"
+ *           "id": "4hsuh4"
+ *           "type": "userRole"
  *         }
  *       ],
  *       "enrolledCourses": [
@@ -176,7 +178,7 @@ router.get('/:id', permController.requireAuth, async ctx => {
 
     let user = await User.query()
       .findById(userId)
-      .withGraphFetched('[achievementAwards(selectBadgeNameAndId), userRoles(selectName),' +
+      .withGraphFetched('[achievementAwards(selectBadgeNameAndId), userRoles(selectId),' +
         ' enrolledCourses(selectNameAndId)]');
 
     ctx.assert(user, 404, 'No User With that Id');
