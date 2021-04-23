@@ -1,5 +1,5 @@
 function parentComment() {
-    return cy.comments({parentId: false}).then((comments) => {
+    return cy.comments({ parentId: false }).then((comments) => {
         return comments
             .filter((comment) => comment.chapterId !== undefined)[0]
     });
@@ -12,7 +12,7 @@ describe('Chapter comments when authenticated', () => {
         parentComment()
             .then((comment) => {
                 cy.visit(`/chapter/${comment.chapterId}`)
-            });
+            }).as('comments');
     });
 
 
@@ -28,7 +28,7 @@ describe('Chapter comments when authenticated', () => {
     });
 
     it('should display created comment immediately', () => {
-        const comment = {text: `Test comment randomly at ${Math.random() * 1000000}`};
+        const comment = { text: `Test comment randomly at ${Math.random() * 1000000}` };
 
         cy.get('#chapter .padded form textarea')
             .type(comment.text);
@@ -39,12 +39,13 @@ describe('Chapter comments when authenticated', () => {
 
         cy.get('#chapter .media-body')
             .wait(1000) //TODO can we do better than this wait ?🤔
+            .last()
             .contains(comment.text)
             .should('be.visible')
     });
 
     it('should notify on comment posting success', () => {
-        const comment = {text: `Test notification randomly at ${Math.random() * 1000000}`};
+        const comment = { text: `Test notification randomly at ${Math.random() * 1000000}` };
 
         cy.get('#chapter .padded form textarea')
             .type(comment.text);
@@ -59,7 +60,7 @@ describe('Chapter comments when authenticated', () => {
     });
 
     it('should notify on comment posting error', () => {
-        const comment = {text: `What the hell randomly at ${Math.random() * 1000000}`};
+        const comment = { text: `What the hell randomly at ${Math.random() * 1000000}` };
 
         cy.get('#chapter .padded form textarea')
             .type(comment.text);
