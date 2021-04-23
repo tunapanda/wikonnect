@@ -1,12 +1,14 @@
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
+import { inject as service } from '@ember/service';
 import { H5P as H5PStandalone } from 'h5p-standalone';
+import config from 'wikonnect/config/environment';
 
 export default class H5pPlayerComponent extends Component {
-  @tracked
-  contentId = this.args.contentId;
+  @service router;
 
+  @tracked contentId = this.args.contentId;
   @tracked contentUrl = this.args.location;
 
   @action
@@ -25,9 +27,10 @@ export default class H5pPlayerComponent extends Component {
         frameCss: '/h5p/h5p.css',
         frame: true,
         copyright: true,
+        export: true,
+        downloadUrl: config.proxyUrl + `/api/v1/h5p/download/${this.contentId}`,
         //including this with false value until implementation on H5P player
         embed: false,
-        export: false,
       };
     }
 
