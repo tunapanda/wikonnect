@@ -45,7 +45,7 @@ router.post('/', validateAuthRoutes.validateUserLogin, async ctx => {
   let { hash: hashPassword, ...userInfoWithoutPassword } = user[0];
   user = user[0];
 
-  const userData = await user.$query().findById(user.id).withGraphFetched('userRoles(selectName)');
+  const userData = await user.$query().findById(user.id).withGraphFetched('userRoles(selectNameAndId)');
 
   let role = userData['userRoles'][0] !== undefined ? userData['userRoles'][0].name : 'basic';
   userInfoWithoutPassword['role'] = role;
