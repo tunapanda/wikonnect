@@ -31,7 +31,7 @@
     "@ember/test-helpers": "^2.1.4",
     "@glimmer/component": "^1.0.3",
     "@glimmer/tracking": "^1.0.3",
-    "@lumieducation/h5p-webcomponents": "^7.2.0",
+    "@lumieducation/h5p-webcomponents": "^7.5.2",
     "@types/ember": "^3.1.1",
     "babel-eslint": "^10.1.0",
     "bootstrap": "^4.3.1",
