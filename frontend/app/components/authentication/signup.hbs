@@ -1,5 +1,5 @@
 <div class="p-4">
-  <BsForm @class="form" @formLayout="vertical" @model={{@newUser}} @onSubmit={{this.createUser}} as |form|>
+  <BsForm class="signup-form" @formLayout="vertical" @model={{@newUser}} @onSubmit={{this.createUser}} as |form|>
 
     <div class="signup-form-fields">
       <form.element id="username" class="" @controlType="text" @label={{t "auth.login.username"}} @property="username" as |el|>
