@@ -89,3 +89,8 @@ manage:
   approved: Approved
   not_approved: Not Approved
   chapter: Chapter
+
+main_navbar:
+  notifications:
+    title: Notifications
+    empty: You have no new notifications

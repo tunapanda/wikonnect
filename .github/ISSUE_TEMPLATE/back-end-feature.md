@@ -22,7 +22,7 @@ assignees: '@mosesokemwa'
 
 
 ### Acceptance Criteria
-<!-- Detailed checlist of acceptance criteria  -->
+<!-- Detailed checklist of acceptance criteria  -->
 - [ ] eg end-point  " api/users" should not list users  for non-admin users
 - [ ] eg end-point  " api/users" should list users for admin users
 
