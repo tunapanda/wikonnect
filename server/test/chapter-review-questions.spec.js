@@ -4,7 +4,6 @@ const chaiJSON = require('chai-json-schema');
 
 const server = require('../index');
 const tokens = require('./_tokens');
-const knex = require('../db/db');
 
 chai.use(chaiHttp);
 chai.use(chaiJSON);
@@ -12,11 +11,6 @@ chai.should();
 
 const route = '/api/v1/review-questions';
 describe('CHAPTER REVIEW QUESTIONS ROUTE', () => {
-  before(async () => {
-    await knex.migrate.rollback();
-    await knex.migrate.latest();
-    return await knex.seed.run();
-  });
 
   it('Should fetch chapter reviews questions', done => {
     chai

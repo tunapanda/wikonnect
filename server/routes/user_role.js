@@ -1,6 +1,6 @@
 const Router = require('koa-router');
 const { requireAuth, grantAccess } = require('../middleware/permController');
-
+const groupMembers = require('../models/group_members');
 const environment = process.env.NODE_ENV;
 const config = require('../knexfile.js')[environment];
 const knex = require('knex')(config);
@@ -9,42 +9,167 @@ const router = new Router({
   prefix: '/userRole'
 });
 
-router.get('/', requireAuth, async ctx => {
-  const group_members = await knex().from('group_members').join('groups', { 'group_members.group_id': 'groups.id' });
-  ctx.assert(group_members, 404, 'No users with roles yet');
+
+/**
+ * @api {get} /api/v1/userRole GET all user roles
+ * @apiName Get user roles
+ * @apiGroup UserRole
+ * @apiPermission authenticated user[moderator/admin/superadmin]
+ * @apiVersion 0.4.0
+ *
+ * @apiHeader {String} Authorization Bearer << JWT here>>
+ *
+ * @apiParam (URI Param) {String} id user role id
+ *
+ * @apiParam (Query Params) {Boolean} [userId] filter by userId
+ * @apiParam (Query Params) {String} [groupId] filter by groupId
+ *
+ * @apiSuccess {Object} user_role Top level object
+ * @apiSuccess {String} user_role[userId] users id
+ * @apiSuccess {String} user_role[groupId] associated group name Id
+ * @apiSuccess {String} user_role[createdAt] date created
+ * @apiSuccess {String} user_role[updatedAt] date updated
+ * @apiSuccess {String} user_role[group] group details object
+ *
+ * @apiSuccessExample {json} Success-Response:
+ *     HTTP/1.1 200 OK
+ *     "user_role": [
+ *          {
+ *            "userId": "user1",
+ *            "groupId": "groupAdmin",
+ *            "createdAt": "2019-12-20T16:17:10.000Z",
+ *            "updatedAt": "2019-12-20T16:17:10.000Z",
+ *            "group": [{
+ *                "id": "groupAdmin",
+ *                "name": "admin",
+ *                "slug": "role-admin",
+ *                "description": "",
+ *                "metadata": null,
+ *                "createdAt": "2019-12-20T16:17:10.000Z",
+ *                "updatedAt": "2019-12-20T16:17:10.000Z",
+ *                "type": "userRoles"
+ *            }]
+ *          }
+ *      ]
+ *
+ */
+
+router.get('/', requireAuth, grantAccess('readAny', 'private'), async ctx => {
+  const user_role = await groupMembers.query().where(ctx.query).withGraphFetched('group');
+  ctx.assert(user_role, 404, 'No users with roles yet');
 
   ctx.status = 200;
-  ctx.body = { group_members };
+  ctx.body = { user_role };
 });
+/**
+ * @api {get} /api/v1/userRole/:id GET user role by userId
+ * @apiName Get user role by userId
+ * @apiGroup UserRole
+ * @apiPermission authenticated user[moderator/admin/superadmin]
+ * @apiVersion 0.4.0
+ *
+ * @apiHeader {String} Authorization Bearer << JWT here>>
+ *
+ * @apiParam (URI Param) {String} id user role id
+ *
+ * @apiParam (Query Params) {Boolean} [userId] filter by userId
+ * @apiParam (Query Params) {String} [groupId] filter by groupId
+ *
+ * @apiSuccess {Object} user_role Top level object
+ * @apiSuccess {String} user_role[userId] users id
+ * @apiSuccess {String} user_role[groupId] associated group name Id
+ * @apiSuccess {String} user_role[createdAt] date created
+ * @apiSuccess {String} user_role[updatedAt] date updated
+ * @apiSuccess {String} user_role[group] group details object
+ *
+ * @apiSuccessExample {json} Success-Response:
+ *     HTTP/1.1 200 OK
+ *     "user_role": [
+ *          {
+ *            "userId": "user1",
+ *            "groupId": "groupAdmin",
+ *            "createdAt": "2019-12-20T16:17:10.000Z",
+ *            "updatedAt": "2019-12-20T16:17:10.000Z",
+ *            "group": [{
+ *                "id": "groupAdmin",
+ *                "name": "admin",
+ *                "slug": "role-admin",
+ *                "description": "",
+ *                "metadata": null,
+ *                "createdAt": "2019-12-20T16:17:10.000Z",
+ *                "updatedAt": "2019-12-20T16:17:10.000Z",
+ *                "type": "userRoles"
+ *            }]
+ *          }
+ *      ]
+ *
+ */
+router.get('/:id', requireAuth, grantAccess('readAny', 'private'), async ctx => {
+  let stateUserId = ctx.state.user.id === undefined ? ctx.state.user.data.id : ctx.state.user.id;
+  let userId = (ctx.params.id !== 'current' || ctx.params.id !== 'me') ? ctx.params.id : stateUserId;
 
-router.get('/user', requireAuth, async ctx => {
-  const group_members = await knex('group_members')
-    .where('user_id', knex.raw('?', [ctx.state.user.data.id]))
-    .join('groups', { 'group_members.group_id': 'groups.id' });
-  ctx.assert(group_members, 404, 'The current user has no role yet');
-
+  const user_role = await groupMembers.query().where('user_id', userId).withGraphFetched('group');
+  ctx.assert(user_role, 404, 'The current user has no role yet');
   ctx.status = 200;
-  ctx.body = { group_members };
+  ctx.body = { user_role };
 });
 
-router.post('/', requireAuth, grantAccess('updateAny', 'path'), async ctx => {
-  const group_members = await knex()
-    .insert(
-      [{ 'user_id': knex.raw('?', [ctx.query.user_id]), 'group_id': knex.raw('?', [ctx.query.group_id]) }],
-      ['user_id', 'group_id'])
-    .into('group_members');
-
+router.post('/', requireAuth, grantAccess('createAny', 'private'), async ctx => {
+  const user_role = await groupMembers.query()
+    .insertAndFetch(
+      {
+        'user_id': knex.raw('?', [ctx.query.user_id]),
+        'group_id': knex.raw('?', [ctx.query.group_id])
+      });
   ctx.status = 200;
-  ctx.body = { group_members };
+  ctx.body = { user_role };
 });
 
 
-router.put('/:id', requireAuth, async ctx => {
-  const group_members = await knex('group_members')
-    .where({ 'user_id': knex.raw('?', [ctx.params.id]) })
-    .update({ 'group_id': knex.raw('?', [ctx.request.body.group_id]) }, ['user_id', 'group_id']);
+/**
+ * @api {put} /api/v1/userRole/:id PUT user role by userId
+ * @apiName Put user role by userId
+ * @apiGroup UserRole
+ * @apiPermission authenticated user[moderator/admin/superadmin]
+ * @apiVersion 0.4.0
+ *
+ * @apiHeader {String} Authorization Bearer << JWT here>>
+ *
+ * @apiParam (URI Param) {String} id user role id
+ * @apiParam (Params) {String} [groupId] filter by groupId
+ *
+ * @apiSuccessExample {json} Success-Response:
+ *     HTTP/1.1 200 OK
+ *     "user_role": [
+ *          {
+ *            "userId": "user1",
+ *            "groupId": "groupAdmin",
+ *            "createdAt": "2019-12-20T16:17:10.000Z",
+ *            "updatedAt": "2019-12-20T16:17:10.000Z",
+ *            "group": [{
+ *                "id": "groupAdmin",
+ *                "name": "admin",
+ *                "slug": "role-admin",
+ *                "description": "",
+ *                "metadata": null,
+ *                "createdAt": "2019-12-20T16:17:10.000Z",
+ *                "updatedAt": "2019-12-20T16:17:10.000Z",
+ *                "type": "userRoles"
+ *            }]
+ *          }
+ *      ]
+ *
+ */
 
+router.put('/:id', requireAuth, grantAccess('updateAny', 'private'), async ctx => {
+  let stateUserId = ctx.state.user.id === undefined ? ctx.state.user.data.id : ctx.state.user.id;
+  let userId = (ctx.params.id !== 'current' || ctx.params.id !== 'me') ? ctx.params.id : stateUserId;
+  const user_role = await groupMembers.query()
+    .where({ 'user_id': userId })
+    .updateAndFetch({ 'group_id': ctx.request.body.user_role.group_id })
+    .withGraphFetched('group');
   ctx.status = 200;
-  ctx.body = { group_members };
+  ctx.body = { user_role };
 });
+
 module.exports = router.routes();

@@ -4,7 +4,6 @@ const chaiJSON = require('chai-json-schema');
 
 const server = require('../index');
 const tokens = require('./_tokens');
-const knex = require('../db/db');
 
 chai.use(chaiHttp);
 chai.use(chaiJSON);
@@ -13,13 +12,8 @@ chai.should();
 const route = '/api/v1/userRole';
 
 describe('USER ROLE ROUTE', () => {
-  before(async () => {
-    await knex.migrate.rollback();
-    await knex.migrate.latest();
-    return await knex.seed.run();
-  });
 
-  it('Should fetch existing uer roles', done => {
+  it('Should grant superadmin access to all user roles', done => {
     chai
       .request(server)
       .get(route)
@@ -27,7 +21,36 @@ describe('USER ROLE ROUTE', () => {
       .end((err, res) => {
         res.should.have.status(200);
         res.should.be.json;
-        res.body.reviews[0].should.have.property('id');
+        res.body.user_role[0].should.have.property('id');
+        res.body.user_role[0].should.have.property('user_id');
+        res.body.user_role[0].should.have.property('group_id');
+        done();
+      });
+  });
+
+  it('Should grant admin access to all user roles', done => {
+    chai
+      .request(server)
+      .get(route)
+      .set(tokens.headerAdminUser)
+      .end((err, res) => {
+        res.should.be.json;
+        res.should.have.status(200);
+        res.body.user_role[0].should.have.property('id');
+        res.body.user_role[0].should.have.property('user_id');
+        res.body.user_role[0].should.have.property('group_id');
+        done();
+      });
+  });
+  it('Should deny access for permissions that are not admin and superadmin', done => {
+    chai
+      .request(server)
+      .get(route)
+      .set(tokens.headerBasicUser2)
+      .end((err, res) => {
+        res.should.be.json;
+        res.should.have.status(400);
+        res.body.errors[0].should.eq('Access denied');
         done();
       });
   });
