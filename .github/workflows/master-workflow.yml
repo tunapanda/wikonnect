@@ -287,6 +287,11 @@ jobs:
       - name: Frontend run build
         env:
           GOOGLE_KEY: ${{ secrets.GOOGLE_KEY }}
+          FACEBOOK_KEY: ${{ secrets.FACEBOOK_KEY }}
+          LINKEDIN_CLIENT_ID: ${{ secrets.LINKEDIN_CLIENT_ID }}
+          LINKEDIN_REDIRECT_URI: ${{ secrets.LINKEDIN_REDIRECT_URI }}
+          GITHUB_CLIENT_ID: ${{ secrets.GITHUB_CLIENT_ID }}
+          GITHUB_REDIRECT_URI: ${{ secrets.GITHUB_REDIRECT_URI }}
         run: yarn --cwd ./frontend build --prod
 
       # Install project dependencies, test and build
