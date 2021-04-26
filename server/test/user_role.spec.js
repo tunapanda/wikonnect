@@ -21,9 +21,8 @@ describe('USER ROLE ROUTE', () => {
       .end((err, res) => {
         res.should.have.status(200);
         res.should.be.json;
-        res.body.user_role[0].should.have.property('id');
-        res.body.user_role[0].should.have.property('user_id');
-        res.body.user_role[0].should.have.property('group_id');
+        res.body.user_role[0].should.have.property('userId');
+        res.body.user_role[0].should.have.property('groupId');
         done();
       });
   });
@@ -36,9 +35,8 @@ describe('USER ROLE ROUTE', () => {
       .end((err, res) => {
         res.should.be.json;
         res.should.have.status(200);
-        res.body.user_role[0].should.have.property('id');
-        res.body.user_role[0].should.have.property('user_id');
-        res.body.user_role[0].should.have.property('group_id');
+        res.body.user_role[0].should.have.property('userId');
+        res.body.user_role[0].should.have.property('groupId');
         done();
       });
   });

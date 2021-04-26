@@ -1,7 +1,7 @@
 const jsonwebtoken = require('jsonwebtoken');
 const { secret } = require('../middleware/jwt');
 
-const userId = 'user1';
+const userId = 'user2';
 const superAdmin = {
   'user': {
     'id': userId,
