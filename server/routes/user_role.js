@@ -1,6 +1,8 @@
 const Router = require('koa-router');
 const { requireAuth, grantAccess } = require('../middleware/permController');
 const groupMembers = require('../models/group_members');
+const User = require('../models/user');
+
 const environment = process.env.NODE_ENV;
 const config = require('../knexfile.js')[environment];
 const knex = require('knex')(config);
@@ -106,7 +108,7 @@ router.get('/', requireAuth, grantAccess('readAny', 'private'), async ctx => {
  */
 router.get('/:id', requireAuth, grantAccess('readAny', 'private'), async ctx => {
   let stateUserId = ctx.state.user.id === undefined ? ctx.state.user.data.id : ctx.state.user.id;
-  let userId = (ctx.params.id !== 'current' || ctx.params.id !== 'me') ? ctx.params.id : stateUserId;
+  let userId = (ctx.params.id !== 'current' || ctx.params.id !== 'me') ? stateUserId : ctx.params.id;
 
   const user_role = await groupMembers.query().where('user_id', userId).withGraphFetched('group');
   ctx.assert(user_role, 404, 'The current user has no role yet');
@@ -135,39 +137,29 @@ router.post('/', requireAuth, grantAccess('createAny', 'private'), async ctx => 
  *
  * @apiHeader {String} Authorization Bearer << JWT here>>
  *
- * @apiParam (URI Param) {String} id user role id
- * @apiParam (Params) {String} [groupId] filter by groupId
+ * @apiParam (URI Param) {String} id user id
+ * @apiParam (Params) {String} groupId New group id to be updated
  *
  * @apiSuccessExample {json} Success-Response:
  *     HTTP/1.1 200 OK
- *     "user_role": [
- *          {
+ *     {
+ *        "user_role": [{
  *            "userId": "user1",
- *            "groupId": "groupAdmin",
+ *            "groupId": "groupBasic",
  *            "createdAt": "2019-12-20T16:17:10.000Z",
- *            "updatedAt": "2019-12-20T16:17:10.000Z",
- *            "group": [{
- *                "id": "groupAdmin",
- *                "name": "admin",
- *                "slug": "role-admin",
- *                "description": "",
- *                "metadata": null,
- *                "createdAt": "2019-12-20T16:17:10.000Z",
- *                "updatedAt": "2019-12-20T16:17:10.000Z",
- *                "type": "userRoles"
- *            }]
- *          }
- *      ]
+ *            "updatedAt": "2021-04-26T20:11:24.764Z"
+ *        }]
+ *      }
  *
  */
 
 router.put('/:id', requireAuth, grantAccess('updateAny', 'private'), async ctx => {
-  let stateUserId = ctx.state.user.id === undefined ? ctx.state.user.data.id : ctx.state.user.id;
-  let userId = (ctx.params.id !== 'current' || ctx.params.id !== 'me') ? ctx.params.id : stateUserId;
+  const userId = ctx.params.id;
+  const data = ctx.request.body.user_role;
   const user_role = await groupMembers.query()
+    .patch(data)
     .where({ 'user_id': userId })
-    .updateAndFetch({ 'group_id': ctx.request.body.user_role.group_id })
-    .withGraphFetched('group');
+    .returning('*');
   ctx.status = 200;
   ctx.body = { user_role };
 });
