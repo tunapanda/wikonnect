@@ -26,7 +26,7 @@
         {{t "messages.authenticating"}}
       </button>
     {{else}}
-      <BsButton class="bg-primary form-control mb-2" @defaultText={{t "auth.login.login"}} type="submit">
+      <BsButton class="bg-primary form-control mb-2" @defaultText={{t "auth.login.login"}} @buttonType="submit">
       </BsButton>
 
       <BsButton type="button" class="bg-primary form-control" {{ on "click" this.authenticateWithGoogleImplicitGrant}}>
