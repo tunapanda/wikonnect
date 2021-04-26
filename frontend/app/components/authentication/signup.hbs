@@ -46,18 +46,28 @@
       <BsButton class="btn btn-primary form-control mb-2" @type="submit" @defaultText={{t "auth.signup.signup" }}
         @buttonType="submit" />
 
-      <BsButton type="button" class="bg-primary form-control mb-2" {{ on "click"
+      <p class="line-text"><span>{{t "auth.login.or" }}</span></p>
+
+      <BsButton type="button" class="shadow-sm rounded btn-dark btn-linkedIn form-control mb-2" {{ on "click"
+        this.authenticateWithLinkedIn}}>
+        <span class="px-2">{{svg-jar "linkedIn-icon-2"}}</span> {{t "auth.signup.signup_third_party"
+        authProvider="LinkedIn"}}
+      </BsButton>
+
+      <BsButton type="button" class="shadow-sm rounded btn-dark form-control mb-2" {{ on "click"
+        this.authenticateWithGitHub}}>
+        <span class="px-2">{{svg-jar "github-icon"}}</span>{{t "auth.signup.signup_third_party" authProvider="GitHub"}}
+      </BsButton>
+
+      <BsButton type="button" class="shadow-sm border rounded btn-light form-control mb-2" {{ on "click"
         this.authenticateWithGoogleImplicitGrant}}>
         <span class="px-2">{{svg-jar "google-icon"}}</span> {{t "auth.signup.signup_third_party" authProvider="Google"}}
       </BsButton>
 
-      <BsButton type="button" class="bg-primary form-control mb-2" {{ on "click" this.authenticateWithFacebook}}>
-        <span class="px-2">{{svg-jar "facebook-icon"}}</span>{{t "auth.signup.signup_third_party"
+      <BsButton type="button" class="shadow-sm rounded btn-dark btn-facebook form-control mb-2" {{ on "click"
+        this.authenticateWithFacebook}}>
+        <span class="px-2">{{svg-jar "facebook-icon-2"}}</span>{{t "auth.signup.signup_third_party"
         authProvider="Facebook"}}
-      </BsButton>
-
-      <BsButton type="button" class="bg-primary form-control mb-2" {{ on "click" this.authenticateWithGitHub}}>
-        <span class="px-2">{{svg-jar "github-icon"}}</span>{{t "auth.signup.signup_third_party" authProvider="GitHub"}}
       </BsButton>
 
     </BsForm>
