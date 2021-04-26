@@ -7,7 +7,7 @@ on:
 jobs:
   Build:
     name: Build Wikonnect
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-18.04
 
     steps:
       - uses: actions/checkout@v2
@@ -48,7 +48,7 @@ jobs:
 
   FrontendTest:
     name: Test Wikonnect Frontend
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-18.04
     needs: Build
     steps:
       - uses: actions/checkout@v2
@@ -94,7 +94,7 @@ jobs:
 
   BackendTest:
     name: Test Wikonnect Backend
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-18.04
     needs: Build
     services:
       # Label used to access the service container
@@ -182,7 +182,7 @@ jobs:
 
   IntegrationTest:
     name: Integration Test
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-18.04
     services:
       # Label used to access the service container
       postgres:
@@ -276,7 +276,7 @@ jobs:
           path: cypress/screenshots
   deploy:
     name: CD Pipeline
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-18.04
     strategy:
       matrix:
         python-version: [3.8]
