@@ -7,7 +7,7 @@ export default class ApplicationAdapter extends RESTAdapter {
   namespace = 'api/v1';
   get headers() {
     return {
-      Authorization: `Bearer ${this.session?.data?.authenticated?.token}`
+      Authorization: `Bearer ${this.session?.data?.authenticated?.token}`,
     };
   }
 }
