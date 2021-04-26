@@ -23,7 +23,7 @@ router.post('/', async ctx => {
   let newUser = {
     email: gData.emailAddresses[0].value,
     hash: hashPassword,
-    username: username,
+    username: username.toLowerCase(),
     firstName: gData.names[0].familyName,
     lastName: gData.names[0].givenName,
     metadata: {
