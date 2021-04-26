@@ -116,17 +116,6 @@ router.get('/:id', requireAuth, grantAccess('readAny', 'private'), async ctx => 
   ctx.body = { user_role };
 });
 
-router.post('/', requireAuth, grantAccess('createAny', 'private'), async ctx => {
-  const user_role = await groupMembers.query()
-    .insertAndFetch(
-      {
-        'user_id': knex.raw('?', [ctx.query.user_id]),
-        'group_id': knex.raw('?', [ctx.query.group_id])
-      });
-  ctx.status = 200;
-  ctx.body = { user_role };
-});
-
 
 /**
  * @api {put} /api/v1/userRole/:id PUT user role by userId
