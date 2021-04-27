@@ -9,7 +9,7 @@ on:
 jobs:
   Build:
     name: Build Wikonnect
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-18.04
 
     steps:
       - uses: actions/checkout@v2
@@ -50,7 +50,7 @@ jobs:
 
   FrontendTest:
     name: Test Wikonnect Frontend
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-18.04
     needs: Build
     steps:
       - uses: actions/checkout@v2
@@ -88,7 +88,7 @@ jobs:
 
   BackendTest:
     name: Test Wikonnect Backend
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-18.04
     needs: Build
     services:
       # Label used to access the service container
@@ -150,7 +150,11 @@ jobs:
 
   IntegrationTest:
     name: Integration Test
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-18.04
+    strategy:
+      fail-fast: false
+      matrix:
+        containers: [1, 2]
     services:
       # Label used to access the service container
       postgres:
@@ -212,6 +216,7 @@ jobs:
         env:
           POSTGRES_HOST: localhost
           POSTGRES_PORT: 5432
+          SEEDS: 25
           NODE_ENV: action
 
       # Run all Cypress tests
@@ -219,7 +224,12 @@ jobs:
         uses: cypress-io/github-action@v2
         env:
           NODE_ENV: action
+          CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
+          record: true
+          parallel: true
+          group: "Integration Tests on push"
           config: pageLoadTimeout=100000,baseUrl=http://localhost:4200
           start: yarn --cwd ./server start, yarn --cwd ./frontend start
           wait-on: "http://localhost:4200"
