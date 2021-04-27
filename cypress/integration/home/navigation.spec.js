@@ -26,16 +26,11 @@ describe('Learner Navigation Menu', () => {
     cy.get('.main-header.navbar a[href="/"]')
       .should('be.visible');
   }); 
-  
-  it('Should not link to teachers page before authentication', () => {
-    cy.get('.main-header.navbar a[href="/teach"]')
-      .should('not.exist');
-  });
 
-  it('Should link to teachers page if authentication', () => {
-    cy.login();
+  it('Should link to teachers page', () => {
     cy.get('.main-header.navbar a[href="/teach"]')
-      .should('be.visible');
+        .should('exist')
+        .should('be.visible');
   });
 
 })
