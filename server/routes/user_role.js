@@ -1,11 +1,6 @@
 const Router = require('koa-router');
 const { requireAuth, grantAccess } = require('../middleware/permController');
 const groupMembers = require('../models/group_members');
-const User = require('../models/user');
-
-const environment = process.env.NODE_ENV;
-const config = require('../knexfile.js')[environment];
-const knex = require('knex')(config);
 
 const router = new Router({
   prefix: '/userRole'
