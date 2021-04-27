@@ -74,18 +74,10 @@ jobs:
             ${{ runner.os }}-yarn-
 
       # Install project dependencies, test and build
-      - name: Install Wikonnect dependencies
-        run: yarn  --frozen-lockfile
-
-      # Install project dependencies, test and build
       - name: Install frontend dependencies
         run: yarn  --frozen-lockfile --cwd ./frontend
       - name: Run build
         run: yarn  --frozen-lockfile --cwd ./frontend build --prod
-
-      # Install project dependencies, test and build
-      - name: Install backend dependencies
-        run: yarn  --frozen-lockfile --cwd ./server
 
       # Frontend tests
       - name: Lint Ember hbs
@@ -136,16 +128,6 @@ jobs:
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
             ${{ runner.os }}-yarn-
-
-      # Install project dependencies, test and build
-      - name: Install Wikonnect dependencies
-        run: yarn  --frozen-lockfile
-
-      # Install project dependencies, test and build
-      - name: Install frontend dependencies
-        run: yarn  --frozen-lockfile --cwd ./frontend
-      - name: Run build
-        run: yarn  --frozen-lockfile --cwd ./frontend build --prod
 
       # Install project dependencies, test and build
       - name: Install backend dependencies

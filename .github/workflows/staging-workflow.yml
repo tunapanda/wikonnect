@@ -7,7 +7,7 @@ on:
 jobs:
   Build:
     name: Build Wikonnect
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-18.04
 
     steps:
       - uses: actions/checkout@v2
@@ -16,7 +16,7 @@ jobs:
       - name: Install Node.js 14.x
         uses: actions/setup-node@v1
         with:
-          node-version: '14.x'
+          node-version: "14.x"
 
       # Yarn cache dir
       - name: Get yarn cache directory path
@@ -48,7 +48,7 @@ jobs:
 
   FrontendTest:
     name: Test Wikonnect Frontend
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-18.04
     needs: Build
     steps:
       - uses: actions/checkout@v2
@@ -57,7 +57,7 @@ jobs:
       - name: Install Node.js 14.x
         uses: actions/setup-node@v1
         with:
-          node-version: '14.x'
+          node-version: "14.x"
 
       # Yarn cache dir
       - name: Get yarn cache directory path
@@ -73,18 +73,10 @@ jobs:
             ${{ runner.os }}-yarn-
 
       # Install project dependencies, test and build
-      - name: Install Wikonnect dependencies
-        run: yarn  --frozen-lockfile
-
-      # Install project dependencies, test and build
       - name: Install frontend dependencies
         run: yarn  --frozen-lockfile --cwd ./frontend
       - name: Run build
         run: yarn  --frozen-lockfile --cwd ./frontend build --prod
-
-      # Install project dependencies, test and build
-      - name: Install backend dependencies
-        run: yarn  --frozen-lockfile --cwd ./server
 
       # Frontend tests
       - name: Lint Ember hbs
@@ -94,7 +86,7 @@ jobs:
 
   BackendTest:
     name: Test Wikonnect Backend
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-18.04
     needs: Build
     services:
       # Label used to access the service container
@@ -121,7 +113,7 @@ jobs:
       - name: Install Node.js 14.x
         uses: actions/setup-node@v1
         with:
-          node-version: '14.x'
+          node-version: "14.x"
 
       # Yarn cache dir
       - name: Get yarn cache directory path
@@ -135,16 +127,6 @@ jobs:
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
             ${{ runner.os }}-yarn-
-
-      # Install project dependencies, test and build
-      - name: Install Wikonnect dependencies
-        run: yarn  --frozen-lockfile
-
-      # Install project dependencies, test and build
-      - name: Install frontend dependencies
-        run: yarn  --frozen-lockfile --cwd ./frontend
-      - name: Run build
-        run: yarn  --frozen-lockfile --cwd ./frontend build --prod
 
       # Install project dependencies, test and build
       - name: Install backend dependencies
@@ -167,7 +149,16 @@ jobs:
 
   IntegrationTest:
     name: Integration Test
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-18.04
+    strategy:
+      # when one test fails, DO NOT cancel the other
+      # containers, because this will kill Cypress processes
+      # leaving the Dashboard hanging ...
+      # https://github.com/cypress-io/github-action/issues/48
+      fail-fast: false
+      matrix:
+        # run 3 copies of the current job in parallel
+        containers: [1, 2]
     services:
       # Label used to access the service container
       postgres:
@@ -194,7 +185,7 @@ jobs:
       - name: Install Node.js 14.x
         uses: actions/setup-node@v1
         with:
-          node-version: '14.x'
+          node-version: "14.x"
 
       # Install YARN dependencies, cache them correctly
       - name: Get yarn cache directory path
@@ -237,7 +228,12 @@ jobs:
         uses: cypress-io/github-action@v2
         env:
           NODE_ENV: action
+          CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
+          record: true
+          parallel: true
+          group: "Integration Tests staging branch"
           start: yarn --cwd ./server start, yarn --cwd ./frontend start
           wait-on: "http://localhost:4200"
 
@@ -252,26 +248,26 @@ jobs:
     strategy:
       matrix:
         python-version: [3.8]
-        appname: ['aws-codedeploy']
-        deploy-group: ['wikonnect-staging']
-        s3-bucket: ['wikonnect-codedeploy-deployments']
-        s3-filename: ['staging-wikonnect-codedeploy-${{ github.sha }}']
+        appname: ["aws-codedeploy"]
+        deploy-group: ["wikonnect-staging"]
+        s3-bucket: ["wikonnect-codedeploy-deployments"]
+        s3-filename: ["staging-wikonnect-codedeploy-${{ github.sha }}"]
 
-    needs: ['IntegrationTest', 'BackendTest']
+    needs: ["IntegrationTest", "BackendTest"]
     steps:
       - uses: actions/checkout@v2
 
       # cache node_modules in our monorepo project instead of caching the yarn cache
       - uses: actions/cache@v2
         with:
-          path: '**/node_modules'
+          path: "**/node_modules"
           key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
 
       # Initialize Node.js
       - name: Install Node.js 14.x
         uses: actions/setup-node@v1
         with:
-          node-version: '14.x'
+          node-version: "14.x"
 
       # Wikonnect root install dependencies
       - name: Wikonnect root install dependencies

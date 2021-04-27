@@ -42,7 +42,7 @@ jobs:
         run: yarn  --frozen-lockfile --cwd ./frontend
 
       - name: Run build
-        run: yarn  --frozen-lockfile --cwd ./frontend build --prod
+        run: yarn  --frozen-lockfile --cwd ./frontend build
 
       # Install project dependencies, test and build
       - name: Install backend dependencies
@@ -75,18 +75,10 @@ jobs:
             ${{ runner.os }}-yarn-
 
       # Install project dependencies, test and build
-      - name: Install Wikonnect dependencies
-        run: yarn  --frozen-lockfile
-
-      # Install project dependencies, test and build
       - name: Install frontend dependencies
         run: yarn  --frozen-lockfile --cwd ./frontend
       - name: Run build
         run: yarn  --frozen-lockfile --cwd ./frontend build --prod
-
-      # Install project dependencies, test and build
-      - name: Install backend dependencies
-        run: yarn  --frozen-lockfile --cwd ./server
 
       # Frontend tests
       - name: Lint Ember hbs
@@ -137,16 +129,6 @@ jobs:
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
             ${{ runner.os }}-yarn-
-
-      # Install project dependencies, test and build
-      - name: Install Wikonnect dependencies
-        run: yarn  --frozen-lockfile
-
-      # Install project dependencies, test and build
-      - name: Install frontend dependencies
-        run: yarn  --frozen-lockfile --cwd ./frontend
-      - name: Run build
-        run: yarn  --frozen-lockfile --cwd ./frontend build --prod
 
       # Install project dependencies, test and build
       - name: Install backend dependencies
@@ -238,11 +220,12 @@ jobs:
         env:
           NODE_ENV: action
         with:
+          config: pageLoadTimeout=100000,baseUrl=http://localhost:4200
           start: yarn --cwd ./server start, yarn --cwd ./frontend start
           wait-on: "http://localhost:4200"
 
       - uses: actions/upload-artifact@v1
         if: failure()
         with:
-          name: cypress-screenshots
-          path: cypress/screenshots
+          name: cypress-videos
+          path: cypress/videos
