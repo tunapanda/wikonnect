@@ -173,7 +173,7 @@ jobs:
           # Maps tcp port 5432 on service container to the host
           - 5432:5432
 
-    needs: FrontendTest
+    needs: Build
     steps:
       - uses: actions/checkout@v2
 
