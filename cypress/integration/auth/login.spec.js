@@ -48,7 +48,7 @@ describe('Login page', () => {
 
     it('should have Google login call to action', () => {
         cy.get('form button')
-            .contains('Login with Google', {matchCase: false})
+            .contains('Log In With Google', {matchCase: false})
             .should('be.visible');
     });
 
