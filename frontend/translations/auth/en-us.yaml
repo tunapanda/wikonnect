@@ -4,17 +4,17 @@ login:
   authenticating: Authenticating ...
   username: Username
   enter_username: Enter Username
-  enter_email: Enter email
+  enter_email: Enter Email
   password: Password
   enter_password: Enter Password
-  login_third_party: Login with {authProvider}
+  login_third_party: Log In With {authProvider}
 
 signup:
   email: Email
   repeat_password: Repeat Password
   invite_code: Invite Code
   signup: Sign Up
-  signup_third_party: Sign up with {authProvider}
+  signup_third_party: Sign Up With {authProvider}
   link_to_login: Already have an account? '<'a href="/login"'>'Log in'</a>'
 
 password_reset:
