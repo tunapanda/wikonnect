@@ -9,6 +9,7 @@ export default class VerifyEmailComponent extends Component {
 
   @inject me;
   @inject store;
+  @inject notify;
 
   @action
   async verify() {
@@ -25,6 +26,7 @@ export default class VerifyEmailComponent extends Component {
       };
     } else {
       this.store.findRecord('user', this.me.id).then((user) => {
+        this.notify.success('Email verified successfully', { closeAfter: 6000 });
         user.emailVerified = true;
         this.args.verificationSuccessful();
       });
