@@ -176,6 +176,20 @@ Backend set up steps:
         password: 'my_password',
       }
     ```
+5) Rename the email configuration file `server/config/email.example.js` to `server/config/email.js`
+
+6) You can use Mailtrap for an email sandbox environment. Set up a [mailtrap.io](https://mailtrap.io/) account and copy the credentials provided for Nodemailer setup into the development section of the `server/config/email.js` file eg:
+
+```js
+development: {
+    provider: "smtp.mailtrap.io",
+    auth: {
+      user: "xxxxxxxxxxxx",
+      pass: "xxxxxxxxxxxx",
+    },
+    defaultFrom: process.env.FROM_EMAIL_ADDRESS,
+  },
+```
 
 5) Assuming the Postgres server is ready and above [configuration](server/config/db.js) credentials are correct, run the
    latest migrations (defined in `server/migrations`):
