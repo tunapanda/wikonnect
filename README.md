@@ -62,8 +62,7 @@ at [tunapanda.github.io/wikonnect](https://tunapanda.github.io/wikonnect)
 
 ## Development setup
 
-- Manually [download](https://codeload.github.com/tunapanda/wikonnect/zip/master) or clone the project
-  using [Git](https://git-scm.com/) into your workspace:
+- Clone the project using [Git](https://git-scm.com/) into your workspace:
 
 ```
   git clone https://github.com/tunapanda/wikonnect.git
