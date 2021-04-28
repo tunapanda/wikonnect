@@ -474,7 +474,8 @@ router.post('/verify', permController.requireAuth, async ctx => {
 
 router.get('/:id/verify', permController.requireAuth, async ctx => {
   const decodedMail = Buffer.from(ctx.query.email, 'base64').toString('ascii');
-  let user = await User.query().findOne({ 'email': decodedMail });
+  const token = ctx.query.token;
+  let user = await User.query().findOne({ 'email': decodedMail, 'resetPasswordToken': token });
   ctx.assert(user, 404, 'No email found');
   let verifiedData;
   try {
@@ -484,6 +485,8 @@ router.get('/:id/verify', permController.requireAuth, async ctx => {
         'resetPasswordExpires': new Date(),
         'resetPasswordToken': null
       });
+    } else {
+      throw new Error('Email verification has expired');
     }
     
   } catch (e) {
