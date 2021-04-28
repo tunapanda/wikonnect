@@ -68,7 +68,7 @@ at [tunapanda.github.io/wikonnect](https://tunapanda.github.io/wikonnect)
   git clone https://github.com/tunapanda/wikonnect.git
  ```
 
-- Proceed to set up the development environment manually or using Docker.
+- Proceed to set up the development environment [manually](#manual-project-setup) or using [Docker](#docker-project-setup).
 
 ### Docker project setup
 
@@ -86,7 +86,7 @@ at [tunapanda.github.io/wikonnect](https://tunapanda.github.io/wikonnect)
 - [Mac installation](https://docs.docker.com/docker-for-mac/install/) - Installed as docker desktop
 - [Windows installation](https://docs.docker.com/docker-for-windows/install/)  - Installed as docker desktop
 
-#### Starting a development server
+##### Starting a development server
 
 1) If your Docker engine instance is running on your terminal, navigate into the **project root directory**:
 
@@ -133,9 +133,9 @@ Create a postgres user (with password), and set up a database for the project (D
 on the database!). :
 
 ```SQL
-=# CREATE USER my_user WITH PASSWORD 'my_password';
-=# CREATE DATABASE my_database;
-=# GRANT ALL PRIVILEGES ON DATABASE my_database TO my_user;
+=# CREATE USER wikonnect_user WITH PASSWORD 'password';
+=# CREATE DATABASE wikonnect;
+=# GRANT ALL PRIVILEGES ON DATABASE wikonnect TO wikonnect_user;
 ```
 
 #### Starting a development server
@@ -179,16 +179,16 @@ Backend set up steps:
 
 6) You can use Mailtrap for an email sandbox environment. Set up a [mailtrap.io](https://mailtrap.io/) account and copy the credentials provided for Nodemailer setup into the development section of the `server/config/email.js` file eg:
 
-```js
-development: {
-    provider: "smtp.mailtrap.io",
-    auth: {
-      user: "xxxxxxxxxxxx",
-      pass: "xxxxxxxxxxxx",
-    },
-    defaultFrom: process.env.FROM_EMAIL_ADDRESS,
-  },
-```
+    ```js
+    development: {
+        provider: "smtp.mailtrap.io",
+        auth: {
+          user: "xxxxxxxxxxxx",
+          pass: "xxxxxxxxxxxx",
+        },
+        defaultFrom: process.env.FROM_EMAIL_ADDRESS,
+      },
+    ```
 
 5) Assuming the Postgres server is ready and above [configuration](server/config/db.js) credentials are correct, run the
    latest migrations (defined in `server/migrations`):
