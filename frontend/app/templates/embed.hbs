@@ -1,4 +1,3 @@
-<div {{did-insert (fn this.dataLoad)}}></div>
 {{this.model.name}}
 <br>
 {{#if this.callbackUrl}}
@@ -6,21 +5,20 @@
 
 {{/if}}
 
-{{#if this.model.contentUri}}
-  <H5p @location={{this.model.contentUri}} />
-{{else}}
-  <H5p::Player @contentId={{this.model.contentId}}>
+{{#if (or this.model.contentId this.model.contentUri )}}
+  <H5p::Player @contentId={{this.model.contentId}}  @location={{this.model.contentUri}}
+               @onxAPIStatement={{this.onH5PPlayerXAPIEvent}}  >
   </H5p::Player>
 {{/if}}
 {{#if this.me.isAuthenticated}}
   {{t "embed.logged_in_as" user=this.me.user.username}}
-  <a name="" {{on "click" this.logout}} id="" class="btn btn-primary" href="#" role="button">{{t "buttons.logout"}}</a>
+  <a {{on "click" this.logout}} class="btn btn-primary" href="#" role="button">{{t "buttons.logout"}}</a>
 
 {{else}}
-  <a name="" {{on "click" (fn this.openLoginModal true)}} id="" class="btn btn-primary" href="#" role="button">
+  <a {{on "click" (fn this.openLoginModal true)}} class="btn btn-primary" href="#" role="button">
     {{t "buttons.login"}}
   </a>
-  <a name="" {{on "click" (fn this.openSignUpModal true)}} id="" class="btn btn-primary" href="#" role="button">
+  <a {{on "click" (fn this.openSignUpModal true)}} class="btn btn-primary" href="#" role="button">
     {{t "buttons.signup"}}
   </a>
 {{/if}}
