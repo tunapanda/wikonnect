@@ -95,7 +95,7 @@ at [tunapanda.github.io/wikonnect](https://tunapanda.github.io/wikonnect)
 cd wikonnect/
 ```
 
-2) Rename the `.env-sample` configuration file to `.env`. (Never commit this file)
+2) **Copy** the `.env-sample` configuration file to `.env`. (Never commit this file)
 
 3) Update the above `.env` file configurations to match your desired setup.
 
@@ -163,7 +163,7 @@ Backend set up steps:
     yarn
     ```
 
-3) Rename the database configuration file `server/config/db.example.js` to `server/config/db.js`
+3) **Copy** the database configuration file `server/config/db.example.js` to `server/config/db.js`
 
 4) Replace the database configuration to match your development database. (Do not use the development database in a
    production environment)
@@ -176,7 +176,7 @@ Backend set up steps:
         password: 'my_password',
       }
     ```
-5) Rename the email configuration file `server/config/email.example.js` to `server/config/email.js`
+5) **Copy** the email configuration file `server/config/email.example.js` to `server/config/email.js`
 
 6) You can use Mailtrap for an email sandbox environment. Set up a [mailtrap.io](https://mailtrap.io/) account and copy the credentials provided for Nodemailer setup into the development section of the `server/config/email.js` file eg:
 
