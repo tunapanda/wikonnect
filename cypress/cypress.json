@@ -1,6 +1,10 @@
 {
   "baseUrl": "http://localhost:4200",
-  "projectId": "xy8yxa",
+  "pageLoadTimeout": 100000,
   "viewportHeight": 600,
-  "viewportWidth": 1000
+  "viewportWidth": 1000,
+  "retries": {
+    "runMode": 2,
+    "openMode": 0
+  }
 }

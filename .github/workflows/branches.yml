@@ -108,10 +108,6 @@ jobs:
   IntegrationTest:
     name: Integration Test
     runs-on: ubuntu-18.04
-    strategy:
-      fail-fast: false
-      matrix:
-        containers: [1, 2]
     services:
       # Label used to access the service container
       postgres:
@@ -180,14 +176,11 @@ jobs:
         uses: cypress-io/github-action@v2
         env:
           NODE_ENV: action
-          CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          record: true
-          parallel: true
-          group: "Integration Tests on push"
-          config: pageLoadTimeout=100000,baseUrl=http://localhost:4200
+          browser: chrome
           start: yarn --cwd ./server start, yarn --cwd ./frontend start
+          config: pageLoadTimeout=100000,baseUrl=http://localhost:4200
+          config-file: cypress/cypress.json
           wait-on: "http://localhost:4200"
 
       - uses: actions/upload-artifact@v1

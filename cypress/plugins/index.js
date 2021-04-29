@@ -29,4 +29,10 @@ module.exports = (on, config) => {
       return files;
     }
   });
+  
+  config.env.googleRefreshToken = process.env.GOOGLE_REFRESH_TOKEN
+  config.env.googleClientId = process.env.GOOGLE_KEY
+  config.env.googleClientSecret = process.env.GOOGLE_SECRET
+
+  return config
 }
