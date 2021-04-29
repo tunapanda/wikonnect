@@ -43,26 +43,11 @@
       </li>
 
     </ul>
-    {{!-- <form class="form-inline ml-lg-5 search-form" {{on "submit" this.search}}>
-      <Input @id="search" @class="form-control mr-sm-2 search-input" @type="text" @value={{this.search_term}} />
-      {{#if this.searchLoading}}
-      <button class="btn form-control search-button search-loading" type="button">
-        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-        {{t "messages.searching"}}
-      </button>
-      {{else}}
-      <button class="btn  my-2 my-sm-0 search-button" type="submit">
-        {{svg-jar "magnify" width="20" height="21"}}
-
-      </button>
-      {{/if}}
-    </form> --}}
-
     <div id="myDropdown" class="dropdown">
       <div class="dropdown-content">
-        <Input placeholder='Search' id="dropdownMenuButton"
-          class="form-control search-input dropdown-toggle" @autocomplete="off" @click="searchLoading=false" @key-up="change" @insert-newline="enter"
-          @bubbles="false" type="text" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" />
+        <Input placeholder='Search' id="dropdownMenuButton" class="form-control search-input dropdown-toggle"
+          @autocomplete="on" @click="searchLoading=false" @key-up="change" @insert-newline="enter" @bubbles="false"
+          type="text" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" />
         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
           {{#if this.searchLoading}}
           <p class="dropdown-item">
@@ -71,13 +56,12 @@
           </p>
           {{else}}
           {{#each this.filterFunction as |obj|}}
-          <div class="dropdown-item">
-            <p class="m0">
-              <LinkTo @route="chapter" @model={{obj.id}} class="chapter-title">
-                {{obj.name}}
-              </LinkTo>
-            </p>
-          </div>
+          <li>
+            <hr class="dropdown-divider" />
+          </li>
+          <li class="dropdown-item">
+            <LinkTo @route="chapter" @model={{obj.id}} class="chapter-title">{{obj.name}}</LinkTo>
+          </li>
           {{/each}}
           {{/if}}
 

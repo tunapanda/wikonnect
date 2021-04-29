@@ -9,7 +9,11 @@ with_db: &with_db
         PG_HOST: localhost
         PG_PORT: 5432
         NODE_ENV: ci
-        SECRET: 'secret'
+        SECRET: $SECRET
+        GOOGLE_REFRESH_TOKEN: $GOOGLE_REFRESH_TOKEN
+        GOOGLE_KEY: $GOOGLE_KEY
+        GOOGLE_SECRET: $GOOGLE_SECRET
+        GOOGLE_REDIRECT: $GOOGLE_REDIRECT
     - image: circleci/postgres:10.10
       environment:
         POSTGRES_USER: acbe

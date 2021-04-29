@@ -170,6 +170,14 @@ pre {
   overflow: auto;
 }
 
+#myDropdown .dropdown-menu a {
+  color: inherit;
+}
+
+#myDropdown .dropdown-menu a:hover {
+  color: inherit;
+}
+
 //@import "ember-bootstrap/bootstrap";
 //@import "ember-power-select";
 
