@@ -39,9 +39,6 @@ jobs:
       - name: Install frontend dependencies
         run: yarn  --frozen-lockfile --cwd ./frontend
 
-      - name: Run build
-        run: yarn  --frozen-lockfile --cwd ./frontend build --prod
-
       # Install project dependencies, test and build
       - name: Install backend dependencies
         run: yarn  --frozen-lockfile --cwd ./server
@@ -75,8 +72,6 @@ jobs:
       # Install project dependencies, test and build
       - name: Install frontend dependencies
         run: yarn  --frozen-lockfile --cwd ./frontend
-      - name: Run build
-        run: yarn  --frozen-lockfile --cwd ./frontend build --prod
 
       # Frontend tests
       - name: Lint Ember hbs
@@ -198,8 +193,6 @@ jobs:
       # Install project dependencies, test and build
       - name: Install frontend dependencies
         run: yarn  --frozen-lockfile --cwd ./frontend
-      - name: Run build
-        run: yarn  --frozen-lockfile --cwd ./frontend build --prod
 
       # Install project dependencies, test and build
       - name: Install backend dependencies
@@ -273,7 +266,7 @@ jobs:
           LINKEDIN_REDIRECT_URI: ${{ secrets.LINKEDIN_REDIRECT_URI }}
           GITHUB_CLIENT_ID: ${{ secrets.GITHUB_CLIENT_ID }}
           GITHUB_REDIRECT_URI: ${{ secrets.GITHUB_REDIRECT_URI }}
-        run: yarn --cwd ./frontend build --prod
+        run: yarn --cwd ./frontend build
 
       # Install project dependencies, test and build
       - name: Install dependencies

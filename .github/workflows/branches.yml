@@ -35,8 +35,6 @@ jobs:
       # Install project dependencies, test and build
       - name: Install frontend dependencies
         run: yarn  --frozen-lockfile --cwd ./frontend
-      - name: Run build
-        run: yarn  --frozen-lockfile --cwd ./frontend build --prod
 
       # Frontend tests
       - name: Lint Ember hbs
@@ -156,8 +154,6 @@ jobs:
       # Install project dependencies, test and build
       - name: Install frontend dependencies
         run: yarn  --frozen-lockfile --cwd ./frontend
-      - name: Run build
-        run: yarn  --frozen-lockfile --cwd ./frontend build --prod
 
       # Install project dependencies, test and build
       - name: Install backend dependencies
