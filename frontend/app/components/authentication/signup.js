@@ -33,11 +33,6 @@ export default class AuthenticationSignupComponent extends Component {
   }
 
   @action
-  authenticateWithGitHub() {
-    this.session.authenticate('authenticator:torii', 'github');
-  }
-
-  @action
   createUser(model) {
     let fields = model.getProperties(
       'username',

@@ -54,11 +54,6 @@
         authProvider="LinkedIn"}}
       </BsButton>
 
-      <BsButton type="button" class="shadow-sm rounded btn-dark form-control mb-2" {{ on "click"
-        this.authenticateWithGitHub}}>
-        <span class="px-2">{{svg-jar "github-icon"}}</span>{{t "auth.signup.signup_third_party" authProvider="GitHub"}}
-      </BsButton>
-
       <BsButton type="button" class="shadow-sm border rounded btn-light form-control mb-2" {{ on "click"
         this.authenticateWithGoogleImplicitGrant}}>
         <span class="px-2">{{svg-jar "google-icon"}}</span> {{t "auth.signup.signup_third_party" authProvider="Google"}}
