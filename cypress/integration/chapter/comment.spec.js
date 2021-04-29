@@ -39,7 +39,6 @@ describe('Chapter comments when authenticated', () => {
 
         cy.get('#chapter .media-body')
             .wait(1000) //TODO can we do better than this wait ?🤔
-            .last()
             .contains(comment.text)
             .should('be.visible')
     });
