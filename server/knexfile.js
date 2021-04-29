@@ -53,6 +53,14 @@ module.exports = {
     },
     seeds: {
       directory: path.join(BASE_PATH, 'seeds/dev')
+    },
+    log: {
+      error(message) {
+        log.fatal(message);
+      },
+      debug(message) {
+        log.debug(message);
+      },
     }
   },
   test: {

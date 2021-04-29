@@ -108,6 +108,7 @@ jobs:
   IntegrationTest:
     name: Integration Test
     runs-on: ubuntu-18.04
+    needs: ['FrontendTest', 'BackendTest']
     services:
       # Label used to access the service container
       postgres:
