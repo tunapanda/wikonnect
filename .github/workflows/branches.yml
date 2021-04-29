@@ -176,6 +176,10 @@ jobs:
         uses: cypress-io/github-action@v2
         env:
           NODE_ENV: action
+          GOOGLE_REFRESH_TOKEN: ${{ secrets.GOOGLE_REFRESH_TOKEN }}
+          GOOGLE_KEY: ${{ secrets.GOOGLE_KEY }}
+          GOOGLE_SECRET: ${{ secrets.GOOGLE_SECRET }}
+          GOOGLE_REDIRECT: ${{ secrets.GOOGLE_REDIRECT }}
         with:
           browser: chrome
           start: yarn --cwd ./server start, yarn --cwd ./frontend start

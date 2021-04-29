@@ -4,7 +4,7 @@ describe('Google', function () {
     cy.loginByGoogleApi()
   })
 
-  it('shows onboarding', function () {
-    cy.contains('Get Started').should('be.visible')
+  it('Show profile page', function () {
+    cy.visit('/profile')
   })
 })

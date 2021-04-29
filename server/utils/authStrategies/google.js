@@ -7,7 +7,10 @@ module.exports = async(code) => {
   const hashPassword = await bcrypt.hash(code, 10);
   const username = await tools.nanoid();
 
-  const response = await fetch(`https://people.googleapis.com/v1/people/me?access_token=${code}&personFields=names,emailAddresses`);
+  // const response = await fetch(`https://people.googleapis.com/v1/people/me?access_token=${code}&personFields=names,emailAddresses`);
+  const response = await fetch('https://people.googleapis.com/v1/people/me?personFields=names,emailAddresses',{
+    headers: { 'Authorization': `Bearer ${code}`, 'Content-Type': 'application/json'}
+  });
   const data = await response.text();
   const gData = JSON.parse(data);
 

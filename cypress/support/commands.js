@@ -19,7 +19,6 @@ Cypress.Commands.add('login', function () {
             "token": res.token,
             "exp": Math.floor(new Date().getTime() / 1000) + 1000 * 60 * 60,
             "tokenData": {
-              "id": user.id,
               "iat": Math.floor(new Date().getTime() / 1000),
               "exp": Math.floor(new Date().getTime() / 1000) + 1000 * 60 * 60
             }
@@ -31,55 +30,55 @@ Cypress.Commands.add('login', function () {
 
 
 Cypress.Commands.add('chapters', (queryParams = {}) => {
-    const qs = Object.keys(queryParams).reduce((acc, key) => {
-        acc += `${key}=${queryParams[key]}&`;
-        return acc;
-    }, '')
+  const qs = Object.keys(queryParams).reduce((acc, key) => {
+    acc += `${key}=${queryParams[key]}&`;
+    return acc;
+  }, '')
 
-    let headers = {'Accept': `application/json`}
+  let headers = { 'Accept': `application/json` }
 
-    // check if user is authenticated
-    const session = window.localStorage.getItem('ember_simple_auth-session');
-    if (session) {
-        const parsed = JSON.parse(session);
-        if (parsed.authenticated && parsed.authenticated.token) {
-            headers = {...headers, 'Authorization': `Bearer ${parsed.authenticated.token}`}
-        }
+  // check if user is authenticated
+  const session = window.localStorage.getItem('ember_simple_auth-session');
+  if (session) {
+    const parsed = JSON.parse(session);
+    if (parsed.authenticated && parsed.authenticated.token) {
+      headers = { ...headers, 'Authorization': `Bearer ${parsed.authenticated.token}` }
     }
+  }
 
-    return cy.request({
-        method: 'GET',
-        url: `/api/v1/chapters?${qs}`,
-        headers: headers
-    })
+  return cy.request({
+    method: 'GET',
+    url: `/api/v1/chapters?${qs}`,
+    headers: headers
+  })
     .its('body.chapters')
     .then((chapters) => chapters);
 });
 
 Cypress.Commands.add('comments', (queryParams = {}) => {
-    const qs = Object.keys(queryParams).reduce((acc, key) => {
-        acc += `${key}=${queryParams[key]}&`;
-        return acc;
-    }, '')
+  const qs = Object.keys(queryParams).reduce((acc, key) => {
+    acc += `${key}=${queryParams[key]}&`;
+    return acc;
+  }, '')
 
-    let headers = {'Accept': `application/json`}
+  let headers = { 'Accept': `application/json` }
 
-    // check if user is authenticated
-    const session = window.localStorage.getItem('ember_simple_auth-session');
-    if (session) {
-        const parsed = JSON.parse(session);
-        if (parsed.authenticated && parsed.authenticated.token) {
-            headers = {...headers, 'Authorization': `Bearer ${parsed.authenticated.token}`}
-        }
+  // check if user is authenticated
+  const session = window.localStorage.getItem('ember_simple_auth-session');
+  if (session) {
+    const parsed = JSON.parse(session);
+    if (parsed.authenticated && parsed.authenticated.token) {
+      headers = { ...headers, 'Authorization': `Bearer ${parsed.authenticated.token}` }
     }
+  }
 
-    return cy.request({
-        method: 'GET',
-        url: `/api/v1/comments?${qs}`,
-        headers: headers
-    })
-        .its('body.comment')
-        .then((chapters) => chapters);
+  return cy.request({
+    method: 'GET',
+    url: `/api/v1/comments?${qs}`,
+    headers: headers
+  })
+    .its('body.comment')
+    .then((chapters) => chapters);
 });
 
 Cypress.Commands.add('loginByGoogleApi', () => {
@@ -94,29 +93,40 @@ Cypress.Commands.add('loginByGoogleApi', () => {
       refresh_token: Cypress.env('googleRefreshToken'),
     },
   }).then(({ body }) => {
-    const { access_token, id_token } = body
-    console.log(id_token);
-    console.log(access_token);
-
+    const { access_token } = body
     cy.request({
-      method: 'GET',
-      url: 'https://www.googleapis.com/oauth2/v3/userinfo',
-      headers: { Authorization: `Bearer ${access_token}` },
+      method: "POST",
+      url: "/api/v1/oauth2s",
+      body: {
+        oauth2: {
+          code: access_token,
+          provider: 'google'
+        }
+      },
     }).then(({ body }) => {
-      cy.log(body)
-      const userItem = {
-        token: id_token,
-        user: {
-          googleId: body.sub,
-          email: body.email,
-          givenName: body.given_name,
-          familyName: body.family_name,
-          imageUrl: body.picture,
-        },
-      }
-
-      window.localStorage.setItem('googleCypress', JSON.stringify(userItem))
-      cy.visit('/')
+      cy.request({
+        method: 'POST',
+        url: '/api/v1/auth',
+        body: {
+          username: body.oauth2.username,
+          password: access_token
+        }
+      })
+        .its('body')
+        .then(res => {
+          window.localStorage.setItem('ember_simple_auth-session', JSON.stringify({
+            "authenticated": {
+              "authenticator": "authenticator:jwt",
+              "token": res.token,
+              "exp": Math.floor(new Date().getTime() / 1000) + 1000 * 60 * 60,
+              "tokenData": {
+                "iat": Math.floor(new Date().getTime() / 1000),
+                "exp": Math.floor(new Date().getTime() / 1000) + 1000 * 60 * 60
+              }
+            }
+          }));
+        });
     })
   })
-})
+
+});
