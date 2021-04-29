@@ -31,6 +31,16 @@ export default class TeachLoginController extends Controller {
   }
 
   @action
+  authenticateWithFacebook() {
+    this.session.authenticate('authenticator:torii', 'facebook');
+  }
+
+  @action
+  authenticateWithGitHub() {
+    this.session.authenticate('authenticator:torii', 'github');
+  }
+
+  @action
   login(model) {
     this.loading = true;
     this.me

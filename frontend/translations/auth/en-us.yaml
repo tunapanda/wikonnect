@@ -1,5 +1,6 @@
 login:
   login: Login
+  or: or
   logout: Logout
   authenticating: Authenticating ...
   username: Username

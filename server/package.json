@@ -49,7 +49,6 @@
     "pino": "^6.11.0",
     "pino-pretty": "^4.3.0",
     "rate-limiter-flexible": "^2.0.0",
-    "redis": "^3.0.2",
     "sharp": "^0.25.1",
     "socket.io": "^4.0.1",
     "unzipper": "^0.10.5",

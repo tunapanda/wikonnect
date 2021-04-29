@@ -20,16 +20,19 @@ module.exports = (on, config) => {
 
   on('task', {
     'db:reset': async function () {
-      knexfile.debug = false;
+      // knexfile.debug = false;
       const db = require('knex')(knexfile);
-      // console.log('rolling back db');
       await db.migrate.rollback();
       await db.migrate.latest();
       const files = await db.seed.run();
-      // console.log('seed files:');
-      // console.log(files);
       db.destroy();
       return files;
     }
   });
+  
+  config.env.googleRefreshToken = process.env.GOOGLE_REFRESH_TOKEN
+  config.env.googleClientId = process.env.GOOGLE_KEY
+  config.env.googleClientSecret = process.env.GOOGLE_SECRET
+
+  return config
 }

@@ -58,7 +58,6 @@ export default class EmbedController extends Controller {
     const url = this.callbackUrl;
     // eslint-disable-next-line no-undef
     H5P.externalDispatcher.on('xAPI', function (event) {
-      console.log(event);
       fetch(url, {
         method: 'POST',
         mode: 'cors',

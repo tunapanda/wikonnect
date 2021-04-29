@@ -17,10 +17,10 @@ export default class LoginComponent extends Component {
 
   @action
   authenticateWithGoogleImplicitGrant() {
-    let clientId = this.config.get('google').apiKey;
-    let redirectURI = `${window.location.origin}/callback`;
-    let responseType = 'token';
-    let scope = 'profile email';
+    const clientId = this.config.get('google').apiKey;
+    const redirectURI = `${window.location.origin}/callback`;
+    const responseType = 'token';
+    const scope = 'profile email';
     window.location.replace(
       'https://accounts.google.com/o/oauth2/v2/auth?' +
         `client_id=${clientId}` +
@@ -28,6 +28,21 @@ export default class LoginComponent extends Component {
         `&response_type=${responseType}` +
         `&scope=${scope}`
     );
+  }
+
+  @action
+  authenticateWithLinkedIn() {
+    this.session.authenticate('authenticator:torii', 'linkedin');
+  }
+
+  @action
+  authenticateWithFacebook() {
+    this.session.authenticate('authenticator:torii', 'facebook');
+  }
+
+  @action
+  authenticateWithGitHub() {
+    this.session.authenticate('authenticator:torii', 'github');
   }
 
   @action

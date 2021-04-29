@@ -60,6 +60,26 @@ module.exports = function (environment) {
       apiKey: process.env.GOOGLE_KEY,
     },
 
+    torii: {
+      allowUnsafeRedirects: true,
+      providers: {
+        'facebook-oauth2': {
+          apiKey: process.env.FACEBOOK_KEY,
+          scope: 'email',
+        },
+        'github-oauth2': {
+          apiKey: process.env.GITHUB_CLIENT_ID,
+          redirectUri: process.env.GITHUB_REDIRECT_URI,
+          scope: 'repo user:email',
+        },
+        'linked-in-oauth2': {
+          apiKey: process.env.LINKEDIN_CLIENT_ID,
+          redirectUri: process.env.LINKEDIN_REDIRECT_URI,
+          scope: 'r_liteprofile r_emailaddress',
+        },
+      },
+    },
+
     fastboot: {
       hostWhitelist: [/^localhost:\d+$/],
     },

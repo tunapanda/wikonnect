@@ -32,9 +32,6 @@ const editorModelSchema = {
 
 
 describe('H5P Route', () => {
-  before(async () => {
-  });
-
   it('Should return editor model object', done => {
     chai
       .request(server)

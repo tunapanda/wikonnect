@@ -18,6 +18,7 @@ exports.seed = async function (knex) {
         .andWhere('id', ref('reactions.chapterId'))
     );
 
+
   const ratings = [];
   const categories = questions.map((d) => d.category);
   const selectedReactions=[];

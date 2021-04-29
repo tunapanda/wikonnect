@@ -56,8 +56,8 @@ export default class ReplySectionComponent extends Component {
         this.notify.success('Reply added successfully', { closeAfter: 6000 });
         this.shouldFormShow = false;
       })
-      .catch((err) => {
-        console.log(err);
+      .catch(() => {
+        // console.log(err);
         this.reply = model.comment;
         // model.deleteRecord();
         this.notify.alert('Be mindful of your comments', { closeAfter: 6000 });

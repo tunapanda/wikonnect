@@ -2,6 +2,7 @@
 exports.seed = function (knex) {
   // Deletes ALL existing entries
   return knex('users').del()
+    .then(() => knex('user_invite').del())
     .then(function () {
       // Inserts seed entries
       return knex('users').insert([
