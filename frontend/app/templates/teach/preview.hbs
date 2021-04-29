@@ -46,13 +46,8 @@
 
       <div class="h5p-content-section border p-4 mb-1">
         {{#if (or this.model.contentUri this.model.contentId)}}
-
-          {{#if this.model.contentId}}
-            <H5p::Player @contentId={{this.model.contentId}}>
+            <H5p::Player @contentId={{this.model.contentId}}  @location={{this.model.contentUri}}>
             </H5p::Player>
-          {{else}}
-            <H5p @location={{this.model.contentUri}} />
-          {{/if}}
         {{/if}}
         <br>
         {{#if (or this.model.contentUri this.model.contentId)}}
