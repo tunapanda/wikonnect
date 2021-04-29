@@ -39,27 +39,10 @@ export default class EmbedController extends Controller {
     this.me.logout();
   }
 
-  document = document;
-
-  async sendData(url, data) {
-    const response = await fetch(url, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      redirect: 'follow',
-      body: JSON.stringify(data),
-    });
-    return response.json();
-  }
-
   @action
-  async dataLoad() {
-    const url = this.callbackUrl;
-    // eslint-disable-next-line no-undef
-    H5P.externalDispatcher.on('xAPI', function (event) {
-      console.log(event);
-      fetch(url, {
+  async onH5PPlayerXAPIEvent(event) {
+    if (this.callbackUrl) {
+      fetch(this.callbackUrl, {
         method: 'POST',
         mode: 'cors',
         headers: {
@@ -68,6 +51,6 @@ export default class EmbedController extends Controller {
         redirect: 'follow',
         body: JSON.stringify(event),
       });
-    });
+    }
   }
 }
