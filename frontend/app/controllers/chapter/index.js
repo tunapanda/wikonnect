@@ -138,33 +138,33 @@ export default class ChapterIndexController extends Controller {
   }
 
   @action
-  async dataLoad() {
+  async onH5PPlayerXAPIEvent(event) {
+    if (!event || !event.getScore) {
+      return;
+    }
     let chapterId = this.model.id;
-    // eslint-disable-next-line no-undef
-    H5P.externalDispatcher.on('xAPI', async (event) => {
-      if (event.getScore() === event.getMaxScore() && event.getMaxScore() > 0) {
-        this.score = event.getMaxScore();
-      }
+    if (event.getScore() === event.getMaxScore() && event.getMaxScore() > 0) {
+      this.score = event.getMaxScore();
+    }
 
-      if (this.score !== undefined) {
-        if (this.me.isAuthenticated) {
-          let achievement = await this.store.createRecord('achievement', {
-            description: 'completed' + chapterId,
-            targetStatus: 'completed',
-            target: chapterId,
-          });
-          await achievement.save();
-        }
-
-        // if user completes chapters create record
-        let counter = await this.store.createRecord('counter', {
-          counter: 1,
-          chapterId: chapterId,
-          trigger: 'chapterCompletion',
+    if (this.score !== undefined) {
+      if (this.me.isAuthenticated) {
+        let achievement = await this.store.createRecord('achievement', {
+          description: 'completed' + chapterId,
+          targetStatus: 'completed',
+          target: chapterId,
         });
-        await counter.save();
+        await achievement.save();
       }
-    });
+
+      // if user completes chapters create record
+      let counter = await this.store.createRecord('counter', {
+        counter: 1,
+        chapterId: chapterId,
+        trigger: 'chapterCompletion',
+      });
+      await counter.save();
+    }
   }
 
   @action

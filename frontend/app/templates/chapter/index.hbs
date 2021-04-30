@@ -1,5 +1,4 @@
 <div id="chapter" class="p-4">
-  <div {{did-insert (fn this.dataLoad)}}></div>
   <div {{did-insert (fn this.counterTimer)}}></div>
 
   <div class="breadcrumbs d-flex align-items-center">
@@ -11,10 +10,9 @@
       / <span class="chapter-name">{{this.model.name}}</span></p>
   </div>
   <hr>
-  {{#if this.model.contentUri}}
-    <H5p @location={{this.model.contentUri}} />
-  {{else}}
-    <H5p::Player @contentId={{this.model.contentId}} />
+  {{#if (or this.model.contentId this.model.contentUri)}}
+    <H5p::Player @contentId={{this.model.contentId}} @location={{this.model.contentUri}}
+                 @onxAPIStatement={{this.onH5PPlayerXAPIEvent}} />
   {{/if}}
   <div class="row">
     <div class="col-lg-8">
