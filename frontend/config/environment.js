@@ -65,10 +65,7 @@ module.exports = function (environment) {
     },
 
     fastboot: {
-      hostWhitelist: [
-        /^localhost:\d+$/,
-        /^app.wikonnect.org/
-      ],
+      hostWhitelist: [/^localhost:\d+$/, /^app.wikonnect.org/],
     },
   };
 
