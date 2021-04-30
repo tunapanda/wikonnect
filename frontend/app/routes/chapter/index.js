@@ -1,5 +1,6 @@
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
+import config from 'wikonnect/config/environment';
 
 export default class ChapterIndexRoute extends Route {
   @service me;
@@ -10,7 +11,7 @@ export default class ChapterIndexRoute extends Route {
   }
 
   async afterModel(model) {
-    const origin = window.location.origin;
+    const origin = config.appUrl;
     const chapterUrl = `/chapter/${model.id}`;
 
     const headers = [

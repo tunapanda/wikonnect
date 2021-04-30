@@ -14,11 +14,11 @@ export default class SeoTagsService extends Service {
    * @returns {({tagId: string, type: string, content: string}|{tagId: string, type: string, attrs: {name: string, content: string}}|{tagId: string, type: string, attrs: {property: string, content: string}}|{tagId: string, type: string, attrs: {property: string, content: string}}|{tagId: string, type: string, attrs: {property: string, content: string}})[]}
    */
   build(title, pathname, headersToOverride, index, follow) {
-    const origin = window.location.origin;
+    const origin = config.appUrl;
 
     const site = config.APP.instance_name;
     const openGraphCanonicalUrl = pathname ? `${origin}${pathname}` : origin;
-    const openGraphImageUrl = `${origin}/images/icons/wikonnect-primary.svg`;
+    const openGraphImageUrl = `${origin}/images/wikonnect-primary.png`;
     const openGraphTitle = title
       ? title
       : `${config.APP.instance_name} - An open-source e-learning platform`;

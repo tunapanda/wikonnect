@@ -3,13 +3,12 @@ import { H5PEditorComponent } from '@lumieducation/h5p-webcomponents';
 import fetch from 'fetch';
 import { action } from '@ember/object';
 import { tracked } from '@glimmer/tracking';
+import { inject as service } from '@ember/service';
 
 export default class H5pEditorComponent extends Component {
-  @tracked
-  editor;
-
-  @tracked
-  contentId = this.args.contentId || 'new';
+  @service fastboot;
+  @tracked editor;
+  @tracked contentId = this.args.contentId || 'new';
 
   baseUrl = '/api/v1/h5p';
 
@@ -17,7 +16,7 @@ export default class H5pEditorComponent extends Component {
     super(owner, args);
 
     /*create H5P editor web component*/
-    if (!window.customElements.get('hp-editor')) {
+    if (!this.fastboot.isFastBoot && !window.customElements.get('hp-editor')) {
       window.customElements.define('hp-editor', H5PEditorComponent);
     }
   }

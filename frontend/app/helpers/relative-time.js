@@ -45,6 +45,7 @@ export default helper(function relativeTime(params /*, hash*/) {
     }
   }
 
-  const formatter = new Intl.RelativeTimeFormat(navigator.language);
+  const lang = window && window.navigator ? window.navigator.language : 'en';
+  const formatter = new Intl.RelativeTimeFormat(lang);
   return formatter.format(Math.floor(value), unit);
 });

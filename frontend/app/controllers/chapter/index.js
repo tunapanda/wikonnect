@@ -2,6 +2,7 @@ import Controller from '@ember/controller';
 import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
+import config from 'wikonnect/config/environment';
 
 export default class ChapterIndexController extends Controller {
   @service store;
@@ -46,15 +47,15 @@ export default class ChapterIndexController extends Controller {
   }
 
   get embedCode() {
-    let baseURL = window.location.host;
+    let baseURL = config.appUrl;
     if (this.callbackUrl) {
       return (
-        `<iframe width="600" height="450"  src="http://${baseURL}/embed/${this.model.id}?` +
+        `<iframe width="600" height="450"  src="${baseURL}/embed/${this.model.id}?` +
         `callbackUrl=${this.callbackUrl}" frameBorder="0" scrolling="no"></iframe>`
       );
     } else {
       return (
-        `<iframe width="600" height="450" src="http://${baseURL}/embed/${this.model.id}" ` +
+        `<iframe width="600" height="450" src="${baseURL}/embed/${this.model.id}" ` +
         'frameBorder="0" scrolling="no"></iframe>'
       );
     }

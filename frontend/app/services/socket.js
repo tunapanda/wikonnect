@@ -7,12 +7,19 @@ export default class SocketService extends Service {
   @service me;
   @service store;
   @service infinity;
+  @service fastboot;
 
-  socket = io({
-    auth: { token: this.session?.data?.authenticated?.token },
-  });
+  get socket() {
+    return io({
+      auth: { token: this.session?.data?.authenticated?.token },
+    });
+  }
 
   eventHandlers() {
+    //if we are running FastBoot, just skip everything
+    if (this.fastboot.isFastBoot) {
+      return;
+    }
     /**
      *On approved chapter deletion, sync with chapter comments..
      */
@@ -31,6 +38,11 @@ export default class SocketService extends Service {
    *  TODO: role modification(not implemented) event by admin should be pushed from the server (also not implemented)
    */
   roleChanged() {
+    //if we are running FastBoot, just skip everything
+    if (this.fastboot.isFastBoot) {
+      return;
+    }
+
     this.socket.emit(eventCodes.user.roleChange, {
       id: this.me?.user?.id,
       token: this.session?.data?.authenticated?.token,
