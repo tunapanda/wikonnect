@@ -27,22 +27,6 @@ describe('Chapter comments when authenticated', () => {
             .should('be.visible');
     });
 
-    it('should display created comment immediately', () => {
-        const comment = {text: `Test comment randomly at ${Math.random() * 1000000}`};
-
-        cy.get('#chapter .padded form textarea')
-            .type(comment.text);
-
-        cy.get('#chapter .padded form button[type="submit"]')
-            .click();
-
-
-        cy.get('#chapter .media-body')
-            .wait(1000)
-            .contains(comment.text)
-            .should('be.visible')
-    });
-
     it('should notify on comment posting success', () => {
         const comment = {text: `Test notification randomly at ${Math.random() * 1000000}`};
 
