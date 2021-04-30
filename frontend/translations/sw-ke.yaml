@@ -89,3 +89,8 @@ manage:
   approved: Imeidhinishwa
   not_approved: Haijaidhinishwa
   chapter: Sura
+
+main_navbar:
+  notifications:
+    title: Arifa
+    empty: Huna arifa mpya

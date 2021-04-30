@@ -31,7 +31,7 @@ services:
     networks:
       - wikonnect
     healthcheck:
-      test: [ "CMD-SHELL", "pg_isready -U ${POSTGRES_USER}" ]
+      test: [ "CMD-SHELL", "pg_isready -d ${POSTGRES_DB} -U ${POSTGRES_USER}" ]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -72,7 +72,7 @@ services:
     ports:
       - "${SERVER_PORT}:${SERVER_PORT}"
     volumes:
-      - backend-deps:/usr/src/app/node_modules
+      - backenddeps:/usr/src/app/node_modules
       - ./server:/usr/src/app/
     depends_on:
       wikonnect-redis:
@@ -94,7 +94,7 @@ services:
     ports:
       - "${FRONTED_PORT}:${FRONTED_PORT}"
     volumes:
-      - frontend-deps:/usr/src/app/node_modules
+      - frontenddeps:/usr/src/app/node_modules
       - ./frontend:/usr/src/app/
     depends_on:
       backend:
@@ -103,12 +103,12 @@ services:
       - wikonnect
 
 volumes:
-  frontend-deps:
-    name: wikonnect-frontend-deps
+  frontenddeps:
+    name: wikonnectfrontenddeps
     driver: local
 
-  backend-deps:
-    name: wikonnect-backend-deps
+  backenddeps:
+    name: wikonnectbackenddeps
     driver: local
 
   # elasticsearch:

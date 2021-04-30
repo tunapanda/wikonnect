@@ -1,41 +1,47 @@
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
-import fetch from 'fetch';
-import { H5PPlayerComponent } from '@lumieducation/h5p-webcomponents';
+import { inject as service } from '@ember/service';
+import { H5P as H5PStandalone } from 'h5p-standalone';
+import config from 'wikonnect/config/environment';
 
 export default class H5pPlayerComponent extends Component {
-  @tracked
-  contentId = this.args.contentId;
+  @service router;
 
-  @tracked player;
-
-  constructor(owner, args) {
-    super(owner, args);
-    if (!window.customElements.get('hp-player')) {
-      window.customElements.define('hp-player', H5PPlayerComponent);
-    }
-  }
+  @tracked contentId = this.args.contentId;
+  @tracked contentUrl = this.args.location;
 
   @action
-  initPlayer(elem) {
-    elem.loadContentCallback = async (contentId) => {
-      return await fetch(`/api/v1/h5p/player/${contentId}`)
-        .then((res) => res.json())
-        .then((rs) => {
-          this.player = elem; //best place since we are not sure the content was rendered
-          return rs.model;
-        });
+  async initPlayer(elem) {
+    let options = {
+      h5pJsonPath: this.contentUrl,
+      frameJs: '/h5p/frame.bundle.js',
+      frameCss: '/h5p/h5p.css',
     };
-    elem.addEventListener('initialized', (event) => {
-      if (this.args.onInitialization) {
-        this.args.onInitialization(event);
-      }
-    });
-    elem.addEventListener('xAPI', (event) => {
-      if (this.args.onxAPIStatement) {
+    if (this.contentId) {
+      options = {
+        h5pJsonPath: `/h5p/content/${this.contentId}`,
+        contentJsonPath: `/h5p/content/${this.contentId}`,
+        librariesPath: `/h5p/libraries`,
+        frameJs: '/h5p/frame.bundle.js',
+        frameCss: '/h5p/h5p.css',
+        frame: true,
+        copyright: true,
+        export: true,
+        downloadUrl: config.proxyUrl + `/api/v1/h5p/download/${this.contentId}`,
+        //including this with false value until implementation on H5P player
+        embed: false,
+      };
+    }
+
+    await new H5PStandalone(elem, options);
+
+    // eslint-disable-next-line no-undef
+    if (this.args.onxAPIStatement && H5P) {
+      // eslint-disable-next-line no-undef
+      H5P.externalDispatcher.on('xAPI', (event) => {
         this.args.onxAPIStatement(event);
-      }
-    });
+      });
+    }
   }
 }
