@@ -1,6 +1,6 @@
-import LinkedInOauth2 from 'torii/providers/linked-in-oauth2';
+import GitHubOAuth2 from 'torii/providers/github-oauth2';
 
-export default class LinkedInToriiProvider extends LinkedInOauth2 {
+export default class GithubToriiProvider extends GitHubOAuth2 {
   fetch(data) {
     return data;
   }
