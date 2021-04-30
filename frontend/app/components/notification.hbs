@@ -1,0 +1,41 @@
+<BsDropdown class="nav-item notifications-dropdown d-lg-block d-none mr-4" @closeOnMenuClick={{false}} as |dd|>
+  <dd.button @type="default" class="dropdown-toggle  nav-link">
+    {{svg-jar "bell" height="27" width="27"}}
+    <span class="count">{{this.unreadNotificationsCount}}</span>
+  </dd.button>
+  <dd.menu class="dropdown-menu-lg-right" as |ddm|>
+    <a class="dropdown-item header-title" href="#">{{t "main_navbar.notifications.title"}}</a>
+    <ddm.divider class="DropdownMenuDivider"></ddm.divider>
+
+    {{#if @model.notifications}}
+    <div class="notification-items">
+      {{#each @model.notifications as |obj|}}
+      <div class="dropdown-item notification-item d-flex {{if obj.read " read" "unread" }}" href="#">
+        <div class="notification-container row" role="button" {{on "click" (fn this.onNotificationSelect obj dd)}}>
+          <div class="col-12 title">
+            {{obj.title}}
+          </div>
+          <div class="col-12 body">
+            {{obj.body}}
+          </div>
+          <div class="col-12 time">
+            {{relative-time obj.createdAt}}
+          </div>
+        </div>
+        <div class="notification-actions d-flex">
+          <button type="button" class="btn-delete" {{on "click" (fn this.deleteNotification obj)}}>
+            {{svg-jar "close" width="15" height="15"}}
+          </button>
+          <button type="button" class="btn-toggle-read-status" {{on "click" (fn this.toggleNotificationStatus obj )}}>
+            <span class="circle"></span>
+          </button>
+        </div>
+      </div>
+      {{/each}}
+    </div>
+
+    {{else}}
+    <div class="dropdown-item notification-item">{{t "main_navbar.notifications.empty"}}</div>
+    {{/if}}
+  </dd.menu>
+</BsDropdown>

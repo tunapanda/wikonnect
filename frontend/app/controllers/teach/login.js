@@ -36,11 +36,6 @@ export default class TeachLoginController extends Controller {
   }
 
   @action
-  authenticateWithGitHub() {
-    this.session.authenticate('authenticator:torii', 'github');
-  }
-
-  @action
   login(model) {
     this.loading = true;
     this.me

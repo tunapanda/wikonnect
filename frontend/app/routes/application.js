@@ -55,6 +55,13 @@ export default class ApplicationRoute extends Route {
     this.socket.eventHandlers();
 
     this.headTags = this.SeoTags.build();
+    if (this.me.isAuthenticated) {
+      return {
+        notifications: this.store.query('notification', {
+          recipientId: this.me.user.id,
+        }),
+      };
+    }
   }
 
   _loadMe() {

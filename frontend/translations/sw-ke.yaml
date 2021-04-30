@@ -62,7 +62,7 @@ profile:
 
 messages:
   empty_search: Hatukuweza kupata chochote kinacholingana na hoja yako ya utaftaji
-  auth_prompt: "Kwa uzoefu ulioimarishwa tafadhali jisajili au ingia"
+  auth_prompt: "Kwa uzoefu ulioimarishwa tafadhali;"
   searching: "Inatafuta ..."
   upload_profile_pic: "Pakia Picha ya Profaili"
   create_h5p_chapter: "Unda Sura ya H5P"
@@ -94,3 +94,5 @@ main_navbar:
   notifications:
     title: Arifa
     empty: Huna arifa mpya
+  search:
+    result: Hakuna matokeo ya

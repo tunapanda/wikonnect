@@ -62,7 +62,7 @@ profile:
 
 messages:
   empty_search: "We could not find anything that matches your search query"
-  auth_prompt: "For an enhanced experience please sign up or login"
+  auth_prompt: "For an enhanced experience please;"
   searching: "Searching ..."
   upload_profile_pic: "Upload Profile Picture"
   create_h5p_chapter: "Create H5P Chapter"
@@ -94,3 +94,5 @@ main_navbar:
   notifications:
     title: Notifications
     empty: You have no new notifications
+  search:
+    result: No results for

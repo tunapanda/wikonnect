@@ -155,29 +155,6 @@ pre {
   box-shadow: 0 0 0 0.2rem rgb(87 54 224 / 25%);
 }
 
-.search-input,
-.search-input:focus {
-  background-image: url(/images/icons/search.svg);
-  padding-right: calc(1.5em + .75rem);
-  background-repeat: no-repeat;
-  background-position: right calc(.375em + .1875rem) center;
-}
-
-#myDropdown .dropdown-menu {
-  width: 15rem;
-  max-height: 15rem;
-  // min-height: 4rem;
-  overflow: auto;
-}
-
-#myDropdown .dropdown-menu a {
-  color: inherit;
-}
-
-#myDropdown .dropdown-menu a:hover {
-  color: inherit;
-}
-
 //@import "ember-bootstrap/bootstrap";
 //@import "ember-power-select";
 

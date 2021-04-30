@@ -33,8 +33,8 @@ export default class AuthenticationSignupComponent extends Component {
   }
 
   @action
-  authenticateWithGitHub() {
-    this.session.authenticate('authenticator:torii', 'github');
+  authenticateWithLinkedIn() {
+    this.session.authenticate('authenticator:torii', 'linkedin');
   }
 
   @action

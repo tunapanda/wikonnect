@@ -60,10 +60,6 @@
           <BsButton type="button" class="bg-primary form-control mb-2" {{ on "click" this.authenticateWithFacebook}}>
             <span class="px-2">{{svg-jar "facebook-icon"}}</span>{{t "auth.login.login_third_party" authProvider="Facebook"}}
           </BsButton>
-
-          <BsButton type="button" class="bg-primary form-control mb-2" {{ on "click" this.authenticateWithGitHub}}>
-            <span class="px-2">{{svg-jar "github-icon"}}</span>{{t "auth.login.login_third_party" authProvider="GitHub"}}
-          </BsButton>
         {{/if}}
 
       </BsForm>

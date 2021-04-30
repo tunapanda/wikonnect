@@ -1,10 +1,5 @@
 <div class="d-flex justify-content-center align-items-center">
   <div class="auth-form">
-    <div class="row rounded">
-      <div class="col">
-        <h1 class="text-light">{{t "auth.login.login" }}</h1>
-      </div>
-    </div>
     <BsForm @class="form" @formLayout="vertical" @model={{@registeredUser}} @onSubmit={{this.login}} as |form|>
       {{#each @registeredUser.errors as |err| }}
       {{#if (eq err.key "errors")}}
