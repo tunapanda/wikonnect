@@ -6,6 +6,7 @@ module.exports = function (environment) {
     environment,
     rootURL: '/',
     locationType: 'auto',
+    appUrl: 'http://localhost:4200',
     proxyUrl:
       process.argv.indexOf('--proxy') > -1
         ? process.argv[process.argv.indexOf('--proxy') + 1]
@@ -14,7 +15,6 @@ module.exports = function (environment) {
       FEATURES: {
         // Here you can enable experimental features on an ember canary build
         // e.g. EMBER_MODULE_UNIFICATION: true
-        EMBER_METAL_TRACKED_PROPERTIES: true,
       },
       EXTEND_PROTOTYPES: {
         // Prevent Ember Data from overriding Date.parse.
@@ -65,7 +65,10 @@ module.exports = function (environment) {
     },
 
     fastboot: {
-      hostWhitelist: [/^localhost:\d+$/],
+      hostWhitelist: [
+        /^localhost:\d+$/,
+        /^app.wikonnect.org/
+      ],
     },
   };
 
@@ -91,6 +94,7 @@ module.exports = function (environment) {
 
   if (environment === 'production') {
     // here you can enable a production-specific feature
+    ENV.appUrl = 'https://app.wikonnect.org';
   }
 
   // ENV.settings = settings
