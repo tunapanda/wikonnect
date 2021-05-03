@@ -14,4 +14,4 @@ dump.rdb
 yarn-error.log
 *.envrc
 .env
-data/
+data

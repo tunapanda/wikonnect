@@ -3,7 +3,7 @@ const path = require('path');
 
 const { nanoid } = require('nanoid/async');
 const sharp = require('sharp');
-const koaBody = require('koa-body')({multipart: true,multiples:false,keepExtensions:true});
+const koaBody = require('koa-body')({ multipart: true, multiples: false, keepExtensions: true });
 
 
 const User = require('../models/user');
@@ -122,6 +122,7 @@ router.post('/', validateAuthRoutes.validateNewUser, createPasswordHash, async c
  *       "createdAt": "2017-12-20T16:17:10.000Z",
  *       "updatedAt": "2017-12-20T16:17:10.000Z",
  *       "profileUri": "image_url",
+ *       "flag": false,
  *       "private": boolean,
  *       "inviteCode": "invited_by",
  *       "achievementAwards": [
@@ -138,7 +139,8 @@ router.post('/', validateAuthRoutes.validateNewUser, createPasswordHash, async c
  *       ],
  *       "userRoles": [
  *         {
- *           "name": "basic"
+ *           "id": "4hsuh4"
+ *           "type": "userRole"
  *         }
  *       ],
  *       "enrolledCourses": [
@@ -169,30 +171,22 @@ router.post('/', validateAuthRoutes.validateNewUser, createPasswordHash, async c
 
 router.get('/:id', permController.requireAuth, async ctx => {
 
-  try {
-    let stateUserId = ctx.state.user.id === undefined ? ctx.state.user.data.id : ctx.state.user.id;
+  let stateUserId = ctx.state.user.id === undefined ? ctx.state.user.data.id : ctx.state.user.id;
 
-    let userId = (ctx.params.id !== 'current' || ctx.params.id !== 'me') ? ctx.params.id : stateUserId;
+  let userId = (ctx.params.id !== 'current' || ctx.params.id !== 'me') ? ctx.params.id : stateUserId;
 
-    let user = await User.query()
-      .findById(userId)
-      .withGraphFetched('[achievementAwards(selectBadgeNameAndId), userRoles(selectName),' +
-        ' enrolledCourses(selectNameAndId)]');
+  let user = await User.query()
+    .findById(userId)
+    .withGraphFetched('[achievementAwards(selectBadgeNameAndId), userRoles(selectNameAndId),' +
+      ' enrolledCourses(selectNameAndId)]');
 
-    ctx.assert(user, 404, 'No User With that Id');
-    user.profileUri = await getProfileImage(user);
-    profileCompleteBoolean(user, ctx.params.id);
-    log.info('Got a request from %s for %s', ctx.request.ip, ctx.path);
+  ctx.assert(user, 404, 'No User With that Id');
+  user.profileUri = await getProfileImage(user);
+  profileCompleteBoolean(user, ctx.params.id);
+  log.info('Got a request from %s for %s', ctx.request.ip, ctx.path);
 
-    ctx.status = 200;
-    ctx.body = { user: user };
-  } catch (e) {
-    if (e.statusCode) {
-      ctx.throw(e.statusCode, null, { errors: [e.message] });
-    } else {
-      ctx.throw(400, null, { errors: [e.message] });
-    }
-  }
+  ctx.status = 200;
+  ctx.body = { user: user };
 });
 /**
  * @api {get} /users GET all users.
@@ -270,16 +264,8 @@ router.put('/:id', jwt.authenticate, permController.requireAuth, async ctx => {
     }
   }
 
-  let user;
-  try {
-    user = await User.query().patchAndFetchById(ctx.params.id, data);
-    ctx.assert(user, 404, 'That user does not exist.');
-  } catch (e) {
-    if (e.statusCode) {
-      ctx.throw(e.statusCode, null, { errors: [e.message] });
-    } else { ctx.throw(400, null, { errors: [e.message] }); }
-    throw e;
-  }
+  const user = await User.query().patchAndFetchById(ctx.params.id, data);
+  ctx.assert(user, 404, 'That user does not exist.');
 
   profileCompleteBoolean(user, ctx.params.id);
 
@@ -289,16 +275,8 @@ router.put('/:id', jwt.authenticate, permController.requireAuth, async ctx => {
 });
 
 router.post('/invite/:id', async ctx => {
-  let invite;
-  try {
-    // invite = await User.query().patchAndFetchById(ctx.params.id, ctx.request.body.user);
-    invite = await knex('user_invite').insert([{ user_id: ctx.params.id, 'invited_by': ctx.request.body.user.inviteBy }], ['id', 'invited_by', 'user_id']);
-    ctx.assert(invite, 404, 'That user does not exist.');
-  } catch (e) {
-    if (e.statusCode) {
-      ctx.throw(e.statusCode, null, { errors: [e.message] });
-    } else { ctx.throw(400, null, { errors: [e.message] }); }
-  }
+  const invite = await knex('user_invite').insert([{ user_id: ctx.params.id, 'invited_by': ctx.request.body.user.inviteBy }], ['id', 'invited_by', 'user_id']);
+  ctx.assert(invite, 404, 'That user does not exist.');
 
   inviteUserAward(ctx.params.id);
 
@@ -321,7 +299,7 @@ router.post('/invite/:id', async ctx => {
  * @apiError {String} errors Bad Request.
  */
 
-router.post('/:id/profile-image',koaBody, permController.requireAuth, async (ctx) => {
+router.post('/:id/profile-image', koaBody, permController.requireAuth, async (ctx) => {
 
   ctx.assert(ctx.request.files.file, 400, 'No file image uploaded');
 
@@ -329,20 +307,20 @@ router.post('/:id/profile-image',koaBody, permController.requireAuth, async (ctx
   const uploadPath = 'uploads/images/profile';
   const uploadDir = path.resolve(__dirname, '../public/' + uploadPath);
 
-  const {file} =ctx.request.files;
+  const { file } = ctx.request.files;
 
   const fileExtension = path.extname(file.name);
 
-  if (!['.webp', '.svg', '.png', '.jpeg', '.gif', '.avif','.jpg'].includes(fileExtension)) {
+  if (!['.webp', '.svg', '.png', '.jpeg', '.gif', '.avif', '.jpg'].includes(fileExtension)) {
     ctx.throw(400, { error: 'Image format not supported' });
   }
 
   let resizer;
-  try{
+  try {
     resizer = await sharp(file.path)
       .resize(500, 500)
       .jpeg({ quality: 70 });
-  }catch (e) {
+  } catch (e) {
     if (e.statusCode) {
       ctx.throw(e.statusCode, null, { errors: [e.message] });
     } else {

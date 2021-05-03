@@ -65,6 +65,7 @@ section h1 {
   font-weight: 700;
   font-size: 32px;
   line-height: 40px;
+  padding-bottom: 14px;
   margin: 0 0 20px 0;
   padding: 0;
 }
@@ -156,6 +157,7 @@ td {
   font-weight: 700;
   font-size: 32px;
   line-height: 40px;
+  padding-bottom: 14px;
   margin: 0 0 20px 0;
   padding: 0;
 }
