@@ -9,6 +9,7 @@ buttons:
   publish: Chapisha
   unpublish: Ondoa
   create: Unda
+  community: Gumzo
   delete: Futa
   modify: Rekebisha
   edit: Hariri
@@ -61,7 +62,7 @@ labels:
   forgot_password: Je, umesahau nenosiri yako?
 
 profile:
-  profile_picture : Picha ya Profaili
+  profile_picture: Picha ya Profaili
 
 messages:
   empty_search: Hatukuweza kupata chochote kinacholingana na hoja yako ya utaftaji
