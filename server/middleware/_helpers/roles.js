@@ -22,19 +22,20 @@ let grantList = [
   { role: 'basic', resource: 'path', action: 'read:any', attributes: '*' },
   { role: 'basic', resource: 'path', action: 'create:any', attributes: '*' },
 
-  { role: 'admin', resource: 'profile', action: 'create:any', attributes: '*' },
-  { role: 'admin', resource: 'profile', action: 'read:any', attributes: '*' },
-  { role: 'admin', resource: 'profile', action: 'update:any', attributes: '*' },
+  { role: 'moderators', resource: 'private', action: 'delete:own', attributes: '*' },
+  { role: 'moderators', resource: 'private', action: 'create:any', attributes: '*' },
+  { role: 'moderators', resource: 'private', action: 'read:any', attributes: '*' },
+  { role: 'moderators', resource: 'private', action: 'update:any', attributes: '*' },
 
-  { role: 'admin', resource: 'path', action: 'delete:own', attributes: '*' },
-  { role: 'admin', resource: 'path', action: 'create:any', attributes: '*' },
-  { role: 'admin', resource: 'path', action: 'read:any', attributes: '*' },
-  { role: 'admin', resource: 'path', action: 'update:any', attributes: '*' },
+  { role: 'admin', resource: 'private', action: 'delete:any', attributes: '*' },
+  { role: 'admin', resource: 'private', action: 'create:any', attributes: '*' },
+  { role: 'admin', resource: 'private', action: 'read:any', attributes: '*' },
+  { role: 'admin', resource: 'private', action: 'update:any', attributes: '*' },
 
-  { role: 'superadmin', resource: 'path', action: 'delete:any', attributes: '*' },
-  { role: 'superadmin', resource: 'path', action: 'create:any', attributes: '*' },
-  { role: 'superadmin', resource: 'path', action: 'read:any', attributes: '*' },
-  { role: 'superadmin', resource: 'path', action: 'update:any', attributes: '*' },
+  { role: 'superadmin', resource: 'private', action: 'delete:any', attributes: '*' },
+  { role: 'superadmin', resource: 'private', action: 'create:any', attributes: '*' },
+  { role: 'superadmin', resource: 'private', action: 'read:any', attributes: '*' },
+  { role: 'superadmin', resource: 'private', action: 'update:any', attributes: '*' },
 ];
 let ac = new AccessControl(grantList);
 

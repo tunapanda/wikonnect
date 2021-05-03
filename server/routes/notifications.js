@@ -1,7 +1,7 @@
 const Router = require('koa-router');
 
 const NotificationModel = require('../models/notification');
-const {requireAuth} = require('../middleware/permController');
+const { requireAuth } = require('../middleware/permController');
 
 
 const router = new Router({
@@ -54,23 +54,12 @@ const router = new Router({
  *
  */
 router.get('/:id', requireAuth, async (ctx) => {
-  let notification;
+  const notification = await NotificationModel.query()
+    .findById(ctx.params.id);
 
-  try {
-    notification=await NotificationModel.query()
-      .findById(ctx.params.id);
-
-  } catch (e) {
-    if (e.statusCode) {
-      ctx.throw(e.statusCode, null, {errors: [e.message]});
-    } else {
-      ctx.throw(400, null, {errors: [e.message]});
-    }
-  }
-
-  ctx.assert(notification,404,{message:'Notification not found'});
+  ctx.assert(notification, 404, { message: 'Notification not found' });
   ctx.status = 200;
-  ctx.body = {notification};
+  ctx.body = { notification };
 });
 
 /**
@@ -128,19 +117,11 @@ router.get('/:id', requireAuth, async (ctx) => {
  *
  */
 router.get('/', requireAuth, async (ctx) => {
-  try {
-    const notifications =  await NotificationModel.query()
-      .where(ctx.query);
-       
-    ctx.status = 200;
-    ctx.body = {notifications};
-  } catch (e) {
-    if (e.statusCode) {
-      ctx.throw(e.statusCode, null, {errors: [e.message]});
-    } else {
-      ctx.throw(400, null, {errors: [e.message]});
-    }
-  }
+  const notifications = await NotificationModel.query()
+    .where(ctx.query);
+
+  ctx.status = 200;
+  ctx.body = { notifications };
 });
 
 /**
@@ -202,21 +183,11 @@ router.post('/', requireAuth, async ctx => {
   const obj = ctx.request.body.notification;
   const creatorId = ctx.state.user.data.id;
 
-  try {
-    const notification = await NotificationModel.query()
-      .insertAndFetch({...obj, creatorId});
+  const notification = await NotificationModel.query()
+    .insertAndFetch({ ...obj, creatorId });
 
-
-    ctx.status = 201;
-    ctx.body = {notification};
-
-  } catch (e) {
-    if (e.statusCode) {
-      ctx.throw(e.statusCode, null, {errors: [e.message]});
-    } else {
-      ctx.throw(400, null, {errors: [e.message]});
-    }
-  }
+  ctx.status = 201;
+  ctx.body = { notification };
 
 });
 
@@ -278,25 +249,17 @@ router.post('/', requireAuth, async ctx => {
 router.put('/:id', requireAuth, async ctx => {
   let obj = ctx.request.body.notification;
   delete obj.id;
-  
+
   const currentNotification = await NotificationModel.query()
     .findById(ctx.params.id);
   ctx.assert(currentNotification, 404, 'Notification does not exist');
 
-  try {
-    const notification = await currentNotification.$query()
-      .patchAndFetch(obj);
-  
-    ctx.status = 200;
-    ctx.body = {notification};
+  const notification = await currentNotification.$query()
+    .patchAndFetch(obj);
 
-  } catch (e) {
-    if (e.statusCode) {
-      ctx.throw(e.statusCode, null, {errors: [e.message]});
-    } else {
-      ctx.throw(400, null, {errors: ['Bad Request']});
-    }
-  }
+  ctx.status = 200;
+  ctx.body = { notification };
+
 });
 
 /**
@@ -320,20 +283,13 @@ router.delete('/:id', requireAuth, async ctx => {
   const notification = await NotificationModel.query()
     .findById(ctx.params.id);
 
-  ctx.assert(notification,404, 'No notification with that Id exist');
+  ctx.assert(notification, 404, 'No notification with that Id exist');
 
-  try {
-    await  notification.$query().delete();
+  await notification.$query().delete();
 
-    ctx.status = 200;
-    ctx.body = {};
-  } catch (e) {
-    if (e.statusCode) {
-      ctx.throw(e.statusCode, null, {errors: [e.message]});
-    } else {
-      ctx.throw(400, null, {errors: ['Bad Request']});
-    }
-  }
+  ctx.status = 200;
+  ctx.body = {};
+
 });
 
 
