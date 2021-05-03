@@ -25,12 +25,6 @@ const sample ={
 };
 
 describe('NOTIFICATIONS ROUTE', () => {
-  before(async () => {
-    await knex.migrate.rollback();
-    await knex.migrate.latest();
-    return await knex.seed.run();
-  });
-
 
   it('Should fetch existing notifications', done => {
     chai
@@ -78,16 +72,33 @@ describe('NOTIFICATIONS ROUTE', () => {
       });
   });
 
+  it('Should get existing notification', async () => {
+
+    const notification = (await knex('notifications').select().limit(1))[0];
+
+    return chai
+      .request(server)
+      .get(`${route}/${notification.id}`)
+      .set(tokens.headersSuperAdmin1)
+      .set('Content-Type', 'application/json')
+      .then((res) => {
+        res.should.have.status(200);
+        res.should.be.json;
+        res.body.notification.should.have.property('id');
+        res.body.notification.should.have.property('title');
+      });
+  });
+
   it('Should update existing notification', async () => {
 
     const notification = (await knex('notifications').select().limit(1))[0];
-      
+
     return chai
       .request(server)
       .put(`${route}/${notification.id}`)
       .set(tokens.headersSuperAdmin1)
       .set('Content-Type', 'application/json')
-      .send({notification: sample})
+      .send({ notification: sample })
       .then((res) => {
         res.should.have.status(200);
         res.should.be.json;

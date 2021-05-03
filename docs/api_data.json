@@ -471,7 +471,7 @@
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "    HTTP/1.1 201 OK\n    {\n      \"user\": {\n      \"id\": \"user2\",\n      \"username\": \"user2\",\n      \"createdAt\": \"2017-12-20T16:17:10.000Z\",\n      \"updatedAt\": \"2017-12-20T16:17:10.000Z\",\n      \"profileUri\": \"image_url\",\n      \"private\": boolean,\n      \"inviteCode\": \"invited_by\",\n      \"achievementAwards\": [\n        {\n          \"id\": \"achievementaward1\",\n          \"name\": \"completed 10 courses\",\n          \"type\": \"achievementAwards\"\n        },\n        {\n          \"id\": \"achievementaward2\",\n          \"name\": \"fully filled profile\",\n          \"type\": \"achievementAwards\"\n        }\n      ],\n      \"userRoles\": [\n        {\n          \"name\": \"basic\"\n        }\n      ],\n      \"enrolledCourses\": [\n         {\n           \"id\": \"course1\",\n           \"name\": \"A Course 1\",\n           \"type\": \"course\"\n         }\n      ],\n      \"userVerification\": []\n   }\n}",
+          "content": "    HTTP/1.1 201 OK\n    {\n      \"user\": {\n      \"id\": \"user2\",\n      \"username\": \"user2\",\n      \"createdAt\": \"2017-12-20T16:17:10.000Z\",\n      \"updatedAt\": \"2017-12-20T16:17:10.000Z\",\n      \"profileUri\": \"image_url\",\n      \"flag\": false,\n      \"private\": boolean,\n      \"inviteCode\": \"invited_by\",\n      \"achievementAwards\": [\n        {\n          \"id\": \"achievementaward1\",\n          \"name\": \"completed 10 courses\",\n          \"type\": \"achievementAwards\"\n        },\n        {\n          \"id\": \"achievementaward2\",\n          \"name\": \"fully filled profile\",\n          \"type\": \"achievementAwards\"\n        }\n      ],\n      \"userRoles\": [\n        {\n          \"id\": \"4hsuh4\"\n          \"type\": \"userRole\"\n        }\n      ],\n      \"enrolledCourses\": [\n         {\n           \"id\": \"course1\",\n           \"name\": \"A Course 1\",\n           \"type\": \"course\"\n         }\n      ],\n      \"userVerification\": []\n   }\n}",
           "type": "json"
         }
       ]
@@ -4781,6 +4781,350 @@
     },
     "filename": "server/routes/search.js",
     "groupTitle": "Search"
+  },
+  {
+    "type": "get",
+    "url": "/api/v1/userRole/:id",
+    "title": "GET user role by userId",
+    "name": "Get_user_role_by_userId",
+    "group": "UserRole",
+    "permission": [
+      {
+        "name": "authenticated user[moderator/admin/superadmin]"
+      }
+    ],
+    "version": "0.4.0",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Bearer &lt;&lt; JWT here&gt;&gt;</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "URI Param": [
+          {
+            "group": "URI Param",
+            "type": "String",
+            "optional": false,
+            "field": "id",
+            "description": "<p>user role id</p>"
+          }
+        ],
+        "Query Params": [
+          {
+            "group": "Query Params",
+            "type": "Boolean",
+            "optional": true,
+            "field": "userId",
+            "description": "<p>filter by userId</p>"
+          },
+          {
+            "group": "Query Params",
+            "type": "String",
+            "optional": true,
+            "field": "groupId",
+            "description": "<p>filter by groupId</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "user_role",
+            "description": "<p>Top level object</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "user_role[userId]",
+            "description": "<p>users id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "user_role[groupId]",
+            "description": "<p>associated group name Id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "user_role[createdAt]",
+            "description": "<p>date created</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "user_role[updatedAt]",
+            "description": "<p>date updated</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "user_role[group]",
+            "description": "<p>group details object</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n\"user_role\": [\n     {\n       \"userId\": \"user1\",\n       \"groupId\": \"groupAdmin\",\n       \"createdAt\": \"2019-12-20T16:17:10.000Z\",\n       \"updatedAt\": \"2019-12-20T16:17:10.000Z\",\n       \"group\": [{\n           \"id\": \"groupAdmin\",\n           \"name\": \"admin\",\n           \"slug\": \"role-admin\",\n           \"description\": \"\",\n           \"metadata\": null,\n           \"createdAt\": \"2019-12-20T16:17:10.000Z\",\n           \"updatedAt\": \"2019-12-20T16:17:10.000Z\",\n           \"type\": \"userRoles\"\n       }]\n     }\n ]",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "server/routes/user_role.js",
+    "groupTitle": "UserRole",
+    "sampleRequest": [
+      {
+        "url": "https://app.wikonnect.org/api/v1/userRole/:id"
+      }
+    ]
+  },
+  {
+    "type": "get",
+    "url": "/api/v1/userRole",
+    "title": "GET all user roles",
+    "name": "Get_user_roles",
+    "group": "UserRole",
+    "permission": [
+      {
+        "name": "authenticated user[moderator/admin/superadmin]"
+      }
+    ],
+    "version": "0.4.0",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Bearer &lt;&lt; JWT here&gt;&gt;</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "URI Param": [
+          {
+            "group": "URI Param",
+            "type": "String",
+            "optional": false,
+            "field": "id",
+            "description": "<p>user role id</p>"
+          }
+        ],
+        "Query Params": [
+          {
+            "group": "Query Params",
+            "type": "Boolean",
+            "optional": true,
+            "field": "userId",
+            "description": "<p>filter by userId</p>"
+          },
+          {
+            "group": "Query Params",
+            "type": "String",
+            "optional": true,
+            "field": "groupId",
+            "description": "<p>filter by groupId</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "user_role",
+            "description": "<p>Top level object</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "user_role[userId]",
+            "description": "<p>users id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "user_role[groupId]",
+            "description": "<p>associated group name Id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "user_role[createdAt]",
+            "description": "<p>date created</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "user_role[updatedAt]",
+            "description": "<p>date updated</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "user_role[group]",
+            "description": "<p>group details object</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n\"user_role\": [\n     {\n       \"userId\": \"user1\",\n       \"groupId\": \"groupAdmin\",\n       \"createdAt\": \"2019-12-20T16:17:10.000Z\",\n       \"updatedAt\": \"2019-12-20T16:17:10.000Z\",\n       \"group\": [{\n           \"id\": \"groupAdmin\",\n           \"name\": \"admin\",\n           \"slug\": \"role-admin\",\n           \"description\": \"\",\n           \"metadata\": null,\n           \"createdAt\": \"2019-12-20T16:17:10.000Z\",\n           \"updatedAt\": \"2019-12-20T16:17:10.000Z\",\n           \"type\": \"userRoles\"\n       }]\n     }\n ]",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "server/routes/user_role.js",
+    "groupTitle": "UserRole",
+    "sampleRequest": [
+      {
+        "url": "https://app.wikonnect.org/api/v1/userRole"
+      }
+    ]
+  },
+  {
+    "type": "put",
+    "url": "/api/v1/userRole/:id",
+    "title": "PUT user role by userId",
+    "name": "Put_user_role_by_userId",
+    "group": "UserRole",
+    "permission": [
+      {
+        "name": "authenticated user[moderator/admin/superadmin]"
+      }
+    ],
+    "version": "0.4.0",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Bearer &lt;&lt; JWT here&gt;&gt;</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "URI Param": [
+          {
+            "group": "URI Param",
+            "type": "String",
+            "optional": false,
+            "field": "id",
+            "description": "<p>user role id</p>"
+          }
+        ],
+        "Params": [
+          {
+            "group": "Params",
+            "type": "String",
+            "optional": true,
+            "field": "groupId",
+            "description": "<p>filter by groupId</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "user_role",
+            "description": "<p>Top level object</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "user_role[userId]",
+            "description": "<p>users id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "user_role[groupId]",
+            "description": "<p>associated group name Id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "user_role[createdAt]",
+            "description": "<p>date created</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "user_role[updatedAt]",
+            "description": "<p>date updated</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "user_role[group]",
+            "description": "<p>group details object</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n\"user_role\": [\n     {\n       \"userId\": \"user1\",\n       \"groupId\": \"groupAdmin\",\n       \"createdAt\": \"2019-12-20T16:17:10.000Z\",\n       \"updatedAt\": \"2019-12-20T16:17:10.000Z\",\n       \"group\": [{\n           \"id\": \"groupAdmin\",\n           \"name\": \"admin\",\n           \"slug\": \"role-admin\",\n           \"description\": \"\",\n           \"metadata\": null,\n           \"createdAt\": \"2019-12-20T16:17:10.000Z\",\n           \"updatedAt\": \"2019-12-20T16:17:10.000Z\",\n           \"type\": \"userRoles\"\n       }]\n     }\n ]",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "server/routes/user_role.js",
+    "groupTitle": "UserRole",
+    "sampleRequest": [
+      {
+        "url": "https://app.wikonnect.org/api/v1/userRole/:id"
+      }
+    ]
   },
   {
     "type": "delete",
