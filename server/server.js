@@ -61,7 +61,7 @@ router.use(jwt.authenticate, require('./routes/reactions'));
 
 router.use(jwt.authenticate, require('./routes/dashboard'));
 
-router.use(jwt.authenticate, require('./routes/admin'));
+router.use(jwt.authenticate, require('./routes/user_role'));
 
 router.use(jwt.authenticate, require('./routes/achievement_awards'));
 

@@ -7,7 +7,7 @@ const CommentModel = require('../../../models/comment');
 exports.seed = async (knex)=>{
   // Deletes ALL existing entries
   await knex('notifications').del();
-  
+
   const userIds = await knex('users').pluck('id');
 
   const comments = await CommentModel.query().select('id', 'chapter_id');
@@ -40,7 +40,7 @@ exports.seed = async (knex)=>{
         event_type,
         model: 'comment',
         recipient_id: chapter.creatorId,
-        read: faker.random.boolean(),
+        read: faker.datatype.boolean(),
         creator_id: faker.random.arrayElement(userIds),
         created_at: faker.date.past(),
         updated_at: faker.date.recent(),
@@ -64,7 +64,7 @@ exports.seed = async (knex)=>{
         event_type,
         model: 'rating',
         recipient_id: chapter.creatorId,
-        read: faker.random.boolean(),
+        read: faker.datatype.boolean(),
         creator_id: faker.random.arrayElement(userIds),
         created_at: faker.date.past(),
         updated_at: faker.date.recent(),
@@ -82,8 +82,8 @@ exports.seed = async (knex)=>{
         event_type: eventCodes.chapter.approved,
         model: 'chapter',
         recipient_id: chapter.creatorId,
-        read: faker.random.boolean(),
-        metadata: {sendEmail: faker.random.boolean()},
+        read: faker.datatype.boolean(),
+        metadata: { sendEmail: faker.datatype.boolean() },
         creator_id: faker.random.arrayElement(userIds),
         created_at: faker.date.past(),
         updated_at: faker.date.recent(),
@@ -102,8 +102,8 @@ exports.seed = async (knex)=>{
         event_type: eventCodes.chapter.verified,
         model: 'chapter',
         recipient_id: chapter.creatorId,
-        read: faker.random.boolean(),
-        metadata: {sendEmail: faker.random.boolean()},
+        read: faker.datatype.boolean(),
+        metadata: { sendEmail: faker.datatype.boolean() },
         created_at: faker.date.past(),
         updated_at: faker.date.recent(),
       };
