@@ -27,9 +27,9 @@ describe('Learner Navigation Menu', () => {
       .should('be.visible');
   }); 
   
-  it('Should not link to teachers page before authentication', () => {
+  it('Should link to teachers page before authentication', () => {
     cy.get('.main-header.navbar a[href="/teach"]')
-      .should('not.exist');
+      .should('be.visible');
   });
 
   it('Should link to teachers page if authentication', () => {
