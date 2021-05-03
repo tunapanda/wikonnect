@@ -39,6 +39,9 @@ Router.map(function () {
   this.route('embed', { path: '/embed/:chapter_id' });
   this.route('callback');
 
+  this.route('forgot_password');
+  this.route('reset_password');
+  this.route('verify');
   // 404 page should always be the last
   this.route('not-found', { path: '*path' });
 });

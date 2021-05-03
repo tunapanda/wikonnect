@@ -29,9 +29,9 @@ describe('Sign up', () => {
 
     it('should register new  user', () => {
 
-        const username = 'dummyaccount';
+        const username = `dummyaccount${new Date().getTime()}`;
         const password = 'dummypassword';
-        const email = 'winnie@dummyemail.com';
+        const email = `${username}@dummyemail.com`;
 
         cy.get('.signup-form-fields #username input[type="text"]')
             .type(username)

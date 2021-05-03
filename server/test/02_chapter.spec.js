@@ -195,6 +195,7 @@ describe('CHAPTER ROUTE', () => {
         res.status.should.eql(404);
         res.should.be.json;
         res.body.should.be.a('object');
+        res.body.message.should.eql('Invalid data provided');
         done();
       });
   });
