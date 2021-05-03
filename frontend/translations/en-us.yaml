@@ -9,6 +9,7 @@ buttons:
   publish: Publish
   unpublish: Unpublish
   create: Create
+  community: Community Chat
   delete: Delete
   modify: Modify
   edit: Edit
@@ -58,7 +59,7 @@ labels:
   user_profile_link: "{user}'s profile"
 
 profile:
-  profile_picture : Profile Picture
+  profile_picture: Profile Picture
 
 messages:
   empty_search: "We could not find anything that matches your search query"
