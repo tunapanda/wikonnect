@@ -38,4 +38,9 @@ export default class ApplicationController extends Controller {
     this.socket.roleChanged();
     this.router.transitionTo('index');
   }
+
+  @action
+  resetModal(){
+    document.body.classList.remove('modal')
+  }
 }
