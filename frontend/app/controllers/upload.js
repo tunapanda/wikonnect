@@ -3,6 +3,7 @@ import { inject as service } from '@ember/service';
 import { action } from '@ember/object';
 import { tracked } from '@glimmer/tracking';
 import Uploader from '../utils/uploader';
+import config from 'wikonnect/config/environment';
 
 export default class UploadController extends Controller {
   @service me;
@@ -31,8 +32,7 @@ export default class UploadController extends Controller {
         filename: files[0].name,
       });
 
-      const host = '/' + this.store.adapterFor('application').urlPrefix();
-
+      const host = this.store.adapterFor('application').namespace;
       await this.uploader.startUpload(
         [host, 'users', this.me.user.id, 'profile-image'].join('/')
       );
