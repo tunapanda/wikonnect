@@ -3,7 +3,6 @@ import { inject as service } from '@ember/service';
 import { action } from '@ember/object';
 import { tracked } from '@glimmer/tracking';
 import Uploader from '../utils/uploader';
-import config from 'wikonnect/config/environment';
 
 export default class UploadController extends Controller {
   @service me;

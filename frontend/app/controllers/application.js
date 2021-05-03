@@ -40,7 +40,7 @@ export default class ApplicationController extends Controller {
   }
 
   @action
-  resetModal(){
-    document.body.classList.remove('modal')
+  resetModal() {
+    document.body.classList.remove('modal');
   }
 }
