@@ -1,24 +1,23 @@
-<nav
-        class="main-header navbar navbar-expand-lg navbar-light text-{{this.config.content.APP.header_text}}
+<nav class="main-header navbar navbar-expand-lg navbar-light text-{{this.config.content.APP.header_text}}
          secondary-color bg-{{if @isTeach this.config.content.APP.teach_header_background
                                  this.config.content.APP.header_background}}">
   <LinkTo @route="index" class="pr-4">
 
-    {{svg-jar "wikonnect-logo-white"   height="40"}}
+    {{svg-jar "wikonnect-logo-white" height="40"}}
   </LinkTo>
 
-  <a class="nav-link text-{{this.config.content.APP.header_text}} lang-selector m-0 p-1" href="#"
-    {{on "click" (fn this.translate "en-us")}}>
+  <a class="nav-link text-{{this.config.content.APP.header_text}} lang-selector m-0 p-1" href="#" {{on "click" (fn
+    this.translate "en-us" )}}>
     {{t "labels.english"}}
   </a>
   <span class="lang-selector-divider">/</span>
-  <a class="nav-link text-{{this.config.content.APP.header_text}} lang-selector m-0 p-1" href="#"
-    {{on "click" (fn this.translate "sw-ke")}}>
+  <a class="nav-link text-{{this.config.content.APP.header_text}} lang-selector m-0 p-1" href="#" {{on "click" (fn
+    this.translate "sw-ke" )}}>
     {{t "labels.kiswahili"}}
   </a>
 
   <button class="navbar-toggler ml-auto" type="button" data-toggle="collapse" data-target="#mainTopNav"
-          aria-controls="navbarSupportedContent-555" aria-expanded="false" aria-label={{t "labels.toggle_nav"}}>
+    aria-controls="navbarSupportedContent-555" aria-expanded="false" aria-label={{t "labels.toggle_nav" }}>
     {{svg-jar "segment" width="27" height="27"}}
 
   </button>
@@ -52,40 +51,40 @@
     <form class="form-inline ml-lg-5 search-form" {{on "submit" this.search}}>
       <Input @id="search" @class="form-control mr-sm-2 search-input" @type="text" @value={{this.search_term}} />
       {{#if this.searchLoading}}
-        <button class="btn form-control search-button search-loading" type="button">
-          <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-          {{t "messages.searching"}}
-        </button>
+      <button class="btn form-control search-button search-loading" type="button">
+        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+        {{t "messages.searching"}}
+      </button>
       {{else}}
-        <button class="btn  my-2 my-sm-0 search-button" type="submit">
-          {{svg-jar "magnify" width="20" height="21"}}
+      <button class="btn  my-2 my-sm-0 search-button" type="submit">
+        {{svg-jar "magnify" width="20" height="21"}}
 
-        </button>
+      </button>
       {{/if}}
     </form>
 
     <ul class="navbar-nav ml-auto">
       <li class="nav-item">
-      <NavMenu::NotificationDropdown class="nav-link" @notifications={{@notifications}} />
+        <NavMenu::NotificationDropdown class="nav-link" @notifications={{@notifications}} />
       </li>
     </ul>
     <ul class="navbar-nav">
       {{#if this.me.user.id}}
-        <NavMenu::UserAccountDropdown @logout={{@logout}} />
+      <NavMenu::UserAccountDropdown @logout={{@logout}} />
       {{else}}
-        <li class="text-light nav-item">
-          <LinkTo @route="login" class="nav-link btn-outline-light signin signin-menu-link"
-                  data-toggle="collapse" data-target="#mainTopNav.show">
-            {{t "buttons.login"}}
-          </LinkTo>
-        </li>
-        <li class="text-light nav-item ml-lg-3">
-          <LinkTo @route="signup" class="nav-link signup btn-outline-light signup-menu-link"
-                  data-toggle="collapse" data-target="#mainTopNav.show">
-            {{t "buttons.signup"}}
-          </LinkTo>
+      <li class="text-light nav-item">
+        <LinkTo @route="login" class="nav-link btn-outline-light signin signin-menu-link" data-toggle="collapse"
+          data-target="#mainTopNav.show">
+          {{t "buttons.login"}}
+        </LinkTo>
+      </li>
+      <li class="text-light nav-item ml-lg-3">
+        <LinkTo @route="signup" class="nav-link signup btn-outline-light signup-menu-link" data-toggle="collapse"
+          data-target="#mainTopNav.show">
+          {{t "buttons.signup"}}
+        </LinkTo>
 
-        </li>
+      </li>
       {{/if}}
     </ul>
   </div>
