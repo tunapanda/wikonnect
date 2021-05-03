@@ -20,12 +20,17 @@
 
 html {
   font-family: 'Inter', sans-serif;
+  height: 100%;
 }
 
 @supports (font-variation-settings: normal) {
   html {
     font-family: 'Inter var', sans-serif;
   }
+}
+
+body{
+  height: 100%;
 }
 
 .h40 {
@@ -160,3 +165,4 @@ pre {
 @import "notifications-dropdown";
 @import "user-acc-dropdown";
 
+@import "admin/admin";
