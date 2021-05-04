@@ -8,8 +8,6 @@ export default class ApplicationAdapter extends RESTAdapter {
   get headers() {
     return {
       Authorization: `Bearer ${this.session?.data?.authenticated?.token}`,
-      mojaHeader: window.localStorage.getItem('moja_campaign'),
-      achievement: window.localStorage.getItem('achievement'),
     };
   }
 }

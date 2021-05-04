@@ -5,7 +5,10 @@ import { tracked } from '@glimmer/tracking';
 export default class ShareComponent extends Component {
   @tracked
   isShowingModal = false;
-  baseURL = window.location;
+
+  get baseUrl() {
+    return window.location;
+  }
 
   @action
   toggleModal() {

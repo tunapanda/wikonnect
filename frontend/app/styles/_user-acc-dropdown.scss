@@ -31,20 +31,10 @@ $palette: (
 
 }
 
-.signin-menu-link,
-.signup-menu-link {
-  font-size: 15px;
-  letter-spacing: 0;
-  border: 1px solid map-get($palette,white);
-  border-radius: 2px;
-  padding-top: 8px;
-  padding-bottom: 8px;
-  display: inline;
-}
+
 
 .signup-menu-link {
-  background-color: map-get($palette, white);
-  color: map-get($palette, primary) !important;
+  color: map-get($palette, white) !important;
 }
 
 .signin-menu-link{
@@ -56,8 +46,22 @@ On large screen
  */
 @media (min-width: 992px) {
 
-
-
+  .signin-menu-link,
+  .signup-menu-link {
+    font-size: 15px;
+    letter-spacing: 0;
+    border: 1px solid map-get($palette,white);
+    border-radius: 2px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    display: inline;
+    white-space: nowrap;
+  }
+  .signup-menu-link {
+    color: map-get($palette, primary) !important;
+    background-color: map-get($palette, white);
+    border-color: map-get($palette, white);
+  }
   .user-profile-dropdown .dropdown-menu.show::after {
     border-color: transparent transparent map-get($palette,white);
     border-image: none;

@@ -24,11 +24,11 @@ describe('Login page', () => {
         const password = `password${Math.random()}`;
         const username = `usertest`;
 
-        cy.get('.login-form-fields #username input[type="text"]')
+        cy.get('.login-form .login-form-fields #username input[type="text"]')
             .type(username)
             .should('have.value', username);
 
-        cy.get('.login-form-fields #password input[type="password"]')
+        cy.get('.login-form .login-form-fields #password input[type="password"]')
             .type(password)
             .should('have.value', password);
 
@@ -47,8 +47,8 @@ describe('Login page', () => {
     });
 
     it('should have Google login call to action', () => {
-        cy.get('form button')
-            .contains('Log In With Google', {matchCase: false})
+        cy.get('.login-form button')
+            .contains('Log in with Google', {matchCase: false})
             .should('be.visible');
     });
 
@@ -56,11 +56,11 @@ describe('Login page', () => {
 
         const {password, username} = user;
 
-        cy.get('.login-form-fields #username input[type="text"]')
+        cy.get('.login-form .login-form-fields #username input[type="text"]')
             .type(username)
             .should('have.value', username);
 
-        cy.get('.login-form-fields #password input[type="password"]')
+        cy.get('.login-form .login-form-fields #password input[type="password"]')
             .type(password)
             .should('have.value', password);
 
