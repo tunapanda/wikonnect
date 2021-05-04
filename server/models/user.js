@@ -36,7 +36,7 @@ class User extends Model {
   }
 
   get $secureFields() {
-    return ['hash', 'lastIp'];
+    return ['hash', 'lastIp', 'resetPasswordToken', 'resetPasswordExpires'];
   }
 
   $beforeInsert() {

@@ -35,7 +35,6 @@ export default class AuthenticationSignupComponent extends Component {
       'password',
       'inviteCode'
     );
-    this.notify.info('Signing up...', { closeAfter: 5000 });
 
     this.me
       .register(fields)

@@ -1,9 +1,42 @@
 module.exports = {
-  mailgun: {
+  test: {
+    provider: process.env.SMTP_HOSTNAME,
     auth: {
-      apiKey: 'key-wikonnect.org',
-      domain: 'wikonnect.org'
-    }
+      user: process.env.SMTP_USERNAME,
+      pass: process.env.SMTP_PASSWORD
+    },
+    defaultFrom: process.env.FROM_EMAIL_ADDRESS,
   },
-  default_from: 'Wikonnect <hello@wikonnect.org>'
+  ci: {
+    provider: process.env.SMTP_HOSTNAME,
+    auth: {
+      user: process.env.SMTP_USERNAME,
+      pass: process.env.SMTP_PASSWORD
+    },
+    defaultFrom: process.env.FROM_EMAIL_ADDRESS,
+  },
+  action: {
+    provider: process.env.SMTP_HOSTNAME,
+    auth: {
+      user: process.env.SMTP_USERNAME,
+      pass: process.env.SMTP_PASSWORD
+    },
+    defaultFrom: process.env.FROM_EMAIL_ADDRESS,
+  },
+  development: {
+    provider: process.env.SMTP_HOSTNAME,
+    auth: {
+      user: process.env.SMTP_USERNAME,
+      pass: process.env.SMTP_PASSWORD
+    },
+    defaultFrom: process.env.FROM_EMAIL_ADDRESS,
+  },
+  production: {
+    provider: process.env.SMTP_HOSTNAME,
+    auth: {
+      user: process.env.SMTP_USERNAME,
+      pass: process.env.SMTP_PASSWORD
+    },
+    defaultFrom: process.env.FROM_EMAIL_ADDRESS,
+  }
 };

@@ -3,7 +3,7 @@
                                  this.config.content.APP.header_background}}">
   <LinkTo @route="index" class="pr-4">
 
-    {{svg-jar "wikonnect-logo-white"   height="40"}}
+    {{svg-jar "wikonnect-logo-white" height="40"}}
   </LinkTo>
 
   <a class="nav-link text-{{this.config.content.APP.header_text}} lang-selector m-0 p-1" href="#" {{on "click" (fn
@@ -51,111 +51,40 @@
     <form class="form-inline ml-lg-5 search-form" {{on "submit" this.search}}>
       <Input @id="search" @class="form-control mr-sm-2 search-input" @type="text" @value={{this.search_term}} />
       {{#if this.searchLoading}}
-        <button class="btn form-control search-button search-loading" type="button">
-          <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-          {{t "messages.searching"}}
-        </button>
+      <button class="btn form-control search-button search-loading" type="button">
+        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+        {{t "messages.searching"}}
+      </button>
       {{else}}
-        <button class="btn  my-2 my-sm-0 search-button" type="submit">
-          {{svg-jar "magnify" width="20" height="21"}}
+      <button class="btn  my-2 my-sm-0 search-button" type="submit">
+        {{svg-jar "magnify" width="20" height="21"}}
 
-        </button>
+      </button>
       {{/if}}
     </form>
 
     <ul class="navbar-nav ml-auto">
-
-      <BsDropdown class="nav-item notifications-dropdown d-lg-block d-none mr-4" @closeOnMenuClick={{false}} as |dd|>
-        <dd.button @type="default" class="nav-link">
-          {{svg-jar "bell" height="27" width="27"}}
-          <span class="count">{{this.unreadNotificationsCount}}</span>
-        </dd.button>
-        <dd.menu class="dropdown-menu-lg-right" as |ddm|>
-          <a class="dropdown-item header-title" href="#">{{t "main_navbar.notifications.title"}}</a>
-          <ddm.divider class="DropdownMenuDivider"></ddm.divider>
-
-          {{#if @notifications}}
-            <div class="notification-items">
-              {{#each @notifications as |obj|}}
-                <div class="dropdown-item notification-item d-flex {{if obj.read " read" "unread" }}" href="#">
-                  <div class="notification-container row" role="button" {{on "click" (fn this.onNotificationSelect obj
-                    dd)}}>
-                    <div class="col-12 title">
-                      {{obj.title}}
-                    </div>
-                    <div class="col-12 body">
-                      {{obj.body}}
-                    </div>
-                    <div class="col-12 time">
-                      {{relative-time obj.createdAt}}
-                    </div>
-                  </div>
-                  <div class="notification-actions d-flex">
-                    <button type="button" class="btn-delete" {{on "click" (fn this.deleteNotification obj)}}>
-                      {{svg-jar "close" width="15" height="15"}}
-                    </button>
-                    <button type="button" class="btn-toggle-read-status" {{on "click" (fn this.toggleNotificationStatus
-                      obj )}}>
-                      <span class="circle"></span>
-                    </button>
-                  </div>
-                </div>
-              {{/each}}
-            </div>
-
-          {{else}}
-            <div class="dropdown-item notification-item">{{t "main_navbar.notifications.empty"}}</div>
-          {{/if}}
-        </dd.menu>
-      </BsDropdown>
-
+      <li class="nav-item">
+        <NavMenu::NotificationDropdown class="nav-link" @notifications={{@notifications}} />
+      </li>
     </ul>
     <ul class="navbar-nav">
       {{#if this.me.user.id}}
-
-        <li class="nav-item avatar dropdown user-profile-dropdown text-{{this.config.content.APP.header_text}}">
-          <a href="#" class="nav-link dropdown-toggle mr-2" id="navbarDropdownMenuLink-55" data-toggle="dropdown"
-            aria-haspopup="true" aria-expanded="false">
-            {{#if this.me.user.profileUri}}
-              <img src={{this.me.user.profileUri}} class="rounded-circle user-profile-image"
-                alt={{t "profile.profile_picture" }}>
-              <span class="pl-2">{{this.me.name}}</span>
-            {{else}}
-              <span aria-hidden="true">&times;</span>
-            {{/if}}
-          </a>
-          <div class="dropdown-menu dropdown-menu-lg-right dropdown-secondary"
-            aria-labelledby="navbarDropdownMenuLink-55">
-
-            <LinkTo @route="profile" class="dropdown-item" data-toggle="collapse" data-target="#mainTopNav.show">
-              {{t "labels.user_profile_link" user=this.name}}
-            </LinkTo>
-
-            <LinkTo @route="profile" @query={{hash view="Settings" }} class="dropdown-item" data-toggle="collapse"
-              data-target="#mainTopNav.show">
-              {{t "buttons.settings"}}
-            </LinkTo>
-
-            <a class="dropdown-item" href="#" {{on "click" @logout }} data-toggle="collapse"
-              data-target="#mainTopNav.show">
-              {{t "buttons.logout"}}
-            </a>
-          </div>
-        </li>
+      <NavMenu::UserAccountDropdown @logout={{@logout}} />
       {{else}}
-        <li class="text-light nav-item">
-          <LinkTo @route="login" class="nav-link text-light action-btn signin" data-toggle="collapse"
-            data-target="#mainTopNav.show">
-            {{t "buttons.login"}}
-          </LinkTo>
-        </li>
-        <li class="text-light nav-item ml-lg-3">
-          <LinkTo @route="signup" class="nav-link text-light action-btn signup" data-toggle="collapse"
-            data-target="#mainTopNav.show">
-            {{t "buttons.signup"}}
-          </LinkTo>
+      <li class="text-light nav-item">
+        <LinkTo @route="login" class="nav-link btn-outline-light signin signin-menu-link" data-toggle="collapse"
+          data-target="#mainTopNav.show">
+          {{t "buttons.login"}}
+        </LinkTo>
+      </li>
+      <li class="text-light nav-item ml-lg-3">
+        <LinkTo @route="signup" class="nav-link signup btn-outline-light signup-menu-link" data-toggle="collapse"
+          data-target="#mainTopNav.show">
+          {{t "buttons.signup"}}
+        </LinkTo>
 
-        </li>
+      </li>
       {{/if}}
     </ul>
   </div>

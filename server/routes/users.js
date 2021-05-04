@@ -3,7 +3,8 @@ const path = require('path');
 
 const { nanoid } = require('nanoid/async');
 const sharp = require('sharp');
-const koaBody = require('koa-body')({ multipart: true, multiples: false, keepExtensions: true });
+const crypto = require('crypto');
+const koaBody = require('koa-body')({multipart: true,multiples:false,keepExtensions:true});
 
 
 const User = require('../models/user');
@@ -13,6 +14,7 @@ const jwt = require('../middleware/jwt');
 const permController = require('../middleware/permController');
 const validateAuthRoutes = require('../middleware/validateRoutePostSchema/validateAuthRoutes');
 
+const sendMailMessage = require('../utils/sendMailMessage');
 const profaneCheck = require('../utils/profaneCheck');
 const knex = require('../utils/knexUtil');
 const log = require('../utils/logger');
@@ -30,6 +32,23 @@ const router = new Router({
   prefix: '/users'
 });
 
+const DOMAIN_NAME = process.env.DOMAIN_NAME || 'http://localhost:4200';
+
+const sendVerificationEmail = async (user, email) => {
+  const token = crypto.randomBytes(64).toString('hex');
+  const buf = Buffer.from(email, 'ascii').toString('base64');
+
+  const userData = await user.$query().patchAndFetch({
+    'resetPasswordExpires': new Date(+new Date() + 1.8e6),
+    'resetPasswordToken': token,
+  });
+  // sending email
+  const link = `${DOMAIN_NAME}/verify?email=${buf}&token=${token}`;
+  await sendMailMessage(buf, userData.username, link, 'confirm-email', 'Welcome to Wikonnect! Please confirm your email');
+  log.info('Email verification sent to %s', email);
+
+  return userData;
+};
 
 
 /**
@@ -81,7 +100,8 @@ router.post('/', validateAuthRoutes.validateNewUser, createPasswordHash, async c
     inviteUserAward(invitedBy);
 
     log.info('Created a user with id %s with username %s with the invite code %s', user.id, user.username, user.inviteCode);
-
+    sendVerificationEmail(user, ctx.request.body.user.email);
+    
     ctx.status = 201;
     ctx.body = { user };
   } catch (e) {
@@ -372,6 +392,91 @@ router.post('/:id/profile-image', koaBody, permController.requireAuth, async (ct
       }
     }
   }
+});
+
+/**
+ * @api {post} /api/v1/users/verify POST user's email to validate.
+ * @apiName PostLoginAUserEmail
+ * @apiGroup Authentication
+ *
+ * @apiParam {string} user[email] emailAddress
+ *
+ * @apiPermission basic
+ * @apiSampleRequest https://localhost:3000/api/v1/users/verify
+ *
+ * @apiSuccessExample {json} Success-Response:
+ *     HTTP/1.1 201 OK
+ *     {
+ *       "user":{
+ *          "email": "emailAddress",
+ *          "emailVerified": "true",
+ *        }
+ *     }
+ *
+ * @apiError {String} errors Bad Request.
+ */
+
+router.post('/verify', permController.requireAuth, async ctx => {
+  const email = ctx.request.body.user.email;
+  const user = await User.query().findOne({ 'email': email, 'emailVerified': false });
+  ctx.assert(user, 404, user);
+
+  try {
+    const userData = sendVerificationEmail(user, email);
+    ctx.status = 201;
+    ctx.body = userData;
+
+  } catch (e) {
+    log.info('Email verification already requested');
+    if (e.statusCode) {
+      ctx.throw(e.statusCode, e, { errors: [e.message] });
+    } else { ctx.throw(400, e, { errors: [e.message] }); }
+    throw e;
+  }
+});
+
+/**
+ * @api {get} /api/v1/users/verify Validate a users email.
+ * @apiName ValidateAUsersEmail
+ * @apiGroup Authentication
+ *
+ * @apiVersion 0.4.0
+ * @apiDescription Validate a users email using token sent via email
+ * @apiPermission [admin, superadmin]
+ * @apiHeader (Header) {String} authorization Bearer <<YOUR_API_KEY_HERE>>
+ *
+ * @apiParam (Required Params) {string} user[token] username
+ * @apiParam (Required Params) {string} user[email] Unique email
+ *
+ */
+
+router.get('/:id/verify', permController.requireAuth, async ctx => {
+  const decodedMail = Buffer.from(ctx.query.email, 'base64').toString('ascii');
+  const token = ctx.query.token;
+  let user = await User.query().findOne({ 'email': decodedMail, 'resetPasswordToken': token });
+  ctx.assert(user, 404, 'No email found');
+  let verifiedData;
+  try {
+    if (new Date() < user.resetPasswordExpires) {
+      verifiedData = await user.$query().patchAndFetch({
+        'emailVerified': true,
+        'resetPasswordExpires': new Date(),
+        'resetPasswordToken': null
+      });
+    } else {
+      throw new Error('Email verification has expired');
+    }
+    
+  } catch (e) {
+    log.info('Email verification has expired');
+    if (e.statusCode) {
+      ctx.throw(e.statusCode, e, { errors: [e.message] });
+    } else { ctx.throw(400, e, { errors: [e.message] }); }
+    throw e;
+  }
+
+  ctx.status = 200;
+  ctx.body = { verifiedData };
 });
 
 module.exports = router.routes();

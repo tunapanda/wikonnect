@@ -4,13 +4,27 @@ login:
   authenticating: Authenticating ...
   username: Username
   enter_username: Enter Username
+  enter_email: Enter Email
   password: Password
   enter_password: Enter Password
-  login_third_party: Login with {authProvider}
+  login_third_party: Log In With {authProvider}
 
 signup:
   email: Email
   repeat_password: Repeat Password
   invite_code: Invite Code
   signup: Sign Up
-  signup_third_party: Sign up with {authProvider}
+  signup_third_party: Sign Up With {authProvider}
+  link_to_login: Already have an account? '<'a href="/login"'>'Log in'</a>'
+
+password_reset:
+  header: Create your new password
+  new_password: New password
+  confirm_password: Confirm password
+  reset_password: Reset Password
+  return_to_login: Return to Log in
+  success: Success!
+  enter_email_prompt: Enter your email address and we'll send you a link to reset your password.
+  email_sent_p1: We have sent an email to <strong>{email}</strong>. Click on the password reset link to set your new password.
+  email_sent_p2: If you haven’t received an email please check your spam folder or
+  try_again: try again
