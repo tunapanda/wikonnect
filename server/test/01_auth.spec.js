@@ -29,11 +29,9 @@ const loginUserData = {
 
 describe('AUTHENTICATION ROUTES', () => {
 
-  before((done) => {
-    knex.migrate.rollback();
-    knex.migrate.latest();
-    knex.seed.run();
-    done();
+  before(async () => {
+    await knex.migrate.latest();
+    await knex.seed.run();
   });
   describe('Auth routes tests: /api/v1/users/', () => {
     it('Should create user on POST requests', done => {
