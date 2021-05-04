@@ -1,8 +1,5 @@
-<div class="d-flex justify-content-center align-items-center">
+<div class="d-flex justify-content-center align-items-center overflow-auto">
   <div class="signup-form auth-form">
-    <header>
-      <h1>{{t 'auth.signup.signup'}}</h1>
-    </header>
     <BsForm @class="form" @formLayout="vertical" @model={{@newUser}} @onSubmit={{this.createUser}} as |form|>
 
       <div class="signup-form-fields">
@@ -51,18 +48,18 @@
 
       <p class="line-text"><span>{{t "auth.login.or" }}</span></p>
 
-      <BsButton type="button" class="shadow-sm rounded btn-dark btn-linkedIn form-control mb-2" {{ on "click"
+      <BsButton type="button" class="shadow-sm rounded btn btn-dark btn-linkedIn form-control mb-2" {{ on "click"
         this.authenticateWithLinkedIn}}>
         <span class="px-2">{{svg-jar "linkedIn-icon-2"}}</span> {{t "auth.signup.signup_third_party"
         authProvider="LinkedIn"}}
       </BsButton>
 
-      <BsButton type="button" class="shadow-sm border rounded btn-light form-control mb-2" {{ on "click"
+      <BsButton type="button" class="shadow-sm border btn rounded btn-light form-control mb-2" {{ on "click"
         this.authenticateWithGoogleImplicitGrant}}>
         <span class="px-2">{{svg-jar "google-icon"}}</span> {{t "auth.signup.signup_third_party" authProvider="Google"}}
       </BsButton>
 
-      <BsButton type="button" class="shadow-sm rounded btn-facebook form-control mb-2" {{ on "click"
+      <BsButton type="button" class="shadow-sm rounded btn btn-facebook form-control mb-2" {{ on "click"
         this.authenticateWithFacebook}}>
         <span class="px-2">{{svg-jar "facebook-icon-2"}}</span>{{t "auth.signup.signup_third_party"
         authProvider="Facebook"}}

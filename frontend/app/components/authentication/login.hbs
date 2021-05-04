@@ -1,8 +1,5 @@
 <div class="d-flex justify-content-center align-items-center">
-  <div class="login-form auth-form">
-    <header>
-      <h1>{{t "auth.login.login"}}</h1>
-    </header>
+  <div class="auth-form">
     <BsForm @formLayout="vertical" @model={{@registeredUser}} @onSubmit={{this.login}} as |form|>
       {{#each @registeredUser.errors as |err| }}
         {{#if (eq err.key "errors")}}
@@ -29,8 +26,12 @@
           {{t "messages.authenticating"}}
         </button>
       {{else}}
-        <BsButton class="bg-primary form-control mb-4" @defaultText={{t "auth.login.login" }} type="submit">
+        <BsButton class="bg-primary form-control mb-2" @defaultText={{t "auth.login.login" }} type="submit">
         </BsButton>
+
+        <div class="text-center">
+          <LinkTo @route="forgot_password">{{t 'labels.forgot_password'}}</LinkTo>
+        </div>
 
         <p class="line-text"><span>{{t "auth.login.or" }}</span></p>
 
@@ -52,9 +53,6 @@
         </BsButton>
 
       {{/if}}
-      <div class="mt-2">
-        <LinkTo @route="forgot_password">{{t 'labels.forgot_password'}}</LinkTo>
-      </div>
     </BsForm>
     <div class="d-flex justify-content-center mt-3">
       <p>{{t 'teach.login.sign_up' htmlSafe=true}}</p>
