@@ -50,7 +50,7 @@ describe('Sign up', () => {
             .should('have.value', password);
 
 
-        cy.get('.form button[type="submit"]')
+        cy.get('.auth-form button[type="submit"]')
             .click()
             .url()
             .should('include', '/upload')
@@ -77,7 +77,7 @@ describe('Sign up', () => {
                     .should('have.value', password);
 
 
-                cy.get('.form button[type="submit"]')
+                cy.get('.auth-form button[type="submit"]')
                     .click();
 
                 cy.get('.alert.alert-danger')

@@ -8,7 +8,7 @@ describe('Login page', () => {
 
 
     it('should not sign in user without credentials', () => {
-        cy.get('.login-form button[type="submit"]')
+        cy.get('.auth-form button[type="submit"]')
             .click();
 
         cy.get('#username .invalid-feedback')
@@ -32,7 +32,7 @@ describe('Login page', () => {
             .type(password)
             .should('have.value', password);
 
-        cy.get('.login-form button[type="submit"]')
+        cy.get('.auth-form button[type="submit"]')
             .click();
 
         cy.get('.ember-notify.ember-notify-show.alert .message')
@@ -64,7 +64,7 @@ describe('Login page', () => {
             .type(password)
             .should('have.value', password);
 
-        cy.get('.login-form button[type="submit"]')
+        cy.get('.auth-form button[type="submit"]')
             .click()
             .url()
             .should('include', '/');
