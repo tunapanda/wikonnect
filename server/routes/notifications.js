@@ -53,20 +53,9 @@ const router = new Router({
  *          }
  *
  */
-router.get('/:id', async (ctx) => {
-  let notification;
-
-  try {
-    notification = await NotificationModel.query()
-      .findById(ctx.params.id);
-
-  } catch (e) {
-    if (e.statusCode) {
-      ctx.throw(e.statusCode, null, { errors: [e.message] });
-    } else {
-      ctx.throw(400, null, { errors: [e.message] });
-    }
-  }
+router.get('/:id', requireAuth, async (ctx) => {
+  const notification = await NotificationModel.query()
+    .findById(ctx.params.id);
 
   ctx.assert(notification, 404, { message: 'Notification not found' });
   ctx.status = 200;
@@ -128,19 +117,11 @@ router.get('/:id', async (ctx) => {
  *
  */
 router.get('/', requireAuth, async (ctx) => {
-  try {
-    const notifications = await NotificationModel.query()
-      .where(ctx.query);
+  const notifications = await NotificationModel.query()
+    .where(ctx.query);
 
-    ctx.status = 200;
-    ctx.body = { notifications };
-  } catch (e) {
-    if (e.statusCode) {
-      ctx.throw(e.statusCode, null, { errors: [e.message] });
-    } else {
-      ctx.throw(400, null, { errors: [e.message] });
-    }
-  }
+  ctx.status = 200;
+  ctx.body = { notifications };
 });
 
 /**
@@ -202,21 +183,11 @@ router.post('/', requireAuth, async ctx => {
   const obj = ctx.request.body.notification;
   const creatorId = ctx.state.user.data.id;
 
-  try {
-    const notification = await NotificationModel.query()
-      .insertAndFetch({ ...obj, creatorId });
+  const notification = await NotificationModel.query()
+    .insertAndFetch({ ...obj, creatorId });
 
-
-    ctx.status = 201;
-    ctx.body = { notification };
-
-  } catch (e) {
-    if (e.statusCode) {
-      ctx.throw(e.statusCode, null, { errors: [e.message] });
-    } else {
-      ctx.throw(400, null, { errors: [e.message] });
-    }
-  }
+  ctx.status = 201;
+  ctx.body = { notification };
 
 });
 
@@ -283,20 +254,12 @@ router.put('/:id', requireAuth, async ctx => {
     .findById(ctx.params.id);
   ctx.assert(currentNotification, 404, 'Notification does not exist');
 
-  try {
-    const notification = await currentNotification.$query()
-      .patchAndFetch(obj);
+  const notification = await currentNotification.$query()
+    .patchAndFetch(obj);
 
-    ctx.status = 200;
-    ctx.body = { notification };
+  ctx.status = 200;
+  ctx.body = { notification };
 
-  } catch (e) {
-    if (e.statusCode) {
-      ctx.throw(e.statusCode, null, { errors: [e.message] });
-    } else {
-      ctx.throw(400, null, { errors: ['Bad Request'] });
-    }
-  }
 });
 
 /**
@@ -322,18 +285,11 @@ router.delete('/:id', requireAuth, async ctx => {
 
   ctx.assert(notification, 404, 'No notification with that Id exist');
 
-  try {
-    await notification.$query().delete();
+  await notification.$query().delete();
 
-    ctx.status = 200;
-    ctx.body = {};
-  } catch (e) {
-    if (e.statusCode) {
-      ctx.throw(e.statusCode, null, { errors: [e.message] });
-    } else {
-      ctx.throw(400, null, { errors: ['Bad Request'] });
-    }
-  }
+  ctx.status = 200;
+  ctx.body = {};
+
 });
 
 

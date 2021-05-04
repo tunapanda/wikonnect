@@ -1,24 +1,6 @@
 version: "3.8"
 
 services:
-  wikonnect-redis:
-    container_name: redis
-    image: "redis:alpine"
-    restart: "on-failure"
-    volumes:
-      - ./data/redis/:/data
-    ports:
-      - "6379"
-    healthcheck:
-      test: [ "CMD-SHELL", "redis-cli ping" ]
-      start_period: 10s
-      retries: 10
-      interval: 2s
-      timeout: 1m
-
-    networks:
-      - wikonnect
-
   wikonnect-postgres:
     container_name: postgres
     image: "postgres"
@@ -75,8 +57,6 @@ services:
       - backenddeps:/usr/src/app/node_modules
       - ./server:/usr/src/app/
     depends_on:
-      wikonnect-redis:
-        condition: service_healthy
       wikonnect-postgres:
         condition: service_healthy
       # wikonnect-elastic:

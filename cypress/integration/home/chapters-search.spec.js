@@ -16,7 +16,7 @@ describe('Navigation Menu Chapters Search ', () => {
     cy.chapters({ approved: true }).then((items) => {
       cy.get('.main-header.navbar #myDropdown input')
         .type(items[0].name)
-        .get('#myDropdown .dropdown-item')
+        .get('#myDropdown .dropdown-item .chapter-title')
         .contains(items[0].name)
         .click()
         .url()

@@ -1,5 +1,8 @@
 <div class="d-flex justify-content-center align-items-center">
-  <div class="auth-form">
+  <div class="signup-form auth-form">
+    <header>
+      <h1>{{t 'auth.signup.signup'}}</h1>
+    </header>
     <BsForm @class="form" @formLayout="vertical" @model={{@newUser}} @onSubmit={{this.createUser}} as |form|>
 
       <div class="signup-form-fields">
@@ -64,7 +67,9 @@
         <span class="px-2">{{svg-jar "facebook-icon-2"}}</span>{{t "auth.signup.signup_third_party"
         authProvider="Facebook"}}
       </BsButton>
-
     </BsForm>
+    <div class="d-flex justify-content-center mt-3">
+      <p>{{t 'auth.signup.link_to_login' htmlSafe=true}}</p>
+    </div>
   </div>
 </div>

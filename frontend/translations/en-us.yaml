@@ -9,6 +9,7 @@ buttons:
   publish: Publish
   unpublish: Unpublish
   create: Create
+  community: Community Chat
   delete: Delete
   modify: Modify
   edit: Edit
@@ -30,6 +31,8 @@ buttons:
   copy_embed_code: Copy embed code
   proceed_to_profile: Proceed to profile
   skip_to_profile: Skip to profile
+  resend_verification: Resend verification email
+  verify_email_prompt: "Please verify your email"
 
 labels:
   username: Username
@@ -56,19 +59,21 @@ labels:
   kiswahili: SW
   toggle_nav: Toggle Navigation
   user_profile_link: "{user}'s profile"
+  forgot_password: Forgot your password?
 
 profile:
-  profile_picture : Profile Picture
+  profile_picture: Profile Picture
 
 messages:
   empty_search: "We could not find anything that matches your search query"
-  auth_prompt: "For an enhanced experience please;"
+  auth_prompt: "For an enhanced experience: "
   searching: "Searching ..."
   upload_profile_pic: "Upload Profile Picture"
   create_h5p_chapter: "Create H5P Chapter"
   edit_h5p_chapter: Edit H5P Chapter
   authenticating: "Authenticating ..."
   uploading: "Uploading ..."
+  verify_email_prompt: "Please verify your email"
 
 feedback:
   message: The topics below are best understood if you finish the ones before

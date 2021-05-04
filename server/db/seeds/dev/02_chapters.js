@@ -29,7 +29,7 @@ exports.seed = function (knex) {
             updated_at: faker.date.recent(),
             tags: faker.random.arrayElements(tags),
             approved: true,
-            verified: faker.random.boolean(),
+            verified: faker.datatype.boolean(),
             review_questions: faker.random.arrayElements(reviewQuestionsCategories, 4)
           });
         }

@@ -27,23 +27,6 @@ describe('Chapter comments when authenticated', () => {
             .should('be.visible');
     });
 
-    // it('should display created comment immediately', () => {
-    //     const comment = { text: `Test comment randomly at ${Math.random() * 1000000}` };
-
-    //     cy.get('#chapter .padded form textarea')
-    //         .type(comment.text);
-
-    //     cy.get('#chapter .padded form button[type="submit"]')
-    //         .click();
-
-
-    //     cy.get('#chapter .media-body')
-    //         .wait(2000) //TODO can we do better than this wait ?🤔
-    //         .last()
-    //         .contains(comment.text)
-    //         .should('be.visible')
-    // });
-
     it('should notify on comment posting success', () => {
         const comment = { text: `Test notification randomly at ${Math.random() * 1000000}` };
 
@@ -78,27 +61,27 @@ describe('Chapter comments when authenticated', () => {
     });
 
     it('should be able to reply to a comment', () => {
-        const reply = `Test reply randomly at ${Math.random() * 1000000}`;
+         const reply = `Test reply randomly at ${Math.random() * 1000000}`;
 
-        cy.get('#chapter .padded form textarea').type('Memento Mori');
-        cy.get('#chapter .padded form button[type="submit"]').click();
+         cy.get("#chapter .padded form textarea").type("Memento Mori");
+         cy.get('#chapter .padded form button[type="submit"]').click();
 
-        cy.get('#comments-section > :nth-child(1) > .media-body > .reply-actions > :nth-child(2) > button')
-            .click();
+         cy.get(
+           "#comments-section > :nth-child(1) > .media-body > .reply-actions > :nth-child(2) > button"
+         ).click();
 
-        cy.get('.reply-form textarea').should('be.visible');
+         cy.get(".reply-form textarea").should("be.visible");
 
-        cy.get('.reply-form textarea').type(reply);
-        cy.get('.reply-form button[type=submit]').click();
+         cy.get(".reply-form textarea").type(reply);
+         cy.get(".reply-form button[type=submit]").click();
 
-        cy.get(
-            "#comments-section > :nth-child(1) > .media-body > .media > .replies"
-        )
-            .contains(reply)
-            .should('be.visible');
+         cy.get(
+           "#comments-section > :nth-child(1) > .media-body > .media > .replies:last-child"
+         )
+           .contains(reply)
+           .should("be.visible");
     });
-
-})
+});
 
 
 describe('Chapter comments without authentication', () => {

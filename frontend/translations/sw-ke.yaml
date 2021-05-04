@@ -9,6 +9,7 @@ buttons:
   publish: Chapisha
   unpublish: Ondoa
   create: Unda
+  community: Gumzo
   delete: Futa
   modify: Rekebisha
   edit: Hariri
@@ -30,6 +31,8 @@ buttons:
   copy_embed_code: Nakili msimbo wa kupachika
   proceed_to_profile: Endelea kwa profaili
   skip_to_profile: Ruka kwa profaili
+  resend_verification: Tuma tena barua pepe ya uthibitishaji
+  verify_email_prompt: Tafadhali thibitisha barua pepe yako
 
 labels:
   username: Jina La Mtumiaji
@@ -56,19 +59,21 @@ labels:
   kiswahili: SW
   toggle_nav: Geuza urambazaji
   user_profile_link: "Profaili ya {user}"
+  forgot_password: Je, umesahau nenosiri yako?
 
 profile:
-  profile_picture : Picha ya Profaili
+  profile_picture: Picha ya Profaili
 
 messages:
   empty_search: Hatukuweza kupata chochote kinacholingana na hoja yako ya utaftaji
-  auth_prompt: "Kwa uzoefu ulioimarishwa tafadhali;"
+  auth_prompt: "Kwa uzoefu ulioimarishwa:"
   searching: "Inatafuta ..."
   upload_profile_pic: "Pakia Picha ya Profaili"
   create_h5p_chapter: "Unda Sura ya H5P"
   edit_h5p_chapter: Hariri Sura ya H5P
   authenticating: "Inathibitisha ..."
   uploading: Inapakia
+  verify_email_prompt: "Tafadhali thibitisha barua pepe yako"
 
 feedback:
   message: Mada zilizo chini zinaeleweka vyema ukimaliza zile zilizotangulia

@@ -3,6 +3,7 @@ const path = require('path');
 
 const { nanoid } = require('nanoid/async');
 const sharp = require('sharp');
+const crypto = require('crypto');
 const koaBody = require('koa-body')({multipart: true,multiples:false,keepExtensions:true});
 
 
@@ -13,6 +14,7 @@ const jwt = require('../middleware/jwt');
 const permController = require('../middleware/permController');
 const validateAuthRoutes = require('../middleware/validateRoutePostSchema/validateAuthRoutes');
 
+const sendMailMessage = require('../utils/sendMailMessage');
 const profaneCheck = require('../utils/profaneCheck');
 const knex = require('../utils/knexUtil');
 const log = require('../utils/logger');
@@ -30,6 +32,23 @@ const router = new Router({
   prefix: '/users'
 });
 
+const DOMAIN_NAME = process.env.DOMAIN_NAME || 'http://localhost:4200';
+
+const sendVerificationEmail = async (user, email) => {
+  const token = crypto.randomBytes(64).toString('hex');
+  const buf = Buffer.from(email, 'ascii').toString('base64');
+
+  const userData = await user.$query().patchAndFetch({
+    'resetPasswordExpires': new Date(+new Date() + 1.8e6),
+    'resetPasswordToken': token,
+  });
+  // sending email
+  const link = `${DOMAIN_NAME}/verify?email=${buf}&token=${token}`;
+  await sendMailMessage(buf, userData.username, link, 'confirm-email', 'Welcome to Wikonnect! Please confirm your email');
+  log.info('Email verification sent to %s', email);
+
+  return userData;
+};
 
 
 /**
@@ -81,7 +100,8 @@ router.post('/', validateAuthRoutes.validateNewUser, createPasswordHash, async c
     inviteUserAward(invitedBy);
 
     log.info('Created a user with id %s with username %s with the invite code %s', user.id, user.username, user.inviteCode);
-
+    sendVerificationEmail(user, ctx.request.body.user.email);
+    
     ctx.status = 201;
     ctx.body = { user };
   } catch (e) {
@@ -122,6 +142,7 @@ router.post('/', validateAuthRoutes.validateNewUser, createPasswordHash, async c
  *       "createdAt": "2017-12-20T16:17:10.000Z",
  *       "updatedAt": "2017-12-20T16:17:10.000Z",
  *       "profileUri": "image_url",
+ *       "flag": false,
  *       "private": boolean,
  *       "inviteCode": "invited_by",
  *       "achievementAwards": [
@@ -138,7 +159,8 @@ router.post('/', validateAuthRoutes.validateNewUser, createPasswordHash, async c
  *       ],
  *       "userRoles": [
  *         {
- *           "name": "basic"
+ *           "id": "4hsuh4"
+ *           "type": "userRole"
  *         }
  *       ],
  *       "enrolledCourses": [
@@ -169,30 +191,22 @@ router.post('/', validateAuthRoutes.validateNewUser, createPasswordHash, async c
 
 router.get('/:id', permController.requireAuth, async ctx => {
 
-  try {
-    let stateUserId = ctx.state.user.id === undefined ? ctx.state.user.data.id : ctx.state.user.id;
+  let stateUserId = ctx.state.user.id === undefined ? ctx.state.user.data.id : ctx.state.user.id;
 
-    let userId = (ctx.params.id !== 'current' || ctx.params.id !== 'me') ? ctx.params.id : stateUserId;
+  let userId = (ctx.params.id !== 'current' || ctx.params.id !== 'me') ? ctx.params.id : stateUserId;
 
-    let user = await User.query()
-      .findById(userId)
-      .withGraphFetched('[achievementAwards(selectBadgeNameAndId), userRoles(selectName),' +
-        ' enrolledCourses(selectNameAndId)]');
+  let user = await User.query()
+    .findById(userId)
+    .withGraphFetched('[achievementAwards(selectBadgeNameAndId), userRoles(selectNameAndId),' +
+      ' enrolledCourses(selectNameAndId)]');
 
-    ctx.assert(user, 404, 'No User With that Id');
-    user.profileUri = await getProfileImage(user);
-    profileCompleteBoolean(user, ctx.params.id);
-    log.info('Got a request from %s for %s', ctx.request.ip, ctx.path);
+  ctx.assert(user, 404, 'No User With that Id');
+  user.profileUri = await getProfileImage(user);
+  profileCompleteBoolean(user, ctx.params.id);
+  log.info('Got a request from %s for %s', ctx.request.ip, ctx.path);
 
-    ctx.status = 200;
-    ctx.body = { user: user };
-  } catch (e) {
-    if (e.statusCode) {
-      ctx.throw(e.statusCode, null, { errors: [e.message] });
-    } else {
-      ctx.throw(400, null, { errors: [e.message] });
-    }
-  }
+  ctx.status = 200;
+  ctx.body = { user: user };
 });
 /**
  * @api {get} /users GET all users.
@@ -270,16 +284,8 @@ router.put('/:id', jwt.authenticate, permController.requireAuth, async ctx => {
     }
   }
 
-  let user;
-  try {
-    user = await User.query().patchAndFetchById(ctx.params.id, data);
-    ctx.assert(user, 404, 'That user does not exist.');
-  } catch (e) {
-    if (e.statusCode) {
-      ctx.throw(e.statusCode, null, { errors: [e.message] });
-    } else { ctx.throw(400, null, { errors: [e.message] }); }
-    throw e;
-  }
+  const user = await User.query().patchAndFetchById(ctx.params.id, data);
+  ctx.assert(user, 404, 'That user does not exist.');
 
   profileCompleteBoolean(user, ctx.params.id);
 
@@ -289,16 +295,8 @@ router.put('/:id', jwt.authenticate, permController.requireAuth, async ctx => {
 });
 
 router.post('/invite/:id', async ctx => {
-  let invite;
-  try {
-    // invite = await User.query().patchAndFetchById(ctx.params.id, ctx.request.body.user);
-    invite = await knex('user_invite').insert([{ user_id: ctx.params.id, 'invited_by': ctx.request.body.user.inviteBy }], ['id', 'invited_by', 'user_id']);
-    ctx.assert(invite, 404, 'That user does not exist.');
-  } catch (e) {
-    if (e.statusCode) {
-      ctx.throw(e.statusCode, null, { errors: [e.message] });
-    } else { ctx.throw(400, null, { errors: [e.message] }); }
-  }
+  const invite = await knex('user_invite').insert([{ user_id: ctx.params.id, 'invited_by': ctx.request.body.user.inviteBy }], ['id', 'invited_by', 'user_id']);
+  ctx.assert(invite, 404, 'That user does not exist.');
 
   inviteUserAward(ctx.params.id);
 
@@ -321,7 +319,7 @@ router.post('/invite/:id', async ctx => {
  * @apiError {String} errors Bad Request.
  */
 
-router.post('/:id/profile-image',koaBody, permController.requireAuth, async (ctx) => {
+router.post('/:id/profile-image', koaBody, permController.requireAuth, async (ctx) => {
 
   ctx.assert(ctx.request.files.file, 400, 'No file image uploaded');
 
@@ -329,20 +327,20 @@ router.post('/:id/profile-image',koaBody, permController.requireAuth, async (ctx
   const uploadPath = 'uploads/images/profile';
   const uploadDir = path.resolve(__dirname, '../public/' + uploadPath);
 
-  const {file} =ctx.request.files;
+  const { file } = ctx.request.files;
 
   const fileExtension = path.extname(file.name);
 
-  if (!['.webp', '.svg', '.png', '.jpeg', '.gif', '.avif','.jpg'].includes(fileExtension)) {
+  if (!['.webp', '.svg', '.png', '.jpeg', '.gif', '.avif', '.jpg'].includes(fileExtension)) {
     ctx.throw(400, { error: 'Image format not supported' });
   }
 
   let resizer;
-  try{
+  try {
     resizer = await sharp(file.path)
       .resize(500, 500)
       .jpeg({ quality: 70 });
-  }catch (e) {
+  } catch (e) {
     if (e.statusCode) {
       ctx.throw(e.statusCode, null, { errors: [e.message] });
     } else {
@@ -394,6 +392,91 @@ router.post('/:id/profile-image',koaBody, permController.requireAuth, async (ctx
       }
     }
   }
+});
+
+/**
+ * @api {post} /api/v1/users/verify POST user's email to validate.
+ * @apiName PostLoginAUserEmail
+ * @apiGroup Authentication
+ *
+ * @apiParam {string} user[email] emailAddress
+ *
+ * @apiPermission basic
+ * @apiSampleRequest https://localhost:3000/api/v1/users/verify
+ *
+ * @apiSuccessExample {json} Success-Response:
+ *     HTTP/1.1 201 OK
+ *     {
+ *       "user":{
+ *          "email": "emailAddress",
+ *          "emailVerified": "true",
+ *        }
+ *     }
+ *
+ * @apiError {String} errors Bad Request.
+ */
+
+router.post('/verify', permController.requireAuth, async ctx => {
+  const email = ctx.request.body.user.email;
+  const user = await User.query().findOne({ 'email': email, 'emailVerified': false });
+  ctx.assert(user, 404, user);
+
+  try {
+    const userData = sendVerificationEmail(user, email);
+    ctx.status = 201;
+    ctx.body = userData;
+
+  } catch (e) {
+    log.info('Email verification already requested');
+    if (e.statusCode) {
+      ctx.throw(e.statusCode, e, { errors: [e.message] });
+    } else { ctx.throw(400, e, { errors: [e.message] }); }
+    throw e;
+  }
+});
+
+/**
+ * @api {get} /api/v1/users/verify Validate a users email.
+ * @apiName ValidateAUsersEmail
+ * @apiGroup Authentication
+ *
+ * @apiVersion 0.4.0
+ * @apiDescription Validate a users email using token sent via email
+ * @apiPermission [admin, superadmin]
+ * @apiHeader (Header) {String} authorization Bearer <<YOUR_API_KEY_HERE>>
+ *
+ * @apiParam (Required Params) {string} user[token] username
+ * @apiParam (Required Params) {string} user[email] Unique email
+ *
+ */
+
+router.get('/:id/verify', permController.requireAuth, async ctx => {
+  const decodedMail = Buffer.from(ctx.query.email, 'base64').toString('ascii');
+  const token = ctx.query.token;
+  let user = await User.query().findOne({ 'email': decodedMail, 'resetPasswordToken': token });
+  ctx.assert(user, 404, 'No email found');
+  let verifiedData;
+  try {
+    if (new Date() < user.resetPasswordExpires) {
+      verifiedData = await user.$query().patchAndFetch({
+        'emailVerified': true,
+        'resetPasswordExpires': new Date(),
+        'resetPasswordToken': null
+      });
+    } else {
+      throw new Error('Email verification has expired');
+    }
+    
+  } catch (e) {
+    log.info('Email verification has expired');
+    if (e.statusCode) {
+      ctx.throw(e.statusCode, e, { errors: [e.message] });
+    } else { ctx.throw(400, e, { errors: [e.message] }); }
+    throw e;
+  }
+
+  ctx.status = 200;
+  ctx.body = { verifiedData };
 });
 
 module.exports = router.routes();

@@ -8,7 +8,7 @@ describe('Login page', () => {
 
 
     it('should not sign in user without credentials', () => {
-        cy.get('.form button[type="submit"]')
+        cy.get('.login-form button[type="submit"]')
             .click();
 
         cy.get('#username .invalid-feedback')
@@ -32,7 +32,7 @@ describe('Login page', () => {
             .type(password)
             .should('have.value', password);
 
-        cy.get('.form button[type="submit"]')
+        cy.get('.login-form button[type="submit"]')
             .click();
 
         cy.get('.ember-notify.ember-notify-show.alert .message')
@@ -48,7 +48,7 @@ describe('Login page', () => {
 
     it('should have Google login call to action', () => {
         cy.get('form button')
-            .contains('Login with Google', {matchCase: false})
+            .contains('Log In With Google', {matchCase: false})
             .should('be.visible');
     });
 
@@ -64,7 +64,7 @@ describe('Login page', () => {
             .type(password)
             .should('have.value', password);
 
-        cy.get('.form button[type="submit"]')
+        cy.get('.login-form button[type="submit"]')
             .click()
             .url()
             .should('include', '/');

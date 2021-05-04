@@ -37,6 +37,11 @@
         </LinkTo>
       </li>
       <li class="nav-item text-{{this.config.content.APP.header_text}}">
+        <a href="https://discord.gg/tT9Ug6D" class="nav-link forum-link-item" rel="noopener">
+          {{t "buttons.community"}}
+        </a>
+      </li>
+      <li class="nav-item text-{{this.config.content.APP.header_text}}">
         <a href="https://wikonnect.org?referrer=app.wikonnect.org" class="nav-link about-link-item" rel="noopener">
           {{t "buttons.about"}}
         </a>
@@ -105,47 +110,47 @@
     <ul class="navbar-nav">
       {{#if this.me.user.id}}
 
-      <li class="nav-item avatar dropdown user-profile-dropdown text-{{this.config.content.APP.header_text}}">
-        <a href="#" class="nav-link dropdown-toggle mr-2" id="navbarDropdownMenuLink-55" data-toggle="dropdown"
-          aria-haspopup="true" aria-expanded="false">
-          {{#if this.me.user.profileUri}}
-          <img src={{this.me.user.profileUri}} class="rounded-circle user-profile-image"
-            alt={{t "profile.profile_picture" }}>
-          <span class="pl-2">{{this.me.name}}</span>
-          {{else}}
-          <span aria-hidden="true">&times;</span>
-          {{/if}}
-        </a>
-        <div class="dropdown-menu dropdown-menu-lg-right dropdown-secondary"
-          aria-labelledby="navbarDropdownMenuLink-55">
+        <li class="nav-item avatar dropdown user-profile-dropdown text-{{this.config.content.APP.header_text}}">
+          <a href="#" class="nav-link dropdown-toggle mr-2" id="navbarDropdownMenuLink-55" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false">
+            {{#if this.me.user.profileUri}}
+              <img src={{this.me.user.profileUri}} class="rounded-circle user-profile-image"
+                alt={{t "profile.profile_picture" }}>
+              <span class="pl-2">{{this.me.name}}</span>
+            {{else}}
+              <span aria-hidden="true">&times;</span>
+            {{/if}}
+          </a>
+          <div class="dropdown-menu dropdown-menu-lg-right dropdown-secondary"
+            aria-labelledby="navbarDropdownMenuLink-55">
 
           <LinkTo @route="profile" class="dropdown-item" data-toggle="collapse" data-target="#mainTopNav.show">
             {{t "labels.user_profile_link" user=this.name}}
           </LinkTo>
 
-          <LinkTo @route="profile" @query={{hash view="Settings" }} class="dropdown-item" data-toggle="collapse"
-            data-target="#mainTopNav.show">
-            {{t "buttons.settings"}}
-          </LinkTo>
+            <LinkTo @route="profile" @query={{hash view="Settings" }} class="dropdown-item" data-toggle="collapse"
+              data-target="#mainTopNav.show">
+              {{t "buttons.settings"}}
+            </LinkTo>
 
-          <a class="dropdown-item" href="#" {{on "click" @logout }} data-toggle="collapse"
-            data-target="#mainTopNav.show">
-            {{t "buttons.logout"}}
-          </a>
-        </div>
-      </li>
+            <a class="dropdown-item" href="#" {{on "click" @logout }} data-toggle="collapse"
+              data-target="#mainTopNav.show">
+              {{t "buttons.logout"}}
+            </a>
+          </div>
+        </li>
       {{else}}
-      <li class="text-light nav-item">
-        <LinkTo @route="login" class="nav-link text-light action-btn signin" data-toggle="collapse"
-          data-target="#mainTopNav.show">
-          {{t "buttons.login"}}
-        </LinkTo>
-      </li>
-      <li class="text-light nav-item ml-lg-3">
-        <LinkTo @route="signup" class="nav-link text-light action-btn signup" data-toggle="collapse"
-          data-target="#mainTopNav.show">
-          {{t "buttons.signup"}}
-        </LinkTo>
+        <li class="text-light nav-item">
+          <LinkTo @route="login" class="nav-link text-light action-btn signin" data-toggle="collapse"
+            data-target="#mainTopNav.show">
+            {{t "buttons.login"}}
+          </LinkTo>
+        </li>
+        <li class="text-light nav-item ml-lg-3">
+          <LinkTo @route="signup" class="nav-link text-light action-btn signup" data-toggle="collapse"
+            data-target="#mainTopNav.show">
+            {{t "buttons.signup"}}
+          </LinkTo>
 
       </li>
       {{/if}}

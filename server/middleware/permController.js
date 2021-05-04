@@ -42,22 +42,13 @@ exports.requireAuth = async function (ctx, next) {
  * @param {*} resource
  */
 exports.grantAccess = function (action, resource) {
-
   return async (ctx, next) => {
-    try {
-      let roleName = ctx.state.user.role == undefined ? ctx.state.user.data.role : ctx.state.user.role;
-
-      const permission = roles.can(roleName)[action](resource);
-
-      if (!permission.granted) {
-        ctx.throw(400, null, { errors: ['Bad Request'] });
-      }
-
-      await next();
-    } catch (error) {
-      log.error(`Bad request with the following message ${error}`);
-      ctx.throw(400, null, { errors: ['Bad Request'] });
+    let roleName = ctx.state.user.role == undefined ? ctx.state.user.data.role : ctx.state.user.role;
+    const permission = roles.can(roleName)[action](resource);
+    if (!permission.granted) {
+      ctx.throw(400, null, { errors: ['Access denied'] });
     }
+    await next();
   };
 };
 
