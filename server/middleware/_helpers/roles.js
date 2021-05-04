@@ -42,11 +42,16 @@ let ac = new AccessControl(grantList);
 exports.roles = (() => {
   ac.grant('basic');
 
-  ac.grant('admin')
+  ac.grant('moderators')
     .extend('basic');
+
+  ac.grant('admin')
+    .extend('basic')
+    .extend('moderators');
 
   ac.grant('superadmin')
     .extend('basic')
+    .extend('moderators')
     .extend('admin');
   ac.getGrants();
 
