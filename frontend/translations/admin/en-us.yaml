@@ -1,0 +1,8 @@
+sidenav:
+  dashboard: Dashboard
+  users: All Users
+  registered_users: Registered Users
+  verified_users: Verified Users
+  badges: Badges
+  manage_badges: Manage Badges
+  badge_users: Users & Badges

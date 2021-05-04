@@ -22,15 +22,28 @@ describe('Learner Navigation Menu', () => {
           .should('contain','wikonnect.org')
   });
 
+
+  it('Should link to community forum', () => {
+    cy.get('.main-header.navbar a.forum-link-item')
+        .should('be.visible')
+        .invoke('attr','href')
+        .should('contain','discord.gg/tT9Ug6D')
+  });
+
   it('Should link to homepage', () => {
     cy.get('.main-header.navbar a[href="/"]')
       .should('be.visible');
   }); 
-
-  it('Should link to teachers page', () => {
+  
+  it('Should link to teachers page before authentication', () => {
     cy.get('.main-header.navbar a[href="/teach"]')
-        .should('exist')
-        .should('be.visible');
+      .should('be.visible');
+  });
+
+  it('Should link to teachers page if authentication', () => {
+    cy.login();
+    cy.get('.main-header.navbar a[href="/teach"]')
+      .should('be.visible');
   });
 
 })

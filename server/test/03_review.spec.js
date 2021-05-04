@@ -40,12 +40,6 @@ async function getSample(valid = true) {
 }
 
 describe('CHAPTER REVIEWS ROUTE', () => {
-  before(async () => {
-    await knex.migrate.rollback();
-    await knex.migrate.latest();
-    return await knex.seed.run();
-  });
-
 
   it('Should fetch existing chapter reviews', done => {
     chai

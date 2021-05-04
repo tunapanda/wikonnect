@@ -45,8 +45,8 @@ class Group extends Model {
       selectNameAndId: (builder) => {
         builder.select('id', 'name');
       },
-      selectName: (builder) => {
-        builder.select('name');
+      selectId: (builder) => {
+        builder.select('id');
       }
     };
   }

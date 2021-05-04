@@ -9,7 +9,7 @@ on:
 jobs:
   Build:
     name: Build Wikonnect
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-18.04
 
     steps:
       - uses: actions/checkout@v2
@@ -50,7 +50,7 @@ jobs:
 
   FrontendTest:
     name: Test Wikonnect Frontend
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-18.04
     needs: Build
     steps:
       - uses: actions/checkout@v2
@@ -96,7 +96,7 @@ jobs:
 
   BackendTest:
     name: Test Wikonnect Backend
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-18.04
     needs: Build
     services:
       # Label used to access the service container
@@ -115,18 +115,6 @@ jobs:
         ports:
           # Maps tcp port 5432 on service container to the host
           - 5432:5432
-      redis:
-        # Docker Hub image
-        image: redis
-        # Set health checks to wait until redis has started
-        options: >-
-          --health-cmd "redis-cli ping"
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-        ports:
-          # Maps port 6379 on service container to the host
-          - 6379:6379
 
     steps:
       - uses: actions/checkout@v2
@@ -178,13 +166,10 @@ jobs:
         run: yarn --cwd ./server test:local
         env:
           NODE_ENV: action
-          REDIS_HOST: localhost
-          # The default Redis port
-          REDIS_PORT: 6379
 
   IntegrationTest:
     name: Integration Test
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-18.04
     services:
       # Label used to access the service container
       postgres:
@@ -202,18 +187,6 @@ jobs:
         ports:
           # Maps tcp port 5432 on service container to the host
           - 5432:5432
-      redis:
-        # Docker Hub image
-        image: redis
-        # Set health checks to wait until redis has started
-        options: >-
-          --health-cmd "redis-cli ping"
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-        ports:
-          # Maps port 6379 on service container to the host
-          - 6379:6379
     needs: FrontendTest
     steps:
       - uses: actions/checkout@v2
@@ -265,8 +238,6 @@ jobs:
         uses: cypress-io/github-action@v2
         env:
           NODE_ENV: action
-          REDIS_HOST: localhost
-          REDIS_PORT: 6379
         with:
           start: yarn --cwd ./server start, yarn --cwd ./frontend start
           wait-on: "http://localhost:4200"

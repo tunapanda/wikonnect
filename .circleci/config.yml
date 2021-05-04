@@ -14,7 +14,6 @@ with_db: &with_db
       environment:
         POSTGRES_USER: acbe
         POSTGRES_DB: swag_test
-    - image: circleci/redis
   working_directory: ~/ember-circleci
 without_db: &without_db
   docker:

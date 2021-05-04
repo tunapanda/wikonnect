@@ -14,6 +14,8 @@ export default class UserModel extends Model {
   @attr() profileUri;
   @attr() metadata;
   @attr() name;
+  @attr() emailVerified;
+  @attr() flag;
 
   @hasMany('group') groups;
   @hasMany('activity') activities;

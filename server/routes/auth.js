@@ -1,19 +1,22 @@
+const crypto = require('crypto');
 const bcrypt = require('bcrypt');
 const Router = require('koa-router');
 const jsonwebtoken = require('jsonwebtoken');
 
 const User = require('../models/user');
-const sendMAil = require('../utils/sendMail');
 const log = require('../utils/logger');
+const checkIfPasswordAreSame = require('../utils/routesUtils/authRouteUtils');
+const sendMailMessage = require('../utils/sendMailMessage');
+// const { requireAuth } = require('../middleware/permController');
 const { secret } = require('../middleware/jwt');
-const redisClient = require('../utils/redisConfig');
-const UserVerification = require('../models/user_verification');
 const validateAuthRoutes = require('../middleware/validateRoutePostSchema/validateAuthRoutes');
-
 
 const router = new Router({
   prefix: '/auth'
 });
+
+
+const DOMAIN_NAME = process.env.DOMAIN_NAME || 'http://localhost:4200';
 
 /**
  * @api {post} /api/v1/auth POST login a user.
@@ -45,7 +48,7 @@ router.post('/', validateAuthRoutes.validateUserLogin, async ctx => {
   let { hash: hashPassword, ...userInfoWithoutPassword } = user[0];
   user = user[0];
 
-  const userData = await user.$query().findById(user.id).withGraphFetched('userRoles(selectName)');
+  const userData = await user.$query().findById(user.id).withGraphFetched('userRoles(selectNameAndId)');
 
   let role = userData['userRoles'][0] !== undefined ? userData['userRoles'][0].name : 'basic';
   userInfoWithoutPassword['role'] = role;
@@ -76,88 +79,98 @@ router.post('/', validateAuthRoutes.validateUserLogin, async ctx => {
   }
 });
 
+/**
+ * @api {post} /api/v1/auth/forgot_password POST forgot user route.
+ * @apiName ForgotPasswordRoute
+ * @apiGroup Authentication
+ *
+ * @apiParam {string} auth[email] emailAddress
+ *
+ * @apiPermission basic
+ * @apiSampleRequest https://localhost:3000/api/v1/auth/forgot_password
+ *
+ * @apiError {String} errors Bad Request.
+ */
 
-async function verifyEmail(email) {
-  const rand = Math.floor((Math.random() * 100) + 54);
-  const resetMail = email;
-
-  const reply = redisClient.exists(resetMail);
-  if (reply !== true) {
-    return true;
-  }
-
-  redisClient.set(resetMail, rand);
-  redisClient.expire(resetMail, 600);
-
-  const buf = Buffer.from(resetMail, 'ascii').toString('base64');
-  sendMAil(buf, rand);
-}
-router.get('/reset/:mail', async ctx => {
-  let confirmEmail = await User.query().where('email', ctx.params.mail);
-  confirmEmail = confirmEmail[0];
-
-  if (confirmEmail == undefined) {
-    log.info('criminal', { error: { errors: ['User email not found'] } });
-    throw new Error({ error: { errors: ['User email not found'] } });
-  }
+router.post('/forgot_password', async ctx => {
+  const email = ctx.request.body.auth.email;
+  const user = await User.query().findOne({ 'email': email });
+  ctx.assert(user, 404, user);
 
   try {
-    await verifyEmail(confirmEmail.email);
+    const token = crypto.randomBytes(64).toString('hex');
+    const buf = Buffer.from(email, 'ascii').toString('base64');
 
+    const userData = await user.$query().patchAndFetch({
+      'resetPasswordExpires': new Date(+new Date() + 1.8e6),
+      'resetPasswordToken': token,
+    });
+    // sending email
+    const link = `${DOMAIN_NAME}/reset_password?email=${buf}&token=${token}`;
+    await sendMailMessage(buf, userData.username, link, 'forgot-password-email', 'Password help has arrived!');
+    log.info('Email verification sent to %s', email);
 
-    log.info('Email verification sent to %s', confirmEmail.email);
     ctx.status = 201;
-    ctx.body = { confirmEmail };
+    // ctx.body = userData;
+    ctx.body = { email: email, token: token };
 
   } catch (e) {
     log.info('Email verification already requested');
     if (e.statusCode) {
-      ctx.throw(e.statusCode, null, { errors: [e.message] });
-    } else { ctx.throw(400, null, { errors: [e.message] }); }
+      ctx.throw(e.statusCode, e, { errors: [e.message] });
+    } else { ctx.throw(400, e, { errors: [e.message] }); }
     throw e;
   }
-
-
 });
 
-router.get('/validate', async ctx => {
-  const decodedMail = Buffer.from(ctx.query.mail, 'base64').toString('ascii');
 
-  const getEmail = redisClient.get(decodedMail);
-  if (getEmail === false) {
-    ctx.throw(401, 'Invalid email address');
+/**
+ * @api {post} /api/v1/auth/reset_password POST new password.
+ * @apiName ForgotPasswordRoute
+ * @apiGroup Authentication
+ *
+ * @apiParam {string} auth[new_password] newPassword
+ * @apiParam {string} auth[verify_password] verifyPassword
+ * @apiParam {string} auth[token] token
+ * @apiParam {string} auth[email] email
+ *
+ * @apiPermission basic
+ * @apiSampleRequest https://localhost:3000/api/v1/auth/reset_password
+ *
+ * @apiError {String} errors Bad Request.
+ */
+
+
+
+router.post('/reset_password', checkIfPasswordAreSame, async ctx => {
+  const auth = ctx.request.body.auth;
+  const decodedMail = Buffer.from(auth.email, 'base64').toString('ascii');
+
+  const user = await User.query().findOne(
+    'resetPasswordExpires', '>', new Date(+new Date() + 0),
+    {
+      reset_password_token: auth.token,
+      email: decodedMail,
+    }
+  );
+  ctx.assert(user, 404, user);
+
+  try {
+    const userData = await user.$query().patchAndFetch({ 'resetPasswordExpires': new Date(), 'hash': auth.hash });
+    // generate link and send email
+    await sendMailMessage(userData.username, 'reset-password-email', 'Password Reset Successfully');
+    log.info('Password changed for user with email: %s', decodedMail);
+
+    ctx.status = 201;
+    ctx.body = userData;
+
+  } catch (e) {
+    log.info('Passwords do not match');
+    if (e.statusCode) {
+      ctx.throw(e.statusCode, e, { errors: [e.message] });
+    } else { ctx.throw(400, e, { errors: [e.message] }); }
+    throw e;
   }
-  const delEmail = redisClient.del(decodedMail, ctx.query.id);
-  if (delEmail !== true) {
-    ctx.throw(401, 'Token error');
-  }
-
-  // after validation update user verification table with current data
-  const confirmEmail = await User.query().where('email', decodedMail);
-  if (!confirmEmail[0]) {
-    ctx.throw(401, 'No user with that email');
-  }
-  let userId = confirmEmail[0].id;
-  const data = {
-    userId: userId,
-    email: true,
-    phoneNumber: true
-  };
-
-  // check if validation record already exists
-  // if it does then update the record and avid making a new one
-  let verifiedData = await UserVerification.query().where('user_id', userId);
-  let veedData;
-  if (!verifiedData[0]) {
-    veedData = await UserVerification.query().insertAndFetch(data);
-  } else {
-    veedData = await UserVerification.query().patchAndFetchById(verifiedData[0].id, data);
-  }
-
-  ctx.status = 200;
-  ctx.body = { message: 'Email has been verified', veedData };
-
 });
-
 
 module.exports = router.routes();
