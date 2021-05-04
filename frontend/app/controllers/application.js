@@ -38,4 +38,7 @@ export default class ApplicationController extends Controller {
     this.socket.roleChanged();
     this.router.transitionTo('index');
   }
+  get isAdminRoute() {
+    return this.route.startsWith('admin');
+  }
 }

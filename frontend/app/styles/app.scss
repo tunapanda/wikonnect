@@ -20,12 +20,17 @@
 
 html {
   font-family: 'Inter', sans-serif;
+  height: 100%;
 }
 
 @supports (font-variation-settings: normal) {
   html {
     font-family: 'Inter var', sans-serif;
   }
+}
+
+body{
+  height: 100%;
 }
 
 .h40 {
@@ -157,3 +162,7 @@ pre {
 @import "rating-and-review";
 @import "teacher/teacher";
 @import "h5p-player";
+@import "notifications-dropdown";
+@import "user-acc-dropdown";
+
+@import "admin/admin";
