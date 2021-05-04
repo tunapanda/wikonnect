@@ -5271,71 +5271,25 @@
             "type": "String",
             "optional": false,
             "field": "id",
-            "description": "<p>user role id</p>"
+            "description": "<p>user id</p>"
           }
         ],
-        "Params": [
+        "PUT Params": [
           {
-            "group": "Params",
-            "type": "String",
-            "optional": true,
-            "field": "groupId",
-            "description": "<p>filter by groupId</p>"
+            "group": "PUT Params",
+            "type": "string",
+            "optional": false,
+            "field": "userRole[groupId]",
+            "description": "<p>New group id to be updated</p>"
           }
         ]
       }
     },
     "success": {
-      "fields": {
-        "Success 200": [
-          {
-            "group": "Success 200",
-            "type": "Object",
-            "optional": false,
-            "field": "user_role",
-            "description": "<p>Top level object</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "String",
-            "optional": false,
-            "field": "user_role[userId]",
-            "description": "<p>users id</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "String",
-            "optional": false,
-            "field": "user_role[groupId]",
-            "description": "<p>associated group name Id</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "String",
-            "optional": false,
-            "field": "user_role[createdAt]",
-            "description": "<p>date created</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "String",
-            "optional": false,
-            "field": "user_role[updatedAt]",
-            "description": "<p>date updated</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "String",
-            "optional": false,
-            "field": "user_role[group]",
-            "description": "<p>group details object</p>"
-          }
-        ]
-      },
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "HTTP/1.1 200 OK\n\"user_role\": [\n     {\n       \"userId\": \"user1\",\n       \"groupId\": \"groupAdmin\",\n       \"createdAt\": \"2019-12-20T16:17:10.000Z\",\n       \"updatedAt\": \"2019-12-20T16:17:10.000Z\",\n       \"group\": [{\n           \"id\": \"groupAdmin\",\n           \"name\": \"admin\",\n           \"slug\": \"role-admin\",\n           \"description\": \"\",\n           \"metadata\": null,\n           \"createdAt\": \"2019-12-20T16:17:10.000Z\",\n           \"updatedAt\": \"2019-12-20T16:17:10.000Z\",\n           \"type\": \"userRoles\"\n       }]\n     }\n ]",
+          "content": "HTTP/1.1 200 OK\n{\n   \"user_role\": [{\n       \"userId\": \"user1\",\n       \"groupId\": \"groupBasic\",\n       \"createdAt\": \"2019-12-20T16:17:10.000Z\",\n       \"updatedAt\": \"2021-04-26T20:11:24.764Z\"\n   }]\n }",
           "type": "json"
         }
       ]
