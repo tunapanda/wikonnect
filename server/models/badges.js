@@ -1,0 +1,35 @@
+const Model = require('./_model');
+const knex = require('../db/db');
+const softDelete = require('objection-soft-delete');
+
+class Badge extends softDelete({ columnName: 'is_deleted' })(Model) {
+  static get tableName() {
+    return 'badges';
+  }
+
+  static get jsonSchema() {
+    return {
+      type: 'object',
+      required: [],
+
+      properties: {
+        name: { type: 'string' },
+        description: { type: 'string' },
+        // matches the columnName passed above
+        isDeleted: { type: 'boolean' },
+        // other columns
+      },
+    };
+  }
+
+  async $indexForSearch() {
+    return null;
+  }
+
+  static get relationMappings() {
+    return {};
+  }
+}
+
+Badge.knex(knex);
+module.exports = Badge;
