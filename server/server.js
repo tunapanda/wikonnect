@@ -57,6 +57,8 @@ router.use(jwt.authenticate, require('./routes/flags'));
 
 router.use(jwt.authenticate, require('./routes/badges'));
 
+router.use(jwt.authenticate, require('./routes/triggers'));
+
 router.use(jwt.authenticate, require('./routes/ratings'));
 
 router.use(jwt.authenticate, require('./routes/reactions'));
