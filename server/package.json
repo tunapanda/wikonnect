@@ -12,8 +12,8 @@
     "db:reset": "knex migrate:rollback && knex migrate:latest",
     "db:seed": "knex seed:run",
     "db:migrate": "knex migrate:make",
-    "test:local": "nyc --reporter=html mocha test --exit",
-    "test": "nyc mocha test --reporter mocha-junit-reporter --reporter-options mochaFile=coverage/mocha/test-results.xml --exit",
+    "test:local": "nyc --reporter=html mocha test --timeout 10000 --exit",
+    "test": "nyc mocha test --timeout 10000 --reporter mocha-junit-reporter --reporter-options mochaFile=coverage/mocha/test-results.xml --exit",
     "lint:js": "eslint .",
     "lint:fix": "eslint . --fix",
     "postinstall": "node scripts/h5p-core-setup.js"
