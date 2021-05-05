@@ -15,8 +15,38 @@ const router = new Router({
   prefix: '/badges'
 });
 
+/**
+ * @api {get} /api/v1/badges/:id GET a badge details.
+ * @apiName GET a badge details
+ * @apiGroup Badge
+ * @apiPermission authenticated user
+ * @apiVersion 0.4.0
+ *
+ * @apiHeader {String} Authorization Bearer << JWT here>>
+ *
+ * @apiParam (URI Param) {String} id Id of the badge to update
+ *
+ * @apiSuccess {Object} badge Top level object
+ * @apiSuccess {String} badge[id] badge id
+ * @apiSuccess {String} badge[name] name given to badge
+ * @apiSuccess {String} badge[slug] path to view the badge
+ * @apiSuccess {String} badge[badgeUri] image link
+ * @apiSuccess {String} badge[trigger] foreign key for badge
+ * @apiSuccess {String} badge[creatorId] creator id
+ * @apiSuccess {Number} badge[points] points awarded to badge owner
+ * @apiSuccess {String} badge[description] badge explanation
+ * @apiSuccess {String} badge[expiry] date time of expiry of the badge
+ * @apiSuccess {Boolean} badge[isDeleted] boolean indicating if soft deleted
+ * @apiSuccess {Object} badge[metadata] JSON metadata
+ * @apiSuccess {String} badge[createdAt]
+ * @apiSuccess {String} badge[updatedAt]
+ * @apiSuccess {String} badge[badge_triggers][id] trigger id same as trigger string
+ * @apiSuccess {String} badge[badge_triggers][trigger] trigger name
+ * @apiSuccess {String} badge[badge_triggers][type] model instance type
+ *
+ */
 router.get('/:id', requireAuth, grantAccess('readAny', 'private'), async ctx => {
-  const badge = await Badge.query().findById(ctx.params.id).where({ isDeleted: false });
+  const badge = await Badge.query().findById(ctx.params.id).withGraphFetched('badge_triggers(selectNameAndId)');
 
   // ctx.assert(badge, 404, 'Not found', { errors: ['Bad Request'] } );
   ctx.assert(badge, 404, null, { errors: ['Bad Request'] });
@@ -24,6 +54,36 @@ router.get('/:id', requireAuth, grantAccess('readAny', 'private'), async ctx => 
   ctx.status = 200;
   ctx.body = { badge };
 });
+
+/**
+ * @api {get} /api/v1/badges GET all badge details.
+ * @apiName GET all badge details
+ * @apiGroup Badge
+ * @apiPermission authenticated user
+ * @apiVersion 0.4.0
+ *
+ * @apiHeader {String} Authorization Bearer << JWT here>>
+ *
+ *
+ * @apiSuccess {Object[]} badge Top level object
+ * @apiSuccess {String} badge[id] badge id
+ * @apiSuccess {String} badge[name] name given to badge
+ * @apiSuccess {String} badge[slug] path to view the badge
+ * @apiSuccess {String} badge[badgeUri] image link
+ * @apiSuccess {String} badge[trigger] foreign key for badge
+ * @apiSuccess {String} badge[creatorId] creator id
+ * @apiSuccess {Number} badge[points] points awarded to badge owner
+ * @apiSuccess {String} badge[description] badge explanation
+ * @apiSuccess {String} badge[expiry] date time of expiry of the badge
+ * @apiSuccess {Boolean} badge[isDeleted] boolean indicating if soft deleted
+ * @apiSuccess {Object} badge[metadata] JSON metadata
+ * @apiSuccess {String} badge[createdAt]
+ * @apiSuccess {String} badge[updatedAt]
+ * @apiSuccess {String} badge[badge_triggers][id] trigger id same as trigger string
+ * @apiSuccess {String} badge[badge_triggers][trigger] trigger name
+ * @apiSuccess {String} badge[badge_triggers][type] model instance type
+ *
+ */
 
 router.get('/', requireAuth, async ctx => {
   const badge = await Badge.query().where(ctx.query);
@@ -33,6 +93,49 @@ router.get('/', requireAuth, async ctx => {
 });
 
 
+
+/**
+ * @api {post} /api/v1/badges/ POST a new badge.
+ * @apiName POST a badge details
+ * @apiGroup Badge
+ * @apiPermission authenticated user
+ * @apiVersion 0.4.0
+ *
+ * @apiHeader {String} Authorization Bearer << JWT here>>
+ *
+ * @apiParam (Request Body) {Object} badge Top level object
+ * @apiParam (Request Body) {String} badge[id] badge id
+ * @apiParam (Request Body) {String} badge[name] name given to badge
+ * @apiParam (Request Body) {String} badge[slug] path to view the badge
+ * @apiParam (Request Body) {String} badge[badgeUri] image link
+ * @apiParam (Request Body) {String} badge[trigger] foreign key for badge
+ * @apiParam (Request Body) {String} badge[creatorId] creator id
+ * @apiParam (Request Body) {Number} badge[points] points awarded to badge owner
+ * @apiParam (Request Body) {String} badge[description] badge explanation
+ * @apiParam (Request Body) {String} badge[expiry] date time of expiry of the badge
+ * @apiParam (Request Body) {Boolean} badge[isDeleted] boolean indicating if soft deleted
+ * @apiParam (Request Body) badge[metadata] JSON metadata
+ *
+ *
+ * @apiSuccess {Object} badge Top level object
+ * @apiSuccess {String} badge[id] badge id
+ * @apiSuccess {String} badge[name] name given to badge
+ * @apiSuccess {String} badge[slug] path to view the badge
+ * @apiSuccess {String} badge[badgeUri] image link
+ * @apiSuccess {String} badge[trigger] foreign key for badge
+ * @apiSuccess {String} badge[creatorId] creator id
+ * @apiSuccess {Number} badge[points] points awarded to badge owner
+ * @apiSuccess {String} badge[description] badge explanation
+ * @apiSuccess {String} badge[expiry] date time of expiry of the badge
+ * @apiSuccess {Boolean} badge[isDeleted] boolean indicating if soft deleted
+ * @apiSuccess {Object} badge[metadata] JSON metadata
+ * @apiSuccess {String} badge[createdAt]
+ * @apiSuccess {String} badge[updatedAt]
+ * @apiSuccess {String} badge[badge_triggers][id] trigger id same as trigger string
+ * @apiSuccess {String} badge[badge_triggers][trigger] trigger name
+ * @apiSuccess {String} badge[badge_triggers][type] model instance type
+ *
+ */
 router.post('/', requireAuth, async ctx => {
   let newBadge = ctx.request.body.badge;
   newBadge.slug = await slugGen(newBadge.name);
@@ -45,6 +148,41 @@ router.post('/', requireAuth, async ctx => {
   ctx.body = { badge };
 
 });
+
+
+/**
+ * @api {put} /api/v1/badges/:id PUT a badge details.
+ * @apiName PUT a badge details
+ * @apiGroup Badge
+ * @apiPermission authenticated user
+ * @apiVersion 0.4.0
+ *
+ * @apiHeader {String} Authorization Bearer << JWT here>>
+ *
+ * @apiParam (URI Param) {String} id Id of the badge to update
+ *
+ * @apiParam (Request Body) {Object} badge Top level object
+ * @apiParam (Request Body) {String} [badge[name]] badge name
+ *
+ * @apiSuccess {Object} badge Top level object
+ * @apiSuccess {String} badge[id] badge id
+ * @apiSuccess {String} badge[name] name given to badge
+ * @apiSuccess {String} badge[slug] path to view the badge
+ * @apiSuccess {String} badge[badgeUri] image link
+ * @apiSuccess {String} badge[trigger] foreign key for badge
+ * @apiSuccess {String} badge[creatorId] creator id
+ * @apiSuccess {Number} badge[points] points awarded to badge owner
+ * @apiSuccess {String} badge[description] badge explanation
+ * @apiSuccess {String} badge[expiry] date time of expiry of the badge
+ * @apiSuccess {Boolean} badge[isDeleted] boolean indicating if soft deleted
+ * @apiSuccess {Object} badge[metadata] JSON metadata
+ * @apiSuccess {String} badge[createdAt]
+ * @apiSuccess {String} badge[updatedAt]
+ * @apiSuccess {String} badge[badge_triggers][id] trigger id same as trigger string
+ * @apiSuccess {String} badge[badge_triggers][trigger] trigger name
+ * @apiSuccess {String} badge[badge_triggers][type] model instance type
+ *
+ */
 router.put('/:id', requireAuth, async ctx => {
 
   const badgeChecker = await Badge.query().findById(ctx.params.id);
@@ -54,6 +192,27 @@ router.put('/:id', requireAuth, async ctx => {
   ctx.status = 201;
   ctx.body = { badge };
 });
+
+
+/**
+ * @api {delete} /api/v1/badges/:id Delete a badge.
+ * @apiName DELETE a Badge
+ * @apiDescription DELETE a badge using id
+ * @apiGroup Badge
+ * @apiPermission [admin, superadmin]
+ * @apiVersion 0.4.0
+ *
+ * @apiHeader {String} Authorization Bearer << JWT here>>
+ *
+ * @apiParam (URI Param) {String} id badge id
+ *
+ * @apiSuccessExample {json} Success-Response:
+ *     HTTP/1.1 201 OK
+ *     { }
+ *
+ *
+ */
+
 
 router.delete('/:id', async ctx => {
   const badge = await Badge.query()
@@ -71,13 +230,13 @@ router.delete('/:id', async ctx => {
 
 
 /**
- * @api {post} /users/:id/profile-image POST users profile picture.
- * @apiName PostAUser
- * @apiGroup Authentication
+ * @api {post} /badges/:id/badge-image POST badge image.
+ * @apiName Badges
+ * @apiDescription upload a badge image
+ * @apiGroup Badge
  *
  * @apiVersion 0.4.0
- * @apiDescription upload user profile pic
- * @apiPermission [basic, admin, superadmin]
+ * @apiPermission [admin, superadmin]
  * @apiHeader (Header) {String} authorization Bearer <<YOUR_API_KEY_HERE>>
  *
  *

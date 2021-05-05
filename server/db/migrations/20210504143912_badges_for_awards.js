@@ -3,7 +3,7 @@ const { idGenerator } = require('../id_generator');
 exports.up = (knex) => {
   return knex.schema
     .raw(idGenerator)
-    .createTable('triggers', table => {
+    .createTable('badge_triggers', table => {
       table.text('id').primary().notNullable().defaultTo(knex.raw('next_id()'));
       table.text('trigger');
       table.text('description');
@@ -16,7 +16,7 @@ exports.up = (knex) => {
       table.text('name');
       table.text('slug');
       table.text('badge_uri');
-      table.text('trigger').references('triggers.id')
+      table.text('trigger').references('badge_triggers.id')
         .onDelete('SET NULL')
         .onUpdate('CASCADE');
       table.integer('points').defaultTo(1);
@@ -30,6 +30,6 @@ exports.up = (knex) => {
 
 exports.down = (knex) => {
   return knex.schema
-    .dropTableIfExists('triggers')
-    .dropTableIfExists('badges');
+    .dropTableIfExists('badges')
+    .dropTableIfExists('badge_triggers');
 };
