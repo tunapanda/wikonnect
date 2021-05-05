@@ -40,11 +40,11 @@ class User extends Model {
   }
 
   $beforeInsert() {
-    this.lastSeen = new Date().toISOString();
+    this.lastSeen = new Date(+new Date());
   }
 
   $afterFind() {
-    this.lastSeen = new Date().toISOString();
+    this.lastSeen = new Date(+new Date());
   }
 
   async $indexForSearch() {

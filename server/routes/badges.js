@@ -86,7 +86,16 @@ router.get('/:id', requireAuth, grantAccess('readAny', 'private'), async ctx => 
  */
 
 router.get('/', requireAuth, async ctx => {
-  const badge = await Badge.query().where(ctx.query);
+  const { expiry, ...query } = ctx.query;
+  let badges = Badge.query().where(query);
+
+  console.log(typeof(expiry));
+
+  if (expiry === 'true') badges.where('expiry', '>=', new Date().toISOString());
+  if (expiry === 'false') badges.where('expiry', '<=', new Date().toISOString());
+
+  const badge = await badges;
+
   ctx.assert(badge, 404);
   ctx.status = 200;
   ctx.body = { badge };

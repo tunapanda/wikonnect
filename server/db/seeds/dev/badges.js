@@ -32,6 +32,7 @@ exports.seed = async (knex) => {
         creator_id: faker.random.arrayElement(userIds),
         created_at: faker.date.past(),
         updated_at: faker.date.recent(),
+        expiry: faker.date.between(faker.date.past(), faker.date.soon()),
         is_deleted: faker.datatype.boolean(),
         trigger: faker.random.arrayElement(triggerIds)
       });
