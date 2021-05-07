@@ -1,1 +1,9 @@
-{{outlet}}
+<div class="p-3">
+  {{#if @model}}
+    <ModelsTable
+      @data={{@model}}
+      @columns={{this.columns}}
+      @useNumericPagination={{false}}
+    />
+  {{/if}}
+</div>
