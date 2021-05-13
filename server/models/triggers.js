@@ -3,7 +3,7 @@ const knex = require('../db/db');
 
 class Trigger extends Model {
   static get tableName() {
-    return 'triggers';
+    return 'badge_triggers';
   }
 }
 
