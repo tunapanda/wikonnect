@@ -34,7 +34,11 @@ exports.seed = async (knex) => {
         updated_at: faker.date.recent(),
         expiry: faker.date.between(faker.date.past(), faker.date.soon()),
         is_deleted: faker.datatype.boolean(),
-        trigger: faker.random.arrayElement(triggerIds)
+        trigger: faker.random.arrayElement(triggerIds),
+        published: faker.datatype.boolean(),
+        frequency: faker.random.number(),
+        reminder: faker.random.number(),
+        reminder_message:  faker.lorem.sentence(),
       });
     }
     return knex('badges').insert(fakeBadges);
