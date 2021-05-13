@@ -1,0 +1,84 @@
+<div class="badges-manage-page">
+  <h1 class="title">{{t "admin.badges.titles.manage"}}</h1>
+  <hr>
+  <div class="badges-list">
+    <h2 class="subtitle">{{t "admin.badges.titles.all_badges"}}</h2>
+
+    <div class="row">
+
+      <div class="col-md-2 create-badge-card" role="button" {{on "click" this.toggleCreateFormVisibility}}>
+          <span class="text-primary content">
+            {{svg-jar "plus-circle" height="21" width="21" stroke="white"}}
+            {{t "admin.badges.buttons.new"}}
+          </span>
+      </div>
+
+      {{#each this.model  as |badge index|}}
+        <div class="col-lg-2 col-sm-4 badge-card d-flex flex-column">
+          <div class="body d-flex flex-row">
+            <div class="left d-flex justify-content-center">
+              <div class="badge-icon-container d-flex align-items-center justify-content-center">
+                <img src="{{badge.iconUrl}}" class="badge-icon" role="presentation" alt="">
+              </div>
+            </div>
+            <div class="right d-flex flex-column">
+              <div class="points">{{badge.points}} {{t "admin.badges.labels.points"}}</div>
+              <div class="name">{{badge.name}}</div>
+              <div class="description">{{ellipsize badge.description 60}}</div>
+            </div>
+          </div>
+          <div class="footer d-flex justify-content-between">
+            <div class="left ">
+              <BsDropdown class="dd-actions-menu" as |dd|>
+                <dd.toggle>{{svg-jar "horizontal-menu-dots" height="16" }} </dd.toggle>
+                <dd.menu class="dropdown-menu-right" as |menu|>
+                  <menu.item>
+                    <button type="button" class="btn w-100" {{on "click" (fn this.initBadgeForm badge) }}>
+                      {{t "admin.badges.buttons.edit"}}
+                    </button>
+                    <button type="button" class="btn w-100" {{on "click" (fn this.deleteBadge badge) }}>
+                      {{t "admin.badges.buttons.delete"}}
+                    </button>
+                  </menu.item>
+                </dd.menu>
+              </BsDropdown>
+            </div>
+            <div class="right">
+              <div role="button">
+                {{t 'admin.badges.buttons.earning'}}
+                <span class="link-icon"> {{svg-jar "chevron-circle-right" height="16" fill="grey" }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {{#if (eq index 3)}}
+          <div class="col-11 pt-4 pb-4 {{if this.createFormVisible '' 'd-none'}}">
+            <div class="card">
+              <div class="card-body col-lg-10">
+                <Admin::BadgeForm @model={{this.badgeModel}}>
+                </Admin::BadgeForm>
+              </div>
+            </div>
+          </div>
+        {{/if}}
+      {{/each}}
+
+      {{#if (lt this.model.length 4)}}
+        <div class="col-11 pt-4 pb-4 {{if this.createFormVisible '' 'd-none'}} ">
+          <div class="card">
+            <div class="card-body col-lg-10">
+              <Admin::BadgeForm @model={{this.badgeModel}}>
+              </Admin::BadgeForm>
+            </div>
+          </div>
+        </div>
+      {{/if}}
+
+
+    </div>
+
+
+  </div>
+
+</div>

@@ -99,3 +99,10 @@ main_navbar:
   notifications:
     title: Arifa
     empty: Huna arifa mpya
+
+table:
+  empty: Hakuna rekodi za kuonyesha
+  pagination:
+    per_page: Idadi kwa Ukurasa
+    previous: Iliyotangulia
+    next: Ifuatayo

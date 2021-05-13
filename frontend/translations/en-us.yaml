@@ -99,3 +99,10 @@ main_navbar:
   notifications:
     title: Notifications
     empty: You have no new notifications
+
+table:
+  empty: No records to show
+  pagination:
+    per_page: Per Page
+    previous: Previous
+    next: Next

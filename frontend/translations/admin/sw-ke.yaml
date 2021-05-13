@@ -1,8 +1,64 @@
 sidenav:
-  dashboard: Dashboard
+  dashboard: Dashibodi
   users: Watumiaji
   registered_users: Watumiaji Waliosajiliwa
   verified_users: Watumiaji Waliothibitishwa
   badges: Beji
   manage_badges: Usimamizi wa Beji
   badge_users: Watumiaji na Beji
+
+badges:
+  titles:
+    badges: Beji
+    manage: Usimamizi wa Beji
+    all_badges: Beji zote
+    popup: Jinsi ya kupata beji hii
+
+  buttons:
+    create: Unda beji mpya
+    details: Maelezo
+    view_all: Ona yote
+    bulk_action: Hatua ya wingi
+    delete_all:  Futa zote
+    new: Beji mpya
+    earning: Jinsi ya kupata
+    upload_icon: FUNGUA FAILI
+    save: Hifadhi
+    unpublish: Ondoa uchapizo
+    publish: Kuchapisha
+    delete: Futa beji
+    edit: Hariri beji
+    ok: SAWA NIMEPATA!
+
+  labels:
+    badge_create_prompt: Halo {name}, ungependa kuunda baji mpya leo?
+    badges_total: Idadi ya Beji
+    badges_earned: Beji Zilizopatikana
+    upload_icon: Pakia ikoni ya bagde
+    change_icon: Badilisha ikoni ya bagde
+    options: Chaguzi
+    search_placeholder: Tafuta Beji
+
+    #below are form related values
+    trigger: Kuchochea
+    trigger_placeholder: Chagua kichocheo
+    name: Jina
+    name_placeholder: Jina la beji
+    description: Jinsi ya kupata
+    description_placeholder: Eleza jinsi ya kupata beji
+    expiry_date: Tarehe ya kumalizika
+    frequency: Mara ngapi
+    frequency_placeholder: Idadi ambayo mtu anapaswa kuchochea kupata baji
+    points: Pointi
+    points_placeholder: Pointi zinazohusiana na beji
+    reminder: Kikumbusho
+    reminder_placeholder: Idadi kabla ya ukumbusho kutumwa
+    reminder_message: Ujumbe wa Kikumbusho
+    reminder_message_placeholder: Unda sura 4 zaidi kufungua baji ya Ninja na upate alama 1000
+  tables:
+    name: Jina
+    description: Jinsi ya kupata
+    expiry: Tarehe ya mwisho wa matumizi
+    status: Hali
+    users_earned: Watumiaji walipata
+    action: Hatua

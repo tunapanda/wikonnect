@@ -1,0 +1,112 @@
+<div class="row badge-form">
+  <div class="col-lg-4">
+    <div class="badge-icon-card d-flex">
+      <div class="icon-container">
+        {{#if  this.badge.iconUri}}
+          <img src="{{this.badge.iconUri}}" role="presentation" alt="">
+        {{else}}
+          {{svg-jar "trophy" height="96" width="96" stroke="white"}}
+        {{/if}}
+      </div>
+      <div class="d-flex flex-column justify-content-center align-items-center">
+        <p class="title">
+          {{#if this.badge.iconUri}}
+            {{t "admin.badges.labels.change_icon"}}
+          {{else}}
+            {{t "admin.badges.labels.upload_icon"}}
+          {{/if}}
+        </p>
+        <Forms::Upload class="btn btn-primary">
+          {{svg-jar "upload" height="18" width="18" stroke="white"}}
+          {{t "admin.badges.buttons.upload_icon"}}
+        </Forms::Upload>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-8">
+    <BsForm @model={{this.model}} @onSubmit={{this.submitForm}}  as |form|>
+      <div class="form-group d-flex">
+        <label for="trigger" class="col-lg-4">{{t "admin.badges.labels.trigger"}}</label>
+        <div class="col-lg-8">
+          <form.element @property="trigger"  as |el|>
+            <select id={{el.id}}  class="form-control" {{on "change" (fn this.triggerSelected el.setValue)}}>
+              <option disabled selected hidden>{{t "admin.badges.labels.trigger_placeholder"}}</option>
+              {{#each this.triggers as |trigger|}}
+                <option value={{trigger.trigger}}>{{trigger.trigger}}</option>
+              {{/each}}
+            </select>
+          </form.element>
+        </div>
+      </div>
+
+      <div class="form-group d-flex">
+        <label for="name" class="col-lg-4">{{t "admin.badges.labels.name"}}</label>
+        <div class="col-lg-8">
+          <form.element @property="name"  as |el|>
+            <el.control  placeholder={{t "admin.badges.labels.name_placeholder"}}/>
+          </form.element>
+        </div>
+      </div>
+
+      <div class="form-group d-flex">
+        <label for="description" class="col-lg-4">{{t "admin.badges.labels.description"}}</label>
+        <div class="col-lg-8">
+          <form.element @property="description"  as |el|>
+            <el.control  placeholder={{t "admin.badges.labels.description_placeholder"}}/>
+          </form.element>
+        </div>
+      </div>
+
+      <div class="form-group d-flex">
+        <label for="expiry_date" class="col-lg-4">{{t "admin.badges.labels.expiry_date"}}</label>
+        <div class="col-lg-8">
+          <form.element @type="date" @property="expiry" @required="true" as |el|>
+            <el.control  placeholder={{t "admin.badges.labels.description_placeholder"}}/>
+          </form.element>
+          <Input type="date" class="form-control" id="expiry_date" @value={{exec this.parseDate this.model.expiry}}/>
+        </div>
+      </div>
+
+      <div class="form-group d-flex">
+        <label for="frequency" class="col-lg-4">{{t "admin.badges.labels.frequency"}}</label>
+        <div class="col-lg-8">
+          <Input id="frequency" @type="number" class="form-control"
+                 placeholder="{{t "admin.badges.labels.frequency_placeholder"}}" @value={{this.model.frequency}}/>
+        </div>
+      </div>
+
+      <div class="form-group d-flex">
+        <label for="points" class="col-lg-4">{{t "admin.badges.labels.points"}}</label>
+        <div class="col-lg-8">
+          <Input id="points" class="form-control" @type="number" @value={{this.model.points}}
+                 placeholder="{{t "admin.badges.labels.points_placeholder"}}"/>
+        </div>
+      </div>
+
+      <div class="form-group d-flex">
+        <label for="reminder" class="col-lg-4">{{t "admin.badges.labels.reminder"}}</label>
+        <div class="col-lg-8">
+          <Input id="reminder" @type="text" class="form-control" @value={{this.model.reminder}}
+                 placeholder="{{t "admin.badges.labels.reminder_placeholder"}}"/>
+        </div>
+      </div>
+
+      <div class="form-group d-flex">
+        <label for="reminder_message" class="col-lg-4">{{t "admin.badges.labels.reminder_message"}}</label>
+        <div class="col-lg-8">
+        <Textarea id="reminder_message" class="form-control" @value={{this.model.reminderMessage}}
+                  placeholder={{t "admin.badges.labels.reminder_message_placeholder"}}></Textarea>
+        </div>
+      </div>
+
+      <div class="form-group d-flex justify-content-end mr-3">
+        <form.submitButton class="btn btn-primary"> {{t "admin.badges.buttons.save"}}</form.submitButton>
+
+      </div>
+    </BsForm>
+
+  </div>
+
+</div>
