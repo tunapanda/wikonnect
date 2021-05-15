@@ -2,7 +2,7 @@
   <div class="header-section">
     <h1 class="title">{{t "admin.badges.titles.badges"}}</h1>
     <div class="row">
-      <div class="col-lg-5">
+      <div class="col-lg-4">
         <div class="card action-prompt-card">
           <div class="card-body">
             <p class="prompt-title">
@@ -20,15 +20,15 @@
         <div class="card badges-total-card">
           <div class="card-body text-center">
             <div class="card-icon">
-              {{svg-jar "target" height="39" width="39" stroke="white"}}
+              {{svg-jar "target" height="50" width="50" stroke="white"}}
             </div>
             <div class="card-sect-title">{{t "admin.badges.labels.badges_total"}}</div>
             <div class="badges-total-count">
               <strong>{{this.badgesCount}}</strong>
             </div>
-            <LinkTo @route="admin.badges.home" class="text-primary">
+            <LinkTo @route="admin.badges.home" class="text-primary see-all">
               {{t "admin.badges.buttons.view_all"}}
-              <span class="link-icon"> {{svg-jar "chevron-right" height="24"}}</span>
+              <span class="link-icon"> {{svg-jar "chevron-right" height="30"}}</span>
             </LinkTo>
           </div>
         </div>
@@ -38,15 +38,15 @@
         <div class="card badges-earned-total-card">
           <div class="card-body  text-center">
             <div class="card-icon">
-              {{svg-jar "badge" height="39" width="39" stroke="white"}}
+              {{svg-jar "badge" height="50" width="50" stroke="white"}}
             </div>
             <div class="card-sect-title">{{t "admin.badges.labels.badges_earned"}}</div>
             <div class="badges-total-count">
               <strong>{{this.badgesUnlockedCount}}</strong>
             </div>
-            <LinkTo @route="admin.badges.home" class="text-primary">
+            <LinkTo @route="admin.badges.home" class="text-primary see-all">
               {{t "admin.badges.buttons.view_all"}}
-              <span class="link-icon"> {{svg-jar "chevron-right" height="24"}}</span>
+              <span class="link-icon"> {{svg-jar "chevron-right" height="30"}}</span>
             </LinkTo>
           </div>
         </div>
@@ -57,7 +57,7 @@
   <div class="badges-section pt-5 pb-5">
 
     <div class="submenu-section d-flex justify-content-between">
-      <div class="left-menu d-flex align-items-baseline">
+      <div class="left-menu d-flex">
         <p class="summary pr-3">{{this.paginationSummary}}</p>
         <div class="badges-search">
           <Input type="search" class="search-input form-control" @value={{this.badgeSearchTerm}}
