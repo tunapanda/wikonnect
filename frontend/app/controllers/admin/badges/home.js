@@ -163,7 +163,7 @@ class MiniBadge {
   constructor(badge) {
     this.id = badge.id;
     this.name = badge.name;
-    this.iconUri = badge.iconUri;
+    this.iconUrl = badge.iconUrl;
     this.expiry = badge.expiry;
     this.description = badge.description;
     this.published = badge.published || true;
