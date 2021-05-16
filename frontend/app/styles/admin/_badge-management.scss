@@ -16,7 +16,8 @@ $palette: (
     .card {
       box-shadow: 0px 3px 16px map-get($palette, boxShadow);
       height: 100%;
-      .card-body{
+
+      .card-body {
         padding-top: 28px;
       }
     }
@@ -114,6 +115,12 @@ $palette: (
         font-size: 14px;
         color: map-get($palette, gray30);
         vertical-align: middle;
+      }
+
+      td .badge-icon{
+        img{
+          max-width: 50px;
+        }
       }
 
       td.description {

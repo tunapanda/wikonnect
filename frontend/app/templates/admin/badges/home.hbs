@@ -102,13 +102,15 @@
             <Input @type="checkbox" @checked={{badge.isSelected}} class="checkbox-inline"
               {{on "change" (fn this.toggleBadgeSelection badge)}}/>
           </td>
-          <td class="d-flex name">
-            <div class="badge-icon pr-2">
-              {{#if badge.iconUrl}}
-                <img src="{{badge.iconUrl}}" role="presentation" alt="">
-              {{/if}}
+          <td class="pl-1 pr-1">
+            <div class="d-flex">
+              <div class="badge-icon pr-2">
+                {{#if badge.iconUrl}}
+                  <img src="{{badge.iconUrl}}" role="presentation" alt="">
+                {{/if}}
+              </div>
+              <span class="name"> {{badge.name}}</span>
             </div>
-            {{badge.name}}
           </td>
           <td class="description">  {{badge.description}}</td>
           <td>  {{format-date badge.expiry day="numeric" month="short" year="numeric"}}</td>
