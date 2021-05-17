@@ -1,20 +1,21 @@
 <div class="badges-manage-page">
   <h1 class="title">{{t "admin.badges.titles.manage"}}</h1>
   <hr>
+  <h2 class="subtitle">{{t "admin.badges.titles.all_badges"}}</h2>
   <div class="badges-list">
-    <h2 class="subtitle">{{t "admin.badges.titles.all_badges"}}</h2>
 
-    <div class="row">
+    <div class="card-list">
 
-      <div class="col-md-2 create-badge-card" role="button" {{on "click" this.toggleCreateFormVisibility}}>
-          <span class="text-primary content">
-            {{svg-jar "plus-circle" height="21" width="21" stroke="white"}}
+      <div class="create-badge-card {{if this.createFormVisible 'active'}}" role="button"
+        {{on "click" this.toggleCreateFormVisibility}}>
+          <span class="content">
+            {{svg-jar "plus-circle" height="25" width="25" stroke="white"}}
             {{t "admin.badges.buttons.new"}}
           </span>
       </div>
 
-      {{#each this.model  as |badge index|}}
-        <div class="col-lg-2 col-sm-4 badge-card d-flex flex-column">
+      {{#each this.model  as |badge|}}
+        <div class="badge-card d-flex flex-column">
           <div class="body d-flex flex-row">
             <div class="left d-flex justify-content-center">
               <div class="badge-icon-container d-flex align-items-center justify-content-center">
@@ -32,10 +33,30 @@
               <BsDropdown class="dd-actions-menu" as |dd|>
                 <dd.toggle>{{svg-jar "horizontal-menu-dots" height="16" }} </dd.toggle>
                 <dd.menu class="dropdown-menu-right" as |menu|>
+                  <div class="header">
+                    {{t "admin.badges.labels.options"}}
+                  </div>
+                  <hr>
+                  <menu.item>
+
+                    <button type="button" class="btn w-100" {{on "click" (fn this.updatePublishStatus badge) }}>
+                      {{#if badge.published}}
+                        {{t "admin.badges.buttons.unpublish"}}
+                      {{else}}
+                        {{t "admin.badges.buttons.publish"}}
+                      {{/if}}
+
+                    </button>
+
+                  </menu.item>
+
                   <menu.item>
                     <button type="button" class="btn w-100" {{on "click" (fn this.initBadgeForm badge) }}>
                       {{t "admin.badges.buttons.edit"}}
                     </button>
+                  </menu.item>
+
+                  <menu.item>
                     <button type="button" class="btn w-100" {{on "click" (fn this.deleteBadge badge) }}>
                       {{t "admin.badges.buttons.delete"}}
                     </button>
@@ -46,34 +67,21 @@
             <div class="right">
               <div role="button">
                 {{t 'admin.badges.buttons.earning'}}
-                <span class="link-icon"> {{svg-jar "chevron-circle-right" height="16" fill="grey" }}</span>
+                <span class="link-icon"> {{svg-jar "chevron-circle-right" height="21" width="21" fill="grey" }}</span>
               </div>
             </div>
           </div>
         </div>
-
-        {{#if (eq index 3)}}
-          <div class="col-11 pt-4 pb-4 {{if this.createFormVisible '' 'd-none'}}">
-            <div class="card">
-              <div class="card-body col-lg-10">
-                <Admin::BadgeForm @model={{this.badgeModel}}>
-                </Admin::BadgeForm>
-              </div>
-            </div>
-          </div>
-        {{/if}}
       {{/each}}
 
-      {{#if (lt this.model.length 4)}}
-        <div class="col-11 pt-4 pb-4 {{if this.createFormVisible '' 'd-none'}} ">
-          <div class="card">
-            <div class="card-body col-lg-10">
-              <Admin::BadgeForm @model={{this.badgeModel}}>
-              </Admin::BadgeForm>
-            </div>
+      <div class="creation-form pt-4 pb-4 {{if this.createFormVisible '' 'd-none'}} ">
+        <div class="card">
+          <div class="card-body col-lg-10">
+            <Admin::BadgeForm @model={{this.badgeModel}}>
+            </Admin::BadgeForm>
           </div>
         </div>
-      {{/if}}
+      </div>
 
 
     </div>

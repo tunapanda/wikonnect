@@ -45,4 +45,13 @@ export default class AdminBadgesManageController extends Controller {
       await badge.destroyRecord();
     }
   }
+
+  @action
+  async updatePublishStatus(badge) {
+    const prompt = badge.published ? 'unpublish' : 'publish';
+    if (window.confirm(`Are you sure you want to ${prompt} the badge?`)) {
+      badge.published = !badge.published;
+      await badge.save();
+    }
+  }
 }

@@ -117,8 +117,8 @@ $palette: (
         vertical-align: middle;
       }
 
-      td .badge-icon{
-        img{
+      td .badge-icon {
+        img {
           max-width: 50px;
         }
       }
@@ -138,5 +138,172 @@ $palette: (
       }
     }
 
+  }
+}
+
+
+.badges .badges-manage-page {
+  .title {
+    font-size: 16px;
+    line-height: 20px;
+    font-weight: 600;
+  }
+
+  .subtitle {
+    font-size: 16px;
+    font-weight: normal;
+    padding-bottom: 9px;
+    padding-top: 6px;
+  }
+
+  .card-list {
+    display: grid;
+    grid-row-gap: 20px;
+    grid-column-gap: 20px;
+    //grid-template-columns: 175px 231px 231px 231px 231px;
+    grid-template-columns: 255px 255px 255px 255px;
+    padding-bottom: 20px;
+  }
+
+  .badge-card, .create-badge-card {
+    border: 1px solid rgba(201, 202, 203, 1);
+    box-shadow: 0px 3px 16px rgba(10, 75, 109, 0.18);
+    height: 165px;
+    border-radius: 6px;
+  }
+
+  .create-badge-card {
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    flex-direction: column;
+    height: 100%;
+
+    .content {
+      font-size: 18px;
+      font-weight: 500;
+    }
+
+    svg {
+      circle {
+        fill: map-get($palette, primary);
+      }
+
+      path {
+        stroke-width: 10;
+      }
+    }
+
+    &.active {
+      border: 1px solid map-get($palette, primary);
+    }
+  }
+
+  .badges-list .badge-card {
+    padding: 9px;
+
+    .left {
+      .badge-icon-container {
+        height: 93px;
+        width: 72px;
+        box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.08);
+        border: 0.5px solid rgba(86, 16, 245, 0.11);
+        margin-top: 19px;
+
+        img {
+          padding: 2px;
+          height: auto;
+          width: 100%;
+        }
+      }
+    }
+
+    .right {
+      padding-left: 10px;
+
+      .points {
+        border-radius: 4px;
+        color: white;
+        background-color: map-get($palette, primary);
+        font-size: 12px;
+        align-self: end;
+        padding: 1px 12px;
+      }
+
+      .name {
+        font-size: 14px;
+        font-weight: 500;
+        letter-spacing: 0;
+      }
+
+      .description {
+        font-weight: 300;
+        color: map-get($palette, gray30);
+        font-size: 11px;
+      }
+    }
+
+    .footer {
+      align-items: baseline;
+      padding-top: 10px;
+
+      .left {
+        .dropdown-toggle::after {
+          display: none;
+        }
+      }
+
+      .right {
+        font-size: 14px;
+        color: map-get($palette, primary);
+
+        .link-icon svg {
+          circle {
+            fill: rgba(197, 197, 198, 1);
+          }
+
+          path {
+            stroke: white;
+            stroke-width: 40;
+          }
+        }
+      }
+    }
+
+    .dd-actions-menu {
+      .dropdown-menu {
+        padding-left: 20px;
+        padding-right: 20px;
+        min-width: 203px;
+
+        .header {
+          font-weight: 600;
+          padding-bottom: 10px;
+          padding-top: 4px;
+        }
+
+        hr {
+          margin-top: 0;
+        }
+
+        button {
+          text-align: left;
+        }
+      }
+    }
+  }
+
+  .badges-list {
+    .creation-form {
+      grid-column: 1 / 5;
+      grid-row: 2 / 3;
+    }
+  }
+
+  .badges-list .badge-card:nth-child(3n) {
+    .points {
+      background-color: rgb(90, 71, 173);
+    }
   }
 }
