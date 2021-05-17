@@ -160,7 +160,6 @@ $palette: (
     display: grid;
     grid-row-gap: 20px;
     grid-column-gap: 20px;
-    //grid-template-columns: 175px 231px 231px 231px 231px;
     grid-template-columns: 255px 255px 255px 255px;
     padding-bottom: 20px;
   }
@@ -168,7 +167,7 @@ $palette: (
   .badge-card, .create-badge-card {
     border: 1px solid rgba(201, 202, 203, 1);
     box-shadow: 0px 3px 16px rgba(10, 75, 109, 0.18);
-    height: 165px;
+    min-height: 165px;
     border-radius: 6px;
   }
 
@@ -227,7 +226,7 @@ $palette: (
         color: white;
         background-color: map-get($palette, primary);
         font-size: 12px;
-        align-self: end;
+        align-self: flex-end;
         padding: 1px 12px;
       }
 

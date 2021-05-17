@@ -22,7 +22,7 @@ badges:
     delete_all:  Delete all
     new: New badge
     earning: How to earn
-    upload_icon: UPLOAD FILE
+    upload_icon: SELECT FILE
     save: Save
     unpublish: Unpublish
     publish: Publish

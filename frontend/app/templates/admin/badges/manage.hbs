@@ -24,7 +24,7 @@
             </div>
             <div class="right d-flex flex-column">
               <div class="points">{{badge.points}} {{t "admin.badges.labels.points"}}</div>
-              <div class="name">{{badge.name}}</div>
+              <div class="name">{{ellipsize badge.name 40}}</div>
               <div class="description">{{ellipsize badge.description 60}}</div>
             </div>
           </div>
@@ -76,7 +76,7 @@
 
       <div class="creation-form pt-4 pb-4 {{if this.createFormVisible '' 'd-none'}} ">
         <div class="card">
-          <div class="card-body col-lg-10">
+          <div class="card-body col-lg-11">
             <Admin::BadgeForm @model={{this.badgeModel}}>
             </Admin::BadgeForm>
           </div>

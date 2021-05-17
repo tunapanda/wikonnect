@@ -41,7 +41,7 @@ $palette: (
       width: max-content;
       background-color: map-get($palette, primary);
       padding: 2px 10px;
-      font-size: 18px;
+      font-size: 20px;
       border-radius: 4px;
       margin: 25px auto 14px;
       font-weight: 500;
@@ -57,6 +57,7 @@ $palette: (
       background-color: map-get($palette, windsor);
       padding-bottom: 10px;
       padding-top: 11px;
+      font-size: 20px;
       color: map-get($palette, white);
     }
   }
