@@ -298,12 +298,10 @@ router.post('/:id/badge-image', requireAuth, koaBody, requireAuth, async (ctx) =
       //Upload image to AWS S3 bucket
       const uploaded = await s3.s3.upload(params).promise();
       log.info('Uploaded in:', uploaded.Location);
-      await Badge.query().patchAndFetchById(ctx.params.id, { profileUri: fileNameBase });
+      const badge = await Badge.query()
+        .patchAndFetchById(ctx.params.id, { badgeUri: fileNameBase });
 
-      ctx.body = {
-        host: `${params.Bucket}.s3.amazonaws.com/uploads/badges`,
-        path: `${fileNameBase}.jpg`
-      };
+      ctx.body = {badge };
     } catch (e) {
       log.error(e);
       ctx.throw(e.statusCode, null, { message: e.message });
@@ -311,14 +309,11 @@ router.post('/:id/badge-image', requireAuth, koaBody, requireAuth, async (ctx) =
   } else {
     try {
       await resizer.toFile(`${uploadDir}/${fileNameBase}.jpg`);
-      await Badge.query()
-        .patchAndFetchById(ctx.params.id, { profileUri: `/${uploadPath}/${fileNameBase}.jpg` });
+      const badge = await Badge.query()
+        .patchAndFetchById(ctx.params.id, { badgeUri: `/${uploadPath}/${fileNameBase}.jpg` });
 
       ctx.status = 200;
-      ctx.body = {
-        host: ctx.host,
-        path: `/${uploadPath}/${fileNameBase}.jpg`,
-      };
+      ctx.body = {badge };
     } catch (e) {
       if (e.statusCode) {
         ctx.throw(e.statusCode, null, { errors: [e.message] });
