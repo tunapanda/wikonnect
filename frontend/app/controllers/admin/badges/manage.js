@@ -18,27 +18,30 @@ export default class AdminBadgesManageController extends Controller {
     if (this.editItem) {
       const obj = this.model.find((badge) => badge.id === this.editItem);
       if (obj) {
-        return obj;
+        return { ...obj.serialize(), id: obj.id };
       }
-      return this.store.createRecord('badge', {
-        trigger: '',
-        name: 'KOya',
-        points: 1000,
-      });
     }
-    return this.selectedBadgeModel;
+    return this.store.createRecord('badge', {});
   }
 
   @action
-  toggleCreateFormVisibility() {
-    this.createFormVisible = !this.createFormVisible;
-  }
+  showBadgeCreationForm(badge) {
+    if (!badge && this.editItem) {
+      this.editItem = null;
+      this.createFormVisible = true;
+      return;
+    }
 
-  @action
-  initBadgeForm(badge) {
-    this.editItem = badge.id;
-    this.selectedBadgeModel = badge;
-    this.createFormVisible = true;
+    if (!badge) {
+      this.editItem = null;
+      this.createFormVisible = !this.createFormVisible;
+      return;
+    }
+
+    if (badge) {
+      this.editItem = badge.id;
+      this.createFormVisible = true;
+    }
   }
 
   @action
@@ -62,6 +65,7 @@ export default class AdminBadgesManageController extends Controller {
     this.badgeForPopup = badge;
     this.showBadgePopup = true;
   }
+
   @action badgePopupClosed() {
     this.showBadgePopup = false;
   }

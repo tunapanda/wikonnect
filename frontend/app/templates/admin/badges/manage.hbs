@@ -7,7 +7,7 @@
     <div class="card-list">
 
       <div class="create-badge-card {{if this.createFormVisible 'active'}}" role="button"
-        {{on "click" this.toggleCreateFormVisibility}}>
+        {{on "click" (fn this.showBadgeCreationForm undefined)}}>
           <span class="content">
             {{svg-jar "plus-circle" height="25" width="25" stroke="white"}}
             {{t "admin.badges.buttons.new"}}
@@ -51,7 +51,7 @@
                   </menu.item>
 
                   <menu.item>
-                    <button type="button" class="btn w-100" {{on "click" (fn this.initBadgeForm badge) }}>
+                    <button type="button" class="btn w-100" {{on "click" (fn this.showBadgeCreationForm badge) }}>
                       {{t "admin.badges.buttons.edit"}}
                     </button>
                   </menu.item>

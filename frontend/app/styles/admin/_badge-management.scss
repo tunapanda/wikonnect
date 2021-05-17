@@ -18,7 +18,7 @@ $palette: (
       height: 100%;
 
       .card-body {
-        padding-top: 28px;
+        padding-top: 15px;
       }
     }
 
@@ -303,6 +303,65 @@ $palette: (
   .badges-list .badge-card:nth-child(3n) {
     .points {
       background-color: rgb(90, 71, 173);
+    }
+  }
+}
+
+.badges .badges-manage-page {
+  .creation-form {
+
+
+    .badge-icon-card {
+      box-shadow: 0 3px 16px rgba(10, 75, 109, 0.18);;
+      min-width: 400px;
+      min-height: 194px;
+
+      .left {
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        align-content: center;
+        padding-left: 18px;
+      }
+
+      .icon-container {
+        min-height: 153px;
+        width: 125px;
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        align-content: center;
+        padding-left: 10px;
+        padding-right: 10px;
+        background-color: rgba(240, 240, 240, 1);
+        border: 1px solid rgba(51, 30, 104, 1);
+        box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
+      }
+
+      .btn {
+        padding-left: 20px;
+        padding-right: 20px;
+
+        svg {
+          margin-right: 10px;
+        }
+      }
+    }
+
+    .badge-form .main-form {
+      .form-group {
+        label {
+          text-align: right;
+          color: map-get($palette, black);
+          font-size: 16px;
+        }
+
+        input::placeholder,
+        select:invalid, {
+          font-size: 13px;
+          color: #A6ADB4;
+        }
+      }
     }
   }
 }
