@@ -65,7 +65,7 @@
               </BsDropdown>
             </div>
             <div class="right">
-              <div role="button">
+              <div role="button" {{on "click" (fn this.viewBadgeOnPopup badge)}}>
                 {{t 'admin.badges.buttons.earning'}}
                 <span class="link-icon"> {{svg-jar "chevron-circle-right" height="21" width="21" fill="grey" }}</span>
               </div>
@@ -89,4 +89,6 @@
 
   </div>
 
+<Badge::BadgeModal @show={{this.showBadgePopup}} @badge={{this.badgeForPopup}} @onClose={{this.badgePopupClosed}}>
+</Badge::BadgeModal>
 </div>

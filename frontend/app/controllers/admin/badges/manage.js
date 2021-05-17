@@ -11,6 +11,8 @@ export default class AdminBadgesManageController extends Controller {
   @tracked createFormVisible = true;
   @tracked selectedBadgeModel;
   @tracked editItem = null;
+  @tracked showBadgePopup = false;
+  @tracked badgeForPopup;
 
   get badgeModel() {
     if (this.editItem) {
@@ -53,5 +55,14 @@ export default class AdminBadgesManageController extends Controller {
       badge.published = !badge.published;
       await badge.save();
     }
+  }
+
+  @action
+  viewBadgeOnPopup(badge) {
+    this.badgeForPopup = badge;
+    this.showBadgePopup = true;
+  }
+  @action badgePopupClosed() {
+    this.showBadgePopup = false;
   }
 }

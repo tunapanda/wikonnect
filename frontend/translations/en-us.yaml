@@ -106,3 +106,8 @@ table:
     per_page: Per Page
     previous: Previous
     next: Next
+
+badge_popup:
+  title: How to earn this badge
+  ok: OK, GOT IT
+  points: Points

@@ -28,7 +28,6 @@ badges:
     publish: Kuchapisha
     delete: Futa beji
     edit: Hariri beji
-    ok: SAWA NIMEPATA!
 
   labels:
     badge_create_prompt: Halo {name}, ungependa kuunda baji mpya leo?

@@ -28,7 +28,6 @@ badges:
     publish: Publish
     delete: Delete badge
     edit: Edit badge
-    ok: OK, GOT IT
 
   labels:
     badge_create_prompt: Hi {name},would you like to create a new badge today?
