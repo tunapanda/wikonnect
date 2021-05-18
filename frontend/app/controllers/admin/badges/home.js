@@ -99,6 +99,24 @@ export default class AdminBadgesHomeController extends Controller {
   }
 
   @action
+  async deleteAllSelected() {
+    const prompt = 'Are you sure you want to delete all the selected badges?';
+    if (window.confirm(prompt)) {
+      this.badges.map(async (badge) => {
+        if (!badge.isSelected) {
+          return;
+        }
+        const obj = this.model.find((b) => b.id === badge.id);
+        if (obj) {
+          await obj.destroyRecord();
+          this.parsedBadges = this.parseBadges;
+        }
+      });
+      this.allBadgeTableItems = false;
+    }
+  }
+
+  @action
   updatePerPage(evt) {
     this.currentPage = 1; // It's easier than doing calculations.
     this.showPerPage = +evt.target.selectedOptions[0].value;

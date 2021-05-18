@@ -71,7 +71,9 @@
             <dd.toggle>{{t "admin.badges.buttons.bulk_action"}} <span class="caret"></span></dd.toggle>
             <dd.menu class="dropdown-menu-right" as |menu|>
               <menu.item>
-                <button type="button" class="btn w-100">{{t "admin.badges.buttons.delete_all"}}</button>
+                <button type="button" class="btn w-100" {{on "click" this.deleteAllSelected}}>
+                  {{t "admin.badges.buttons.delete_all"}}
+                </button>
               </menu.item>
             </dd.menu>
           </BsDropdown>
