@@ -7,7 +7,7 @@ export default class BadgeModel extends Model {
   @attr() triggerId;
   @attr('number') points;
   @attr() description;
-  @attr('date') expiry;
+  @attr() expiry;
   @attr('boolean') isDeleted;
   @attr('boolean') published;
   @attr('number') frequency;
