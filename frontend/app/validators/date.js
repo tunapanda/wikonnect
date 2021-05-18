@@ -14,7 +14,6 @@ export default function validateDate(options = {}) {
     if (oldValue && !(oldValue instanceof Date)) {
       oldValue = Date.parse(oldValue);
     }
-    console.log(newValue, oldValue);
     /*we will still pass all options although only first 2 args are currently utilized*/
     return dateValidator(options)(key, newValue, oldValue, changes, content);
   };

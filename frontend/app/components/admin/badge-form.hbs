@@ -36,7 +36,7 @@
           <option disabled selected hidden value="">{{t "admin.badges.labels.trigger_placeholder"}}</option>
         {{/unless}}
         {{#each this.triggers as |x|}}
-          <option value="{{x.id}}" selected="{{if (eq this.model.triggerId x.id) true}}">{{x.trigger}}</option>
+          <option value="{{x.id}}" selected="{{if (eq this.model.triggerId x.id) true}}">{{x.name}}</option>
         {{/each}}
       </select>
     </form.element>

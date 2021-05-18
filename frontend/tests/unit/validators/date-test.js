@@ -3,6 +3,6 @@ import validateDate from 'wikonnect/validators/date';
 
 module('Unit | Validator | date');
 
-test('it exists', function(assert) {
+test('it exists', function (assert) {
   assert.ok(validateDate());
 });

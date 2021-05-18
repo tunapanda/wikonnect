@@ -14,7 +14,10 @@ export default {
   description: [validatePresence({ presence: true, ignoreBlank: true })],
   expiry: [
     validatePresence({ presence: true, ignoreBlank: true }),
-    validateDate({ after: new Date(), message: 'The date must be after today' }),
+    validateDate({
+      after: new Date(),
+      message: 'The date must be after today',
+    }),
   ],
   frequency: [
     validatePresence({ presence: true, ignoreBlank: true }),
