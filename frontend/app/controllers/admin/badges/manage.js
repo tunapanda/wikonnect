@@ -15,14 +15,19 @@ export default class AdminBadgesManageController extends Controller {
   @tracked showBadgePopup = false;
   @tracked badgeForPopup;
 
+  get badges() {
+    //since the badges already exist on the store after model query on the route
+    return this.store.peekAll('badge').filter((badge) => badge.id);
+  }
+
   get badgeModel() {
     if (this.editItem) {
-      const obj = this.model.find((badge) => badge.id === this.editItem);
+      const obj = this.badges.find((badge) => badge.id === this.editItem);
       if (obj) {
         return { ...obj.serialize(), id: obj.id };
       }
     }
-    return this.store.createRecord('badge',{creatorId: this.me.id});
+    return this.store.createRecord('badge', { creatorId: this.me.id });
   }
 
   @action
