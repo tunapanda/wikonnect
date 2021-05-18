@@ -25,15 +25,20 @@ $palette: (
       font-weight: bold;
       font-size: 25px;
       padding-bottom: 15px;
-      padding-top: 15px;
+      padding-top: 30px;
     }
 
     .badge-icon-container {
-      margin-top: 60px;
+      max-width: 150px;
+      max-height: 210px;
+      margin: 0 auto;
+      padding: 10px;
 
       .badge-icon {
         width: 100%;
-        height: auto;
+        height: 100%;
+        padding: 10px;
+        padding-top: 50px;
       }
     }
 
