@@ -34,11 +34,19 @@ export default class AdminBadgeFormComponent extends Component {
     if (!model.id) {
       try {
         await model.save();
-        console.log('after---->', model.id);
-      } catch (e) {}
+        if (!this.tempSelectedBadgeIcon) {
+          // notify the user everything is successful
+          this.notify.success('Badge created successfully (without icon)', {
+            closeAfter: 15000,
+          });
+        }
+      } catch (e) {
+        this.notify.error(
+          'Issue encountered while saving the badge details. Kindly try again later',
+          { closeAfter: 15000 }
+        );
+      }
     } else {
-      model.expiry = new Date(model.expiry);
-
       const original = this.store.peekRecord('badge', model.id);
 
       Object.keys(model).map((key) => {
@@ -47,9 +55,10 @@ export default class AdminBadgeFormComponent extends Component {
       try {
         await original.save();
         if (!this.tempSelectedBadgeIcon) {
-          //reset the form
-
           // notify the user everything is successful
+          this.notify.success('Badge updated successfully', {
+            closeAfter: 15000,
+          });
         }
       } catch (e) {
         original.rollbackAttributes();
@@ -77,7 +86,16 @@ export default class AdminBadgeFormComponent extends Component {
         }
         //reset the icon
         this.tempSelectedBadgeIcon = null;
-      } catch (e) {}
+
+        this.notify.success('Badge details & icon uploaded successfully', {
+          closeAfter: 15000,
+        });
+      } catch (e) {
+        this.notify.error(
+          'Issue encountered while uploading badge icon. Kindly try again later',
+          { closeAfter: 15000 }
+        );
+      }
     }
   }
 
