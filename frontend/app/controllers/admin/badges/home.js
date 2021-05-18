@@ -11,6 +11,7 @@ export default class AdminBadgesHomeController extends Controller {
   @tracked showPerPage = 10;
   @tracked currentPage = 1;
   @tracked parsedBadges = this.parseBadges;
+  @tracked allBadgeTableItems = false;
 
   perPageOptions = [
     { value: 5, selected: false },
@@ -72,6 +73,7 @@ export default class AdminBadgesHomeController extends Controller {
 
   resetAllBadgesSelection() {
     this.parsedBadges.map((b) => (b.isSelected = false));
+    this.allBadgeTableItems = false;
   }
 
   get badgesCount() {
@@ -100,6 +102,7 @@ export default class AdminBadgesHomeController extends Controller {
   updatePerPage(evt) {
     this.currentPage = 1; // It's easier than doing calculations.
     this.showPerPage = +evt.target.selectedOptions[0].value;
+    this.resetAllBadgesSelection();
   }
 
   get pageNumericSummary() {
@@ -136,6 +139,7 @@ export default class AdminBadgesHomeController extends Controller {
   goToPrevPage() {
     if (this.hasPreviousPage) {
       this.currentPage = --this.currentPage;
+      this.resetAllBadgesSelection();
     }
   }
 
@@ -143,6 +147,7 @@ export default class AdminBadgesHomeController extends Controller {
   goToNextPage() {
     if (this.hasNextPage) {
       this.currentPage = ++this.currentPage;
+      this.resetAllBadgesSelection();
     }
   }
 

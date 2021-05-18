@@ -83,7 +83,8 @@
       <thead>
       <tr>
         <td>
-          <Input @type="checkbox" class="checkbox-inline" {{on "change" this.toggleAllBadgesSelection }}/>
+          <Input @type="checkbox" @checked={{this.allBadgeTableItems}} class="checkbox-inline"
+            {{on "change" this.toggleAllBadgesSelection }}/>
         </td>
         <td>{{t "admin.badges.tables.name"}}</td>
         <td>{{t "admin.badges.tables.description"}}</td>
