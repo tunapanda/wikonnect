@@ -12,6 +12,7 @@ export default class BadgeModel extends Model {
   @attr('boolean') published;
   @attr('number') frequency;
   @attr('number') reminder;
+  @attr() creatorId;
   @attr() reminderMessage;
   @attr() metadata;
   @attr('date') createdAt;

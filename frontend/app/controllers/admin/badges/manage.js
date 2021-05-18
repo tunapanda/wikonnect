@@ -7,6 +7,7 @@ export default class AdminBadgesManageController extends Controller {
   queryParams = ['editItem'];
 
   @service store;
+  @service me;
 
   @tracked createFormVisible = true;
   @tracked selectedBadgeModel;
@@ -21,7 +22,7 @@ export default class AdminBadgesManageController extends Controller {
         return { ...obj.serialize(), id: obj.id };
       }
     }
-    return this.store.createRecord('badge', {});
+    return this.store.createRecord('badge',{creatorId: this.me.id});
   }
 
   @action
