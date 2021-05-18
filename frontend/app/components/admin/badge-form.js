@@ -3,12 +3,14 @@ import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
 import Uploader from '../../utils/uploader';
+import badgeValidations from '../../validations/badge';
 
 export default class AdminBadgeFormComponent extends Component {
   @service store;
   @service notify;
 
   @tracked tempSelectedBadgeIcon;
+  badgeValidations = badgeValidations;
 
   get model() {
     const obj = this.args.model;
@@ -29,20 +31,29 @@ export default class AdminBadgeFormComponent extends Component {
 
   @action
   async submitForm(model) {
-    model.expiry = new Date(model.expiry);
+    if (!model.id) {
+      try {
+        await model.save();
+        console.log('after---->', model.id);
+      } catch (e) {}
+    } else {
+      model.expiry = new Date(model.expiry);
 
-    const original = this.store.peekRecord('badge', model.id);
+      const original = this.store.peekRecord('badge', model.id);
 
-    Object.keys(model).map((key) => {
-      original[key] = model[key];
-    });
-    try {
-      await original.save();
-      if (!this.tempSelectedBadgeIcon) {
-        // notify the user everything is successful
+      Object.keys(model).map((key) => {
+        original[key] = model[key];
+      });
+      try {
+        await original.save();
+        if (!this.tempSelectedBadgeIcon) {
+          //reset the form
+
+          // notify the user everything is successful
+        }
+      } catch (e) {
+        original.rollbackAttributes();
       }
-    } catch (e) {
-      original.rollbackAttributes();
     }
     if (this.tempSelectedBadgeIcon) {
       //upload icon
@@ -51,7 +62,7 @@ export default class AdminBadgeFormComponent extends Component {
         filename: this.tempSelectedBadgeIcon.name,
       });
       try {
-        await this.uploader.startUpload(
+        const res = await this.uploader.startUpload(
           [
             this.store.adapterFor('application').host,
             this.store.adapterFor('application').urlPrefix(),
@@ -60,6 +71,12 @@ export default class AdminBadgeFormComponent extends Component {
             '/badge-image',
           ].join('/')
         );
+
+        if (res.badge) {
+          this.store.pushPayload({ badge: res.badge });
+        }
+        //reset the icon
+        this.tempSelectedBadgeIcon = null;
       } catch (e) {}
     }
   }

@@ -4,7 +4,7 @@ export default class BadgeModel extends Model {
   @attr() name;
   @attr() slug;
   @attr() badgeUri;
-  @attr() trigger;
+  @attr() triggerId;
   @attr('number') points;
   @attr() description;
   @attr('date') expiry;

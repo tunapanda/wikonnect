@@ -28,16 +28,15 @@
       </div>
     </div>
   </div>
-
-  <BsForm @formLayout="horizontal" @model={{this.model}} @onSubmit={{this.submitForm}}
+  <BsForm @formLayout="horizontal" @model={{changeset this.model this.badgeValidations}} @onSubmit={{this.submitForm}}
           class="col-lg-7 main-form" as |form|>
-    <form.element @property="trigger" @label={{t "admin.badges.labels.trigger"}} as |el|>
+    <form.element @property="triggerId" @label={{t "admin.badges.labels.trigger"}} as |el|>
       <select id={{el.id}} required class="form-control" {{on "change" (fn this.triggerSelected el.setValue)}}>
-        {{#unless el.value}}
+        {{#unless this.model.triggerId}}
           <option disabled selected hidden value="">{{t "admin.badges.labels.trigger_placeholder"}}</option>
         {{/unless}}
         {{#each this.triggers as |x|}}
-          <option value="{{x.id}}" selected="{{if (eq el.value x.id) true}}">{{x.trigger}}</option>
+          <option value="{{x.id}}" selected="{{if (eq this.model.triggerId x.id) true}}">{{x.trigger}}</option>
         {{/each}}
       </select>
     </form.element>
