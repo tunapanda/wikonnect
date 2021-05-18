@@ -11,7 +11,7 @@ exports.seed = async (knex) => {
   for (let index = 0; index < triggers.length; index++) {
     fakeBadgeTriggers.push({
       description: faker.lorem.words(),
-      trigger: triggers[index]
+      name: triggers[index]
     });
   }
   await knex('badge_triggers').insert(fakeBadgeTriggers);
@@ -34,7 +34,7 @@ exports.seed = async (knex) => {
         updated_at: faker.date.recent(),
         expiry: faker.date.between(faker.date.past(), faker.date.soon()),
         is_deleted: faker.datatype.boolean(),
-        trigger: faker.random.arrayElement(triggerIds),
+        trigger_id: faker.random.arrayElement(triggerIds),
         published: faker.datatype.boolean(),
         frequency: faker.random.number(),
         reminder: faker.random.number(),
