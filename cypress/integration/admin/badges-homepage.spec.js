@@ -39,9 +39,6 @@ describe('Badges homepage table view', () => {
         return cy.badges({isDeleted: false});
     }
 
-    function defaultBadgesPerPage() {
-        return 9;
-    }
 
     beforeEach(() => {
         cy.login();
@@ -58,7 +55,7 @@ describe('Badges homepage table view', () => {
 
     it('Rows should have a link to a detailed badge view ', () => {
         cy.get('table.badges-table tbody tr')
-            .eq(Math.floor(Math.random() * defaultBadgesPerPage())) //pick any at random
+            .eq(1)
             .within(() => {
 
                 cy.get('a.details-btn')
@@ -72,7 +69,7 @@ describe('Badges homepage table view', () => {
 
     it('Rows should have a link to edit page ', () => {
         cy.get('table.badges-table tbody tr')
-            .eq(Math.floor(Math.random() * defaultBadgesPerPage())) //pick any at random
+            .eq(1)
             .within(() => {
                 cy.get('.extra-actions .dropdown-toggle')
                     .click()
@@ -127,7 +124,7 @@ describe('Badges homepage table view', () => {
     it('should be able to delete individual badge', () => {
         fetchBadges().as('original');
         cy.get('table.badges-table tbody tr')
-            .eq(Math.floor(Math.random() * defaultBadgesPerPage())) //pick any at random
+            .eq(1)
             .within(() => {
                 cy.get('.extra-actions .dropdown-toggle')
                     .click()
