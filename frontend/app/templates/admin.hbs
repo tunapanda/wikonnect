@@ -1,7 +1,7 @@
 <div class="d-flex admin-base">
   <Admin::Sidenav class=""></Admin::Sidenav>
   <div class="main-content-wrapper">
-    <Admin::MainHeader></Admin::MainHeader>
+    <Admin::MainHeader @notifications={{this.model}}></Admin::MainHeader>
     {{outlet}}
   </div>
 
