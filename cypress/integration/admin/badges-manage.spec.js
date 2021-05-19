@@ -135,6 +135,7 @@ describe("Badges management page", () => {
 
             });
 
+        cy.wait(4000)
         cy.get('.badges-list .badge-card .body')
             .contains('.name', badge.name)
             .siblings()
