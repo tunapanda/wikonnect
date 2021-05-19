@@ -27,7 +27,10 @@ export default class AdminBadgesManageController extends Controller {
         return { ...obj.serialize(), id: obj.id };
       }
     }
-    return this.store.createRecord('badge', { creatorId: this.me.id });
+    return this.store.createRecord('badge', {
+      creatorId: this.me.id,
+      published: true,
+    });
   }
 
   @action
