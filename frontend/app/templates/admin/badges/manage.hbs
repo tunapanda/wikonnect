@@ -15,7 +15,7 @@
       </div>
 
       {{#each this.badges  as |badge|}}
-        <div class="badge-card d-flex flex-column">
+        <div class="badge-card d-flex flex-column" id="badge-card-{{badge.id}}">
           <div class="body d-flex flex-row">
             <div class="left d-flex justify-content-center">
               <div class="badge-icon-container d-flex align-items-center justify-content-center">
@@ -39,7 +39,7 @@
                   <hr>
                   <menu.item>
 
-                    <button type="button" class="btn w-100" {{on "click" (fn this.updatePublishStatus badge) }}>
+                    <button type="button" class="btn w-100 btn-publish" {{on "click" (fn this.updatePublishStatus badge) }}>
                       {{#if badge.published}}
                         {{t "admin.badges.buttons.unpublish"}}
                       {{else}}
@@ -51,13 +51,13 @@
                   </menu.item>
 
                   <menu.item>
-                    <button type="button" class="btn w-100" {{on "click" (fn this.showBadgeCreationForm badge) }}>
+                    <button type="button" class="btn w-100 btn-edit" {{on "click" (fn this.showBadgeCreationForm badge) }}>
                       {{t "admin.badges.buttons.edit"}}
                     </button>
                   </menu.item>
 
                   <menu.item>
-                    <button type="button" class="btn w-100" {{on "click" (fn this.deleteBadge badge) }}>
+                    <button type="button" class="btn w-100 btn-delete" {{on "click" (fn this.deleteBadge badge) }}>
                       {{t "admin.badges.buttons.delete"}}
                     </button>
                   </menu.item>

@@ -31,7 +31,8 @@
   <BsForm @formLayout="horizontal" @model={{changeset this.model this.badgeValidations}} @onSubmit={{this.submitForm}}
           class="col-lg-7 main-form" as |form|>
     <form.element @property="triggerId" @label={{t "admin.badges.labels.trigger"}} as |el|>
-      <select id={{el.id}} required class="form-control" {{on "change" (fn this.triggerSelected el.setValue)}}>
+      <select id={{el.id}} required class="form-control trigger-select"
+        {{on "change" (fn this.triggerSelected el.setValue)}}>
         {{#unless this.model.triggerId}}
           <option disabled selected hidden value="">{{t "admin.badges.labels.trigger_placeholder"}}</option>
         {{/unless}}
@@ -42,39 +43,39 @@
     </form.element>
 
     <form.element @property="name" @label={{t "admin.badges.labels.name"}}  as |el|>
-      <el.control placeholder={{t "admin.badges.labels.name_placeholder"}}/>
+      <el.control placeholder={{t "admin.badges.labels.name_placeholder"}} class="name-input"/>
     </form.element>
 
     <form.element @controlType="textarea" @property="description"
                   @label={{t "admin.badges.labels.description"}}  as |el|>
-      <el.control placeholder={{t "admin.badges.labels.description_placeholder"}}/>
+      <el.control placeholder={{t "admin.badges.labels.description_placeholder"}}  class="description-input"/>
     </form.element>
 
 
     <form.element @controlType="date" @property="expiry" @label={{t "admin.badges.labels.expiry_date"}} as |el|>
-      <el.control required="true"></el.control>
+      <el.control class="expiry-input"></el.control>
     </form.element>
 
     <form.element @controlType="number" @property="frequency" @label={{t "admin.badges.labels.frequency"}} as |el|>
-      <el.control placeholder={{t "admin.badges.labels.frequency_placeholder"}}  required="true"/>
+      <el.control placeholder={{t "admin.badges.labels.frequency_placeholder"}} class="frequency-input"/>
     </form.element>
 
     <form.element @controlType="number" @property="points" @label={{t "admin.badges.labels.points"}} as |el|>
-      <el.control placeholder={{t "admin.badges.labels.points_placeholder"}} required="true"/>
+      <el.control placeholder={{t "admin.badges.labels.points_placeholder"}}  class="points-input"/>
     </form.element>
 
     <form.element @property="reminder" @label={{t "admin.badges.labels.reminder"}}  as |el|>
-      <el.control placeholder={{t "admin.badges.labels.reminder_placeholder"}} required="true"/>
+      <el.control placeholder={{t "admin.badges.labels.reminder_placeholder"}}  class="reminder-input"/>
     </form.element>
 
     <form.element @controlType="textarea" @property="reminderMessage"
                   @label={{t "admin.badges.labels.reminder_message"}}  as |el|>
-      <el.control placeholder={{t "admin.badges.labels.reminder_message_placeholder"}} required="true"/>
+      <el.control placeholder={{t "admin.badges.labels.reminder_message_placeholder"}}  class="reminder-message-input"/>
     </form.element>
 
 
     <div class="form-group d-flex justify-content-end mr-3">
-      <form.submitButton class="btn btn-primary"> {{t "admin.badges.buttons.save"}}</form.submitButton>
+      <form.submitButton class="btn btn-primary btn-submit"> {{t "admin.badges.buttons.save"}}</form.submitButton>
     </div>
   </BsForm>
 
