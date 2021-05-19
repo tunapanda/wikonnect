@@ -64,7 +64,7 @@
       <el.control placeholder={{t "admin.badges.labels.points_placeholder"}}  class="points-input"/>
     </form.element>
 
-    <form.element @property="reminder" @label={{t "admin.badges.labels.reminder"}}  as |el|>
+    <form.element @controlType="number"  @property="reminder" @label={{t "admin.badges.labels.reminder"}}  as |el|>
       <el.control placeholder={{t "admin.badges.labels.reminder_placeholder"}}  class="reminder-input"/>
     </form.element>
 
