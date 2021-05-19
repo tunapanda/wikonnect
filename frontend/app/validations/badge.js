@@ -3,6 +3,7 @@ import {
   validateNumber,
 } from 'ember-changeset-validations/validators';
 import validateDate from '../validators/date';
+import crossFieldValidator from '../validators/cross-field';
 
 export default {
   triggerId: [validatePresence({ presence: true })],
@@ -26,6 +27,7 @@ export default {
   reminder: [
     validatePresence({ presence: true, ignoreBlank: true, on: 'frequency' }),
     validateNumber({ positive: true }),
+    crossFieldValidator({ on: 'frequency', operator: '<' }),
   ],
   reminderMessage: [validatePresence(true)],
 };
