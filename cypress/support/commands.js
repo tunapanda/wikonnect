@@ -81,3 +81,55 @@ Cypress.Commands.add('comments', (queryParams = {}) => {
         .its('body.comment')
         .then((chapters) => chapters);
 });
+
+Cypress.Commands.add('badges', (queryParams = {}) => {
+    const qs = Object.keys(queryParams).reduce((acc, key) => {
+        acc += `${key}=${queryParams[key]}&`;
+        return acc;
+    }, '')
+
+    let headers = {'Accept': `application/json`}
+
+    // check if user is authenticated
+    const session = window.localStorage.getItem('ember_simple_auth-session');
+    if (session) {
+        const parsed = JSON.parse(session);
+        if (parsed.authenticated && parsed.authenticated.token) {
+            headers = {...headers, 'Authorization': `Bearer ${parsed.authenticated.token}`}
+        }
+    }
+
+    return cy.request({
+        method: 'GET',
+        url: `/api/v1/badges?${qs}`,
+        headers: headers
+    })
+        .its('body.badge')
+        .then((badges) => badges);
+});
+
+Cypress.Commands.add('triggers', (queryParams = {}) => {
+    const qs = Object.keys(queryParams).reduce((acc, key) => {
+        acc += `${key}=${queryParams[key]}&`;
+        return acc;
+    }, '')
+
+    let headers = {'Accept': `application/json`}
+
+    // check if user is authenticated
+    const session = window.localStorage.getItem('ember_simple_auth-session');
+    if (session) {
+        const parsed = JSON.parse(session);
+        if (parsed.authenticated && parsed.authenticated.token) {
+            headers = {...headers, 'Authorization': `Bearer ${parsed.authenticated.token}`}
+        }
+    }
+
+    return cy.request({
+        method: 'GET',
+        url: `/api/v1/triggers?${qs}`,
+        headers: headers
+    })
+        .its('body.trigger')
+        .then((triggers) => triggers);
+});
