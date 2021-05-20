@@ -1,0 +1,184 @@
+<div class="users-badges-homepage">
+  <div class="header-section">
+    <h1 class="title">{{t "admin.users_and_badges.title"}}</h1>
+    <div class="row">
+      <div class="col-lg-4">
+        <div class="card action-prompt-card">
+          <div class="card-body">
+            <p class="prompt-title">
+              {{t "admin.users_and_badges.labels.badge_create_prompt" name=this.me.name}}
+            </p>
+            <LinkTo @route="admin.badges" class="btn btn-primary">
+              {{svg-jar "plus-circle" height="21" width="21" stroke="white"}}
+              {{t "admin.users_and_badges.buttons.create"}}
+            </LinkTo>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-3">
+        <div class="card badges-total-card">
+          <div class="card-body text-center">
+            <div class="card-icon">
+              {{svg-jar "target" height="50" width="50" stroke="white"}}
+            </div>
+            <div class="card-sect-title">{{t "admin.users_and_badges.labels.badges_total"}}</div>
+            <div class="badges-total-count">
+              <strong>{{this.badges.length}}</strong>
+            </div>
+            <LinkTo @route="admin.badges" class="text-primary see-all">
+              {{t "admin.users_and_badges.buttons.view_all"}}
+              <span class="link-icon"> {{svg-jar "chevron-right" height="30"}}</span>
+            </LinkTo>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-3">
+        <div class="card badges-earned-total-card">
+          <div class="card-body  text-center">
+            <div class="card-icon">
+              {{svg-jar "badge" height="50" width="50" stroke="white"}}
+            </div>
+            <div class="card-sect-title">{{t "admin.users_and_badges.labels.badges_earned"}}</div>
+            <div class="badges-total-count">
+              <strong>{{this.badgesUnlockedCount}}</strong>
+            </div>
+            <LinkTo @route="admin.badges" class="text-primary see-all">
+              {{t "admin.users_and_badges.buttons.view_all"}}
+              <span class="link-icon"> {{svg-jar "chevron-right" height="30"}}</span>
+            </LinkTo>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="user-badges-section  pt-5 pb-5">
+
+    <div class="submenu-section d-flex justify-content-between">
+      <div class="left-menu d-flex">
+        <p class="summary pr-3">{{this.paginationSummary}}</p>
+        <div class="search-form">
+          <Input type="search" class="search-input form-control" @value={{this.userSearchTerm}}
+                 placeholder={{t "admin.users_and_badges.labels.search_placeholder"}}/>
+          <span class="search-icon {{if this.userSearchTerm 'd-none'}}"></span>
+        </div>
+      </div>
+      <div class="right-menu">
+      </div>
+    </div>
+
+    <table class="table badges-users-table">
+      <thead>
+      <tr>
+        <td>{{t "admin.users_and_badges.table.header.name"}}</td>
+        <td>{{t "admin.users_and_badges.table.header.points"}}</td>
+        <td>{{t "admin.users_and_badges.table.header.badges"}}</td>
+        <td>{{t "admin.users_and_badges.table.header.view"}}</td>
+      </tr>
+      </thead>
+      <tbody>
+
+      <tr>
+        <td class="user-profile">
+          <div class="d-flex">
+            <div class="image-container">
+              <img src="/uploads/images/profile-placeholder.gif" class="user-profile-image" alt="">
+            </div>
+            <div class="details d-flex flex-column">
+              <span class="name">Jane Doe</span>
+              <span class="location">Nairobi</span>
+            </div>
+          </div>
+        </td>
+        <td class="points">
+          2000
+        </td>
+        <td class="badges-container">
+          <div class="badges">
+            <div class="mini-badge-container">
+              <img src="https://pg.labskenya.com/badge.svg" class="badge-icon" alt="" role="presentation">
+            </div>
+            <div class="mini-badge-container">
+              <img src="https://pg.labskenya.com/medba.svg" class="badge-icon" alt="" role="presentation">
+            </div>
+            <div class="mini-badge-container">
+              <img src="https://pg.labskenya.com/medal.svg" class="badge-icon" alt="" role="presentation">
+            </div>
+          </div>
+        </td>
+        <td>
+          <LinkTo @route="profile" class="btn-sm btn btn-primary view-profile-btn">
+            {{t "admin.users_and_badges.buttons.view_user"}}
+          </LinkTo>
+        </td>
+      </tr>
+
+      <tr>
+        <td class="user-profile">
+          <div class="d-flex">
+            <div class="image-container">
+              <img src="/uploads/images/profile-placeholder.gif" class="user-profile-image" alt="">
+            </div>
+            <div class="details d-flex flex-column">
+              <span class="name">Marete Buda</span>
+              <span class="location">Nairobi</span>
+            </div>
+          </div>
+        </td>
+        <td class="points">
+          2000
+        </td>
+        <td class="badges-container">
+          <div class="badges d-flex">
+            <div class="mini-badge-container">
+              <img src="https://pg.labskenya.com/badge.svg" class="badge-icon" alt="">
+            </div>
+            <div class="mini-badge-container">
+              <img src="https://pg.labskenya.com/medba.svg" class="badge-icon" alt="">
+            </div>
+            <div class="mini-badge-container">
+              <img src="https://pg.labskenya.com/medal.svg" class="badge-icon" alt="">
+            </div>
+            <div class="extra-badges-total">
+              2+
+            </div>
+          </div>
+        </td>
+        <td>
+          <LinkTo @route="profile" class="btn-sm btn btn-primary view-profile-btn">
+            {{t "admin.users_and_badges.buttons.view_user"}}
+          </LinkTo>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+    <div class="footer-pagination d-flex justify-content-between">
+      <div class="form-group form-inline">
+        <label for="perPage" class="pr-3">{{t "table.pagination.per_page"}} </label>
+        <select id="perPage" class="form-control" {{on "change" this.updatePerPage}}>
+          {{#each this.perPageOptions as |opt|}}
+            {{#if opt.selected}}
+              <option value="{{opt.value}}" selected>{{opt.value}}</option>
+            {{else}}
+              <option value="{{opt.value}}">{{opt.value}}</option>
+            {{/if}}
+          {{/each}}
+        </select>
+      </div>
+
+      <ul class="pagination">
+        <li class="page-item {{if this.hasPreviousPage '' 'disabled'}}">
+        <span class="page-link" role="button" {{on "click" this.goToPrevPage}}>
+          {{t "table.pagination.previous"}}</span>
+        </li>
+        <li class="page-item {{if this.hasNextPage '' 'disabled'}}">
+        <span class="page-link" role="button" {{on "click" this.goToNextPage}}>
+          {{t "table.pagination.next"}}
+        </span>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>

@@ -99,3 +99,15 @@ main_navbar:
   notifications:
     title: Arifa
     empty: Huna arifa mpya
+
+table:
+  empty: Hakuna rekodi za kuonyesha
+  pagination:
+    per_page: Idadi kwa Ukurasa
+    previous: Iliyotangulia
+    next: Ifuatayo
+
+badge_popup:
+  title: Jinsi ya kupata hii beji
+  ok: SAWA NIMEPATA!
+  points: Pointi

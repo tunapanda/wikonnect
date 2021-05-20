@@ -6,3 +6,23 @@ sidenav:
   badges: Beji
   manage_badges: Usimamizi wa Beji
   badge_users: Watumiaji na Beji
+
+users_and_badges:
+  title: Watumiaji wote na Beji
+  buttons:
+    create: Unda beji mpya
+    details: Maelezo
+    view_all: Ona yote
+    view_user: Angalia wasifu
+
+  labels:
+    badge_create_prompt: Halo {name}, ungependa kuunda baji mpya leo?
+    badges_total: Idadi ya Beji
+    badges_earned: Beji Zilizopatikana
+    search_placeholder: Tafuta mtumiaji
+  table:
+    header:
+      name: Watu
+      points: Pointi zilizopatikana
+      badges: Beji zilizopatikana
+      view: Mtazamo

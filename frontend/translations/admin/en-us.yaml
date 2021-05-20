@@ -6,3 +6,23 @@ sidenav:
   badges: Badges
   manage_badges: Manage Badges
   badge_users: Users & Badges
+
+users_and_badges:
+  title: All Users & Badges
+  buttons:
+    create: Create new badge
+    details: Details
+    view_all: See All
+    view_user: View profile
+
+  labels:
+    badge_create_prompt: Hi {name},would you like to create a new badge today?
+    badges_total: Number of Badges
+    badges_earned: Badges Earned
+    search_placeholder: Search user
+  table:
+    header:
+      name: People
+      points: Points earned
+      badges: Badges earned
+      view: view

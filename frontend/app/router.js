@@ -46,7 +46,9 @@ Router.map(function () {
   this.route('admin', function () {
     this.route('dashboard', { path: '/' });
     this.route('users');
-    this.route('badges');
+    this.route('badges', function () {
+      this.route('users');
+    });
   });
 
   // 404 page should always be the last
