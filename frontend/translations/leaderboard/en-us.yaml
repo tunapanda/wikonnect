@@ -1,0 +1,13 @@
+title: Leaderboard
+subtitle: Top gainers
+earnedPoints: Points earned
+table:
+  header:
+    user: People
+    points: Points earned
+    badges: Badges earned
+    action: view
+
+buttons:
+  view_profile: View profile
+

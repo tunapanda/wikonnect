@@ -1,0 +1,261 @@
+<div class="leaderboard-wrapper">
+
+  <div class="bg-panel"></div>
+  <div class="leaderboard-main-container container-lg">
+    <div class="title">{{t "leaderboard.title"}}</div>
+
+    <div class="top-leaders d-flex align-items-center">
+      <div class="leader-card second-winner d-flex flex-column">
+        <div class="top d-flex justify-content-between">
+          <div class="left d-flex">
+            <div class="image-container">
+              <img src="/uploads/images/profile-placeholder.gif" class="user-profile-image" alt="">
+            </div>
+            <div class="details d-flex flex-column">
+              <span class="name">Jane Doe</span>
+              <span class="location">Nairobi</span>
+            </div>
+          </div>
+
+          <div class="right d-flex flex-column">
+            <span class="points">1,000</span>
+            <span class="points-title">{{t "leaderboard.earnedPoints"}}</span>
+
+          </div>
+        </div>
+
+        <hr class="w-100">
+        <div class="bottom d-flex justify-content-between">
+          <div class="badges-list">
+            <div class="badge-icon-container">
+              <img src="https://pg.labskenya.com/badge.svg" class="badge-icon" alt="" role="presentation">
+            </div>
+            <div class="badge-icon-container">
+              <img src="https://pg.labskenya.com/medal.svg" class="badge-icon" alt="" role="presentation">
+            </div>
+            <div class="badge-icon-container">
+              <img src="https://pg.labskenya.com/medba.svg" class="badge-icon" alt="" role="presentation">
+            </div>
+            <div class="badge-icon-container">
+              +5
+            </div>
+          </div>
+
+          <LinkTo @route="profile" class="btn-sm btn btn-primary view-profile-btn">
+            {{t "admin.users_and_badges.buttons.view_user"}}
+          </LinkTo>
+        </div>
+      </div>
+
+      <div class="leader-card first-winner d-flex flex-column">
+        <div class="top d-flex justify-content-between">
+          <div class="left d-flex">
+            <div class="image-container">
+              <img src="/uploads/images/profile-placeholder.gif" class="user-profile-image" alt="">
+            </div>
+            <div class="details d-flex flex-column">
+              <span class="name">Jane Doe</span>
+              <span class="location">Nairobi</span>
+            </div>
+          </div>
+
+          <div class="right d-flex flex-column">
+            <span class="points">1,000</span>
+            <span class="points-title">{{t "leaderboard.earnedPoints"}}</span>
+
+          </div>
+        </div>
+
+        <hr class="w-100">
+        <div class="bottom d-flex justify-content-between">
+          <div class="badges-list">
+            <div class="badge-icon-container">
+              <img src="https://pg.labskenya.com/badge.svg" class="badge-icon" alt="" role="presentation">
+            </div>
+            <div class="badge-icon-container">
+              <img src="https://pg.labskenya.com/medal.svg" class="badge-icon" alt="" role="presentation">
+            </div>
+            <div class="badge-icon-container">
+              <img src="https://pg.labskenya.com/medba.svg" class="badge-icon" alt="" role="presentation">
+            </div>
+            <div class="badge-icon-container">
+              +5
+            </div>
+          </div>
+
+          <LinkTo @route="profile" class="btn-sm btn btn-primary view-profile-btn">
+            {{t "admin.users_and_badges.buttons.view_user"}}
+          </LinkTo>
+        </div>
+        <div class="confetti-one"></div>
+        <div class="confetti-two"></div>
+      </div>
+
+
+      <div class="leader-card third-winner d-flex flex-column">
+        <div class="top d-flex justify-content-between">
+          <div class="left d-flex">
+            <div class="image-container">
+              <img src="/uploads/images/profile-placeholder.gif" class="user-profile-image" alt="">
+            </div>
+            <div class="details d-flex flex-column">
+              <span class="name">Charles Kiprop</span>
+              <span class="location">Mombasa</span>
+            </div>
+          </div>
+
+          <div class="right d-flex flex-column">
+            <span class="points">9,000</span>
+            <span class="points-title">{{t "leaderboard.earnedPoints"}}</span>
+
+          </div>
+        </div>
+
+        <hr class="w-100">
+        <div class="bottom d-flex justify-content-between">
+          <div class="badges-list">
+            <div class="badge-icon-container">
+              <img src="https://pg.labskenya.com/badge.svg" class="badge-icon" alt="" role="presentation">
+            </div>
+            <div class="badge-icon-container">
+              <img src="https://pg.labskenya.com/medal.svg" class="badge-icon" alt="" role="presentation">
+            </div>
+            <div class="badge-icon-container">
+              <img src="https://pg.labskenya.com/medba.svg" class="badge-icon" alt="" role="presentation">
+            </div>
+            <div class="badge-icon-container">
+              +4
+            </div>
+          </div>
+
+          <LinkTo @route="profile" class="btn-sm btn btn-primary view-profile-btn">
+            {{t "admin.users_and_badges.buttons.view_user"}}
+          </LinkTo>
+        </div>
+      </div>
+
+    </div>
+    <div class="sub-title">{{t "leaderboard.subtitle"}}</div>
+
+
+    <table class="table leaderboard-table">
+      <thead>
+      <tr>
+        <td></td>
+        <td>{{t "leaderboard.table.header.user"}}</td>
+        <td>{{t "leaderboard.table.header.points"}}</td>
+        <td>{{t "leaderboard.table.header.badges"}}</td>
+        <td>{{t "leaderboard.table.header.action"}}</td>
+      </tr>
+      </thead>
+      <tbody>
+
+      <tr>
+        <td class="position"><span>4</span></td>
+        <td class="user-profile">
+          <div class="d-flex">
+            <div class="image-container">
+              <img src="/uploads/images/profile-placeholder.gif" class="user-profile-image" alt="">
+            </div>
+            <div class="details d-flex flex-column">
+              <span class="name">Jane Doe</span>
+              <span class="location">Nairobi</span>
+            </div>
+          </div>
+        </td>
+        <td class="points">
+          2000
+        </td>
+        <td class="badges-container">
+          <div class="badges">
+            <div class="mini-badge-container">
+              <img src="https://pg.labskenya.com/badge.svg" class="badge-icon" alt="" role="presentation">
+            </div>
+            <div class="mini-badge-container">
+              <img src="https://pg.labskenya.com/medba.svg" class="badge-icon" alt="" role="presentation">
+            </div>
+            <div class="mini-badge-container">
+              <img src="https://pg.labskenya.com/medal.svg" class="badge-icon" alt="" role="presentation">
+            </div>
+          </div>
+        </td>
+        <td>
+          <LinkTo @route="profile" class="btn-sm btn btn-primary view-profile-btn">
+            {{t "admin.users_and_badges.buttons.view_user"}}
+          </LinkTo>
+        </td>
+      </tr>
+
+      <tr>
+        <td class="position"><span>5</span></td>
+        <td class="user-profile">
+          <div class="d-flex">
+            <div class="image-container">
+              <img src="/uploads/images/profile-placeholder.gif" class="user-profile-image" alt="">
+            </div>
+            <div class="details d-flex flex-column">
+              <span class="name">Marete Buda</span>
+              <span class="location">Nairobi</span>
+            </div>
+          </div>
+        </td>
+        <td class="points">
+          2000
+        </td>
+        <td class="badges-container">
+          <div class="badges d-flex">
+            <div class="mini-badge-container">
+              <img src="https://pg.labskenya.com/badge.svg" class="badge-icon" alt="">
+            </div>
+            <div class="mini-badge-container">
+              <img src="https://pg.labskenya.com/medba.svg" class="badge-icon" alt="">
+            </div>
+            <div class="mini-badge-container">
+              <img src="https://pg.labskenya.com/medal.svg" class="badge-icon" alt="">
+            </div>
+            <div class="extra-badges-total">
+              2+
+            </div>
+          </div>
+        </td>
+        <td>
+          <LinkTo @route="profile" class="btn-sm btn btn-primary view-profile-btn">
+            {{t "admin.users_and_badges.buttons.view_user"}}
+          </LinkTo>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+
+    <div class="footer-pagination d-flex justify-content-between">
+      <div class="form-group form-inline">
+        <label for="perPage" class="pr-3">{{t "table.pagination.per_page"}} </label>
+        <select id="perPage" class="form-control" {{on "change" this.updatePerPage}}>
+          {{#each this.perPageOptions as |opt|}}
+            {{#if opt.selected}}
+              <option value="{{opt.value}}" selected>{{opt.value}}</option>
+            {{else}}
+              <option value="{{opt.value}}">{{opt.value}}</option>
+            {{/if}}
+          {{/each}}
+        </select>
+      </div>
+
+      <ul class="pagination">
+        <li class="page-item {{if this.hasPreviousPage '' 'disabled'}}">
+        <span class="page-link" role="button" {{on "click" this.goToPrevPage}}>
+          {{t "table.pagination.previous"}}</span>
+        </li>
+        <li class="page-item {{if this.hasNextPage '' 'disabled'}}">
+        <span class="page-link" role="button" {{on "click" this.goToNextPage}}>
+          {{t "table.pagination.next"}}
+        </span>
+        </li>
+      </ul>
+    </div>
+
+
+  </div>
+
+
+</div>

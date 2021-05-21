@@ -43,6 +43,8 @@ Router.map(function () {
   this.route('reset_password');
   this.route('verify');
 
+  this.route('leaderboard');
+
   this.route('admin', function () {
     this.route('dashboard', { path: '/' });
     this.route('users');
