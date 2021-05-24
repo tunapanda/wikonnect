@@ -1091,6 +1091,131 @@ define({ "api": [
         ]
       }
     },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "badge",
+            "description": "<p>Top level object</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "badge[id]",
+            "description": "<p>badge id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "badge[name]",
+            "description": "<p>name given to badge</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "badge[slug]",
+            "description": "<p>path to view the badge</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "badge[badgeUri]",
+            "description": "<p>image link</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "badge[triggerId]",
+            "description": "<p>foreign key for badge trigger</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "badge[creatorId]",
+            "description": "<p>creator id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "badge[points]",
+            "description": "<p>points awarded to badge owner</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "badge[description]",
+            "description": "<p>badge explanation</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "badge[expiry]",
+            "description": "<p>date time of expiry of the badge</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Boolean",
+            "optional": false,
+            "field": "badge[isDeleted]",
+            "description": "<p>boolean indicating if soft deleted</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "badge[metadata]",
+            "description": "<p>JSON metadata</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "badge[frequency]",
+            "description": "<p>No. of times one should trigger to earn the badge</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "badge[reminder]",
+            "description": "<p>No. of times before a reminder sent</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "badge[reminderMessage]",
+            "description": "<p>Reminder message to show</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "badge[createdAt]",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "badge[updatedAt]",
+            "description": ""
+          }
+        ]
+      }
+    },
     "error": {
       "fields": {
         "Error 4xx": [
@@ -1248,8 +1373,8 @@ define({ "api": [
             "group": "Success 200",
             "type": "String",
             "optional": false,
-            "field": "badge[trigger]",
-            "description": "<p>foreign key for badge</p>"
+            "field": "badge[triggerId]",
+            "description": "<p>foreign key for badge trigger</p>"
           },
           {
             "group": "Success 200",
@@ -1292,6 +1417,27 @@ define({ "api": [
             "optional": false,
             "field": "badge[metadata]",
             "description": "<p>JSON metadata</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "badge[frequency]",
+            "description": "<p>No. of times one should trigger to earn the badge</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "badge[reminder]",
+            "description": "<p>No. of times before a reminder sent</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "badge[reminderMessage]",
+            "description": "<p>Reminder message to show</p>"
           },
           {
             "group": "Success 200",
@@ -1392,8 +1538,8 @@ define({ "api": [
             "group": "Success 200",
             "type": "String",
             "optional": false,
-            "field": "badge[trigger]",
-            "description": "<p>foreign key for badge</p>"
+            "field": "badge[triggerId]",
+            "description": "<p>foreign key for badge trigger</p>"
           },
           {
             "group": "Success 200",
@@ -1436,6 +1582,27 @@ define({ "api": [
             "optional": false,
             "field": "badge[metadata]",
             "description": "<p>JSON metadata</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "badge[frequency]",
+            "description": "<p>No. of times one should trigger to earn the badge</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "badge[reminder]",
+            "description": "<p>No. of times before a reminder sent</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "badge[reminderMessage]",
+            "description": "<p>Reminder message to show</p>"
           },
           {
             "group": "Success 200",
@@ -1508,27 +1675,13 @@ define({ "api": [
             "group": "Request Body",
             "type": "String",
             "optional": false,
-            "field": "badge[id]",
-            "description": "<p>badge id</p>"
-          },
-          {
-            "group": "Request Body",
-            "type": "String",
-            "optional": false,
             "field": "badge[name]",
             "description": "<p>name given to badge</p>"
           },
           {
             "group": "Request Body",
             "type": "String",
-            "optional": false,
-            "field": "badge[slug]",
-            "description": "<p>path to view the badge</p>"
-          },
-          {
-            "group": "Request Body",
-            "type": "String",
-            "optional": false,
+            "optional": true,
             "field": "badge[badgeUri]",
             "description": "<p>image link</p>"
           },
@@ -1536,8 +1689,8 @@ define({ "api": [
             "group": "Request Body",
             "type": "String",
             "optional": false,
-            "field": "badge[trigger]",
-            "description": "<p>foreign key for badge</p>"
+            "field": "badge[triggerId]",
+            "description": "<p>foreign key for badge trigger</p>"
           },
           {
             "group": "Request Body",
@@ -1570,15 +1723,36 @@ define({ "api": [
           {
             "group": "Request Body",
             "type": "Boolean",
-            "optional": false,
+            "optional": true,
             "field": "badge[isDeleted]",
             "description": "<p>boolean indicating if soft deleted</p>"
           },
           {
             "group": "Request Body",
-            "optional": false,
+            "optional": true,
             "field": "badge[metadata]",
             "description": "<p>JSON metadata</p>"
+          },
+          {
+            "group": "Request Body",
+            "type": "Number",
+            "optional": false,
+            "field": "badge[frequency]",
+            "description": "<p>No. of times one should trigger to earn the badge</p>"
+          },
+          {
+            "group": "Request Body",
+            "type": "Number",
+            "optional": false,
+            "field": "badge[reminder]",
+            "description": "<p>No. of times before a reminder sent</p>"
+          },
+          {
+            "group": "Request Body",
+            "type": "String",
+            "optional": false,
+            "field": "badge[reminderMessage]",
+            "description": "<p>Reminder message to show</p>"
           }
         ]
       }
@@ -1625,8 +1799,8 @@ define({ "api": [
             "group": "Success 200",
             "type": "String",
             "optional": false,
-            "field": "badge[trigger]",
-            "description": "<p>foreign key for badge</p>"
+            "field": "badge[triggerId]",
+            "description": "<p>foreign key for badge trigger</p>"
           },
           {
             "group": "Success 200",
@@ -1669,6 +1843,27 @@ define({ "api": [
             "optional": false,
             "field": "badge[metadata]",
             "description": "<p>JSON metadata</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "badge[frequency]",
+            "description": "<p>No. of times one should trigger to earn the badge</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "badge[reminder]",
+            "description": "<p>No. of times before a reminder sent</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "badge[reminderMessage]",
+            "description": "<p>Reminder message to show</p>"
           },
           {
             "group": "Success 200",
@@ -1798,8 +1993,8 @@ define({ "api": [
             "group": "Success 200",
             "type": "String",
             "optional": false,
-            "field": "badge[trigger]",
-            "description": "<p>foreign key for badge</p>"
+            "field": "badge[triggerId]",
+            "description": "<p>foreign key for badge trigger</p>"
           },
           {
             "group": "Success 200",
@@ -1842,6 +2037,27 @@ define({ "api": [
             "optional": false,
             "field": "badge[metadata]",
             "description": "<p>JSON metadata</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "badge[frequency]",
+            "description": "<p>No. of times one should trigger to earn the badge</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "badge[reminder]",
+            "description": "<p>No. of times before a reminder sent</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "badge[reminderMessage]",
+            "description": "<p>Reminder message to show</p>"
           },
           {
             "group": "Success 200",
@@ -5813,6 +6029,420 @@ define({ "api": [
     },
     "filename": "server/routes/search.js",
     "groupTitle": "Search"
+  },
+  {
+    "type": "delete",
+    "url": "/api/v1/triggers/:id",
+    "title": "Delete a trigger.",
+    "name": "DELETE_a_trigger",
+    "description": "<p>DELETE a trigger using id</p>",
+    "group": "Trigger",
+    "permission": [
+      {
+        "name": "[admin, superadmin]"
+      }
+    ],
+    "version": "0.4.0",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Bearer &lt;&lt; JWT here&gt;&gt;</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "URI Param": [
+          {
+            "group": "URI Param",
+            "type": "String",
+            "optional": false,
+            "field": "id",
+            "description": "<p>trigger id</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 201 OK\n{ }",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "server/routes/triggers.js",
+    "groupTitle": "Trigger",
+    "sampleRequest": [
+      {
+        "url": "https://app.wikonnect.org/api/v1/triggers/:id"
+      }
+    ]
+  },
+  {
+    "type": "get",
+    "url": "/api/v1/triggers/:id",
+    "title": "GET a trigger details.",
+    "name": "GET_a_trigger_details",
+    "group": "Trigger",
+    "permission": [
+      {
+        "name": "authenticated user"
+      }
+    ],
+    "version": "0.4.0",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Bearer &lt;&lt; JWT here&gt;&gt;</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "URI Param": [
+          {
+            "group": "URI Param",
+            "type": "String",
+            "optional": false,
+            "field": "id",
+            "description": "<p>Id of the trigger to update</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "trigger",
+            "description": "<p>Top level object</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "trigger[id]",
+            "description": "<p>trigger id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "trigger[name]",
+            "description": "<p>name given to trigger</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "trigger[description]",
+            "description": "<p>trigger explanation</p>"
+          }
+        ]
+      }
+    },
+    "filename": "server/routes/triggers.js",
+    "groupTitle": "Trigger",
+    "sampleRequest": [
+      {
+        "url": "https://app.wikonnect.org/api/v1/triggers/:id"
+      }
+    ]
+  },
+  {
+    "type": "get",
+    "url": "/api/v1/triggers",
+    "title": "GET all trigger details.",
+    "name": "GET_all_trigger_details",
+    "group": "Trigger",
+    "permission": [
+      {
+        "name": "authenticated user"
+      }
+    ],
+    "version": "0.4.0",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Bearer &lt;&lt; JWT here&gt;&gt;</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Object[]",
+            "optional": false,
+            "field": "trigger",
+            "description": "<p>Top level object</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "trigger[id]",
+            "description": "<p>trigger id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "trigger[name]",
+            "description": "<p>name given to trigger</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "trigger[description]",
+            "description": "<p>trigger explanation</p>"
+          }
+        ]
+      }
+    },
+    "filename": "server/routes/triggers.js",
+    "groupTitle": "Trigger",
+    "sampleRequest": [
+      {
+        "url": "https://app.wikonnect.org/api/v1/triggers"
+      }
+    ]
+  },
+  {
+    "type": "post",
+    "url": "/api/v1/triggers/",
+    "title": "POST a new trigger.",
+    "name": "POST_a_trigger_details",
+    "group": "Trigger",
+    "permission": [
+      {
+        "name": "authenticated user"
+      }
+    ],
+    "version": "0.4.0",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Bearer &lt;&lt; JWT here&gt;&gt;</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Request Body": [
+          {
+            "group": "Request Body",
+            "type": "Object",
+            "optional": false,
+            "field": "trigger",
+            "description": "<p>Top level object</p>"
+          },
+          {
+            "group": "Request Body",
+            "type": "Object",
+            "optional": false,
+            "field": "trigger[id]",
+            "description": "<p>trigger id</p>"
+          },
+          {
+            "group": "Request Body",
+            "type": "Object",
+            "optional": false,
+            "field": "trigger[name]",
+            "description": "<p>name given to trigger</p>"
+          },
+          {
+            "group": "Request Body",
+            "type": "Object",
+            "optional": false,
+            "field": "trigger[description]",
+            "description": "<p>trigger explanation</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "trigger",
+            "description": "<p>Top level object</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "trigger[id]",
+            "description": "<p>trigger id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "trigger[name]",
+            "description": "<p>name given to trigger</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "trigger[description]",
+            "description": "<p>trigger explanation</p>"
+          }
+        ]
+      }
+    },
+    "filename": "server/routes/triggers.js",
+    "groupTitle": "Trigger",
+    "sampleRequest": [
+      {
+        "url": "https://app.wikonnect.org/api/v1/triggers/"
+      }
+    ]
+  },
+  {
+    "type": "put",
+    "url": "/api/v1/triggers/:id",
+    "title": "PUT a trigger details.",
+    "name": "PUT_a_trigger_details",
+    "group": "Trigger",
+    "permission": [
+      {
+        "name": "authenticated user"
+      }
+    ],
+    "version": "0.4.0",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Bearer &lt;&lt; JWT here&gt;&gt;</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "URI Param": [
+          {
+            "group": "URI Param",
+            "type": "String",
+            "optional": false,
+            "field": "id",
+            "description": "<p>Id of the trigger to update</p>"
+          }
+        ],
+        "Request Body": [
+          {
+            "group": "Request Body",
+            "type": "Object",
+            "optional": false,
+            "field": "trigger",
+            "description": "<p>Top level object</p>"
+          },
+          {
+            "group": "Request Body",
+            "type": "Object",
+            "optional": false,
+            "field": "trigger[id]",
+            "description": "<p>trigger id</p>"
+          },
+          {
+            "group": "Request Body",
+            "type": "Object",
+            "optional": false,
+            "field": "trigger[name]",
+            "description": "<p>name given to trigger</p>"
+          },
+          {
+            "group": "Request Body",
+            "type": "Object",
+            "optional": false,
+            "field": "trigger[description]",
+            "description": "<p>trigger explanation</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "trigger",
+            "description": "<p>Top level object</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "trigger[id]",
+            "description": "<p>trigger id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "trigger[name]",
+            "description": "<p>name given to trigger</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "trigger[description]",
+            "description": "<p>trigger explanation</p>"
+          }
+        ]
+      }
+    },
+    "filename": "server/routes/triggers.js",
+    "groupTitle": "Trigger",
+    "sampleRequest": [
+      {
+        "url": "https://app.wikonnect.org/api/v1/triggers/:id"
+      }
+    ]
   },
   {
     "type": "get",

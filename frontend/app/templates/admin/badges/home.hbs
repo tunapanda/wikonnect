@@ -1,0 +1,176 @@
+<div class="badges-homepage">
+  <div class="header-section">
+    <h1 class="title">{{t "admin.badges.titles.badges"}}</h1>
+    <div class="row">
+      <div class="col-lg-4">
+        <div class="card action-prompt-card">
+          <div class="card-body">
+            <p class="prompt-title">
+              {{t "admin.badges.labels.badge_create_prompt" name=this.me.name}}
+            </p>
+            <LinkTo @route="admin.badges.manage" class="btn btn-primary">
+              {{svg-jar "plus-circle" height="21" width="21" stroke="white"}}
+              {{t "admin.badges.buttons.create"}}
+            </LinkTo>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-3">
+        <div class="card badges-total-card">
+          <div class="card-body text-center">
+            <div class="card-icon">
+              {{svg-jar "target" height="50" width="50" stroke="white"}}
+            </div>
+            <div class="card-sect-title">{{t "admin.badges.labels.badges_total"}}</div>
+            <div class="badges-total-count">
+              <strong>{{this.badgesCount}}</strong>
+            </div>
+            <LinkTo @route="admin.badges.home" class="text-primary see-all">
+              {{t "admin.badges.buttons.view_all"}}
+              <span class="link-icon"> {{svg-jar "chevron-right" height="30"}}</span>
+            </LinkTo>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-3">
+        <div class="card badges-earned-total-card">
+          <div class="card-body  text-center">
+            <div class="card-icon">
+              {{svg-jar "badge" height="50" width="50" stroke="white"}}
+            </div>
+            <div class="card-sect-title">{{t "admin.badges.labels.badges_earned"}}</div>
+            <div class="badges-total-count">
+              <strong>{{this.badgesUnlockedCount}}</strong>
+            </div>
+            <LinkTo @route="admin.badges.home" class="text-primary see-all">
+              {{t "admin.badges.buttons.view_all"}}
+              <span class="link-icon"> {{svg-jar "chevron-right" height="30"}}</span>
+            </LinkTo>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="badges-section pt-5 pb-5">
+
+    <div class="submenu-section d-flex justify-content-between">
+      <div class="left-menu d-flex">
+        <p class="summary pr-3">{{this.paginationSummary}}</p>
+        <div class="badges-search">
+          <Input type="search" class="search-input form-control" @value={{this.badgeSearchTerm}}
+                 placeholder={{t "admin.badges.labels.search_placeholder"}}/>
+          <span class="search-icon {{if this.badgeSearchTerm 'd-none'}}"></span>
+        </div>
+      </div>
+      <div class="right-menu">
+        <div class="form-group">
+          <BsDropdown class="bulk-menu-dd" as |dd|>
+            <dd.toggle>{{t "admin.badges.buttons.bulk_action"}} <span class="caret"></span></dd.toggle>
+            <dd.menu class="dropdown-menu-right" as |menu|>
+              <menu.item>
+                <button type="button" class="btn w-100 btn-delete-all" {{on "click" this.deleteAllSelected}}>
+                  {{t "admin.badges.buttons.delete_all"}}
+                </button>
+              </menu.item>
+            </dd.menu>
+          </BsDropdown>
+        </div>
+      </div>
+    </div>
+
+    <table class="table badges-table">
+      <thead>
+      <tr>
+        <td>
+          <Input @type="checkbox" @checked={{this.allBadgeTableItems}} class="checkbox-inline"
+            {{on "change" this.toggleAllBadgesSelection }}/>
+        </td>
+        <td>{{t "admin.badges.tables.name"}}</td>
+        <td>{{t "admin.badges.tables.description"}}</td>
+        <td>{{t "admin.badges.tables.expiry"}}</td>
+        <td>{{t "admin.badges.tables.status"}}</td>
+        <td>{{t "admin.badges.tables.users_earned"}}</td>
+        <td>{{t "admin.badges.tables.action"}}</td>
+        <td></td>
+        <td></td>
+      </tr>
+      </thead>
+      <tbody>
+      {{#each this.badges as |badge|}}
+        <tr class="border-top-0 border-bottom">
+          <td>
+            <Input @type="checkbox" @checked={{badge.isSelected}} class="checkbox-inline"
+              {{on "change" (fn this.toggleBadgeSelection badge)}}/>
+          </td>
+          <td class="pl-1 pr-1">
+            <div class="d-flex">
+              <div class="badge-icon pr-2">
+                {{#if badge.iconUrl}}
+                  <img src="{{badge.iconUrl}}" role="presentation" alt="">
+                {{/if}}
+              </div>
+              <span class="name"> {{badge.name}}</span>
+            </div>
+          </td>
+          <td class="description">  {{badge.description}}</td>
+          <td>  {{format-date badge.expiry day="numeric" month="short" year="numeric"}}</td>
+          <td>{{badge.status}}</td>
+          <td>{{exec this.usersEarned badge}}</td>
+          <td>
+            <LinkTo @route="admin.badges.manage" @query={{hash editItem=badge.id}} class="btn btn-sm details-btn">
+              {{t "admin.badges.buttons.details"}}
+            </LinkTo>
+          </td>
+          <td>
+            <div class="extra-actions">
+              <BsDropdown as |dd|>
+                <dd.toggle>{{svg-jar "vertical-dots-menu" fill="black"}} </dd.toggle>
+                <dd.menu class="dropdown-menu-right" as |menu|>
+                  <menu.item>
+                    <menu.link-to @route="admin.badges.manage" @query={{hash editItem=badge.id}} class="w-100">
+                      {{t "admin.badges.buttons.edit"}}
+                    </menu.link-to>
+                    <button type="button" class="btn w-100 btn-delete-badge" {{on "click" (fn this.deleteBadge badge) }}>
+                      {{t "admin.badges.buttons.delete"}}
+                    </button>
+                  </menu.item>
+                </dd.menu>
+              </BsDropdown>
+            </div>
+          </td>
+        </tr>
+      {{/each}}
+      </tbody>
+    </table>
+    <div class="footer-pagination d-flex justify-content-between">
+      <div class="form-group form-inline">
+        <label for="perPage" class="pr-3">{{t "table.pagination.per_page"}} </label>
+        <select id="perPage" class="form-control" {{on "change" this.updatePerPage}}>
+          {{#each this.perPageOptions as |opt|}}
+            {{#if opt.selected}}
+              <option value="{{opt.value}}" selected>{{opt.value}}</option>
+            {{else}}
+              <option value="{{opt.value}}">{{opt.value}}</option>
+            {{/if}}
+          {{/each}}
+        </select>
+      </div>
+
+      <ul class="pagination">
+        <li class="page-item {{if this.hasPreviousPage '' 'disabled'}}">
+        <span class="page-link" role="button" {{on "click" this.goToPrevPage}}>
+          {{t "table.pagination.previous"}}</span>
+        </li>
+        <li class="page-item {{if this.hasNextPage '' 'disabled'}}">
+        <span class="page-link" role="button" {{on "click" this.goToNextPage}}>
+          {{t "table.pagination.next"}}
+        </span>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+</div>

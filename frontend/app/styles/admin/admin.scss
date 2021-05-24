@@ -10,6 +10,7 @@ gray85: #FAFDFF
     height: 100%;
     width: 100%;
     background-color: map-get($palette,gray85);
+    overflow: auto;
   }
 
 }

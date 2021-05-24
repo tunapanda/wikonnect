@@ -31,17 +31,20 @@ const router = new Router({
  * @apiSuccess {String} badge[name] name given to badge
  * @apiSuccess {String} badge[slug] path to view the badge
  * @apiSuccess {String} badge[badgeUri] image link
- * @apiSuccess {String} badge[trigger] foreign key for badge
+ * @apiSuccess {String} badge[triggerId] foreign key for badge trigger
  * @apiSuccess {String} badge[creatorId] creator id
  * @apiSuccess {Number} badge[points] points awarded to badge owner
  * @apiSuccess {String} badge[description] badge explanation
  * @apiSuccess {String} badge[expiry] date time of expiry of the badge
  * @apiSuccess {Boolean} badge[isDeleted] boolean indicating if soft deleted
  * @apiSuccess {Object} badge[metadata] JSON metadata
+ * @apiSuccess {Number} badge[frequency]  No. of times one should trigger to earn the badge
+ * @apiSuccess {Number} badge[reminder] No. of times before a reminder sent
+ * @apiSuccess {String} badge[reminderMessage] Reminder message to show
  * @apiSuccess {String} badge[createdAt]
  * @apiSuccess {String} badge[updatedAt]
  * @apiSuccess {String} badge[badge_triggers][id] trigger id same as trigger string
- * @apiSuccess {String} badge[badge_triggers][trigger] trigger name
+ * @apiSuccess {String} badge[badge_triggers][name] trigger name
  * @apiSuccess {String} badge[badge_triggers][type] model instance type
  *
  */
@@ -70,17 +73,20 @@ router.get('/:id', requireAuth, grantAccess('readAny', 'private'), async ctx => 
  * @apiSuccess {String} badge[name] name given to badge
  * @apiSuccess {String} badge[slug] path to view the badge
  * @apiSuccess {String} badge[badgeUri] image link
- * @apiSuccess {String} badge[trigger] foreign key for badge
+ * @apiSuccess {String} badge[triggerId] foreign key for badge trigger
  * @apiSuccess {String} badge[creatorId] creator id
  * @apiSuccess {Number} badge[points] points awarded to badge owner
  * @apiSuccess {String} badge[description] badge explanation
  * @apiSuccess {String} badge[expiry] date time of expiry of the badge
  * @apiSuccess {Boolean} badge[isDeleted] boolean indicating if soft deleted
  * @apiSuccess {Object} badge[metadata] JSON metadata
+ * @apiSuccess {Number} badge[frequency]  No. of times one should trigger to earn the badge
+ * @apiSuccess {Number} badge[reminder] No. of times before a reminder sent
+ * @apiSuccess {String} badge[reminderMessage] Reminder message to show
  * @apiSuccess {String} badge[createdAt]
  * @apiSuccess {String} badge[updatedAt]
  * @apiSuccess {String} badge[badge_triggers][id] trigger id same as trigger string
- * @apiSuccess {String} badge[badge_triggers][trigger] trigger name
+ * @apiSuccess {String} badge[badge_triggers][name] trigger name
  * @apiSuccess {String} badge[badge_triggers][type] model instance type
  *
  */
@@ -113,35 +119,38 @@ router.get('/', requireAuth, async ctx => {
  * @apiHeader {String} Authorization Bearer << JWT here>>
  *
  * @apiParam (Request Body) {Object} badge Top level object
- * @apiParam (Request Body) {String} badge[id] badge id
  * @apiParam (Request Body) {String} badge[name] name given to badge
- * @apiParam (Request Body) {String} badge[slug] path to view the badge
- * @apiParam (Request Body) {String} badge[badgeUri] image link
- * @apiParam (Request Body) {String} badge[trigger] foreign key for badge
+ * @apiParam (Request Body) {String} [badge[badgeUri]] image link
+ * @apiParam (Request Body) {String} badge[triggerId] foreign key for badge trigger
  * @apiParam (Request Body) {String} badge[creatorId] creator id
  * @apiParam (Request Body) {Number} badge[points] points awarded to badge owner
  * @apiParam (Request Body) {String} badge[description] badge explanation
  * @apiParam (Request Body) {String} badge[expiry] date time of expiry of the badge
- * @apiParam (Request Body) {Boolean} badge[isDeleted] boolean indicating if soft deleted
- * @apiParam (Request Body) badge[metadata] JSON metadata
- *
+ * @apiParam (Request Body) {Boolean} [badge[isDeleted]] boolean indicating if soft deleted
+ * @apiParam (Request Body) [badge[metadata]] JSON metadata
+ * @apiParam (Request Body) {Number} badge[frequency]  No. of times one should trigger to earn the badge
+ * @apiParam (Request Body) {Number} badge[reminder] No. of times before a reminder sent
+ * @apiParam (Request Body) {String} badge[reminderMessage] Reminder message to show
  *
  * @apiSuccess {Object} badge Top level object
  * @apiSuccess {String} badge[id] badge id
  * @apiSuccess {String} badge[name] name given to badge
  * @apiSuccess {String} badge[slug] path to view the badge
  * @apiSuccess {String} badge[badgeUri] image link
- * @apiSuccess {String} badge[trigger] foreign key for badge
+ * @apiSuccess {String} badge[triggerId] foreign key for badge trigger
  * @apiSuccess {String} badge[creatorId] creator id
  * @apiSuccess {Number} badge[points] points awarded to badge owner
  * @apiSuccess {String} badge[description] badge explanation
  * @apiSuccess {String} badge[expiry] date time of expiry of the badge
  * @apiSuccess {Boolean} badge[isDeleted] boolean indicating if soft deleted
  * @apiSuccess {Object} badge[metadata] JSON metadata
+ * @apiSuccess {Number} badge[frequency]  No. of times one should trigger to earn the badge
+ * @apiSuccess {Number} badge[reminder] No. of times before a reminder sent
+ * @apiSuccess {String} badge[reminderMessage] Reminder message to show
  * @apiSuccess {String} badge[createdAt]
  * @apiSuccess {String} badge[updatedAt]
  * @apiSuccess {String} badge[badge_triggers][id] trigger id same as trigger string
- * @apiSuccess {String} badge[badge_triggers][trigger] trigger name
+ * @apiSuccess {String} badge[badge_triggers][name] trigger name
  * @apiSuccess {String} badge[badge_triggers][type] model instance type
  *
  */
@@ -178,17 +187,20 @@ router.post('/', requireAuth, async ctx => {
  * @apiSuccess {String} badge[name] name given to badge
  * @apiSuccess {String} badge[slug] path to view the badge
  * @apiSuccess {String} badge[badgeUri] image link
- * @apiSuccess {String} badge[trigger] foreign key for badge
+ * @apiSuccess {String} badge[triggerId] foreign key for badge trigger
  * @apiSuccess {String} badge[creatorId] creator id
  * @apiSuccess {Number} badge[points] points awarded to badge owner
  * @apiSuccess {String} badge[description] badge explanation
  * @apiSuccess {String} badge[expiry] date time of expiry of the badge
  * @apiSuccess {Boolean} badge[isDeleted] boolean indicating if soft deleted
  * @apiSuccess {Object} badge[metadata] JSON metadata
+ * @apiSuccess {Number} badge[frequency]  No. of times one should trigger to earn the badge
+ * @apiSuccess {Number} badge[reminder] No. of times before a reminder sent
+ * @apiSuccess {String} badge[reminderMessage] Reminder message to show
  * @apiSuccess {String} badge[createdAt]
  * @apiSuccess {String} badge[updatedAt]
  * @apiSuccess {String} badge[badge_triggers][id] trigger id same as trigger string
- * @apiSuccess {String} badge[badge_triggers][trigger] trigger name
+ * @apiSuccess {String} badge[badge_triggers][name] trigger name
  * @apiSuccess {String} badge[badge_triggers][type] model instance type
  *
  */
@@ -248,6 +260,23 @@ router.delete('/:id', async ctx => {
  * @apiPermission [admin, superadmin]
  * @apiHeader (Header) {String} authorization Bearer <<YOUR_API_KEY_HERE>>
  *
+ * @apiSuccess {Object} badge Top level object
+ * @apiSuccess {String} badge[id] badge id
+ * @apiSuccess {String} badge[name] name given to badge
+ * @apiSuccess {String} badge[slug] path to view the badge
+ * @apiSuccess {String} badge[badgeUri] image link
+ * @apiSuccess {String} badge[triggerId] foreign key for badge trigger
+ * @apiSuccess {String} badge[creatorId] creator id
+ * @apiSuccess {Number} badge[points] points awarded to badge owner
+ * @apiSuccess {String} badge[description] badge explanation
+ * @apiSuccess {String} badge[expiry] date time of expiry of the badge
+ * @apiSuccess {Boolean} badge[isDeleted] boolean indicating if soft deleted
+ * @apiSuccess {Object} badge[metadata] JSON metadata
+ * @apiSuccess {Number} badge[frequency]  No. of times one should trigger to earn the badge
+ * @apiSuccess {Number} badge[reminder] No. of times before a reminder sent
+ * @apiSuccess {String} badge[reminderMessage] Reminder message to show
+ * @apiSuccess {String} badge[createdAt]
+ * @apiSuccess {String} badge[updatedAt]
  *
  * @apiError {String} errors Bad Request.
  */
@@ -298,12 +327,10 @@ router.post('/:id/badge-image', requireAuth, koaBody, requireAuth, async (ctx) =
       //Upload image to AWS S3 bucket
       const uploaded = await s3.s3.upload(params).promise();
       log.info('Uploaded in:', uploaded.Location);
-      await Badge.query().patchAndFetchById(ctx.params.id, { profileUri: fileNameBase });
+      const badge = await Badge.query()
+        .patchAndFetchById(ctx.params.id, { badgeUri: fileNameBase });
 
-      ctx.body = {
-        host: `${params.Bucket}.s3.amazonaws.com/uploads/badges`,
-        path: `${fileNameBase}.jpg`
-      };
+      ctx.body = {badge };
     } catch (e) {
       log.error(e);
       ctx.throw(e.statusCode, null, { message: e.message });
@@ -311,14 +338,11 @@ router.post('/:id/badge-image', requireAuth, koaBody, requireAuth, async (ctx) =
   } else {
     try {
       await resizer.toFile(`${uploadDir}/${fileNameBase}.jpg`);
-      await Badge.query()
-        .patchAndFetchById(ctx.params.id, { profileUri: `/${uploadPath}/${fileNameBase}.jpg` });
+      const badge = await Badge.query()
+        .patchAndFetchById(ctx.params.id, { badgeUri: `/${uploadPath}/${fileNameBase}.jpg` });
 
       ctx.status = 200;
-      ctx.body = {
-        host: ctx.host,
-        path: `/${uploadPath}/${fileNameBase}.jpg`,
-      };
+      ctx.body = {badge };
     } catch (e) {
       if (e.statusCode) {
         ctx.throw(e.statusCode, null, { errors: [e.message] });
