@@ -17,8 +17,8 @@ const permController = require('../middleware/permController');
 const validateGetChapter = require('../middleware/validateRequests/chapterGetValidation');
 const Reaction = require('../models/reaction');
 const { getProfileImage } = require('../utils/routesUtils/userRouteUtils');
-const {eventEmitter} =require('./../utils/event-emitter');
-const {eventCodes} = require('./../utils/events-classification');
+const { eventEmitter } = require('./../utils/event-emitter');
+const { eventCodes } = require('./../utils/events-classification');
 
 const router = new Router({
   prefix: '/chapters'
@@ -402,13 +402,13 @@ router.put('/:id', permController.requireAuth, async ctx => {
     const chapter = await chapterCheck.$query().patchAndFetchById(ctx.params.id, chapterData);
 
     // emit a Node event if it has just been published
-    if(justPublished){
-      eventEmitter.emit(eventCodes.chapter.published,chapter);
+    if (justPublished) {
+      eventEmitter.emit(eventCodes.chapter.published, chapter);
     }
 
     // emit a Node event if it has just been approved
-    if(justApproved){
-      eventEmitter.emit(eventCodes.chapter.approved,chapter);
+    if (justApproved) {
+      eventEmitter.emit(eventCodes.chapter.approved, chapter);
     }
 
     ctx.status = 201;
@@ -446,7 +446,7 @@ router.delete('/:id', permController.requireAuth, async ctx => {
     .delete()
     .where({ id: ctx.params.id });
 
-  if(chapter.approved && chapter.approved===true){
+  if (chapter.approved && chapter.approved === true) {
     eventEmitter.emit(eventCodes.approvedChapter.deleted, chapter);
   }
   ctx.status = 200;

@@ -1,0 +1,22 @@
+<BsModal @open={{@show}} @onHide={{this.onClose}} class="badge-popup" as |Modal|>
+
+  <Modal.body class="text-center">
+
+    <div class="title">{{t "badge_popup.title"}}</div>
+
+    <div class="badge-icon-container">
+      <img src="{{@badge.iconUrl}}" class="badge-icon" role="presentation" alt="">
+    </div>
+
+    <div class="name">{{@badge.name}}</div>
+
+    <div class="description">{{@badge.description}}</div>
+
+    <div class="points">{{@badge.points}} {{t "badge_popup.points"}}</div>
+
+  </Modal.body>
+  <Modal.footer>
+    <BsButton @onClick={{Modal.close}} @type="default" class="btn">{{t "badge_popup.ok"}}</BsButton>
+  </Modal.footer>
+
+</BsModal>

@@ -6,3 +6,58 @@ sidenav:
   badges: Badges
   manage_badges: Manage Badges
   badge_users: Users & Badges
+
+badges:
+  titles:
+    badges: Badges
+    manage: Badge Management
+    all_badges: All Badges
+    popup: How to earn this badge
+
+  buttons:
+    create: Create new badge
+    details: Details
+    view_all: See All
+    bulk_action:  Bulk action
+    delete_all:  Delete all
+    new: New badge
+    earning: How to earn
+    upload_icon: SELECT FILE
+    save: Save
+    unpublish: Unpublish
+    publish: Publish
+    delete: Delete badge
+    edit: Edit badge
+
+  labels:
+    badge_create_prompt: Hi {name},would you like to create a new badge today?
+    badges_total: Number of Badges
+    badges_earned: Badges Earned
+    upload_icon: Upload bagde icon
+    change_icon: Change the bagde icon
+    options: Options
+    search_placeholder: Search Badge
+
+    #below are form related values
+    trigger: Trigger
+    trigger_placeholder: Select trigger
+    name: Name
+    name_placeholder: Name of the badge
+    description: How to earn
+    description_placeholder: Describe how to earn the badge
+    expiry_date: Date to expire
+    frequency: No. of times
+    frequency_placeholder: No. of times one should trigger to earn the badge
+    points: Points
+    points_placeholder: Points associated with the badge
+    reminder: Reminder
+    reminder_placeholder: No. of times before a reminder sent
+    reminder_message: Reminder Message
+    reminder_message_placeholder: Create 4 more chapters to unlock Ninja badge and earn 1000 points
+  tables:
+    name: Name
+    description: How to earn
+    expiry: Expiry date
+    status: Status
+    users_earned:  Users earned
+    action: Action

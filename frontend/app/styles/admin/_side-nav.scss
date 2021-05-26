@@ -9,6 +9,7 @@ $palette: (
   height: 100%;
   background-color: map-get($palette, gray75);
   width: 234px;
+  overflow: auto;
 
   .header {
     .header-link {

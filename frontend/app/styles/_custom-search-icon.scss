@@ -1,0 +1,24 @@
+$palette: (
+  circle: black,
+  stick: black
+);
+.search-icon {
+  width: 40px;
+  height: 40px;
+  display: inline-block;
+  border: 4px solid map-get($palette, circle);
+  border-radius: 50%;
+  position: relative;
+
+  &:after {
+    content: '';
+    display: inline-block;
+    position: absolute;
+    width: 4px;
+    height: 28px;
+    background-color: map-get($palette, stick);
+    transform: rotate(-52deg);
+    top: 1.4em;
+    left: 2.5em;
+  }
+}
