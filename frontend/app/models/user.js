@@ -23,15 +23,11 @@ export default class UserModel extends Model {
   @hasMany('achievement-award') achievementAwards;
   @hasMany('course') enrolledCourses;
 
-  get dateJoined() {
-    return new Date(this.createdAt).toLocaleDateString();
-  }
-
-  get verificationStatus() {
-    return this.emailVerified ? 'Verified' : 'Unverified';
-  }
-
   get role() {
+    if (!this.userRoles) {
+      return "";
+    }
+    
     const roleId = this.userRoles[0].id;
 
     if (roleId === 'groupSuperAdmin') {
@@ -39,9 +35,21 @@ export default class UserModel extends Model {
     } else if (roleId === 'groupAdmin') {
       return 'Admin';
     } else if (roleId === 'groupBasic') {
-      return 'Learner';
+      return 'Basic';
     }
 
     return null;
+  }
+
+  get dateJoined() {
+    if (!this.createdAt) {
+      return new Date();
+    }
+
+    return new Date(this.createdAt).toLocaleDateString();
+  }
+
+  get status () {
+    return this.emailVerified ? "Verified" : "Unverified";
   }
 }

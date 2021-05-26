@@ -1,9 +1,106 @@
 <div class="p-3">
   {{#if @model}}
-    <ModelsTable
-      @data={{@model}}
-      @columns={{this.columns}}
-      @useNumericPagination={{false}}
+    <button type="button" {{on 'click' this.deleteSelectedUsers}}>
+      Delete
+    </button>
+    <Input
+      @value={{this.searchTerm}}
+      @type="search"
+      {{on 'input' this.isSearching}}
     />
+    <p>
+      {{this.paginationSummary}}
+    </p>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>
+            <Input
+              @type="checkbox"
+              @checked={{this.isAllUserRowsSelected}}
+              {{on 'change' this.toggleAllRowSelection}}
+            />
+          </th>
+          <th>
+            Name
+          </th>
+          <th>
+            Email
+          </th>
+          <th>
+            Date Joined
+          </th>
+          <th>
+            Role
+          </th>
+          <th>
+            Status
+          </th>
+          <th>
+            Action
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each this.users as |user|}}
+          <tr>
+            <td>
+              <Input
+                @type="checkbox"
+                @checked={{exec this.isUserRowSelected user}}
+                {{on 'change' (fn this.toggleRowSelection user)}}
+              />
+            </td>
+            <td>
+              {{user.name}}
+            </td>
+            <td>
+              {{user.email}}
+            </td>
+            <td>
+              {{user.dateJoined}}
+            </td>
+            <td>
+              {{user.role}}
+            </td>
+            <td>
+              {{user.status}}
+            </td>
+            <td></td>
+          </tr>
+        {{/each}}
+      </tbody>
+    </table>
+    <select
+      id="perPage"
+      class="form-control"
+      {{on 'change' this.updatePerPage}}
+    >
+      {{#each this.perPageOptions as |opt|}}
+        {{#if opt.selected}}
+          <option value="{{opt.value}}" selected>
+            {{opt.value}}
+          </option>
+        {{else}}
+          <option value="{{opt.value}}">
+            {{opt.value}}
+          </option>
+        {{/if}}
+      {{/each}}
+    </select>
+    <ul class="pagination">
+      <li class="page-item {{if this.hasPreviousPage '' 'disabled'}}">
+        <span class="page-link" role="button" {{on 'click' this.goToPrevPage}}>
+          {{!-- {{t 'table.pagination.previous'}} --}}
+          Previous
+        </span>
+      </li>
+      <li class="page-item {{if this.hasNextPage '' 'disabled'}}">
+        <span class="page-link" role="button" {{on 'click' this.goToNextPage}}>
+          {{!-- {{t 'table.pagination.next'}} --}}
+          Next
+        </span>
+      </li>
+    </ul>
   {{/if}}
 </div>
