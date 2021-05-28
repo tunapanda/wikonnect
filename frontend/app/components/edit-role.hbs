@@ -1,0 +1,21 @@
+<div class="form-group">
+  <BsDropdown as |dd|>
+    <dd.toggle>
+      {{@user.role}}
+      <span class="caret"></span>
+    </dd.toggle>
+    <dd.menu class="dropdown-menu-right" as |menu|>
+      <menu.item>
+        {{#each this.roles as |role|}}
+          <button
+            type="button"
+            class="btn w-100"
+            {{on 'click' (fn this.changeRole role)}}
+          >
+            {{role.title}}
+          </button>
+        {{/each}}
+      </menu.item>
+    </dd.menu>
+  </BsDropdown>
+</div>
