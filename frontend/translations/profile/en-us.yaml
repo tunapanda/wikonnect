@@ -1,4 +1,28 @@
-index:
+greeting: Welcome {name}
+role: "Role: {role}"
+bio: Bio
+edit_button: Edit my profile
+chapters_created: Chapters created
+chapters_watched: Chapters completed
+points_earned: Total points earned
+top_achievements: Top achievements
+
+nav:
+  home: Learning
+  achievements: Achievements
+  courses: Courses
+
+badges:
+  share_btn: Share
+
+homepage:
+  title: Chapters recently watched
+
+achievements_page:
+  title: Earned badges
+
+edit_profile_page:
+  title: Edit my profile
   change_pic: Change picture
   profile: Profile
   learning: Learning

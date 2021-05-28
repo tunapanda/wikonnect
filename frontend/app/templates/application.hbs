@@ -4,7 +4,7 @@
 {{else if (not-eq this.route "embed")}}
   <HeadLayout/>
   <MainHeader @isTeach={{false}} @logout={{this.logout}} @notifications={{this.model}} />
-  <div class="container-fluid m-0 p-0 ">
+  <div class="container-fluid m-0 p-0 h-100 ">
     {{outlet}}
   </div>
   <EmberNotify @closeAfter={{4000}} />

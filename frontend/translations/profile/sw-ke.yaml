@@ -1,5 +1,27 @@
-index:
-  change_pic: Badilisha Picha
+greeting: Karibu {name}
+bio: Wasifu
+edit_button: Hariri maelezo yangu mafupi
+chapters_created: Sura zimeundwa
+chapters_watched: Sura zimekamilika
+points_earned: Jumla ya alama zilizopatikana
+top_achievements: Mafanikio ya juu
+
+nav:
+  home: Kujifunza
+  achievements: Mafanikio
+  courses: Kozi
+
+badges:
+  share_btn: Shiriki
+
+homepage:
+  title: Sura zilitazama hivi karibuni
+
+achievements_page:
+  title: Beji zilizopatikana
+
+edit_profile_page:
+  title: Hariri maelezo yangu mafupi
   profile: Profiali
   learning: Masomo
   settings: Mipangilio
