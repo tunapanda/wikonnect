@@ -1,16 +1,22 @@
 <div class="p-3">
   {{#if @model}}
-    <button type="button" {{on 'click' this.deleteSelectedUsers}}>
+    {{!-- <button type="button" {{on 'click' this.deleteSelectedUsers}}>
       Delete
-    </button>
-    <Input
-      @value={{this.searchTerm}}
-      @type="search"
-      {{on 'input' this.isSearching}}
-    />
-    <p>
-      {{this.paginationSummary}}
-    </p>
+    </button> --}}
+    <div class="d-flex align-items-center mb-3">
+      <p class="m-0">
+        {{this.paginationSummary}}
+      </p>
+      <div class="user-search">
+        <Input
+          class="form-control search-input ml-3"
+          @value={{this.searchTerm}}
+          @type="search"
+          {{on 'input' this.isSearching}}
+        />
+        <span class="search-icon {{if this.searchTerm 'd-none'}}"></span>
+      </div>
+    </div>
     <table class="table table-striped">
       <thead>
         <tr>
@@ -61,48 +67,62 @@
               {{user.dateJoined}}
             </td>
             <td>
-              <EditRole @user={{user}}/>
+              <EditRole @user={{user}} />
             </td>
             <td>
               {{user.status}}
             </td>
             <td>
-              <UserDetails @user={{user}}/>
+              <UserDetails @user={{user}} />
             </td>
           </tr>
         {{/each}}
       </tbody>
     </table>
-    <select
-      id="perPage"
-      class="form-control"
-      {{on 'change' this.updatePerPage}}
-    >
-      {{#each this.perPageOptions as |opt|}}
-        {{#if opt.selected}}
-          <option value="{{opt.value}}" selected>
-            {{opt.value}}
-          </option>
-        {{else}}
-          <option value="{{opt.value}}">
-            {{opt.value}}
-          </option>
-        {{/if}}
-      {{/each}}
-    </select>
-    <ul class="pagination">
-      <li class="page-item {{if this.hasPreviousPage '' 'disabled'}}">
-        <span class="page-link" role="button" {{on 'click' this.goToPrevPage}}>
-          {{!-- {{t 'table.pagination.previous'}} --}}
-          Previous
-        </span>
-      </li>
-      <li class="page-item {{if this.hasNextPage '' 'disabled'}}">
-        <span class="page-link" role="button" {{on 'click' this.goToNextPage}}>
-          {{!-- {{t 'table.pagination.next'}} --}}
-          Next
-        </span>
-      </li>
-    </ul>
+    <div class="d-flex justify-content-between align-items-center">
+      <div class="d-flex">
+        <p class="mr-3 mb-0 w-100">
+          Items per page:
+        </p>
+        <select
+          class="form-control h-75 w-50"
+          {{on 'change' this.updatePerPage}}
+        >
+          {{#each this.perPageOptions as |opt|}}
+            {{#if opt.selected}}
+              <option value="{{opt.value}}" selected>
+                {{opt.value}}
+              </option>
+            {{else}}
+              <option value="{{opt.value}}">
+                {{opt.value}}
+              </option>
+            {{/if}}
+          {{/each}}
+        </select>
+      </div>
+      <ul class="pagination">
+        <li class="page-item {{if this.hasPreviousPage '' 'disabled'}}">
+          <span
+            class="page-link"
+            role="button"
+            {{on 'click' this.goToPrevPage}}
+          >
+            {{!-- {{t 'table.pagination.previous'}} --}}
+            Previous
+          </span>
+        </li>
+        <li class="page-item {{if this.hasNextPage '' 'disabled'}}">
+          <span
+            class="page-link"
+            role="button"
+            {{on 'click' this.goToNextPage}}
+          >
+            {{!-- {{t 'table.pagination.next'}} --}}
+            Next
+          </span>
+        </li>
+      </ul>
+    </div>
   {{/if}}
 </div>

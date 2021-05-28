@@ -1,0 +1,23 @@
+.user-search {
+  position: relative;
+
+  .search-input {
+    border-radius: 18px;
+  }
+
+  .search-icon {
+    position: absolute;
+    top: 7px;
+    right: 2px;
+    width: 18px;
+    height: 18px;
+    border-width: 1px;
+
+    &:after {
+      left: 18px;
+      top: 10px;
+      width: 1px;
+      height: 10px;
+    }
+  }
+}
