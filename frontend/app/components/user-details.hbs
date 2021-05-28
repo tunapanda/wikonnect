@@ -1,0 +1,13 @@
+{{#if this.isShowingModal}}
+  <ModalDialog
+    @tagName="div"
+    @onClose={{this.toggleModal}}>
+    <div>
+      <p>{{@user.name}}</p>
+    </div>
+  </ModalDialog>
+{{/if}}
+
+<button type="button" class="btn btn-primary" {{on 'click' this.toggleModal}}>
+  Details
+</button>
