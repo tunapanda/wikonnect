@@ -61,12 +61,14 @@
               {{user.dateJoined}}
             </td>
             <td>
-              {{user.role}}
+              <EditRole @user={{user}}/>
             </td>
             <td>
               {{user.status}}
             </td>
-            <td></td>
+            <td>
+              <UserDetails @user={{user}}/>
+            </td>
           </tr>
         {{/each}}
       </tbody>
