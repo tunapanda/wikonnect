@@ -23,7 +23,7 @@ exports.seed = async (knex) => {
       tags: ['highschool', 'primary', 'university'],
       metadata: { profileComplete: 'false', oneInviteComplete: 'false', oneChapterCompletion: 'false' },
       location: `${faker.address.city()}, ${faker.address.country()}`,
-      contactNumber: faker.phone.phoneNumber('+############'),
+      contact_number: faker.phone.phoneNumber('+############'),
       'gender': faker.random.arrayElement(genders),
     },
     {
@@ -41,7 +41,7 @@ exports.seed = async (knex) => {
       tags: ['primary'],
       metadata: { profileComplete: 'false', oneInviteComplete: 'false', oneChapterCompletion: 'false' },
       location: `${faker.address.city()}, ${faker.address.country()}`,
-      contactNumber: faker.phone.phoneNumber('+############'),
+      contact_number: faker.phone.phoneNumber('+############'),
       'gender': faker.random.arrayElement(genders),
     },
     {
@@ -58,8 +58,8 @@ exports.seed = async (knex) => {
       updated_at: '2017-12-20 19:17:10',
       tags: ['highschool', 'university'],
       metadata: { profileComplete: 'true', oneInviteComplete: 'true', oneChapterCompletion: 'true' },
-      location: `${faker.address.city()}, ${faker.address.country()}`,
-      contactNumber: faker.phone.phoneNumber('+############'),
+      location: `${faker.address.city()}, ${faker.address.country()}`, 
+      contact_number: faker.phone.phoneNumber('+############'),
       'gender': faker.random.arrayElement(genders),
     }
   );
