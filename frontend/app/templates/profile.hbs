@@ -12,7 +12,7 @@
           <div class="body-content d-flex flex-row">
             <div class="left-container d-flex justify-content-center align-items-center flex-column">
               <div class="account-image-container">
-                <img src="https://avatars.githubusercontent.com/u/25152892?v=4" alt="" role="presentation">
+                <img src="{{this.model.profileUri}}" alt="" role="presentation">
               </div>
               <div class="name">
                 {{ellipsize this.model.name 15 ' '}}
@@ -30,9 +30,23 @@
             <div class="card-divider"></div>
             <div class="right-container d-flex flex-column">
               {{#if this.isProfileOwner}}
-                <div class="phone"><span class="v-icon"></span> {{this.model.contactNumber}}</div>
-                <div class="email"><span class="v-icon"></span> {{this.model.email}}</div>
-                <div class="location"><span class="v-icon"></span> {{this.model.location}}</div>
+                <div class="phone">
+                  <span class="v-icon">
+                  {{svg-jar "phone-with-internet"  width="20" height="20"}}
+                </span>
+                  {{this.model.contactNumber}}
+                </div>
+                <div class="email"><span class="v-icon">
+                  {{svg-jar "email" width="20" height="20"}}
+                </span>
+                  {{this.model.email}}
+                </div>
+                <div class="location">
+                  <span class="v-icon">
+                    {{svg-jar "location"  width="20" height="20"}}
+                  </span>
+                  {{this.model.location}}
+                </div>
               {{else}}
                 <div class="section-title"> {{t "profile.bio"}}</div>
                 <div class="account-bio">
