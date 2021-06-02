@@ -1,10 +1,10 @@
 <div class="account-profile-page">
 
   <div class="bg-panel"></div>
-  <div class="dashboard-content-wrapper container-lg">
+  <div class="dashboard-content-wrapper container-lg pb-3">
     <div class="header-section ">
       {{#if this.isProfileOwner}}
-        <div class="main-title">{{t "profile.greeting" name=this.model.name}}</div>
+      <div class="main-title">{{t "profile.greeting" name=this.model.name}}</div>
       {{/if}}
 
       <div class="account-details-list row">
@@ -21,47 +21,57 @@
                 {{ellipsize this.model.role 21 ' '}}
               </div>
               {{#unless this.isProfileOwner}}
-                <div class="location">
-                  {{ellipsize this.model.location 40 ' '}}
-                </div>
+              <div class="location">
+                {{ellipsize this.model.location 40 ' '}}
+              </div>
               {{/unless}}
 
             </div>
             <div class="card-divider"></div>
             <div class="right-container d-flex flex-column">
               {{#if this.isProfileOwner}}
-                <div class="phone">
-                  <span class="v-icon">
-                  {{svg-jar "phone-with-internet"  width="20" height="20"}}
+              {{#if this.model.contactNumber}}
+              <div class="phone">
+                <span class="v-icon">
+                  {{svg-jar "phone-with-internet" width="20" height="20"}}
                 </span>
-                  {{this.model.contactNumber}}
-                </div>
-                <div class="email"><span class="v-icon">
+                {{this.model.contactNumber}}
+              </div>
+              {{/if}}
+              {{#if this.model.email}}
+
+              <div class="email"><span class="v-icon">
                   {{svg-jar "email" width="20" height="20"}}
                 </span>
-                  {{this.model.email}}
-                </div>
-                <div class="location">
-                  <span class="v-icon">
-                    {{svg-jar "location"  width="20" height="20"}}
-                  </span>
-                  {{this.model.location}}
-                </div>
+                {{this.model.email}}
+              </div>
+              {{/if}}
+
+              {{#if this.model.location}}
+
+              <div class="location">
+                <span class="v-icon">
+                  {{svg-jar "location" width="20" height="20"}}
+                </span>
+                {{this.model.location}}
+              </div>
+              {{/if}}
+
               {{else}}
-                <div class="section-title"> {{t "profile.bio"}}</div>
-                <div class="account-bio">
-                  {{ellipsize this.model.aboutMe 218}}
-                </div>
+              <div class="section-title"> {{t "profile.bio"}}</div>
+              <div class="account-bio">
+                {{ellipsize this.model.aboutMe 218}}
+              </div>
               {{/if}}
             </div>
           </div>
           <div class="footer">
             {{#if this.isProfileOwner}}
-              <div class="text-center">
-                <LinkTo @route="account.edit" class="btn btn-primary edit-profile-btn">
-                  {{t "profile.edit_button"}}
-                </LinkTo>
-              </div>
+            <div class="text-center">
+              <LinkTo @route="account.edit" class="btn btn-primary edit-profile-btn">
+                {{t "profile.edit_button"}}
+              </LinkTo>
+            </div>
             {{/if}}
           </div>
 
@@ -100,7 +110,7 @@
         {{!--
         <div class="badges-unlocked-card d-flex flex-column">
           <div class="section-title">
-            <span class="section-icon"></span>  {{t "profile.top_achievements"}}
+            <span class="section-icon"></span> {{t "profile.top_achievements"}}
           </div>
           <div class="badges-list d-flex flex-wrap">
             <div class="mini-badge-card col-md-4">
