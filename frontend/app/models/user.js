@@ -18,6 +18,7 @@ export default class UserModel extends Model {
   @attr() flag;
   @attr() location;
   @attr() contactNumber;
+  @attr() gender;
 
   @hasMany('group') groups;
   @hasMany('activity') activities;
