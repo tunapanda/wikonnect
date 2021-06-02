@@ -18,9 +18,17 @@ export default class UserModel extends Model {
   @attr() location;
   @attr() contactNumber;
   @attr() gender;
+  @attr() userRoles;
 
   @hasMany('group') groups;
   @hasMany('activity') activities;
   @hasMany('achievement-award') achievementAwards;
   @hasMany('course') enrolledCourses;
+
+  get role() {
+    if (!this.userRoles || !this.userRoles[0]) {
+      return '';
+    }
+    return this.userRoles[0].name;
+  }
 }
