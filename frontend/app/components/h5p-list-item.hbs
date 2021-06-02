@@ -3,9 +3,9 @@
     <LinkTo @route="chapter" @model={{@chapter.id}} class="chapter-thumbnail">
       {{#if (eq @chapter.imageUrl null)}}
       <img class="card-img-top chapter-thumbnail" alt="" role="presentation"
-           src="https://placehold.jp/20/{{this.color}}/ffffff/328x200.png?text={{@chapter.name}}" >
+        src="https://placehold.jp/20/{{this.color}}/ffffff/328x200.png?text={{@chapter.name}}">
       {{else}}
-      <img class="card-img-top chapter-thumbnail" alt="" src={{@chapter.imageUrl}} role="presentation" >
+      <img class="card-img-top chapter-thumbnail" alt="" src={{@chapter.imageUrl}} role="presentation">
       {{/if}}
     </LinkTo>
     <div class="card-body chapter-body">
@@ -46,10 +46,10 @@
         {{/if}}
       </div>
 
-      <div class="chapter-creator">
+      <LinkTo @route="profile.home" @model={{@chapter.author.id}} class="chapter-creator text-dark">
         <img src={{@chapter.author.profileUri}} alt="" role="presentation" class="rounded-circle">
         {{@chapter.author.name}}
-      </div>
+      </LinkTo>
     </div>
 
   </div>
