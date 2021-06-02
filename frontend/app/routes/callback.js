@@ -29,7 +29,7 @@ export default class CallbackRoute extends Route {
     if (this.config.content.APP.use_preset_tags) {
       this.transitionTo('tags');
     } else {
-      this.transitionTo('upload');
+      this.transitionTo('account.edit');
     }
   }
 
