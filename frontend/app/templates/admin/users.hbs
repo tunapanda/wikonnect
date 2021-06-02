@@ -3,6 +3,7 @@
     {{!-- <button type="button" {{on 'click' this.deleteSelectedUsers}}>
       Delete
     </button> --}}
+   
     <div class="d-flex align-items-center mb-3">
       <p class="m-0">
         {{this.paginationSummary}}
@@ -67,7 +68,7 @@
               {{user.dateJoined}}
             </td>
             <td>
-              <EditRole @user={{user}} />
+              <EditRole @user={{user}} @roles={{this.roles}}/>
             </td>
             <td>
               {{user.status}}

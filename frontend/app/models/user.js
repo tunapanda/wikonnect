@@ -18,7 +18,7 @@ export default class UserModel extends Model {
   @attr() flag;
   @attr() userRoles;
 
-  @hasMany('group') groups;
+  // @hasMany('group') groups;
   @hasMany('activity') activities;
   @hasMany('achievement-award') achievementAwards;
   @hasMany('course') enrolledCourses;
@@ -28,17 +28,7 @@ export default class UserModel extends Model {
       return "";
     }
     
-    const roleId = this.userRoles[0].id;
-
-    if (roleId === 'groupSuperAdmin') {
-      return 'Super Admin';
-    } else if (roleId === 'groupAdmin') {
-      return 'Admin';
-    } else if (roleId === 'groupBasic') {
-      return 'Basic';
-    }
-
-    return null;
+    return this.userRoles[0].name;
   }
 
   get dateJoined() {

@@ -19,6 +19,10 @@ export default class AdminUsersController extends Controller {
     { value: 100, selected: false },
   ];
 
+  get roles() {
+    return this.store.peekAll('group');
+  }
+  
   get allUsers() {
     return this.model.filter((user) => user.id);
   }
@@ -44,8 +48,7 @@ export default class AdminUsersController extends Controller {
       return this.allUsers;
     }
 
-    return this.allUsers
-      .slice(currentPageStart - 1, currentPageEnd);
+    return this.allUsers.slice(currentPageStart - 1, currentPageEnd);
   }
 
   @action

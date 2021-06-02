@@ -232,8 +232,10 @@ router.get('/', permController.requireAuth, permController.grantAccess('readAny'
     try {
       const users = await User.query()
         .where(ctx.query)
-        .withGraphFetched('[achievementAwards(selectBadgeNameAndId), userRoles(selectId),' +
-          ' enrolledCourses(selectNameAndId)]');
+        .withGraphFetched(
+          "[achievementAwards(selectBadgeNameAndId), userRoles()," +
+            " enrolledCourses(selectNameAndId)]"
+        );
 
       ctx.assert(users, 404, 'No User With that username');
 
