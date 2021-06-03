@@ -141,19 +141,6 @@
   </BsForm>
 </BsModalSimple>
 
-
-<BsModalSimple @open={{this.ratingModal}} @title="Rate This Module " @closeTitle="Close"
-  @submitTitle="Submit Optional Remark" @size="" @closeButton={{true}} @fade={{true}} @backdrop={{true}}
-  @backdropClose={{true}} @onSubmit={{this.ratingSubmit}} @onHidden={{this.toggleRatingModal}} @renderInPlace={{true}}>
-
-  <BsForm @onSubmit={{this.ratingSubmit }} as |form|>
-    <form.element @controlType="textarea" @label="Optional reason/remark for your {{this.rates}} star rating"
-      @property="comment" />
-
-
-  </BsForm>
-</BsModalSimple>
-
 <BsPopover @triggerElement=".reaction-btn.like-button" @triggerEvents="null" @visible={{this.showPositiveRFPopup}}
   @placement="bottom" class="reaction-feedback-popover positive-feedback">
   <div class="d-flex justify-content-between">
