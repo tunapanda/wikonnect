@@ -7,9 +7,48 @@ on:
       - "staging"
 
 jobs:
+  Build:
+    name: Build Wikonnect
+    runs-on: ubuntu-18.04
+
+    steps:
+      - uses: actions/checkout@v2
+
+      # Initialize Node.js
+      - name: Install Node.js 14.x
+        uses: actions/setup-node@v1
+        with:
+          node-version: '14.x'
+
+      # Yarn cache dir
+      - name: Get yarn cache directory path
+        id: yarn-cache-dir-path
+        run: echo "::set-output name=dir::$(yarn cache dir)"
+
+      - uses: actions/cache@v2
+        id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
+        with:
+          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+
+      # Install project dependencies, test and build
+      - name: Install Wikonnect dependencies
+        run: yarn  --frozen-lockfile
+
+      # Install project dependencies, test and build
+      - name: Install frontend dependencies
+        run: yarn  --frozen-lockfile --cwd ./frontend
+
+      # Install project dependencies, test and build
+      - name: Install backend dependencies
+        run: yarn  --frozen-lockfile --cwd ./server
+
   FrontendTest:
     name: Test Wikonnect Frontend
     runs-on: ubuntu-18.04
+    needs: Build
     steps:
       - uses: actions/checkout@v2
 
@@ -35,8 +74,6 @@ jobs:
       # Install project dependencies, test and build
       - name: Install frontend dependencies
         run: yarn  --frozen-lockfile --cwd ./frontend
-      - name: Run build
-        run: yarn  --frozen-lockfile --cwd ./frontend build --prod
 
       # Frontend tests
       - name: Lint Ember hbs
@@ -47,6 +84,7 @@ jobs:
   BackendTest:
     name: Test Wikonnect Backend
     runs-on: ubuntu-18.04
+    needs: Build
     services:
       # Label used to access the service container
       postgres:
@@ -88,6 +126,14 @@ jobs:
             ${{ runner.os }}-yarn-
 
       # Install project dependencies, test and build
+      - name: Install Wikonnect dependencies
+        run: yarn  --frozen-lockfile
+
+      # Install project dependencies, test and build
+      - name: Install frontend dependencies
+        run: yarn  --frozen-lockfile --cwd ./frontend
+
+      # Install project dependencies, test and build
       - name: Install backend dependencies
         run: yarn  --frozen-lockfile --cwd ./server
 
@@ -108,7 +154,6 @@ jobs:
   IntegrationTest:
     name: Integration Test
     runs-on: ubuntu-18.04
-    needs: ['FrontendTest', 'BackendTest']
     services:
       # Label used to access the service container
       postgres:
@@ -126,7 +171,7 @@ jobs:
         ports:
           # Maps tcp port 5432 on service container to the host
           - 5432:5432
-
+    needs: FrontendTest
     steps:
       - uses: actions/checkout@v2
 
@@ -156,8 +201,6 @@ jobs:
       # Install project dependencies, test and build
       - name: Install frontend dependencies
         run: yarn  --frozen-lockfile --cwd ./frontend
-      - name: Run build
-        run: yarn  --frozen-lockfile --cwd ./frontend build --prod
 
       # Install project dependencies, test and build
       - name: Install backend dependencies
@@ -177,10 +220,6 @@ jobs:
         uses: cypress-io/github-action@v2
         env:
           NODE_ENV: action
-          GOOGLE_REFRESH_TOKEN: ${{ secrets.GOOGLE_REFRESH_TOKEN }}
-          GOOGLE_KEY: ${{ secrets.GOOGLE_KEY }}
-          GOOGLE_SECRET: ${{ secrets.GOOGLE_SECRET }}
-          GOOGLE_REDIRECT: ${{ secrets.GOOGLE_REDIRECT }}
         with:
           browser: chrome
           start: yarn --cwd ./server start, yarn --cwd ./frontend start

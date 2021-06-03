@@ -41,7 +41,6 @@ async function getSample(valid = true) {
 
 describe('CHAPTER REVIEWS ROUTE', () => {
 
-
   it('Should fetch existing chapter reviews', done => {
     chai
       .request(server)

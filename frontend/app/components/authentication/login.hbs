@@ -57,8 +57,16 @@
 
 
 
+
+
       {{/if}}
+      <div class="mt-2">
+        <LinkTo @route="forgot_password">{{t 'labels.forgot_password'}}</LinkTo>
+      </div>
 
     </BsForm>
+    <div class="d-flex justify-content-center mt-3">
+      <p>{{t 'teach.login.sign_up' htmlSafe=true}}</p>
+    </div>
   </div>
 </div>

@@ -1,0 +1,26 @@
+$palette:(
+gray85: #FAFDFF
+);
+.admin-base {
+  padding: 0;
+  margin: 0;
+  height: 100%;
+
+  .main-content-wrapper{
+    height: 100%;
+    width: 100%;
+    background-color: map-get($palette,gray85);
+    overflow: auto;
+  }
+
+}
+
+
+.admin-base{
+  @import "side-nav";
+  @import "main-header";
+  @import "badge-management";
+
+
+
+}

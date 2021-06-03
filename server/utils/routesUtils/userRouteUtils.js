@@ -18,11 +18,10 @@ async function getProfileImage(user) {
         Bucket: s3.config.bucket, // pass your bucket name
         Key: `uploads/profiles/${user.profileUri}.jpg`, // key for retrieving a filename
       };
-
       const getImage = await s3.s3.getObject(params).promise();
       return 'data:image/(png|jpg);base64,' + encode(getImage.Body);
     } else {
-      if(user.profileUri &&  fs.existsSync( path.resolve(`public/${user.profileUri}`))){
+      if(user.profileUri &&  fs.existsSync(path.resolve(`public/${user.profileUri}`))){
         return user.profileUri;
       }
       return  '/uploads/images/profile-placeholder.gif';

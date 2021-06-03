@@ -1,0 +1,7 @@
+export SEEDS=150
+export FROM_EMAIL_ADDRESS='Wikonnect <hello@wikonnect.org>'
+export SMTP_HOSTNAME=smtp.mailgun.org
+export SMTP_POSRT=587
+export SMTP_USERNAME=xxxxxxxxxxxxx.mailgun.org
+export SMTP_PASSWORD=xxxxxxxxxxxxxxxxxxxxxxxxxx
+export DOMAIN_NAME='http://localhost:4200'

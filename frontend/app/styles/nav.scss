@@ -2,12 +2,18 @@
 
   .navbar-nav {
     .nav-link {
-      color: #FFFFFF !important;
-      &.active {
+      color: #FFFFFF;
+      &.active{
+        color: #FFFFFF;
         font-weight: bold;
       }
+      &:hover,{
+        color: #FFFFFF;
+      }
     }
-
+    .show>.nav-link{
+      color: #FFFFFF;
+    }
   }
 }
 
@@ -40,143 +46,6 @@
   }
 }
 
-.main-header {
-  .notifications-dropdown {
-    .nav-link{
-      position: relative;
-    }
-    .dropdown-toggle::after{
-      display: none;
-    }
-    .nav-link svg path {
-      fill: white;
-    }
-    .nav-link .count{
-      position: absolute;
-      background-color: #EA0606;
-      border-radius: 100px;
-      right: 8px;
-      display: block;
-      text-align: center;
-      top: 7px;
-      font-size: 10px;
-      font-weight: 800;
-      width: 15px;
-      height: 15px;
-    }
-    .dropdown-menu.show{
-      .header-title{
-        font-size: 16px;
-      }
-      .notification-items{
-        overflow-y: auto;
-        max-height: 440px;
-
-
-        .notification-item{
-          border-bottom: solid 1px #b3bac55c;
-          padding-right: 8px;
-
-          .notification-container{
-            font-weight: 300;
-            white-space: normal;
-            margin-right: -2px;
-          }
-          &.active,
-          &:active {
-            color: inherit;
-            background-color: inherit;
-            outline: none;
-          }
-        }
-      }
-    }
-
-    .notification-item{
-      .notification-container {
-        .title {
-          font-size: 14px;
-          font-weight: 400;
-          cursor: pointer;
-          padding-right: 0;
-        }
-        .body{
-          padding-left: 1.5rem;
-          font-size: 14px;
-          padding-right: 0;
-        }
-        .time{
-          padding-left: 1.5rem;
-          font-size: small;
-          color: #b3bac5;
-          font-weight: 600;
-          padding-right: 0;
-        }
-      }
-
-      .notification-actions{
-        .btn-delete{
-          display: flex;
-          opacity: 0;
-          padding: 0;
-          margin: 0 4px;
-          height: 21px;
-          width: 21px;
-          align-items: center;
-          justify-content: center;
-          border: none;
-          outline: none;
-          background-color: transparent;
-          &:hover{
-            background-color: #ebecf0;
-          }
-        }
-        .btn-toggle-read-status{
-          padding: 0;
-          height: 16px;
-          width: 16px;
-          border: solid 4px transparent;
-          background-color: transparent;
-          outline: none;
-          border-radius: 50%;
-          margin: 3px 0 0;
-        }
-      }
-
-      &:hover{
-        .notification-actions {
-          .btn-delete {
-            opacity: 1;
-          }
-          .btn-toggle-read-status{
-            border-color: #ebecf0;
-            background-color: #ebecf0;
-          }
-        }
-      }
-    }
-
-    .notification-item.unread{
-      font-weight: 600;
-        .notification-actions{
-          .btn-toggle-read-status {
-            border: solid 4px #ebecf0;
-            background-color: #0052cc;
-          }
-      }
-    }
-  }
-
-  .user-profile-dropdown{
-    .user-profile-image{
-      height: 34px;
-    }
-  }
-
-
-}
-
-
 /**
 On large screen
  */
@@ -184,60 +53,5 @@ On large screen
 
   .main-header {
     height: 60px;
-
-    .action-btn {
-      font-size: 15px;
-      letter-spacing: 0;
-      border: 1px solid #FFFFFF;
-      border-radius: 2px;
-      padding-top: 8px;
-      padding-bottom: 8px;
-      display: inline;
-
-      &.signup {
-        background-color: #FFFFFF;
-        color: $primary !important;
-      }
-
-      &.signin {
-        color: #FFFF !important;
-      }
-    }
-
-    .notifications-dropdown {
-      .dropdown-menu.show{
-        width: 320px;
-        right: 0 !important;
-        left: auto !important;
-        transform: none !important;
-        top: 100% !important;
-      }
-    }
-    .notifications-dropdown .dropdown-menu.show::after,
-    .user-profile-dropdown .dropdown-menu.show::after{
-      border-color: rgba(0, 0, 0, 0) rgba(0, 0, 0, 0) rgb(255, 255, 255);
-      border-image: none;
-      border-style: solid;
-      border-width: 8px;
-      bottom: 100%;
-      content: " ";
-      height: 0;
-      left: 89%;
-      margin-left: -8px;
-      pointer-events: none;
-      position: absolute;
-      width: 0;
-    }
-
-    .notifications-dropdown .dropdown-menu.show::after{
-      left: 91%;
-      margin-left: 0;
-    }
-    .user-profile-dropdown .dropdown-menu.show::after {
-      left: 55%;
-      margin-left: 0;
-    }
-
   }
-
 }

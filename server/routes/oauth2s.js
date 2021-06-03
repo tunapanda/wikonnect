@@ -4,6 +4,7 @@ const User = require('../models/user');
 const Oauth2 = require('../models/oauth2');
 const authStrategies = require('../utils/authStrategies/index');
 const log = require('../utils/logger');
+const GroupMembers = require('../models/group_members');
 
 const router = new Router({
   prefix: '/oauth2s'
@@ -14,7 +15,9 @@ router.post('/', async ctx => {
   const newUser = await authStrategies[provider](code);
   try {
     const user = await User.query().insertAndFetch(newUser);
-    await Oauth2.query().insertAndFetch({ provider: provider, email: newUser.email, user_id: user.id });
+    await Oauth2.query().insert({ provider: provider, email: newUser.email, user_id: user.id });
+    await GroupMembers.query().insert({ user_id: user.id, group_id: 'groupBasic' });
+
     ctx.status = 200;
     ctx.body = { oauth2: user };
   } catch (err) {

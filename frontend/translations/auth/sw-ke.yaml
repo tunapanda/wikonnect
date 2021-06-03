@@ -5,6 +5,7 @@ login:
   authenticating: Inathibitisha ...
   username: Jina La Mtumiaji
   enter_username: Andika jina la mtumiaji hapa
+  enter_email: Andika anwani ya barua pepe hapa
   password: Neno La Siri
   enter_password: Andika neno la siri hapa
   login_third_party: Ingia Ukitumia {authProvider}
@@ -15,3 +16,16 @@ signup:
   invite_code: Nambari ya Kukaribisha
   signup: Jisajili
   signup_third_party: Jisajili Ukitumia {authProvider}
+  link_to_login: Je, tayari unayo akaunti?'<'a href="/login"'>' Ingia'</a>'
+
+password_reset:
+  header: Unda nenosiri lako mpya
+  new_password: Nenosiri mpya
+  confirm_password: Rudia neno siri
+  reset_password: Weka upya Nenosiri
+  return_to_login: Rudi kwenye ukurasa wa Kuingia
+  success: Mafanikio!
+  enter_email_prompt: Ingiza anwani yako ya barua pepe na tutakutumia kiunga cha kuweka tena nenosiri lako.
+  email_sent_p1: Tumetuma barua pepe kwa <strong>{email}</strong>. Bonyeza kiungo cha kuweka upya nenosiri ili kuweka nenosiri lako mpya.
+  email_sent_p2: Ikiwa haujapokea barua pepe tafadhali angalia folda yako ya barua taka au
+  try_again: jaribu tena

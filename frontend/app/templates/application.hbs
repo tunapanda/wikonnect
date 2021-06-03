@@ -1,4 +1,4 @@
-{{#if (eq this.route "teach.login")}}
+{{#if (or this.isAdminRoute (eq this.route "teach.login"))}}
   <HeadLayout />
   {{outlet}}
 {{else if (not-eq this.route "embed")}}
@@ -9,6 +9,8 @@
   </div>
   <EmberNotify @closeAfter={{4000}} />
   <AuthPrompt />
+  {{!-- TODO: verifiy email in prod --}}
+  {{!-- <VerifyEmailPrompt /> --}}
 {{else }}
 
   {{outlet}}

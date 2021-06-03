@@ -62,14 +62,13 @@ at [tunapanda.github.io/wikonnect](https://tunapanda.github.io/wikonnect)
 
 ## Development setup
 
-- Manually [download](https://codeload.github.com/tunapanda/wikonnect/zip/master) or clone the project
-  using [Git](https://git-scm.com/) into your workspace:
+- Clone the project using [Git](https://git-scm.com/) into your workspace:
 
 ```
   git clone https://github.com/tunapanda/wikonnect.git
  ```
 
-- Proceed to set up the development environment manually or using Docker.
+- Proceed to set up the development environment [manually](#manual-project-setup) or using [Docker](#docker-project-setup).
 
 ### Docker project setup
 
@@ -87,7 +86,7 @@ at [tunapanda.github.io/wikonnect](https://tunapanda.github.io/wikonnect)
 - [Mac installation](https://docs.docker.com/docker-for-mac/install/) - Installed as docker desktop
 - [Windows installation](https://docs.docker.com/docker-for-windows/install/)  - Installed as docker desktop
 
-#### Starting a development server
+##### Starting a development server
 
 1) If your Docker engine instance is running on your terminal, navigate into the **project root directory**:
 
@@ -95,7 +94,7 @@ at [tunapanda.github.io/wikonnect](https://tunapanda.github.io/wikonnect)
 cd wikonnect/
 ```
 
-2) Rename the `.env-sample` configuration file to `.env`. (Never commit this file)
+2) **Copy** the `.env-sample` configuration file to `.env`. (Never commit this file)
 
 3) Update the above `.env` file configurations to match your desired setup.
 
@@ -134,9 +133,9 @@ Create a postgres user (with password), and set up a database for the project (D
 on the database!). :
 
 ```SQL
-=# CREATE USER my_user WITH PASSWORD 'my_password';
-=# CREATE DATABASE my_database;
-=# GRANT ALL PRIVILEGES ON DATABASE my_database TO my_user;
+=# CREATE USER wikonnect_user WITH PASSWORD 'password';
+=# CREATE DATABASE wikonnect;
+=# GRANT ALL PRIVILEGES ON DATABASE wikonnect TO wikonnect_user;
 ```
 
 #### Starting a development server
@@ -163,7 +162,7 @@ Backend set up steps:
     yarn
     ```
 
-3) Rename the database configuration file `server/config/db.example.js` to `server/config/db.js`
+3) **Copy** the database configuration file `server/config/db.example.js` to `server/config/db.js`
 
 4) Replace the database configuration to match your development database. (Do not use the development database in a
    production environment)
@@ -175,6 +174,20 @@ Backend set up steps:
         user: 'my_user',
         password: 'my_password',
       }
+    ```
+5) **Copy** the email configuration file `server/config/email.example.js` to `server/config/email.js`
+
+6) You can use Mailtrap for an email sandbox environment. Set up a [mailtrap.io](https://mailtrap.io/) account and copy the credentials provided for Nodemailer setup into the development section of the `server/config/email.js` file eg:
+
+    ```js
+    development: {
+        provider: "smtp.mailtrap.io",
+        auth: {
+          user: "xxxxxxxxxxxx",
+          pass: "xxxxxxxxxxxx",
+        },
+        defaultFrom: process.env.FROM_EMAIL_ADDRESS,
+      },
     ```
 
 5) Assuming the Postgres server is ready and above [configuration](server/config/db.js) credentials are correct, run the

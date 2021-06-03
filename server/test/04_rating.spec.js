@@ -34,11 +34,6 @@ async function getSample(valid = true) {
 }
 
 describe('CHAPTER RATINGS ROUTE', () => {
-  // before(async () => {
-  //   await knex.migrate.rollback();
-  //   await knex.migrate.latest();
-  //   return await knex.seed.run();
-  // });
 
   it('Should fetch existing chapter ratings', done => {
     chai

@@ -21,6 +21,7 @@ exports.seed = function (knex) {
             description: faker.lorem.paragraph(),
             lesson_id: 'lesson1',
             content_type: 'h5p',
+            image_url: faker.image.imageUrl(328, 200, 'business', true, false),
             status: faker.random.arrayElement(status),
             content_id: `${faker.random.arrayElement(chapterId)}`,
             creator_id: faker.random.arrayElement(userIds),
@@ -28,7 +29,7 @@ exports.seed = function (knex) {
             updated_at: faker.date.recent(),
             tags: faker.random.arrayElements(tags),
             approved: true,
-            verified: faker.random.boolean(),
+            verified: faker.datatype.boolean(),
             review_questions: faker.random.arrayElements(reviewQuestionsCategories, 4)
           });
         }
