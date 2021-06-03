@@ -11,6 +11,7 @@ export default class TeachTagController extends Controller {
   @service notify;
 
   maxTagsTotal = 6;
+  disallowedXcters = ['#', ','];
 
   @tracked topic_list = [
     'Literacy',
@@ -134,6 +135,15 @@ export default class TeachTagController extends Controller {
       );
       return;
     }
+    if (this.disallowedXcters.some((xcter) => this.tag.includes(xcter))) {
+      this.notify.alert(
+        this.intl.t('errors.characters_not_allowed', {
+          characters: this.disallowedXcters.join(' '),
+        })
+      );
+      return;
+    }
+
     if (this.tag) {
       const index = this.custom_cart.findIndex(
         (pred) => pred.toLowerCase() === this.tag.toLowerCase()
