@@ -92,7 +92,7 @@ export default class TeachTagController extends Controller {
       { title: 'Internet Basics', isSelected: false },
       { title: 'Content Creation', isSelected: false },
       { title: 'Digital Wellness', isSelected: false },
-      { title: 'Data Protection and Privacy', isSelected: false },
+      { title: 'Data Protection & Privacy', isSelected: false },
       { title: 'Online safety', isSelected: false },
       { title: 'Relationships & Communications', isSelected: false },
       { title: 'News & Media Literacy', isSelected: false },
@@ -141,7 +141,7 @@ export default class TeachTagController extends Controller {
       if (index > -1) {
         this.tag = '';
       } else {
-        this.custom_cart.pushObject(this.tag);
+        this.custom_cart.pushObject(this.tag.trim().toLowerCase()); // lowercase for insane capitalization
         this.tag = '';
       }
     }
@@ -166,7 +166,7 @@ export default class TeachTagController extends Controller {
     );
 
     let chapter = await this.store.peekRecord('chapter', id);
-    chapter.tags = combined;
+    chapter.tags = combined.map((t) => t.toLowerCase()); //all tags will be lower cased for easier backend filtering
     await chapter.save();
     //reset the local tags holder
     this.custom_cart = null;

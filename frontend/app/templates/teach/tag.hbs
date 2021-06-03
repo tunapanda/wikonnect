@@ -161,7 +161,7 @@
     {{/if}}
 
     {{#each this.selectedTags as |tag|}}
-      <button type="button" class="btn btn-success btn-sm m-1" {{on "click" (fn this.removeme tag "custom")}}>
+      <button type="button" class="btn btn-success btn-sm m-1 text-capitalize" {{on "click" (fn this.removeme tag "custom")}}>
         {{tag}}
         <span aria-hidden="true">&times;</span>
       </button>
