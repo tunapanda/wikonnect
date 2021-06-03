@@ -470,8 +470,8 @@ router.delete('/:id', permController.requireAuth, async ctx => {
  *      "path": image path
  *    }
  *
- * @apiSuccess {String} host
- * @apiSuccess {String} path
+ * @apiSuccess {String} host hostname of where the image has been uploaded
+ * @apiSuccess {String} path image path
  *
  * @apiErrorExample {json} List error
  *    HTTP/1.1 500 Internal Server Error

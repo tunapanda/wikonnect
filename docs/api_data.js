@@ -2601,14 +2601,14 @@ define({ "api": [
             "type": "String",
             "optional": false,
             "field": "host",
-            "description": ""
+            "description": "<p>hostname of where the image has been uploaded</p>"
           },
           {
             "group": "Success 200",
             "type": "String",
             "optional": false,
             "field": "path",
-            "description": ""
+            "description": "<p>image path</p>"
           }
         ]
       }
