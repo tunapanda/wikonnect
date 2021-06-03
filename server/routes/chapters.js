@@ -35,6 +35,7 @@ const router = new Router({
  * @apiParam  (Query Params) {String} [chapter[status]] Query by chapter status - published | draft
  * @apiParam  (Query Params) {String} [chapter[creatorId]] Query by author of a chapter
  * @apiParam  (Query Params) {Boolean} [chapter[approved]] Query by approval status
+ * @apiParam  (Query Params) {String} [chapter[tags]] Query by tags-separated by comma
  *
  * @apiHeader {String} [Authorization] Bearer << JWT here>>
  *
