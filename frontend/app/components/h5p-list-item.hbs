@@ -48,7 +48,7 @@
 
       <div class="chapter-tags-list pb-3">
         {{#each @chapter.tags as |tag|}}
-          <LinkTo @route="tag" @model={{tag}} class="tag">{{tag}}</LinkTo>
+          <LinkTo @route="index" @query={{hash tags=tag}}  class="tag">{{tag}}</LinkTo>
         {{/each}}
       </div>
 
