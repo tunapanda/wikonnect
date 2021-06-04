@@ -7,6 +7,11 @@ import { A } from '@ember/array';
 export default class TeachTagController extends Controller {
   @service me;
   @service config;
+  @service intl;
+  @service notify;
+
+  maxTagsTotal = 6;
+  disallowedXcters = ['#', ','];
 
   @tracked topic_list = [
     'Literacy',
@@ -83,6 +88,40 @@ export default class TeachTagController extends Controller {
     return this.model.tags;
   }
 
+  get topicBucketTags() {
+    const tags = [
+      { title: 'Internet Basics', isSelected: false },
+      { title: 'Content Creation', isSelected: false },
+      { title: 'Digital Wellness', isSelected: false },
+      { title: 'Data Protection & Privacy', isSelected: false },
+      { title: 'Online safety', isSelected: false },
+      { title: 'Relationships & Communications', isSelected: false },
+      { title: 'News & Media Literacy', isSelected: false },
+      { title: 'Online Working', isSelected: false },
+      { title: 'Online Learning', isSelected: false },
+      { title: 'Life Skills', isSelected: false },
+      { title: 'Health', isSelected: false },
+      { title: 'Digital Financial Literacy', isSelected: false },
+    ];
+
+    if (this.selectedTags) {
+      return tags.map((tag) => {
+        const index = this.selectedTags.findIndex(
+          (pred) => pred.toLowerCase() === tag.title.toLowerCase()
+        );
+        if (index > -1) {
+          tag.isSelected = true;
+        }
+        return tag;
+      });
+    }
+    return tags;
+  }
+
+  get hasUnselectedPredefinedTags() {
+    return this.topicBucketTags.filter((t) => !t.isSelected).length > 0;
+  }
+
   @action
   addtag(evt) {
     evt.preventDefault();
@@ -90,6 +129,21 @@ export default class TeachTagController extends Controller {
     if (!this.custom_cart) {
       this.custom_cart = A(this.model.tags);
     }
+    if (this.custom_cart.length === this.maxTagsTotal) {
+      this.notify.alert(
+        this.intl.t('errors.max_tags_selected', { max: this.maxTagsTotal })
+      );
+      return;
+    }
+    if (this.disallowedXcters.some((xcter) => this.tag.includes(xcter))) {
+      this.notify.alert(
+        this.intl.t('errors.characters_not_allowed', {
+          characters: this.disallowedXcters.join(' '),
+        })
+      );
+      return;
+    }
+
     if (this.tag) {
       const index = this.custom_cart.findIndex(
         (pred) => pred.toLowerCase() === this.tag.toLowerCase()
@@ -97,7 +151,7 @@ export default class TeachTagController extends Controller {
       if (index > -1) {
         this.tag = '';
       } else {
-        this.custom_cart.pushObject(this.tag);
+        this.custom_cart.pushObject(this.tag.trim().toLowerCase()); // lowercase for insane capitalization
         this.tag = '';
       }
     }
@@ -122,7 +176,7 @@ export default class TeachTagController extends Controller {
     );
 
     let chapter = await this.store.peekRecord('chapter', id);
-    chapter.tags = combined;
+    chapter.tags = combined.map((t) => t.toLowerCase()); //all tags will be lower cased for easier backend filtering
     await chapter.save();
     //reset the local tags holder
     this.custom_cart = null;
@@ -197,5 +251,19 @@ export default class TeachTagController extends Controller {
       default:
         break;
     }
+  }
+
+  @action
+  selectPredefinedTag(tag) {
+    if (!this.custom_cart) {
+      this.custom_cart = A(this.model.tags);
+    }
+    if (this.custom_cart.length === this.maxTagsTotal) {
+      this.notify.alert(
+        this.intl.t('errors.max_tags_selected', { max: this.maxTagsTotal })
+      );
+      return;
+    }
+    this.custom_cart.pushObject(tag.title);
   }
 }

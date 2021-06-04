@@ -7,12 +7,14 @@ $palette: (
   gray75: #B0BABF,
   gray95: #EBF0F2,
   black: #000000,
+  mystic: #ebf0f2
 );
 
-.chapter-thumbnail{
+.chapter-thumbnail {
   min-height: 175px;
-  background-color: lighten(map-get($palette,primary),30%);
+  background-color: lighten(map-get($palette, primary), 30%);
 }
+
 .chapter-metadata {
   .verified-icon {
     fill: map-get($palette, primary);
@@ -51,4 +53,20 @@ $palette: (
   font-size: 15px;
   font-family: 'Inter', serif;
   color: map-get($palette, gray75);
+}
+
+.chapter-tags-list {
+  font-size: 12px;
+  .tag {
+    display: inline-block;
+    padding: 0.3em .6em;
+    font-size: 90%;
+    text-align: center;
+    white-space: nowrap;
+    background-color: map-get($palette, mystic);
+    color: map-get($palette, gray45);
+    border-radius: 4px;
+    text-transform: capitalize;
+    margin:0 0 5px 0;
+  }
 }

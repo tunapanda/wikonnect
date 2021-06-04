@@ -198,6 +198,14 @@ export default class ChapterIndexController extends Controller {
       // delete any previous rating if reaction has been altered
       await this.deleteUserRatingReview();
     }
+    //if chapter has no rating & review questions, just break the flow
+    if (
+      !this.model.reviewQuestions ||
+      this.model.reviewQuestions.length === 0
+    ) {
+      return 1;
+    }
+
     if (currentReaction) {
       this.userChapterReaction = currentReaction;
       if (currentReaction === 'like') {

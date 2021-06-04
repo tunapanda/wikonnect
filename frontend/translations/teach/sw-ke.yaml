@@ -22,7 +22,7 @@ toc:
   thumbnail: Kijipicha
   tags: Lebo
   preview_publish: Hakikisha halafu hapisha
-  select_review_questions: Ukadiriaji na Uhakiki
+  select_review_questions: Ukadiriaji na Maoni
 
 
 create:
@@ -66,8 +66,9 @@ tag:
   kicd_status: Hali ya KICD
 
 review_questions:
-  title: Chagua maswali ya uhakiki na ukadiriaji
-  subtitle: Mapitio na ukadiriaji kutoka kwa wanafunzi zitakusaidia kuboresha yaliyomo
+  title: Wanafunzi watapima na kukagua yaliyomo kulingana na kategoria tofauti. Maoni haya kutoka kwa wanafunzi yatakusaidia kuwa mwalimu bora zaidi na mtunzi wa yaliyomo.
+  default_subtitle: "Aina zifuatazo zinatumika kwa maudhui yako kwa chaguo-msingi:"
+  others_subtitle: "Tafadhali chagua kategoria hapa chini ambazo zinatumika pia kwa yaliyomo yako:"
 
 preview:
   title: Chungulia Sura ya H5P
