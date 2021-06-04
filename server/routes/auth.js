@@ -153,7 +153,7 @@ router.post('/reset_password', checkIfPasswordAreSame, async ctx => {
       email: decodedMail,
     }
   );
-  ctx.assert(user, 404, user);
+  ctx.assert(user, 404, 'Account not found');
 
   try {
     const userData = await user.$query().patchAndFetch({ 'resetPasswordExpires': new Date(), 'hash': auth.hash });
@@ -162,7 +162,7 @@ router.post('/reset_password', checkIfPasswordAreSame, async ctx => {
     log.info('Password changed for user with email: %s', decodedMail);
 
     ctx.status = 201;
-    ctx.body = userData;
+    ctx.body = {};
 
   } catch (e) {
     log.info('Passwords do not match');
