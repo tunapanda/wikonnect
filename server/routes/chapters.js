@@ -125,7 +125,10 @@ router.get('/', permController.requireAuth, validateGetChapter, async ctx => {
           .as('authenticated_user_reaction_id')
       ])
       .where(ctx.query)
-      .where('tags', '@>', queryTags)
+      .where((builder)=>{
+        builder.whereNull('tags')
+          .orWhere('tags', '@>', queryTags);
+      })
       .page(page, per_page)
       .withGraphFetched(
         '[reaction(reactionAggregate), flag(selectFlag),author()]'
