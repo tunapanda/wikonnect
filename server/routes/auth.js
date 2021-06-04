@@ -112,7 +112,7 @@ router.post('/forgot_password', async ctx => {
 
     ctx.status = 201;
     // ctx.body = userData;
-    ctx.body = { email: email, token: token };
+    ctx.body = {};
 
   } catch (e) {
     log.info('Email verification already requested');
