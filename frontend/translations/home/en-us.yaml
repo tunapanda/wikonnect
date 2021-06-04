@@ -8,3 +8,4 @@ tags:
 loading:
   loading_more_records: Loading more records...
   loaded_all_the_records: Loaded all the records
+  no_filtered_record: No records that were found matching the filters

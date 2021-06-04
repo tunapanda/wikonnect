@@ -1,53 +1,64 @@
 import Controller from '@ember/controller';
 import { inject as service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
-import { A } from '@ember/array';
-import { ChapterFilterTag } from '../utils/chapter-filter-tag';
 import { action } from '@ember/object';
 
 export default class IndexController extends Controller {
-  @service
-  me;
+  queryParams = ['tags'];
+  queryTagJoinXcter = ',';
 
-  @tracked
-  selectedFilterTags = A([]);
+  @service me;
+  @service store;
+  @service intl;
+  @tracked tags = null;
+  @tracked tagsList = this.store.peekAll('chapter-tag');
 
-  get chapters() {
-    if (this.selectedFilterTags.length > 0) {
-      return this.model.filter((chapter) =>
-        this.selectedFilterTags.some((tag) => chapter.tags.includes(tag.name))
-      );
+  get selectedFilterTags() {
+    if (!this.tags) {
+      return [];
     }
-    return this.model;
-  }
-
-  get tagsList() {
-    let allFilterTags = A([]);
-
-    this.model.map((chapter) => {
-      chapter.tags.map((tag) => {
-        let obj = new ChapterFilterTag(tag);
-        allFilterTags.addObject(obj);
-      });
+    const queryTags = this.tags.split(this.queryTagJoinXcter);
+    return this.tagsList.filter((tag) => {
+      const index = queryTags.findIndex((t) => t.toLowerCase() === tag.name);
+      if (index > -1) {
+        tag.isSelected = true;
+        return true;
+      }
+      tag.isSelected = false;
+      return false;
     });
-    return allFilterTags.uniqBy('name');
   }
 
   @action
   clearAllTagFilters() {
-    this.selectedFilterTags.map((tag) => {
-      tag.selected = false;
+    this.tagsList = this.tagsList.map((tag) => {
+      tag.isSelected = false;
+      return tag;
     });
-    this.selectedFilterTags.clear();
+    this.tags = null;
   }
 
   @action
   toggleTagSelection(tag) {
-    if (tag.selected) {
-      this.selectedFilterTags.removeObject(tag);
+    const queryTags = this.tags ? this.tags.split(this.queryTagJoinXcter) : [];
+    if (tag.isSelected) {
+      const index = queryTags.findIndex((t) => t.toLowerCase() === tag.name);
+      if (index > -1) {
+        queryTags.splice(index, 1);
+      }
     } else {
-      this.selectedFilterTags.addObject(tag);
+      const index = queryTags.findIndex((t) => t.toLowerCase() === tag.name);
+      if (index === -1) {
+        queryTags.push(tag.name);
+      }
     }
-    tag.selected = !tag.selected;
+    this.tags = queryTags.join(this.queryTagJoinXcter);
+  }
+
+  get recordsLoadedText() {
+    if (!this.tags) {
+      return this.intl.t('home.loading.loaded_all_the_records');
+    }
+    return this.intl.t('home.loading.no_filtered_record');
   }
 }
