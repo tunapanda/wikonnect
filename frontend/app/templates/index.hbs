@@ -7,13 +7,13 @@
 
 <div class="container">
   <div class="row mt-5 " id="chapters-container">
-    <Home::Chapters @chapters={{this.chapters}}>
+    <Home::Chapters @chapters={{this.model}}>
     </Home::Chapters>
   </div>
   <div class="row">
     <div class="col">
-      <InfinityLoader @infinityModel={{this.chapters}} @loadingText={{t "home.loading.loading_more_records"}}
-                      @loadedText={{t "home.loading.loaded_all_the_records"}} @triggerOffset={{500}} @eventDebounce={{1000}}/>
+      <InfinityLoader @infinityModel={{this.model}} @loadingText={{t "home.loading.loading_more_records"}}
+                      @loadedText={{this.recordsLoadedText}} @triggerOffset={{500}} @eventDebounce={{1000}}/>
     </div>
   </div>
 
