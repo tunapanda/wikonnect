@@ -33,7 +33,7 @@
                 <label class=" d-flex justify-content-between align-items-center">
                   {{tag.name}}
                   <Input @type="checkbox" class="checkbox wik-checkbox"
-                    {{on "change" (fn @toggleTagSelection tag) }} @checked={{tag.selected}} />
+                    {{on "change" (fn @toggleTagSelection tag) }} @checked={{tag.isSelected}} />
                 </label>
               </div>
 
