@@ -77,6 +77,8 @@ router.use(jwt.authenticate, require('./routes/review-questions'));
 
 router.use(jwt.authenticate, require('./routes/notifications'));
 
+router.use(require('./routes/chapter-tags'));
+
 router.use(require('./routes/search'));
 
 
