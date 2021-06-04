@@ -31,7 +31,8 @@ const router = new Router({
 router.get('/', async (ctx) => {
   try {
 
-    const chapters = await ChapterModel.query().select(['tags']);
+    const chapters = await ChapterModel.query().select(['tags'])
+      .whereNotNull('tags');
 
     const allTags = chapters.flatMap((chapter) => chapter.tags);
 
