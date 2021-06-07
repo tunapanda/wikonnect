@@ -1,13 +1,101 @@
-{{#if this.isShowingModal}}
-  <ModalDialog
-    @tagName="div"
-    @onClose={{this.toggleModal}}>
-    <div>
-      <p>{{@user.name}}</p>
+<BsModal
+  @open={{this.isShowingModal}}
+  @backdrop={{false}}
+  @renderInPlace={{true}}
+  @size={{'lg'}}
+  class="user-detail-modal"
+  @position="center"
+  @closeButton={{true}} as |modal|
+>
+  <modal.header class="border-0" />
+  <modal.body>
+    <div class="user-details d-flex">
+      <div class="user-detail-card d-flex flex-row">
+        <div class="user-profile">
+          <img src={{@user.profileUri}} alt="Profile" class="rounded-circle" />
+          {{!-- <img
+            src="/uploads/images/profile-placeholder.gif"
+            alt="Profile"
+            class="rounded-circle"
+          /> --}}
+          <p>
+            <strong>
+              {{@user.name}}
+            </strong>
+          </p>
+          <p class="text-muted">
+            {{@user.role}}
+          </p>
+        </div>
+        <div class="user-info">
+          <p>
+            {{svg-jar 'phone_black_24dp'}}
+            +254 701928677
+          </p>
+          <p>
+            {{svg-jar 'email_black_24dp'}}
+            bmarete10@gmail.com
+          </p>
+          <p>
+            {{svg-jar 'place_black_24dp'}}
+            Nairobi, Kenya
+          </p>
+        </div>
+      </div>
+      <div class="user-detail-card icon-card">
+        <img src="/images/chapters-created.png" alt="chapters created icon" />
+        <p>
+          Chapters Created
+        </p>
+        <p>
+          <strong>
+            0
+          </strong>
+        </p>
+      </div>
+      <div class="user-detail-card icon-card">
+        <img
+          src="/images/completed-chapters.png"
+          alt="completed chapters icon"
+        />
+        <p>
+          Completed Chapters
+        </p>
+        <p>
+          <strong>
+            0
+          </strong>
+        </p>
+      </div>
+      <div class="user-detail-card icon-card">
+        <img src="/images/points-earned.png" alt="points accumulated icon" />
+        <p>
+          Points Accumulated
+        </p>
+        <p>
+          <strong>
+            0
+          </strong>
+        </p>
+      </div>
+      <div class="user-detail-card icon-card">
+        <img src="/images/badges-earned.png" alt="badges earned" />
+        <p>
+          Badges Earned
+        </p>
+        <p>
+          <strong>
+            0
+          </strong>
+        </p>
+      </div>
     </div>
-  </ModalDialog>
-{{/if}}
-
-<button type="button" class="btn btn-primary" {{on 'click' this.toggleModal}}>
+  </modal.body>
+</BsModal>
+<button
+  type="button"
+  class="btn btn-dark btn-sm"
+  {{on 'click' this.toggleModal}}
+>
   Details
 </button>

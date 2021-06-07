@@ -21,3 +21,58 @@
     }
   }
 }
+.user-detail-modal {
+  .modal-dialog {
+    max-width: 70%;
+  }
+
+  .modal-header {
+    padding: 0 0.5rem;
+  }
+
+  .modal-body {
+    padding-top: 0;
+  }
+}
+.user-details {
+  font-size: 0.8em;
+
+  .user-detail-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-direction: column;
+    margin: 10px;
+    padding: 15px 10px;
+    text-align: center;
+    border-radius: 3%;
+    box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.2);
+
+    img {
+      width: 50px;
+      margin-bottom: 10px;
+    }
+
+    p {
+      margin: 0;
+    }
+
+    .user-profile {
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+      padding-right: 10px;
+      width: 100px;
+    }
+
+    .user-info {
+      border-left: 1px solid #f57010;
+      text-align: left;
+      padding-left: 10px;
+
+      p {
+        margin-bottom: 0.5rem;
+      }
+    }
+  }
+}
