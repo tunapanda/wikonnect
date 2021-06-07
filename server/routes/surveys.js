@@ -213,7 +213,6 @@ router.post('/', requireAuth, async ctx => {
  *
  * @apiParam (URI Param) {String} id survey Id to update
  *
- * @apiParam (Request Body) {Object} survey Top level object
  * @apiParam (Request Body) {String} [survey[surveyType]=mne] Kind of the survey.
  * @apiParam (Request Body) {String} survey[name] Name/title of the survey
  * @apiParam (Request Body) {String} survey[description] Short survey description/purpose
