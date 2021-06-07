@@ -1,4 +1,3 @@
-import "cypress-file-upload";
 
 Cypress.Commands.add('login', function () {
   cy.fixture('user').then(user => {
