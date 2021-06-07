@@ -3465,14 +3465,14 @@
             "type": "Object",
             "optional": true,
             "field": "notification[model]",
-            "description": "<p>Optional model name related to notification (refer to Wikonnect/frontend/app/models)</p>"
+            "description": "<p>Model name related to notification (refer <a target=\"_blank\" href=\"https://github.com/tunapanda/wikonnect/tree/master/frontend/app/models\"> here </a>)</p>"
           },
           {
             "group": "Success 200",
             "type": "Object",
             "optional": true,
             "field": "notification[itemId]",
-            "description": "<p>Optional Id of model record</p>"
+            "description": "<p>Id of model record</p>"
           },
           {
             "group": "Success 200",
@@ -3564,73 +3564,66 @@
         "Query Params": [
           {
             "group": "Query Params",
-            "type": "Object",
-            "optional": false,
-            "field": "notification",
-            "description": "<p>Top level object</p>"
-          },
-          {
-            "group": "Query Params",
             "type": "String",
-            "optional": false,
-            "field": "notification[id]",
+            "optional": true,
+            "field": "id",
             "description": "<p>notification id</p>"
           },
           {
             "group": "Query Params",
             "type": "String",
-            "optional": false,
-            "field": "notification[title]",
+            "optional": true,
+            "field": "title",
             "description": "<p>Title of the notification</p>"
           },
           {
             "group": "Query Params",
             "type": "String",
-            "optional": false,
-            "field": "notification[body]",
+            "optional": true,
+            "field": "body",
             "description": "<p>Body of the notification</p>"
           },
           {
             "group": "Query Params",
-            "type": "Object",
+            "type": "String",
             "optional": true,
-            "field": "notification[model]",
-            "description": "<p>Optional model name related to notification (refer to Wikonnect/frontend/app/models)</p>"
+            "field": "model",
+            "description": "<p>Model name related to notification (refer <a target=\"_blank\" href=\"https://github.com/tunapanda/wikonnect/tree/master/frontend/app/models\"> here </a>)</p>"
           },
           {
             "group": "Query Params",
             "type": "Object",
             "optional": true,
             "field": "notification[itemId]",
-            "description": "<p>Optional Id of model record</p>"
+            "description": "<p>Id of referenced model record</p>"
           },
           {
             "group": "Query Params",
             "type": "String",
-            "optional": false,
-            "field": "notification[eventType]",
+            "optional": true,
+            "field": "eventType",
             "description": "<p>Type of event. Can be used to resolve related notification model.</p>"
           },
           {
             "group": "Query Params",
             "type": "String",
-            "optional": false,
-            "field": "notification[recipientId]",
+            "optional": true,
+            "field": "recipientId",
             "description": "<p>Id of the user being notified</p>"
           },
           {
             "group": "Query Params",
-            "type": "Boolean",
-            "optional": false,
-            "field": "notification[read]",
-            "description": "<p>if user has read the notification</p>"
+            "type": "String",
+            "optional": true,
+            "field": "creatorId",
+            "description": "<p>Id of the user who created the notification</p>"
           },
           {
             "group": "Query Params",
-            "type": "Object",
+            "type": "Boolean",
             "optional": true,
-            "field": "notification[metadata]",
-            "description": "<p>Any metadata related to the notification</p>"
+            "field": "read",
+            "description": "<p>if user has read the notification</p>"
           }
         ]
       }
@@ -3642,84 +3635,84 @@
             "group": "Success 200",
             "type": "Object",
             "optional": false,
-            "field": "notification",
+            "field": "notifications",
             "description": "<p>Top level object</p>"
           },
           {
             "group": "Success 200",
             "type": "String",
             "optional": false,
-            "field": "notification[id]",
+            "field": "notifications[id]",
             "description": "<p>notification id</p>"
           },
           {
             "group": "Success 200",
             "type": "String",
             "optional": false,
-            "field": "notification[title]",
+            "field": "notifications[title]",
             "description": "<p>Title of the notification</p>"
           },
           {
             "group": "Success 200",
             "type": "String",
             "optional": false,
-            "field": "notification[body]",
+            "field": "notifications[body]",
             "description": "<p>Body of the notification</p>"
           },
           {
             "group": "Success 200",
             "type": "Object",
             "optional": true,
-            "field": "notification[model]",
-            "description": "<p>Optional model name related to notification (refer to Wikonnect/frontend/app/models)</p>"
+            "field": "notifications[model]",
+            "description": "<p>Model name related to notification (refer <a target=\"_blank\" href=\"https://github.com/tunapanda/wikonnect/tree/master/frontend/app/models\"> here </a>)</p>"
           },
           {
             "group": "Success 200",
             "type": "Object",
             "optional": true,
-            "field": "notification[itemId]",
-            "description": "<p>Optional Id of model record</p>"
+            "field": "notifications[itemId]",
+            "description": "<p>Id of model record</p>"
           },
           {
             "group": "Success 200",
             "type": "String",
             "optional": false,
-            "field": "notification[eventType]",
+            "field": "notifications[eventType]",
             "description": "<p>Type of event. Can be used to resolve related notification model.</p>"
           },
           {
             "group": "Success 200",
             "type": "String",
             "optional": false,
-            "field": "notification[recipientId]",
+            "field": "notifications[recipientId]",
             "description": "<p>Id of the user being notified</p>"
           },
           {
             "group": "Success 200",
             "type": "Boolean",
             "optional": false,
-            "field": "notification[read]",
+            "field": "notifications[read]",
             "description": "<p>if user has read the notification</p>"
           },
           {
             "group": "Success 200",
             "type": "Object",
             "optional": true,
-            "field": "notification[metadata]",
+            "field": "notifications[metadata]",
             "description": "<p>Any metadata related to the notification</p>"
           },
           {
             "group": "Success 200",
             "type": "String",
             "optional": false,
-            "field": "notification[createdAt]",
+            "field": "notifications[createdAt]",
             "description": "<p>date created</p>"
           },
           {
             "group": "Success 200",
             "type": "String",
             "optional": false,
-            "field": "notification[updatedAt]",
+            "field": "notifications[updatedAt]",
             "description": "<p>date updated</p>"
           }
         ]
@@ -3727,7 +3720,7 @@
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "HTTP/1.1 200 OK\n     {\n        \"notification\":{\n            \"id\": \"I3ml3x-AAPE\",\n            \"title\": \"Your chapter has been approved\",\n            \"body\": \"Your recently published chapter has been approved!\",\n            \"itemId\": \"I3lchuEAA80\",\n            \"eventType\": \"chapter-approved\",\n            \"model\": \"chapter\",\n            \"recipientId\": \"user2\",\n            \"creatorId\": \"user1\",\n            \"read\": false,\n            \"metadata\":{\"sendEmail\": true},\n            \"createdAt\": \"2021-04-20T20:12:39.830Z\",\n            \"updatedAt\": \"2021-04-20T20:12:39.830Z\"\n           }\n     }",
+          "content": "HTTP/1.1 200 OK\n     {\n        \"notifications\":[{\n            \"id\": \"I3ml3x-AAPE\",\n            \"title\": \"Your chapter has been approved\",\n            \"body\": \"Your recently published chapter has been approved!\",\n            \"itemId\": \"I3lchuEAA80\",\n            \"eventType\": \"chapter-approved\",\n            \"model\": \"chapter\",\n            \"recipientId\": \"user2\",\n            \"creatorId\": \"user1\",\n            \"read\": false,\n            \"metadata\":{\"sendEmail\": true},\n            \"createdAt\": \"2021-04-20T20:12:39.830Z\",\n            \"updatedAt\": \"2021-04-20T20:12:39.830Z\"\n           }]\n     }",
           "type": "json"
         }
       ]
@@ -3779,13 +3772,6 @@
         "Request Body": [
           {
             "group": "Request Body",
-            "type": "Object",
-            "optional": false,
-            "field": "notification",
-            "description": "<p>Top level object</p>"
-          },
-          {
-            "group": "Request Body",
             "type": "String",
             "optional": true,
             "field": "notification[title]",
@@ -3803,14 +3789,14 @@
             "type": "Object",
             "optional": true,
             "field": "notification[model]",
-            "description": "<p>Optional model name related to notification (refer to Wikonnect/frontend/app/models)</p>"
+            "description": "<p>Model name related to notification (refer <a target=\"_blank\" href=\"https://github.com/tunapanda/wikonnect/tree/master/frontend/app/models\"> here </a>)</p>"
           },
           {
             "group": "Request Body",
             "type": "Object",
             "optional": true,
             "field": "notification[itemId]",
-            "description": "<p>Optional Id of model record</p>"
+            "description": "<p>Id of model record</p>"
           },
           {
             "group": "Request Body",
@@ -3879,14 +3865,14 @@
             "type": "Object",
             "optional": true,
             "field": "notification[model]",
-            "description": "<p>Optional model name related to notification (refer to Wikonnect/frontend/app/models)</p>"
+            "description": "<p>Model name related to notification (refer <a target=\"_blank\" href=\"https://github.com/tunapanda/wikonnect/tree/master/frontend/app/models\"> here </a>)</p>"
           },
           {
             "group": "Success 200",
             "type": "Object",
             "optional": true,
             "field": "notification[itemId]",
-            "description": "<p>Optional Id of model record</p>"
+            "description": "<p>Id of model record</p>"
           },
           {
             "group": "Success 200",
@@ -3978,13 +3964,6 @@
         "Request Body": [
           {
             "group": "Request Body",
-            "type": "Object",
-            "optional": false,
-            "field": "notification",
-            "description": "<p>Top level object</p>"
-          },
-          {
-            "group": "Request Body",
             "type": "String",
             "optional": false,
             "field": "notification[title]",
@@ -4002,14 +3981,14 @@
             "type": "Object",
             "optional": true,
             "field": "notification[model]",
-            "description": "<p>Optional model name related to notification (refer to Wikonnect/frontend/app/models)</p>"
+            "description": "<p>Model name related to notification (refer <a target=\"_blank\" href=\"https://github.com/tunapanda/wikonnect/tree/master/frontend/app/models\"> here </a>)</p>"
           },
           {
             "group": "Request Body",
             "type": "Object",
             "optional": true,
             "field": "notification[itemId]",
-            "description": "<p>Optional Id of model record</p>"
+            "description": "<p>Id of model record</p>"
           },
           {
             "group": "Request Body",
@@ -4078,14 +4057,14 @@
             "type": "Object",
             "optional": true,
             "field": "notification[model]",
-            "description": "<p>Optional model name related to notification (refer to Wikonnect/frontend/app/models)</p>"
+            "description": "<p>Model name related to notification (refer <a target=\"_blank\" href=\"https://github.com/tunapanda/wikonnect/tree/master/frontend/app/models\"> here </a>)</p>"
           },
           {
             "group": "Success 200",
             "type": "Object",
             "optional": true,
             "field": "notification[itemId]",
-            "description": "<p>Optional Id of model record</p>"
+            "description": "<p>Id of model record</p>"
           },
           {
             "group": "Success 200",
@@ -5055,13 +5034,6 @@
         "Request Body": [
           {
             "group": "Request Body",
-            "type": "Object",
-            "optional": false,
-            "field": "rating",
-            "description": "<p>Top level object</p>"
-          },
-          {
-            "group": "Request Body",
             "type": "String",
             "optional": true,
             "field": "rating[id]",
@@ -5785,33 +5757,26 @@
     ],
     "parameter": {
       "fields": {
-        "Optional Params": [
+        "Query Params": [
           {
-            "group": "Optional Params",
+            "group": "Query Params",
             "type": "String",
-            "optional": false,
-            "field": "reaction.id",
-            "description": "<p>Chapter Id</p>"
+            "optional": true,
+            "field": "reaction",
+            "description": "<p>Reaction type (like|dislike).</p>"
           },
           {
-            "group": "Optional Params",
+            "group": "Query Params",
             "type": "String",
-            "optional": false,
-            "field": "reaction[reaction]",
-            "description": "<p>Reaction type (like|dislike|whatever).</p>"
-          },
-          {
-            "group": "Optional Params",
-            "type": "String",
-            "optional": false,
-            "field": "reaction[chapter_id]",
+            "optional": true,
+            "field": "chapterId",
             "description": "<p>Chapter id.</p>"
           },
           {
-            "group": "Optional Params",
+            "group": "Query Params",
             "type": "String",
-            "optional": false,
-            "field": "reaction[user_id]",
+            "optional": true,
+            "field": "userId",
             "description": "<p>Authenticated user id</p>"
           }
         ]
@@ -5881,40 +5846,6 @@
       }
     ],
     "version": "0.4.0",
-    "parameter": {
-      "fields": {
-        "Optional Params": [
-          {
-            "group": "Optional Params",
-            "type": "String",
-            "optional": false,
-            "field": "reaction[id]",
-            "description": "<p>Chapter Id</p>"
-          },
-          {
-            "group": "Optional Params",
-            "type": "String",
-            "optional": false,
-            "field": "reaction[reaction]",
-            "description": "<p>Reaction type (like|dislike|whatever).</p>"
-          },
-          {
-            "group": "Optional Params",
-            "type": "String",
-            "optional": false,
-            "field": "reaction[chapter_id]",
-            "description": "<p>Chapter id.</p>"
-          },
-          {
-            "group": "Optional Params",
-            "type": "String",
-            "optional": false,
-            "field": "reaction[user_id]",
-            "description": "<p>Authenticated user id</p>"
-          }
-        ]
-      }
-    },
     "success": {
       "examples": [
         {
@@ -6485,13 +6416,6 @@
           }
         ],
         "Request Body": [
-          {
-            "group": "Request Body",
-            "type": "Object",
-            "optional": false,
-            "field": "survey",
-            "description": "<p>Top level object</p>"
-          },
           {
             "group": "Request Body",
             "type": "String",
@@ -7103,13 +7027,6 @@
             "group": "Request Body",
             "type": "Object",
             "optional": false,
-            "field": "trigger",
-            "description": "<p>Top level object</p>"
-          },
-          {
-            "group": "Request Body",
-            "type": "Object",
-            "optional": false,
             "field": "trigger[id]",
             "description": "<p>trigger id</p>"
           },
@@ -7209,13 +7126,6 @@
           }
         ],
         "Request Body": [
-          {
-            "group": "Request Body",
-            "type": "Object",
-            "optional": false,
-            "field": "trigger",
-            "description": "<p>Top level object</p>"
-          },
           {
             "group": "Request Body",
             "type": "Object",
