@@ -2360,6 +2360,13 @@ define({ "api": [
             "optional": true,
             "field": "chapter[approved]",
             "description": "<p>Query by approval status</p>"
+          },
+          {
+            "group": "Query Params",
+            "type": "String",
+            "optional": true,
+            "field": "chapter[tags]",
+            "description": "<p>Query by tags-separated by comma</p>"
           }
         ]
       }
@@ -4969,13 +4976,34 @@ define({ "api": [
             "optional": false,
             "field": "reviewQuestions[title]",
             "description": "<p>category title</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Boolean",
+            "optional": false,
+            "field": "reviewQuestions[default]",
+            "description": "<p>if the category is always selected</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "reviewQuestions[priority]",
+            "description": "<p>Order of priority when showing the category</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object[]",
+            "optional": true,
+            "field": "reviewQuestions[options]",
+            "description": "<p>Preset categories for review feedback</p>"
           }
         ]
       },
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "HTTP/1.1 200 OK\n{\n   \"reviewQuestions\": [\n       {\n           \"category\": \"audioVideoQuality\",\n           \"title\": \"Audio & video quality\"\n       },\n       {\n           \"category\": \"soundQuality\",\n           \"title\": \"Sound quality\"\n       }\n\n     ]\n }",
+          "content": "HTTP/1.1 200 OK\n{\n   \"reviewQuestions\": [\n       {\n           \"category\": \"grammar\",\n           \"title\": \"Grammar & Spelling\",\n            \"default\":false,\n            \"priority\":2,\n       },\n       {\n           \"category\": \"soundQuality\",\n           \"title\": \"Sound quality\",\n           \"default\":true,\n           \"priority\":1,\n           \"options\":{\n               \"negative\":[\"Bad quality\"],\n               \"positive\":[\"Good quality\"]\n           }\n       }\n\n     ]\n }",
           "type": "json"
         }
       ]
