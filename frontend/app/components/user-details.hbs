@@ -12,7 +12,7 @@
     <div class="user-details d-flex">
       <div class="user-detail-card d-flex flex-row">
         <div class="user-profile">
-          <img src={{@user.profileUri}} alt="Profile" class="rounded-circle" />
+          <img src={{@user.profileUri}} alt={{t 'admin.users.details.profile_image_alt'}} class="rounded-circle" />
           {{!-- <img
             src="/uploads/images/profile-placeholder.gif"
             alt="Profile"
@@ -30,62 +30,62 @@
         <div class="user-info">
           <p>
             {{svg-jar 'phone_black_24dp'}}
-            +254 701928677
+            {{@user.contactNumber}}
           </p>
           <p>
             {{svg-jar 'email_black_24dp'}}
-            bmarete10@gmail.com
+            {{@user.email}}
           </p>
           <p>
             {{svg-jar 'place_black_24dp'}}
-            Nairobi, Kenya
+            {{@user.location}}
           </p>
         </div>
       </div>
       <div class="user-detail-card icon-card">
-        <img src="/images/chapters-created.png" alt="chapters created icon" />
+        <img src="/images/chapters-created.png" alt={{t 'admin.users.details.chapters_created_alt'}} />
         <p>
-          Chapters Created
+          {{t 'admin.users.details.chapters_created'}}
         </p>
         <p>
           <strong>
-            0
+            {{@user.chaptersCreated}}
           </strong>
         </p>
       </div>
       <div class="user-detail-card icon-card">
         <img
           src="/images/completed-chapters.png"
-          alt="completed chapters icon"
+          alt={{t 'admin.user.details.completed_chapters_alt'}}
         />
         <p>
-          Completed Chapters
+          {{t 'admin.users.details.completed_chapters'}}
         </p>
         <p>
           <strong>
-            0
+            {{@user.chaptersCompleted}}
           </strong>
         </p>
       </div>
       <div class="user-detail-card icon-card">
-        <img src="/images/points-earned.png" alt="points accumulated icon" />
+        <img src="/images/points-earned.png" alt={{t 'admin.users.details.points_accumulated_alt'}} />
         <p>
-          Points Accumulated
+          {{t 'admin.users.details.points_accumulated'}}
         </p>
         <p>
           <strong>
-            0
+            {{@user.pointsEarned}}
           </strong>
         </p>
       </div>
       <div class="user-detail-card icon-card">
-        <img src="/images/badges-earned.png" alt="badges earned" />
+        <img src="/images/badges-earned.png" alt={{t 'admin.users.details.badges_earned_alt'}} />
         <p>
-          Badges Earned
+          {{t 'admin.users.details.badges_earned'}}
         </p>
         <p>
           <strong>
-            0
+            {{@user.badgesEarned}}
           </strong>
         </p>
       </div>
@@ -97,5 +97,5 @@
   class="btn btn-dark btn-sm"
   {{on 'click' this.toggleModal}}
 >
-  Details
+  {{t 'admin.users.details.details_button'}}
 </button>

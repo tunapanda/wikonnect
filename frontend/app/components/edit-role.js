@@ -1,19 +1,11 @@
 import Component from '@glimmer/component';
 import { action } from '@ember/object';
-import { tracked } from '@glimmer/tracking';
 import { inject as service } from '@ember/service';
-
 
 export default class EditRoleComponent extends Component {
   @service session;
   @service notify;
   @service store;
-
-  // roles = [
-  //   { title: 'Basic', id: 'groupBasic' },
-  //   { title: 'Admin', id: 'groupAdmin' },
-  //   { title: 'Super Admin', id: 'groupSuperAdmin' },
-  // ];
 
   get roles() {
     return this.args.roles;
@@ -52,13 +44,12 @@ export default class EditRoleComponent extends Component {
       const group = this.store.peekRecord('group', groupId);
       const user = this.store.peekRecord('user', userId);
       user.userRoles = [group];
-
     } catch (e) {
       let message = 'Unexpected error encountered';
       if (e.status === 400) {
         message = 'User account associated with that email not found';
       }
-      // this.notify.error(message, { closeAfter: 20000 });
+      this.notify.error(message, { closeAfter: 20000 });
     }
   }
 }

@@ -81,7 +81,7 @@ describe('USER ROLE ROUTE', () => {
       .request(server)
       .put(`${route}/user1`)
       .set('Content-Type', 'application/json')
-      .send({ 'user_role': { 'group_id': 'groupAdmin' }})
+      .send({ 'userRole': { 'groupId': 'groupAdmin' }})
       .set(tokens.headersSuperAdmin1)
       .end((err, res) => {
         res.should.be.json;

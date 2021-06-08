@@ -25,22 +25,22 @@
             />
           </th>
           <th>
-            Name
+            {{t 'admin.users.table.name'}}
           </th>
           <th>
-            Email
+            {{t 'admin.users.table.email'}}
           </th>
           <th>
-            Date Joined
+            {{t 'admin.users.table.date_joined'}}
           </th>
           <th>
-            Role
+            {{t 'admin.users.table.role'}}
           </th>
           <th>
-            Status
+            {{t 'admin.users.table.status'}}
           </th>
           <th>
-            Action
+            {{t 'admin.users.table.action'}}
           </th>
         </tr>
       </thead>
@@ -79,7 +79,7 @@
     <div class="d-flex justify-content-between align-items-center">
       <div class="d-flex">
         <p class="mr-3 mb-0 w-100">
-          Items per page:
+          {{t 'table.pagination.per_page'}}
         </p>
         <select
           class="form-control h-75 w-50"
@@ -105,8 +105,7 @@
             role="button"
             {{on 'click' this.goToPrevPage}}
           >
-            {{!-- {{t 'table.pagination.previous'}} --}}
-            Previous
+            {{t 'table.pagination.previous'}}
           </span>
         </li>
         <li class="page-item {{if this.hasNextPage '' 'disabled'}}">
@@ -115,8 +114,7 @@
             role="button"
             {{on 'click' this.goToNextPage}}
           >
-            {{!-- {{t 'table.pagination.next'}} --}}
-            Next
+            {{t 'table.pagination.next'}}
           </span>
         </li>
       </ul>
