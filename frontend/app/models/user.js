@@ -17,7 +17,7 @@ export default class UserModel extends Model {
   @attr() emailVerified;
   @attr() flag;
   @attr('string', { defaultValue: 'Nairobi, Kenya' }) location;
-  @attr('string', {defaultValue: '+254 712345678'}) contactNumber;
+  @attr('string', { defaultValue: '+254 712345678' }) contactNumber;
   @attr() userRoles;
   @attr('number', { defaultValue: 0 }) chaptersCreated;
   @attr('number', { defaultValue: 0 }) chaptersCompleted;
