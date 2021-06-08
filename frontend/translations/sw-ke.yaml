@@ -111,3 +111,6 @@ badge_popup:
   title: Jinsi ya kupata hii beji
   ok: SAWA NIMEPATA!
   points: Pointi
+
+callback:
+  custom: Kaa chini tunapounda akaunti yako

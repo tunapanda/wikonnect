@@ -111,3 +111,6 @@ badge_popup:
   title: How to earn this badge
   ok: OK, GOT IT
   points: Points
+
+callback:
+  custom: Sit back as we create your account
