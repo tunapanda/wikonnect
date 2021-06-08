@@ -22,7 +22,7 @@ export default class AdminUsersController extends Controller {
   get roles() {
     return this.store.peekAll('group');
   }
-  
+
   get allUsers() {
     return this.model.filter((user) => user.id);
   }

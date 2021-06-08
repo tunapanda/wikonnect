@@ -16,18 +16,23 @@ export default class UserModel extends Model {
   @attr() name;
   @attr() emailVerified;
   @attr() flag;
+  @attr() location;
+  @attr() contactNumber;
   @attr() userRoles;
+  @attr('number', { defaultValue: 0 }) chaptersCreated;
+  @attr('number', { defaultValue: 0 }) chaptersCompleted;
+  @attr('number', { defaultValue: 0 }) pointsEarned;
+  @attr('number', { defaultValue: 0 }) badgesEarned;
 
-  // @hasMany('group') groups;
   @hasMany('activity') activities;
   @hasMany('achievement-award') achievementAwards;
   @hasMany('course') enrolledCourses;
 
   get role() {
     if (!this.userRoles) {
-      return "";
+      return '';
     }
-    
+
     return this.userRoles[0].name;
   }
 
@@ -39,7 +44,7 @@ export default class UserModel extends Model {
     return new Date(this.createdAt).toLocaleDateString();
   }
 
-  get status () {
-    return this.emailVerified ? "Verified" : "Unverified";
+  get status() {
+    return this.emailVerified ? 'Verified' : 'Unverified';
   }
 }
