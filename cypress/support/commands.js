@@ -129,6 +129,7 @@ Cypress.Commands.add('loginByGoogleApi', () => {
     })
         .its('body.comment')
         .then((chapters) => chapters);
+  });
 });
 
 Cypress.Commands.add('badges', (queryParams = {}) => {
