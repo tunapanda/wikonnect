@@ -117,7 +117,7 @@ $palette: (
     box-shadow: none;
     border-color: map-get($palette, grey75);
     color: map-get($palette, grey75);
-
+    white-space: nowrap;
     display: flex;
     align-items: center;
     flex-flow: nowrap;
@@ -143,6 +143,7 @@ $palette: (
     padding: 0;
     font-size: 12px;
     border-radius: 0;
+    white-space: nowrap;
 
     &:hover, &:focus, &:active {
       background-color: transparent;

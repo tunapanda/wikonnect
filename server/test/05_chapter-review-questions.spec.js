@@ -29,7 +29,7 @@ describe('CHAPTER REVIEW QUESTIONS ROUTE', () => {
   it('Should query chapter reviews questions by category', done => {
     chai
       .request(server)
-      .get(`${route}?categories=language`)
+      .get(`${route}?categories=soundQuality`)
       .set(tokens.headersSuperAdmin1)
       .end((err, res) => {
         res.should.have.status(200);

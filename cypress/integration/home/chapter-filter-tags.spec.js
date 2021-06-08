@@ -68,14 +68,20 @@ describe("Chapters filter tags ", () => {
             });
     });
 
-    it('Clear all filters buttons should unselect all tags', () => {
+    it('Clear all filters buttons should unselect all selected tags', () => {
         getFilterButton()
             .click();
 
         getFilterDropdownMenu()
             .find('.tag-select-item label')
             .find('input[type="checkbox"]')
-            .check();
+            .each((el, index) => {
+                cy.wrap(el)
+                    .check();
+                if(index===5){
+                    return false;
+                }
+            });
 
         cy.get('.tags-section-container button.clear-tags-btn:visible')
             .click()

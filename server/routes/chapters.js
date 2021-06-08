@@ -35,6 +35,7 @@ const router = new Router({
  * @apiParam  (Query Params) {String} [chapter[status]] Query by chapter status - published | draft
  * @apiParam  (Query Params) {String} [chapter[creatorId]] Query by author of a chapter
  * @apiParam  (Query Params) {Boolean} [chapter[approved]] Query by approval status
+ * @apiParam  (Query Params) {String} [chapter[tags]] Query by tags-separated by comma
  *
  * @apiHeader {String} [Authorization] Bearer << JWT here>>
  *
@@ -93,7 +94,12 @@ router.get('/', permController.requireAuth, validateGetChapter, async ctx => {
   delete ctx.query.page;
   delete ctx.query.per_page;
   let chapter;
+  let queryTags = [];
   try {
+    if (ctx.query.tags) {
+      queryTags = ctx.query.tags.split(',');
+      delete ctx.query.tags;
+    }
     // View counter for each chapter
     chapter = await Chapter.query()
       .select([
@@ -119,6 +125,7 @@ router.get('/', permController.requireAuth, validateGetChapter, async ctx => {
           .as('authenticated_user_reaction_id')
       ])
       .where(ctx.query)
+      .where('tags', '@>', queryTags)
       .page(page, per_page)
       .withGraphFetched(
         '[reaction(reactionAggregate), flag(selectFlag),author()]'
