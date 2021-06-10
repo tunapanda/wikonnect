@@ -65,7 +65,7 @@ tag:
   kicd_status: KICD Status
 
 review_questions:
-  title: Learners will rate and review your content based on different categories. This feedback from learners will help you become an even better teacher & content creator.
+  title: Learners will rate and review your content based on different categories. This feedback from learners will help you become an even better teacher and content creator.
   default_subtitle: "The following categories apply to your content by default:"
   others_subtitle: "Please select the categories below which also apply to your content:"
 
@@ -89,7 +89,7 @@ preview:
   unpublish_prompt: Are you sure you want to unpublish this chapter?
   delete_prompt: Are you sure you want to delete
   section_titles:
-    reviewQuestions: Selected review & ratings questions categories
+    reviewQuestions: Selected review and ratings questions categories
   buttons:
     modifyReviewQuestions: Modify questions
 
