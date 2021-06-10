@@ -205,4 +205,8 @@ describe('Monitoring & Evaluation Survey Assignment', () => {
 
   });
 
+  after(async ()=>{
+    await knex.migrate.latest();
+    return await knex.seed.run();
+  });
 });
