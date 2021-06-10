@@ -58,7 +58,7 @@ module.exports = () => {
           title: 'We`d love to hear your thoughts',
           body: approvedChapterSurveys[i].name,
           itemId: approvedChapterSurveys[i].id,
-          eventType: notificationTypes.chapter.approved,
+          eventType: notificationTypes.chapter.published,
           model: 'survey',
           recipientId: payload.creatorId,
           read: false,
