@@ -1,5 +1,5 @@
 const {faker, seed_number} = require('../_seeds');
-const UserSurveyModel = require('../../../models/user-survey.js');
+const UserSurveyModel = require('../../../models/user-survey');
 const SurveyModel = require('../../../models/survey');
 const UserModel = require('../../../models/user');
 
