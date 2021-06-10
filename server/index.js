@@ -34,8 +34,8 @@ const io = socketIO(server);
  * Call event handlers into the app process
  */
 
-require('./event-handlers/socket-impl')(io);
-require('./event-handlers/mne-surveys-impl')();
+require('./event-handlers/socket-events')(io);
+require('./event-handlers/mne-surveys')();
 
 
 
