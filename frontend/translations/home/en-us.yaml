@@ -6,6 +6,6 @@ tags:
   clear_all_filters: Clear all filters
 
 loading:
-  loading_more_records: Loading more records...
-  loaded_all_the_records: Loaded all the records
-  no_filtered_record: No records that were found matching the filters
+  loading_more_records: Loading more content...
+  loaded_all_the_records: All content loaded
+  no_filtered_record:  No content found matching <strong> {selectedTags} </strong>. Kindly try a fewer filter tags

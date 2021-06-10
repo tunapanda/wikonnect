@@ -56,9 +56,13 @@ export default class IndexController extends Controller {
   }
 
   get recordsLoadedText() {
-    if (!this.tags) {
+    if (!this.tags || (this.model.length > 0 && this.tags)) {
       return this.intl.t('home.loading.loaded_all_the_records');
     }
-    return this.intl.t('home.loading.no_filtered_record');
+    const allTags = this.tags.split(this.queryTagJoinXcter);
+    const lastTag = allTags.pop();
+    const selectedTags = allTags.join(',') + ', and ' + lastTag;
+
+    return this.intl.t('home.loading.no_filtered_record', { selectedTags });
   }
 }

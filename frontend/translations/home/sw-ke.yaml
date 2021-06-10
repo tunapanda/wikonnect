@@ -8,4 +8,5 @@ tags:
 loading:
   loading_more_records: Inapakia rekodi nyingine...
   loaded_all_the_records: Imepakia rekodi zote
-  no_filtered_record: Hakuna rekodi zilizopatikana zinazolingana na vichungi
+  no_filtered_record: Hakuna maudhui yaliyopatikana yanayolingana <strong> {selectedTags} </strong>. Tafadhali jaribu vitambulisho vichache
+
