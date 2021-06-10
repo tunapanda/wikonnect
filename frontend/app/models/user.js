@@ -16,17 +16,29 @@ export default class UserModel extends Model {
   @attr() name;
   @attr() emailVerified;
   @attr() flag;
-  @attr('string', { defaultValue: 'Nairobi, Kenya' }) location;
-  @attr('string', { defaultValue: '+254 712345678' }) contactNumber;
+  // @attr('string', { defaultValue: 'Nairobi, Kenya' }) location;
+  // @attr('string', { defaultValue: '+254 712345678' }) contactNumber;
   @attr() userRoles;
-  @attr('number', { defaultValue: 0 }) chaptersCreated;
-  @attr('number', { defaultValue: 0 }) chaptersCompleted;
-  @attr('number', { defaultValue: 0 }) pointsEarned;
-  @attr('number', { defaultValue: 0 }) badgesEarned;
 
   @hasMany('activity') activities;
   @hasMany('achievement-award') achievementAwards;
   @hasMany('course') enrolledCourses;
+
+  get badgesEarned() {
+    return 0;
+  }
+
+  get pointsEarned() {
+    return 0;
+  }
+
+  get chaptersCompleted() {
+    return 0;
+  }
+
+  get chaptersCreated() {
+    return 0;
+  }
 
   get role() {
     if (!this.userRoles) {
