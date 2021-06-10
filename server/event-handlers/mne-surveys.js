@@ -16,7 +16,10 @@ module.exports = () => {
       .where('surveyType','mne') //is default now.Future: there can be dedicated table of survey types.
       .where('expiry', '>=', new Date().toISOString()) // can do for now..(_region difference challenge_)
       .withGraphJoined('trigger')
-      .where('trigger.name', 'chapter_approved');
+      .where('trigger.name', 'chapter_approved')
+      .withGraphJoined('respondents')
+      .where( 'respondents.userId','<>',  payload.creatorId);
+
 
     for (let i = 0; i < surveys.length; i++) {
       //add a notification
@@ -38,7 +41,9 @@ module.exports = () => {
       .where('status','published')
       .where('expiry', '>=', new Date().toISOString())
       .withGraphJoined('trigger')
-      .where('trigger.name', 'chapter_publish');
+      .where('trigger.name', 'chapter_publish')
+      .withGraphJoined('respondents')
+      .where( 'respondents.userId','<>',  payload.creatorId);
 
     for (let i = 0; i < approvedChapterSurveys.length; i++) {
       //add a notification
@@ -67,8 +72,10 @@ module.exports = () => {
       .where('surveyType','mne')
       .where('expiry', '>=', new Date().toISOString())
       .withGraphJoined('trigger')
-      .where('trigger.name', 'comment_create');
-
+      .where('trigger.name', 'comment_create')
+      .withGraphJoined('respondents')
+      .where( 'respondents.userId','<>',  payload.creatorId);
+    
     for (let i = 0; i < commentSurveys.length; i++) {
       //add a notification
       await NotificationModel.query()
@@ -90,7 +97,9 @@ module.exports = () => {
       .where('surveyType','mne')
       .where('expiry', '>=', new Date().toISOString()) 
       .withGraphJoined('trigger')
-      .where('trigger.name', 'comment_reply');
+      .where('trigger.name', 'comment_reply')
+      .withGraphJoined('respondents')
+      .where( 'respondents.userId','<>',  payload.creatorId);
 
     for (let i = 0; i < repliesSurveys.length; i++) {
       //add a notification
@@ -119,7 +128,9 @@ module.exports = () => {
       .where('status','published')
       .where('expiry', '>=', new Date().toISOString())
       .withGraphJoined('trigger')
-      .where('trigger.name', 'reaction_create');
+      .where('trigger.name', 'reaction_create')
+      .withGraphJoined('respondents')
+      .where( 'respondents.userId','<>',  payload.creatorId);
 
     for (let i = 0; i < survey.length; i++) {
       //add a notification
@@ -148,7 +159,9 @@ module.exports = () => {
       .where('status','published')
       .where('expiry', '>=', new Date().toISOString())
       .withGraphJoined('trigger')
-      .where('trigger.name', 'rating_create');
+      .where('trigger.name', 'rating_create')
+      .withGraphJoined('respondents')
+      .where( 'respondents.userId','<>',  payload.creatorId);
 
     for (let i = 0; i < survey.length; i++) {
       //add a notification
