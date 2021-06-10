@@ -52,6 +52,8 @@ export default class IndexController extends Controller {
         queryTags.push(tag.name);
       }
     }
+    tag.isSelected = !tag.isSelected;
+
     this.tags = queryTags.join(this.queryTagJoinXcter);
   }
 
