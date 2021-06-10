@@ -1,7 +1,11 @@
+const { raw } = require('objection');
+
 const Model = require('./_model');
 const knex = require('../db/db');
 const chapterSchema = require('../db/json_schema/chapterSchema');
 const search = require('../utils/search');
+const {SHooksEventEmitter} = require('../utils/event-emitter');
+const {events} = require('../utils/storage-hooks-events');
 
 class Chapter extends Model {
   static get tableName() {
@@ -96,6 +100,32 @@ class Chapter extends Model {
         builder.select('id', 'name');
       }
     };
+  }
+
+  static async afterUpdate(args) {
+    await super.afterUpdate(args);
+
+    const {  context ,asFindQuery} =args;
+
+    if(SHooksEventEmitter.listenerCount(events.user.chapter.countOnUpdate)>0) {
+      const rows = await asFindQuery().select('creatorId');
+      for (let i = 0; i < rows.length; i++) {
+
+        // get totals
+        const results = await this.query(context.transaction)
+          .select([
+            raw('COUNT(CASE WHEN "approved" = true THEN 1 ELSE NULL END) AS totalApproved'),
+            raw('COUNT(CASE WHEN "status" = \'published\' THEN 1 ELSE NULL END) AS totalPublished')
+          ])
+          .where('creator_id', rows[i].creatorId);
+
+        SHooksEventEmitter.emit(events.user.chapter.countOnUpdate, {
+          totalApproved: results[0].totalapproved,
+          totalPublished: results[0].totalpublished,
+          creatorId: rows[i].creatorId
+        });
+      }
+    }
   }
 }
 
