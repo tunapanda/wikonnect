@@ -35,6 +35,7 @@ const io = socketIO(server);
  */
 
 require('./event-handlers/socket-impl')(io);
+require('./event-handlers/mne-surveys-impl')();
 
 
 
