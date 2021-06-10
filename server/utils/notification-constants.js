@@ -24,8 +24,8 @@ exports.notificationTypes = {
     verified: 'chapter.verified',
   },
   reaction: {
-    liked: 'chapter.liked',
-    disliked: 'chapter.disliked',
+    deleted: 'rating.deleted',
+    created: 'rating.created',
   },
   rating: {
     deleted: 'rating.deleted',
