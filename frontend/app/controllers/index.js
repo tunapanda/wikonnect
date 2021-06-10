@@ -56,6 +56,10 @@ export default class IndexController extends Controller {
   }
 
   get recordsLoadedText() {
+    if (!this.tags && this.model.length === 0) {
+      return this.intl.t('home.loading.no_content');
+    }
+
     if (!this.tags || (this.model.length > 0 && this.tags)) {
       return this.intl.t('home.loading.loaded_all_the_records');
     }

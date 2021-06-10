@@ -9,3 +9,4 @@ loading:
   loading_more_records: Loading more content...
   loaded_all_the_records: All content loaded
   no_filtered_record:  No content found matching <strong> {selectedTags} </strong>. Kindly try a fewer filter tags
+  no_content: There seems to be no content at the moment. Kindly check with us again later.
