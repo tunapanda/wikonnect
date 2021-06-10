@@ -135,23 +135,24 @@ export default class TeachTagController extends Controller {
       );
       return;
     }
-    if (this.disallowedXcters.some((xcter) => this.tag.includes(xcter))) {
-      this.notify.alert(
-        this.intl.t('errors.characters_not_allowed', {
-          characters: this.disallowedXcters.join(' '),
-        })
-      );
-      return;
-    }
-
     if (this.tag) {
+      if (this.disallowedXcters.some((xcter) => this.tag.includes(xcter))) {
+        this.notify.alert(
+          this.intl.t('errors.characters_not_allowed', {
+            characters: this.disallowedXcters.join(' '),
+          })
+        );
+        return;
+      }
+      this.tag = this.tag.replace(/&/, 'and');
       const index = this.custom_cart.findIndex(
-        (pred) => pred.toLowerCase() === this.tag.toLowerCase()
+        (pred) => pred.toLowerCase() === this.tag.trim().toLowerCase()
       );
       if (index > -1) {
         this.tag = '';
       } else {
-        this.custom_cart.pushObject(this.tag.trim().toLowerCase()); // lowercase for insane capitalization
+        this.custom_cart.pushObject(this.tag.trim().toLowerCase()); // lowercase for insane capitalization.
+        // we are sacrificing some capitalization i.e. McDonald
         this.tag = '';
       }
     }
