@@ -6,7 +6,8 @@ exports.seed = async (knex)=>{
   await knex(TriggersModel.tableName).del();
 
   const actionTriggers = [];
-  const triggers = ['chapter_create', 'chapter_publish', 'comment_create','comment_reply'];
+  const triggers = [ 'chapter_publish','chapter_approved', 'comment_create','comment_reply',
+    'reaction_create','rating_create'];
 
   for (let index = 0; index < triggers.length; index++) {
     actionTriggers.push({
