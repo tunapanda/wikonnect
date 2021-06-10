@@ -24,6 +24,14 @@ class Survey extends Model {
           to: 'users.id'
         }
       },
+      respondents: {
+        relation: Model.HasManyRelation,
+        modelClass: `${__dirname}/user-survey`,
+        join: {
+          from: 'surveys.id',
+          to: 'user_surveys.survey_id'
+        }
+      },
     };
   }
 }
