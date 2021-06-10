@@ -18,7 +18,10 @@ module.exports = () => {
       .withGraphJoined('trigger')
       .where('trigger.name', 'chapter_approved')
       .withGraphJoined('respondents')
-      .where( 'respondents.userId','<>',  payload.creatorId);
+      .where(  (builder)=>{
+        builder.where('respondents.userId','<>',  payload.creatorId)
+          .orWhereNull('respondents.userId');
+      });
 
 
     for (let i = 0; i < surveys.length; i++) {
@@ -43,8 +46,11 @@ module.exports = () => {
       .withGraphJoined('trigger')
       .where('trigger.name', 'chapter_publish')
       .withGraphJoined('respondents')
-      .where( 'respondents.userId','<>',  payload.creatorId);
-
+      .where(  (builder)=>{
+        builder.where('respondents.userId','<>',  payload.creatorId)
+          .orWhereNull('respondents.userId');
+      });
+    
     for (let i = 0; i < approvedChapterSurveys.length; i++) {
       //add a notification
       await NotificationModel.query()
@@ -74,7 +80,10 @@ module.exports = () => {
       .withGraphJoined('trigger')
       .where('trigger.name', 'comment_create')
       .withGraphJoined('respondents')
-      .where( 'respondents.userId','<>',  payload.creatorId);
+      .where(  (builder)=>{
+        builder.where('respondents.userId','<>',  payload.creatorId)
+          .orWhereNull('respondents.userId');
+      });  
     
     for (let i = 0; i < commentSurveys.length; i++) {
       //add a notification
@@ -99,8 +108,11 @@ module.exports = () => {
       .withGraphJoined('trigger')
       .where('trigger.name', 'comment_reply')
       .withGraphJoined('respondents')
-      .where( 'respondents.userId','<>',  payload.creatorId);
-
+      .where(  (builder)=>{
+        builder.where('respondents.userId','<>',  payload.creatorId)
+          .orWhereNull('respondents.userId');
+      });
+    
     for (let i = 0; i < repliesSurveys.length; i++) {
       //add a notification
       await NotificationModel.query()
@@ -130,7 +142,10 @@ module.exports = () => {
       .withGraphJoined('trigger')
       .where('trigger.name', 'reaction_create')
       .withGraphJoined('respondents')
-      .where( 'respondents.userId','<>',  payload.creatorId);
+      .where(  (builder)=>{
+        builder.where('respondents.userId','<>',  payload.creatorId)
+          .orWhereNull('respondents.userId');
+      });
 
     for (let i = 0; i < survey.length; i++) {
       //add a notification
@@ -161,7 +176,10 @@ module.exports = () => {
       .withGraphJoined('trigger')
       .where('trigger.name', 'rating_create')
       .withGraphJoined('respondents')
-      .where( 'respondents.userId','<>',  payload.creatorId);
+      .where(  (builder)=>{
+        builder.where('respondents.userId','<>',  payload.creatorId)
+          .orWhereNull('respondents.userId');
+      });
 
     for (let i = 0; i < survey.length; i++) {
       //add a notification
