@@ -11,7 +11,30 @@ export default class TeachTagController extends Controller {
   @service notify;
 
   maxTagsTotal = 6;
-  disallowedXcters = ['#', ','];
+  disallowedXcters = [
+    '#',
+    ',',
+    '<',
+    '>',
+    '/',
+    '\\',
+    '=',
+    ';',
+    '"',
+    "'",
+    '+',
+    '!',
+    '@',
+    '$',
+    ':',
+    '%',
+    '^',
+    '(',
+    '*',
+    '~',
+    '.',
+    ')',
+  ];
 
   @tracked topic_list = [
     'Literacy',
@@ -140,7 +163,8 @@ export default class TeachTagController extends Controller {
         this.notify.alert(
           this.intl.t('errors.characters_not_allowed', {
             characters: this.disallowedXcters.join(' '),
-          })
+          }),
+          { closeAfter: 100000 }
         );
         return;
       }
