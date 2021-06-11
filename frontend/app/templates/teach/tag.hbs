@@ -116,8 +116,11 @@
     <h5>{{t "teach.tag.custom_tag"}}</h5>
     <form method="post" {{on "submit" this.addtag}}>
       <Input @type="text" id="tag" @value={{this.tag}} aria-controls="existing-user-table"
-             placeholder={{t "teach.tag.custom_tag_placeholder"}}
-             class="form-control"/>
+             placeholder={{t "teach.tag.custom_tag_placeholder"}} class="form-control"
+          {{on "keyup" this.validateTag}} />
+      {{#if this.customTagError}}
+        <div class="invalid-feedback d-block">{{this.customTagError}}</div>
+      {{/if}}
       <button type="submit" class="btn btn-primary btn-sm mt-2 ">{{t "buttons.submit"}}</button>
     </form>
     <hr>
@@ -161,8 +164,8 @@
     {{/if}}
 
     {{#each this.selectedTags as |tag|}}
-      <button type="button" class="btn btn-success btn-sm m-1 text-capitalize" {{on "click" (fn this.removeme tag "custom")}}>
-        {{tag}}
+      <button type="button" class="btn btn-success btn-sm m-1 " {{on "click" (fn this.removeme tag "custom")}}>
+        {{capitalize tag}}
         <span aria-hidden="true">&times;</span>
       </button>
 

@@ -63,6 +63,7 @@ tag:
   level: Level
   platform: Platform
   kicd_status: KICD Status
+  tag_name: Tag name
 
 review_questions:
   title: Learners will rate and review your content based on different categories. This feedback from learners will help you become an even better teacher and content creator.

@@ -103,6 +103,7 @@ export default class TeachTagController extends Controller {
 
   @tracked custom_cart;
   @tracked tag;
+  @tracked customTagError;
 
   get selectedTags() {
     if (this.custom_cart) {
@@ -158,17 +159,12 @@ export default class TeachTagController extends Controller {
       );
       return;
     }
+    if (this.customTagError) {
+      return;
+    }
     if (this.tag) {
-      if (this.disallowedXcters.some((xcter) => this.tag.includes(xcter))) {
-        this.notify.alert(
-          this.intl.t('errors.characters_not_allowed', {
-            characters: this.disallowedXcters.join(' '),
-          }),
-          { closeAfter: 100000 }
-        );
-        return;
-      }
-      this.tag = this.tag.replace(/&/, 'and');
+      this.tag = this.tag.replace(/( & +)/, ' and ');
+
       const index = this.custom_cart.findIndex(
         (pred) => pred.toLowerCase() === this.tag.trim().toLowerCase()
       );
@@ -290,5 +286,32 @@ export default class TeachTagController extends Controller {
       return;
     }
     this.custom_cart.pushObject(tag.title);
+  }
+
+  @action
+  validateTag() {
+    if (!this.tag) {
+      this.customTagError = this.intl.t('errors.is_required', {
+        key: this.intl.t('teach.tag.tag_name'),
+      });
+      return;
+    }
+
+    if (this.disallowedXcters.some((xcter) => this.tag.includes(xcter))) {
+      this.customTagError = this.intl.t('errors.characters_not_allowed', {
+        characters: this.disallowedXcters.join(' '),
+      });
+      return;
+    }
+
+    if (this.tag.length >= 30) {
+      this.customTagError = this.intl.t('errors.max_characters', {
+        key: this.intl.t('teach.tag.tag_name'),
+        max: 30,
+      });
+      return;
+    }
+
+    this.customTagError = '';
   }
 }
