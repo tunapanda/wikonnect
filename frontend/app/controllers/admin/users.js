@@ -6,6 +6,7 @@ import { inject as service } from '@ember/service';
 
 export default class AdminUsersController extends Controller {
   @service store;
+  @service me;
   @tracked allTableItemsSelected = false;
   @tracked selectedUserRows = A([]);
   @tracked searchTerm;

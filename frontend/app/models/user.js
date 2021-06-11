@@ -8,6 +8,7 @@ export default class UserModel extends Model {
   @attr() lastName;
   @attr() aboutMe;
   @attr() lastSeen;
+  @attr() updatedAt;
   @attr() tags;
   @attr() inviteCode;
   @attr() createdAt;
@@ -53,7 +54,7 @@ export default class UserModel extends Model {
       return new Date();
     }
 
-    return new Date(this.lastSeen).toLocaleString();
+    return new Date(this.updatedAt).toLocaleString();
   }
 
   get status() {

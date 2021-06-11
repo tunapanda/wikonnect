@@ -3,6 +3,7 @@ import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
 
 export default class EditRoleComponent extends Component {
+  @service me;
   @service session;
   @service notify;
   @service store;
@@ -15,6 +16,15 @@ export default class EditRoleComponent extends Component {
   async changeRole(role) {
     const userId = this.args.user.id;
 
+    const currentUser = this.store.peekRecord('user', this.me.id);
+
+    if (role.name === 'superadmin' && currentUser.role !== 'superadmin') {
+      let message = 'You are not authorized to make a user a super admin';
+      this.notify.error(message, { closeAfter: 20000 });
+
+      return;
+    }
+    
     const data = {
       userRole: {
         groupId: role.id,
@@ -35,7 +45,6 @@ export default class EditRoleComponent extends Component {
       }
       const payload = await res.json();
       const groupId = payload.user_role[0].groupId;
-      console.log(groupId);
 
       if (!groupId) {
         return;
