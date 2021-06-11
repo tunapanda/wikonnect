@@ -74,7 +74,7 @@ describe("Chapters filter tags ", () => {
 
         fetchFirstPageChapters()
             .then((chapters) => {
-                const chapter = chapters.find((c) => c.tags && c.tags.length > 3); //relying on seed data on backend
+                const chapter = chapters.find((c) => c.tags && c.tags.length < 3); //relying on seed data on backend
 
                 if (chapter) {
                     getFilterDropdownMenu()
