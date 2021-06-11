@@ -31,7 +31,7 @@
             {{t 'admin.users.table.email'}}
           </th>
           <th>
-            {{t 'admin.users.table.date_joined'}}
+            {{t 'admin.users.table.last_login'}}
           </th>
           <th>
             {{t 'admin.users.table.role'}}
@@ -61,7 +61,7 @@
               {{user.email}}
             </td>
             <td>
-              {{user.dateJoined}}
+              {{user.lastLoginTime}}
             </td>
             <td>
               <EditRole @user={{user}} @roles={{this.roles}}/>

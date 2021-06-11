@@ -66,9 +66,9 @@ users:
   table:
     name: Jina
     email: Barua Pepe
-    date_joined: Tarehe ya Kujiunga
+    last_login: Wakati Aliingia Mwisho
     role: Jukumu
-    status: hali ya uthibitishaji
+    status: Hali ya Uthibitishaji
     action: Hatua
     
   details:

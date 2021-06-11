@@ -48,12 +48,12 @@ export default class UserModel extends Model {
     return this.userRoles[0].name;
   }
 
-  get dateJoined() {
+  get lastLoginTime() {
     if (!this.createdAt) {
       return new Date();
     }
 
-    return new Date(this.createdAt).toLocaleDateString();
+    return new Date(this.lastSeen).toLocaleString();
   }
 
   get status() {
