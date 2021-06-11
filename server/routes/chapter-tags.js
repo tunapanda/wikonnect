@@ -32,7 +32,8 @@ router.get('/', async (ctx) => {
   try {
 
     const chapters = await ChapterModel.query().select(['tags'])
-      .whereNotNull('tags');
+      .whereNotNull('tags')
+      .where('approved',true);
 
     const allTags = chapters.flatMap((chapter) => chapter.tags);
 
