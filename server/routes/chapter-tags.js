@@ -35,7 +35,7 @@ router.get('/', async (ctx) => {
       .whereNotNull('tags')
       .where('approved',true);
 
-    const allTags = chapters.flatMap((chapter) => chapter.tags);
+    const allTags = chapters.reduce((acc,chapter) => acc.concat(chapter.tags),[]);
 
     const chapterTags = [...new Set(allTags)] //remove duplicates
       .map((t) => {return {name: t};});
