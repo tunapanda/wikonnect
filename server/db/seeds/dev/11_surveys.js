@@ -13,7 +13,7 @@ exports.seed = async (knex)=>{
   const surveys=[];
   
   const surveyTypes=['mne'];
-  const surveyStatuses=['published','unpublished','archived'];
+  const surveyStatuses=['Active','Pending','Archived'];
   const sampleSurveyEmbed= '<iframe src="https://docs.google.com/forms/d/e/1FAIpQLSfGyOtXfOoUt9J4R_Ft-wPsd5UbT' +
     'bFmBaa6GUBibzLzQFY4QQ/viewform?embedded=true" width="640" height="585" frameborder="0" marginheight="0" ' +
     'marginwidth="0">Loading…</iframe>';
