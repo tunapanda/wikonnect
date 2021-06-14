@@ -1,13 +1,19 @@
 import Component from '@glimmer/component';
 import { action } from '@ember/object';
+import { inject as service } from '@ember/service';
 import { log } from '../../utils/logger';
 
 export default class NavMenuNotificationDropdownComponent extends Component {
+  @service store;
+  get notifications() {
+    return this.store.peekAll('notification');
+  }
+
   get unreadNotificationsCount() {
-    if (!this.args.notifications) {
+    if (!this.notifications) {
       return 0;
     }
-    return this.args.notifications.filter((n) => n.read === false).length;
+    return this.notifications.filter((n) => n.read === false).length;
   }
 
   @action

@@ -7,9 +7,9 @@
     <a class="dropdown-item header-title" href="#">{{t "main_navbar.notifications.title"}}</a>
     <ddm.divider class="DropdownMenuDivider"></ddm.divider>
 
-    {{#if @notifications}}
+    {{#if this.notifications}}
     <div class="notification-items">
-      {{#each @notifications as |obj|}}
+      {{#each this.notifications as |obj|}}
       <div class="dropdown-item notification-item d-flex {{if obj.read " read" "unread" }}" href="#">
         <div class="notification-container row" role="button" {{on "click" (fn this.onNotificationSelect obj dd)}}>
           <div class="col-12 title">
