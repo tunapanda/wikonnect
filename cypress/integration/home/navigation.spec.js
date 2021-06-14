@@ -42,6 +42,7 @@ describe('Learner Navigation Menu', () => {
 
   it('Should link to teachers page if authentication', () => {
     cy.login();
+    cy.wait(1000)
     cy.get('.main-header.navbar .navbar-nav a[href="/teach"]')
       .should('be.visible');
   });
