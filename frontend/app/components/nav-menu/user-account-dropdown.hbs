@@ -10,12 +10,11 @@
   </a>
   <div class="dropdown-menu dropdown-menu-lg-right dropdown-secondary" aria-labelledby="user-acc-dd">
 
-    <LinkTo @route="profile" class="dropdown-item" data-toggle="collapse" data-target="#mainTopNav.show">
+    <LinkTo @route="profile.home" @model={{this.me.id}}  class="dropdown-item" data-toggle="collapse" data-target="#mainTopNav.show">
       {{t "labels.user_profile_link" user=this.me.name}}
     </LinkTo>
 
-    <LinkTo @route="profile" @query={{hash view="Settings" }} class="dropdown-item" data-toggle="collapse"
-      data-target="#mainTopNav.show">
+    <LinkTo @route="account.edit" class="dropdown-item" data-toggle="collapse" data-target="#mainTopNav.show">
       {{t "buttons.settings"}}
     </LinkTo>
 

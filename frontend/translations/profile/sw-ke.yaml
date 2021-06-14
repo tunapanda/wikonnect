@@ -1,17 +1,41 @@
-index:
-  change_pic: Badilisha Picha
-  profile: Profiali
-  learning: Masomo
-  settings: Mipangilio
-  details: Maelezo
+greeting: Karibu {name}
+bio: Wasifu
+edit_button: Hariri maelezo yangu mafupi
+chapters_created: Sura zimeundwa
+chapters_watched: Sura zimekamilika
+points_earned: Jumla ya alama zilizopatikana
+top_achievements: Mafanikio ya juu
+
+nav:
+  home: Kujifunza
+  achievements: Mafanikio
+  courses: Kozi
+
+badges:
+  share_btn: Shiriki
+
+homepage:
+  title: Sura zilitazama hivi karibuni
+
+achievements_page:
+  title: Beji zilizopatikana
+
+edit_profile_page:
+  title: Hariri maelezo yangu mafupi
+  buttons:
+    view_profile: View Profile
+    browse: Chagua Faili
+    save: Hifadhi mabadiliko
+  intro_subtitle: Utangulizi
+  details_subtitle: Maelezo kukuhusu
+  details_section_prompt: Jitambulishe kwa jamii ya Wikonnect
   first_name: Jina la kwanza
   last_name: Jina la familia
-  about: Maelezo zaidi kunihusu
-  achievements: Mafanikio yangu
-  invite_link: Linki ya mwaliko
-  update_email: Sasisha barua pepe
-  copy_to_clipboard: Nakili kwenye clipboard
-  copy: Nakili
-  copied: Imenakiliwa
-  user_completed_courses: "Kozi {user} amemaliza"
-  no_completed_courses: "{user} hajamaliza kozi yoyote"
+  contact_number: Nambari ya simu
+  email: Email Address
+  photo: Picha ya Profaili
+  photo_prompt: Ukubwa wa juu wa 15MB. JPG, GIF, SVG, au PNG
+  about: Kuhusu mimi
+  location: Eneo lako
+  location_prompt: Turkana, Kenya
+  gender: Jinsia

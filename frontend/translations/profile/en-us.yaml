@@ -1,17 +1,42 @@
-index:
-  change_pic: Change picture
-  profile: Profile
-  learning: Learning
-  settings: Settings
-  details: Details
+greeting: Welcome {name}
+role: "Role: {role}"
+bio: Bio
+edit_button: Edit my profile
+chapters_created: Chapters created
+chapters_watched: Chapters completed
+points_earned: Total points earned
+top_achievements: Top achievements
+
+nav:
+  home: Learning
+  achievements: Achievements
+  courses: Courses
+
+badges:
+  share_btn: Share
+
+homepage:
+  title: Chapters recently watched
+
+achievements_page:
+  title: Earned badges
+
+edit_profile_page:
+  title: Edit my profile
+  buttons:
+    view_profile: View Profile
+    browse: Select File
+    save: Save Changes
+  intro_subtitle: Introduction
+  details_subtitle: Details About You
+  details_section_prompt: Introduce yourself to the Wikonnect community
   first_name: First Name
   last_name: Last Name
-  about: About
-  achievements: My Achievements
-  invite_link: Invite Link
-  update_email: Update Email
-  copy_to_clipboard: Copy to clipboard
-  copy: Copy
-  copied: Copied
-  user_completed_courses: "{user}'s completed courses"
-  no_completed_courses: "{user} has not completed any courses"
+  contact_number: Phone Number
+  email: Email Address
+  photo: Profile Photo
+  photo_prompt: Maximum size of 15MB. JPG, GIF, SVG, or PNG
+  about: About Me
+  location: Location
+  location_prompt: Turkana, Kenya
+  gender: Gender
