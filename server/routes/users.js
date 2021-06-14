@@ -205,8 +205,15 @@ router.get('/:id', permController.requireAuth, async ctx => {
   profileCompleteBoolean(user, ctx.params.id);
   log.info('Got a request from %s for %s', ctx.request.ip, ctx.path);
 
+  if(stateUserId !== userId){
+    delete user.email;
+    delete user.username;
+    delete user.updatedAt;
+    delete user.contactNumber;
+  }
+
   ctx.status = 200;
-  ctx.body = { user: user };
+  ctx.body = { user };
 });
 /**
  * @api {get} /users GET all users.
