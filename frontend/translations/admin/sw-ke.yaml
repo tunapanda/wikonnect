@@ -6,6 +6,7 @@ sidenav:
   badges: Beji
   manage_badges: Usimamizi wa Beji
   badge_users: Watumiaji na Beji
+  surveys: Utafiti wa Mtumiaji
 
 badges:
   titles:
@@ -39,7 +40,7 @@ badges:
     search_placeholder: Tafuta Beji
 
     #below are form related values
-    trigger: Kuchochea
+    trigger: Hatua ya kuchochea
     trigger_placeholder: Chagua kichocheo
     name: Jina
     name_placeholder: Jina la beji
@@ -61,3 +62,54 @@ badges:
     status: Hali
     users_earned: Watumiaji walipata
     action: Hatua
+
+surveys:
+  titles:
+    manage: Usimamizi wa Utafiti
+    all_surveys: Tafiti zilizopo
+  buttons:
+    new: Utafiti Mpya
+    sort: Panga kwa
+    view_survey: Angalia uchunguzi
+    unpublish: Chapisha
+    publish: Kuchapisha
+    delete: Futa utafiti
+    edit: Hariri utafiti
+    archive: Utafiti wa jalada
+    save: Wasilisha utafiti
+
+  labels:
+    search_placeholder: Tafuta utafiti
+    survey_options: Chaguzi
+    edit_form_title: Hariri utafiti
+    create_form_title: Unda utafiti mpya
+
+    sort_options: Panga kwa
+    sort_by_status: Hali
+    sort_by_name: Jina
+    sort_by_expiry: Kuisha muda
+    #below are form related values
+    trigger: Kitendo ya kuchochea
+    trigger_placeholder: Chagua kitendo cha kuchochea
+    name: Jina la Utafiti
+    name_placeholder: Jina la utafiti
+    expiry_date: Tarehe ya kumalizika
+    frequency: Mara ngapi
+    frequency_placeholder: Idadi ambayo mtu anapaswa kuchochea kupata baji
+    embed: Pachika msimbo / kiunga
+    embed_placeholder: Msimbo wa upachikaji wa utafiti
+    description: Onyesha ujumbe
+    description_placeholder: Ujumbe mfupi juu ya umuhimu / kuhusu utafiti
+
+    #below are notifications related values
+    delete_confirmation: Je! Una uhakika unataka kufuta utafiti?
+    publish_confirmation: Je! Una uhakika unataka kuchapisha utafiti?
+    archive_confirmation: Je! Una uhakika unataka kuhifadhi kumbukumbu?
+    unpublish_confirmation: Je! Una uhakika unataka kuchapisha utafiti?
+    status_updated: Hali ya utafiti imesasishwa vizuri
+    survey_updated: Melezo ya utafiti yamesasishwa kwa mafanikio
+    survey_created: Utafiti umehifadhiwa kwa mafanikio
+    survey_deleted: Utafiti umefutwa kwa mafanikio
+    survey_deletion_error: Hatukuweza kufuta utafiti. Hitilafu isiyotarajiwa ilitokea
+    survey_update_error: Hatukuweza kusasisha utafiti. Hitilafu isiyotarajiwa ilitokea
+    survey_create_error: Hatukuweza kuhifadhi maelezo ya utafiti. Hitilafu isiyotarajiwa ilitokea

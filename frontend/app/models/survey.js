@@ -10,6 +10,6 @@ export default class SurveyModel extends Model {
   @attr('number', { defaultValue: 10 }) frequency;
   @attr() triggerId;
   @attr() createdAt;
-  @attr() updatedAt;
+  @attr('date') updatedAt;
   @belongsTo('user') creator;
 }

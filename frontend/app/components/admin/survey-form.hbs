@@ -1,0 +1,46 @@
+<div class="survey-form">
+  <BsForm @formLayout="horizontal" @model={{changeset this.model this.surveyValidations}} @onSubmit={{this.submitForm}}
+          class="col-lg-7 main-form" as |form|>
+    <form.element @property="triggerId" @label={{t "admin.surveys.labels.trigger"}} as |el|>
+      <select id={{el.id}} required class="form-control trigger-select"
+        {{on "change" (fn this.triggerSelected el.setValue)}}>
+        {{#unless this.model.triggerId}}
+          <option disabled selected hidden value="">{{t "admin.surveys.labels.trigger_placeholder"}}</option>
+        {{/unless}}
+        {{#each this.triggers as |x|}}
+          <option value="{{x.id}}" selected="{{if (eq this.model.triggerId x.id) true}}">{{x.name}}</option>
+        {{/each}}
+      </select>
+    </form.element>
+
+    <form.element @property="name" @label={{t "admin.surveys.labels.name"}}  as |el|>
+      <el.control placeholder={{t "admin.surveys.labels.name_placeholder"}} class="name-input"/>
+    </form.element>
+
+    <form.element @controlType="date" @property="expiry" @label={{t "admin.surveys.labels.expiry_date"}} as |el|>
+      <el.control class="expiry-input"></el.control>
+    </form.element>
+
+    <form.element @controlType="number" @property="frequency" @label={{t "admin.surveys.labels.frequency"}} as |el|>
+      <el.control placeholder={{t "admin.surveys.labels.frequency_placeholder"}} class="frequency-input"/>
+    </form.element>
+
+
+    <form.element @property="surveyEmbed" @label={{t "admin.surveys.labels.embed"}}  as |el|>
+      <el.control placeholder={{t "admin.surveys.labels.embed_placeholder"}} class="embed-input"/>
+    </form.element>
+
+
+    <form.element @controlType="textarea" @property="description"
+                  @label={{t "admin.surveys.labels.description"}}  as |el|>
+      <el.control placeholder={{t "admin.surveys.labels.description_placeholder"}} class="description-input"/>
+    </form.element>
+
+    <div class="form-group d-flex justify-content-end mr-3">
+      <form.submitButton class="btn btn-primary btn-submit">
+        {{t "admin.surveys.buttons.save"}}
+      </form.submitButton>
+    </div>
+  </BsForm>
+
+</div>

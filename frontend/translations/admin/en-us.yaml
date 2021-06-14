@@ -6,6 +6,7 @@ sidenav:
   badges: Badges
   manage_badges: Manage Badges
   badge_users: Users & Badges
+  surveys: Surveys
 
 badges:
   titles:
@@ -61,3 +62,54 @@ badges:
     status: Status
     users_earned:  Users earned
     action: Action
+
+surveys:
+  titles:
+    manage: Survey Management
+    all_surveys: All Surveys
+  buttons:
+    new: New Survey
+    sort: Sort by
+    view_survey: View survey
+    unpublish: Unpublish
+    publish: Publish
+    delete: Delete survey
+    edit: Edit survey
+    archive: Archive survey
+    save: Save
+
+  labels:
+    search_placeholder: Search survey
+    survey_options: Options
+    edit_form_title: Edit survey
+    create_form_title: Create new survey
+
+    sort_options: Sort By
+    sort_by_status: Status
+    sort_by_name: Name
+    sort_by_expiry: Expiry
+    #below are form related values
+    trigger: Trigger
+    trigger_placeholder: Select trigger
+    name: Survey Name
+    name_placeholder: Name of the survey
+    expiry_date: Expiry date
+    frequency: No. of times
+    frequency_placeholder: Trigger action count to fill survey
+    embed: Embed code/link
+    embed_placeholder: Survey embed code
+    description: Display message
+    description_placeholder: A short message on importance/about the survey
+
+    #below are notifications related values
+    delete_confirmation: Are you sure you want to delete the survey?
+    publish_confirmation: Are you sure you want to publish the survey?
+    archive_confirmation: Are you sure you want to archive the survey?
+    unpublish_confirmation: Are you sure you want to un-publish the survey?
+    status_updated: Survey status updated successfully
+    survey_updated: Survey details updated successfully
+    survey_created: Survey created successfully
+    survey_deleted: Survey deleted successfully
+    survey_deletion_error: We could not delete the survey. Unexpected error occurred
+    survey_update_error: We could not update the survey. Unexpected error occurred
+    survey_create_error: We could not save the survey details. Unexpected error occurred
