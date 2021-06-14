@@ -1,4 +1,4 @@
-const { faker, seed_number } = require('../_seeds');
+const {faker, seed_number} = require('../_seeds');
 const reviewQuestions = require('../../../utils/review-questions');
 
 exports.seed = function (knex) {
@@ -13,7 +13,10 @@ exports.seed = function (knex) {
           const name = faker.lorem.words();
           const slug = faker.helpers.slugify(name);
           const status = ['published', 'drafts', 'archived'];
-          const tags = ['highschool', 'university', 'all', 'data', 'test'];
+          const tags = ['internet basics', 'content creation', 'digital wellness', 'data protection and privacy',
+            'online safety', 'relationships & communications', 'news & media literacy', 'online working',
+            'online learning', 'life skills', 'health', 'digital financial literacy'];
+
           const chapterId = ['chapter1', 'chapter2'];
           fakeChapters.push({
             name: name,
@@ -27,8 +30,8 @@ exports.seed = function (knex) {
             creator_id: faker.random.arrayElement(userIds),
             created_at: faker.date.past(),
             updated_at: faker.date.recent(),
-            tags: faker.random.arrayElements(tags),
-            approved: true,
+            tags: faker.random.arrayElements(tags, faker.datatype.number({'min': 1, 'max': 6})),
+            approved: faker.datatype.boolean(),
             verified: faker.datatype.boolean(),
             review_questions: faker.random.arrayElements(reviewQuestionsCategories, 4)
           });

@@ -13,6 +13,7 @@ Router.map(function () {
 
   this.route('profile');
   this.route('search', { path: '/search/:id' });
+  this.route('tag', { path: '/chapters/tag/:id' });
 
   this.route('chapter', function () {
     this.route('index', {

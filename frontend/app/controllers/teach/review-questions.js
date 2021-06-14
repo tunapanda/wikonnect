@@ -4,8 +4,7 @@ import { tracked } from '@glimmer/tracking';
 import { A } from '@ember/array';
 
 export default class ReviewQuestionsController extends Controller {
-  @tracked
-  selectedCategories;
+  @tracked selectedCategories = A(this.chapter.reviewQuestions);
 
   get chapter() {
     return this.model[0];
@@ -13,6 +12,15 @@ export default class ReviewQuestionsController extends Controller {
 
   get reviewQuestions() {
     return this.model[1];
+  }
+
+  get defaultReviewQuestions() {
+    return this.reviewQuestions
+      .filter((q) => q.default === true)
+      .sortBy('priority');
+  }
+  get selectableReviewQuestions() {
+    return this.reviewQuestions.filter((q) => !q.default).sortBy('priority');
   }
 
   get reviewQuestionsCategories() {
@@ -28,10 +36,7 @@ export default class ReviewQuestionsController extends Controller {
 
   @action
   categoryPreselected(category) {
-    if (!this.selectedCategories && !this.chapter.reviewQuestions) {
-      //initialize the selected categories with all review questions
-      this.selectedCategories = A(this.reviewQuestionsCategories);
-    } else if (!this.selectedCategories && this.chapter.reviewQuestions) {
+    if (!this.selectedCategories && this.chapter.reviewQuestions) {
       // initialize the selected categories with existing chapter review questions
       this.selectedCategories = A(this.chapter.reviewQuestions);
     }

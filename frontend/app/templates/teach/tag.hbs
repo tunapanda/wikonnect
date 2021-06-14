@@ -14,7 +14,6 @@
 
     {{#if this.config.content.APP.use_preset_tags}}
 
-      <h5>{{t "teach.tag.select"}}</h5>
       <hr>
       <ul class="nav nav-tabs" id="myTab" role="tablist">
         <li class="nav-item">
@@ -98,10 +97,26 @@
       <br>
     {{/if}}
 
+    {{#if this.hasUnselectedPredefinedTags}}
+      <div class="predefined-tags pb-4">
+        <h5>{{t "teach.tag.select"}}</h5>
+        {{#each this.topicBucketTags as |tag|}}
+          {{#unless tag.isSelected}}
+            <button type="button" class="btn btn-sm btn-outline-success m-1"
+              {{on "click"  (fn this.selectPredefinedTag tag )}}>
+              {{tag.title}}
+            </button>
+          {{/unless}}
+
+        {{/each}}
+      </div>
+    {{/if}}
+
+
     <h5>{{t "teach.tag.custom_tag"}}</h5>
     <form method="post" {{on "submit" this.addtag}}>
-      <Input @type="text" id="tag" @value={{this.tag}} aria-controls="existing-user-table" placeholder={{t
-              "teach.tag.custom_tag_placeholder"}}
+      <Input @type="text" id="tag" @value={{this.tag}} aria-controls="existing-user-table"
+             placeholder={{t "teach.tag.custom_tag_placeholder"}}
              class="form-control"/>
       <button type="submit" class="btn btn-primary btn-sm mt-2 ">{{t "buttons.submit"}}</button>
     </form>
@@ -146,7 +161,7 @@
     {{/if}}
 
     {{#each this.selectedTags as |tag|}}
-      <button type="button" class="btn btn-success btn-sm m-1" {{on "click" (fn this.removeme tag "custom")}}>
+      <button type="button" class="btn btn-success btn-sm m-1 text-capitalize" {{on "click" (fn this.removeme tag "custom")}}>
         {{tag}}
         <span aria-hidden="true">&times;</span>
       </button>
@@ -156,7 +171,8 @@
 
 
   <div class="col-lg-6 col-sm-8 d-flex justify-content-between mr-sm-3 ml-sm-3 mt-3 action-buttons">
-    <LinkTo @route="teach.thumbnail-upload" @model={{this.model.id}} class="btn btn-outline-primary btn-block mr-2 previous">
+    <LinkTo @route="teach.thumbnail-upload" @model={{this.model.id}}
+            class="btn btn-outline-primary btn-block mr-2 previous">
       {{t "teach.buttons.previous"}}
     </LinkTo>
 
