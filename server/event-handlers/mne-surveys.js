@@ -6,13 +6,18 @@ const {SHooksEventEmitter} = require('../utils/event-emitter');
 
 module.exports = () => {
 
+  const surveyStatus = {
+    published: 'Active',
+    unpublished: 'Pending',
+    archived: 'Archived',
+  };
   /**
      * On Chapter Update
      */
   SHooksEventEmitter.on(events.user.chapter.countOnUpdate, async (payload) => {
     const surveys = await SurveyModel.query()
       .where('frequency', payload.totalApproved)
-      .where('status','published')
+      .where('status',  surveyStatus.published)
       .where('surveyType','mne') //is default now.Future: there can be dedicated table of survey types.
       .where('expiry', '>=', new Date().toISOString()) // can do for now..(_region difference challenge_)
       .withGraphJoined('trigger')
@@ -41,7 +46,7 @@ module.exports = () => {
 
     const approvedChapterSurveys = await SurveyModel.query()
       .where('frequency', payload.totalPublished)
-      .where('status','published')
+      .where('status',  surveyStatus.published)
       .where('expiry', '>=', new Date().toISOString())
       .withGraphJoined('trigger')
       .where('trigger.name', 'chapter_publish')
@@ -74,7 +79,7 @@ module.exports = () => {
   SHooksEventEmitter.on(events.user.comment.countOnCreate, async(payload) => {
     const commentSurveys = await SurveyModel.query()
       .where('frequency', payload.totalComments)
-      .where('status','published')
+      .where('status',  surveyStatus.published)
       .where('surveyType','mne')
       .where('expiry', '>=', new Date().toISOString())
       .withGraphJoined('trigger')
@@ -102,7 +107,7 @@ module.exports = () => {
 
     const repliesSurveys = await SurveyModel.query()
       .where('frequency', payload.totalReplies)
-      .where('status','published')
+      .where('status',  surveyStatus.published)
       .where('surveyType','mne')
       .where('expiry', '>=', new Date().toISOString()) 
       .withGraphJoined('trigger')
@@ -137,7 +142,7 @@ module.exports = () => {
     const survey = await SurveyModel.query()
       .where('frequency', payload.totalReactions)
       .where('surveyType','mne')
-      .where('status','published')
+      .where('status',  surveyStatus.published)
       .where('expiry', '>=', new Date().toISOString())
       .withGraphJoined('trigger')
       .where('trigger.name', 'reaction_create')
@@ -171,7 +176,7 @@ module.exports = () => {
     const survey = await SurveyModel.query()
       .where('frequency', payload.totalRatings)
       .where('surveyType','mne')
-      .where('status','published')
+      .where('status',  surveyStatus.published)
       .where('expiry', '>=', new Date().toISOString())
       .withGraphJoined('trigger')
       .where('trigger.name', 'rating_create')

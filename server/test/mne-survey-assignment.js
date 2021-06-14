@@ -34,13 +34,17 @@ describe('Monitoring & Evaluation Survey Assignment', () => {
     //seed survey with predictable data
     const triggers =await knex(triggerModel.tableName).select('id');
     const userIds =await knex(userModel.tableName).select('id');
-
+    const surveyStatus = {
+      published: 'Active',
+      unpublished: 'Pending',
+      archived: 'Archived',
+    };
     const surveys=[];
     for (let i = 0; i <triggers.length; i++) {
       surveys.push({
         survey_type: 'mne',
         name: `Test ${i}`,
-        status: 'published',
+        status: surveyStatus.published,
         expiry: new Date(new Date().setFullYear(new Date().getFullYear() + 1)),
         survey_embed: '<iframe>fake iframe</iframe>',
         frequency: 1,
