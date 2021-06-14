@@ -33,8 +33,8 @@ describe('Learner Navigation Menu', () => {
   it('Should link to homepage', () => {
     cy.get('.main-header.navbar a[href="/"]')
       .should('be.visible');
-  }); 
-  
+  });
+
   it('Should link to teachers page before authentication', () => {
     cy.get('.main-header.navbar a[href="/teach"]')
       .should('be.visible');
@@ -42,7 +42,7 @@ describe('Learner Navigation Menu', () => {
 
   it('Should link to teachers page if authentication', () => {
     cy.login();
-    cy.get('.main-header.navbar a[href="/teach"]')
+    cy.get('.main-header.navbar .navbar-nav a[href="/teach"]')
       .should('be.visible');
   });
 
