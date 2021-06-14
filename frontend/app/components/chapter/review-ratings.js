@@ -20,7 +20,7 @@ export default class ChapterReviewRatingsComponent extends Component {
       return A([]);
     }
     let parsedQuestions = A([]);
-    questions.map((category) => {
+    questions.sortBy('priority').map((category) => {
       let options;
       if (category.options) {
         options = {

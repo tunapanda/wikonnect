@@ -1,37 +1,40 @@
 module.exports = [
   {
-    category: 'audioVideoQuality',
-    title: 'Audio & video quality'
-  },
-
-  {
     category: 'soundQuality',
-    title: 'Sound quality'
+    title: 'Sound Quality',
+    default: false,
+    priority: 1
   },
 
   {
     category: 'videoQuality',
-    title: 'Video quality'
+    title: 'Video Quality',
+    default: false,
+    priority: 2
   },
   {
     category: 'contentAccuracy',
-    title: 'Accuracy of the content'
+    title: 'Accuracy',
+    default: true,
+    priority: 3
   },
   {
-    category: 'language',
-    title: 'Language'
+    category: 'grammar',
+    title: 'Grammar & Spelling',
+    default: true,
+    priority: 4
   },
   {
     category: 'creativity',
-    title: 'Level of creativity & content originality'
+    title: 'Creativity & Originality',
+    default: true,
+    priority: 5
   },
   {
     category: 'educationalValue',
-    title: 'Educational Value'
-  },
-  {
-    category: 'learningInterest',
-    title: 'Learning Interest'
-  },
+    title: 'Educational Value',
+    default: true,
+    priority: 6
+  }
 
 ];

@@ -29,7 +29,7 @@ html {
   }
 }
 
-body{
+body {
   height: 100%;
 }
 
@@ -142,6 +142,11 @@ pre {
   height: 300px;
 }
 
+.text-sentence {
+  &::first-letter {
+    text-transform: uppercase;
+  }
+}
 
 //@import "ember-bootstrap/bootstrap";
 //@import "ember-power-select";

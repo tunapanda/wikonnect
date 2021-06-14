@@ -1,12 +1,14 @@
 function likedChapter() {
     return cy.chapters({approved: true}).then((chapters) => {
-        return chapters.filter((ch) => ch.authenticatedUser === 'like' || ch.authenticatedUser === null)[0]
+        return chapters.filter((ch) => { return ch.reviewQuestions &&
+            (ch.authenticatedUser === 'like' || ch.authenticatedUser === null)})[0]
     });
 }
 
 function dislikedChapter() {
     return cy.chapters({approved: true}).then((chapters) => {
-        return chapters.filter((ch) => ch.authenticatedUser === 'dislike' || ch.authenticatedUser === null)[0]
+        return chapters.filter((ch) => { return ch.reviewQuestions &&
+            (ch.authenticatedUser === 'dislike' || ch.authenticatedUser === null)})[0]
     });
 }
 
