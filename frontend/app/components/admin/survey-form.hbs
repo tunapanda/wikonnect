@@ -1,7 +1,12 @@
 <div class="survey-form">
   <BsForm @formLayout="horizontal" @model={{changeset this.model this.surveyValidations}} @onSubmit={{this.submitForm}}
-          class="col-lg-7 main-form" as |form|>
-    <form.element @property="triggerId" @label={{t "admin.surveys.labels.trigger"}} as |el|>
+          class="col-lg-8 main-form" as |form|>
+
+    <form.element @property="name" @label={{t "admin.surveys.labels.name"}}  as |el|>
+      <el.control placeholder={{t "admin.surveys.labels.name_placeholder"}} class="name-input"/>
+    </form.element>
+    <form.element @property="triggerId" @helpText ={{t "admin.surveys.help.what_trigger"}}
+                  @label={{t "admin.surveys.labels.trigger"}} as |el|>
       <select id={{el.id}} required class="form-control trigger-select"
         {{on "change" (fn this.triggerSelected el.setValue)}}>
         {{#unless this.model.triggerId}}
@@ -13,25 +18,24 @@
       </select>
     </form.element>
 
-    <form.element @property="name" @label={{t "admin.surveys.labels.name"}}  as |el|>
-      <el.control placeholder={{t "admin.surveys.labels.name_placeholder"}} class="name-input"/>
-    </form.element>
-
-    <form.element @controlType="date" @property="expiry" @label={{t "admin.surveys.labels.expiry_date"}} as |el|>
-      <el.control class="expiry-input"></el.control>
-    </form.element>
-
-    <form.element @controlType="number" @property="frequency" @label={{t "admin.surveys.labels.frequency"}} as |el|>
+    <form.element @controlType="number" @property="frequency" @helpText ={{t "admin.surveys.help.what_frequency"}}
+                  @label={{t "admin.surveys.labels.frequency"}} as |el|>
       <el.control placeholder={{t "admin.surveys.labels.frequency_placeholder"}} class="frequency-input"/>
     </form.element>
 
+    <form.element @controlType="date" @property="expiry" @helpText ={{t "admin.surveys.help.what_expiry"}}
+                  @label={{t "admin.surveys.labels.expiry_date"}} as |el|>
+      <el.control class="expiry-input"></el.control>
+    </form.element>
 
-    <form.element @property="surveyEmbed" @label={{t "admin.surveys.labels.embed"}}  as |el|>
+
+    <form.element  @property="surveyEmbed" @label={{t "admin.surveys.labels.embed"}}
+                   @helpText={{t "admin.surveys.help.what_embed"}}  as |el|>
       <el.control placeholder={{t "admin.surveys.labels.embed_placeholder"}} class="embed-input"/>
     </form.element>
 
 
-    <form.element @controlType="textarea" @property="description"
+    <form.element @controlType="textarea" @property="description" @helpText={{t "admin.surveys.help.what_message"}}
                   @label={{t "admin.surveys.labels.description"}}  as |el|>
       <el.control placeholder={{t "admin.surveys.labels.description_placeholder"}} class="description-input"/>
     </form.element>

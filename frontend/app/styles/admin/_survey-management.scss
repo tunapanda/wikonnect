@@ -199,6 +199,7 @@ $palette: (
           }
 
           input::placeholder,
+          textarea::placeholder,
           select:invalid, {
             font-size: 13px;
             color: map-get($palette, grayChateau);

@@ -99,7 +99,7 @@ surveys:
     embed: Pachika Msimbo/Kiunga
     embed_placeholder: Msimbo wa upachikaji wa utafiti
     description: Onyesha Ujumbe
-    description_placeholder: Ujumbe mfupi juu ya umuhimu / kuhusu utafiti
+    description_placeholder: Tunataka kukupa uzoefu bora, kwa hivyo maoni yako ni muhimu sana kwetu
 
     #below are notifications related values
     delete_confirmation: Je! Una uhakika unataka kufuta utafiti?
@@ -113,3 +113,11 @@ surveys:
     survey_deletion_error: Hatukuweza kufuta utafiti. Hitilafu isiyotarajiwa ilitokea
     survey_update_error: Hatukuweza kusasisha utafiti. Hitilafu isiyotarajiwa ilitokea
     survey_create_error: Hatukuweza kuhifadhi maelezo ya utafiti. Hitilafu isiyotarajiwa ilitokea
+
+  help:
+    what_trigger: Kitendo ambacho mtumiaji anapaswa kufanya ili kuhitimu kujaza utafiti
+    what_frequency: Idadi ya nyakati ambazo mtumiaji anapaswa kutekeleza kitendo hicho
+    what_expiry: Utafiti huu hautapatikana baada ya tarehe ya kumalizika muda
+    what_embed: Fomu ya uchunguzi wa Google fomu ya kupachika HTML <>
+    what_message: Sababu ama umuhimu wa kujaza utafiti
+

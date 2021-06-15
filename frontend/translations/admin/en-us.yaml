@@ -99,7 +99,7 @@ surveys:
     embed: Embed Code/Link
     embed_placeholder: Survey Embed Code
     description: Display Message
-    description_placeholder: A short message on importance/about the survey
+    description_placeholder: We want to provide you the best experience, so your feedback is very valuable to us
 
     #below are notifications related values
     delete_confirmation: Are you sure you want to delete the survey?
@@ -113,3 +113,11 @@ surveys:
     survey_deletion_error: We could not delete the survey. Unexpected error occurred
     survey_update_error: We could not update the survey. Unexpected error occurred
     survey_create_error: We could not save the survey details. Unexpected error occurred
+
+  help:
+    what_trigger: An action a user has to perform to qualify for the survey
+    what_frequency: Number of times the user has to perform the action
+    what_expiry: This survey will not be available after expiry date
+    what_embed: A Google survey form HTML embed code <>
+    what_message: A prompt on importance of filling the survey
+
