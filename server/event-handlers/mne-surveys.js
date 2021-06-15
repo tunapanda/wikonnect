@@ -1,5 +1,6 @@
 const SurveyModel = require('../models/survey');
 const NotificationModel = require('../models/notification');
+const UserSurveyModel = require('../models/user-survey');
 const {notificationTypes} = require('../utils/notification-constants');
 const {events} = require('../utils/storage-hooks-events');
 const {SHooksEventEmitter} = require('../utils/event-emitter');
@@ -42,6 +43,11 @@ module.exports = () => {
           read: false,
           metadata: {sendEmail: false},
         });
+      await UserSurveyModel.query()
+        .insert({
+          surveyId: surveys[i].id,
+          userId: payload.creatorId
+        });
     }
 
     const approvedChapterSurveys = await SurveyModel.query()
@@ -68,6 +74,11 @@ module.exports = () => {
           recipientId: payload.creatorId,
           read: false,
           metadata: {sendEmail: false},
+        });
+      await UserSurveyModel.query()
+        .insert({
+          surveyId: approvedChapterSurveys[i].id,
+          userId: payload.creatorId
         });
     }
 
@@ -103,6 +114,12 @@ module.exports = () => {
           read: false,
           metadata: {sendEmail: false},
         });
+
+      await UserSurveyModel.query()
+        .insert({
+          surveyId: commentSurveys[i].id,
+          userId: payload.creatorId
+        });
     }
 
     const repliesSurveys = await SurveyModel.query()
@@ -131,6 +148,12 @@ module.exports = () => {
           read: false,
           metadata: {sendEmail: false},
         });
+
+      await UserSurveyModel.query()
+        .insert({
+          surveyId: repliesSurveys[i].id,
+          userId: payload.creatorId
+        });
     }
     
   });
@@ -139,7 +162,7 @@ module.exports = () => {
      * On reaction created
      */
   SHooksEventEmitter.on(events.user.reaction.countOnCreate, async(payload) =>{
-    const survey = await SurveyModel.query()
+    const surveys = await SurveyModel.query()
       .where('frequency', payload.totalReactions)
       .where('surveyType','mne')
       .where('status',  surveyStatus.published)
@@ -152,18 +175,24 @@ module.exports = () => {
           .orWhereNull('respondents.userId');
       });
 
-    for (let i = 0; i < survey.length; i++) {
+    for (let i = 0; i < surveys.length; i++) {
       //add a notification
       await NotificationModel.query()
         .insert({
           title: 'We`d love to hear your thoughts',
-          body: survey[i].name,
-          itemId: survey[i].id,
+          body: surveys[i].name,
+          itemId: surveys[i].id,
           model: 'survey',
           eventType:notificationTypes.reaction.created,
           recipientId: payload.creatorId,
           read: false,
           metadata: {sendEmail: false},
+        });
+
+      await UserSurveyModel.query()
+        .insert({
+          surveyId: surveys[i].id,
+          userId: payload.creatorId
         });
     }
   });
@@ -173,7 +202,7 @@ module.exports = () => {
      */
   SHooksEventEmitter.on(events.user.rating.countOnCreate, async (payload) => {
 
-    const survey = await SurveyModel.query()
+    const surveys = await SurveyModel.query()
       .where('frequency', payload.totalRatings)
       .where('surveyType','mne')
       .where('status',  surveyStatus.published)
@@ -186,18 +215,24 @@ module.exports = () => {
           .orWhereNull('respondents.userId');
       });
 
-    for (let i = 0; i < survey.length; i++) {
+    for (let i = 0; i < surveys.length; i++) {
       //add a notification
       await NotificationModel.query()
         .insert({
           title: 'We`d love to hear your thoughts',
-          body: survey[i].name,
-          itemId: survey[i].id,
+          body: surveys[i].name,
+          itemId: surveys[i].id,
           eventType:notificationTypes.rating.created,
           model: 'survey',
           recipientId: payload.creatorId,
           read: false,
           metadata: {sendEmail: false},
+        });
+
+      await UserSurveyModel.query()
+        .insert({
+          surveyId: surveys[i].id,
+          userId: payload.creatorId
         });
     }
 
