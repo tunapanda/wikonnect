@@ -12,16 +12,14 @@ Cypress.Commands.add('login', function () {
       .its('body')
       .then(res => {
         this.token = res.token;
+        const rawData =this.token.split('.')[1];
+        const data =rawData?JSON.parse(atob(rawData)):'';
         window.localStorage.setItem('ember_simple_auth-session', JSON.stringify({
           "authenticated": {
             "authenticator": "authenticator:jwt",
             "token": res.token,
             "exp": Math.floor(new Date().getTime() / 1000) + 1000 * 60 * 60,
-            "tokenData": {
-              "id": user.id,
-              "iat": Math.floor(new Date().getTime() / 1000),
-              "exp": Math.floor(new Date().getTime() / 1000) + 1000 * 60 * 60
-            }
+            "tokenData": data
           }
         }));
       });
