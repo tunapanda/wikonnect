@@ -5,6 +5,8 @@ import { log } from '../../utils/logger';
 
 export default class NavMenuNotificationDropdownComponent extends Component {
   @service store;
+  @service router;
+
   get notifications() {
     return this.store.peekAll('notification');
   }
@@ -19,8 +21,8 @@ export default class NavMenuNotificationDropdownComponent extends Component {
   @action
   async onNotificationSelect(model, dropdown) {
     if (model.read === true) {
-      if (model.route) {
-        this.router.transitionTo(model.route, model.itemId);
+      if (model.url) {
+        this.router.transitionTo(model.url);
       }
       dropdown.closeDropdown();
       return;
@@ -32,8 +34,8 @@ export default class NavMenuNotificationDropdownComponent extends Component {
 
       dropdown.closeDropdown();
 
-      if (model.route) {
-        this.router.transitionTo(model.route, model.itemId);
+      if (model.url) {
+        this.router.transitionTo(model.url);
       }
     } catch (e) {
       log.error('Notifications', e);
