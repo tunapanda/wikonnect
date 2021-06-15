@@ -19,15 +19,14 @@ export default class SurveyPromptPopupComponent extends Component {
 
   @action
   notificationEventIntercept() {
-    this.socket.socket.on(
-      events.user.notification.created,
-      async (notification) => {
+    this.socket.socket.on(events.user.notification.created, (notification) => {
+      setTimeout(async () => {
         if (!this.showSurveyFillPrompt) {
           this.survey = await this.store.find('survey', notification.itemId);
           this.showSurveyFillPrompt = true;
         }
-      }
-    );
+      }, 3000);
+    });
   }
 
   @action
