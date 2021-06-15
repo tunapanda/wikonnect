@@ -370,12 +370,9 @@ router.post('/:id/profile-image', koaBody, permController.requireAuth, async (ct
       //Upload image to AWS S3 bucket
       const uploaded = await s3.s3.upload(params).promise();
       log.info('Uploaded in:', uploaded.Location);
-      await User.query().patchAndFetchById(ctx.params.id, { profileUri: fileNameBase });
+      const user = await User.query().patchAndFetchById(ctx.params.id, { profileUri: fileNameBase });
 
-      ctx.body = {
-        host: `${params.Bucket}.s3.amazonaws.com/uploads/profiles`,
-        path: `${fileNameBase}.jpg`
-      };
+      ctx.body = { user };
     } catch (e) {
       log.error(e);
       ctx.throw(e.statusCode, null, { message: e.message });
@@ -385,14 +382,11 @@ router.post('/:id/profile-image', koaBody, permController.requireAuth, async (ct
   else {
     try {
       await resizer.toFile(`${uploadDir}/${fileNameBase}.jpg`);
-      await User.query()
+      const user = await User.query()
         .patchAndFetchById(ctx.params.id, { profileUri: `/${uploadPath}/${fileNameBase}.jpg` });
 
       ctx.status = 200;
-      ctx.body = {
-        host: ctx.host,
-        path: `/${uploadPath}/${fileNameBase}.jpg`,
-      };
+      ctx.body = { user };
     } catch (e) {
       if (e.statusCode) {
         ctx.throw(e.statusCode, null, { errors: [e.message] });

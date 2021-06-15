@@ -10,12 +10,31 @@ export default class ProfileController extends Controller {
   queryParams = ['view'];
   view = 'Profile';
 
-  get myProfile() {
-    return this.me.user.id;
+  get isProfileOwner() {
+    if (!this.me?.isAuthenticated || !this.model.id) {
+      return false;
+    }
+    return this.model.id === this.me.user.id;
+  }
+
+  get accountRole() {
+    return this.model.role; //TODO I am sure we should have extra stuff
+  }
+
+  get totalChaptersCreatedByUser() {
+    return 0;
+  }
+
+  get totalPointsEarnedByUser() {
+    return 0;
+  }
+
+  get totalChaptersEarnedByUser() {
+    return 0;
   }
 
   @action
-  saveUser(model) {
-    model.save();
+  viewAllUnlockedBadges() {
+    this.transitionToRoute('profile.achievements');
   }
 }

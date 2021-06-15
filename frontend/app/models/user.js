@@ -6,7 +6,6 @@ export default class UserModel extends Model {
   @attr() password;
   @attr() firstName;
   @attr() lastName;
-  @attr() aboutMe;
   @attr() lastSeen;
   @attr() updatedAt;
   @attr() tags;
@@ -17,8 +16,9 @@ export default class UserModel extends Model {
   @attr() name;
   @attr() emailVerified;
   @attr() flag;
-  // @attr('string', { defaultValue: 'Nairobi, Kenya' }) location;
-  // @attr('string', { defaultValue: '+254 712345678' }) contactNumber;
+  @attr() location;
+  @attr() contactNumber;
+  @attr() gender;
   @attr() userRoles;
 
   @hasMany('activity') activities;

@@ -24,7 +24,7 @@ export default class EditRoleComponent extends Component {
 
       return;
     }
-    
+
     const data = {
       userRole: {
         groupId: role.id,

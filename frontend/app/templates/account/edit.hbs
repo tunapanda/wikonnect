@@ -1,0 +1,88 @@
+<div class="edit-profile-page">
+
+  <div class="container-lg container-wrap">
+    <div class="d-flex justify-content-between header-section">
+      <div class="title">{{t "profile.edit_profile_page.title"}}</div>
+      <LinkTo @route="profile.home" @model={{this.model.id}} type="button" class="btn btn-primary btn-view-profile">{{t
+              "profile.edit_profile_page.buttons.view_profile"}}</LinkTo>
+    </div>
+    <hr class="horizontal-divider w-100">
+
+    <BsForm @formLayout="horizontal" @model={{changeset this.model this.accountValidation}}
+            @onSubmit={{this.updateProfile}}
+            class="edit-profile-form pb-5" as |form|>
+      <section class="col-lg-8 col-md-10 col-sm-12">
+        <div class="section-title">{{t "profile.edit_profile_page.intro_subtitle"}}</div>
+
+        <form.element @property="metadata.firstName" @label={{t "profile.edit_profile_page.first_name"}} as |el|>
+          <el.control class="firstname-input"/>
+        </form.element>
+
+        <form.element @property="metadata.lastName" @label={{t "profile.edit_profile_page.last_name"}} as |el|>
+          <el.control class="lastname-input"/>
+        </form.element>
+
+        <form.element @property="contactNumber" @label={{t "profile.edit_profile_page.contact_number"}} as |el|>
+          <el.control class="contact-number-input" placeholder="+254-712-345-567"/>
+        </form.element>
+
+        <form.element @property="email" @label={{t "profile.edit_profile_page.email"}} as |el|>
+          <el.control class="email-input"/>
+        </form.element>
+
+        <form.element @label={{t "profile.edit_profile_page.photo"}}>
+          <div class="d-flex flex-wrap-reverse flex-row flex-md-wrap">
+            <div class="profile-image-preview">
+              {{#if this.userProfilePicSrc}}
+                <img src="{{this.userProfilePicSrc}}" alt="" role="none">
+              {{else}}
+                {{svg-jar "user-circle-regular" width="50" height="50"}}
+              {{/if}}
+            </div>
+            <div class="sub-form">
+              <Forms::Upload @multiple="false" @accept="image/*" @filesSelected={{this.uploadProfilePic}}
+                             @disabled={{this.fileUploader.uploading}}>
+                {{#if this.fileUploader.uploading}}
+                  {{t "messages.uploading"}} <span class="loading-spinner"></span> {{this.fileUploader.progress}}%
+                {{else}}
+                  {{t "profile.edit_profile_page.buttons.browse"}}
+                {{/if}}
+              </Forms::Upload>
+              <div class="help-prompt">
+                {{t "profile.edit_profile_page.photo_prompt"}}
+              </div>
+            </div>
+          </div>
+        </form.element>
+      </section>
+
+      <hr class="horizontal-divider w-100">
+
+      <section class="col-lg-8 col-md-10 col-sm-12">
+        <div class="section-title">{{t "profile.edit_profile_page.details_subtitle"}}</div>
+        <div class="section-helper-prompt">{{t "profile.edit_profile_page.details_section_prompt"}}</div>
+
+        <form.element @controlType="textarea" @property="metadata.aboutMe" @label={{t
+                "profile.edit_profile_page.about"}}
+                      as |el|>
+          <el.control class="about-input"/>
+        </form.element>
+
+        <form.element @property="location" @label={{t "profile.edit_profile_page.location"}} as |el|>
+          <el.control class="location-input" placeholder={{t "profile.edit_profile_page.location_prompt"}}/>
+        </form.element>
+
+        <form.element @controlType="radio" @label={{t "profile.edit_profile_page.gender"}} @property="gender"
+                      @options={{this.genderOptions}} class="gender-select" as |el|>
+          <el.control class="gender-select-option"/>
+        </form.element>
+
+        <div class="ml-md-5 pl-md-5">
+          <form.submitButton class="btn btn-primary btn-submit ml-md-5">
+            {{t "profile.edit_profile_page.buttons.save"}}
+          </form.submitButton>
+        </div>
+      </section>
+    </BsForm>
+  </div>
+</div>

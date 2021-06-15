@@ -11,7 +11,15 @@ Router.map(function () {
   this.route('login');
   this.route('about');
 
-  this.route('profile');
+  this.route('profile', { path: '/profile/:id' }, function () {
+    this.route('home');
+    this.route('achievements');
+  });
+
+  this.route('account', { path: '/profile' }, function () {
+    this.route('edit');
+  });
+
   this.route('search', { path: '/search/:id' });
   this.route('tag', { path: '/chapters/tag/:id' });
 
