@@ -23,7 +23,7 @@
     {{#if this.signup}}
 
       <br><br>
-      <LinkTo @route="profile">
+      <LinkTo @route="profile.home" @model={{this.me.id}}>
         {{#if this.complete}}
           <button type="button" class="btn btn-success">{{t "buttons.proceed_to_profile"}}</button>
         {{else}}
