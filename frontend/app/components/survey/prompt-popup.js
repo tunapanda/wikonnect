@@ -7,6 +7,7 @@ import { events } from '../../utils/socket-events';
 export default class SurveyPromptPopupComponent extends Component {
   @service socket;
   @service store;
+  @service router;
 
   @tracked showSurveyFillPrompt = false;
   @tracked survey;
@@ -27,5 +28,11 @@ export default class SurveyPromptPopupComponent extends Component {
         }
       }
     );
+  }
+
+  @action
+  transitionToSurveyPage() {
+    this.hideSurveyFillPrompt();
+    this.router.transitionTo('surveys', this.survey);
   }
 }
