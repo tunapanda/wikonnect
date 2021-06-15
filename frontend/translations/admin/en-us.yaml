@@ -6,6 +6,7 @@ sidenav:
   badges: Badges
   manage_badges: Manage Badges
   badge_users: Users & Badges
+  content_approval: Content Approval
 
 badges:
   titles:
@@ -85,3 +86,11 @@ users:
     badges_earned: Badges Earned
     badges_earned_alt: badges earned icon
     details_button: Details
+content_approval:
+  table:
+    thumbnail: Thumbnail
+    name: Chapter Name
+    description: Description
+    status: Status
+    teacher: Teacher
+    action: Action

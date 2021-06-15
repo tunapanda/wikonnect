@@ -6,6 +6,7 @@ sidenav:
   badges: Beji
   manage_badges: Usimamizi wa Beji
   badge_users: Watumiaji na Beji
+  content_approval: Idhini ya Somo
 
 badges:
   titles:
@@ -85,3 +86,11 @@ users:
     badges_earned: Beji Zilizopatikana
     badges_earned_alt: badges earned icon
     details_button: Maelezo
+content_approval:
+  table:
+    thumbnail: Kijipicha
+    name: Jina
+    description: Maelezo
+    status: Hali
+    teacher: Mwandishi
+    action: Hatua
