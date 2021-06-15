@@ -38,14 +38,10 @@
           </div>
         </div>
         <div class="chapter-metadata">
-          <p> {{t "single_chapter.h5p.views" numViews=this.model.views}} &middot;
-            {{format-date this.model.createdAt day="numeric" month="short" year="numeric"}}</p>
-
-          <div class="chapter-tags-list">
-            {{#each this.model.tags as |tag|}}
-            <LinkTo @route="tag" @model={{tag}} class="tag">{{tag}}</LinkTo>
-            {{/each}}
-          </div>
+          <p> {{t "single_chapter.h5p.views" numViews=this.model.views}} &middot; {{format-date this.model.createdAt
+            day="numeric"
+            month="short"
+            year="numeric"}}</p>
         </div>
 
         <div class="modal fade" id="modelId" tabindex="-1" role="dialog" aria-labelledby="modelTitleId"
@@ -79,15 +75,19 @@
 
         <hr>
         <div class="single-chapter-creator mb-3">
-          {{#if this.model.author.profileUri}}
-          <img src={{this.model.author.profileUri}} alt={{t "single_chapter.h5p.creator_avatar" }}
-            class="rounded-circle mr-2">
-          {{else}}
-          <img src="/uploads/images/profile-placeholder.gif" alt={{t "single_chapter.h5p.creator_avatar" }}
-            class="rounded-circle mr-2">
-          {{/if}}
+          <LinkTo @route="profile.home" @model={{this.model.author.id}} class="text-dark">
+            {{#if this.model.author.profileUri}}
+            <img src={{this.model.author.profileUri}} alt={{t "single_chapter.h5p.creator_avatar" }}
+              class="rounded-circle mr-2">
+            {{else}}
+            <img src="/uploads/images/profile-placeholder.gif" alt={{t "single_chapter.h5p.creator_avatar" }}
+              class="rounded-circle mr-2">
+            {{/if}}
+          </LinkTo>
           <div class="chapter-author">
-            <p>{{this.model.author.name}}</p>
+            <LinkTo @route="profile.home" @model={{this.model.author.id}} class="text-dark">
+              <p>{{this.model.author.name}}</p>
+            </LinkTo>
             {{!-- TODO: Add "verified" & "likes" to user model --}}
             {{!-- {{svg-jar "verified-black-24dp" class="verified-icon" height="20px"}} --}}
             {{!-- <p>134 likes</p> --}}
@@ -136,6 +136,17 @@
   <BsForm @model={{this.flagModel}} @onSubmit={{this.saveFlag }} as |form|>
     <form.element @controlType="textarea" @label="Reason for reporting" @property="comment" />
     <form.element @controlType="hidden" @value={{this.model}} @name="chapter" />
+
+  </BsForm>
+</BsModalSimple>
+
+<BsModalSimple @open={{this.ratingModal}} @title="Rate This Module " @closeTitle="Close"
+  @submitTitle="Submit Optional Remark" @size="" @closeButton={{true}} @fade={{true}} @backdrop={{true}}
+  @backdropClose={{true}} @onSubmit={{this.ratingSubmit}} @onHidden={{this.toggleRatingModal}} @renderInPlace={{true}}>
+
+  <BsForm @onSubmit={{this.ratingSubmit }} as |form|>
+    <form.element @controlType="textarea" @label="Optional reason/remark for your {{this.rates}} star rating"
+      @property="comment" />
 
 
   </BsForm>

@@ -1,0 +1,132 @@
+$palette: (
+  blizzardBlue: #ABD5F0,
+  white: #FFFF,
+  gray30:#3F484D,
+  mako: #3F484D,
+  corvette: #fac7a1,
+  portage: #AF7EF4,
+  black: #000
+);
+
+.edit-profile-page {
+
+  background-color: map-get($palette, blizzardBlue);
+
+  .container-wrap {
+    position: relative;
+    top: 15px;
+    background-color: map-get($palette, white);
+    padding: 25px;
+
+  }
+
+  .header-section {
+    .title {
+      color: map-get($palette, gray30);
+      font-size: 19px;
+      font-weight: 600;
+    }
+
+    .btn-view-profile {
+      padding-bottom: 2px;
+      padding-top: 2px;
+    }
+  }
+  
+  .edit-profile-form {
+    .section-title {
+      font-size: 19px;
+      color: map-get($palette, gray30);
+    }
+
+    .section-helper-prompt {
+      padding-bottom: 12px;
+      padding-top: 12px;
+      color: map-get($palette, gray30);
+    }
+
+    .form-group {
+      .col-form-label {
+        font-weight: 400;
+        color: map-get($palette, mako);
+      }
+
+      .form-control {
+        border-radius: 0;
+        color: map-get($palette, black);
+
+        &::placeholder,
+        &::-webkit-input-placeholder {
+          color: lighten(map-get($palette, mako), 30%);
+          font-size: 12px;
+        }
+      }
+
+    }
+
+    .btn-submit {
+      margin-top: 5px;
+    }
+  }
+
+  .edit-profile-form {
+    .profile-image-preview {
+      height: 100px;
+      width: 100px;
+      margin-right: 8px;
+      border: solid 3px map-get($palette, corvette);
+      display: flex;
+      align-content: center;
+      justify-content: center;
+      align-items: center;
+
+      img {
+        width: 100%;
+        height: 100%;
+      }
+
+      svg {
+        path {
+          fill: map-get($palette, portage);
+        }
+      }
+    }
+
+    .sub-form {
+      .upload-file-button {
+        padding: 2px 14px;
+      }
+
+      .help-prompt {
+        padding-top: 8px;
+        padding-bottom: 8px;
+        font-size: 12px;
+        color: map-get($palette, gray30);
+      }
+    }
+  }
+
+}
+
+@media (min-width: 768px) {
+
+  .edit-profile-page {
+    .edit-profile-form {
+
+      .form-group {
+        .col-form-label {
+          text-align: right;
+        }
+
+        &.gender-select {
+          .form-check {
+            display: inline-flex;
+            align-content: center;
+            align-items: flex-end;
+            margin-right: 8px;
+          }
+        }
+      }
+    }
+  }
+}
