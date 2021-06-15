@@ -6,6 +6,7 @@ sidenav:
   badges: Badges
   manage_badges: Manage Badges
   badge_users: Users & Badges
+  content_approval: Content Approval
 
 badges:
   titles:
@@ -60,4 +61,13 @@ badges:
     expiry: Expiry date
     status: Status
     users_earned:  Users earned
+    action: Action
+
+content_approval:
+  table:
+    thumbnail: Thumbnail
+    name: Chapter Name
+    description: Description
+    status: Status
+    teacher: Teacher
     action: Action

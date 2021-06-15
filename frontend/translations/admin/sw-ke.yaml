@@ -6,6 +6,7 @@ sidenav:
   badges: Beji
   manage_badges: Usimamizi wa Beji
   badge_users: Watumiaji na Beji
+  content_approval: Idhini ya Somo
 
 badges:
   titles:
@@ -60,4 +61,13 @@ badges:
     expiry: Tarehe ya mwisho wa matumizi
     status: Hali
     users_earned: Watumiaji walipata
+    action: Hatua
+
+content_approval:
+  table:
+    thumbnail: Kijipicha
+    name: Jina
+    description: Maelezo
+    status: Hali
+    teacher: Mwandishi
     action: Hatua

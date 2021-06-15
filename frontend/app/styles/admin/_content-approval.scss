@@ -1,0 +1,16 @@
+table.content {
+  table-layout: fixed;
+  width: 100%;
+
+  img {
+    width: 150px;
+  }
+
+  th:nth-child(3) {
+    width: 30%;
+  }
+
+  th:nth-child(4) {
+    width: 10%;
+  }
+}
