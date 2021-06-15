@@ -10,25 +10,12 @@
           @property="username" as |el|>
           <el.control autocomplete="username" placeholder={{t "auth.login.enter_username" }}></el.control>
         </form.element>
-        {{#each @newUser.errors as |err| }}
-        {{#if (eq err.key "username")}}
-        <BsAlert @type="danger" @fade={{true}}>
-          {{err.validation}}
-        </BsAlert>
-        {{/if}}
-        {{/each}}
+
 
         <form.element id="email" class="" @controlType="text" @label={{t "auth.signup.email" }} @property="email" as
           |el|>
           <el.control autocomplete="email" placeholder="example@mail.com"></el.control>
         </form.element>
-        {{#each @newUser.errors as |err| }}
-        {{#if (eq err.key "email")}}
-        <BsAlert @type="danger" @fade={{true}}>
-          {{err.validation}}
-        </BsAlert>
-        {{/if}}
-        {{/each}}
 
         <form.element id="password" class="" @controlType="password" @label={{t "auth.login.password" }}
           @property="password" as |el|>

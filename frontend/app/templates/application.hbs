@@ -15,7 +15,7 @@
   <div class="container-fluid m-0 p-0 h-100 ">
     {{outlet}}
   </div>
-  <EmberNotify @closeAfter={{4000}} />
+  <EmberNotify  @messageStyle="bootstrap" @closeAfter={{30000}} />
   <AuthPrompt />
   {{!-- TODO: verifiy email in prod --}}
   {{!-- <VerifyEmailPrompt /> --}}
