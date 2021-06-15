@@ -1,0 +1,8 @@
+breadcrumb:
+  home: Home
+  surveys: Surveys
+popup:
+  google_prompt: Take two minutes to fill this google form
+  buttons:
+    ok: Sure yes
+    no: Later

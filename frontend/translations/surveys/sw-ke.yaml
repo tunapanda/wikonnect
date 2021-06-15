@@ -1,0 +1,5 @@
+popup:
+  google_prompt: Chukua dakika mbili kujaza fomu hii ya google
+  buttons:
+    ok: Hakika ndiyo
+    no: Baadae
