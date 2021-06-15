@@ -55,16 +55,40 @@
               <UserDetails @user={{user}} />
             </td>
             <td>
-              {{user.email}}
+              <span
+                data-toggle="tooltip"
+                data-placement="right"
+                title={{user.email}}
+              >
+                {{user.email}}
+              </span>
             </td>
             <td>
               {{user.lastLoginTime}}
             </td>
             <td>
-              <EditRole @user={{user}} @roles={{this.roles}}/>
+              <EditRole @user={{user}} @roles={{this.roles}} />
             </td>
             <td>
-              {{user.status}}
+              {{#if user.emailVerified}}
+                <span
+                  class="text-primary"
+                  data-toggle="tooltip"
+                  data-placement="right"
+                  title="Verified Email"
+                >
+                  {{svg-jar 'verified-user' width='34px'}}
+                </span>
+              {{else}}
+                <span
+                  class="text-muted"
+                  data-toggle="tooltip"
+                  data-placement="right"
+                  title="Unverified Email"
+                >
+                  {{svg-jar 'unverified-user' width='34px'}}
+                </span>
+              {{/if}}
             </td>
           </tr>
         {{/each}}

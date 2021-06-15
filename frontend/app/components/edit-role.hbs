@@ -9,7 +9,7 @@
         {{#each this.roles as |role|}}
           <button
             type="button"
-            class="btn w-100"
+            class="btn w-100 text-left"
             {{on 'click' (fn this.changeRole role)}}
           >
             {{role.name}}

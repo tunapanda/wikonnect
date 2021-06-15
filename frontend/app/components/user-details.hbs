@@ -12,17 +12,18 @@
     <div class="user-details d-flex">
       <div class="user-detail-card d-flex flex-row">
         <div class="user-profile">
-          <img src={{@user.profileUri}} alt={{t 'admin.users.details.profile_image_alt'}} class="rounded-circle" />
-          {{!-- <img
-            src="/uploads/images/profile-placeholder.gif"
-            alt="Profile"
-            class="rounded-circle"
-          /> --}}
-          <p>
-            <strong>
-              {{@user.name}}
-            </strong>
-          </p>
+          <LinkTo @route="profile" @model={{@user}}>
+            <img
+              src={{@user.profileUri}}
+              alt={{t 'admin.users.details.profile_image_alt'}}
+              class="rounded-circle"
+            />
+            <p>
+              <strong>
+                {{@user.name}}
+              </strong>
+            </p>
+          </LinkTo>
           <p class="text-muted">
             {{@user.role}}
           </p>
@@ -43,7 +44,10 @@
         </div>
       </div>
       <div class="user-detail-card icon-card">
-        <img src="/images/chapters-created.png" alt={{t 'admin.users.details.chapters_created_alt'}} />
+        <img
+          src="/images/chapters-created.png"
+          alt={{t 'admin.users.details.chapters_created_alt'}}
+        />
         <p>
           {{t 'admin.users.details.chapters_created'}}
         </p>
@@ -68,7 +72,10 @@
         </p>
       </div>
       <div class="user-detail-card icon-card">
-        <img src="/images/points-earned.png" alt={{t 'admin.users.details.points_accumulated_alt'}} />
+        <img
+          src="/images/points-earned.png"
+          alt={{t 'admin.users.details.points_accumulated_alt'}}
+        />
         <p>
           {{t 'admin.users.details.points_accumulated'}}
         </p>
@@ -79,7 +86,10 @@
         </p>
       </div>
       <div class="user-detail-card icon-card">
-        <img src="/images/badges-earned.png" alt={{t 'admin.users.details.badges_earned_alt'}} />
+        <img
+          src="/images/badges-earned.png"
+          alt={{t 'admin.users.details.badges_earned_alt'}}
+        />
         <p>
           {{t 'admin.users.details.badges_earned'}}
         </p>
@@ -92,10 +102,6 @@
     </div>
   </modal.body>
 </BsModal>
-<button
-  type="button"
-  class="btn btn-link"
-  {{on 'click' this.toggleModal}}
->
+<button type="button" class="btn btn-link" {{on 'click' this.toggleModal}}>
   {{@user.name}}
 </button>

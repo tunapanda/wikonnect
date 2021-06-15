@@ -6,7 +6,9 @@ table.users {
     width: 3%;
   }
 
-  th:nth-child(2),
+  th:nth-child(2) {
+    width: 15%;
+  }
   th:nth-child(4) {
     width: 20%;
   }
@@ -15,6 +17,18 @@ table.users {
     width: 25%;
   }
 
+  td {
+    vertical-align: top;
+
+    button.btn-link {
+      padding: 0;
+    }
+
+    button:focus {
+      outline: none !important;
+      box-shadow: none;
+    }
+  }
 }
 
 .user-search {
