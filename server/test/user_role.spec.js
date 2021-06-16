@@ -12,27 +12,26 @@ chai.should();
 const route = '/api/v1/userRole';
 
 describe('USER ROLE ROUTE', () => {
-
-  it('Should grant superadmin access to all user roles', done => {
-    chai
-      .request(server)
-      .get(route)
-      .set(tokens.headersSuperAdmin1)
-      .end((err, res) => {
-        res.should.have.status(200);
-        res.should.be.json;
-        res.body.user_role[0].should.have.property('userId');
-        res.body.user_role[0].should.have.property('groupId');
-        done();
-      });
-  });
-
-  it('Should grant admin access to all user roles', done => {
+  it('Should grant superadmin access to all user roles', (done) => {
     chai
       .request(server)
       .get(route)
       .set(tokens.headerAdminUser)
       .end((err, res) => {
+        res.should.have.status(200);
+        res.should.be.json;
+        res.body.user_role[0].should.have.property('userId');
+        res.body.user_role[0].should.have.property('groupId');
+        done();
+      });
+  });
+
+  it('Should grant admin access to all user roles', (done) => {
+    chai
+      .request(server)
+      .get(route)
+      .set(tokens.headerModeratorUser)
+      .end((err, res) => {
         res.should.be.json;
         res.should.have.status(200);
         res.body.user_role[0].should.have.property('userId');
@@ -40,11 +39,11 @@ describe('USER ROLE ROUTE', () => {
         done();
       });
   });
-  it('Should deny access for permissions that are not admin and superadmin', done => {
+  it('Should deny access for permissions that are not admin and superadmin', (done) => {
     chai
       .request(server)
       .get(route)
-      .set(tokens.headerBasicUser2)
+      .set(tokens.headerVerifiedUser)
       .end((err, res) => {
         res.should.be.json;
         res.should.have.status(400);
@@ -52,11 +51,11 @@ describe('USER ROLE ROUTE', () => {
         done();
       });
   });
-  it('Should get logged in users details', done => {
+  it('Should get logged in users details', (done) => {
     chai
       .request(server)
       .get(`${route}/me`)
-      .set(tokens.headersSuperAdmin1)
+      .set(tokens.headerAdminUser)
       .end((err, res) => {
         res.should.be.json;
         res.should.have.status(200);
@@ -64,11 +63,11 @@ describe('USER ROLE ROUTE', () => {
         done();
       });
   });
-  it('Should get logged in users details', done => {
+  it('Should get logged in users details', (done) => {
     chai
       .request(server)
       .get(`${route}/current`)
-      .set(tokens.headersSuperAdmin1)
+      .set(tokens.headerAdminUser)
       .end((err, res) => {
         res.should.be.json;
         res.should.have.status(200);
@@ -76,13 +75,13 @@ describe('USER ROLE ROUTE', () => {
         done();
       });
   });
-  it('Should update user role', done => {
+  it('Should update user role', (done) => {
     chai
       .request(server)
       .put(`${route}/user1`)
       .set('Content-Type', 'application/json')
-      .send({ 'userRole': { 'groupId': 'groupAdmin' }})
-      .set(tokens.headersSuperAdmin1)
+      .send({ userRole: { groupId: 'groupAdmin' } })
+      .set(tokens.headerAdminUser)
       .end((err, res) => {
         res.should.be.json;
         res.should.have.status(200);

@@ -12,7 +12,7 @@ chai.should();
 
 const route = '/api/v1/notifications';
 
-const sample ={
+const sample = {
   title: 'You have a new chapter comment',
   body: 'Your recently approved chapter has received a comment!',
   itemId: 'I3lchuEAA80',
@@ -21,16 +21,15 @@ const sample ={
   recipientId: 'user2',
   creatorId: 'user1',
   read: false,
-  metadata:{sendEmail: false},
+  metadata: { sendEmail: false },
 };
 
 describe('NOTIFICATIONS ROUTE', () => {
-
-  it('Should fetch existing notifications', done => {
+  it('Should fetch existing notifications', (done) => {
     chai
       .request(server)
       .get(route)
-      .set(tokens.headersSuperAdmin1)
+      .set(tokens.headerAdminUser)
       .end((err, res) => {
         res.should.have.status(200);
         res.should.be.json;
@@ -41,11 +40,11 @@ describe('NOTIFICATIONS ROUTE', () => {
       });
   });
 
-  it('Should query existing notifications', done => {
+  it('Should query existing notifications', (done) => {
     chai
       .request(server)
       .get(`${route}?model=chapter`)
-      .set(tokens.headersSuperAdmin1)
+      .set(tokens.headerAdminUser)
       .end((err, res) => {
         res.should.have.status(200);
         res.should.be.json;
@@ -60,26 +59,24 @@ describe('NOTIFICATIONS ROUTE', () => {
     return chai
       .request(server)
       .post(route)
-      .set(tokens.headersSuperAdmin1)
+      .set(tokens.headerAdminUser)
       .set('Content-Type', 'application/json')
-      .send({notification: sample})
+      .send({ notification: sample })
       .then((res) => {
         res.status.should.eql(201);
         res.should.be.json;
         res.body.should.have.property('notification');
         res.body.notification.body.should.eql(sample.body);
-
       });
   });
 
   it('Should get existing notification', async () => {
-
     const notification = (await knex('notifications').select().limit(1))[0];
 
     return chai
       .request(server)
       .get(`${route}/${notification.id}`)
-      .set(tokens.headersSuperAdmin1)
+      .set(tokens.headerAdminUser)
       .set('Content-Type', 'application/json')
       .then((res) => {
         res.should.have.status(200);
@@ -90,13 +87,12 @@ describe('NOTIFICATIONS ROUTE', () => {
   });
 
   it('Should update existing notification', async () => {
-
     const notification = (await knex('notifications').select().limit(1))[0];
 
     return chai
       .request(server)
       .put(`${route}/${notification.id}`)
-      .set(tokens.headersSuperAdmin1)
+      .set(tokens.headerAdminUser)
       .set('Content-Type', 'application/json')
       .send({ notification: sample })
       .then((res) => {
@@ -115,7 +111,7 @@ describe('NOTIFICATIONS ROUTE', () => {
     return chai
       .request(server)
       .delete(`${route}/${notification.id}`)
-      .set(tokens.headersSuperAdmin1)
+      .set(tokens.headerAdminUser)
       .then((res) => {
         res.status.should.eql(200);
       });
