@@ -88,4 +88,28 @@ export default class MeService extends Service {
 
     return null;
   }
+
+  get role() {
+    if (this.user) {
+      return this.user.role;
+    }
+
+    return null;
+  }
+
+  get isAdmin() {
+    if (this.user && this.user.role) {
+      return this.user.role.toLowerCase() === 'admin';
+    }
+
+    return false;
+  }
+
+  get isModerator() {
+    if (this.user && this.user.role) {
+      return this.user.role.toLowerCase() === 'moderator';
+    }
+
+    return false;
+  }
 }
