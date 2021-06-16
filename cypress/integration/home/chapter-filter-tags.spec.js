@@ -97,7 +97,9 @@ describe("Chapters filter tags ", () => {
             })
 
 
-        cy.get('.tags-section-container button.clear-tags-btn:visible')
+        cy.get('.tags-section-container')
+            .click() //this will hide dropdown if visible
+            .find(' button.clear-tags-btn:visible')
             .click()
             .get('.tags-section-container .selected-tags.tag-list button.tag-button')
             .should('not.exist')
