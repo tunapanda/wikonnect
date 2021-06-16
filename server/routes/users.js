@@ -205,8 +205,15 @@ router.get('/:id', permController.requireAuth, async ctx => {
   profileCompleteBoolean(user, ctx.params.id);
   log.info('Got a request from %s for %s', ctx.request.ip, ctx.path);
 
+  if(stateUserId !== userId){
+    delete user.email;
+    delete user.username;
+    delete user.updatedAt;
+    delete user.contactNumber;
+  }
+
   ctx.status = 200;
-  ctx.body = { user: user };
+  ctx.body = { user };
 });
 /**
  * @api {get} /users GET all users.
@@ -361,12 +368,9 @@ router.post('/:id/profile-image', koaBody, permController.requireAuth, async (ct
       //Upload image to AWS S3 bucket
       const uploaded = await s3.s3.upload(params).promise();
       log.info('Uploaded in:', uploaded.Location);
-      await User.query().patchAndFetchById(ctx.params.id, { profileUri: fileNameBase });
+      const user = await User.query().patchAndFetchById(ctx.params.id, { profileUri: fileNameBase });
 
-      ctx.body = {
-        host: `${params.Bucket}.s3.amazonaws.com/uploads/profiles`,
-        path: `${fileNameBase}.jpg`
-      };
+      ctx.body = { user };
     } catch (e) {
       log.error(e);
       ctx.throw(e.statusCode, null, { message: e.message });
@@ -376,14 +380,11 @@ router.post('/:id/profile-image', koaBody, permController.requireAuth, async (ct
   else {
     try {
       await resizer.toFile(`${uploadDir}/${fileNameBase}.jpg`);
-      await User.query()
+      const user = await User.query()
         .patchAndFetchById(ctx.params.id, { profileUri: `/${uploadPath}/${fileNameBase}.jpg` });
 
       ctx.status = 200;
-      ctx.body = {
-        host: ctx.host,
-        path: `/${uploadPath}/${fileNameBase}.jpg`,
-      };
+      ctx.body = { user };
     } catch (e) {
       if (e.statusCode) {
         ctx.throw(e.statusCode, null, { errors: [e.message] });

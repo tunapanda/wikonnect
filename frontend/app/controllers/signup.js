@@ -15,7 +15,7 @@ export default class SignupController extends Controller {
     if (this.config.content.APP.use_preset_tags) {
       this.transitionToRoute('tags');
     } else {
-      this.transitionToRoute('upload');
+      this.transitionToRoute('account.edit');
     }
   }
 }

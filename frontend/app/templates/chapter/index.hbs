@@ -79,6 +79,7 @@
 
         <hr>
         <div class="single-chapter-creator mb-3">
+          <LinkTo @route="profile.home" @model={{this.model.author.id}} class="text-dark">
           {{#if this.model.author.profileUri}}
           <img src={{this.model.author.profileUri}} alt={{t "single_chapter.h5p.creator_avatar" }}
             class="rounded-circle mr-2">
@@ -86,9 +87,11 @@
           <img src="/uploads/images/profile-placeholder.gif" alt={{t "single_chapter.h5p.creator_avatar" }}
             class="rounded-circle mr-2">
           {{/if}}
+          </LinkTo>
           <div class="chapter-author">
-            <p>{{this.model.author.name}}</p>
-            {{!-- TODO: Add "verified" & "likes" to user model --}}
+            <LinkTo @route="profile.home" @model={{this.model.author.id}} class="text-dark">
+              <p>{{this.model.author.name}}</p>
+            </LinkTo>            {{!-- TODO: Add "verified" & "likes" to user model --}}
             {{!-- {{svg-jar "verified-black-24dp" class="verified-icon" height="20px"}} --}}
             {{!-- <p>134 likes</p> --}}
           </div>
