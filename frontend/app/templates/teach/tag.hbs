@@ -165,7 +165,7 @@
 
     {{#each this.selectedTags as |tag|}}
       <button type="button" class="btn btn-success btn-sm m-1 " {{on "click" (fn this.removeme tag "custom")}}>
-        {{capitalize tag}}
+        {{title-case tag}}
         <span aria-hidden="true">&times;</span>
       </button>
 

@@ -114,18 +114,18 @@ export default class TeachTagController extends Controller {
 
   get topicBucketTags() {
     const tags = [
-      { title: 'Internet basics', isSelected: false },
-      { title: 'Content creation', isSelected: false },
-      { title: 'Digital wellness', isSelected: false },
-      { title: 'Data protection and privacy', isSelected: false },
-      { title: 'Online safety', isSelected: false },
-      { title: 'Relationships and communications', isSelected: false },
-      { title: 'News and media literacy', isSelected: false },
-      { title: 'Online working', isSelected: false },
-      { title: 'Online learning', isSelected: false },
-      { title: 'Life skills', isSelected: false },
+      { title: 'Internet Basics', isSelected: false },
+      { title: 'Content Creation', isSelected: false },
+      { title: 'Digital Wellness', isSelected: false },
+      { title: 'Data Protection and Privacy', isSelected: false },
+      { title: 'Online Safety', isSelected: false },
+      { title: 'Relationships and Communications', isSelected: false },
+      { title: 'News and Media Literacy', isSelected: false },
+      { title: 'Online Working', isSelected: false },
+      { title: 'Online Learning', isSelected: false },
+      { title: 'Life Skills', isSelected: false },
       { title: 'Health', isSelected: false },
-      { title: 'Digital financial literacy', isSelected: false },
+      { title: 'Digital Financial Literacy', isSelected: false },
     ];
 
     if (this.selectedTags) {
