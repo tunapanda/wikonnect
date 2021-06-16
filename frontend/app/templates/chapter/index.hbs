@@ -7,7 +7,7 @@
     </LinkTo>
     <p class="m0">
       <LinkTo @route="index">{{t "single_chapter.h5p.chapters"}}</LinkTo>
-      / <span class="chapter-name">{{this.model.name}}</span>
+      / <span class="chapter-name">{{title-case this.model.name}}</span>
     </p>
   </div>
   <hr>
@@ -21,7 +21,7 @@
         <div class="d-flex justify-content-between pt-2 pb-2 flex-wrap">
           <div class="chapter-title">
             <h4>
-              {{this.model.name}}
+              {{title-case  this.model.name}}
             </h4>
           </div>
 
