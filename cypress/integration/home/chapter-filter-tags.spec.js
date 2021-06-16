@@ -45,7 +45,7 @@ describe("Chapters filter tags ", () => {
                 getFilterDropdownMenu()
                     .find('.tag-select-item')
                     .find('label')
-                    .contains(tags[0], {ignoreCase: true});
+                    .contains(tags[0], {matchCase: false});
             });
     });
 
@@ -58,13 +58,13 @@ describe("Chapters filter tags ", () => {
 
                 getFilterDropdownMenu()
                     .find('.tag-select-item label')
-                    .contains(tags[0], {ignoreCase: true})
+                    .contains(tags[0], {matchCase: false})
                     .find('input[type="checkbox"]')
                     .check();
 
                 cy.get('.chapter-filters-section .selected-tags')
                     .find('button.tag-button')
-                    .contains(tags[0], {ignoreCase: true});
+                    .contains(tags[0], {matchCase: false});
             });
     });
 
@@ -81,7 +81,7 @@ describe("Chapters filter tags ", () => {
                         .within(() => {
                             chapter.tags.map((tag) => {
                                 cy.get('.tag-select-item label')
-                                    .contains(tag, {ignoreCase: true})
+                                    .contains(tag, {matchCase: false})
                                     .find('input[type="checkbox"]')
                                     .check()
                             })
@@ -114,7 +114,7 @@ describe("Chapters filter tags ", () => {
 
                 getFilterDropdownMenu()
                     .find('.tag-select-item label')
-                    .contains(tag, {ignoreCase: true})
+                    .contains(tag, {matchCase: false})
                     .find('input[type="checkbox"]')
                     .check()
 
