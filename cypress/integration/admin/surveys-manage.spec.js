@@ -219,6 +219,7 @@ describe("Surveys management page", () => {
                 if (activeSurvey) {
                     cy.get(`.surveys-list .survey-card#survey-card-${activeSurvey.id} .footer .dd-actions-menu`)
                         .find('.dropdown-toggle')
+                        .focus()
                         .click()
                         .siblings()
                         .focus("dropdown-menu")
@@ -226,12 +227,11 @@ describe("Surveys management page", () => {
                         .click();
 
 
-                    cy.get('.surveys-list')
-                        .click() //this will hide dropdown if visible
                     cy.get(`.surveys-list .survey-card#survey-card-${activeSurvey.id}`)
                         .contains('.status .status-badge', surveyStatus.unpublished)
                         .get(`.surveys-list .survey-card#survey-card-${activeSurvey.id}`)
                         .find('.dropdown-toggle')
+                        .focus()
                         .click()
                         .siblings()
                         .focus("dropdown-menu")
@@ -241,21 +241,20 @@ describe("Surveys management page", () => {
                 }
 
                 if (pendingSurvey) {
-                    cy.get('.surveys-list')
-                        .click() //this will hide dropdown if visible
                     cy.get(`.surveys-list .survey-card#survey-card-${pendingSurvey.id} .footer .dd-actions-menu`)
                         .find('.dropdown-toggle')
+                        .focus()
                         .click()
                         .siblings()
                         .focus("dropdown-menu")
                         .find('button.btn-publish')
                         .click();
 
-                    cy.get('.surveys-list')
-                        .click() //this will hide dropdown if visible
+
                     cy.get(`.surveys-list .survey-card#survey-card-${pendingSurvey.id}`)
                         .contains('.status .status-badge', surveyStatus.published)
                         .get(`.surveys-list .survey-card#survey-card-${pendingSurvey.id}`)
+                        .focus()
                         .find('.dropdown-toggle')
                         .click()
                         .siblings()
@@ -265,22 +264,20 @@ describe("Surveys management page", () => {
                 }
 
                 if (archivedSurvey) {
-                    cy.get('.surveys-list')
-                        .click() //this will hide dropdown if visible
                     cy.get(`.surveys-list .survey-card#survey-card-${archivedSurvey.id} .footer .dd-actions-menu`)
                         .find('.dropdown-toggle')
+                        .focus()
                         .click()
                         .siblings()
                         .focus("dropdown-menu")
                         .find('button.btn-publish')
                         .click();
 
-                    cy.get('.surveys-list')
-                        .click() //this will hide dropdown if visible
                     cy.get(`.surveys-list .survey-card#survey-card-${archivedSurvey.id}`)
                         .contains('.status .status-badge', surveyStatus.published)
                         .get(`.surveys-list .survey-card#survey-card-${archivedSurvey.id}`)
                         .find('.dropdown-toggle')
+                        .focus()
                         .click()
                         .siblings()
                         .focus("dropdown-menu")
