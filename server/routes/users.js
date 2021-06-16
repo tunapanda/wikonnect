@@ -91,7 +91,7 @@ router.post('/', validateAuthRoutes.validateNewUser, createPasswordHash, async c
   newUser.lastIp = ctx.request.ip;
 
   const userCheck = await User.query();
-  let role = !userCheck.length ? 'groupSuperAdmin' : 'groupBasic';
+  let role = !userCheck.length ? 'groupAdmin' : 'groupVerified';
 
   try {
     const user = await User.query().insertAndFetch(newUser);

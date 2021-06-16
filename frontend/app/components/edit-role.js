@@ -1,5 +1,6 @@
 import Component from '@glimmer/component';
 import { action } from '@ember/object';
+import { capitalize } from '@ember/string';
 import { inject as service } from '@ember/service';
 
 export default class EditRoleComponent extends Component {
@@ -9,7 +10,7 @@ export default class EditRoleComponent extends Component {
   @service store;
 
   get roles() {
-    return this.args.roles;
+    return this.args.roles.map((role) => capitalize(role.name));
   }
 
   @action

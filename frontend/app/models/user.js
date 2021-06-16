@@ -1,4 +1,5 @@
 import Model, { attr, hasMany } from '@ember-data/model';
+import { capitalize } from '@ember/string';
 
 export default class UserModel extends Model {
   @attr() username;
@@ -46,7 +47,7 @@ export default class UserModel extends Model {
       return '';
     }
 
-    return this.userRoles[0].name;
+    return capitalize(this.userRoles[0].name);
   }
 
   get lastLoginTime() {

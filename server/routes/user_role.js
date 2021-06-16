@@ -129,7 +129,7 @@ router.get('/:id', requireAuth, grantAccess('readAny', 'private'), async ctx => 
  *     {
  *        "user_role": [{
  *            "userId": "user1",
- *            "groupId": "groupBasic",
+ *            "groupId": "groupVerified",
  *            "createdAt": "2019-12-20T16:17:10.000Z",
  *            "updatedAt": "2021-04-26T20:11:24.764Z"
  *        }]

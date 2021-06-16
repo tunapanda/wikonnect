@@ -63,6 +63,9 @@ badges:
     action: Hatua
 
 users:
+  verified_email: Barua pepe iliyothibitishwa
+  unverfied_email: Barua pepe isiyothibitishwa
+
   table:
     name: Jina
     email: Barua Pepe

@@ -13,46 +13,37 @@ const AccessControl = require('accesscontrol');
  */
 let grantList = [
   { role: 'anonymous', resource: 'path', action: 'read:own', attributes: '*' },
-  { role: 'basic', resource: 'profile', action: 'create:own', attributes: '*' },
-  { role: 'basic', resource: 'profile', action: 'read:own', attributes: '*' },
-  { role: 'basic', resource: 'profile', action: 'update:own', attributes: '*' },
-  { role: 'basic', resource: 'profile', action: 'delete:own', attributes: '*' },
+  { role: 'verified', resource: 'profile', action: 'create:own', attributes: '*' },
+  { role: 'verified', resource: 'profile', action: 'read:own', attributes: '*' },
+  { role: 'verified', resource: 'profile', action: 'update:own', attributes: '*' },
+  { role: 'verified', resource: 'profile', action: 'delete:own', attributes: '*' },
 
-  { role: 'basic', resource: 'path', action: 'read:own', attributes: '*' },
-  { role: 'basic', resource: 'path', action: 'read:any', attributes: '*' },
-  { role: 'basic', resource: 'path', action: 'create:any', attributes: '*' },
+  { role: 'verified', resource: 'path', action: 'read:own', attributes: '*' },
+  { role: 'verified', resource: 'path', action: 'read:any', attributes: '*' },
+  { role: 'verified', resource: 'path', action: 'create:any', attributes: '*' },
 
-  { role: 'moderators', resource: 'private', action: 'delete:own', attributes: '*' },
-  { role: 'moderators', resource: 'private', action: 'create:any', attributes: '*' },
-  { role: 'moderators', resource: 'private', action: 'read:any', attributes: '*' },
-  { role: 'moderators', resource: 'private', action: 'update:any', attributes: '*' },
+  { role: 'moderator', resource: 'private', action: 'delete:own', attributes: '*' },
+  { role: 'moderator', resource: 'private', action: 'create:any', attributes: '*' },
+  { role: 'moderator', resource: 'private', action: 'read:any', attributes: '*' },
+  { role: 'moderator', resource: 'private', action: 'update:any', attributes: '*' },
 
   { role: 'admin', resource: 'private', action: 'delete:any', attributes: '*' },
   { role: 'admin', resource: 'private', action: 'create:any', attributes: '*' },
   { role: 'admin', resource: 'private', action: 'read:any', attributes: '*' },
   { role: 'admin', resource: 'private', action: 'update:any', attributes: '*' },
-
-  { role: 'superadmin', resource: 'private', action: 'delete:any', attributes: '*' },
-  { role: 'superadmin', resource: 'private', action: 'create:any', attributes: '*' },
-  { role: 'superadmin', resource: 'private', action: 'read:any', attributes: '*' },
-  { role: 'superadmin', resource: 'private', action: 'update:any', attributes: '*' },
 ];
 let ac = new AccessControl(grantList);
 
 exports.roles = (() => {
-  ac.grant('basic');
+  ac.grant('verified');
 
-  ac.grant('moderators')
-    .extend('basic');
+  ac.grant('moderator')
+    .extend('verified');
 
   ac.grant('admin')
-    .extend('basic')
-    .extend('moderators');
+    .extend('verified')
+    .extend('moderator');
 
-  ac.grant('superadmin')
-    .extend('basic')
-    .extend('moderators')
-    .extend('admin');
   ac.getGrants();
 
   return ac;

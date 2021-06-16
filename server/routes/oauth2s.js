@@ -40,7 +40,7 @@ router.post('/', async ctx => {
   try {
     const user = await User.query().insertAndFetch(newUser);
     await Oauth2.query().insert({ provider: provider, email: newUser.email, user_id: user.id });
-    await GroupMembers.query().insert({ user_id: user.id, group_id: 'groupBasic' });
+    await GroupMembers.query().insert({ user_id: user.id, group_id: 'groupVerified' });
     ctx.body = { oauth2: user };
   } catch (err) {
     if (err.constraint == 'users_email_unique') {

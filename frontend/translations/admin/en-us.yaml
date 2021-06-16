@@ -63,6 +63,9 @@ badges:
     action: Action
 
 users:
+  verified_email: Verified Email
+  unverfied_email: Unverified Email
+
   table:
     name: Name
     email: Email
