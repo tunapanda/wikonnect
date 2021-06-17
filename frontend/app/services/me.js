@@ -1,6 +1,7 @@
 import Service, { inject as service } from '@ember/service';
 import { getOwner } from '@ember/application';
 import { tracked } from '@glimmer/tracking';
+import fetch from 'fetch';
 
 export default class MeService extends Service {
   @service session;
@@ -28,9 +29,18 @@ export default class MeService extends Service {
   }
 
   async register(fields) {
-    let user = this.store.createRecord('user', fields);
-
-    return await user.save();
+    const res = await fetch(
+      this.store.adapterFor('user').urlForCreateRecord('user'),
+      {
+        method: 'POST',
+        body: JSON.stringify({ user: fields }),
+        headers: { 'Content-type': 'application/json; charset=UTF-8' },
+      }
+    );
+    if (res.ok) {
+      return;
+    }
+    throw res.toJson();
   }
 
   registerWithGoogle(fields) {
