@@ -93,6 +93,8 @@ router.post('/', validateAuthRoutes.validateNewUser, createPasswordHash, async c
   const userCheck = await User.query();
   let role = !userCheck.length ? 'groupSuperAdmin' : 'groupBasic';
 
+  delete newUser.profileUri; //avoids external profile links at the moment
+
   try {
     const user = await User.query().insertAndFetch(newUser);
     await knex('group_members').insert({ 'user_id': user.id, 'group_id': role });
@@ -290,6 +292,8 @@ router.put('/:id', jwt.authenticate, permController.requireAuth, async ctx => {
       data[`metadata:${key}`] = metadata[key];
     }
   }
+
+  delete data.profileUri; //avoids external profile links at the moment
 
   const user = await User.query().patchAndFetchById(ctx.params.id, data);
   ctx.assert(user, 404, 'That user does not exist.');
