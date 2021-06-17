@@ -3,7 +3,7 @@
     <header>
       <h1>{{t 'auth.signup.signup'}}</h1>
     </header>
-    <BsForm @model={{@newUser}} @onSubmit={{this.createUser}} as |form|>
+    <BsForm @model={{changeset this.userLoginForm this.UserValidation}} @onSubmit={{this.createUser}} as |form|>
 
       <div class="signup-form-fields">
         <form.element id="username" class="" @controlType="text" @label={{t "auth.login.username" }}
