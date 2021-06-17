@@ -374,6 +374,8 @@ router.post('/:id/profile-image', koaBody, permController.requireAuth, async (ct
       log.info('Uploaded in:', uploaded.Location);
       const user = await User.query().patchAndFetchById(ctx.params.id, { profileUri: fileNameBase });
 
+      user.profileUri = 'data:image/(png|jpg);base64,' +  buffer.toString('base64'); //since s3 will not alter the image
+
       ctx.body = { user };
     } catch (e) {
       log.error(e);
