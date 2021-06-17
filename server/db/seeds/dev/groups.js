@@ -1,5 +1,3 @@
-const { faker } = require('../_seeds');
-
 exports.seed = function (knex) {
   // Deletes ALL existing entries
   return knex('groups')
@@ -88,20 +86,28 @@ exports.seed = function (knex) {
           ])
         )
         .then(() => {
-          return knex('users').then((users) => {
+          return knex('users').then(() => {
             return knex('group_members').insert(
-              users.map((user) => {
-                return {
-                  user_id: user.id,
-                  group_id: faker.random.arrayElement([
-                    'groupAdmin',
-                    'groupModerator',
-                    'groupVerified',
-                  ]),
+              [
+                {
+                  user_id: 'user1',
+                  group_id: 'groupAdmin',
                   created_at: '2019-12-20 19:17:10',
                   updated_at: '2019-12-20 19:17:10',
-                };
-              })
+                },
+                {
+                  user_id: 'user2',
+                  group_id: 'groupModerator',
+                  created_at: '2019-12-20 19:17:10',
+                  updated_at: '2019-12-20 19:17:10',
+                },
+                {
+                  user_id: 'user3',
+                  group_id: 'groupVerified',
+                  created_at: '2019-12-20 19:17:10',
+                  updated_at: '2019-12-20 19:17:10',
+                },
+              ]
             );
           });
         });
