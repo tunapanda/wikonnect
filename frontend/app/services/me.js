@@ -40,7 +40,7 @@ export default class MeService extends Service {
     if (res.ok) {
       return;
     }
-    throw res.toJson();
+    throw await res.json();
   }
 
   registerWithGoogle(fields) {
