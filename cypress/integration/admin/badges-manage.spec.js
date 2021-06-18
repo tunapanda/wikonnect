@@ -145,7 +145,7 @@ describe("Badges management page", () => {
 
     it('should not create a badge with invalid data', () => {
         const badge = {
-            name: 'Super learner',
+            name: 'A very random name? '+Math.random() * 100000,
             description: 'Test super learner badge description',
             expiry: `${new Date().getFullYear() - 1}-10-21`, //invalid date
             frequency: -10,
