@@ -9,8 +9,7 @@
   </div>
   <EmberNotify @closeAfter={{4000}} />
   <AuthPrompt />
-  {{!-- TODO: verifiy email in prod --}}
-  {{!-- <VerifyEmailPrompt /> --}}
+  <VerifyEmailPrompt />
 {{else }}
 
   {{outlet}}
