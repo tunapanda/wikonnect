@@ -31,6 +31,7 @@ export default class H5pPlayerComponent extends Component {
         downloadUrl: config.proxyUrl + `/api/v1/h5p/download/${this.contentId}`,
         //including this with false value until implementation on H5P player
         embed: false,
+        fullScreen: true,
       };
     }
 

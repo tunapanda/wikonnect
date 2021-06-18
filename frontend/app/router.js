@@ -27,7 +27,6 @@ Router.map(function () {
       path: '/:chapter_slug',
     });
   });
-  this.route('upload');
   this.route('manage');
 
   this.route('teach', function () {

@@ -93,6 +93,8 @@ router.post('/', validateAuthRoutes.validateNewUser, createPasswordHash, async c
   const userCheck = await User.query();
   let role = !userCheck.length ? 'groupSuperAdmin' : 'groupBasic';
 
+  delete newUser.profileUri; //avoids external profile links at the moment
+
   try {
     const user = await User.query().insertAndFetch(newUser);
     await knex('group_members').insert({ 'user_id': user.id, 'group_id': role });
@@ -291,6 +293,8 @@ router.put('/:id', jwt.authenticate, permController.requireAuth, async ctx => {
     }
   }
 
+  delete data.profileUri; //avoids external profile links at the moment
+
   const user = await User.query().patchAndFetchById(ctx.params.id, data);
   ctx.assert(user, 404, 'That user does not exist.');
 
@@ -369,6 +373,8 @@ router.post('/:id/profile-image', koaBody, permController.requireAuth, async (ct
       const uploaded = await s3.s3.upload(params).promise();
       log.info('Uploaded in:', uploaded.Location);
       const user = await User.query().patchAndFetchById(ctx.params.id, { profileUri: fileNameBase });
+
+      user.profileUri = 'data:image/(png|jpg);base64,' +  buffer.toString('base64'); //since s3 will not alter the image
 
       ctx.body = { user };
     } catch (e) {
