@@ -1,19 +1,26 @@
 <div class="chapter-filters-section">
   <div class="container pb-3 pt-3">
     <ChapterTags::TagsList @tagsList={{this.tagsList}} @toggleTagSelection={{this.toggleTagSelection}}
-                           @selectedFilterTags={{this.selectedFilterTags}} @clearAllTagFilters={{this.clearAllTagFilters}} />
+      @selectedFilterTags={{this.selectedFilterTags}} @clearAllTagFilters={{this.clearAllTagFilters}} />
   </div>
 </div>
 
 <div class="container">
   <div class="row mt-5 " id="chapters-container">
-    <Home::Chapters @chapters={{this.chapters}}>
+    <Home::Chapters @chapters={{this.model}}>
     </Home::Chapters>
   </div>
   <div class="row">
-    <div class="col">
-      <InfinityLoader @infinityModel={{this.chapters}} @loadingText={{t "home.loading.loading_more_records"}}
-                      @loadedText={{t "home.loading.loaded_all_the_records"}} @triggerOffset={{500}} @eventDebounce={{1000}}/>
+    <div class="col chapters-infinity-loader">
+      <InfinityLoader @infinityModel={{this.model}} @triggerOffset={{500}} @eventDebounce={{1000}}>
+        <div class="loading-indicator">
+          {{ svg-jar "loader" height="100px" width="100px"}}
+          <p> {{t "home.loading.loading_more_records"}}</p>
+        </div>
+        <div class="records-loaded-indicator">
+          {{html-safe this.recordsLoadedText}}
+        </div>
+      </InfinityLoader>
     </div>
   </div>
 
