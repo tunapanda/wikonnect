@@ -5,7 +5,7 @@
       <img class="card-img-top chapter-thumbnail" alt="" role="presentation"
         src="https://placehold.jp/20/{{this.color}}/ffffff/328x200.png?text={{@chapter.name}}">
       {{else}}
-      <img class="card-img-top chapter-thumbnail" alt="" src={{@chapter.imageUrl}} role="presentation">
+        <img class="card-img-top chapter-thumbnail" alt="" src={{@chapter.imageUrl}} role="presentation">
       {{/if}}
     </LinkTo>
     <div class="card-body chapter-body">
@@ -22,7 +22,7 @@
 
       <h5 class="card-title title-section">
         <LinkTo @route="chapter" @model={{@chapter.id}} class="chapter-title">
-          {{@chapter.name}}
+          {{title-case  @chapter.name}}
         </LinkTo>
       </h5>
 
@@ -45,6 +45,13 @@
           <p class="card-text">{{@chapter.description}}</p>
         {{/if}}
       </div>
+
+      <div class="chapter-tags-list pb-3">
+        {{#each @chapter.tags as |tag|}}
+          <LinkTo @route="index" @query={{hash tags=tag}}  class="tag">{{title-case tag}}</LinkTo>
+        {{/each}}
+      </div>
+
       <LinkTo @route="profile.home" @model={{@chapter.author.id}} class="chapter-creator text-dark">
         <img src={{@chapter.author.profileUri}} alt="" role="presentation" class="rounded-circle">
         {{@chapter.author.name}}

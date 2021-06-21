@@ -11,7 +11,30 @@ export default class TeachTagController extends Controller {
   @service notify;
 
   maxTagsTotal = 6;
-  disallowedXcters = ['#', ','];
+  disallowedXcters = [
+    '#',
+    ',',
+    '<',
+    '>',
+    '/',
+    '\\',
+    '=',
+    ';',
+    '"',
+    "'",
+    '+',
+    '!',
+    '@',
+    '$',
+    ':',
+    '%',
+    '^',
+    '(',
+    '*',
+    '~',
+    '.',
+    ')',
+  ];
 
   @tracked topic_list = [
     'Literacy',
@@ -80,6 +103,7 @@ export default class TeachTagController extends Controller {
 
   @tracked custom_cart;
   @tracked tag;
+  @tracked customTagError;
 
   get selectedTags() {
     if (this.custom_cart) {
@@ -93,10 +117,10 @@ export default class TeachTagController extends Controller {
       { title: 'Internet Basics', isSelected: false },
       { title: 'Content Creation', isSelected: false },
       { title: 'Digital Wellness', isSelected: false },
-      { title: 'Data Protection & Privacy', isSelected: false },
-      { title: 'Online safety', isSelected: false },
-      { title: 'Relationships & Communications', isSelected: false },
-      { title: 'News & Media Literacy', isSelected: false },
+      { title: 'Data Protection and Privacy', isSelected: false },
+      { title: 'Online Safety', isSelected: false },
+      { title: 'Relationships and Communications', isSelected: false },
+      { title: 'News and Media Literacy', isSelected: false },
       { title: 'Online Working', isSelected: false },
       { title: 'Online Learning', isSelected: false },
       { title: 'Life Skills', isSelected: false },
@@ -135,23 +159,20 @@ export default class TeachTagController extends Controller {
       );
       return;
     }
-    if (this.disallowedXcters.some((xcter) => this.tag.includes(xcter))) {
-      this.notify.alert(
-        this.intl.t('errors.characters_not_allowed', {
-          characters: this.disallowedXcters.join(' '),
-        })
-      );
+    if (this.customTagError) {
       return;
     }
-
     if (this.tag) {
+      this.tag = this.tag.replace(/( & +)/, ' and ');
+
       const index = this.custom_cart.findIndex(
-        (pred) => pred.toLowerCase() === this.tag.toLowerCase()
+        (pred) => pred.toLowerCase() === this.tag.trim().toLowerCase()
       );
       if (index > -1) {
         this.tag = '';
       } else {
-        this.custom_cart.pushObject(this.tag.trim().toLowerCase()); // lowercase for insane capitalization
+        this.custom_cart.pushObject(this.tag.trim().toLowerCase()); // lowercase for insane capitalization.
+        // we are sacrificing some capitalization i.e. McDonald
         this.tag = '';
       }
     }
@@ -265,5 +286,32 @@ export default class TeachTagController extends Controller {
       return;
     }
     this.custom_cart.pushObject(tag.title);
+  }
+
+  @action
+  validateTag() {
+    if (!this.tag) {
+      this.customTagError = this.intl.t('errors.is_required', {
+        key: this.intl.t('teach.tag.tag_name'),
+      });
+      return;
+    }
+
+    if (this.disallowedXcters.some((xcter) => this.tag.includes(xcter))) {
+      this.customTagError = this.intl.t('errors.characters_not_allowed', {
+        characters: this.disallowedXcters.join(' '),
+      });
+      return;
+    }
+
+    if (this.tag.length >= 30) {
+      this.customTagError = this.intl.t('errors.max_characters', {
+        key: this.intl.t('teach.tag.tag_name'),
+        max: 30,
+      });
+      return;
+    }
+
+    this.customTagError = '';
   }
 }

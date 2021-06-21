@@ -64,7 +64,13 @@ export default class ReviewQuestionsController extends Controller {
   @action
   async updateChapterReviewQuestions() {
     try {
-      this.chapter.reviewQuestions = this.selectedCategories;
+      const defaultCategories = this.defaultReviewQuestions.map(
+        (question) => question.category
+      );
+
+      this.chapter.reviewQuestions = this.selectedCategories.addObjects(
+        defaultCategories
+      );
       await this.chapter.save();
       //reset the selected questions
       this.selectedCategories = null;

@@ -2,3 +2,5 @@
 max_tags_selected: You can only select a maximum of {max} chapter tags
 character_not_allowed: "sorry but {character} is not allowed"
 characters_not_allowed: "sorry but {characters} are not allowed"
+is_required: "{key} is required"
+max_characters: "{key} is too long (maximum is {max} characters)"
