@@ -61,4 +61,5 @@ Router.map(function () {
 
   // 404 page should always be the last
   this.route('not-found', { path: '*path' });
+  this.route('access-denied');
 });

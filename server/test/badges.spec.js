@@ -5,33 +5,36 @@ const server = require('../index');
 const tokens = require('./_tokens');
 const knex = require('../db/db');
 
-
 chai.use(chaiHttp);
 chai.use(chaiJSON);
 chai.should();
 
 const route = '/api/v1/badges';
 const data = {
-  'badge':{
-    'name': 'changed',
-    'description': 'changed'
-  }
+  badge: {
+    name: 'changed',
+    description: 'changed',
+  },
 };
 
 async function getBadge() {
-  const badgeId = (await knex('badges').where({ isDeleted: false }).select(['badges.id']).limit(1))[0];
+  const badgeId = (
+    await knex('badges')
+      .where({ isDeleted: false })
+      .select(['badges.id'])
+      .limit(1)
+  )[0];
   return badgeId.id;
 }
 
 describe('BADGES ROUTE', () => {
-
   // Passing tests
   it('Should get Badge using ID', async () => {
     const id = await getBadge();
     return chai
       .request(server)
       .get(`${route}/${id}`)
-      .set(tokens.headersSuperAdmin1)
+      .set(tokens.headerAdminUser)
       .set('Content-Type', 'application/json')
       .then((res) => {
         res.status.should.eql(200);
@@ -44,7 +47,7 @@ describe('BADGES ROUTE', () => {
     return chai
       .request(server)
       .get(`${route}`)
-      .set(tokens.headersSuperAdmin1)
+      .set(tokens.headerAdminUser)
       .set('Content-Type', 'application/json')
       .then((res) => {
         res.status.should.eql(200);
@@ -58,7 +61,7 @@ describe('BADGES ROUTE', () => {
     return chai
       .request(server)
       .put(`${route}/${id}`)
-      .set(tokens.headersSuperAdmin1)
+      .set(tokens.headerAdminUser)
       .set('Content-Type', 'application/json')
       .send(data)
       .then((res) => {
@@ -75,7 +78,7 @@ describe('BADGES ROUTE', () => {
     return chai
       .request(server)
       .delete(`${route}/${id}`)
-      .set(tokens.headersSuperAdmin1)
+      .set(tokens.headerAdminUser)
       .set('Content-Type', 'application/json')
       .then((res) => {
         console.log(res.body.badge);

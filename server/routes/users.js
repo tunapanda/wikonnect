@@ -91,7 +91,7 @@ router.post('/', validateAuthRoutes.validateNewUser, createPasswordHash, async c
   newUser.lastIp = ctx.request.ip;
 
   const userCheck = await User.query();
-  let role = !userCheck.length ? 'groupSuperAdmin' : 'groupBasic';
+  let role = !userCheck.length ? 'groupAdmin' : 'groupVerified';
 
   delete newUser.profileUri; //avoids external profile links at the moment
 
@@ -235,14 +235,16 @@ router.get('/:id', permController.requireAuth, async ctx => {
  * @apiParam (Optional Params) {string} user[metadata] json data
  *
  */
-router.get('/', permController.requireAuth, permController.grantAccess('readAny', 'profile'),
+router.get('/', permController.requireAuth, permController.grantAccess('readAny', 'private'),
   async ctx => {
 
     try {
       const users = await User.query()
         .where(ctx.query)
-        .withGraphFetched('[achievementAwards(selectBadgeNameAndId), userRoles(selectName),' +
-          ' enrolledCourses(selectNameAndId)]');
+        .withGraphFetched(
+          '[achievementAwards(selectBadgeNameAndId), userRoles(),' +
+            ' enrolledCourses(selectNameAndId)]'
+        );
 
       ctx.assert(users, 404, 'No User With that username');
 

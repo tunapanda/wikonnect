@@ -1,1 +1,141 @@
-{{outlet}}
+<div class="p-3">
+  {{#if @model}}
+    <div class="d-flex align-items-center mb-3">
+      <p class="m-0">
+        {{this.paginationSummary}}
+      </p>
+      <div class="user-search">
+        <Input
+          class="form-control search-input ml-3"
+          @value={{this.searchTerm}}
+          @type="search"
+          {{on 'input' this.isSearching}}
+        />
+        <span class="search-icon {{if this.searchTerm 'd-none'}}"></span>
+      </div>
+    </div>
+    <table class="table table-striped users">
+      <thead>
+        <tr>
+          <th>
+            <Input
+              @type="checkbox"
+              @checked={{this.isAllUserRowsSelected}}
+              {{on 'change' this.toggleAllRowSelection}}
+            />
+          </th>
+          <th>
+            {{t 'admin.users.table.name'}}
+          </th>
+          <th>
+            {{t 'admin.users.table.email'}}
+          </th>
+          <th>
+            {{t 'admin.users.table.last_login'}}
+          </th>
+          <th>
+            {{t 'admin.users.table.role'}}
+          </th>
+          <th>
+            {{t 'admin.users.table.status'}}
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each this.users as |user|}}
+          <tr>
+            <td>
+              <Input
+                @type="checkbox"
+                @checked={{exec this.isUserRowSelected user}}
+                {{on 'change' (fn this.toggleRowSelection user)}}
+              />
+            </td>
+            <td>
+              <UserDetails @user={{user}} />
+            </td>
+            <td>
+              <span
+                data-toggle="tooltip"
+                data-placement="right"
+                title={{user.email}}
+              >
+                {{user.email}}
+              </span>
+            </td>
+            <td>
+              {{user.lastLoginTime}}
+            </td>
+            <td>
+              <EditRole @user={{user}} @roles={{this.roles}} />
+            </td>
+            <td>
+              {{#if user.emailVerified}}
+                <span
+                  class="text-primary"
+                  data-toggle="tooltip"
+                  data-placement="right"
+                  title={{t "admin.users.verfied_email"}}
+                >
+                  {{svg-jar 'verified-user' width='34px'}}
+                </span>
+              {{else}}
+                <span
+                  class="text-muted"
+                  data-toggle="tooltip"
+                  data-placement="right"
+                  title={{t 'admin.users.unverfied_email'}}
+                >
+                  {{svg-jar 'unverified-user' width='34px'}}
+                </span>
+              {{/if}}
+            </td>
+          </tr>
+        {{/each}}
+      </tbody>
+    </table>
+    <div class="d-flex justify-content-between align-items-center">
+      <div class="d-flex">
+        <p class="mr-3 mb-0 w-100">
+          {{t 'table.pagination.per_page'}}
+        </p>
+        <select
+          class="form-control h-75 w-50"
+          {{on 'change' this.updatePerPage}}
+        >
+          {{#each this.perPageOptions as |opt|}}
+            {{#if opt.selected}}
+              <option value="{{opt.value}}" selected>
+                {{opt.value}}
+              </option>
+            {{else}}
+              <option value="{{opt.value}}">
+                {{opt.value}}
+              </option>
+            {{/if}}
+          {{/each}}
+        </select>
+      </div>
+      <ul class="pagination">
+        <li class="page-item {{if this.hasPreviousPage '' 'disabled'}}">
+          <span
+            class="page-link"
+            role="button"
+            {{on 'click' this.goToPrevPage}}
+          >
+            {{t 'table.pagination.previous'}}
+          </span>
+        </li>
+        <li class="page-item {{if this.hasNextPage '' 'disabled'}}">
+          <span
+            class="page-link"
+            role="button"
+            {{on 'click' this.goToNextPage}}
+          >
+            {{t 'table.pagination.next'}}
+          </span>
+        </li>
+      </ul>
+    </div>
+  {{/if}}
+</div>
