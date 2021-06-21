@@ -233,14 +233,16 @@ router.get('/:id', permController.requireAuth, async ctx => {
  * @apiParam (Optional Params) {string} user[metadata] json data
  *
  */
-router.get('/', permController.requireAuth, permController.grantAccess('readAny', 'profile'),
+router.get('/', permController.requireAuth, permController.grantAccess('readAny', 'private'),
   async ctx => {
 
     try {
       const users = await User.query()
         .where(ctx.query)
-        .withGraphFetched('[achievementAwards(selectBadgeNameAndId), userRoles(selectName),' +
-          ' enrolledCourses(selectNameAndId)]');
+        .withGraphFetched(
+          '[achievementAwards(selectBadgeNameAndId), userRoles(),' +
+            ' enrolledCourses(selectNameAndId)]'
+        );
 
       ctx.assert(users, 404, 'No User With that username');
 

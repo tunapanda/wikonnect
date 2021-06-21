@@ -1,0 +1,107 @@
+<BsModal
+  @open={{this.isShowingModal}}
+  @backdrop={{false}}
+  @renderInPlace={{true}}
+  @size={{'lg'}}
+  class="user-detail-modal"
+  @position="center"
+  @closeButton={{true}} as |modal|
+>
+  <modal.header class="border-0" />
+  <modal.body>
+    <div class="user-details d-flex">
+      <div class="user-detail-card d-flex flex-row">
+        <div class="user-profile">
+          <LinkTo @route="profile" @model={{@user}}>
+            <img
+              src={{@user.profileUri}}
+              alt={{t 'admin.users.details.profile_image_alt'}}
+              class="rounded-circle"
+            />
+            <p>
+              <strong>
+                {{@user.name}}
+              </strong>
+            </p>
+          </LinkTo>
+          <p class="text-muted">
+            {{@user.role}}
+          </p>
+        </div>
+        <div class="user-info">
+          <p>
+            {{svg-jar 'phone_black_24dp'}}
+            {{@user.contactNumber}}
+          </p>
+          <p>
+            {{svg-jar 'email_black_24dp'}}
+            {{@user.email}}
+          </p>
+          <p>
+            {{svg-jar 'place_black_24dp'}}
+            {{@user.location}}
+          </p>
+        </div>
+      </div>
+      <div class="user-detail-card icon-card">
+        <img
+          src="/images/chapters-created.png"
+          alt={{t 'admin.users.details.chapters_created_alt'}}
+        />
+        <p>
+          {{t 'admin.users.details.chapters_created'}}
+        </p>
+        <p>
+          <strong>
+            {{@user.chaptersCreated}}
+          </strong>
+        </p>
+      </div>
+      <div class="user-detail-card icon-card">
+        <img
+          src="/images/completed-chapters.png"
+          alt={{t 'admin.user.details.completed_chapters_alt'}}
+        />
+        <p>
+          {{t 'admin.users.details.completed_chapters'}}
+        </p>
+        <p>
+          <strong>
+            {{@user.chaptersCompleted}}
+          </strong>
+        </p>
+      </div>
+      <div class="user-detail-card icon-card">
+        <img
+          src="/images/points-earned.png"
+          alt={{t 'admin.users.details.points_accumulated_alt'}}
+        />
+        <p>
+          {{t 'admin.users.details.points_accumulated'}}
+        </p>
+        <p>
+          <strong>
+            {{@user.pointsEarned}}
+          </strong>
+        </p>
+      </div>
+      <div class="user-detail-card icon-card">
+        <img
+          src="/images/badges-earned.png"
+          alt={{t 'admin.users.details.badges_earned_alt'}}
+        />
+        <p>
+          {{t 'admin.users.details.badges_earned'}}
+        </p>
+        <p>
+          <strong>
+            {{@user.badgesEarned}}
+          </strong>
+        </p>
+      </div>
+    </div>
+  </modal.body>
+</BsModal>
+<button type="button" class="btn btn-link" {{on 'click' this.toggleModal}}>
+  {{@user.name}}
+</button>
