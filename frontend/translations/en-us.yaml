@@ -99,6 +99,8 @@ main_navbar:
   notifications:
     title: Notifications
     empty: You have no new notifications
+  search:
+    result: No results for
 
 table:
   empty: No records to show
