@@ -16,17 +16,17 @@ class User extends Model {
     return ['name'];
   }
 
-  get name(){
-    if(!this.metadata ){
+  get name() {
+    if (!this.metadata) {
       return this.username;
     }
-    if(this.metadata.firstName && this.metadata.lastName){
+    if (this.metadata.firstName && this.metadata.lastName) {
       return `${this.metadata.firstName} ${this.metadata.lastName}`;
     }
-    if(this.metadata.firstName){
+    if (this.metadata.firstName) {
       return `${this.metadata.firstName}`;
     }
-    if(this.metadata.lastName){
+    if (this.metadata.lastName) {
       return `${this.metadata.lastName}`;
     }
     return this.username;
@@ -59,9 +59,8 @@ class User extends Model {
         join: {
           from: 'users.id',
           through: {
-            modelClass: __dirname + '/enrollment',
-            from: 'enrollments.user_id',
-            to: 'enrollments.course_id'
+            from: 'course_enrollment.user_id',
+            to: 'course_enrollment.course_id'
           },
           to: 'courses.id'
         }
@@ -93,7 +92,38 @@ class User extends Model {
           },
           to: 'groups.id'
         }
-      }
+      },
+      following: {
+        relation: Model.ManyToManyRelation,
+        modelClass: __dirname + '/user',
+        join: {
+          from: 'users.id',
+          through: {
+            to: 'user_followers.following_id',
+            from: 'user_followers.user_id',
+            extra: {
+              subscriptionId: 'id'
+            },
+          },
+          to: 'users.id'
+        }
+      },
+      followers: {
+        relation: Model.ManyToManyRelation,
+        modelClass: __dirname + '/user',
+        join: {
+          from: 'users.id',
+          through: {
+            to: 'user_followers.user_id',
+            from: 'user_followers.following_id',
+            extra: {
+              subscriptionId: 'id'
+            },
+          },
+          to: 'users.id'
+        }
+      },
+
     };
   }
 
@@ -104,7 +134,10 @@ class User extends Model {
       },
       selectNameAndProfile: (builder) => {
         builder.select('username', 'profileUri');
-      }
+      },
+      selectBasicInfo: (query) => {
+        query.select('users.id', 'username', 'metadata', 'profileUri','email');
+      },
     };
   }
 }
