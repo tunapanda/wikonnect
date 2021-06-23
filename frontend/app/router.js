@@ -20,8 +20,6 @@ Router.map(function () {
     this.route('edit');
   });
 
-  this.route('search', { path: '/search/:id' });
-
   this.route('chapter', function () {
     this.route('index', {
       path: '/:chapter_slug',
