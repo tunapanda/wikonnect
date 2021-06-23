@@ -79,6 +79,16 @@ router.use(jwt.authenticate, require('./routes/notifications'));
 
 router.use(jwt.authenticate, require('./routes/groups'));
 
+router.use(jwt.authenticate, require('./routes/tags'));
+
+router.use(jwt.authenticate, require('./routes/courses'));
+
+router.use(jwt.authenticate, require('./routes/accounts-following'));
+
+router.use(jwt.authenticate, require('./routes/tags-following'));
+
+router.use(jwt.authenticate, require('./routes/courses-enrolled'));
+
 router.use(require('./routes/chapter-tags'));
 
 router.use(require('./routes/search'));
