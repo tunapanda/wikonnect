@@ -1,6 +1,5 @@
 const Model = require('./_model');
 const knex = require('../db/db');
-const modelSchema = require('../db/json_schema/modelSchema');
 const search = require('../utils/search');
 
 class Course extends Model {
@@ -9,12 +8,25 @@ class Course extends Model {
   }
 
   static get jsonSchema() {
-    return modelSchema;
+    return  {
+      type: 'object',
+      properties: {
+        id: { type: 'string' },
+        name: { type: 'string' },
+        slug: { type: 'string' },
+        description: { type: 'string' },
+        status: { type: 'string' },
+        metadata: { type: 'object' },
+        creatorId: { type: 'string' },
+        thumbnailUrl: { type: 'string' },
+        createdAt: { type: 'string' },
+        updatedAt: { type: 'string' },
+      },
+      required: ['name', 'description', 'slug', 'status', 'creatorId'],
+    };
   }
 
-  // get $virtualFields() {
-  //   return [{type: 'course'}];
-  // }
+
 
   static get virtualAttributes() {
     return ['type'];
@@ -26,26 +38,56 @@ class Course extends Model {
 
   static get relationMappings() {
     return {
-      modules: {
+      tags: {
         relation: Model.ManyToManyRelation,
-        modelClass: __dirname + '/module',
+        modelClass: __dirname + '/tag',
         join: {
           from: 'courses.id',
           through: {
-            from: 'course_modules.course_id',
-            to: 'course_modules.module_id'
+            to: 'course_tags.tag_id',
+            from: 'course_tags.course_id'
           },
-          to: 'modules.id'
+          to: 'tags.id'
         }
       },
-      enrollments: {
-        relation: Model.HasManyRelation,
-        modelClass: __dirname + '/enrollment',
+      enrolledUsers: {
+        relation: Model.ManyToManyRelation,
+        modelClass: __dirname + '/user',
         join: {
-          to: 'courses.id',
-          from: 'enrollments.courseId'
+          from: 'users.id',
+          through: {
+            to: 'course_enrollment.user_id',
+            from: 'course_enrollment.course_id',
+            extra: {
+              enrollmentId: 'id'
+            }
+          },
+          to: 'courses.id'
         }
-      }
+      },
+      playlist:{
+        relation: Model.ManyToManyRelation,
+        modelClass: __dirname + '/chapter',
+        join: {
+          from: 'chapters.id',
+          through: {
+            to: 'course_playlist.chapter_id',
+            from: 'course_playlist.course_id',
+            extra: ['rank']
+          },
+          to: 'courses.id'
+        }
+      },
+
+      //following joins will be quicker on some instances e.g. getting count
+      courseEnrollments:{
+        relation: Model.HasManyRelation,
+        modelClass: __dirname + '/course-enrollment',
+        join: {
+          from: 'courses.id',
+          to: 'course_enrollment.course_id'
+        }
+      },
     };
   }
 
@@ -54,7 +96,7 @@ class Course extends Model {
       index: search.indexName,
       id: this.id,
       body: {
-        model: 'course',
+        model: 'courses',
         name: this.name,
         description: this.description,
         status: this.status,
