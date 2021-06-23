@@ -99,6 +99,8 @@ main_navbar:
   notifications:
     title: Arifa
     empty: Huna arifa mpya
+  search:
+    result: Hakuna matokeo ya
 
 table:
   empty: Hakuna rekodi za kuonyesha
