@@ -197,10 +197,21 @@ router.get('/:id', permController.requireAuth, async ctx => {
 
   let userId = (ctx.params.id !== 'current' || ctx.params.id !== 'me') ? ctx.params.id : stateUserId;
 
+  let joinRelations = 'achievementAwards(selectBadgeNameAndId), userRoles(selectNameAndId),' +
+      'enrolledCourses(selectNameAndId)';
+  if(ctx.query && ctx.query.include){
+    const includes = ctx.query.include.split(',');
+    if(includes.some((v)=>v.toLowerCase().includes('following'))){
+      joinRelations+=',following(selectBasicInfo)';
+    }
+    if(includes.some((v)=>v.toLowerCase().includes('followers'))){
+      joinRelations+=',followers(selectBasicInfo)';
+    }
+  }
+
   let user = await User.query()
     .findById(userId)
-    .withGraphFetched('[achievementAwards(selectBadgeNameAndId), userRoles(selectNameAndId),' +
-      ' enrolledCourses(selectNameAndId)]');
+    .withGraphFetched(`[${joinRelations}]`);
 
   ctx.assert(user, 404, 'No User With that Id');
   user.profileUri = await getProfileImage(user);
@@ -243,10 +254,9 @@ router.get('/', permController.requireAuth, permController.grantAccess('readAny'
     try {
       const users = await User.query()
         .where(ctx.query)
-        .withGraphFetched(
-          '[achievementAwards(selectBadgeNameAndId), userRoles(),' +
-            ' enrolledCourses(selectNameAndId)]'
-        );
+        .withGraphFetched('[achievementAwards(selectBadgeNameAndId), userRoles(),' +
+            ' enrolledCourses(selectNameAndId)]');
+        //.modify('selectBasicInfo'); //this will not work for admin
 
       ctx.assert(users, 404, 'No User With that username');
 
