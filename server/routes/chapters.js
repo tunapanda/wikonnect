@@ -126,8 +126,9 @@ router.get('/', permController.requireAuth, validateGetChapter, async ctx => {
       ])
       .where(ctx.query)
       .where((builder)=>{
-        builder.whereNull('tags')
-          .orWhere('tags', '@>', queryTags);
+        if (queryTags.length > 0) {
+          builder.where('tags', '@>', queryTags);
+        }
       })
       .page(page, per_page)
       .withGraphFetched(
