@@ -20,9 +20,6 @@ Router.map(function () {
     this.route('edit');
   });
 
-  this.route('search', { path: '/search/:id' });
-  this.route('tag', { path: '/chapters/tag/:id' });
-
   this.route('chapter', function () {
     this.route('index', {
       path: '/:chapter_slug',
@@ -62,4 +59,5 @@ Router.map(function () {
 
   // 404 page should always be the last
   this.route('not-found', { path: '*path' });
+  this.route('access-denied');
 });
