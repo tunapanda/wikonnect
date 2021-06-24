@@ -197,7 +197,7 @@ jobs:
         env:
           NODE_ENV: action
         with:
-          start: yarn --cwd ./server start, yarn --cwd ./frontend start
+          start: yarn --cwd ./server start:dev, yarn --cwd ./frontend start
           wait-on: "http://localhost:4200"
 
       - uses: actions/upload-artifact@v1
