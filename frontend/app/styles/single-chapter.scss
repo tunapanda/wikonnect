@@ -11,6 +11,9 @@ $palette: (
 
   p {
     margin: 0 0.7rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
     span.chapter-name {
       margin-left: 0.5rem;
     }
@@ -127,4 +130,8 @@ $palette: (
     font-size: 16px;
     color: map-get($palette,primary);
   }
+}
+
+.comment-section{
+  padding-bottom: 8em;
 }

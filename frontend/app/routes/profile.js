@@ -5,23 +5,18 @@ export default class ProfileRoute extends Route {
   @service me;
   @service SeoTags;
 
-  async beforeModel() {
-    if (!this.me.isAuthenticated) {
-      this.transitionTo('login');
-    }
-    return await this.store.findRecord('user', this.me.user.id);
+  async model({ id }) {
+    return await this.store.findRecord('user', id);
   }
 
-  async model() {
-    return await this.me.user;
-  }
-  afterModel() {
+  afterModel(resolvedModel, transition) {
     this.headTags = this.SeoTags.build(
-      'View User Profile - Wikonnect',
+      ` ${resolvedModel.name} Profile - Wikonnect`,
       '/profile',
       undefined,
       false,
       false
     );
+    return super.afterModel(resolvedModel, transition);
   }
 }

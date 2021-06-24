@@ -1,17 +1,26 @@
 {{#unless this.me.isAuthenticated}}
-
-  <footer>
-    <nav class="navbar fixed-bottom text-white mt-5  bg-orange justify-content-between ">
-
-      {{t "messages.auth_prompt"}}
-      <div>
-        <LinkTo @route="login">
-          <button type="button" class="btn btn-outline-light float-right mr-2">{{t "buttons.login"}}</button>
-        </LinkTo>
-        <LinkTo @route="signup">
-          <button type="button" class="btn btn-outline-light float-right mr-2">{{t "buttons.signup"}}</button>
-        </LinkTo>
-      </div>
-    </nav>
-  </footer>
+<footer>
+  <nav
+    class="navbar fixed-bottom text-white mt-5 bg-orange justify-content-start"
+  >
+    {{t 'messages.auth_prompt'}}
+    <div>
+      <LinkTo @route="login">
+        <button type="button" class="btn btn-outline-light mx-2">
+          {{t 'buttons.login'}}
+        </button>
+      </LinkTo>
+      <LinkTo @route="signup">
+        <button type="button" class="btn btn-light text-primary mr-2">
+          {{t 'buttons.signup'}}
+        </button>
+      </LinkTo>
+    </div>
+  </nav>
+</footer>
 {{/unless}}
+
+{{#if (eq this.model.environment 'production')}}
+<script async defer data-website-id="70152a2f-258e-4120-bd2e-9453d38f5f96"
+  src="https://www.analytics.wikonnect.org/umami.js"></script>
+{{/if}}

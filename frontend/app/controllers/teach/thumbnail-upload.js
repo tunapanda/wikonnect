@@ -8,34 +8,45 @@ export default class TeachH5pUploadController extends Controller {
   @service me;
   @service notify;
 
-  @tracked complete = false;
   @tracked hover = false;
   @tracked uploader;
+  @tracked thumbnail;
+
+  get selectedImagePreviewSrc() {
+    if (this.thumbnail) {
+      return URL.createObjectURL(this.thumbnail);
+    }
+    if (this.model.imageUrl) {
+      return this.model.imageUrl;
+    }
+    return '';
+  }
 
   @action
-  addFiles(files) {
-    this.hover = false;
+  async onFilesSelect(files) {
     if (files.length > 1) {
-      this.notify.warning('You can only upload one file', { closeAfter: 1000 });
+      this.notify.error('You can only upload one file');
+    } else {
+      this.thumbnail = files[0];
     }
   }
 
   @action
-  onFileHover() {
-    this.hover = true;
-  }
+  async saveThumbnail() {
+    if (!this.thumbnail && this.model.imageUrl) {
+      this.transitionToRoute('teach.tag', this.model.id);
+      return;
+    }
+    if (!this.thumbnail || !this.thumbnail?.name) {
+      this.notify.error('You have not selected any thumbnail image');
 
-  @action
-  onFileExit() {
-    this.hover = false;
-  }
+      return;
+    }
 
-  @action
-  async uploadPic(files) {
     let id = this.model.id;
     this.uploader = Uploader.create({
-      file: files[0],
-      filename: files[0].name,
+      file: this.thumbnail,
+      filename: this.thumbnail.name,
     });
 
     const host = '/' + this.store.adapterFor('application').urlPrefix();
@@ -43,8 +54,8 @@ export default class TeachH5pUploadController extends Controller {
       await this.uploader.startUpload(
         [host, 'chapters', id, 'chapter-image'].join('/')
       );
-
-      this.complete = true;
+      //reset the thumbnail local property
+      this.thumbnail = null;
       this.transitionToRoute('teach.tag', id);
     } catch (e) {
       this.notify.alert('Unexpected err encountered during thumbnail upload');

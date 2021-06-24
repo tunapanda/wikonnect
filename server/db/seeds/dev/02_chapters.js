@@ -1,4 +1,4 @@
-const { faker, seed_number } = require('../_seeds');
+const {faker, seed_number} = require('../_seeds');
 const reviewQuestions = require('../../../utils/review-questions');
 
 exports.seed = function (knex) {
@@ -12,8 +12,11 @@ exports.seed = function (knex) {
         for (let index = 0; index < seed_number; index++) {
           const name = faker.lorem.words();
           const slug = faker.helpers.slugify(name);
-          const status = ['published', 'drafts', 'archived'];
-          const tags = ['highschool', 'university', 'all', 'data', 'test'];
+          const status = ['published', 'draft', 'archived'];
+          const tags = ['internet basics', 'content creation', 'digital wellness', 'data protection and privacy',
+            'online safety', 'relationships & communications', 'news & media literacy', 'online working',
+            'online learning', 'life skills', 'health', 'digital financial literacy'];
+
           const chapterId = ['chapter1', 'chapter2'];
           fakeChapters.push({
             name: name,
@@ -21,14 +24,15 @@ exports.seed = function (knex) {
             description: faker.lorem.paragraph(),
             lesson_id: 'lesson1',
             content_type: 'h5p',
+            image_url: faker.image.imageUrl(328, 200, 'business', true, false),
             status: faker.random.arrayElement(status),
             content_uri: `/uploads/h5p/${faker.random.arrayElement(chapterId)}`,
             creator_id: faker.random.arrayElement(userIds),
             created_at: faker.date.past(),
             updated_at: faker.date.recent(),
-            tags: faker.random.arrayElements(tags),
-            approved: true,
-            verified: faker.random.boolean(),
+            tags: faker.random.arrayElements(tags, faker.datatype.number({'min': 1, 'max': 6})),
+            approved: faker.datatype.boolean(),
+            verified: faker.datatype.boolean(),
             review_questions: faker.random.arrayElements(reviewQuestionsCategories, 4)
           });
         }

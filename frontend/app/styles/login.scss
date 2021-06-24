@@ -1,0 +1,28 @@
+.login-form {
+  text-align: left;
+  width: 400px;
+  height: 550px;
+  margin: 2%;
+  margin-bottom: 10%;
+  background-color: white;
+
+  h1 {
+    font-weight: bold;
+    font-size: 2rem;
+  }
+
+  form {
+    padding: 0 2rem;
+  }
+  
+  header {
+    margin-bottom: 1rem;
+    padding: 0.5rem;
+    height: 30%;
+    background-color: lighten(#F57010, 10%);
+    background-image: url('/images/logo-background.png');
+    display: flex;
+    align-items: center;
+    color: white;
+  }
+}

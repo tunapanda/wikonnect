@@ -1,0 +1,49 @@
+<div class="sidenav" ...attributes>
+
+  <div class="header">
+    <LinkTo @route="index" class="header-link">
+      {{svg-jar "wikonnect-logo-white" height="40" width="120"}}
+    </LinkTo>
+  </div>
+
+  <ul class="sidenav-menu nav flex-column">
+    <li class="nav-item">
+      <LinkTo @route="admin.dashboard" class="nav-link">
+        <span class="link-icon">{{svg-jar "dashboard" height="20" width="20"}}</span>
+        {{t "admin.sidenav.dashboard"}}
+      </LinkTo>
+    </li>
+    <li class="nav-item">
+      <div class="nav-link users-dashboard-menu" role="button" {{on "click" this.toggleUserMenu}}>
+        <span class="link-icon">{{svg-jar "people" height="20" width="20"}}</span>
+        {{t "admin.sidenav.users"}}
+      </div>
+      <BsCollapse @collapsed={{this.collapseUserMenu}}>
+        <ul class="sub-menu nav">
+          <li class="nav-item">
+            <LinkTo @route="admin.users" class="nav-link">
+              {{t "admin.sidenav.registered_users"}}
+            </LinkTo>
+          </li>
+        </ul>
+      </BsCollapse>
+    </li>
+    <li class="nav-item">
+
+      <div class="nav-link badges-dashboard-menu" role="button" {{on "click" this.toggleBadgesMenu}}>
+        <span class="link-icon">{{svg-jar "badge" height="20" width="20"}}</span>
+        {{t "admin.sidenav.badges"}}
+      </div>
+      <BsCollapse @collapsed={{this.badgesMenuCollapsed}}>
+        <ul class="sub-menu nav">
+          <li class="nav-item">
+            <LinkTo @route="admin.badges" class="nav-link">
+              {{t "admin.sidenav.manage_badges"}}
+            </LinkTo>
+          </li>
+        </ul>
+      </BsCollapse>
+    </li>
+
+  </ul>
+</div>

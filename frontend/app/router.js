@@ -11,15 +11,20 @@ Router.map(function () {
   this.route('login');
   this.route('about');
 
-  this.route('profile');
-  this.route('search', { path: '/search/:id' });
+  this.route('profile', { path: '/profile/:id' }, function () {
+    this.route('home');
+    this.route('achievements');
+  });
+
+  this.route('account', { path: '/profile' }, function () {
+    this.route('edit');
+  });
 
   this.route('chapter', function () {
     this.route('index', {
       path: '/:chapter_slug',
     });
   });
-  this.route('upload');
   this.route('manage');
 
   this.route('teach', function () {
@@ -39,6 +44,20 @@ Router.map(function () {
   this.route('embed', { path: '/embed/:chapter_id' });
   this.route('callback');
 
+  this.route('forgot_password');
+  this.route('reset_password');
+  this.route('verify');
+
+  this.route('admin', function () {
+    this.route('dashboard', { path: '/' });
+    this.route('users');
+    this.route('badges', function () {
+      this.route('home', { path: '/' });
+      this.route('manage');
+    });
+  });
+
   // 404 page should always be the last
   this.route('not-found', { path: '*path' });
+  this.route('access-denied');
 });

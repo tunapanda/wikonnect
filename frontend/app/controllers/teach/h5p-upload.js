@@ -9,15 +9,33 @@ export default class TeachH5pUploadController extends Controller {
   @service notify;
 
   @tracked uploader;
-  @tracked complete = false;
+
+  @tracked H5PZipFile;
 
   @action
-  async uploadH5p(files) {
+  onH5PZipFileSelection(files) {
+    if (files.length > 1) {
+      this.notify.error('You can only upload one H5P file');
+      return;
+    }
+    this.H5PZipFile = files[0];
+  }
+  @action
+  async uploadH5PFile() {
+    const id = this.model.id;
+
+    if (!this.H5PZipFile && this.model.contentUri) {
+      this.transitionToRoute('teach.thumbnail-upload', id);
+      return;
+    }
+    if (!this.H5PZipFile) {
+      this.notify.error('You have not selected any H5P zip file');
+      return;
+    }
     try {
-      let id = this.model.id;
       this.uploader = Uploader.create({
-        file: files[0],
-        filename: files[0].name,
+        file: this.H5PZipFile,
+        filename: this.H5PZipFile,
       });
 
       const host = '/' + this.store.adapterFor('application').urlPrefix();
@@ -26,7 +44,9 @@ export default class TeachH5pUploadController extends Controller {
         [host, 'chapters', id, 'upload'].join('/')
       );
 
-      this.complete = true;
+      //reset local H5P property holder
+      this.H5PZipFile = null;
+
       this.transitionToRoute('teach.thumbnail-upload', id);
     } catch (e) {
       this.notify.alert(

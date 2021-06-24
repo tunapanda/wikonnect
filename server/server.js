@@ -55,13 +55,17 @@ router.use(jwt.authenticate, require('./routes/achievements'));
 
 router.use(jwt.authenticate, require('./routes/flags'));
 
+router.use(jwt.authenticate, require('./routes/badges'));
+
+router.use(jwt.authenticate, require('./routes/triggers'));
+
 router.use(jwt.authenticate, require('./routes/ratings'));
 
 router.use(jwt.authenticate, require('./routes/reactions'));
 
 router.use(jwt.authenticate, require('./routes/dashboard'));
 
-router.use(jwt.authenticate, require('./routes/admin'));
+router.use(jwt.authenticate, require('./routes/user_role'));
 
 router.use(jwt.authenticate, require('./routes/achievement_awards'));
 
@@ -70,6 +74,12 @@ router.use(jwt.authenticate, require('./routes/h5p'));
 router.use(jwt.authenticate, require('./routes/reviews'));
 
 router.use(jwt.authenticate, require('./routes/review-questions'));
+
+router.use(jwt.authenticate, require('./routes/notifications'));
+
+router.use(jwt.authenticate, require('./routes/groups'));
+
+router.use(require('./routes/chapter-tags'));
 
 router.use(require('./routes/search'));
 

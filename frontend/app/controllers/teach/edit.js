@@ -10,7 +10,11 @@ export default class TeachEditController extends Controller {
       approved: false,
     });
     model.save().then((x) => {
-      this.transitionToRoute('teach.preview', x.id);
+      if (model.contentUri && !model.contentId) {
+        this.transitionToRoute('teach.h5p-upload', x.id);
+      } else {
+        this.transitionToRoute('teach.h5p-editor', x.id);
+      }
     });
   }
 }

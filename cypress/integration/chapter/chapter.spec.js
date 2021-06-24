@@ -10,7 +10,7 @@ describe('Chapter view', () => {
         // Chapter title
         cy.get('.chapter-title > h4').should('exist').should('be.visible');
         // Chapter author
-        cy.get('.chapter-author > p').should('exist').should('be.visible');
+        cy.get('.chapter-author').should('exist').should('be.visible');
         // Chapter views and creation date
         cy.get('.chapter-metadata > p').should('exist').should('be.visible');
         // Chapter description

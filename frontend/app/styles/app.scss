@@ -1,12 +1,10 @@
 @import 'common/forms';
-@import 'common/buttons';
 @import 'common/colors';
 //@import "bs4";
 //@import 'header';
 @import 'landing';
 @import 'home';
 @import 'courses';
-@import 'modules';
 @import 'nav';
 @import 'search';
 @import "warning-component";
@@ -22,12 +20,17 @@
 
 html {
   font-family: 'Inter', sans-serif;
+  height: 100%;
 }
 
 @supports (font-variation-settings: normal) {
   html {
     font-family: 'Inter var', sans-serif;
   }
+}
+
+body {
+  height: 100%;
 }
 
 .h40 {
@@ -55,7 +58,7 @@ body {
   color: white;
   width: 100%;
   -webkit-mask-image: -webkit-gradient(linear, left top, left bottom,
-    from(rgba(252, 113, 0, 0)), to(rgba(0, 0, 0, 1)));
+      from(rgba(252, 113, 0, 0)), to(rgba(0, 0, 0, 1)));
 }
 
 body {
@@ -139,6 +142,16 @@ pre {
   height: 300px;
 }
 
+.text-sentence {
+  &::first-letter {
+    text-transform: uppercase;
+  }
+}
+
+footer .row {
+  width: 560px;
+}
+
 //@import "ember-bootstrap/bootstrap";
 //@import "ember-power-select";
 
@@ -152,4 +165,17 @@ pre {
 @import "h5p-editor";
 @import "loader";
 @import "teach-login";
+@import "forgot-password";
+@import "login";
+@import "signup";
 @import "rating-and-review";
+@import "teacher/teacher";
+@import "h5p-player";
+@import "notifications-dropdown";
+@import "user-acc-dropdown";
+@import "custom-search-icon";
+@import "dropdown";
+@import "badge-modal";
+@import "edit-profile";
+
+@import "admin/admin";

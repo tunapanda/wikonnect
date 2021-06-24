@@ -23,18 +23,31 @@ const router = new Router({
  * @apiSuccess {Object[]} reviewQuestions Top level array of question objects
  * @apiSuccess {String} reviewQuestions[category] category unique identifier
  * @apiSuccess {String} reviewQuestions[title] category title
+ * @apiSuccess {Boolean} reviewQuestions[default] if the category is always selected
+ * @apiSuccess {Number} reviewQuestions[priority] Order of priority when showing the category
+ * @apiSuccess {Object[]} [reviewQuestions[options]] Preset categories for review feedback
+ * @apiSuccess {Object} [reviewQuestions[options][negative]] Negative pre-set review feedback
+ * @apiSuccess {Object} [reviewQuestions[options][positive]] Positive pre-set review feedback
  *
  * @apiSuccessExample {json} Success-Response:
  *     HTTP/1.1 200 OK
  *     {
  *        "reviewQuestions": [
  *            {
- *                "category": "audioVideoQuality",
- *                "title": "Audio & video quality"
+ *                "category": "grammar",
+ *                "title": "Grammar & Spelling",
+ *                 "default":false,
+ *                 "priority":2,
  *            },
  *            {
  *                "category": "soundQuality",
- *                "title": "Sound quality"
+ *                "title": "Sound quality",
+ *                "default":true,
+ *                "priority":1,
+ *                "options":{
+ *                    "negative":["Bad quality"],
+ *                    "positive":["Good quality"]
+ *                }
  *            }
  *
  *          ]

@@ -1,14 +1,15 @@
-{{#if (eq this.route "teach.login")}}
+{{#if (or this.isAdminRoute (eq this.route "teach.login"))}}
   <HeadLayout />
   {{outlet}}
 {{else if (not-eq this.route "embed")}}
   <HeadLayout/>
-  <MainHeader @isTeach={{false}} @logout={{this.logout}} />
-  <div class="container-fluid m-0 p-0 ">
+  <MainHeader @isTeach={{false}} @logout={{this.logout}} @notifications={{this.model}} />
+  <div class="container-fluid m-0 p-0 h-100 ">
     {{outlet}}
   </div>
   <EmberNotify @closeAfter={{4000}} />
   <AuthPrompt />
+  {{!-- <VerifyEmailPrompt /> --}}
 {{else }}
 
   {{outlet}}

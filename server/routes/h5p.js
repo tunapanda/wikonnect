@@ -241,19 +241,48 @@ router.get('/content', requireAuth, async (ctx) => {
  * Persist user created content
  *
  */
-router.put('/content', requireAuth, async (ctx) => {
+router.post('/content', requireAuth, async (ctx) => {
   try {
 
-    const {contentId, library, params} = ctx.request.body;
+    const { library, params} = ctx.request.body;
     if (!params.params || !params.metadata || !library) {
-      throw 'Malformed request';
+      ctx.throw(400,{message:'Malformed request'});
     }
 
     const user = H5PUser(ctx.state.user);
     const editor = await H5PEditor();
 
     const result = await editor
-      .saveOrUpdateContentReturnMetaData(contentId || undefined, params.params, params.metadata, library, user);
+      .saveOrUpdateContentReturnMetaData( undefined, params.params, params.metadata, library, user);
+
+    ctx.status = 200;
+    ctx.body = result;
+
+  } catch (e) {
+    ctx.status = 400;
+    ctx.body = {error: e.message || e};
+  }
+});
+
+/**
+ * Persist user created content
+ *
+ */
+router.put('/content/:contentId', requireAuth, async (ctx) => {
+  try {
+
+    const {contentId} =ctx.params;
+    
+    const {library, params} = ctx.request.body;
+    if (!params.params || !params.metadata || !library) {
+      ctx.throw(400,{message:'Malformed request'});
+    }
+
+    const user = H5PUser(ctx.state.user);
+    const editor = await H5PEditor();
+
+    const result = await editor
+      .saveOrUpdateContentReturnMetaData(contentId, params.params, params.metadata, library, user);
 
     ctx.status = 200;
     ctx.body = result;

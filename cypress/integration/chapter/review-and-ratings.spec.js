@@ -1,12 +1,14 @@
 function likedChapter() {
     return cy.chapters({approved: true}).then((chapters) => {
-        return chapters.filter((ch) => ch.authenticatedUser === 'like' || ch.authenticatedUser === null)[0]
+        return chapters.filter((ch) => { return ch.reviewQuestions &&
+            (ch.authenticatedUser === 'like' || ch.authenticatedUser === null)})[0]
     });
 }
 
 function dislikedChapter() {
     return cy.chapters({approved: true}).then((chapters) => {
-        return chapters.filter((ch) => ch.authenticatedUser === 'dislike' || ch.authenticatedUser === null)[0]
+        return chapters.filter((ch) => { return ch.reviewQuestions &&
+            (ch.authenticatedUser === 'dislike' || ch.authenticatedUser === null)})[0]
     });
 }
 
@@ -27,14 +29,17 @@ describe('Chapter ratings & review when authenticated', () => {
                     .click();
 
                 cy.get('.reaction-feedback-popover.negative-feedback')
+                    .scrollIntoView()
                     .should('be.visible')
                     .find('.prompt-button')
                     .click()
                     .get('.reaction-feedback-popover')
                     .should('not.exist');
 
-                cy.get('.rating-review-section')
+                cy.get('.rating-review-section  .gesture-icon')
+                    .scrollIntoView()
                     .should('be.visible')
+                    .get('.rating-review-section')
                     .find('.question')
                     .then((questions) => {
                         const buttons = ["terrible", "bad", "okay", "good", "great"]
@@ -68,14 +73,17 @@ describe('Chapter ratings & review when authenticated', () => {
                     .click();
 
                 cy.get('.reaction-feedback-popover.positive-feedback')
+                    .scrollIntoView()
                     .should('be.visible')
                     .find('.prompt-button')
                     .click()
                     .get('.reaction-feedback-popover')
                     .should('not.exist');
 
-                cy.get('.rating-review-section')
+                cy.get('.rating-review-section .gesture-icon')
+                    .scrollIntoView()
                     .should('be.visible')
+                    .get('.rating-review-section')
                     .find('.question')
                     .then((questions) => {
                         const buttons = ["terrible", "bad", "okay", "good", "great"]
@@ -109,11 +117,13 @@ describe('Chapter ratings & review when authenticated', () => {
                     .click();
 
                 cy.get('.reaction-feedback-popover.negative-feedback')
+                    .scrollIntoView()
                     .should('be.visible')
                     .find('.prompt-button')
                     .click();
 
-                cy.get('.rating-review-section')
+                cy.get('.rating-review-section .gesture-icon')
+                    .scrollIntoView()
                     .should('be.visible')
                     .get('.skip-ratings-and-review-btn')
                     .click()
@@ -132,11 +142,13 @@ describe('Chapter ratings & review when authenticated', () => {
                     .click();
 
                 cy.get('.reaction-feedback-popover.positive-feedback')
+                    .scrollIntoView()
                     .should('be.visible')
                     .find('.prompt-button')
                     .click();
 
-                cy.get('.rating-review-section')
+                cy.get('.rating-review-section  .gesture-icon')
+                    .scrollIntoView()
                     .should('be.visible')
                     .get('.skip-ratings-and-review-btn')
                     .click()

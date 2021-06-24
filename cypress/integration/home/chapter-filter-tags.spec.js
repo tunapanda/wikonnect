@@ -45,7 +45,7 @@ describe("Chapters filter tags ", () => {
                 getFilterDropdownMenu()
                     .find('.tag-select-item')
                     .find('label')
-                    .contains(tags[0], {ignoreCase: true});
+                    .contains(tags[0], {matchCase: false});
             });
     });
 
@@ -58,26 +58,48 @@ describe("Chapters filter tags ", () => {
 
                 getFilterDropdownMenu()
                     .find('.tag-select-item label')
-                    .contains(tags[0], {ignoreCase: true})
+                    .contains(tags[0], {matchCase: false})
                     .find('input[type="checkbox"]')
                     .check();
 
                 cy.get('.chapter-filters-section .selected-tags')
                     .find('button.tag-button')
-                    .contains(tags[0], {ignoreCase: true});
+                    .contains(tags[0], {matchCase: false});
             });
     });
 
-    it('Clear all filters buttons should unselect all tags', () => {
+    it('Clear all filters buttons should unselect all selected tags', () => {
         getFilterButton()
             .click();
 
-        getFilterDropdownMenu()
-            .find('.tag-select-item label')
-            .find('input[type="checkbox"]')
-            .check();
+        fetchFirstPageChapters()
+            .then((chapters) => {
+                const chapter = chapters.find((c) => c.tags && c.tags.length < 3); //relying on seed data on backend
 
-        cy.get('.tags-section-container button.clear-tags-btn:visible')
+                if (chapter) {
+                    getFilterDropdownMenu()
+                        .within(() => {
+                            chapter.tags.map((tag) => {
+                                cy.get('.tag-select-item label')
+                                    .contains(tag, {matchCase: false})
+                                    .find('input[type="checkbox"]')
+                                    .check()
+                            })
+                        })
+
+                } else { //just in case
+                    getFilterDropdownMenu()
+                        .find('.tag-select-item label')
+                        .find('input[type="checkbox"]')
+                        .eq(1) //it is
+                        .check();
+                }
+            })
+
+
+        cy.get('.tags-section-container')
+            .click() //this will hide dropdown if visible
+            .find(' button.clear-tags-btn:visible')
             .click()
             .get('.tags-section-container .selected-tags.tag-list button.tag-button')
             .should('not.exist')
@@ -94,7 +116,7 @@ describe("Chapters filter tags ", () => {
 
                 getFilterDropdownMenu()
                     .find('.tag-select-item label')
-                    .contains(tag, {ignoreCase: true})
+                    .contains(tag, {matchCase: false})
                     .find('input[type="checkbox"]')
                     .check()
 

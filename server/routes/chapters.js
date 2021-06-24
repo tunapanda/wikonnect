@@ -17,6 +17,8 @@ const permController = require('../middleware/permController');
 const validateGetChapter = require('../middleware/validateRequests/chapterGetValidation');
 const Reaction = require('../models/reaction');
 const { getProfileImage } = require('../utils/routesUtils/userRouteUtils');
+const { eventEmitter } = require('./../utils/event-emitter');
+const { eventCodes } = require('./../utils/events-classification');
 
 const router = new Router({
   prefix: '/chapters'
@@ -33,6 +35,7 @@ const router = new Router({
  * @apiParam  (Query Params) {String} [chapter[status]] Query by chapter status - published | draft
  * @apiParam  (Query Params) {String} [chapter[creatorId]] Query by author of a chapter
  * @apiParam  (Query Params) {Boolean} [chapter[approved]] Query by approval status
+ * @apiParam  (Query Params) {String} [chapter[tags]] Query by tags-separated by comma
  *
  * @apiHeader {String} [Authorization] Bearer << JWT here>>
  *
@@ -91,7 +94,12 @@ router.get('/', permController.requireAuth, validateGetChapter, async ctx => {
   delete ctx.query.page;
   delete ctx.query.per_page;
   let chapter;
+  let queryTags = [];
   try {
+    if (ctx.query.tags) {
+      queryTags = ctx.query.tags.split(',');
+      delete ctx.query.tags;
+    }
     // View counter for each chapter
     chapter = await Chapter.query()
       .select([
@@ -117,6 +125,11 @@ router.get('/', permController.requireAuth, validateGetChapter, async ctx => {
           .as('authenticated_user_reaction_id')
       ])
       .where(ctx.query)
+      .where((builder)=>{
+        if (queryTags.length > 0) {
+          builder.where('tags', '@>', queryTags);
+        }
+      })
       .page(page, per_page)
       .withGraphFetched(
         '[reaction(reactionAggregate), flag(selectFlag),author()]'
@@ -389,22 +402,26 @@ router.post('/', permController.requireAuth, async ctx => {
 router.put('/:id', permController.requireAuth, async ctx => {
   let chapterData = ctx.request.body.chapter;
   if (chapterData.id) delete chapterData.id;
-  //TODO: enable permissions checking
-
-  // const stateUserRole = ctx.state.user.role == undefined
-  //   ? ctx.state.user.data.role
-  //   : ctx.state.user.role;
-  // const roles = ['admin', 'superadmin'];
-  // if (!roles.includes(stateUserRole)) {
-  //   ctx.throw(403, null, { errors: ['Not enough permissions'] });
-  //   chapterData.verified = 'false';
-  // }
+  //TODO: enable permissions checking so only allowed users can approve and verify
 
   const chapterCheck = await Chapter.query().findById(ctx.params.id);
   ctx.assert(chapterCheck, 404, 'Invalid data provided');
 
+  const justPublished = chapterCheck.status !== 'published' && chapterData.status === 'published';
+  const justApproved = (!chapterCheck.approved || chapterCheck.approved !== true) && chapterData.approved === true;
   try {
     const chapter = await chapterCheck.$query().patchAndFetchById(ctx.params.id, chapterData);
+
+    // emit a Node event if it has just been published
+    if (justPublished) {
+      eventEmitter.emit(eventCodes.chapter.published, chapter);
+    }
+
+    // emit a Node event if it has just been approved
+    if (justApproved) {
+      eventEmitter.emit(eventCodes.chapter.approved, chapter);
+    }
+
     ctx.status = 201;
     ctx.body = { chapter };
   } catch (e) {
@@ -434,9 +451,15 @@ router.put('/:id', permController.requireAuth, async ctx => {
  */
 router.delete('/:id', permController.requireAuth, async ctx => {
   const chapter = await Chapter.query().findById(ctx.params.id);
-  ctx.assert(chapter, 401, 'No ID was found');
-  await Chapter.query().delete().where({ id: ctx.params.id });
+  ctx.assert(chapter, 404, 'No chapter with that identifier was found');
 
+  await Chapter.query()
+    .delete()
+    .where({ id: ctx.params.id });
+
+  if (chapter.approved && chapter.approved === true) {
+    eventEmitter.emit(eventCodes.approvedChapter.deleted, chapter);
+  }
   ctx.status = 200;
   ctx.body = { chapter };
 });

@@ -1,12 +1,18 @@
+<div class=" d-flex row text-center p-4 m-0 shadow-sm justify-content-center">
+  <h3><b>{{t "teach.preview.title"}}</b></h3>
+</div>
+
 <div class="p-4">
 
   <div class="d-flex justify-content-center">
-    <Toc @page="6"/>
+    <div class="col-md-8">
+      <Toc @page="6"/>
+    </div>
   </div>
   <div class="row p-5">
     <div class="col-12 row">
-      <div class="chapter-title-section">
-        <h4><b>{{t "teach.create.chapter_name"}}: </b>{{this.model.name}}({{this.model.status}}) </h4>
+      <div class="chapter-title-section col-lg-6">
+        <h4><b>{{t "teach.create.chapter_name"}}: </b>{{title-case  this.model.name}}({{this.model.status}}) </h4>
 
         {{#if (eq this.model.status "published")}}
           {{#if this.model.approved}}
@@ -40,13 +46,8 @@
 
       <div class="h5p-content-section border p-4 mb-1">
         {{#if (or this.model.contentUri this.model.contentId)}}
-
-          {{#if this.model.contentId}}
-            <H5p::Player @contentId={{this.model.contentId}}>
+            <H5p::Player @contentId={{this.model.contentId}}  @location={{this.model.contentUri}}>
             </H5p::Player>
-          {{else}}
-            <H5p @location={{this.model.contentUri}} />
-          {{/if}}
         {{/if}}
         <br>
         {{#if (or this.model.contentUri this.model.contentId)}}
@@ -106,7 +107,7 @@
       <div class="border mb-1 p-4">
         <div class="form-group ">
           <label for="t">{{t "teach.create.chapter_name"}}</label>
-          <input value={{this.model.name}} type="text" class="form-control bg-light" id="t" disabled>
+          <input value={{title-case  this.model.name}} type="text" class="form-control bg-light" id="t" disabled>
         </div>
         <div class="form-group">
           <label for="">{{t "teach.create.chapter_desc"}}</label>
@@ -120,7 +121,7 @@
       <div class="border p-3 mb-1">
 
         {{#if this.model.imageUrl}}
-          <img src="{{this.model.imageUrl}}" class="img-thumbnail img-fluid rounded h-50 d-inline-block" alt={{t
+          <img src="{{this.model.imageUrl}}" class="img-thumbnail img-fluid rounded h-50 d-inline-block mb-3" alt={{t
                   "teach.preview.chapter"}}>
           <br>
           <LinkTo @route="teach.thumbnail-upload" @model={{this.model.id}}>
@@ -158,5 +159,5 @@
         "buttons.cancel"}}
                @submitTitle={{t "teach.preview.delete"}} @title={{t "teach.preview.delete"}} @size="sm"
                @onHidden={{fn (mut this.deleteModal) false}}>
-  {{t "teach.preview.delete_prompt"}}: <b>{{this.model.name}}</b> ?
+  {{t "teach.preview.delete_prompt"}}: <b>{{title-case this.model.name}}</b> ?
 </BsModalSimple>

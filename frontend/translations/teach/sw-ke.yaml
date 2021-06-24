@@ -21,7 +21,9 @@ toc:
   h5p_content: Rekodi ya H5P
   thumbnail: Kijipicha
   tags: Lebo
-  preview_publish: Hakikisha halafu chapisha
+  preview_publish: Hakikisha halafu hapisha
+  select_review_questions: Ukadiriaji na Maoni
+
 
 create:
   chapter_name: Jina la Rekodi
@@ -34,6 +36,13 @@ edit:
 
 h5p:
   init: Inaanzisha mhariri
+  upload:
+    title: Pakia faili ya zip ya H5P
+    drag_and_drop: Buruta na uangushe hapa
+    or: au
+    uploading: Inapakia...
+    redirect_message: Utaelekezwa mara baada ya kupakia kukamilika
+    browse_files: Vinjari faili
 
 thumbnail:
   upload: Pakia kijipicha
@@ -43,6 +52,8 @@ thumbnail:
   accepted_file_types: "Aina za faili zilizokubaliwa: jpg, png, svg"
   uploading: Inapakia ...
   redirect_mesg: Utaelekezwa mara baada ya kupakia kukamilika
+  browse_files: Vinjari faili
+  change_image: Badilisha picha
 
 tag:
   custom_tag: Ongeza lebo maalum
@@ -53,11 +64,15 @@ tag:
   level: Kiwango
   platform: Jukwaa
   kicd_status: Hali ya KICD
+  tag_name: Jina la lebo
 
 review_questions:
-  title: Chagua maswali ya uhakiki na ukadiriaji
+  title: Wanafunzi watapima na kukagua yaliyomo kulingana na kategoria tofauti. Maoni haya kutoka kwa wanafunzi yatakusaidia kuwa mwalimu bora zaidi na mtunzi wa yaliyomo.
+  default_subtitle: "Aina zifuatazo zinatumika kwa maudhui yako kwa chaguo-msingi:"
+  others_subtitle: "Tafadhali chagua kategoria hapa chini ambazo zinatumika pia kwa yaliyomo yako:"
 
 preview:
+  title: Chungulia Sura ya H5P
   chapter: Sura
   approved: Imeidhinishwa
   unapproved: Haijaidhinishwa
@@ -79,3 +94,9 @@ preview:
     reviewQuestions: Aina zilizochaguliwa za ukaguzi na ukadiriaji
   buttons:
     modifyReviewQuestions: Rekebisha maswali
+
+buttons:
+  cancel: Ghairi
+  previous: Nyuma
+  next: Hifadhi na Endelea
+  skip: Ruka kwa Sasa

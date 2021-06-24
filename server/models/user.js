@@ -36,15 +36,15 @@ class User extends Model {
   }
 
   get $secureFields() {
-    return ['hash', 'lastIp'];
+    return ['hash', 'lastIp', 'resetPasswordToken', 'resetPasswordExpires'];
   }
 
   $beforeInsert() {
-    this.lastSeen = new Date().toISOString();
+    this.lastSeen = new Date(+new Date());
   }
 
   $afterFind() {
-    this.lastSeen = new Date().toISOString();
+    this.lastSeen = new Date(+new Date());
   }
 
   async $indexForSearch() {

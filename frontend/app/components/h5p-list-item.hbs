@@ -3,9 +3,9 @@
     <LinkTo @route="chapter" @model={{@chapter.id}} class="chapter-thumbnail">
       {{#if (eq @chapter.imageUrl null)}}
       <img class="card-img-top chapter-thumbnail" alt="" role="presentation"
-           src="https://placehold.jp/20/{{this.color}}/ffffff/328x200.png?text={{@chapter.name}}" >
+        src="https://placehold.jp/20/{{this.color}}/ffffff/328x200.png?text={{@chapter.name}}">
       {{else}}
-      <img class="card-img-top chapter-thumbnail" alt="" src={{@chapter.imageUrl}} role="presentation" >
+        <img class="card-img-top chapter-thumbnail" alt="" src={{@chapter.imageUrl}} role="presentation">
       {{/if}}
     </LinkTo>
     <div class="card-body chapter-body">
@@ -22,15 +22,15 @@
 
       <h5 class="card-title title-section">
         <LinkTo @route="chapter" @model={{@chapter.id}} class="chapter-title">
-          {{@chapter.name}}
+          {{title-case  @chapter.name}}
         </LinkTo>
       </h5>
 
       <div class="chapter-metadata">
         {{#if @chapter.verified }}
-        <div class="d-inline mr-2">
-          {{svg-jar "verified-black-24dp" class="verified-icon"}}
-        </div>
+          <div class="d-inline mr-2">
+            {{svg-jar "verified-black-24dp" class="verified-icon"}}
+          </div>
         {{/if}}
         <div class="d-inline mr-3">
           {{svg-jar "watch" class="watch-icon"}} {{relative-time @chapter.createdAt}}
@@ -40,16 +40,22 @@
 
       <div class="chapter-description mt-1 mb-3">
         {{#if this.config.content.APP.linkify_description}}
-        <p class="card-text">{{linkify @chapter.description class="btn btn-primary mt-3 replaced"}}</p>
+          <p class="card-text">{{linkify @chapter.description class="btn btn-primary mt-3 replaced"}}</p>
         {{else}}
-        <p class="card-text">{{@chapter.description}}</p>
+          <p class="card-text">{{@chapter.description}}</p>
         {{/if}}
       </div>
 
-      <div class="chapter-creator">
-        <img src={{@chapter.author.profileUri}} alt={{t "single_chapter.h5p."}} class="rounded-circle">
-        {{@chapter.author.name}}
+      <div class="chapter-tags-list pb-3">
+        {{#each @chapter.tags as |tag|}}
+          <LinkTo @route="index" @query={{hash tags=tag}}  class="tag">{{title-case tag}}</LinkTo>
+        {{/each}}
       </div>
+
+      <LinkTo @route="profile.home" @model={{@chapter.author.id}} class="chapter-creator text-dark">
+        <img src={{@chapter.author.profileUri}} alt="" role="presentation" class="rounded-circle">
+        {{@chapter.author.name}}
+      </LinkTo>
     </div>
 
   </div>

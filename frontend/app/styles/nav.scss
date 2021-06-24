@@ -1,94 +1,19 @@
-.sidenav {
-  height: 100%;
-  /* 100% Full-height */
-  width: 0%;
-  /* 0 width - change this with JavaScript */
-  position: fixed;
-  /* Stay in place */
-  z-index: 1000;
-  /* Stay on top */
-  top: 0;
-  /* Stay at the top */
-  left: 0;
-  background-color: white;
-  /* Black*/
-  overflow-x: hidden;
-  /* Disable horizontal scroll */
-  /* Place content 60px from the top */
-  transition: 0.5s;
-  /* 0.5 second transition effect to slide in the sidenav */
-}
-
-/* The navigation menu links */
-.sidenav a {
-  padding: 8px 8px 8px 32px;
-  text-decoration: none;
-  font-size: 25px;
-  color: #818181;
-  display: block;
-  transition: 0.3s;
-}
-
-/* When you mouse over the navigation links, change their color */
-.sidenav a:hover {
-  color: #f1f1f1;
-}
-
-/* Position and style the close button (top right corner) */
-.sidenav .closebtn {
-  position: absolute;
-  top: 0;
-  right: 25px;
-  font-size: 36px;
-  margin-left: 50px;
-  color: black;
-  background-color: Transparent;
-  background-repeat: no-repeat;
-  border: none;
-  cursor: pointer;
-  overflow: hidden;
-}
-
-/* Style page content - use this if you want to push the page content to the right when you open the side navigation */
-#main {
-  transition: margin-left .5s;
-  padding: 20px;
-}
-
-.nav-head {
-  background-color: coral;
-  color: white;
-}
-
-.nav-x {
-  background-color: coral;
-}
-
-.closebtn {
-  background-color: coral;
-  color: red;
-}
-
-
-.nav-picture {
-
-  width: 50px;
-  height: 50px;
-  border-width: medium;
-  border: white;
-  border-radius: 50px;
-}
-
 .main-header {
 
   .navbar-nav {
     .nav-link {
-      color: #FFFFFF !important;
-      &.active {
+      color: #FFFFFF;
+      &.active{
+        color: #FFFFFF;
         font-weight: bold;
       }
+      &:hover,{
+        color: #FFFFFF;
+      }
     }
-
+    .show>.nav-link{
+      color: #FFFFFF;
+    }
   }
 }
 
@@ -121,41 +46,12 @@
   }
 }
 
-
-/* On smaller screens, where height is less than 450px */
-@media screen and (max-height: 450px) {
-  .sidenav {
-    padding-top: 15px;
-  }
-
-  .sidenav a {
-    font-size: 18px;
-  }
-}
-
+/**
+On large screen
+ */
 @media (min-width: 992px) {
 
   .main-header {
     height: 60px;
-
-    .action-btn {
-      font-size: 15px;
-      letter-spacing: 0;
-      border: 1px solid #FFFFFF;
-      border-radius: 2px;
-      padding-top: 8px;
-      padding-bottom: 8px;
-      display: inline;
-
-      &.signup {
-        background-color: #FFFFFF;
-        color: $primary !important;
-      }
-
-      &.signin {
-        color: #FFFF !important;
-      }
-    }
   }
-
 }

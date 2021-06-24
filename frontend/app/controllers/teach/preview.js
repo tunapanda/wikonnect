@@ -7,9 +7,9 @@ export default class TeachPreviewController extends Controller {
   @service notify;
   @service session;
   @service me;
-  @tracked publishModal;
-  @tracked unpublishModal;
-  @tracked deleteModal;
+  @tracked publishModal = false;
+  @tracked unpublishModal = false;
+  @tracked deleteModal = false;
   token = this.session.data.authenticated.token;
 
   @action

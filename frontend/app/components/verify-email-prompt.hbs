@@ -1,0 +1,13 @@
+{{#if this.me.isAuthenticated}}
+  {{#unless this.me.isEmailVerified}}
+  
+  <footer>
+    <nav class="navbar fixed-bottom text-white mt-5  bg-red justify-content-between ">
+      <p>{{t 'messages.verify_email_prompt'}}</p>
+      <button class="btn btn-outline-light float-right mr-2" type="button" {{on "click" this.sendVerificationEmail}}>
+        {{t 'buttons.resend_verification'}}
+      </button>
+    </nav>
+  </footer>
+  {{/unless}}
+{{/if}}

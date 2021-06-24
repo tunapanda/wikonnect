@@ -1,7 +1,7 @@
 version: 2.1
 with_db: &with_db
   docker:
-    - image: circleci/node:10-browsers
+    - image: circleci/node:14-browsers
       environment:
         JOBS: 2
         PG_USER: acbe
@@ -9,11 +9,11 @@ with_db: &with_db
         PG_HOST: localhost
         PG_PORT: 5432
         NODE_ENV: ci
+        SECRET: 'secret'
     - image: circleci/postgres:10.10
       environment:
         POSTGRES_USER: acbe
         POSTGRES_DB: swag_test
-    - image: circleci/redis
   working_directory: ~/ember-circleci
 without_db: &without_db
   docker:

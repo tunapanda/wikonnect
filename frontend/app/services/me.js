@@ -1,6 +1,7 @@
 import Service, { inject as service } from '@ember/service';
 import { getOwner } from '@ember/application';
 import { tracked } from '@glimmer/tracking';
+import fetch from 'fetch';
 
 export default class MeService extends Service {
   @service session;
@@ -28,9 +29,18 @@ export default class MeService extends Service {
   }
 
   async register(fields) {
-    let user = this.store.createRecord('user', fields);
-
-    return await user.save();
+    const res = await fetch(
+      this.store.adapterFor('user').urlForCreateRecord('user'),
+      {
+        method: 'POST',
+        body: JSON.stringify({ user: fields }),
+        headers: { 'Content-type': 'application/json; charset=UTF-8' },
+      }
+    );
+    if (res.ok) {
+      return;
+    }
+    throw await res.json();
   }
 
   registerWithGoogle(fields) {
@@ -52,6 +62,13 @@ export default class MeService extends Service {
   }
 
   get name() {
+    if (!this.user) {
+      return '';
+    }
+    if (this.user.name) {
+      return this.user.name;
+    }
+
     if (!this.user.metadata) {
       return this.user.username;
     }
@@ -64,5 +81,45 @@ export default class MeService extends Service {
     } else {
       return this.user.username;
     }
+  }
+
+  get isEmailVerified() {
+    if (this.user) {
+      return this.user.emailVerified;
+    }
+
+    return null;
+  }
+
+  get id() {
+    if (this.user) {
+      return this.user.id;
+    }
+
+    return null;
+  }
+
+  get role() {
+    if (this.user) {
+      return this.user.role;
+    }
+
+    return null;
+  }
+
+  get isAdmin() {
+    if (this.user && this.user.role) {
+      return this.user.role.toLowerCase() === 'admin';
+    }
+
+    return false;
+  }
+
+  get isModerator() {
+    if (this.user && this.user.role) {
+      return this.user.role.toLowerCase() === 'moderator';
+    }
+
+    return false;
   }
 }

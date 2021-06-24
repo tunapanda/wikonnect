@@ -8,3 +8,5 @@ tags:
 loading:
   loading_more_records: Inapakia rekodi nyingine...
   loaded_all_the_records: Imepakia rekodi zote
+  no_filtered_record: Hakuna maudhui yaliyopatikana yanayolingana <strong> {selectedTags} </strong>. Tafadhali jaribu vitambulisho vichache
+  no_content: Inaonekana hakuna maudhui ya kujifunza kwa sasa. Tafadhali angalia nasi tena baadaye.

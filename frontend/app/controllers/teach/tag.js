@@ -7,6 +7,34 @@ import { A } from '@ember/array';
 export default class TeachTagController extends Controller {
   @service me;
   @service config;
+  @service intl;
+  @service notify;
+
+  maxTagsTotal = 6;
+  disallowedXcters = [
+    '#',
+    ',',
+    '<',
+    '>',
+    '/',
+    '\\',
+    '=',
+    ';',
+    '"',
+    "'",
+    '+',
+    '!',
+    '@',
+    '$',
+    ':',
+    '%',
+    '^',
+    '(',
+    '*',
+    '~',
+    '.',
+    ')',
+  ];
 
   @tracked topic_list = [
     'Literacy',
@@ -73,21 +101,90 @@ export default class TeachTagController extends Controller {
 
   @tracked custom_tags = [];
 
-  @tracked custom_cart = A([]);
+  @tracked custom_cart;
   @tracked tag;
+  @tracked customTagError;
+
+  get selectedTags() {
+    if (this.custom_cart) {
+      return this.custom_cart;
+    }
+    return this.model.tags;
+  }
+
+  get topicBucketTags() {
+    const tags = [
+      { title: 'Internet Basics', isSelected: false },
+      { title: 'Content Creation', isSelected: false },
+      { title: 'Digital Wellness', isSelected: false },
+      { title: 'Data Protection and Privacy', isSelected: false },
+      { title: 'Online Safety', isSelected: false },
+      { title: 'Relationships and Communications', isSelected: false },
+      { title: 'News and Media Literacy', isSelected: false },
+      { title: 'Online Working', isSelected: false },
+      { title: 'Online Learning', isSelected: false },
+      { title: 'Life Skills', isSelected: false },
+      { title: 'Health', isSelected: false },
+      { title: 'Digital Financial Literacy', isSelected: false },
+    ];
+
+    if (this.selectedTags) {
+      return tags.map((tag) => {
+        const index = this.selectedTags.findIndex(
+          (pred) => pred.toLowerCase() === tag.title.toLowerCase()
+        );
+        if (index > -1) {
+          tag.isSelected = true;
+        }
+        return tag;
+      });
+    }
+    return tags;
+  }
+
+  get hasUnselectedPredefinedTags() {
+    return this.topicBucketTags.filter((t) => !t.isSelected).length > 0;
+  }
 
   @action
   addtag(evt) {
     evt.preventDefault();
     evt.stopPropagation();
+    if (!this.custom_cart) {
+      this.custom_cart = A(this.model.tags);
+    }
+    if (this.custom_cart.length === this.maxTagsTotal) {
+      this.notify.alert(
+        this.intl.t('errors.max_tags_selected', { max: this.maxTagsTotal })
+      );
+      return;
+    }
+    if (this.customTagError) {
+      return;
+    }
     if (this.tag) {
-      this.custom_cart.pushObject(this.tag);
-      this.tag = '';
+      this.tag = this.tag.replace(/( & +)/, ' and ');
+
+      const index = this.custom_cart.findIndex(
+        (pred) => pred.toLowerCase() === this.tag.trim().toLowerCase()
+      );
+      if (index > -1) {
+        this.tag = '';
+      } else {
+        this.custom_cart.pushObject(this.tag.trim().toLowerCase()); // lowercase for insane capitalization.
+        // we are sacrificing some capitalization i.e. McDonald
+        this.tag = '';
+      }
     }
   }
 
   @action
   async updateTags() {
+    if (this.model.tags && !this.custom_cart) {
+      this.transitionToRoute('teach.review-questions', this.model.id);
+      return;
+    }
+
     let id = this.model.id;
     let combined = [];
 
@@ -100,9 +197,11 @@ export default class TeachTagController extends Controller {
     );
 
     let chapter = await this.store.peekRecord('chapter', id);
-    chapter.tags = combined;
+    chapter.tags = combined.map((t) => t.toLowerCase()); //all tags will be lower cased for easier backend filtering
     await chapter.save();
-    this.transitionToRoute('teach.preview', id);
+    //reset the local tags holder
+    this.custom_cart = null;
+    this.transitionToRoute('teach.review-questions', id);
   }
 
   @action
@@ -164,11 +263,55 @@ export default class TeachTagController extends Controller {
         this.kicd_list.addObject(item);
         break;
       case 'custom':
+        if (!this.custom_cart) {
+          this.custom_cart = A(this.model.tags);
+        }
         this.custom_cart.removeObject(item);
         break;
 
       default:
         break;
     }
+  }
+
+  @action
+  selectPredefinedTag(tag) {
+    if (!this.custom_cart) {
+      this.custom_cart = A(this.model.tags);
+    }
+    if (this.custom_cart.length === this.maxTagsTotal) {
+      this.notify.alert(
+        this.intl.t('errors.max_tags_selected', { max: this.maxTagsTotal })
+      );
+      return;
+    }
+    this.custom_cart.pushObject(tag.title);
+  }
+
+  @action
+  validateTag() {
+    if (!this.tag) {
+      this.customTagError = this.intl.t('errors.is_required', {
+        key: this.intl.t('teach.tag.tag_name'),
+      });
+      return;
+    }
+
+    if (this.disallowedXcters.some((xcter) => this.tag.includes(xcter))) {
+      this.customTagError = this.intl.t('errors.characters_not_allowed', {
+        characters: this.disallowedXcters.join(' '),
+      });
+      return;
+    }
+
+    if (this.tag.length >= 30) {
+      this.customTagError = this.intl.t('errors.max_characters', {
+        key: this.intl.t('teach.tag.tag_name'),
+        max: 30,
+      });
+      return;
+    }
+
+    this.customTagError = '';
   }
 }

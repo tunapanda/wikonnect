@@ -1,0 +1,80 @@
+$palette: (
+  white: #FFFF,
+  warning: #FFD300,
+  dark: #343a40,
+  grey: grey
+);
+
+.content-creation-section {
+  .action-buttons {
+    .previous {
+      white-space: nowrap;
+      margin-top: 0;
+      background-color: transparent;
+      color: map-get($palette, dark);
+      border-color: map-get($palette, grey);
+    }
+
+    .next {
+      white-space: nowrap;
+      margin-top: 0;
+    }
+  }
+}
+
+.thumbnail-upload-section {
+  .drop-area {
+    .preview-image {
+      height: 170px;
+      max-width: 310px;
+      border: solid 1px map-get($palette, grey);
+      img {
+        width: auto;
+        height: 100%;
+      }
+    }
+  }
+
+}
+
+//ratings and review section
+.review-question-section {
+
+  .review-question-option {
+    .btn {
+      min-height: 34px;
+      outline: none;
+      box-shadow: none;
+      display: flex;
+
+      &:hover, &:active {
+        outline: none;
+        box-shadow: none;
+        color: map-get($palette, dark);
+        background-color: lighten(map-get($palette, warning), 30%);
+      }
+
+      &.btn-warning {
+
+        &:hover,
+        &:focus {
+          color: map-get($palette, dark);
+          background-color: map-get($palette, warning);
+        }
+      }
+    }
+  }
+
+}
+
+
+@media only screen and (max-width: 600px) {
+  .thumbnail-upload-section {
+    .drop-area {
+      height: 340px;
+      .ember-file-drop-zone {
+        max-width: 15em;
+      }
+    }
+  }
+}

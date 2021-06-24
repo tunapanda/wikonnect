@@ -1,0 +1,83 @@
+<div class="row badge-form"   {{did-update this.resetSelectedBadgeIcon  this.model}}>
+  <div class="col-lg-5">
+    <div class="badge-icon-card justify-content-between d-flex">
+      <div class="left">
+        <div class="icon-container">
+          {{#if this.selectedBadgeIconPreviewSrc}}
+            <img src="{{this.selectedBadgeIconPreviewSrc}}" class="badge-icon" role="presentation" alt="">
+          {{else}}
+            {{svg-jar "trophy" height="96" width="96" stroke="white" class="badge-icon"}}
+          {{/if}}
+        </div>
+      </div>
+
+      <div class="right w-100 d-flex flex-column justify-content-center align-items-center">
+        <p class="title">
+          {{#if this.selectedBadgeIconPreviewSrc}}
+            {{t "admin.badges.labels.change_icon"}}
+          {{else}}
+            {{t "admin.badges.labels.upload_icon"}}
+          {{/if}}
+        </p>
+        <Forms::Upload class="btn btn-primary" @filesSelected={{this.onBadgeIconSelect}} @accept="image/*"
+                       @multiple="false">
+          {{svg-jar "upload" height="18" width="18" stroke="white"}}
+          {{t "admin.badges.buttons.upload_icon"}}
+        </Forms::Upload>
+
+      </div>
+    </div>
+  </div>
+  <BsForm @formLayout="horizontal" @model={{changeset this.model this.badgeValidations}} @onSubmit={{this.submitForm}}
+          class="col-lg-7 main-form" as |form|>
+    <form.element @property="triggerId" @label={{t "admin.badges.labels.trigger"}} as |el|>
+      <select id={{el.id}} required class="form-control trigger-select"
+        {{on "change" (fn this.triggerSelected el.setValue)}}>
+        {{#unless this.model.triggerId}}
+          <option disabled selected hidden value="">{{t "admin.badges.labels.trigger_placeholder"}}</option>
+        {{/unless}}
+        {{#each this.triggers as |x|}}
+          <option value="{{x.id}}" selected="{{if (eq this.model.triggerId x.id) true}}">{{x.name}}</option>
+        {{/each}}
+      </select>
+    </form.element>
+
+    <form.element @property="name" @label={{t "admin.badges.labels.name"}}  as |el|>
+      <el.control placeholder={{t "admin.badges.labels.name_placeholder"}} class="name-input"/>
+    </form.element>
+
+    <form.element @controlType="textarea" @property="description"
+                  @label={{t "admin.badges.labels.description"}}  as |el|>
+      <el.control placeholder={{t "admin.badges.labels.description_placeholder"}}  class="description-input"/>
+    </form.element>
+
+
+    <form.element @controlType="date" @property="expiry" @label={{t "admin.badges.labels.expiry_date"}} as |el|>
+      <el.control class="expiry-input"></el.control>
+    </form.element>
+
+    <form.element @controlType="number" @property="frequency" @label={{t "admin.badges.labels.frequency"}} as |el|>
+      <el.control placeholder={{t "admin.badges.labels.frequency_placeholder"}} class="frequency-input"/>
+    </form.element>
+
+    <form.element @controlType="number" @property="points" @label={{t "admin.badges.labels.points"}} as |el|>
+      <el.control placeholder={{t "admin.badges.labels.points_placeholder"}}  class="points-input"/>
+    </form.element>
+
+    <form.element @controlType="number"  @property="reminder" @label={{t "admin.badges.labels.reminder"}}  as |el|>
+      <el.control placeholder={{t "admin.badges.labels.reminder_placeholder"}}  class="reminder-input"/>
+    </form.element>
+
+    <form.element @controlType="textarea" @property="reminderMessage"
+                  @label={{t "admin.badges.labels.reminder_message"}}  as |el|>
+      <el.control placeholder={{t "admin.badges.labels.reminder_message_placeholder"}}  class="reminder-message-input"/>
+    </form.element>
+
+
+    <div class="form-group d-flex justify-content-end mr-3">
+      <form.submitButton class="btn btn-primary btn-submit"> {{t "admin.badges.buttons.save"}}</form.submitButton>
+    </div>
+  </BsForm>
+
+
+</div>

@@ -6,6 +6,7 @@ export default class ApplicationController extends Controller {
   @service session;
   @service me;
   @service router;
+  @service socket;
 
   headerStyles = {
     default: 'white-header',
@@ -34,6 +35,10 @@ export default class ApplicationController extends Controller {
   logout() {
     this.me.logout();
     document.location.reload();
+    this.socket.roleChanged();
     this.router.transitionTo('index');
+  }
+  get isAdminRoute() {
+    return this.route.startsWith('admin');
   }
 }

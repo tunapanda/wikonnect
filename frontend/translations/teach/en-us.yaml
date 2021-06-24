@@ -22,7 +22,7 @@ toc:
   thumbnail: Thumbnail
   tags: Tags
   preview_publish: Preview & Publish
-  select_review_questions: Ratings & Review
+  select_review_questions: Ratings & Reviews
 
 create:
   chapter_name: Chapter Name
@@ -35,6 +35,13 @@ edit:
 
 h5p:
   init: Initializing editor
+  upload:
+    title: Upload H5P zip file
+    drag_and_drop: Drag and drop here
+    or: or
+    uploading: Uploading...
+    redirect_message: You will be redirected once upload is complete
+    browse_files: Browse files
 
 thumbnail:
   upload: Upload Thumbnail
@@ -44,6 +51,8 @@ thumbnail:
   accepted_file_types: "Accepted file types: jpg, png, svg"
   uploading: Uploading ...
   redirect_mesg: You will be redirected once upload is complete
+  browse_files: Browse files
+  change_image: Change image
 
 tag:
   custom_tag: Add a custom tag
@@ -54,11 +63,15 @@ tag:
   level: Level
   platform: Platform
   kicd_status: KICD Status
+  tag_name: Tag name
 
 review_questions:
-  title: Select review and rating questions
+  title: Learners will rate and review your content based on different categories. This feedback from learners will help you become an even better teacher and content creator.
+  default_subtitle: "The following categories apply to your content by default:"
+  others_subtitle: "Please select the categories below which also apply to your content:"
 
 preview:
+  title: Preview H5P Chapter
   chapter: Chapter
   approved: Approved
   unapproved: Unapproved
@@ -77,6 +90,12 @@ preview:
   unpublish_prompt: Are you sure you want to unpublish this chapter?
   delete_prompt: Are you sure you want to delete
   section_titles:
-    reviewQuestions: Selected review & ratings questions categories
+    reviewQuestions: Selected review and ratings questions categories
   buttons:
     modifyReviewQuestions: Modify questions
+
+buttons:
+  cancel: Cancel
+  previous: Back
+  next: Save and Continue
+  skip: Skip

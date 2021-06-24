@@ -13,12 +13,13 @@ chai.should();
 const route = '/api/v1/ratings';
 
 async function getSample(valid = true) {
-
   if (valid) {
-    const chapter = (await knex('chapters')
-      .select(['chapters.id'])
-      .where({approved: true})
-      .limit(1))[0];
+    const chapter = (
+      await knex('chapters')
+        .select(['chapters.id'])
+        .where({ approved: true })
+        .limit(1)
+    )[0];
 
     return {
       chapterId: chapter.id,
@@ -26,25 +27,18 @@ async function getSample(valid = true) {
       metadata: {
         audioQuality: 1,
         contentAccuracy: 1,
-        language: 2
-      }
+        language: 2,
+      },
     };
-
   }
 }
 
 describe('CHAPTER RATINGS ROUTE', () => {
-  before(async () => {
-    await knex.migrate.rollback();
-    await knex.migrate.latest();
-    return await knex.seed.run();
-  });
-
-  it('Should fetch existing chapter ratings', done => {
+  it('Should fetch existing chapter ratings', (done) => {
     chai
       .request(server)
       .get(route)
-      .set(tokens.headersSuperAdmin1)
+      .set(tokens.headerAdminUser)
       .end((err, res) => {
         res.should.have.status(200);
         res.should.be.json;
@@ -53,11 +47,11 @@ describe('CHAPTER RATINGS ROUTE', () => {
       });
   });
 
-  it('Should query existing chapter ratings to include respective review', done => {
+  it('Should query existing chapter ratings to include respective review', (done) => {
     chai
       .request(server)
       .get(`${route}?include=review`)
-      .set(tokens.headersSuperAdmin1)
+      .set(tokens.headerAdminUser)
       .end((err, res) => {
         res.should.have.status(200);
         res.should.be.json;
@@ -74,9 +68,9 @@ describe('CHAPTER RATINGS ROUTE', () => {
     return chai
       .request(server)
       .post(route)
-      .set(tokens.headersSuperAdmin1)
+      .set(tokens.headerAdminUser)
       .set('Content-Type', 'application/json')
-      .send({rating: data})
+      .send({ rating: data })
       .then((res) => {
         res.status.should.eql(201);
         res.should.be.json;
@@ -91,9 +85,9 @@ describe('CHAPTER RATINGS ROUTE', () => {
     return chai
       .request(server)
       .put(`${route}/${rating.id}`)
-      .set(tokens.headersSuperAdmin1)
+      .set(tokens.headerAdminUser)
       .set('Content-Type', 'application/json')
-      .send({rating: data})
+      .send({ rating: data })
       .then((res) => {
         res.should.have.status(200);
         res.should.be.json;
@@ -109,7 +103,7 @@ describe('CHAPTER RATINGS ROUTE', () => {
     return chai
       .request(server)
       .delete(`${route}/${rating.id}`)
-      .set(tokens.headersSuperAdmin1)
+      .set(tokens.headerAdminUser)
       .then((res) => {
         res.status.should.eql(200);
       });
