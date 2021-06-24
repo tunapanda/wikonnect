@@ -1,21 +1,20 @@
 {{#unless this.me.isAuthenticated}}
 <footer>
-  <nav class="navbar fixed-bottom text-white mt-5  bg-orange">
-    <div class="container">
-      <div class="row">
-
-        <div class="mt-2 col">
-          {{t "messages.auth_prompt"}}
-        </div>
-        <div class="col">
-          <LinkTo @route="login">
-            <button type="button" class="btn btn-outline-light float-right mr-2">{{t "buttons.login"}}</button>
-          </LinkTo>
-          <LinkTo @route="signup">
-            <button type="button" class="btn btn-outline-light float-right mr-2">{{t "buttons.signup"}}</button>
-          </LinkTo>
-        </div>
-      </div>
+  <nav
+    class="navbar fixed-bottom text-white mt-5 bg-orange justify-content-start"
+  >
+    {{t 'messages.auth_prompt'}}
+    <div>
+      <LinkTo @route="login">
+        <button type="button" class="btn btn-outline-light mx-2">
+          {{t 'buttons.login'}}
+        </button>
+      </LinkTo>
+      <LinkTo @route="signup">
+        <button type="button" class="btn btn-light text-primary mr-2">
+          {{t 'buttons.signup'}}
+        </button>
+      </LinkTo>
     </div>
   </nav>
 </footer>
