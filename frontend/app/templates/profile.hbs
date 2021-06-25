@@ -60,7 +60,11 @@
               {{else}}
               <div class="section-title"> {{t "profile.bio"}}</div>
               <div class="account-bio">
-                {{ellipsize this.model.metadata.aboutMe 218}}
+                {{#if this.model.metadata.aboutMe}}
+                  {{ellipsize this.model.metadata.aboutMe 218}}
+                {{else}}
+                 <i>{{t "profile.no_bio"}}</i>
+                {{/if}}
               </div>
               {{/if}}
             </div>
