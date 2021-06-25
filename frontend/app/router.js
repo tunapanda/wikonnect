@@ -55,6 +55,7 @@ Router.map(function () {
       this.route('home', { path: '/' });
       this.route('manage');
     });
+    this.route('content-approval');
   });
 
   // 404 page should always be the last

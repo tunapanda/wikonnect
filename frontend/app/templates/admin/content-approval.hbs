@@ -1,0 +1,42 @@
+<div class="container">
+  <table class="table content">
+    <thead>
+      <th>
+        {{t "admin.content_approval.table.thumbnail"}}
+      </th>
+      <th>
+        {{t "admin.content_approval.table.name"}}
+      </th>
+      <th>
+        {{t "admin.content_approval.table.description"}}
+      </th>
+      <th>
+        {{t "admin.content_approval.table.status"}}
+      </th>
+      <th>
+        {{t "admin.content_approval.table.status"}}
+      </th>
+      <th>
+        {{t "admin.content_approval.table.action"}}
+      </th>
+    </thead>
+    <tbody>
+      {{#each this.model as |chapter|}}
+        <tr>
+          <td>
+            <img src={{chapter.imageUrl}} alt={{chapter.name}} />
+          </td>
+          <td>
+            {{chapter.name}}
+          </td>
+          <td>
+            {{chapter.description}}
+          </td>
+          <td></td>
+          <td>{{chapter.author.name}}</td>
+          <td></td>
+        </tr>
+      {{/each}}
+    </tbody>
+  </table>
+</div>
