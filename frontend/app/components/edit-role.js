@@ -9,18 +9,21 @@ export default class EditRoleComponent extends Component {
   @service notify;
   @service store;
 
-  get roles() {
+  get roleNames() {
     return this.args.roles.map((role) => capitalize(role.name));
   }
 
   @action
-  async changeRole(role) {
+  async changeRole(roleName) {
     const userId = this.args.user.id;
+    const role = this.args.roles.find(
+      (roleObj) => roleObj.name === roleName.toLowerCase()
+    );
 
     const currentUser = this.store.peekRecord('user', this.me.id);
 
-    if (role.name === 'superadmin' && currentUser.role !== 'superadmin') {
-      let message = 'You are not authorized to make a user a super admin';
+    if (role.name === 'admin' && currentUser.role !== 'admin') {
+      let message = 'You are not authorized to make a user an admin';
       this.notify.error(message, { closeAfter: 20000 });
 
       return;
@@ -31,6 +34,7 @@ export default class EditRoleComponent extends Component {
         groupId: role.id,
       },
     };
+    
     try {
       const res = await fetch(`/api/v1/userRole/${userId}`, {
         method: 'PUT',
