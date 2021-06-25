@@ -2,22 +2,22 @@
   <table class="table content">
     <thead>
       <th>
-        {{t "admin.content_approval.table.thumbnail"}}
+        {{t 'admin.content_approval.table.thumbnail'}}
       </th>
       <th>
-        {{t "admin.content_approval.table.name"}}
+        {{t 'admin.content_approval.table.name'}}
       </th>
       <th>
-        {{t "admin.content_approval.table.description"}}
+        {{t 'admin.content_approval.table.description'}}
       </th>
       <th>
-        {{t "admin.content_approval.table.status"}}
+        {{t 'admin.content_approval.table.status'}}
       </th>
       <th>
-        {{t "admin.content_approval.table.status"}}
+        {{t 'admin.content_approval.table.teacher'}}
       </th>
       <th>
-        {{t "admin.content_approval.table.action"}}
+        {{t 'admin.content_approval.table.action'}}
       </th>
     </thead>
     <tbody>
@@ -33,8 +33,24 @@
             {{chapter.description}}
           </td>
           <td></td>
-          <td>{{chapter.author.name}}</td>
-          <td></td>
+          <td>
+            <LinkTo @route="profile" @model={{chapter.author}}>
+              <img
+                class="rounded-circle user-profile-image m-1"
+                src={{chapter.author.profileUri}}
+                alt={{chapter.author.name}}
+              />
+              {{chapter.author.name}}
+            </LinkTo>
+          </td>
+          <td>
+            <button class="btn btn-secondary" type="button">
+              Approve
+            </button>
+            <button class="btn btn-light" type="button">
+              Request Revisions
+            </button>
+          </td>
         </tr>
       {{/each}}
     </tbody>
