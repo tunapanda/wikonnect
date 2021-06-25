@@ -34,7 +34,7 @@ export default class EditRoleComponent extends Component {
         groupId: role.id,
       },
     };
-    
+
     try {
       const res = await fetch(`/api/v1/userRole/${userId}`, {
         method: 'PUT',
