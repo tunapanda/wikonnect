@@ -5,7 +5,11 @@ const busboy = require('async-busboy');
 const { ref } = require('objection');
 const { nanoid } = require('nanoid/async');
 const sharp = require('sharp');
-const koaBody = require('koa-body')({ multipart: true, multiples: false, keepExtensions: true });
+const koaBody = require('koa-body')({
+  multipart: true,
+  multiples: false,
+  keepExtensions: true,
+});
 
 const s3 = require('../utils/s3Util');
 const log = require('../utils/logger');
@@ -19,9 +23,11 @@ const Reaction = require('../models/reaction');
 const { getProfileImage } = require('../utils/routesUtils/userRouteUtils');
 const { eventEmitter } = require('./../utils/event-emitter');
 const { eventCodes } = require('./../utils/events-classification');
+const ChapterFeedback = require('../models/chapter_feedback');
+const profaneCheck = require('../utils/profaneCheck');
 
 const router = new Router({
-  prefix: '/chapters'
+  prefix: '/chapters',
 });
 
 /**
@@ -87,8 +93,9 @@ const router = new Router({
  *
  */
 
-router.get('/', permController.requireAuth, validateGetChapter, async ctx => {
-  let stateUserId = ctx.state.user.id == undefined ? ctx.state.user.data.id : ctx.state.user.id;
+router.get('/', permController.requireAuth, validateGetChapter, async (ctx) => {
+  let stateUserId =
+    ctx.state.user.id == undefined ? ctx.state.user.data.id : ctx.state.user.id;
 
   let { page, per_page } = ctx.query;
   delete ctx.query.page;
@@ -105,7 +112,7 @@ router.get('/', permController.requireAuth, validateGetChapter, async ctx => {
       .select([
         'chapters.*',
         Counter.query()
-          .where({ 'chapterId': ref('chapters.id'), 'trigger': 'timerDelay' })
+          .where({ chapterId: ref('chapters.id'), trigger: 'timerDelay' })
           .count()
           .as('views'),
         Rating.query()
@@ -122,7 +129,7 @@ router.get('/', permController.requireAuth, validateGetChapter, async ctx => {
           .select('id')
           .where('userId', stateUserId)
           .andWhere('chapterId', ref('chapters.id'))
-          .as('authenticated_user_reaction_id')
+          .as('authenticated_user_reaction_id'),
       ])
       .where(ctx.query)
       .where((builder)=>{
@@ -148,14 +155,13 @@ router.get('/', permController.requireAuth, validateGetChapter, async ctx => {
         authors.push(chapter.results[i].author);
         authorIds[chapter.results[i].author.id] = true;
       }
-
     }
     const promises = authors.map(async (author) => {
       return {
         id: author.id,
         name: author.name,
         username: author.username,
-        profileUri: await getProfileImage(author)
+        profileUri: await getProfileImage(author),
       };
     });
     const authorProfiles = await Promise.all(promises);
@@ -163,7 +169,12 @@ router.get('/', permController.requireAuth, validateGetChapter, async ctx => {
     chapter.results = chapter.results.map((chap) => {
       if (!chap.author) {
         //just in case 😁
-        chap.author = { name: 'Private', username: 'Private', id: 'Private', profileUri: 'anonymous' };
+        chap.author = {
+          name: 'Private',
+          username: 'Private',
+          id: 'Private',
+          profileUri: 'anonymous',
+        };
         return chap;
       }
       const profile = authorProfiles.find((p) => p.id === chap.author.id);
@@ -171,21 +182,27 @@ router.get('/', permController.requireAuth, validateGetChapter, async ctx => {
         chap.author = profile;
       } else {
         //just in case 👽
-        chap.author = { name: 'Private', username: 'Private', id: 'Private', profileUri: 'anonymous' };
+        chap.author = {
+          name: 'Private',
+          username: 'Private',
+          id: 'Private',
+          profileUri: 'anonymous',
+        };
       }
       return chap;
     });
-
   } catch (e) {
     if (e.statusCode) {
       ctx.throw(e.statusCode, null, { errors: [e.message] });
-    } else { ctx.throw(400, null, { errors: [e.message] }); }
+    } else {
+      ctx.throw(400, null, { errors: [e.message] });
+    }
     throw e;
   }
 
   chapter = {
     meta: {
-      total_pages: chapter.total / per_page
+      total_pages: chapter.total / per_page,
     },
     chapters: chapter.results,
   };
@@ -193,7 +210,6 @@ router.get('/', permController.requireAuth, validateGetChapter, async ctx => {
   ctx.assert(chapter, 404, 'No chapter by that ID');
   ctx.status = 200;
   ctx.body = chapter;
-
 });
 
 /**
@@ -250,15 +266,15 @@ router.get('/', permController.requireAuth, validateGetChapter, async ctx => {
  *    HTTP/1.1 500 Internal Server Error
  */
 
-router.get('/:id', permController.requireAuth, async ctx => {
-
-  let stateUserId = ctx.state.user.id == undefined ? ctx.state.user.data.id : ctx.state.user.id;
+router.get('/:id', permController.requireAuth, async (ctx) => {
+  let stateUserId =
+    ctx.state.user.id == undefined ? ctx.state.user.data.id : ctx.state.user.id;
   try {
     let results = await Chapter.query()
       .select([
         'chapters.*',
         Counter.query()
-          .where({ 'chapterId': ref('chapters.id'), 'trigger': 'timerDelay' })
+          .where({ chapterId: ref('chapters.id'), trigger: 'timerDelay' })
           .count()
           .as('views'),
         Rating.query()
@@ -269,8 +285,7 @@ router.get('/:id', permController.requireAuth, async ctx => {
           .select('reaction')
           .where('userId', stateUserId)
           .andWhere('chapterId', ref('chapters.id'))
-          .as('authenticated_user')
-
+          .as('authenticated_user'),
       ])
       .where({ 'chapters.id': ctx.params.id })
       .withGraphFetched(
@@ -284,7 +299,7 @@ router.get('/:id', permController.requireAuth, async ctx => {
         id: chapter.author.id,
         name: chapter.author.name,
         username: chapter.author.username,
-        profileUri: await getProfileImage(chapter.author)
+        profileUri: await getProfileImage(chapter.author),
       };
     }
     ctx.status = 200;
@@ -292,13 +307,12 @@ router.get('/:id', permController.requireAuth, async ctx => {
   } catch (e) {
     if (e.statusCode) {
       ctx.throw(e.statusCode, null, { errors: [e.message] });
-    } else { ctx.throw(400, null, { errors: ['Bad Request'] }); }
+    } else {
+      ctx.throw(400, null, { errors: ['Bad Request'] });
+    }
     throw e;
   }
-
-
 });
-
 
 /**
  * @api {post} /api/v1/chapters POST single chapter.
@@ -345,8 +359,9 @@ router.get('/:id', permController.requireAuth, async ctx => {
  * @apiErrorExample {json} List error
  *    HTTP/1.1 500 Internal Server Error
  */
-router.post('/', permController.requireAuth, async ctx => {
-  let stateUserId = ctx.state.user.id == undefined ? ctx.state.user.data.id : ctx.state.user.id;
+router.post('/', permController.requireAuth, async (ctx) => {
+  let stateUserId =
+    ctx.state.user.id == undefined ? ctx.state.user.data.id : ctx.state.user.id;
   let newChapter = ctx.request.body.chapter;
 
   // Server side slug generator
@@ -362,16 +377,16 @@ router.post('/', permController.requireAuth, async ctx => {
   } catch (e) {
     if (e.statusCode) {
       ctx.throw(e.statusCode, null, { errors: [e.message] });
-    } else { ctx.throw(400, null, { errors: ['Bad Request'] }); }
+    } else {
+      ctx.throw(400, null, { errors: ['Bad Request'] });
+    }
     throw e;
   }
   ctx.assert(chapter, 401, 'Something went wrong');
 
   ctx.status = 201;
   ctx.body = { chapter };
-
 });
-
 
 /**
  * @api {put} /api/v1/chapters/:id PUT single chapter.
@@ -399,7 +414,7 @@ router.post('/', permController.requireAuth, async ctx => {
  * @apiErrorExample {json} List error
  *    HTTP/1.1 500 Internal Server Error
  */
-router.put('/:id', permController.requireAuth, async ctx => {
+router.put('/:id', permController.requireAuth, async (ctx) => {
   let chapterData = ctx.request.body.chapter;
   if (chapterData.id) delete chapterData.id;
   //TODO: enable permissions checking so only allowed users can approve and verify
@@ -407,10 +422,15 @@ router.put('/:id', permController.requireAuth, async ctx => {
   const chapterCheck = await Chapter.query().findById(ctx.params.id);
   ctx.assert(chapterCheck, 404, 'Invalid data provided');
 
-  const justPublished = chapterCheck.status !== 'published' && chapterData.status === 'published';
-  const justApproved = (!chapterCheck.approved || chapterCheck.approved !== true) && chapterData.approved === true;
+  const justPublished =
+    chapterCheck.status !== 'published' && chapterData.status === 'published';
+  const justApproved =
+    (!chapterCheck.approved || chapterCheck.approved !== true) &&
+    chapterData.approved === true;
   try {
-    const chapter = await chapterCheck.$query().patchAndFetchById(ctx.params.id, chapterData);
+    const chapter = await chapterCheck
+      .$query()
+      .patchAndFetchById(ctx.params.id, chapterData);
 
     // emit a Node event if it has just been published
     if (justPublished) {
@@ -427,11 +447,12 @@ router.put('/:id', permController.requireAuth, async ctx => {
   } catch (e) {
     if (e.statusCode) {
       ctx.throw(e.statusCode, null, { errors: [e.message] });
-    } else { ctx.throw(400, null, { errors: [e.message] }); }
+    } else {
+      ctx.throw(400, null, { errors: [e.message] });
+    }
     throw e;
   }
 });
-
 
 /**
  * @api {delete} /api/v1/review/:id Delete a chapter
@@ -449,13 +470,11 @@ router.put('/:id', permController.requireAuth, async ctx => {
  *     { }
  *
  */
-router.delete('/:id', permController.requireAuth, async ctx => {
+router.delete('/:id', permController.requireAuth, async (ctx) => {
   const chapter = await Chapter.query().findById(ctx.params.id);
   ctx.assert(chapter, 404, 'No chapter with that identifier was found');
 
-  await Chapter.query()
-    .delete()
-    .where({ id: ctx.params.id });
+  await Chapter.query().delete().where({ id: ctx.params.id });
 
   if (chapter.approved && chapter.approved === true) {
     eventEmitter.emit(eventCodes.approvedChapter.deleted, chapter);
@@ -463,7 +482,6 @@ router.delete('/:id', permController.requireAuth, async ctx => {
   ctx.status = 200;
   ctx.body = { chapter };
 });
-
 
 /**
  * @api {post} /api/v1/chapters/:id/chapter-image POST chapter banner image.
@@ -487,79 +505,83 @@ router.delete('/:id', permController.requireAuth, async ctx => {
  * @apiErrorExample {json} List error
  *    HTTP/1.1 500 Internal Server Error
  */
-router.post('/:id/chapter-image', permController.requireAuth, koaBody, async (ctx) => {
-  const chapter_id = ctx.params.id;
+router.post(
+  '/:id/chapter-image',
+  permController.requireAuth,
+  koaBody,
+  async (ctx) => {
+    const chapter_id = ctx.params.id;
 
-  ctx.assert(ctx.request.files.file, 400, 'No file image uploaded');
+    ctx.assert(ctx.request.files.file, 400, 'No file image uploaded');
 
-  const fileNameBase = await nanoid(11);
-  const uploadPath = '/uploads/chapters';
-  const uploadDir = path.resolve(__dirname, '../public/' + uploadPath);
+    const fileNameBase = await nanoid(11);
+    const uploadPath = '/uploads/chapters';
+    const uploadDir = path.resolve(__dirname, '../public/' + uploadPath);
 
-  const { file } = ctx.request.files;
+    const { file } = ctx.request.files;
 
-  const fileExtension = path.extname(file.name);
+    const fileExtension = path.extname(file.name);
 
-  if (!['.webp', '.svg', '.png', '.jpeg', '.gif', '.avif', '.jpg'].includes(fileExtension)) {
-    ctx.throw(400, { error: 'Image format not supported' });
-  }
-
-  let resizer;
-  try {
-    resizer = await sharp(file.path)
-      .resize(328, 200)
-      .jpeg({ quality: 70 });
-  } catch (e) {
-    if (e.statusCode) {
-      ctx.throw(e.statusCode, null, { errors: [e.message] });
-    } else {
-      ctx.throw(500, null, { errors: [e.message] });
+    if (
+      !['.webp', '.svg', '.png', '.jpeg', '.gif', '.avif', '.jpg'].includes(
+        fileExtension
+      )
+    ) {
+      ctx.throw(400, { error: 'Image format not supported' });
     }
-  }
 
-  if (s3.config) {
-    let buffer = await resizer.toBuffer();
-    const params = {
-      Bucket: s3.config.bucket, // pass your bucket name
-      Key: `/uploads/chapters/${fileNameBase}.jpg`, // key for saving filename
-      Body: buffer, //image to be uploaded
-      ACL: 'public-read'
-    };
-
+    let resizer;
     try {
-      //Upload image to AWS S3 bucket
-      const uploaded = await s3.s3.upload(params).promise();
-      log.info('Uploaded in:', uploaded.Location);
-      await Chapter.query().patchAndFetchById(chapter_id, { imageUrl: uploaded.Location });
+      resizer = await sharp(file.path).resize(328, 200).jpeg({ quality: 70 });
+    } catch (e) {
+      if (e.statusCode) {
+        ctx.throw(e.statusCode, null, { errors: [e.message] });
+      } else {
+        ctx.throw(500, null, { errors: [e.message] });
+      }
+    }
+
+    if (s3.config) {
+      let buffer = await resizer.toBuffer();
+      const params = {
+        Bucket: s3.config.bucket, // pass your bucket name
+        Key: `/uploads/chapters/${fileNameBase}.jpg`, // key for saving filename
+        Body: buffer, //image to be uploaded
+        ACL: 'public-read',
+      };
+
+      try {
+        //Upload image to AWS S3 bucket
+        const uploaded = await s3.s3.upload(params).promise();
+        log.info('Uploaded in:', uploaded.Location);
+        await Chapter.query().patchAndFetchById(chapter_id, {
+          imageUrl: uploaded.Location,
+        });
+
+        ctx.body = {
+          host: `${params.Bucket}.s3.amazonaws.com/uploads/chapters`,
+          path: `${fileNameBase}.jpg`,
+        };
+      } catch (e) {
+        log.error(e);
+        ctx.throw(e.statusCode, null, { message: e.message });
+      }
+    } else {
+      await resizer.toFile(`${uploadDir}/${fileNameBase}.jpg`);
+
+      await Chapter.query()
+        .findById(chapter_id)
+        .patch({
+          imageUrl: `${uploadPath}/${fileNameBase}.jpg`,
+        });
 
       ctx.body = {
-        host: `${params.Bucket}.s3.amazonaws.com/uploads/chapters`,
-        path: `${fileNameBase}.jpg`
+        host: ctx.host,
+        path: `${uploadPath}/${fileNameBase}.jpg`,
       };
-    } catch (e) {
-      log.error(e);
-      ctx.throw(e.statusCode, null, { message: e.message });
     }
-
-  } else {
-
-    await resizer.toFile(`${uploadDir}/${fileNameBase}.jpg`);
-
-
-    await Chapter.query()
-      .findById(chapter_id)
-      .patch({
-        imageUrl: `${uploadPath}/${fileNameBase}.jpg`
-      });
-
-    ctx.body = {
-      host: ctx.host,
-      path: `${uploadPath}/${fileNameBase}.jpg`
-    };
   }
-});
-
-
+);
 
 /**
  * @apiDeprecated use now (#HP5:Save H5P).
@@ -584,30 +606,73 @@ router.post('/:id/chapter-image', permController.requireAuth, koaBody, async (ct
  *    HTTP/1.1 500 Internal Server Error
  */
 
-router.post('/:id/upload', async ctx => {
+router.post('/:id/upload', async (ctx) => {
   const dirName = ctx.params.id;
   const uploadPath = `/uploads/h5p/${dirName}`;
   const uploadDir = path.resolve(__dirname, '../public' + uploadPath);
 
-  await Chapter.query()
-    .findById(dirName)
-    .patch({
-      content_uri: uploadPath
-    });
-
+  await Chapter.query().findById(dirName).patch({
+    content_uri: uploadPath,
+  });
 
   await busboy(ctx.req, {
     onFile: function (fieldname, file) {
       file.pipe(unzipper.Extract({ path: uploadDir }));
-    }
+    },
   });
   // ctx.assert(files.length, 400, 'No files sent.');
   // ctx.assert(files.length === 1, 400, 'Too many files sent.');
 
   ctx.body = {
     host: ctx.host,
-    path: uploadPath
+    path: uploadPath,
   };
+});
+
+router.get('/:id/feedback', async (ctx) => {
+  try {
+    const feedback = await ChapterFeedback.query().where(ctx.query);
+
+    ctx.assert(feedback, 401, 'Something went wrong');
+    ctx.status = 200;
+    ctx.body = { feedback };
+  } catch (e) {
+    if (e.statusCode) {
+      ctx.throw(e.statusCode, null, { errors: [e] });
+    } else {
+      ctx.throw(400, null, { errors: [e] });
+    }
+    throw e;
+  }
+});
+
+router.post('/:id/feedback', permController.requireAuth, async (ctx) => {
+  let stateUserId =
+    ctx.state.user.id == undefined ? ctx.state.user.data.id : ctx.state.user.id;
+  let newChapterFeedback = ctx.request.body.comment;
+  newChapterFeedback.creatorId = stateUserId;
+  newChapterFeedback.chapterId = ctx.params.id;
+
+  const checked = await profaneCheck(newChapterFeedback.comment);
+
+  if (typeof checked != 'undefined' && checked) {
+    ctx.throw(400, null, { errors: [checked] });
+  }
+
+  let feedback;
+  try {
+    feedback = await ChapterFeedback.query().insertAndFetch(newChapterFeedback);
+  } catch (e) {
+    if (e.statusCode) {
+      ctx.throw(e.statusCode, null, { errors: [e.data] });
+    } else {
+      ctx.throw(400, null, { errors: [e.nativeError] });
+    }
+    throw e;
+  }
+  ctx.assert(feedback, 401, 'Something went wrong');
+  ctx.status = 201;
+  ctx.body = { feedback };
 });
 
 module.exports = router.routes();
