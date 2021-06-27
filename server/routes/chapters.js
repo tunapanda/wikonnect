@@ -460,15 +460,14 @@ router.delete('/:id', permController.requireAuth, async ctx => {
   const chapter = await Chapter.query().findById(ctx.params.id);
   ctx.assert(chapter, 404, 'No chapter with that identifier was found');
 
-  await Chapter.query()
-    .delete()
-    .where({ id: ctx.params.id });
+  await chapter.$query()
+    .delete();
 
   if (chapter.approved && chapter.approved === true) {
     eventEmitter.emit(eventCodes.approvedChapter.deleted, chapter);
   }
   ctx.status = 200;
-  ctx.body = { chapter };
+  ctx.body = { };
 });
 
 
