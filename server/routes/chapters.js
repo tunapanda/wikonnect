@@ -362,8 +362,11 @@ router.post('/', permController.requireAuth, async ctx => {
 
   let chapter;
   try {
-    chapter = await Chapter.query()
-      .insertGraphAndFetch(newChapter);
+    chapter =
+        await Chapter.transaction( tsx => {
+          return Chapter.query(tsx)
+            .insertGraphAndFetch(newChapter, { relate: ['tags'] });
+        });
   } catch (e) {
     if (e.statusCode) {
       ctx.throw(e.statusCode, null, { errors: [e.message] });
@@ -414,9 +417,9 @@ router.put('/:id', permController.requireAuth, async ctx => {
   const justPublished = chapterCheck.status !== 'published' && chapterData.status === 'published';
   const justApproved = (!chapterCheck.approved || chapterCheck.approved !== true) && chapterData.approved === true;
   try {
-    const chapter = await Chapter.transaction(async tsx => {
+    const chapter = await Chapter.transaction( tsx => {
       return Chapter.query(tsx)
-        .upsertGraphAndFetch({...chapterData, id: ctx.params.id}, {relate: true, unrelate: true});
+        .upsertGraphAndFetch({...chapterData, id: ctx.params.id}, {relate: ['tags'], unrelate: ['tags']});
     });
 
     // emit a Node event if it has just been published
