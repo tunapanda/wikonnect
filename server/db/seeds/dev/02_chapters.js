@@ -1,5 +1,6 @@
 const {faker, seed_number} = require('../_seeds');
 const reviewQuestions = require('../../../utils/review-questions');
+const {seedH5PFiles} = require( '../../../h5p-dummy/unzip-dummy-h5p');
 
 exports.seed = async (knex) => {
   // Deletes ALL existing entries
@@ -8,12 +9,16 @@ exports.seed = async (knex) => {
   const userIds = await knex('users').pluck('id');
   const fakeChapters = [];
   const reviewQuestionsCategories = reviewQuestions.map((question) => question.category);
+  let contentId = null;
+  if(!process.env.NODE_ENV || process.env.NODE_ENV ==='development'){
+    contentId = 'demo-chapter';
+    await seedH5PFiles(contentId);
+  }
   for (let index = 0; index < seed_number; index++) {
     const name = faker.lorem.words();
     const slug = faker.helpers.slugify(name);
     const status = ['published', 'draft', 'archived'];
 
-    const chapterId = ['chapter1', 'chapter2'];
     fakeChapters.push({
       name: name,
       slug: slug,
@@ -22,7 +27,7 @@ exports.seed = async (knex) => {
       content_type: 'h5p',
       image_url: faker.image.imageUrl(328, 200, 'business', true, false),
       status: faker.random.arrayElement(status),
-      content_uri: `/uploads/h5p/${faker.random.arrayElement(chapterId)}`,
+      content_id: contentId,
       creator_id: faker.random.arrayElement(userIds),
       created_at: faker.date.past(),
       updated_at: faker.date.recent(),
@@ -39,8 +44,8 @@ exports.seed = async (knex) => {
     status: 'published',
     lesson_id: 'lesson1',
     creator_id: 'user1',
-    content_type: 'h5p',
-    content_uri: '/uploads/h5p/chapter1',
+    content_type: 'h5p', 
+    content_id: contentId,
     created_at: '2017-12-20 19:17:10',
     updated_at: '2017-12-20 19:17:10',
     approved: true,
@@ -55,7 +60,7 @@ exports.seed = async (knex) => {
     status: 'published',
     lesson_id: 'basics1',
     content_type: 'h5p',
-    content_uri: '/uploads/h5p/chapter1',
+    content_id: contentId,
     created_at: '2017-12-20 19:17:10',
     updated_at: '2017-12-20 19:17:10',
     approved: true,
@@ -70,7 +75,7 @@ exports.seed = async (knex) => {
     status: 'published',
     lesson_id: 'basics2',
     content_type: 'h5p',
-    content_uri: '/uploads/h5p/chapter1',
+    content_id: contentId,
     created_at: '2017-12-20 19:17:10',
     updated_at: '2017-12-20 19:17:10',
     approved: true,
@@ -85,7 +90,7 @@ exports.seed = async (knex) => {
     creator_id: 'user1',
     lesson_id: 'basics2',
     content_type: 'h5p',
-    content_uri: '/uploads/h5p/chapter1',
+    content_id: contentId,
     created_at: '2017-12-20 19:17:10',
     updated_at: '2017-12-20 19:17:10',
     approved: true,
@@ -100,13 +105,13 @@ exports.seed = async (knex) => {
     status: 'published',
     lesson_id: 'basics2',
     content_type: 'h5p',
-    content_uri: '/uploads/h5p/chapter1',
+    content_id: contentId,
     created_at: '2017-12-20 19:17:10',
     updated_at: '2017-12-20 19:17:10',
     approved: true,
     verified: false,
   });
-
+  
   // Inserts seed entries
   return knex('chapters').insert(fakeChapters);
 };
