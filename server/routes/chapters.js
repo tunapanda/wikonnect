@@ -14,7 +14,7 @@ const Chapter = require('../models/chapter');
 const Rating = require('../models/rating');
 const Counter = require('../models/counter');
 const permController = require('../middleware/permController');
-const validateGetChapter = require('../middleware/validateRequests/chapterGetValidation');
+const { ChapterGetValidation } = require('../middleware/request-validations/chapter');
 const Reaction = require('../models/reaction');
 const { getProfileImage } = require('../utils/routesUtils/userRouteUtils');
 const { eventEmitter } = require('./../utils/event-emitter');
@@ -87,7 +87,7 @@ const router = new Router({
  *
  */
 
-router.get('/', permController.requireAuth, validateGetChapter, async ctx => {
+router.get('/', permController.requireAuth, ChapterGetValidation, async ctx => {
   let stateUserId = ctx.state.user.id == undefined ? ctx.state.user.data.id : ctx.state.user.id;
 
   let { page, per_page } = ctx.query;
