@@ -117,6 +117,13 @@ class Tag extends Model {
     });
   }
 
+  static get modifiers() {
+    return {
+      selectBasicInfo: (builder) => {
+        builder.select('tags.id', 'tags.name','tags.slug');
+      }
+    };
+  }
 }
 
 Tag.knex(knex);
