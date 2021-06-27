@@ -11,7 +11,14 @@ export default class IndexController extends Controller {
   @service store;
   @service intl;
   @tracked tags = null;
-  @tracked tagsList = this.store.peekAll('chapter-tag');
+  @tracked tagsList = this.parsedChapterTags;
+
+  get parsedChapterTags() {
+    return this.store
+      .peekAll('tag')
+      .sortBy('name')
+      .map((tag) => new FilterTag(tag, false));
+  }
 
   get selectedFilterTags() {
     if (!this.tags) {
@@ -19,7 +26,9 @@ export default class IndexController extends Controller {
     }
     const queryTags = this.tags.split(this.queryTagJoinXcter);
     return this.tagsList.filter((tag) => {
-      const index = queryTags.findIndex((t) => t.toLowerCase() === tag.name);
+      const index = queryTags.findIndex(
+        (t) => t.toLowerCase() === tag.id.toLowerCase()
+      );
       if (index > -1) {
         tag.isSelected = true;
         return true;
@@ -42,14 +51,18 @@ export default class IndexController extends Controller {
   toggleTagSelection(tag) {
     const queryTags = this.tags ? this.tags.split(this.queryTagJoinXcter) : [];
     if (tag.isSelected) {
-      const index = queryTags.findIndex((t) => t.toLowerCase() === tag.name);
+      const index = queryTags.findIndex(
+        (t) => t.toLowerCase() === tag.id.toLowerCase()
+      );
       if (index > -1) {
         queryTags.splice(index, 1);
       }
     } else {
-      const index = queryTags.findIndex((t) => t.toLowerCase() === tag.name);
+      const index = queryTags.findIndex(
+        (t) => t.toLowerCase() === tag.id.toLowerCase()
+      );
       if (index === -1) {
-        queryTags.push(tag.name);
+        queryTags.push(tag.id);
       }
     }
     tag.isSelected = !tag.isSelected;
@@ -67,8 +80,22 @@ export default class IndexController extends Controller {
     }
     const allTags = this.tags.split(this.queryTagJoinXcter);
     const lastTag = allTags.pop();
+    if (allTags.length === 0) {
+      return this.intl.t('home.loading.no_filtered_record', {
+        selectedTag: lastTag,
+      });
+    }
     const selectedTags = allTags.join(',') + ', and ' + lastTag;
 
-    return this.intl.t('home.loading.no_filtered_record', { selectedTags });
+    return this.intl.t('home.loading.no_filtered_records', { selectedTags });
+  }
+}
+
+class FilterTag {
+  @tracked isSelected;
+  constructor(tagModel, isSelected) {
+    this.name = tagModel.name;
+    this.id = tagModel.id;
+    this.isSelected = isSelected;
   }
 }
