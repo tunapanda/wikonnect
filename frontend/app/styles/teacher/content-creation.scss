@@ -2,7 +2,9 @@ $palette: (
   white: #FFFF,
   warning: #FFD300,
   dark: #343a40,
-  grey: grey
+  grey: grey,
+  gray95: #EBF0F2,
+  primary: #F57010,
 );
 
 .content-creation-section {
@@ -67,6 +69,21 @@ $palette: (
 
 }
 
+.tags-selection-section{
+  .tag-action-button {
+    padding: 2px 4px;
+    background-color: map-get($palette, gray95);
+    border-color: map-get($palette, gray95);
+    color: map-get($palette, gray45);
+    font-size: 12px;
+
+    &:active, &.active, &:focus {
+      outline: none;
+      background-color: map-get($palette, primary);
+      color: map-get($palette, white);
+    }
+  }
+}
 
 @media only screen and (max-width: 600px) {
   .thumbnail-upload-section {
