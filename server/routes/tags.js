@@ -68,6 +68,8 @@ router.get('/:id', requireAuth, async (ctx) => {
  * @apiParam (Query Params) {Boolean}  [canDelete]  filter with tags that can/not be deleted
  * @apiParam (Query Params) {String}   [creatorId]  filter tags by tag author Id
  * @apiParam (Query Params) {Boolean}  [includeAggregates=false] if to add courses, chapters, & followers counts on response
+ * @apiParam (Query Params) {Boolean}  [chapterTagsOnly=false] Only include tags tied to a chapter
+ * @apiParam (Query Params) {Boolean}  [courseTagsOnly=false] Only include tags tied to a course
  *
  *
  * @apiSuccess {Object}  tags Top level object
@@ -104,7 +106,12 @@ router.get('/:id', requireAuth, async (ctx) => {
 router.get('/', requireAuth, async (ctx) => {
   let tags;
   const includeAggregates = ctx.query.includeAggregates;
+  const courseTagsOnly = ctx.query.courseTagsOnly;
+  const chapterTagsOnly = ctx.query.chapterTagsOnly;
+
   delete ctx.query.includeAggregates;
+  delete ctx.query.courseTagsOnly;
+  delete ctx.query.chapterTagsOnly;
 
   if (includeAggregates === true || includeAggregates === 1 || includeAggregates === 'true' || includeAggregates === '1') {
     tags = await TagModel.query()
@@ -113,6 +120,18 @@ router.get('/', requireAuth, async (ctx) => {
         TagModel.relatedQuery('chapterTags').count().as('chaptersCount'),
         TagModel.relatedQuery('followers').count().as('followersCount'),
       ])
+      .onBuild((builder)=>{
+        if(courseTagsOnly && !chapterTagsOnly){
+          builder.whereExists(
+            TagModel.relatedQuery('courseTags')
+          );
+        }
+        if(!courseTagsOnly && chapterTagsOnly){
+          builder.whereExists(
+            TagModel.relatedQuery('chapterTags')
+          );
+        }
+      })
       .where(ctx.query);
   } else {
     tags = await TagModel.query()
