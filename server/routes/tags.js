@@ -3,6 +3,7 @@ const { UniqueViolationError } = require('objection');
 const TagModel = require('../models/tag');
 const { requireAuth } = require('../middleware/permController');
 const slugify = require('../utils/slugGen');
+const { TagsQueryValidation, TagPostValidation, TagPutValidation } = require('../middleware/request-validations/tag');
 
 
 const router = new Router({
@@ -103,7 +104,7 @@ router.get('/:id', requireAuth, async (ctx) => {
  *          }
  *
  */
-router.get('/', requireAuth, async (ctx) => {
+router.get('/', requireAuth,TagsQueryValidation, async (ctx) => {
   let tags;
   const includeAggregates = ctx.query.includeAggregates;
   const courseTagsOnly = ctx.query.courseTagsOnly;
@@ -177,7 +178,7 @@ router.get('/', requireAuth, async (ctx) => {
  *                }
  *          }
  */
-router.post('/', requireAuth, async ctx => {
+router.post('/', requireAuth,TagPostValidation, async ctx => {
 
   try {
     const obj = ctx.request.body.tag;
@@ -240,7 +241,7 @@ router.post('/', requireAuth, async ctx => {
  *                }
  *          }
  */
-router.put('/:id', requireAuth, async ctx => {
+router.put('/:id', requireAuth, TagPutValidation, async ctx => {
   let obj = ctx.request.body.tag;
   delete obj.id;
 
