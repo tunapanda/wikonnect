@@ -4,5 +4,5 @@ breadcrumb:
 popup:
   google_prompt: Take two minutes to fill this Google form
   buttons:
-    ok: Sure yes
+    ok: Sure !
     no: Later
