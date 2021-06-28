@@ -21,10 +21,20 @@ export default class EditRoleComponent extends Component {
     );
 
     const currentUser = this.store.peekRecord('user', this.me.id);
+    const targetUser = this.store.peekRecord('user', userId);
 
-    if (role.name === 'admin' && currentUser.role !== 'admin') {
+    // A non-admin user can't promote someone to admin
+    if (role.name === 'admin' && currentUser.role !== 'Admin') {
       let message = 'You are not authorized to make a user an admin';
-      this.notify.error(message, { closeAfter: 20000 });
+      this.notify.error(message, { closeAfter: 3000 });
+
+      return;
+    }
+
+    // A non-admin user can't demote an admin
+    if (currentUser.role !== 'Admin' && targetUser.role === 'Admin') {
+      let message = 'You are not authorized to make a user an admin';
+      this.notify.error(message, { closeAfter: 3000 });
 
       return;
     }
