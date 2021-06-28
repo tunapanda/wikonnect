@@ -26,6 +26,6 @@ export default class IndexRoute extends Route {
   }
 
   async afterModel() {
-    return await this.store.findAll('tag');
+    return await this.store.query('tag', { chapterTagsOnly: true });
   }
 }
