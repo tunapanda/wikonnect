@@ -16,6 +16,7 @@ export default class IndexController extends Controller {
   get parsedChapterTags() {
     return this.store
       .peekAll('tag')
+      .filter((tag) => tag.id) // ensure it has an id
       .sortBy('name')
       .map((tag) => new FilterTag(tag, false));
   }
@@ -78,15 +79,27 @@ export default class IndexController extends Controller {
     if (!this.tags || (this.model.length > 0 && this.tags)) {
       return this.intl.t('home.loading.loaded_all_the_records');
     }
-    const allTags = this.tags.split(this.queryTagJoinXcter);
-    const lastTag = allTags.pop();
-    if (allTags.length === 0) {
+    const allTagIds = this.tags.split(this.queryTagJoinXcter);
+    const lastTagId = allTagIds.pop();
+    const lastTag = this.tagsList.find((tag) => {
+      return tag.id.toLowerCase() === lastTagId.toLowerCase();
+    });
+
+    if (allTagIds.length === 0) {
       return this.intl.t('home.loading.no_filtered_record', {
-        selectedTag: lastTag,
+        selectedTag: lastTag ? lastTag.name : lastTagId,
       });
     }
-    const selectedTags = allTags.join(',') + ', and ' + lastTag;
+    const allTagNames = this.tagsList
+      .filter((t) => {
+        return allTagIds.some((id) => id.toLowerCase() === t.id.toLowerCase());
+      })
+      .mapBy('name');
 
+    let selectedTags = lastTag ? lastTag.name : lastTagId;
+    if (allTagNames) {
+      allTagNames.join(',') + ', and ' + lastTag.name;
+    }
     return this.intl.t('home.loading.no_filtered_records', { selectedTags });
   }
 }
