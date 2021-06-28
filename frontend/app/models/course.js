@@ -5,10 +5,12 @@ export default class CourseModel extends Model {
   @attr() slug;
   @attr() description;
   @attr() status;
-  @attr() enrolled;
-  @attr('number') progress;
-  @attr() permission;
+  @attr('number', { defaultValue: 0 }) totalEnrolled;
+  @attr() updatedAt;
+  @attr() createdAt;
+  @attr() metadata;
+
   @belongsTo('user') creator;
-  @hasMany('module') modules;
-  @hasMany('comment') comments;
+  @hasMany('tag') tags;
+  @hasMany('course-playlist') playlist;
 }
