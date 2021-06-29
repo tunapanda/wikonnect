@@ -1,7 +1,7 @@
 import Controller from '@ember/controller';
 import { tracked } from '@glimmer/tracking';
 
-export default class CourseDraftsController extends Controller {
+export default class CoursePublishedController extends Controller {
   @tracked searchTerm;
 
   get courses() {

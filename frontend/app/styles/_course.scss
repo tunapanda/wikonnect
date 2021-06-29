@@ -518,11 +518,11 @@ $palette: (
   background-color: map-get($palette, alto);
 }
 
-.draft-course-preview .course-preview-card {
+.course-preview .course-preview-card {
   position: relative;
   padding-bottom: 45px;
 
-  .draft-course-actions {
+  .course-actions {
     position: absolute;
     right: 10px;
     bottom: 10px;

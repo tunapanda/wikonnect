@@ -55,6 +55,13 @@ drafts_page:
   labels:
     no_content: You currently have no draft courses
 
+published_page:
+  title: Your Published Course Items
+  buttons:
+    view_course: View Course
+  labels:
+    no_content: You currently have no published courses.
+
 errors:
   submit_tag: Error encoutered while processing the tag. Kindly try again.
   course_image_upload: Error encountered while uploading course image
