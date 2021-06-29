@@ -1,5 +1,9 @@
+const { raw } = require('objection');
 const Model = require('./_model');
 const knex = require('../db/db');
+const Trigger = require('./badge_triggers');
+const Badges = require('./badges');
+const UserBadges = require('./user_badges');
 
 class Comment extends Model {
   static get tableName() {
@@ -70,6 +74,29 @@ class Comment extends Model {
         builder.select('id', 'creator_id', 'chapter_id', 'comment', 'createdAt', 'updatedAt');
       }
     };
+  }
+
+  async $afterInsert(queryContext) {
+    await super.$afterInsert(queryContext);
+    // get total
+    const results = await Comment.query(queryContext.transaction)
+      .select([
+        raw('COUNT(CASE WHEN parent_id =\'false\' THEN 1 ELSE NULL END) as "totalcomments"'),
+        raw('COUNT(CASE WHEN parent_id <> \'false\' THEN 1 ELSE NULL END) as "totalreplies"')
+      ])
+      .where('creator_id', this.creatorId);
+
+    const trigger = await Trigger.query().where({ name: 'comment_create' }).returning('id');
+
+    if (results[0].totalcomments > 1) {
+      const badges = await Badges.query().where('trigger_id', trigger[0].id);
+      await UserBadges.query().insert({ 'user_id': this.creatorId, 'badge_id': badges[0].id }).returning(['user_id']);
+    }
+
+    if (results[0].totalreplies > 3) {
+      const badges = await Badges.query().where('trigger_id', trigger[0].id);
+      await UserBadges.query().insert({ 'user_id': this.creatorId, 'badge_id': badges[0].id }).returning(['user_id']);
+    }
   }
 }
 

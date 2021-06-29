@@ -3,7 +3,7 @@ const User = require('../models/user');
 
 
 const router = new Router({
-  prefix: '/leaderboard'
+  prefix: '/user_badges'
 });
 
 router.get('/', async ctx => {
