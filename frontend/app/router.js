@@ -57,6 +57,15 @@ Router.map(function () {
     });
   });
 
+  this.route('course', function () {
+    this.route('index');
+    this.route('show', { path: '/:id/show' });
+    this.route('edit', { path: '/:id/edit' });
+    this.route('create');
+    this.route('published');
+    this.route('drafts');
+  });
+
   // 404 page should always be the last
   this.route('not-found', { path: '*path' });
   this.route('access-denied');
