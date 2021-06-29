@@ -13,8 +13,6 @@ export default Torii.extend({
           provider: data.provider,
         })
         .then((user) => {
-          console.log(user.get('isNew'));
-          console.log(user);
           if (user.get('isNew')) {
             this.signupSuccess();
           } else {
