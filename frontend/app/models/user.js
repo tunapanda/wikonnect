@@ -43,7 +43,7 @@ export default class UserModel extends Model {
   }
 
   get role() {
-    if (!this.userRoles) {
+    if (!this.userRoles || !this.userRoles[0] || !this.userRoles[0].name) {
       return '';
     }
 

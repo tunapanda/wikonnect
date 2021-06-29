@@ -91,7 +91,7 @@ router.post('/', validateAuthRoutes.validateNewUser, createPasswordHash, async c
   newUser.lastIp = ctx.request.ip;
 
   const userCheck = await User.query();
-  let role = !userCheck.length ? 'groupAdmin' : 'groupVerified';
+  let role = !userCheck.length ? 'groupAdmin' : 'groupBasic';
 
   delete newUser.profileUri; //avoids external profile links at the moment
 
@@ -207,7 +207,9 @@ router.get('/:id', permController.requireAuth, async ctx => {
   profileCompleteBoolean(user, ctx.params.id);
   log.info('Got a request from %s for %s', ctx.request.ip, ctx.path);
 
-  if(stateUserId !== userId){
+
+  user = user.toJSON();
+  if (stateUserId !== userId) {
     delete user.email;
     delete user.username;
     delete user.updatedAt;
@@ -475,7 +477,7 @@ router.get('/:id/verify', permController.requireAuth, async ctx => {
     } else {
       throw new Error('Email verification has expired');
     }
-    
+
   } catch (e) {
     log.info('Email verification has expired');
     if (e.statusCode) {

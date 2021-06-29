@@ -43,7 +43,7 @@ export default class AccountEditController extends Controller {
 
   @action
   async updateProfile(userModel) {
-    if (!userModel.isDirty && this.selectedProfilePicUploaded !== false) {
+    if (!userModel.isDirty && !this.selectedProfilePic) {
       return;
     }
     if (this.selectedProfilePic) {
@@ -71,11 +71,12 @@ export default class AccountEditController extends Controller {
       }
     }
 
-    if (!userModel.isDirty) {
+    if (userModel.isPristine) {
       this.notify.success('Profile image updated successfully', {
         closeAfter: 10000,
       });
       userModel.reload(); //no option because model will still have dirty attributes on store.push
+      return;
     }
     try {
       await userModel.save();
