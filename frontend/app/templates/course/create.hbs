@@ -1,69 +1,73 @@
-<div class="create-course-tab ml-2">
-  <div class="course-section-title">
-    {{t "course.create_page.title.create_course"}}
-  </div>
-  <div class="course-section-subtitle">
-    {{t "course.create_page.title.subtitle"}}
-  </div>
-
-  <hr class="section-divider">
-  <Course::CourseForm @model={{this.courseModel}} @tags={{this.model}}  @fileUploader={{this.fileUploader}}
-                      @onFormSubmit={{this.createCourse}} as |courseForm|>
-    {{exec this.setCourseForm courseForm}}
-  </Course::CourseForm>
-
-  <div class="sub-section-title">
-    {{t "course.create_page.title.all_chapters"}}
-  </div>
-  <hr class="section-divider">
-
-  <div class="chapters-filters-menu filters-sub-section-menu row">
-    <div class="col-lg-3">
-      <div class="search-form">
-        <Input class="form-control search-input" @value={{this.chapterSearchTerm}} @type="search"
-               placeholder="{{t "course.search_placeholder"}}"/>
-        <span class="search-icon {{if this.chapterSearchTerm 'd-none'}}"></span>
-      </div>
+<Course::CourseBuilderHeader>
+</Course::CourseBuilderHeader>
+<div class="course-sc-container">
+  <div class="create-course-tab ml-2">
+    <div class="course-section-title">
+      {{t "course.create_page.title.create_course"}}
     </div>
-    <div class="col-lg-7 mt-2 mt-lg-0">
-      <div class="filter-button-section">
-        <ChapterTags::TagsList @tagsList={{this.filterTags}}
-                               @toggleTagSelection={{this.toggleFilterTagSelection}}
-                               @selectedFilterTags={{this.selectedFilterTags}}
-                               @clearAllTagFilters={{this.clearAllTagFilters}} />
-      </div>
+    <div class="course-section-subtitle">
+      {{t "course.create_page.title.subtitle"}}
     </div>
-  </div>
-  {{#if this.filteredChapters}}
-    <div class="course-sub-section-subtitle d-flex justify-content-between">
-      <span> {{t "course.create_page.labels.chapters_subtitle"}}</span>
-    </div>
-  {{/if}}
 
-  <div class="row course-chapters-selection-list pb-5" id="select-chapters-section">
-    {{#each this.filteredChapters as |chapter|}}
-      <H5pListItem @chapter={{chapter}} class="chapter-preview-card ">
-        <span class="d-block col-12 mt-4"></span>
-        <div class="col-12 text-right add-course-action-section">
-          {{#if (exec this.isChapterOnCoursePlaylist chapter)}}
-            <button type="button" class="btn btn-sm btn-remove-from-course"
-              {{on "click" (fn this.removeChapterFromCourse chapter)}}>
-              {{svg-jar "tick" height="15" width="15"}}
-              {{t "course.create_page.buttons.remove_from_course"}}
-            </button>
-          {{else}}
-            <button type="button" class="btn btn-sm btn-add-to-course"
-              {{on "click"  (fn this.addChapterToCourse chapter)}}>
-              {{svg-jar "plus-circle" height="20" width="20"}}
-              {{t "course.create_page.buttons.add_to_course"}}
-            </button>
-          {{/if}}
+    <hr class="section-divider">
+    <Course::CourseForm @model={{this.courseModel}} @tags={{this.model}}  @fileUploader={{this.fileUploader}}
+                        @onFormSubmit={{this.createCourse}} as |courseForm|>
+      {{exec this.setCourseForm courseForm}}
+    </Course::CourseForm>
+
+    <div class="sub-section-title">
+      {{t "course.create_page.title.all_chapters"}}
+    </div>
+    <hr class="section-divider">
+
+    <div class="chapters-filters-menu filters-sub-section-menu row">
+      <div class="col-lg-3">
+        <div class="search-form">
+          <Input class="form-control search-input" @value={{this.chapterSearchTerm}} @type="search"
+                 placeholder="{{t "course.search_placeholder"}}"/>
+          <span class="search-icon {{if this.chapterSearchTerm 'd-none'}}"></span>
         </div>
-      </H5pListItem>
-    {{/each}}
+      </div>
+      <div class="col-lg-7 mt-2 mt-lg-0">
+        <div class="filter-button-section">
+          <ChapterTags::TagsList @tagsList={{this.filterTags}}
+                                 @toggleTagSelection={{this.toggleFilterTagSelection}}
+                                 @selectedFilterTags={{this.selectedFilterTags}}
+                                 @clearAllTagFilters={{this.clearAllTagFilters}} />
+        </div>
+      </div>
+    </div>
+    {{#if this.filteredChapters}}
+      <div class="course-sub-section-subtitle d-flex justify-content-between">
+        <span> {{t "course.create_page.labels.chapters_subtitle"}}</span>
+      </div>
+    {{/if}}
 
-    {{#unless this.filteredChapters}}
-      <div class="pt-3">{{html-safe this.noChaptersLoadedText}}</div>
-    {{/unless}}
+    <div class="row course-chapters-selection-list pb-5" id="select-chapters-section">
+      {{#each this.filteredChapters as |chapter|}}
+        <H5pListItem @chapter={{chapter}} class="chapter-preview-card ">
+          <span class="d-block col-12 mt-4"></span>
+          <div class="col-12 text-right add-course-action-section">
+            {{#if (exec this.isChapterOnCoursePlaylist chapter)}}
+              <button type="button" class="btn btn-sm btn-remove-from-course"
+                {{on "click" (fn this.removeChapterFromCourse chapter)}}>
+                {{svg-jar "tick" height="15" width="15"}}
+                {{t "course.create_page.buttons.remove_from_course"}}
+              </button>
+            {{else}}
+              <button type="button" class="btn btn-sm btn-add-to-course"
+                {{on "click"  (fn this.addChapterToCourse chapter)}}>
+                {{svg-jar "plus-circle" height="20" width="20"}}
+                {{t "course.create_page.buttons.add_to_course"}}
+              </button>
+            {{/if}}
+          </div>
+        </H5pListItem>
+      {{/each}}
+
+      {{#unless this.filteredChapters}}
+        <div class="pt-3">{{html-safe this.noChaptersLoadedText}}</div>
+      {{/unless}}
+    </div>
   </div>
 </div>
