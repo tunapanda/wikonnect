@@ -4,7 +4,6 @@
 //@import 'header';
 @import 'landing';
 @import 'home';
-@import 'courses';
 @import 'nav';
 @import 'search';
 @import "warning-component";
@@ -21,6 +20,7 @@
 html {
   font-family: 'Inter', sans-serif;
   height: 100%;
+ scroll-behavior:smooth;
 }
 
 @supports (font-variation-settings: normal) {
@@ -177,5 +177,6 @@ footer .row {
 @import "dropdown";
 @import "badge-modal";
 @import "edit-profile";
+@import "course";
 
 @import "admin/admin";

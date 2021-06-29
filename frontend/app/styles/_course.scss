@@ -1,0 +1,474 @@
+$palette: (
+  primary: #F57010,
+  black: #0000,
+  white: #FFFF,
+  gray30: #3F484D,
+  gray75: #B0BABF,
+  gray95: #EBF0F2,
+  alto: #DCDCDC,
+  osloGray: #8A9296,
+  silver: #bebebe,
+  cinderella: #fcdfca,
+  doveGray: #707070,
+  gallery: #F0F0F0
+);
+
+.course-form {
+
+  .image-upload-section {
+    .image-upload-card {
+      padding: 12px;
+      border: solid 1px map-get($palette, alto);
+      border-radius: 4px;
+
+      .section-title {
+        color: map-get($palette, gray30);
+      }
+
+      .file-drop-zone {
+        width: auto;
+        height: auto;
+        border: 1px dashed map-get($palette, alto);
+        padding-bottom: 10px;
+        padding-top: 10px;
+
+        .drag-drop-prompt {
+          font-size: 12px;
+        }
+      }
+
+      .preview-image {
+        max-width: 190px;
+        max-height: 150px;
+        min-height: 85px;
+        padding: 0;
+        margin: 0;
+
+        img {
+          width: 100%;
+          height: initial;
+          max-height: 100%;
+          display: block;
+        }
+      }
+
+      .upload-file-button {
+        svg {
+          bottom: 2px;
+          position: relative;
+          margin-right: 4px;
+        }
+      }
+    }
+  }
+
+  .main-form-section {
+    .form-group {
+      label {
+        font-weight: 500;
+        color: map-get($palette, gray30);
+        font-size: 13px;
+      }
+    }
+
+    .tag-action-button {
+      padding: 2px 4px;
+      background-color: map-get($palette, gray95);
+      border-color: map-get($palette, gray95);
+      font-size: 12px;
+
+      &:active, &.active, &:focus {
+        outline: none;
+        background-color: map-get($palette, primary);
+        color: map-get($palette, white);
+      }
+
+      &.selected {
+        .close-icon {
+          opacity: .5;
+          font-weight: 700;
+        }
+
+        &:hover {
+          border-color: map-get($palette, primary);
+
+          .close-icon {
+            opacity: 1;
+            color: map-get($palette, primary);
+          }
+        }
+      }
+    }
+
+    .btn-save-draft {
+      color: map-get($palette, gray30);
+      background-color: map-get($palette, alto);
+      border-color: map-get($palette, alto);
+    }
+
+    .btn-publish {
+      &:disabled {
+        cursor: not-allowed;
+      }
+    }
+  }
+
+  .playlist-manager-section {
+    border: solid 1px map-get($palette, alto);
+    min-height: 415px;
+    max-height: 410px;
+    overflow-y: auto;
+    border-radius: 4px;
+
+    .section-title {
+      padding: 15px 32px;
+
+      font-size: 17px;
+      font-weight: 500;
+      color: map-get($palette, gray30);
+      position: sticky;
+      background-color: map-get($palette, white);
+      top: 0;
+      z-index: 1;
+    }
+
+    &::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    &::-webkit-scrollbar-thumb, ::-webkit-scrollbar-thumb:hover {
+      background: #71797c;
+    }
+
+  }
+
+  .playlist-manager-section {
+    padding-left: 0;
+    padding-right: 0;
+
+    .playlist-item {
+      margin-bottom: 12px;
+      padding-left: 10px;
+      padding-right: 10px;
+
+      .rank-actions {
+        .btn-down, .btn-up {
+          padding: 0;
+          border-radius: 0;
+          width: 28px;
+          border-width: 0;
+
+          svg {
+            fill: #CCD9E0;
+          }
+        }
+      }
+
+      .item-thumbnail {
+        max-width: 115px;
+
+        img {
+          height: 100%;
+          width: 100%;
+        }
+      }
+
+      .item-details {
+        min-width: 198px;
+        padding-left: 8px;
+
+        .name {
+          font-size: 15px;
+        }
+
+        .description {
+          color: map-get($palette, osloGray);
+          font-size: 13px;
+        }
+
+        .extra {
+          color: map-get($palette, gray75);
+          font-size: 13px;
+
+          .author {
+            padding-right: 15px;
+          }
+
+          .views {
+            svg {
+              fill: map-get($palette, gray75);
+            }
+          }
+        }
+      }
+
+      .remove-action {
+        .btn-remove {
+          padding: 0;
+          height: 98%;
+          border: none;
+          background: #f57979;
+          visibility: hidden;
+
+          svg {
+            fill: #848484;
+          }
+        }
+      }
+    }
+
+    .playlist-item:hover {
+      .rank-actions {
+        .btn-down, .btn-up {
+          padding: 0;
+          border-radius: 0;
+          width: 28px;
+          border-width: 0;
+
+          svg {
+            fill: #174A84;
+          }
+        }
+      }
+
+      .remove-action {
+        .btn-remove {
+          visibility: visible;
+        }
+      }
+    }
+  }
+
+  .playlist-manager-section {
+    .playlist-empty-state {
+      text-align: center;
+      margin-top: 40px;
+      color: map-get($palette, gray75);
+    }
+  }
+}
+
+.course-sc-container {
+  padding-right: 15px;
+  padding-left: 15px;
+  margin-right: auto;
+  margin-left: auto;
+  width: 100%;
+}
+
+.course-header-banner {
+  height: 65px;
+  background-color: map-get($palette, cinderella);
+
+  .main-header-title {
+    color: map-get($palette, gray30);
+    font-size: 20px;
+  }
+
+}
+
+.mini-user-menu {
+  border-bottom: solid 1px map-get($palette, alto);
+
+  .nav-item {
+    .nav-link {
+      position: relative;
+      color: map-get($palette, gray30);
+
+      &.active:after {
+        content: "";
+        position: absolute;
+        width: 68%;
+        bottom: -1px;
+        border-radius: 2px;
+        left: 0;
+        border: 1px solid map-get($palette, primary);
+        right: 0;
+        transform: translateX(25%);
+      }
+    }
+  }
+
+}
+
+.course-sections-menu {
+  .nav-item {
+    margin-right: 16px;
+    margin-bottom: 8px;
+
+    .nav-link {
+      border: solid 1px map-get($palette, doveGray);
+      border-radius: 70px;
+      font-size: 16px;
+      padding: 4px 27px;
+      color: map-get($palette, gray30);
+      line-height: initial;
+
+      &.active {
+        background-color: #ECF0F2;
+      }
+    }
+  }
+}
+
+.course-section-title {
+  color: map-get($palette, gray30);
+  font-weight: 600;
+  padding-top: 1rem;
+  padding-bottom: 10px;
+}
+
+.course-sections-menu {
+  font-size: 16px;
+  color: map-get($palette, gray30);
+  font-weight: 400;
+}
+
+.course-sub-section-title {
+  font-size: 20px;
+  color: map-get($palette, gray30);
+  font-weight: 600;
+}
+
+.course-sub-section-subtitle {
+  color: map-get($palette, gray45);
+  border-radius: 4px;
+  background-color: map-get($palette, gallery);
+  margin: 10px 0 15px;
+  padding: 6px 6px 6px 24px;
+}
+
+.course-chapters-selection-section-menu {
+  .search-form {
+    position: relative;
+
+    .search-input {
+      border-radius: 18px;
+      padding: .275rem .45rem;
+      height: initial;
+
+      &::placeholder {
+        font-size: 14px;
+      }
+
+      &:focus, &:hover {
+        background: none;
+      }
+    }
+
+    .search-icon {
+      position: absolute;
+      top: 10px;
+      right: 16px;
+      width: 12px;
+      height: 12px;
+      border-width: 1px;
+
+      &:after {
+        transform: rotate(-45deg);
+        left: 11px;
+        top: 8px;
+        width: 1px;
+        height: 8px;
+      }
+    }
+  }
+
+  .filter-button-section {
+    .tags-filter-dropdown {
+      .tags-filter-dropdown-menu {
+        overflow-y: auto;
+        max-height: 250px;
+
+        .search-input {
+          background: none;
+
+          &:focus, &:hover {
+            background: none;
+          }
+        }
+      }
+    }
+  }
+}
+
+.course-chapters-selection-list {
+  min-height: 450px;
+
+  .chapter-preview-card {
+    .card-body {
+      .card-title {
+        font-size: 16px;
+      }
+
+      .card-text {
+        font-size: 12px;
+        height: auto;
+      }
+    }
+
+    .add-course-action-section {
+      position: absolute;
+      bottom: 10px;
+      right: 0;
+
+      .btn-add-to-course, .btn-remove-from-course {
+        background-color: transparent;
+        border: none;
+        color: map-get($palette, primary);
+
+        svg {
+          circle {
+            stroke: transparent;
+          }
+
+          path {
+            stroke: map-get($palette, primary);
+          }
+        }
+      }
+    }
+  }
+}
+
+.section-divider {
+  background-color: map-get($palette, alto);
+}
+
+
+@media (min-width: 576px) {
+  .course-sc-container {
+    max-width: 540px;
+  }
+  .course-sections-menu {
+    .nav-link {
+      margin-bottom: 0;
+    }
+  }
+}
+
+@media (min-width: 768px) {
+  .course-sc-container {
+    max-width: 720px;
+  }
+}
+
+@media (min-width: 992px) {
+  .chapter-preview-card {
+    flex: 0 0 30.33333%;
+  }
+  .course-sc-container {
+    max-width: 960px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .course-sc-container {
+    max-width: 1230px;
+  }
+}
+

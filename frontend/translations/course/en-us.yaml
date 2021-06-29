@@ -1,0 +1,55 @@
+main_title: Course Builder
+search_placeholder: Search Chapters
+
+nav:
+  home: Home
+  learn: Learn
+  badges: Badges
+  courses: Course Builder
+  teach: Teach
+  create_course: New
+  draft_courses: Drafts
+  published_courses: Published
+
+form:
+  labels:
+    upload_image: Upload Course Image
+    drag_drop_prompt: "Drag and drop here <br> or <br> browse"
+    title: Your Course Title
+    description: Your Course Description
+    tags: Add Tags to Your Course
+    select_tags: Select Tags
+    add_custom_tag: Add Custom Tag
+    selected_tags: "Selected Tags (Maximum: {max})"
+    playlist: Course Playlist
+    author: "by {name}"
+    submitting: Kindly wait...
+  buttons:
+    file_select: Select File
+    save_draft: Save as Draft
+    publish: Publish Course
+    save_tag: Submit Tag
+  thumbnail:
+    uploading: "Uploading image..."
+  empty_playlist_state: Start adding chapters to the course </br> from the  <a href="#select-chapters-section">  list below </a>
+
+create_page:
+  title:
+    create_course: Create A New Course
+    subtitle: Add chapters to create a playlist for this course
+    all_chapters: All Chapters
+  buttons:
+    add_to_course: Add to Course
+    remove_from_course: Added to the course
+  labels:
+    chapters_subtitle: Add these chapters to your playlist
+    published_no_image: Course published successfully without an image
+    published_with_image: Course published successfully
+    draft_saved: Course draft saved successfully
+
+errors:
+  submit_tag: Error encoutered while processing the tag. Kindly try again.
+  course_image_upload: Error encountered while uploading course image
+  course_submission: Error encountered during course details submission
+  course_image_size: "Course image size should be less than {max} "
+  chapter_on_playlist: Chapter already added on the course playlist

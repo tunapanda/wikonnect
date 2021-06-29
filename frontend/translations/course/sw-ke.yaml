@@ -1,0 +1,53 @@
+main_title: Jenga Kozi
+search_placeholder: Tafuta Sura
+
+nav:
+  home: Nyumbani
+  learn: Jifunze
+  badges: Beji
+  courses: Kozi
+  teach: Fundisha
+  create_course: Unda Kozi
+  draft_courses: Rasimu
+  published_courses: Zilizochapishwa
+
+form:
+  labels:
+    upload_image: Pakia Picha ya Kozi
+    drag_drop_prompt: "Buruta na uangushe hapa <br> au <br> vinjari"
+    title: Jina la Kozi
+    description: Maelezo ya Kozi yako
+    tags: Ongeza Vitambulisho kwenye Kozi yako
+    select_tags: Chagua Vitambulisho
+    add_custom_tag: Ongeza lebo maalum
+    selected_tags: "Lebo zilizochaguliwa (Upeo: {max})"
+    playlist: Orodha ya kucheza ya kozi
+    author: "imeundwa na {name}"
+    submitting: Subiri tafadhali...
+  buttons:
+    file_select: Chagua Faili
+    save_draft: Hifadhi kama Rasimu
+    publish: Chapisha Kozi
+    save_tag: Wasilisha Lebo
+  thumbnail:
+    uploading: "Inapakia picha..."
+  empty_playlist_state: Anza kuongeza sura kwenye kozi </br> kutoka kwa <a href="#select-chapters-section"> orodha hapa chini </a>
+
+create_page:
+  title:
+    create_course: Unda Kozi Mpya
+    subtitle: Ongeza sura ili kuunda orodha ya kucheza ya kozi hii
+    all_chapters: Sura Zote
+  buttons:
+    add_to_course: Ongeza kwenye Kozi
+    remove_from_course: Imeongezwa kwenye kozi
+  labels:
+    chapters_subtitle: Ongeza sura hizi kwenye orodha yako ya kucheza
+    published_no_image: Kozi imechapishwa kwa mafanikio bila pich
+    published_with_image: Kozi imechapishwa kwa mafanikio
+    draft_saved: Rasimu ya kozi imehifadhiwa kwa mafanikio
+
+errors:
+  submit_tag: Hitilafu imefungwa wakati wa kuchakata lebo. Tafadhali jaribu tena.
+  course_image_upload: Hitilafu imetokea wakati wa kupakia picha ya kozi
+  course_submission: Hitilafu iliyotokea wakati wa kuwasilisha maelezo ya kozi
