@@ -31,17 +31,4 @@ export default class CourseSerializer extends ApplicationSerializer.extend(
 
     return json;
   }
-  normalizeResponse(store, primaryModelClass, payload) {
-    if (payload.course.playlist) {
-      payload.course.playlist.map((item) => {
-        item.type = 'course-playlist';
-      });
-    }
-    if (payload.course.tags) {
-      payload.course.tags.map((item) => {
-        item.type = 'tag';
-      });
-    }
-    return super.normalizeResponse(...arguments);
-  }
 }
