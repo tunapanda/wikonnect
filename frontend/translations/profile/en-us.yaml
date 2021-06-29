@@ -9,9 +9,11 @@ top_achievements: Top achievements
 no_bio: Apparently, this user prefers to keep an air of mystery about them
 
 nav:
-  home: Learning
-  achievements: Achievements
-  courses: Courses
+  home: Home
+  courses: Course Builder
+  achievements: Badges
+  teach: Teach
+  learn: Learn
 
 badges:
   share_btn: Share
