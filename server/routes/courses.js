@@ -74,7 +74,7 @@ router.get('/:id', requireAuth, async (ctx) => {
       .select(['*',
         CourseModel.relatedQuery('courseEnrollments').count().as('totalEnrolled'),
       ])
-      .withGraphFetched('[tags,playlist]')
+      .withGraphFetched('[tags,playlist, playlist.reaction(reactionAggregate)]')
       .findById(ctx.params.id);
 
     ctx.assert(course, 404, { message: 'Course not found' });
