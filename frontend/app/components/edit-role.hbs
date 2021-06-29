@@ -6,13 +6,13 @@
     </dd.toggle>
     <dd.menu class="dropdown-menu-right" as |menu|>
       <menu.item>
-        {{#each this.roles as |role|}}
+        {{#each this.roleNames as |roleName|}}
           <button
             type="button"
             class="btn w-100 text-left"
-            {{on 'click' (fn this.changeRole role)}}
+            {{on 'click' (fn this.changeRole roleName)}}
           >
-            {{role}}
+            {{roleName}}
           </button>
         {{/each}}
       </menu.item>

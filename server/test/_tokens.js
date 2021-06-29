@@ -13,13 +13,13 @@ const admin = {
   },
 };
 
-const verifiedUser = {
+const basicUser = {
   user: {
     id: 'user10',
     username: 'user10',
     password: 'wikonnect',
     email: 'user10@wikonnect.com',
-    role: 'verified',
+    role: 'basic',
     tags: ['test'],
   },
 };
@@ -40,10 +40,10 @@ const headerAdminUser = {
     'Bearer ' +
     jsonwebtoken.sign({ data: admin.user }, secret, { expiresIn: '1d' }),
 };
-const headerVerifiedUser = {
+const headerBasicUser = {
   Authorization:
     'Bearer ' +
-    jsonwebtoken.sign({ data: verifiedUser.user }, secret, { expiresIn: '1d' }),
+    jsonwebtoken.sign({ data: basicUser.user }, secret, { expiresIn: '1d' }),
 };
 
 const headerModeratorUser = {
@@ -62,7 +62,7 @@ const brokenToken = {
 
 module.exports = {
   headerAdminUser,
-  headerVerifiedUser,
+  headerBasicUser,
   headerModeratorUser,
   brokenToken,
 };

@@ -19,6 +19,8 @@ table.users {
 
   td {
     vertical-align: top;
+    overflow-x: clip;
+    text-overflow: ellipsis;
 
     button.btn-link {
       padding: 0;
