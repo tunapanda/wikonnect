@@ -1,1 +1,45 @@
-{{yield}}
+<div class="cpc-container" ...attributes>
+  <div class="course-preview-card pb-3">
+    <div class="course-image-container w-100">
+      {{#if @course.thumbnailUrl}}
+        <img src="{{@course.thumbnailUrl}}" class="course-image" alt="" role="presentation">
+      {{else}}
+        <img src="https://placehold.jp/20/black/ffffff/328x200.png?text={{@chapter.name}}"
+        class="course-image"
+        alt="" role="presentation">
+      {{/if}}
+    </div>
+    <div class="course-metadata d-flex">
+      <div class="author">
+        <LinkTo @route="profile.home" @model={{@chapter.creator.id}} class="author-link">
+          <img src="{{ @course.creator.profileUri}}" class="author-avatar rounded-circle" alt="" role="presentation">
+        </LinkTo>
+
+      </div>
+      <div class="enrollment-count pl-3">
+        {{svg-jar "group-solid" width="17" }}
+        <span>{{t "course_preview_card.enrolled" count=@course.totalEnrolled}}</span>
+      </div>
+    </div>
+    <div class="course-title">
+      {{title-case @course.name}}
+    </div>
+    <div class="course-description">
+      {{ellipsize @course.description 80}}
+    </div>
+    {{#if @course.tags}}
+      <div class="tags-section">
+        <span class="section-header pb-3 pb-2">
+          {{t "course_preview_card.tag_list_title"}}
+        </span>
+        <div class="tag-list">
+          {{#each @course.tags as |tag|}}
+            <span class="course-tag"> {{tag.name}}</span>
+          {{/each}}
+        </div>
+      </div>
+    {{/if}}
+
+    {{yield}}
+  </div>
+</div>
