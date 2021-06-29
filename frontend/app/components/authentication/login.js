@@ -31,6 +31,17 @@ export default class LoginComponent extends Component {
   }
 
   @action
+  authenticateWithLinkedIn() {
+    this.session.authenticate('authenticator:torii', 'linkedin');
+  }
+
+  @action
+  authenticateWithFacebook() {
+    this.session.authenticate('authenticator:torii', 'facebook');
+  }
+
+
+  @action
   login(model) {
     this.loading = true;
     this.me
