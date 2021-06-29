@@ -4,9 +4,9 @@
     {{#if this.replies}}
         <button type="button" {{on "click" this.toggleReplies}}>
           {{#if this.shouldRepliesShow}}
-            {{t "single_chapter.comments.hide_replies"}} {{svg-jar "expand_less_black_24dp"}}
+            {{t "single_chapter.comments.hide_replies"}} {{svg-jar "chevron-up"}}
           {{else}}
-            {{t "single_chapter.comments.show_replies"}} {{svg-jar "expand_more_black_24dp"}}
+            {{t "single_chapter.comments.show_replies"}} {{svg-jar "chevron-down"}}
           {{/if}}
         </button>
     {{/if}}
