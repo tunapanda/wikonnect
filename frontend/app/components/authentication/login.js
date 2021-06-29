@@ -40,7 +40,6 @@ export default class LoginComponent extends Component {
     this.session.authenticate('authenticator:torii', 'facebook');
   }
 
-
   @action
   login(model) {
     this.loading = true;
