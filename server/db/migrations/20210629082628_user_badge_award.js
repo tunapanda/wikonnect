@@ -2,7 +2,7 @@ const { idGenerator, idGenRemoval } = require('../id_generator');
 
 exports.up = knex =>
   knex.schema
-    .raw(idGenerator).createTable('user_badges', table => {
+    .createTable('user_badges', table => {
       table.text('user_id')
         .references('users.id')
         .onDelete('SET NULL')
@@ -16,5 +16,4 @@ exports.up = knex =>
 
 exports.down = knex =>
   knex.schema
-    .dropTableIfExists('user_badges')
-    .raw(idGenRemoval);
+    .dropTableIfExists('user_badges');
