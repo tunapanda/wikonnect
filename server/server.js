@@ -38,6 +38,7 @@ router.use(require('./routes/users'));
 
 router.use(require('./routes/oauth2s'));
 
+router.use(require('./routes/leaderboard'));
 
 router.use(jwt.authenticate, require('./routes/chapters'));
 
