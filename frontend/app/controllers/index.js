@@ -2,6 +2,7 @@ import Controller from '@ember/controller';
 import { inject as service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
+import { A } from '@ember/array';
 
 export default class IndexController extends Controller {
   queryParams = ['tags'];
@@ -11,53 +12,50 @@ export default class IndexController extends Controller {
   @service store;
   @service intl;
   @tracked tags = null;
-  @tracked tagsList = this.parsedChapterTags;
+  @tracked selectedFilterTags = A([]);
 
-  get parsedChapterTags() {
+  get tagsList() {
     return this.store
       .peekAll('tag')
       .filter((tag) => tag.id) // ensure it has an id
-      .sortBy('name')
-      .map((tag) => new FilterTag(tag, false));
+      .sortBy('name');
   }
 
-  get selectedFilterTags() {
+  @action
+  preselectSelectedFilterTags() {
     if (!this.tags) {
-      return [];
+      return;
     }
     const queryTags = this.tags.split(this.queryTagJoinXcter);
-    return this.tagsList.filter((tag) => {
+
+    this.tagsList.map((tag) => {
       const index = queryTags.findIndex(
         (t) => t.toLowerCase() === tag.id.toLowerCase()
       );
       if (index > -1) {
-        tag.isSelected = true;
-        return true;
+        this.selectedFilterTags.addObject(tag);
       }
-      tag.isSelected = false;
-      return false;
     });
   }
 
   @action
   clearAllTagFilters() {
-    this.tagsList = this.tagsList.map((tag) => {
-      tag.isSelected = false;
-      return tag;
-    });
+    this.selectedFilterTags.clear();
     this.tags = null;
+    console.log(this.selectedFilterTags.length);
   }
 
   @action
   toggleTagSelection(tag) {
     const queryTags = this.tags ? this.tags.split(this.queryTagJoinXcter) : [];
-    if (tag.isSelected) {
+    const obj = this.selectedFilterTags.findBy('id', tag.id);
+    if (obj) {
       const index = queryTags.findIndex(
         (t) => t.toLowerCase() === tag.id.toLowerCase()
       );
-      if (index > -1) {
-        queryTags.splice(index, 1);
-      }
+      queryTags.splice(index, 1);
+
+      this.selectedFilterTags.removeObject(obj);
     } else {
       const index = queryTags.findIndex(
         (t) => t.toLowerCase() === tag.id.toLowerCase()
@@ -65,8 +63,8 @@ export default class IndexController extends Controller {
       if (index === -1) {
         queryTags.push(tag.id);
       }
+      this.selectedFilterTags.addObject(tag);
     }
-    tag.isSelected = !tag.isSelected;
 
     this.tags = queryTags.join(this.queryTagJoinXcter);
   }
@@ -79,36 +77,23 @@ export default class IndexController extends Controller {
     if (!this.tags || (this.model.length > 0 && this.tags)) {
       return this.intl.t('home.loading.loaded_all_the_records');
     }
-    const allTagIds = this.tags.split(this.queryTagJoinXcter);
-    const lastTagId = allTagIds.pop();
-    const lastTag = this.tagsList.find((tag) => {
-      return tag.id.toLowerCase() === lastTagId.toLowerCase();
-    });
-
-    if (allTagIds.length === 0) {
-      return this.intl.t('home.loading.no_filtered_record', {
-        selectedTag: lastTag ? lastTag.name : lastTagId,
+    if (this.selectedFilterTags.length === 0) {
+      return this.intl.t('home.loading.wrong_record_filters', {
+        selectedTags: this.tags,
       });
     }
-    const allTagNames = this.tagsList
-      .filter((t) => {
-        return allTagIds.some((id) => id.toLowerCase() === t.id.toLowerCase());
-      })
-      .mapBy('name');
+    const allTags = this.selectedFilterTags.compact();
 
-    let selectedTags = lastTag ? lastTag.name : lastTagId;
-    if (allTagNames) {
-      allTagNames.join(',') + ', and ' + lastTag.name;
+    const lastTag = allTags.pop();
+
+    if (allTags.length === 0) {
+      return this.intl.t('home.loading.no_filtered_record', {
+        selectedTag: lastTag.name,
+      });
     }
-    return this.intl.t('home.loading.no_filtered_records', { selectedTags });
-  }
-}
 
-class FilterTag {
-  @tracked isSelected;
-  constructor(tagModel, isSelected) {
-    this.name = tagModel.name;
-    this.id = tagModel.id;
-    this.isSelected = isSelected;
+    const selectedTags =
+      allTags.mapBy('name').join(',') + ', and ' + lastTag.name;
+    return this.intl.t('home.loading.no_filtered_records', { selectedTags });
   }
 }

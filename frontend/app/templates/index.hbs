@@ -1,4 +1,4 @@
-<div class="chapter-filters-section">
+<div class="chapter-filters-section" {{did-insert this.preselectSelectedFilterTags}}>
   <div class="container pb-3 pt-3">
     <ChapterTags::TagsList @tagsList={{this.tagsList}} @toggleTagSelection={{this.toggleTagSelection}}
       @selectedFilterTags={{this.selectedFilterTags}} @clearAllTagFilters={{this.clearAllTagFilters}} />

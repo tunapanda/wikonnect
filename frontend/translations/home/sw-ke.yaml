@@ -11,3 +11,4 @@ loading:
   no_filtered_record: Hakuna maudhui yaliyopatikana yanayolingana <strong> {selectedTag} </strong>. Tafadhali jaribu kitambulisho kingine
   no_filtered_records: Hakuna maudhui yaliyopatikana yanayolingana <strong> {selectedTags} </strong>. Tafadhali jaribu vitambulisho vichache
   no_content: Inaonekana hakuna maudhui ya kujifunza kwa sasa. Tafadhali angalia nasi tena baadaye.
+  wrong_record_filters: Hakuna maudhui yaliyopatikana yanayolingana <strong> {selectedTags} </strong>. Tafadhali jaribu tena na lebo ya kichujio halali
