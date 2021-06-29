@@ -19,6 +19,7 @@ export default class ChapterModel extends Model {
   @hasMany('comment') comment;
   @attr author;
   @attr reviewQuestions;
+  @attr rank; // used by course
 
   @belongsTo('user') creator;
   @hasMany('tag') tags;

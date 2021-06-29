@@ -12,5 +12,5 @@ export default class CourseModel extends Model {
 
   @belongsTo('user') creator;
   @hasMany('tag') tags;
-  @hasMany('course-playlist') playlist;
+  @hasMany('chapter') playlist;
 }
