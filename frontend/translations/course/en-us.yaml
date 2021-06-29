@@ -1,5 +1,6 @@
 main_title: Course Builder
 search_placeholder: Search Chapters
+search_course_placeholder: Search course
 
 nav:
   home: Home
@@ -46,6 +47,13 @@ create_page:
     published_no_image: Course published successfully without an image
     published_with_image: Course published successfully
     draft_saved: Course draft saved successfully
+
+drafts_page:
+  title: Your Draft Course Items
+  buttons:
+    view_course: View Course
+  labels:
+    no_content: You currently have no draft courses
 
 errors:
   submit_tag: Error encoutered while processing the tag. Kindly try again.

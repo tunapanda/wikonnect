@@ -17,13 +17,14 @@ $palette: (
 
 .cpc-container {
   .course-preview-card {
-    box-shadow: 0 3px 6px rgba(0,0,0,.075);
-    border: 1px solid map-get($palette,mercury);
+    box-shadow: 0 3px 6px rgba(0, 0, 0, .075);
+    border: 1px solid map-get($palette, mercury);
     height: 100%;
     display: flex;
     align-items: flex-start;
     flex-direction: column;
     flex-wrap: nowrap;
+    padding-bottom: 1rem;
 
     .course-image-container {
       .course-image {
@@ -419,7 +420,8 @@ $palette: (
   padding: 6px 6px 6px 24px;
 }
 
-.course-chapters-selection-section-menu {
+.filters-sub-section-menu.chapters-filters-menu,
+.filters-sub-section-menu.course-filters-menu {
   .search-form {
     position: relative;
 
@@ -516,6 +518,17 @@ $palette: (
   background-color: map-get($palette, alto);
 }
 
+.draft-course-preview .course-preview-card {
+  position: relative;
+  padding-bottom: 45px;
+
+  .draft-course-actions {
+    position: absolute;
+    right: 10px;
+    bottom: 10px;
+  }
+
+}
 
 @media (min-width: 576px) {
   .course-sc-container {

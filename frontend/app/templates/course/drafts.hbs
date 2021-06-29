@@ -1,1 +1,37 @@
-{{outlet}}
+<div class="course-section-title">
+  {{t "course.drafts_page.title"}}
+</div>
+{{#if this.model}}
+  <div class="course-filters-menu filters-sub-section-menu row pb-2">
+    <div class="col-lg-3">
+      <div class="search-form">
+        <Input class="form-control search-input" @value={{this.searchTerm}} @type="search"
+               placeholder="{{t "course.search_course_placeholder"}}"/>
+        <span class="search-icon {{if this.searchTerm 'd-none'}}"></span>
+      </div>
+    </div>
+  </div>
+{{/if}}
+
+
+<div class="row pt-2 pl-3 pr-3">
+  {{#each this.courses as |course|}}
+    <Course::PreviewCard class="col-md-4 col-lg-4 col-xl-3 mb-3 draft-course-preview" @course={{course}}>
+
+      <div class="w-100 text-right draft-course-actions">
+        <LinkTo @route="course.show" @model={{course.id}}
+                class="btn btn-outline-primary btn-sm border-0 btn-view-course">
+          {{t "course.drafts_page.buttons.view_course"}}
+        </LinkTo>
+      </div>
+    </Course::PreviewCard>
+  {{/each}}
+</div>
+
+{{#if (and (not this.courses) (not this.searchTerm) )}}
+  <div class="p-4"> {{html-safe (t "course.drafts_page.labels.no_content")}}</div>
+{{/if}}
+
+{{#if (and (not this.courses) this.searchTerm)}}
+  <div class="p-4"> {{html-safe (t "course.errors.no_searched_record" word=this.searchTerm)}}</div>
+{{/if}}

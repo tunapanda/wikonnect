@@ -1,5 +1,6 @@
 main_title: Jenga Kozi
 search_placeholder: Tafuta Sura
+search_course_placeholder: Tafuta Kozi
 
 nav:
   home: Nyumbani
@@ -46,6 +47,13 @@ create_page:
     published_no_image: Kozi imechapishwa kwa mafanikio bila pich
     published_with_image: Kozi imechapishwa kwa mafanikio
     draft_saved: Rasimu ya kozi imehifadhiwa kwa mafanikio
+
+drafts_page:
+  title: Rasimu yako ya Vitu vya Kozi
+  buttons:
+    view_course: Angalia Kozi
+  labels:
+    no_content: Kwa sasa huna kozi za rasimu
 
 errors:
   submit_tag: Hitilafu imefungwa wakati wa kuchakata lebo. Tafadhali jaribu tena.
