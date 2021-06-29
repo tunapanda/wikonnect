@@ -27,12 +27,20 @@
             <img src={{chapter.imageUrl}} alt={{chapter.name}} />
           </td>
           <td>
-            {{chapter.name}}
+            <LinkTo @route="chapter" @model={{chapter.id}}>
+              {{chapter.name}}
+            </LinkTo>
           </td>
           <td>
             {{chapter.description}}
           </td>
-          <td></td>
+          <td>
+            {{#if chapter.revisionRequested}}
+              Revision Requested
+            {{else}}
+              {{if chapter.approved 'Approved' 'Pending'}}
+            {{/if}}
+          </td>
           <td>
             <LinkTo @route="profile" @model={{chapter.author}}>
               <img
@@ -44,9 +52,23 @@
             </LinkTo>
           </td>
           <td>
-            <button class="btn btn-secondary" type="button">
-              Approve
-            </button>
+            {{#if chapter.approved}}
+              <button
+                class="btn btn-secondary"
+                type="button"
+                {{on 'click' (fn this.toggleApproval chapter.id false)}}
+              >
+                Unapprove
+              </button>
+            {{else}}
+              <button
+                class="btn btn-secondary"
+                type="button"
+                {{on 'click' (fn this.toggleApproval chapter.id false)}}
+              >
+                Approve
+              </button>
+            {{/if}}
             <button class="btn btn-light" type="button">
               Request Revisions
             </button>
