@@ -1,4 +1,3 @@
-const { idGenerator, idGenRemoval } = require('../id_generator');
 
 exports.up = knex =>
   knex.schema
@@ -12,6 +11,7 @@ exports.up = knex =>
         .onDelete('SET NULL')
         .onUpdate('CASCADE');
       table.timestamps();
+      table.primary(['user_id', 'badge_id']);
     });
 
 exports.down = knex =>

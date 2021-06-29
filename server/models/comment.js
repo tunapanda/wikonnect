@@ -4,6 +4,7 @@ const knex = require('../db/db');
 const Trigger = require('./badge_triggers');
 const Badges = require('./badges');
 const UserBadges = require('./user_badges');
+const awardsNotification = require('../utils/awards/awardsNotification');
 
 class Comment extends Model {
   static get tableName() {
@@ -76,6 +77,16 @@ class Comment extends Model {
     };
   }
 
+  async comment(params) {
+    return {
+      title: params.name,
+      body: params.description,
+      event_type: 'comment creation',
+      creator_id: params.creator_id,
+      recipient_id: params.user_id
+    };
+  }
+
   async $afterInsert(queryContext) {
     await super.$afterInsert(queryContext);
     // get total
@@ -86,16 +97,31 @@ class Comment extends Model {
       ])
       .where('creator_id', this.creatorId);
 
-    const trigger = await Trigger.query().where({ name: 'comment_create' }).returning('id');
+    const badgesIds = await knex('user_badges').pluck('badge_id');
 
-    if (results[0].totalcomments > 1) {
-      const badges = await Badges.query().where('trigger_id', trigger[0].id);
-      await UserBadges.query().insert({ 'user_id': this.creatorId, 'badge_id': badges[0].id }).returning(['user_id']);
-    }
+    console.log(results[0].totalreplies, results[0].totalcomments, badgesIds);
+    try {
+      const comment_create = await Trigger.query().where({ name: 'comment_create' }).returning('id');
+      const comment_create_badges = await Badges.query().where('trigger_id', comment_create[0].id);
 
-    if (results[0].totalreplies > 3) {
-      const badges = await Badges.query().where('trigger_id', trigger[0].id);
-      await UserBadges.query().insert({ 'user_id': this.creatorId, 'badge_id': badges[0].id }).returning(['user_id']);
+      for (const badge of comment_create_badges) {
+        if (!badgesIds.includes(badge.id) & results[0].totalcomments > badge.frequency & results[0].totalcomments > 0) {
+          await UserBadges.query().insert({ 'user_id': this.creatorId, 'badge_id': badge.id }).returning(['user_id']);
+          awardsNotification(await this.comment(badge));
+        }
+      }
+
+      const comment_reply = await Trigger.query().where({ name: 'comment_reply' }).returning('id');
+      const comment_reply_badges = await Badges.query().where('trigger_id', comment_reply[0].id);
+
+      for (const badge of comment_reply_badges) {
+        if (!badgesIds.includes(badge.id) & results[0].totalreplies > badge.frequency & results[0].totalreplies > 0) {
+          await UserBadges.query().insert({ 'user_id': this.creatorId, 'badge_id': badge.id }).returning(['user_id']);
+          awardsNotification(await this.comment(badge));
+        }
+      }
+    } catch (error) {
+      console.log(error.constraint);
     }
   }
 }

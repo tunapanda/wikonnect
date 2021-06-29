@@ -20,7 +20,7 @@ exports.seed = async (knex) => {
 
   return knex('users').pluck('id').then((userIds) => {
     const fakeBadges = [];
-    for (let index = 0; index < seed_number; index++) {
+    for (let index = 0; index < triggerIds.length; index++) {
       const name = faker.lorem.words();
       const slug = faker.helpers.slugify(name);
       fakeBadges.push({
@@ -34,10 +34,10 @@ exports.seed = async (knex) => {
         updated_at: faker.date.recent(),
         expiry: faker.date.between(faker.date.past(), faker.date.soon()),
         is_deleted: faker.datatype.boolean(),
-        trigger_id: faker.random.arrayElement(triggerIds),
+        trigger_id: triggerIds[index],
         published: faker.datatype.boolean(),
-        frequency: faker.datatype.number(),
-        reminder: faker.datatype.number(),
+        frequency: faker.datatype.number(1,9),
+        reminder: faker.datatype.number(1, 9),
         reminder_message:  faker.lorem.sentence(),
       });
     }
