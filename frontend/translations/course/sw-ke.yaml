@@ -22,7 +22,7 @@ form:
     add_custom_tag: Ongeza lebo maalum
     selected_tags: "Lebo zilizochaguliwa (Upeo: {max})"
     playlist: Orodha ya kucheza ya kozi
-    author: "imeundwa na {name}"
+    author: "Imeundwa na {name}"
     submitting: Subiri tafadhali...
   buttons:
     file_select: Chagua Faili
@@ -51,3 +51,12 @@ errors:
   submit_tag: Hitilafu imefungwa wakati wa kuchakata lebo. Tafadhali jaribu tena.
   course_image_upload: Hitilafu imetokea wakati wa kupakia picha ya kozi
   course_submission: Hitilafu iliyotokea wakati wa kuwasilisha maelezo ya kozi
+  course_image_size: "Ukubwa wa picha ya kozi inapaswa kuwa chini ya {max} "
+  chapter_on_playlist: Sura tayari imeongezwa kwenye orodha ya kozi
+  no_content: Inaonekana hakuna yaliyomo kwa sasa. Tafadhali angalia nasi tena baadaye.
+  content_display_error: Hatuwezi kupata yaliyomo.
+  no_search_filtered_record: Hakuna maudhui yaliyopatikana yanayolingana na <strong> {word} </strong> au <strong> {selectedTags} </strong>.
+  no_searched_record: Hakuna maudhui yaliyopatikana yanayolingana na <strong> {word} </strong>. Tafadhali jaribu neno tofauti la utaftaji
+  no_filtered_record: Hakuna maudhui yaliyopatikana yanayolingana <strong> {selectedTag} </strong>. Tafadhali jaribu kichujio tofauti
+  no_filtered_records:  Hakuna maudhui yaliyopatikana yanayolingana <strong> {selectedTags} </strong>. Tafadhali jaribu vitambulisho vichache
+  wrong_record_filters: Hakuna maudhui yaliyopatikana yanayolingana <strong> {selectedTags} </strong>. Tafadhali jaribu tena na lebo ya kichujio halali

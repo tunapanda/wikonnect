@@ -172,4 +172,41 @@ export default class CourseCreateController extends Controller {
   clearAllTagFilters() {
     this.selectedFilterTags.clear();
   }
+
+  get noChaptersLoadedText() {
+    if (this.store.peekAll('chapter').length === 0) {
+      return this.intl.t('course.errors.no_content');
+    }
+    if (this.selectedFilterTags.length > 0 && this.chapterSearchTerm) {
+      const obj = this.selectedFilterTags.compact();
+      const last = obj.pop();
+      let selectedTags = last.name;
+
+      if (obj.length > 0) {
+        selectedTags = obj.mapBy('name').join(',') + `, and ` + last.name;
+      }
+
+      return this.intl.t('course.errors.no_search_filtered_record', {
+        word: this.chapterSearchTerm,
+        selectedTags,
+      });
+    }
+    if (this.chapterSearchTerm) {
+      return this.intl.t('course.errors.no_searched_record', {
+        word: this.chapterSearchTerm,
+      });
+    }
+    if (this.selectedFilterTags.length === 1) {
+      return this.intl.t('course.errors.no_filtered_record', {
+        selectedTag: this.selectedFilterTags.objectAt(0).name,
+      });
+    }
+    if (this.selectedFilterTags.length > 1) {
+      const obj = this.selectedFilterTags.compact();
+      const last = obj.pop();
+      const selectedTags = obj.mapBy('name').join(',') + `, and ` + last.name;
+      return this.intl.t('course.errors.no_filtered_records', { selectedTags });
+    }
+    return this.intl.t('course.errors.content_display_error');
+  }
 }

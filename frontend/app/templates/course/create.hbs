@@ -34,7 +34,7 @@
       </div>
     </div>
   </div>
-   {{#if this.filteredChapters}}
+  {{#if this.filteredChapters}}
     <div class="course-sub-section-subtitle d-flex justify-content-between">
       <span> {{t "course.create_page.labels.chapters_subtitle"}}</span>
     </div>
@@ -61,5 +61,9 @@
         </div>
       </H5pListItem>
     {{/each}}
+
+    {{#unless this.filteredChapters}}
+      <div class="pt-3">{{html-safe this.noChaptersLoadedText}}</div>
+    {{/unless}}
   </div>
 </div>
