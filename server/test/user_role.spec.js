@@ -43,7 +43,7 @@ describe('USER ROLE ROUTE', () => {
     chai
       .request(server)
       .get(route)
-      .set(tokens.headerVerifiedUser)
+      .set(tokens.headerBasicUser)
       .end((err, res) => {
         res.should.be.json;
         res.should.have.status(400);
