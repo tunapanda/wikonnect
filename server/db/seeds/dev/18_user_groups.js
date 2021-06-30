@@ -20,9 +20,9 @@ exports.seed = async (knex) => {
       updated_at: '2019-12-20 19:17:10',
     },
     {
-      id: 'groupVerified',
-      name: 'verified',
-      slug: 'role-verified',
+      id: 'groupBasic',
+      name: 'Basic',
+      slug: 'role-basic',
       description: '',
       created_at: '2019-12-20 19:17:10',
       updated_at: '2019-12-20 19:17:10',

@@ -10,7 +10,7 @@ exports.seed = async (knex) => {
   let groupMembers = [
     { user_id: 'user1', group_id: 'groupAdmin', created_at: faker.date.past(), updated_at: faker.date.recent() },
     { user_id: 'user2', group_id: 'groupModerator', created_at: faker.date.past(), updated_at: faker.date.recent() },
-    { user_id: 'user3', group_id: 'groupVerified', created_at: faker.date.past(), updated_at: faker.date.recent() },
+    { user_id: 'user3', group_id: 'groupBasic', created_at: faker.date.past(), updated_at: faker.date.recent() },
   ];
 
   const maxSeeds = groupMembers.length > seed_number ? 0 : seed_number - groupMembers.length;
