@@ -606,10 +606,17 @@ $palette: (
           color: map-get($palette, gray30);
 
           .author-avatar {
-            width: 35px;
-            height: 35px;
+            width: 30px;
+            height: 30px;
           }
         }
+      }
+      .vertical-line-divider{
+        width: 2px;
+        background-color: map-get($palette,gray30);
+        height: 16px;
+        margin-left: 13px;
+        margin-right: 13px;
       }
 
       .enrollment-count {
@@ -637,7 +644,7 @@ $palette: (
   .ft-section {
     .side-bar {
       .popular-tags, .popular-courses {
-        box-shadow: 0px 3px 6px #00000019;
+        box-shadow: 0 3px 6px #00000019;
         border: 1px solid #DCDCDC;
         border-radius: 5px;
         min-height: 150px;
@@ -691,16 +698,13 @@ $palette: (
 
   .view-course-page {
     .course-main-details-card {
+      background-color: map-get($palette, electricViolet);
 
       .details-l-section {
-        max-width: 70%;
-        padding: 20px 20% 20px 20px;
+        width: 70%;
+        padding: 20px 15% 20px 20px;
+        background-color: map-get($palette, white);
 
-      }
-
-      .open-r-section {
-        width: 30%;
-        background-color: map-get($palette, electricViolet);
       }
 
       .course-image-container {

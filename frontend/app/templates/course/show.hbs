@@ -27,7 +27,7 @@
       <div class="name">
         {{title-case this.model.name}}
       </div>
-      <div class="description pb.2">
+      <div class="description pb-2 pt-1">
         {{this.model.description}}
       </div>
       <div class="metadata row align-items-center pl-2 pt-2 pb-2">
@@ -43,14 +43,14 @@
           </LinkTo>
 
         </div>
-        <div class="separator">
+        <div class="vertical-line-divider">
         </div>
-        <div class="enrollment-count pl-3">
+        <div class="enrollment-count">
           {{svg-jar "group-solid" width="17" }}
           <span>{{t "course.show_page.enrolled" count=this.model.totalEnrolled}}</span>
         </div>
       </div>
-      <div class="course-actions pt-1">
+      <div class="course-actions pt-3">
         {{#if this.isMyCourse}}
           <LinkTo @route="course.edit" @model={{this.model.id}} class="btn btn-primary">
             {{t "course.show_page.buttons.update_course"}}
@@ -62,8 +62,6 @@
           </button>
         {{/unless}}
       </div>
-    </div>
-    <div class="open-r-section d-none d-lg-inline-block">
     </div>
   </div>
 
