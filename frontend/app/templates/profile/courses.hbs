@@ -1,0 +1,19 @@
+<div class="nav tabs-menu sub-section-menu">
+  <div class="nav-item">
+    <LinkTo @route="profile.courses.enrolled" class="nav-link">
+      {{t "profile.nav.enrolled_courses"}}
+    </LinkTo>
+  </div>
+  <div class="nav-item">
+    <LinkTo @route="profile.courses.available" class="nav-link">
+      {{t "profile.nav.available_courses"}}
+    </LinkTo>
+  </div>
+
+  <div class="nav-item">
+    <LinkTo @route="course.create" class="nav-link">
+      {{t "profile.nav.course_builder"}}
+    </LinkTo>
+  </div>
+</div>
+{{outlet}}

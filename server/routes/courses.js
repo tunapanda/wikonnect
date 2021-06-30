@@ -18,6 +18,27 @@ const { getProfileImage } = require('../utils/routesUtils/userRouteUtils');
 const router = new Router({
   prefix: '/courses'
 });
+router.get('/courses-enrollments',requireAuth,async ctx=>{
+  try {
+    let graphFetchQuery = 'courseEnrollments,tags,creator(selectBasicInfo)';
+    if(ctx.query && ctx.query.include){
+      const includes = ctx.query.include.split(',');
+      if(includes.some((v)=>v.toLowerCase().includes('playlist'))){
+        graphFetchQuery += ',playlist.[reaction(reactionAggregate)';
+      }
+
+    }
+    const coursesEnrollments = await CourseModel.query()
+      .select(['*'])
+       .withGraphFetched(`[${graphFetchQuery}]`);
+
+
+    ctx.status = 200;
+    ctx.body = { coursesEnrollments };
+  } catch (e) {
+    log.error(e);
+  }
+});
 
 /**
  * @api {get} /api/v1/courses/:id GET course by Id

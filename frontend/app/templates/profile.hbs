@@ -186,11 +186,13 @@
         </LinkTo>
       </div>
 
-      <div class="nav-item">
-        <LinkTo @route="course.create" class="nav-link">
-          {{t "profile.nav.courses"}}
-        </LinkTo>
-      </div>
+      {{#if this.isProfileOwner}}
+        <div class="nav-item">
+          <LinkTo @route="profile.courses.enrolled" class="nav-link">
+            {{t "profile.nav.courses"}}
+          </LinkTo>
+        </div>
+      {{/if}}
       <div class="nav-item">
         <LinkTo @route="profile.achievements" @model={{this.model}} class="nav-link">
           {{t "profile.nav.achievements"}}

@@ -10,10 +10,15 @@ no_bio: Apparently, this user prefers to keep an air of mystery about them
 
 nav:
   home: Home
-  courses: Course Builder
   achievements: Badges
   teach: Teach
   learn: Learn
+  courses: Courses
+  enrolled_courses: Enrolled Courses
+  available_courses: Available Courses
+  course_builder: Course Builder
+  people: People
+  tags: Tags
 
 badges:
   share_btn: Share
