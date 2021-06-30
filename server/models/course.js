@@ -78,6 +78,14 @@ class Course extends Model {
           to: 'courses.id'
         }
       },
+      creator: {
+        relation: Model.BelongsToOneRelation,
+        modelClass: __dirname + '/user',
+        join: {
+          from: 'courses.creatorId',
+          to: 'users.id'
+        }
+      },
 
       //following joins will be quicker on some instances e.g. getting count
       courseEnrollments:{

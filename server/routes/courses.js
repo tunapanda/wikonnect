@@ -12,6 +12,7 @@ const { requireAuth } = require('../middleware/permController');
 const slugify = require('../utils/slugGen');
 const s3 = require('../utils/s3Util');
 const log = require('../utils/logger');
+const { getProfileImage } = require('../utils/routesUtils/userRouteUtils');
 
 
 const router = new Router({
@@ -74,10 +75,58 @@ router.get('/:id', requireAuth, async (ctx) => {
       .select(['*',
         CourseModel.relatedQuery('courseEnrollments').count().as('totalEnrolled'),
       ])
-      .withGraphFetched('[tags,playlist, playlist.reaction(reactionAggregate)]')
+      .withGraphFetched('[tags,playlist,playlist.reaction(reactionAggregate),creator(selectBasicInfo)]')
+      .withGraphFetched('[playlist.author(selectBasicInfo)]')     //have to place it here for it to work.
       .findById(ctx.params.id);
 
     ctx.assert(course, 404, { message: 'Course not found' });
+
+    /** fetch correct user image for the chapter(s) authors**/
+    const creators = [];
+    let creatorIds = {}; //quicker to get unique items
+    for (let i = 0; i < course.playlist.length; i++) {
+      if (!course.playlist[i].author) {
+        continue;
+      }
+      if (!creatorIds[course.playlist[i].author.id]) {
+        creators.push(course.playlist[i].author);
+        creatorIds[course.playlist[i].author.id] = true;
+      }
+    }
+    if(creatorIds[course.creator.id]){
+      creators.push(course.creator); //push also the course creator profile
+    }
+
+    const promises = creators.map(async (user) => {
+      return {
+        id: user.id,
+        name: user.name,
+        profileUri: await getProfileImage(user)
+      };
+    });
+    const userProfiles = await Promise.all(promises);
+    //now map above profiles with courses
+    course.playlist = course.playlist.map((chapter) => {
+      if (!chapter.author) {
+        //just in case 😁
+        chapter.author = anonymousProfile();
+        return chapter;
+      }
+      const profile = userProfiles.find((p) => p.id === chapter.author.id);
+      if (profile) {
+        chapter.author  = profile;
+      } else {
+        //just in case 👽
+        chapter.author  = anonymousProfile();
+      }
+      return chapter;
+    });
+
+    //resolve the course creator profile
+    const courseCreatorProfile = userProfiles.find((p)=>p.id === course.creator.id);
+
+    course.creator = courseCreatorProfile ? courseCreatorProfile : anonymousProfile();
+
     ctx.status = 200;
     ctx.body = { course };
   } catch (e) {
@@ -140,12 +189,53 @@ router.get('/:id', requireAuth, async (ctx) => {
 router.get('/', requireAuth, async (ctx) => {
 
   try {
-    const courses = await CourseModel.query()
+    let courses = await CourseModel.query()
       .select(['*',
         CourseModel.relatedQuery('courseEnrollments').count().as('totalEnrolled'),
       ])
-      .withGraphFetched('tags')
+      .withGraphFetched('[tags,creator(selectBasicInfo)]')
       .where(ctx.query);
+
+    /**retrieve correct user image for the courses**/
+    //so not to re-fetch the profile, remove duplicates (handy if network requests to S3 are being done ),
+    const creators = [];
+    let creatorIds = {}; //quicker to get unique items
+    for (let i = 0; i < courses.length; i++) {
+      if (!courses[i].creator) {
+        continue;
+      }
+      if (!creatorIds[courses[i].creator.id]) {
+        creators.push(courses[i].creator);
+        creatorIds[courses[i].creator.id] = true;
+      }
+
+    }
+    const promises = creators.map(async (user) => {
+      return {
+        id: user.id,
+        name: user.name,
+        profileUri: await getProfileImage(user)
+      };
+    });
+    const userProfiles = await Promise.all(promises);
+    //now map above profiles with courses
+    courses = courses.map((course) => {
+      if (!course.creator) {
+        //just in case 😁
+        course.creator = anonymousProfile();
+        return course;
+      }
+      const profile = userProfiles.find((p) => p.id === course.creator.id);
+      if (profile) {
+        course.creator = profile;
+      } else {
+        //just in case 👽
+        course.creator = anonymousProfile();
+      }
+      return course;
+    });
+
+
     ctx.status = 200;
     ctx.body = { courses };
   } catch (e) {
@@ -516,5 +606,12 @@ router.delete('/:id', requireAuth, async ctx => {
 
 });
 
-
+function anonymousProfile(){
+  return  {
+    name: 'Private',
+    username: 'Private',
+    id: 'Private',
+    profileUri: '/uploads/images/profile-placeholder.gif'
+  };
+}
 module.exports = router.routes();
