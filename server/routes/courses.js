@@ -93,7 +93,7 @@ router.get('/:id', requireAuth, async (ctx) => {
         creatorIds[course.playlist[i].author.id] = true;
       }
     }
-    if(creatorIds[course.creator.id]){
+    if(!creatorIds[course.creator.id]){
       creators.push(course.creator); //push also the course creator profile
     }
 
