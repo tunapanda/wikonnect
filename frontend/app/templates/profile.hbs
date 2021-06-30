@@ -117,7 +117,6 @@
 
   <div class="main-content-wrapper container-lg">
     <div class="nav tabs-menu sections-menu">
-      {{!--
       <div class="nav-item">
         <LinkTo @route="profile.home" @model={{this.model}} class="nav-link">
           {{t "profile.nav.home"}}
@@ -128,11 +127,10 @@
         <LinkTo @route="profile.achievements" @model={{this.model}} class="nav-link">
           {{t "profile.nav.achievements"}}
         </LinkTo>
-      </div>--}}
-
+      </div>
     </div>
 
-    <BsTab as |tab|>
+    {{!-- <BsTab as |tab|>
       <tab.pane @title={{t "profile.nav.home"}}>
         {{t "profile.nav.home"}}
       </tab.pane>
@@ -146,7 +144,7 @@
 
         </div>
       </tab.pane>
-    </BsTab>
+    </BsTab> --}}
 
 
     {{outlet}}
