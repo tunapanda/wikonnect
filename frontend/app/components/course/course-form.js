@@ -196,4 +196,8 @@ export default class CourseCourseFormComponent extends Component {
       });
     }
   }
+
+  get courseAlreadyPublished() {
+    return this.model.id && this.model.status === 'published';
+  }
 }

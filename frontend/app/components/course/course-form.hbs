@@ -147,15 +147,22 @@
           {{t "course.form.labels.submitting"}}
         </button>
       {{else}}
-        <button type="button" class="btn btn-outline-primary btn-save-draft"
-          {{on "click" (fn this.beforeSubmit form this.model false)}}>
-          {{t  "course.form.buttons.save_draft"}}
-        </button>
+        {{#unless this.courseAlreadyPublished}}
+          <button type="button" class="btn btn-outline-primary btn-save-draft"
+            {{on "click" (fn this.beforeSubmit form this.model false)}}>
+            {{t  "course.form.buttons.save_draft"}}
+          </button>
+        {{/unless}}
+
 
         {{#if this.canPublish }}
           <button type="button" class="btn btn-primary btn-publish ml-3"
             {{on "click" (fn this.beforeSubmit form this.model true)}}>
-            {{t  "course.form.buttons.publish"}}
+            {{#if this.courseAlreadyPublished}}
+              {{t  "course.form.buttons.edit_published"}}
+            {{else}}
+              {{t  "course.form.buttons.publish"}}
+            {{/if}}
           </button>
         {{else}}
           <button type="button" class="btn btn-primary btn-publish ml-3" disabled>

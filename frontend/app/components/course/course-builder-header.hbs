@@ -40,6 +40,13 @@
         {{t "course.nav.create_course"}}
       </LinkTo>
     </div>
+    {{#if @editCourse}}
+      <div class="nav-item">
+        <LinkTo @route="course.edit" @model={{@editCourse}} class="nav-link">
+          {{t "course.nav.edit_course"}}
+        </LinkTo>
+      </div>
+    {{/if}}
     <div class="nav-item">
       <LinkTo @route="course.drafts" class="nav-link">
         {{t "course.nav.draft_courses"}}

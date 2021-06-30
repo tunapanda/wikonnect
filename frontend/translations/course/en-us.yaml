@@ -11,6 +11,7 @@ nav:
   create_course: New
   draft_courses: Drafts
   published_courses: Published
+  edit_course: Edit Course
 
 form:
   labels:
@@ -29,6 +30,7 @@ form:
     file_select: Select File
     save_draft: Save as Draft
     publish: Publish Course
+    edit_published: Save Changes
     save_tag: Submit Tag
   thumbnail:
     uploading: "Uploading image..."
@@ -73,6 +75,20 @@ show_page:
     enroll: Enroll to this Course
     start_learning: Start Learning ->
 
+edit_page:
+  title:
+    edit_course: Edit Course Details
+    subtitle: Add chapters to create a playlist for this course
+    all_chapters: All Chapters
+  buttons:
+    add_to_course: Add to Course
+    remove_from_course: Added to the course
+  labels:
+    chapters_subtitle: Add these chapters to your playlist
+    published_no_image: Course published successfully without an image
+    published_with_image: Course published successfully
+    draft_saved: Course draft saved successfully
+
 errors:
   submit_tag: Error encoutered while processing the tag. Kindly try again.
   course_image_upload: Error encountered while uploading course image
@@ -86,3 +102,4 @@ errors:
   no_filtered_record: No content found matching <strong> {selectedTag} </strong>. Kindly try a different filter tag
   no_filtered_records:  No content found matching <strong> {selectedTags} </strong>. Kindly try a fewer filter tags
   wrong_record_filters:  No content found matching <strong> {selectedTags} </strong>. Kindly try again with a valid filter tag
+  playlist_error: It seems we are facing issue with course playlist

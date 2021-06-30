@@ -16,6 +16,7 @@ export default class CourseSerializer extends ApplicationSerializer.extend(
     delete json.creatorId;
     delete json.createdAt;
     delete json.updatedAt;
+    delete json.metadata;
 
     snapshot.eachRelationship((key, relationship) => {
       if (relationship.kind === 'hasMany' && key === 'tags') {
