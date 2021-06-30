@@ -1,4 +1,4 @@
-const { faker, seed_number } = require('../_seeds');
+const { faker } = require('../_seeds');
 
 exports.seed = async (knex) => {
   // Deletes ALL existing entries
