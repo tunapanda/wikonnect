@@ -1,18 +1,17 @@
-const Router = require("koa-router");
+const Router = require('koa-router');
 
-const ChapterFeedback = require("../models/chapter_feedback");
-const { requireAuth } = require("../middleware/permController");
-const profaneCheck = require("../utils/profaneCheck");
+const ChapterFeedback = require('../models/chapter_feedback');
+const { requireAuth } = require('../middleware/permController');
 
 const router = new Router({
-  prefix: "/chapterFeedback",
+  prefix: '/chapterFeedback',
 });
 
-router.get("/", async (ctx) => {
+router.get('/', async (ctx) => {
   try {
     const feedback = await ChapterFeedback.query().where(ctx.query);
 
-    ctx.assert(feedback, 401, "Something went wrong");
+    ctx.assert(feedback, 401, 'Something went wrong');
     ctx.status = 200;
     ctx.body = { feedback };
   } catch (e) {
@@ -25,15 +24,9 @@ router.get("/", async (ctx) => {
   }
 });
 
-router.post("/", requireAuth, async (ctx) => {
+router.post('/', requireAuth, async (ctx) => {
   
   const newChapterFeedback = {...ctx.request.body.chapterFeedback};
-
-  // const checked = await profaneCheck(newChapterFeedback.comment);
-
-  // if (typeof checked != "undefined" && checked) {
-  //   ctx.throw(400, null, { errors: [checked] });
-  // }
 
   let chapterFeedback;
   try {
@@ -48,7 +41,7 @@ router.post("/", requireAuth, async (ctx) => {
     }
     throw e;
   }
-  ctx.assert(chapterFeedback, 401, "Something went wrong");
+  ctx.assert(chapterFeedback, 401, 'Something went wrong');
   ctx.status = 201;
   ctx.body = { chapterFeedback };
 });

@@ -30,10 +30,10 @@ export default class AdminContentApprovalController extends Controller {
         chapter: chapter,
         creator: this.me.user,
       });
-      
+
       chapter.revisionRequested = true;
       await chapter.save();
-      
+
       model
         .save()
         .then(() => {

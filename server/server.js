@@ -41,7 +41,7 @@ router.use(require('./routes/oauth2s'));
 
 router.use(jwt.authenticate, require('./routes/chapters'));
 
-router.use(jwt.authenticate, require('./routes/chapter-feedback'))
+router.use(jwt.authenticate, require('./routes/chapter-feedback'));
 
 router.use(jwt.authenticate, require('./routes/comments'));
 

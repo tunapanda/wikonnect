@@ -86,7 +86,14 @@ users:
     badges_earned: Beji Zilizopatikana
     badges_earned_alt: badges earned icon
     details_button: Maelezo
+
 content_approval:
+  revision_requested: Marekebisho yameombwa
+  unapprove: Batilisha idhini
+  approve: Idhinisha
+  request_revisions: Omba Marekebisho
+  feedback: Maoni
+
   table:
     thumbnail: Kijipicha
     name: Jina

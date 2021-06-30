@@ -36,7 +36,7 @@
           </td>
           <td>
             {{#if chapter.revisionRequested}}
-              Revision Requested
+              {{t 'admin.content_approval.revision_requested'}}
             {{else}}
               {{if chapter.approved 'Approved' 'Pending'}}
             {{/if}}
@@ -58,7 +58,7 @@
                 type="button"
                 {{on 'click' (fn this.toggleApproval chapter.id false)}}
               >
-                Unapprove
+                {{t 'admin.content_approval.unapprove'}}
               </button>
             {{else}}
               <button
@@ -66,14 +66,14 @@
                 type="button"
                 {{on 'click' (fn this.toggleApproval chapter.id true)}}
               >
-                Approve
+                {{t 'admin.content_approval.approve'}}
               </button>
             {{/if}}
             <button
               class="btn btn-light"
               type="button"
             >
-              Request Revisions
+              {{t 'admin.content_approval.request_revisions'}}
               <BsPopover @title="Feedback" @placement="bottom">
                 <BsForm @onSubmit={{fn this.requestRevision chapter.id}} as |form|>
                   <form.group>
@@ -83,7 +83,7 @@
                     ></Textarea>
                   </form.group>
                   <form.submitButton>
-                    Submit
+                    {{t 'buttons.submit'}}
                   </form.submitButton>
                 </BsForm>
               </BsPopover>

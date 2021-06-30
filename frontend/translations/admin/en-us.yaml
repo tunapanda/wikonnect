@@ -86,7 +86,14 @@ users:
     badges_earned: Badges Earned
     badges_earned_alt: badges earned icon
     details_button: Details
+
 content_approval:
+  revision_requested: Revision Requested
+  unapprove: Unapprove
+  approve: Approve
+  request_revisions: Request Revisions
+  feedback: Feedback
+  
   table:
     thumbnail: Thumbnail
     name: Chapter Name
