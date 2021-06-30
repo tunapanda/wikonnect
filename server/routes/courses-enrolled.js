@@ -19,6 +19,8 @@ const router = new Router({
  *
  * @apiHeader {String} Authorization Bearer << JWT here>>
  *
+ * @apiParam (Query Params) {String} [include] relationships to eager load (comma separated e.g. course,user)
+ *
  * @apiSuccess {Object}  coursesEnrolled Top level object
  * @apiSuccess {String}  coursesEnrolled[id] the id of the course enrollment
  * @apiSuccess {String}  coursesEnrolled[courseId] the id of the course user has enrolled to
@@ -41,10 +43,23 @@ const router = new Router({
 router.get('/', requireAuth, async ctx => {
 
   try {
-    const userId = ctx.state.user.data.id;
-
+    let joinQuery = '';
+    if(ctx.query && ctx.query.include){ //TODO: move this stuff to Joi validator
+      const includes = ctx.query.include.split(',');
+      if(includes.some((v)=>v.toLowerCase().includes('course'))){
+        joinQuery += 'course';
+      }
+      if(includes.some((v)=>v.toLowerCase().includes('user'))){
+        joinQuery += ',user(selectBasicInfo)';
+      }
+    }
     const coursesEnrolled = await CourseEnrolledModel.query()
-      .where('userId', userId);
+      .withGraphJoined(`[${joinQuery}]`)
+      .where((query)=>{
+        if(ctx.query.userId){
+          query.where('userId',ctx.query.userId);
+        }
+      },);
     ctx.status = 200;
     ctx.body = { coursesEnrolled };
   } catch (e) {
