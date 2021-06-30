@@ -54,7 +54,7 @@
           <td>
             {{#if chapter.approved}}
               <button
-                class="btn btn-secondary"
+                class="btn btn-danger"
                 type="button"
                 {{on 'click' (fn this.toggleApproval chapter.id false)}}
               >
@@ -62,15 +62,31 @@
               </button>
             {{else}}
               <button
-                class="btn btn-secondary"
+                class="btn btn-success"
                 type="button"
-                {{on 'click' (fn this.toggleApproval chapter.id false)}}
+                {{on 'click' (fn this.toggleApproval chapter.id true)}}
               >
                 Approve
               </button>
             {{/if}}
-            <button class="btn btn-light" type="button">
+            <button
+              class="btn btn-light"
+              type="button"
+            >
               Request Revisions
+              <BsPopover @title="Feedback" @placement="bottom">
+                <BsForm @onSubmit={{fn this.requestRevision chapter.id}} as |form|>
+                  <form.group>
+                    <Textarea
+                      @value={{this.feedback}}
+                      class="form-control"
+                    ></Textarea>
+                  </form.group>
+                  <form.submitButton>
+                    Submit
+                  </form.submitButton>
+                </BsForm>
+              </BsPopover>
             </button>
           </td>
         </tr>

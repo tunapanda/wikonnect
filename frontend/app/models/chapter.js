@@ -10,6 +10,7 @@ export default class ChapterModel extends Model {
   @attr contentUri;
   @attr('boolean') approved;
   @attr('boolean') verified;
+  @attr('boolean') revisionRequested;
   @attr tags;
   @attr targetStatus;
   @attr imageUrl;
@@ -18,6 +19,7 @@ export default class ChapterModel extends Model {
   @attr authenticatedUser;
   @attr views;
   @hasMany('comment') comment;
+  @hasMany('chapterFeedback') feedback;
   @attr author;
   @attr reviewQuestions;
 
