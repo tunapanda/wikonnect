@@ -91,7 +91,7 @@ router.post('/', validateAuthRoutes.validateNewUser, createPasswordHash, async c
   newUser.lastIp = ctx.request.ip;
 
   const userCheck = await User.query();
-  let role = !userCheck.length ? 'groupAdmin' : 'groupVerified';
+  let role = !userCheck.length ? 'groupAdmin' : 'groupBasic';
 
   delete newUser.profileUri; //avoids external profile links at the moment
 
