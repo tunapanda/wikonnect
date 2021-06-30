@@ -21,10 +21,13 @@
     {{#each this.courses as |course|}}
       <Course::PreviewCard class="col-md-4 col-lg-4 col-xl-3 mb-3 course-preview" @course={{course}}>
 
-        <div class="w-100 text-right course-actions">
+        <div class="w-100 text-right course-actions pt-3">
           <LinkTo @route="course.show" @model={{course.id}}
                   class="btn btn-outline-primary btn-sm border-0 btn-view-course">
             {{t "course.drafts_page.buttons.view_course"}}
+          </LinkTo>
+          <LinkTo @route="course.edit" @model={{course.id}} class="btn btn-primary btn-sm border-0">
+            {{t "course.drafts_page.buttons.edit_course"}}
           </LinkTo>
         </div>
       </Course::PreviewCard>

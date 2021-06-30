@@ -25,6 +25,9 @@
                   class="btn btn-outline-primary btn-sm border-0 btn-view-course">
             {{t "course.published_page.buttons.view_course"}}
           </LinkTo>
+          <LinkTo @route="course.edit" @model={{course.id}} class="btn btn-primary btn-sm border-0">
+            {{t "course.published_page.buttons.edit_course"}}
+          </LinkTo>
         </div>
       </Course::PreviewCard>
     {{/each}}

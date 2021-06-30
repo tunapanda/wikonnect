@@ -54,6 +54,7 @@ drafts_page:
   title: Rasimu yako ya Vitu vya Kozi
   buttons:
     view_course: Angalia Kozi
+    edit_course: Hariri Kozi hii
   labels:
     no_content: Kwa sasa huna kozi za rasimu
 
@@ -61,6 +62,7 @@ published_page:
   title: Vitu vyako vya Kozi vilivyochapishwa
   buttons:
     view_course: Angalia Kozi
+    edit_course: Hariri Kozi hii
   labels:
     no_content: Kwa sasa huna kozi zilizochapishwa.
 
