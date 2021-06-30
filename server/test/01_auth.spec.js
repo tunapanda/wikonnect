@@ -85,7 +85,7 @@ describe('AUTHENTICATION ROUTES', () => {
         .request(server)
         .get(usersRoute)
         .set('Content-Type', 'application/json')
-        .set(tokens.headerVerifiedUser)
+        .set(tokens.headerBasicUser)
         .end((err, res) => {
           res.should.have.status(400);
           done();
@@ -108,7 +108,7 @@ describe('AUTHENTICATION ROUTES', () => {
         .request(server)
         .get(usersRoute + '?id=' + userId)
         .set('Content-Type', 'application/json')
-        .set(tokens.headerVerifiedUser)
+        .set(tokens.headerBasicUser)
         .end((err, res) => {
           res.should.have.status(400);
           done();

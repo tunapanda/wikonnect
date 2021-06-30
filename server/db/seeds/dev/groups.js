@@ -24,9 +24,9 @@ exports.seed = function (knex) {
             updated_at: '2019-12-20 19:17:10',
           },
           {
-            id: 'groupVerified',
-            name: 'verified',
-            slug: 'role-verified',
+            id: 'groupBasic',
+            name: 'basic',
+            slug: 'role-basic',
             description: '',
             created_at: '2019-12-20 19:17:10',
             updated_at: '2019-12-20 19:17:10',
@@ -103,7 +103,7 @@ exports.seed = function (knex) {
                 },
                 {
                   user_id: 'user3',
-                  group_id: 'groupVerified',
+                  group_id: 'groupBasic',
                   created_at: '2019-12-20 19:17:10',
                   updated_at: '2019-12-20 19:17:10',
                 },
