@@ -62,6 +62,17 @@ published_page:
   labels:
     no_content: You currently have no published courses.
 
+show_page:
+  tag_list_title: Tags
+  enrolled: "{count, plural,=1 {1 Person Enrolled} other {# People Enrolled}}"
+  popular_tags: Popular Tags
+  popular_courses: Popular Courses
+  course_chapters: All Chapters in this Course
+  buttons:
+    update_course: Update this Course
+    enroll: Enroll to this Course
+    start_learning: Start Learning ->
+
 errors:
   submit_tag: Error encoutered while processing the tag. Kindly try again.
   course_image_upload: Error encountered while uploading course image

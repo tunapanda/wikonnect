@@ -55,6 +55,17 @@ drafts_page:
   labels:
     no_content: Kwa sasa huna kozi za rasimu
 
+show_page:
+  tag_list_title: Vitambulisho
+  enrolled: "{count, plural,=1 {Mtu 1 aliyejiandikisha} other {Watu waliojiandikisha ni #}}"
+  popular_tags: Lebo maarufu
+  popular_courses: Kozi Maarufu
+  course_chapters: Sura zote katika Kozi hii
+  buttons:
+    update_course: Sasisha Kozi hii
+    enroll: Enroll to this Course
+    start_learning: Anza Kujifunza ->
+
 errors:
   submit_tag: Hitilafu imefungwa wakati wa kuchakata lebo. Tafadhali jaribu tena.
   course_image_upload: Hitilafu imetokea wakati wa kupakia picha ya kozi

@@ -4,14 +4,14 @@
       {{#if @course.thumbnailUrl}}
         <img src="{{@course.thumbnailUrl}}" class="course-image" alt="" role="presentation">
       {{else}}
-        <img src="https://placehold.jp/20/black/ffffff/328x200.png?text={{@chapter.name}}"
+        <img src="https://placehold.jp/20/black/ffffff/328x200.png?text={{@course.name}}"
         class="course-image"
         alt="" role="presentation">
       {{/if}}
     </div>
     <div class="course-metadata d-flex">
       <div class="author">
-        <LinkTo @route="profile.home" @model={{@chapter.creator.id}} class="author-link">
+        <LinkTo @route="profile.home" @model={{@course.creator.id}} class="author-link">
           <img src="{{ @course.creator.profileUri}}" class="author-avatar rounded-circle" alt="" role="presentation">
         </LinkTo>
 

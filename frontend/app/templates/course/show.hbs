@@ -1,0 +1,111 @@
+<div class="view-course-page">
+
+  <div class="background-banner"></div>
+  <div class="course-main-details-card container d-flex flex-wrap">
+    <div class="course-image-container">
+      {{#if this.model.thumbnailUrl}}
+        <img src="{{this.model.thumbnailUrl}}" class="course-image" alt="" role="presentation">
+      {{else}}
+        <img src="https://placehold.jp/20/black/ffffff/328x200.png?text={{this.model.name}}"
+        class="course-image"
+        alt="" role="presentation">
+      {{/if}}
+    </div>
+    <div class="details-l-section ">
+      {{#if this.model.tags}}
+        <div class="tags-section">
+        <span class="section-header pb-2 d-inline-block ">
+          {{t "course.show_page.tag_list_title"}}
+        </span>
+          <div class="tag-list">
+            {{#each this.model.tags as |tag|}}
+              <span class="course-tag"> {{title-case tag.name}}</span>
+            {{/each}}
+          </div>
+        </div>
+      {{/if}}
+      <div class="name">
+        {{title-case this.model.name}}
+      </div>
+      <div class="description pb.2">
+        {{this.model.description}}
+      </div>
+      <div class="metadata row align-items-center pl-2 pt-2 pb-2">
+        <div class="author">
+          <LinkTo @route="profile.home" @model={{this.model.creator.id}} class="author-link">
+            <img src="{{ this.model.creator.profileUri}}" class="author-avatar rounded-circle" alt=""
+                 role="presentation">
+
+            <span class="author-name">
+              {{this.model.creator.name}}
+            </span>
+
+          </LinkTo>
+
+        </div>
+        <div class="separator">
+        </div>
+        <div class="enrollment-count pl-3">
+          {{svg-jar "group-solid" width="17" }}
+          <span>{{t "course.show_page.enrolled" count=this.model.totalEnrolled}}</span>
+        </div>
+      </div>
+      <div class="course-actions pt-1">
+        {{#if this.isMyCourse}}
+          <LinkTo @route="course.edit" @model={{this.model.id}} class="btn btn-primary">
+            {{t "course.show_page.buttons.update_course"}}
+          </LinkTo>
+        {{/if}}
+        {{#unless this.isMyCourse}}
+          <button type="button" class="btn btn-primary">
+            {{t "course.show_page.buttons.enroll"}}
+          </button>
+        {{/unless}}
+      </div>
+    </div>
+    <div class="open-r-section d-none d-lg-inline-block">
+    </div>
+  </div>
+
+  <div class="row ft-section course-sc-container pt-4 pl-0 pr-0">
+    <div class="side-bar col-lg-3 d-none d-lg-block row">
+      <div class="popular-tags mb-2">
+        <div class="title"> {{t "course.show_page.popular_tags"}}</div>
+        <div class="tags-list">
+          <div class="tag">
+
+          </div>
+        </div>
+      </div>
+      <div class="popular-courses mt-2">
+        <div class="title">{{t "course.show_page.popular_courses"}}</div>
+      </div>
+    </div>
+    <div class="content col-lg-9 col-sm-12 pr-0 mr-0">
+      <div class="subtitle">
+        {{t "course.show_page.course_chapters"}}
+      </div>
+
+      <div class="row course-chapters-list">
+        {{#each this.playlist as |chapter|}}
+          <H5pListItem @chapter={{chapter}} class="chapter-preview-card ">
+            {{#unless this.isMyCourse}}
+              <span class="d-block col-12 mt-4"></span>
+              <div class="col-12 text-right chapter-action-section">
+                <LinkTo @route="chapter.index" @model={{chapter.id}} type="button"
+                        class="btn btn-sm btn-outline-primary">
+                  {{t "course.show_page.buttons.start_learning"}}
+                </LinkTo>
+              </div>
+            {{/unless}}
+
+          </H5pListItem>
+        {{/each}}
+
+      </div>
+
+    </div>
+
+
+  </div>
+</div>

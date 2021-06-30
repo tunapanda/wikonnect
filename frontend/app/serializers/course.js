@@ -7,6 +7,7 @@ export default class CourseSerializer extends ApplicationSerializer.extend(
   attrs = {
     tags: { deserialize: 'records' },
     playlist: { deserialize: 'records' },
+    creator: { deserialize: 'records' },
   };
   serialize(snapshot) {
     let json = super.serialize(...arguments);

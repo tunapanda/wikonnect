@@ -9,6 +9,7 @@ export default class CourseModel extends Model {
   @attr() updatedAt;
   @attr() createdAt;
   @attr() metadata;
+  @attr() thumbnailUrl;
 
   @belongsTo('user') creator;
   @hasMany('tag') tags;

@@ -12,7 +12,9 @@ $palette: (
   doveGray: #707070,
   gallery: #F0F0F0,
   nevada: #696C6E,
-  mercury: #e3e3e3
+  mercury: #e3e3e3,
+  electricViolet: #651CF0,
+  dustyGray: #A08C8C
 );
 
 .cpc-container {
@@ -530,6 +532,138 @@ $palette: (
 
 }
 
+
+.view-course-page {
+  position: relative;
+
+  .background-banner {
+    height: 135px;
+    background-color: map-get($palette, cinderella);
+    z-index: 1;
+    position: absolute;
+    right: 0;
+    left: 0;
+  }
+
+  .course-main-details-card {
+    position: relative;
+    z-index: 10;
+    top: 30px;
+    background-color: map-get($palette, white);
+    border: solid 1px map-get($palette, alto);
+    padding: 0;
+    flex: 0 0 91.66667%;
+    max-width: 91.66667%;
+
+    .details-l-section {
+      padding: 20px 20px 20px 20px;
+    }
+
+    .course-image-container {
+      width: 100%;
+
+      .course-image {
+        width: 100%;
+      }
+    }
+  }
+
+  .course-main-details-card {
+    .tags-section {
+      .section-header {
+        color: map-get($palette, dustyGray)
+      }
+
+      .tag-list {
+        .course-tag {
+          padding: .3em .6em;
+          font-size: 12px;
+          color: map-get($palette, gray45);
+          background-color: map-get($palette, gray95);
+          margin: 0 0 5px;
+          border-radius: 4px;
+          display: inline-block;
+        }
+      }
+    }
+
+    .name {
+      font-size: 22px;
+      font-weight: 500;
+    }
+
+    .description {
+      font-size: 12px;
+      color: map-get($palette, gray30);
+    }
+
+    .metadata {
+      .author {
+        display: flex;
+
+        .author-link {
+          font-size: 14px;
+          color: map-get($palette, gray30);
+
+          .author-avatar {
+            width: 35px;
+            height: 35px;
+          }
+        }
+      }
+
+      .enrollment-count {
+        color: map-get($palette, nevada);
+        font-size: 14px;
+      }
+    }
+
+    .course-actions {
+      .btn {
+        padding: 5px 25px;
+      }
+    }
+  }
+
+  .ft-section {
+    top: 30px;
+    position: relative;
+  }
+
+
+}
+
+.view-course-page {
+  .ft-section {
+    .side-bar {
+      .popular-tags, .popular-courses {
+        box-shadow: 0px 3px 6px #00000019;
+        border: 1px solid #DCDCDC;
+        border-radius: 5px;
+        min-height: 150px;
+        padding: 8px 5px 5px;
+
+        .title {
+          color: map-get($palette, gray30);
+          font-weight: 500;
+          padding-left: 3px;
+
+        }
+      }
+    }
+
+    .content {
+      .subtitle {
+        background-color: map-get($palette, gallery);
+        line-height: 32px;
+        padding-left: 12px;
+        margin-bottom: 12px;
+        border-radius: 4px;
+      }
+    }
+  }
+}
+
 @media (min-width: 576px) {
   .course-sc-container {
     max-width: 540px;
@@ -553,6 +687,36 @@ $palette: (
   }
   .course-sc-container {
     max-width: 960px;
+  }
+
+  .view-course-page {
+    .course-main-details-card {
+
+      .details-l-section {
+        max-width: 70%;
+        padding: 20px 20% 20px 20px;
+
+      }
+
+      .open-r-section {
+        width: 30%;
+        background-color: map-get($palette, electricViolet);
+      }
+
+      .course-image-container {
+        position: absolute;
+        z-index: 15;
+        left: 70%;
+        transform: translate(-45%, 0);
+        top: 10%;
+        width: auto;
+
+        .course-image {
+          height: 100%;
+          width: auto;
+        }
+      }
+    }
   }
 }
 
