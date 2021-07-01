@@ -72,7 +72,7 @@
     {{/each}}
 
     {{#unless this.courses}}
-      <div class="error-message pt-5 pl-3">
+      <div class="error-message pt-3  pl-3 pb-5">
         {{t "profile.available_courses_page.no_content"}},
         <LinkTo @route="course.create">
           {{t "profile.available_courses_page.click_here"}}
@@ -80,7 +80,7 @@
       </div>
     {{/unless}}
     {{#if (and this.searchTerm (not this.filteredCourses))}}
-      <div class="error-message pt-5 pl-3">
+      <div class="error-message pt-3 pl-3 pb-5">
         {{html-safe (t "profile.available_courses_page.no_searched_record" word=this.searchTerm)}}
       </div>
     {{/if}}
