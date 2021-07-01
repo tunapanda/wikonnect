@@ -564,6 +564,7 @@ $palette: (
 
       .course-image {
         width: 100%;
+        max-height: 220px;
       }
     }
   }
@@ -611,9 +612,10 @@ $palette: (
           }
         }
       }
-      .vertical-line-divider{
+
+      .vertical-line-divider {
         width: 2px;
-        background-color: map-get($palette,gray30);
+        background-color: map-get($palette, gray30);
         height: 16px;
         margin-left: 13px;
         margin-right: 13px;
@@ -635,6 +637,21 @@ $palette: (
   .ft-section {
     top: 30px;
     position: relative;
+
+    .course-chapters-list {
+      .chapter-card {
+        .chapter-body {
+          position: relative;
+          padding-bottom: 1.7em;
+          .chapter-action-section {
+            position: absolute;
+            bottom: 10px;
+            left: 0;
+            right: 0;
+          }
+        }
+      }
+    }
   }
 
 
