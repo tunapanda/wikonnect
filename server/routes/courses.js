@@ -98,7 +98,9 @@ router.get('/:id', requireAuth, async (ctx) => {
       .withGraphFetched('[creator(selectBasicInfo),]')
       .findById(ctx.params.id)
       .modifyGraph('courseEnrollments',(query)=>{
-        query.where('user_id',enrolledUserId);
+        if(enrolledUserId) {
+          query.where('user_id', enrolledUserId);
+        }
       });
 
     ctx.assert(course, 404, { message: 'Course not found' });
