@@ -1,14 +1,43 @@
+form {
+  #comment-container {
+    border: 1px solid #6d2445;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    // height: 260px;
+    // padding: 30px 30px 10px;
+    // height: 100px;
+    padding: 10px 10px 5px;
+    position: relative;
+  }
+
+  #comment-area {
+    background: 0 0;
+    border: 0;
+    box-sizing: border-box;
+    // font-size: 26px;
+    // height: 100%;
+    // resize: none;
+    resize: both;
+    line-height: 34px;
+    min-height: 100px;
+    outline: 0;
+    width: 100%;
+  }
+}
+
 .replies {
   border-left: 2px solid transparentize(#F57010, 0.6);
   background-color: transparentize(#F57010, 0.9);
   width: 100%;
-  padding:3px;
+  padding: 3px;
 }
 
 .reply-actions {
   font-size: small;
   color: #aaa;
-  fill:#aaa;
+  fill: #aaa;
 
   button {
     color: #aaa;
