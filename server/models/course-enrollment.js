@@ -26,7 +26,7 @@ class CourseEnrollment extends Model {
         relation: Model.BelongsToOneRelation,
         modelClass: __dirname + '/course',
         join: {
-          from: 'course_enrollment.course_id',
+          from: 'course_enrollment.courseId',
           to: 'courses.id'
         }
       },
@@ -34,7 +34,7 @@ class CourseEnrollment extends Model {
         relation: Model.BelongsToOneRelation,
         modelClass: __dirname + '/user',
         join: {
-          from: 'course_enrollment.user_id',
+          from: 'course_enrollment.userId',
           to: 'users.id'
         }
       }

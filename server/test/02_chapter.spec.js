@@ -135,7 +135,6 @@ describe('CHAPTER ROUTE', () => {
       .get(route + itemID)
       .set(tokens.headerAdminUser)
       .end((err, res) => {
-          console.log('=========>',data.chapter)
         res.should.have.status(200);
         res.should.be.json;
         res.body.chapter.should.have.property('tags');

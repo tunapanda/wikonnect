@@ -27,7 +27,7 @@ class CourseTag extends Model {
         relation: Model.BelongsToOneRelation,
         modelClass: __dirname + '/course',
         join: {
-          from: 'course_tags.course_id',
+          from: 'course_tags.courseId',
           to: 'courses.id'
         }
       },
@@ -35,7 +35,7 @@ class CourseTag extends Model {
         relation: Model.BelongsToOneRelation,
         modelClass: __dirname + '/tag',
         join: {
-          from: 'course_tags.tag_id',
+          from: 'course_tags.tagId',
           to: 'tags.id'
         }
       },

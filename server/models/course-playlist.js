@@ -29,7 +29,7 @@ class CoursePlaylist extends Model {
         relation: Model.BelongsToOneRelation,
         modelClass: __dirname + '/course',
         join: {
-          from: 'course_playlist.course_id',
+          from: 'course_playlist.courseId',
           to: 'courses.id'
         }
       },
@@ -37,7 +37,7 @@ class CoursePlaylist extends Model {
         relation: Model.BelongsToOneRelation,
         modelClass: __dirname + '/chapter',
         join: {
-          from: 'course_playlist.chapter_id',
+          from: 'course_playlist.chapterId',
           to: 'chapters.id'
         }
       },
@@ -45,7 +45,7 @@ class CoursePlaylist extends Model {
         relation: Model.BelongsToOneRelation,
         modelClass: __dirname + '/user',
         join: {
-          from: 'course_playlist.user_id',
+          from: 'course_playlist.userId',
           to: 'users.id'
         }
       }

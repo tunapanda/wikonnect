@@ -38,8 +38,8 @@ class Tag extends Model {
         join: {
           from: 'courses.id',
           through: {
-            to: 'course_tags.course_id',
-            from: 'course_tags.tag_id'
+            to: 'course_tags.courseId',
+            from: 'course_tags.tagId'
           },
           to: 'tags.id'
         }
@@ -50,7 +50,7 @@ class Tag extends Model {
         join: {
           from: 'chapters.id',
           through: {
-            to: 'chapter_tags.chapter_id',
+            to: 'chapter_tags.chapterId',
             from: 'chapter_tags.tag_id'
           },
           to: 'tags.id'
@@ -62,8 +62,8 @@ class Tag extends Model {
         join: {
           from: 'tags.id',
           through: {
-            from: 'tag_followers.tag_id',
-            to: 'tag_followers.user_id',
+            from: 'tag_followers.tagId',
+            to: 'tag_followers.userId',
             extra: {
               subscriptionId: 'id'
             }
@@ -78,7 +78,7 @@ class Tag extends Model {
         modelClass: __dirname + '/course-tag',
         join: {
           from: 'tags.id',
-          to: 'course_tags.tag_id'
+          to: 'course_tags.tagId'
         }
       },
       chapterTags: {
@@ -86,7 +86,7 @@ class Tag extends Model {
         modelClass: __dirname + '/chapter-tag',
         join: {
           from: 'tags.id',
-          to: 'chapter_tags.tag_id'
+          to: 'chapter_tags.tagId'
         }
       },
       tagFollowers: {
@@ -94,7 +94,7 @@ class Tag extends Model {
         modelClass: __dirname + '/tag-follower',
         join: {
           from: 'tags.id',
-          to: 'tag_followers.tag_id'
+          to: 'tag_followers.tagId'
         },
       },
 

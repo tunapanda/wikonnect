@@ -26,7 +26,7 @@ class TagFollower extends Model {
         relation: Model.BelongsToOneRelation,
         modelClass: __dirname + '/tag',
         join: {
-          from: 'tag_subscribers.tag_id',
+          from: 'tag_subscribers.tagId',
           to: 'users.id'
         }
       },
@@ -34,7 +34,7 @@ class TagFollower extends Model {
         relation: Model.BelongsToOneRelation,
         modelClass: __dirname + '/user',
         join: {
-          from: 'tag_subscribers.user_id',
+          from: 'tag_subscribers.userId',
           to: 'users.id'
         }
       }

@@ -59,8 +59,8 @@ class User extends Model {
         join: {
           from: 'users.id',
           through: {
-            from: 'course_enrollment.user_id',
-            to: 'course_enrollment.course_id'
+            from: 'course_enrollment.userId',
+            to: 'course_enrollment.courseId'
           },
           to: 'courses.id'
         }
@@ -87,8 +87,8 @@ class User extends Model {
         join: {
           from: 'users.id',
           through: {
-            from: 'group_members.user_id',
-            to: 'group_members.group_id'
+            from: 'group_members.userId',
+            to: 'group_members.groupId'
           },
           to: 'groups.id'
         }
@@ -99,8 +99,8 @@ class User extends Model {
         join: {
           from: 'users.id',
           through: {
-            to: 'user_followers.following_id',
-            from: 'user_followers.user_id',
+            to: 'user_followers.followingId',
+            from: 'user_followers.userId',
             extra: {
               subscriptionId: 'id'
             },
@@ -114,8 +114,8 @@ class User extends Model {
         join: {
           from: 'users.id',
           through: {
-            to: 'user_followers.user_id',
-            from: 'user_followers.following_id',
+            to: 'user_followers.userId',
+            from: 'user_followers.followingId',
             extra: {
               subscriptionId: 'id'
             },

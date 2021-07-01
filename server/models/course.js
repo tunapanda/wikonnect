@@ -44,8 +44,8 @@ class Course extends Model {
         join: {
           from: 'courses.id',
           through: {
-            to: 'course_tags.tag_id',
-            from: 'course_tags.course_id'
+            to: 'course_tags.tagId',
+            from: 'course_tags.courseId'
           },
           to: 'tags.id'
         }
@@ -56,8 +56,8 @@ class Course extends Model {
         join: {
           from: 'users.id',
           through: {
-            to: 'course_enrollment.user_id',
-            from: 'course_enrollment.course_id',
+            to: 'course_enrollment.userId',
+            from: 'course_enrollment.courseId',
             extra: {
               enrollmentId: 'id'
             }
@@ -71,8 +71,8 @@ class Course extends Model {
         join: {
           from: 'chapters.id',
           through: {
-            to: 'course_playlist.chapter_id',
-            from: 'course_playlist.course_id',
+            to: 'course_playlist.chapterId',
+            from: 'course_playlist.courseId',
             extra: ['rank']
           },
           to: 'courses.id'
@@ -93,7 +93,7 @@ class Course extends Model {
         modelClass: __dirname + '/course-enrollment',
         join: {
           from: 'courses.id',
-          to: 'course_enrollment.course_id'
+          to: 'course_enrollment.courseId'
         }
       },
     };
