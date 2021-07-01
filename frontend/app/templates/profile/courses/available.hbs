@@ -1,1 +1,88 @@
-{{outlet}}
+<div class="enrolled-courses-container">
+  {{#if this.courses}}
+    <div class="course-filters-menu filters-sub-section-menu row pb-3 pt-3">
+      <div class="col-lg-3">
+        <div class="search-form">
+          <Input class="form-control search-input" @value={{this.searchTerm}} @type="search"
+                 placeholder="{{t "course.search_course_placeholder"}}"/>
+          <span class="search-icon {{if this.searchTerm 'd-none'}}"></span>
+        </div>
+      </div>
+
+      <div class="col-lg-4">
+        <BsDropdown class="sort-dropdown custom-courses-dd" as |dd|>
+          <dd.toggle>{{t "profile.available_courses_page.buttons.sort"}} {{this.sortBy.title}}
+            <span class="caret"></span>
+          </dd.toggle>
+          <dd.menu as |menu|>
+            <div class="header">
+              {{t "profile.courses.sort_options_title"}}
+            </div>
+            <hr>
+            <menu.item>
+              <button type="button" class="btn w-100 menu-item btn-sort-all"
+                {{on "click" (fn this.setSortBy undefined  undefined)}}>
+                {{t "profile.courses.sort_by_all"}}
+              </button>
+            </menu.item>
+            <menu.item>
+              <button type="button" class="btn w-100 menu-item btn-sort-followers"
+                {{on "click" (fn this.setSortBy (t "profile.courses.sort_by_followers_count") "followersCount")}}>
+                {{t "profile.courses.sort_by_followers_count"}}
+              </button>
+            </menu.item>
+            <menu.item>
+              <button type="button" class="btn w-100 menu-item btn-sort-tags"
+                {{on "click" (fn this.setSortBy (t "profile.courses.sort_by_tags_count") "tagsCount")}}>
+                {{t "profile.courses.sort_by_tags_count"}}
+              </button>
+            </menu.item>
+          </dd.menu>
+        </BsDropdown>
+      </div>
+    </div>
+  {{/if}}
+
+  <div class="row pb-5">
+    {{#each this.filteredCourses as |course|}}
+      <Course::PreviewCard @course={{course}} class="col-sm-12 col-md-4 col-xl-3 mb-4 course-preview">
+
+        <div class="w-100 text-right course-actions pt-3">
+
+          {{#if (exec this.isEnrolled course)}}
+            <button type="button"  {{on "click" (fn this.disenroll course)}}
+                    class="btn btn-outline-primary btn-sm border-0 btn-disenroll">
+              {{svg-jar "tick" height="15" width="15"}}
+              {{t "profile.available_courses_page.buttons.disenroll"}}
+            </button>
+          {{else}}
+            <button type="button"  {{on "click" (fn this.enroll course)}}
+                    class="btn btn-outline-primary btn-sm border-0 btn-enroll">
+              {{t "profile.available_courses_page.buttons.enroll"}}
+            </button>
+          {{/if}}
+          <LinkTo @route="course.show" @model={{course.id}}
+                  class="btn btn-primary btn-sm border-0 btn-view-course">
+            {{t "profile.available_courses_page.buttons.view_course"}}
+          </LinkTo>
+
+        </div>
+
+      </Course::PreviewCard>
+    {{/each}}
+
+    {{#unless this.courses}}
+      <div class="error-message pt-5 pl-3">
+        {{t "profile.available_courses_page.no_content"}},
+        <LinkTo @route="course.create">
+          {{t "profile.available_courses_page.click_here"}}
+        </LinkTo>
+      </div>
+    {{/unless}}
+    {{#if (and this.searchTerm (not this.filteredCourses))}}
+      <div class="error-message pt-5 pl-3">
+        {{html-safe (t "profile.available_courses_page.no_searched_record" word=this.searchTerm)}}
+      </div>
+    {{/if}}
+  </div>
+</div>

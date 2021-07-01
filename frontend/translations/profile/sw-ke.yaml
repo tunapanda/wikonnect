@@ -61,3 +61,24 @@ enrolled_courses_page:
     view_course: Angalia Kozi
   errors:
     disenroll: Hitilafu isiyotarajiwa imepatikana wakati wa kuchakata ombi lako
+
+available_courses_page:
+  disenroll_prompt: Je! Unataka kujiondoa kwenye kozi hii?
+  no_content: Hakuna kozi zilizochapishwa kwa sasa. Kuunda kozi yako mwenyewe
+  click_here: endelea hapa
+  no_searched_record: Hakuna maudhui yaliyopatikana yanayolingana na <strong> {word} </strong>. Tafadhali jaribu neno tofauti la utaftaji
+  enroll_successful: Umefanikiwa kujiandikisha kwenye kozi
+  disenroll_successful:  Umefanikiwa kujiondoa kwenye kozi
+  general_error: Hitilafu isiyotarajiwa imepatikana wakati wa kuchakata ombi lako
+  buttons:
+    enroll: Jisajili kwenye Kozi
+    view_course: Angalia Kozi
+    disenroll: Tayari umejiandikisha
+    sort: Panga kwa
+
+courses:
+  sort_options_title: Panga Kozi Na
+  sort_by_all: Zote
+  sort_by_followers_count: Inayofuatwa Zaidi
+  sort_by_chapters_count: Sura nyingi
+  sort_by_tags_count: Lebo nyingi

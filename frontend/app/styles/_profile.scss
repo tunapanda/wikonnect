@@ -7,7 +7,9 @@ $palette: (
   cardBoxShadow: rgba(0, 0, 0, 0.29),
   gray30: #3F484D,
   aliceBlue: #F7FCFF,
-  bombay: #B2B4B6
+  bombay: #B2B4B6,
+  bonjour: #EAE7E7,
+  black: #000000
 );
 
 .account-profile-page {
@@ -388,6 +390,63 @@ $palette: (
 
     .cpc-container .course-preview-card {
       background-color: map-get($palette, white);
+
+      .btn-disenroll {
+        svg {
+          path {
+            stroke: map-get($palette, primary);
+          }
+        }
+
+        &:hover {
+          svg {
+            path {
+              stroke: map-get($palette, white);
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+.account-profile-page {
+  .sort-dropdown {
+    width: fit-content;
+    border: 1px solid map-get($palette, bonjour);
+    border-radius: 18px;
+    padding: 0.2275rem 1.45rem;
+    background-color: map-get($palette, white);
+    font-size: 14px;
+
+    .dropdown-toggle {
+      white-space: normal;
+      color: map-get($palette, black);
+    }
+
+    .dropdown-menu {
+      min-width: 230px;
+
+      .header {
+        font-size: 16px;
+        font-weight: 600;
+        padding-left: 13px;
+      }
+
+      hr {
+        margin-top: 4px;
+        margin-bottom: 3px;
+      }
+
+      .menu-item {
+        text-align: left;
+        border-radius: 0;
+
+        &:hover {
+          background-color: map-get($palette, primary);
+          color: map-get($palette, white);
+        }
+      }
     }
   }
 }

@@ -60,3 +60,24 @@ enrolled_courses_page:
     view_course: View Course
   errors:
     disenroll: Unexpected error encountered while processing your request
+
+available_courses_page:
+  disenroll_prompt: Do you want to disenroll from this course?
+  no_content: There are no published courses at the moment. To create your own course
+  click_here: click here
+  no_searched_record: No course found matching <strong> {word} </strong>. Kindly try a different search word
+  enroll_successful: You have successfully enrolled to the course
+  disenroll_successful: You have successfully disenrolled from the course
+  general_error: Unexpected error encountered while processing your request
+  buttons:
+    enroll: Enroll to Course
+    view_course: View Course
+    disenroll: Already Enrolled
+    sort: Sort By
+
+courses:
+  sort_options_title: Sort Courses By
+  sort_by_all: All
+  sort_by_followers_count: Most Followed
+  sort_by_chapters_count: Most Chapters
+  sort_by_tags_count: Most Tags
