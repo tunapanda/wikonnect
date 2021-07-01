@@ -28,10 +28,7 @@
       {{ellipsize @course.description 80}}
     </div>
     {{#if @course.tags}}
-      <div class="tags-section">
-        <span class="section-header pb-3 pb-2">
-          {{t "course_preview_card.tag_list_title"}}
-        </span>
+      <div class="tags-section pt-3">
         <div class="tag-list">
           {{#each @course.tags as |tag|}}
             <span class="course-tag"> {{tag.name}}</span>
