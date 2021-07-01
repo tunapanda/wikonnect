@@ -30,6 +30,9 @@ const router = new Router({
  *
  * @apiParam (URI Param) {String} id tag id
  *
+ * @apiParam (Query Params) {String}   [include=tags,creator,playlist]  relations (separated with a comma) to include in response  (e.g. enrollment)
+ * @apiParam (Query Params) {String}   [enrolledUserId] filter enrollments for this userId. The include query param must request `enrollment` e.g. /?include=enrollment&enrolledUserId=user1
+ *
  *
  * @apiSuccess {Object}  course Top level object
  * @apiSuccess {String}  course[id] the id of the course
@@ -71,13 +74,32 @@ const router = new Router({
  */
 router.get('/:id', requireAuth, async (ctx) => {
   try {
+    const enrolledUserId = ctx.query.enrolledUserId;
+    let queryEnrollment = false;
+    if (ctx.query.include) {
+      const includes = ctx.query.include.split(',');
+      if (includes.some((v) => v.toLowerCase().includes('enrollment'))) {
+        queryEnrollment = true;
+      }
+    }
+
+
     const course = await CourseModel.query()
       .select(['*',
         CourseModel.relatedQuery('courseEnrollments').count().as('totalEnrolled'),
       ])
-      .withGraphFetched('[tags,playlist,playlist.reaction(reactionAggregate),creator(selectBasicInfo)]')
-      .withGraphFetched('[playlist.author(selectBasicInfo)]')     //have to place it here for it to work.
-      .findById(ctx.params.id);
+      .onBuild((builder)=>{
+        if(queryEnrollment) {
+          builder.withGraphFetched('courseEnrollments');
+        }
+    
+      })
+      .withGraphFetched('[tags,playlist,playlist.[reaction(reactionAggregate),author(selectBasicInfo)]]')
+      .withGraphFetched('[creator(selectBasicInfo),]')
+      .findById(ctx.params.id)
+      .modifyGraph('courseEnrollments',(query)=>{
+        query.where('user_id',enrolledUserId);
+      });
 
     ctx.assert(course, 404, { message: 'Course not found' });
 
