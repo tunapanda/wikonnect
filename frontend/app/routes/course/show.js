@@ -5,6 +5,9 @@ export default class CourseShowRoute extends Route {
   @service me;
 
   model({ id }) {
-    return this.store.find('course', id);
+    return this.store.findRecord('course', id, {
+      include: 'enrollment',
+      enrolledUserId: this.me.id,
+    });
   }
 }

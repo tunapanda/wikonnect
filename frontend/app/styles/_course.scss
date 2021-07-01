@@ -630,6 +630,11 @@ $palette: (
     .course-actions {
       .btn {
         padding: 5px 25px;
+        .tick-icon{
+          path {
+            stroke: map-get($palette, white);
+          }
+        }
       }
     }
   }

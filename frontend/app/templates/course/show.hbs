@@ -52,21 +52,28 @@
       </div>
       <div class="course-actions pt-3">
         {{#if this.isMyCourse}}
-          <LinkTo @route="course.edit" @model={{this.model.id}} class="btn btn-primary">
+          <LinkTo @route="course.edit" @model={{this.model.id}} class="btn btn-primary btn-sm">
             {{t "course.show_page.buttons.update_course"}}
           </LinkTo>
         {{/if}}
         {{#unless this.isMyCourse}}
-          <button type="button" class="btn btn-primary">
-            {{t "course.show_page.buttons.enroll"}}
-          </button>
+          {{#if this.isEnrolled}}
+            <button type="button" class="btn btn-primary btn-sm" {{on "click" this.disenroll}}>
+              {{svg-jar "tick" height="15" width="15" class="tick-icon"}}
+              <span class="pl-2">{{t "course.show_page.buttons.disenroll"}}</span>
+            </button>
+          {{else}}
+            <button type="button" class="btn btn-primary btn-sm" {{on "click" this.enroll}}>
+              {{t "course.show_page.buttons.enroll"}}
+            </button>
+          {{/if}}
         {{/unless}}
       </div>
     </div>
   </div>
 
   <div class="row ft-section course-sc-container pt-4 pl-0 pr-0">
-    <div class="side-bar col-lg-3 d-none d-lg-block row">
+    <div class="side-bar col-xl-3 d-none d-xl-block row">
       <div class="popular-tags mb-2">
         <div class="title"> {{t "course.show_page.popular_tags"}}</div>
         <div class="tags-list">
@@ -79,7 +86,7 @@
         <div class="title">{{t "course.show_page.popular_courses"}}</div>
       </div>
     </div>
-    <div class="content col-lg-9 col-sm-12 pr-0 mr-0">
+    <div class="content col-xl-9 col-lg-12 pr-0 mr-0">
       <div class="subtitle">
         {{t "course.show_page.course_chapters"}}
       </div>

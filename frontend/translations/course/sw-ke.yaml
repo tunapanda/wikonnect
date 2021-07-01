@@ -72,9 +72,14 @@ show_page:
   popular_tags: Lebo maarufu
   popular_courses: Kozi Maarufu
   course_chapters: Sura zote katika Kozi hii
+  disenroll_prompt: Je! Unataka kujiondoa kwenye kozi hii?
+  enrolled_successfully: Umefanikiwa kujiandikisha kwenye kozi hiyo.
+  disenroll_successful: Umefanikiwa kujiondoa kwenye kozi.
+  general_error: Hitilafu isiyotarajiwa imepatikana wakati wa kuchakata ombi lako.
   buttons:
     update_course: Sasisha Kozi hii
     enroll: Enroll to this Course
+    disenroll: Tayari Umejiandikisha
     start_learning: Anza Kujifunza ->
 
 edit_page:

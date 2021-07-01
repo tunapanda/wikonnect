@@ -72,10 +72,14 @@ show_page:
   popular_tags: Popular Tags
   popular_courses: Popular Courses
   course_chapters: All Chapters in this Course
+  disenroll_prompt: Do you want to disenroll from this course?
+  enrolled_successfully: You have successfully enrolled in the course.
+  disenroll_successful: You have successfully disenrolled from the course.
+  general_error: Unexpected error encountered while processing your request.
   buttons:
     update_course: Edit this Course
     enroll: Enroll to this Course
-    disenroll: Already Enrolled
+    disenroll: Enrolled
     start_learning: Start Learning ->
 
 edit_page:
