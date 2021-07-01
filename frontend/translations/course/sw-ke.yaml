@@ -99,8 +99,8 @@ errors:
   chapter_on_playlist: Sura tayari imeongezwa kwenye orodha ya kozi
   no_content: Inaonekana hakuna yaliyomo kwa sasa. Tafadhali angalia nasi tena baadaye.
   content_display_error: Hatuwezi kupata yaliyomo.
-  no_search_filtered_record: Hakuna maudhui yaliyopatikana yanayolingana na <strong> {word} </strong> au <strong> {selectedTags} </strong>.
-  no_searched_record: Hakuna maudhui yaliyopatikana yanayolingana na <strong> {word} </strong>. Tafadhali jaribu neno tofauti la utaftaji
-  no_filtered_record: Hakuna maudhui yaliyopatikana yanayolingana <strong> {selectedTag} </strong>. Tafadhali jaribu kichujio tofauti
-  no_filtered_records:  Hakuna maudhui yaliyopatikana yanayolingana <strong> {selectedTags} </strong>. Tafadhali jaribu vitambulisho vichache
-  wrong_record_filters: Hakuna maudhui yaliyopatikana yanayolingana <strong> {selectedTags} </strong>. Tafadhali jaribu tena na lebo ya kichujio halali
+  no_search_filtered_record: Hakuna maudhui yaliyopatikana yanayolingana na <strong> {word} </strong> au <strong> {selectedTags}</strong>.
+  no_searched_record: Hakuna maudhui yaliyopatikana yanayolingana na <strong> {word}</strong>. Tafadhali jaribu utaftaji tofauti.
+  no_filtered_record: Hakuna maudhui yaliyopatikana yanayolingana <strong> {selectedTag}</strong>. Tafadhali jaribu kichujio tofauti.
+  no_filtered_records:  Hakuna maudhui yaliyopatikana yanayolingana <strong> {selectedTags}</strong>. Tafadhali jaribu vitambulisho vichache.
+  wrong_record_filters: Hakuna maudhui yaliyopatikana yanayolingana <strong> {selectedTags}</strong>. Tafadhali jaribu tena na lebo ya kichujio halali.

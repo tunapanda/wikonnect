@@ -54,8 +54,6 @@ enrolled_courses_page:
   disenroll_prompt: Je! Una uhakika unataka kujiondoa kwenye kozi hii?
   no_content: Hujajiandikisha kwa kozi yoyote. Kuangalia kozi zinazopatikana unaweza kujiandikisha,
   click_here: bonyeza hapa
-  no_searched_record: Hakuna maudhui yaliyopatikana yanayolingana na <strong> {word} </strong>. Tafadhali jaribu neno tofauti la utaftaji
-
   buttons:
     disenroll: Ondoa Uandikishaji
     view_course: Angalia Kozi
@@ -66,10 +64,10 @@ available_courses_page:
   disenroll_prompt: Je! Unataka kujiondoa kwenye kozi hii?
   no_content: Hakuna kozi zilizochapishwa kwa sasa. Kuunda kozi yako mwenyewe
   click_here: endelea hapa
-  no_searched_record: Hakuna maudhui yaliyopatikana yanayolingana na <strong> {word} </strong>. Tafadhali jaribu neno tofauti la utaftaji
-  enroll_successful: Umefanikiwa kujiandikisha kwenye kozi
-  disenroll_successful:  Umefanikiwa kujiondoa kwenye kozi
-  general_error: Hitilafu isiyotarajiwa imepatikana wakati wa kuchakata ombi lako
+  no_searched_record: Hakuna maudhui yaliyopatikana yanayolingana na <strong> {word}</strong>. Tafadhali jaribu utaftaji tofauti.
+  enroll_successful: Umefanikiwa kujiandikisha kwenye kozi hiyo.
+  disenroll_successful:  Umefanikiwa kujiondoa kwenye kozi.
+  general_error: Hitilafu isiyotarajiwa imepatikana wakati wa kuchakata ombi lako.
   buttons:
     enroll: Jisajili kwenye Kozi
     view_course: Angalia Kozi
@@ -80,5 +78,4 @@ courses:
   sort_options_title: Panga Kozi Na
   sort_by_all: Zote
   sort_by_followers_count: Inayofuatwa Zaidi
-  sort_by_chapters_count: Sura nyingi
   sort_by_tags_count: Lebo nyingi

@@ -75,6 +75,7 @@ show_page:
   buttons:
     update_course: Edit this Course
     enroll: Enroll to this Course
+    disenroll: Already Enrolled
     start_learning: Start Learning ->
 
 edit_page:
@@ -99,9 +100,9 @@ errors:
   chapter_on_playlist: Chapter already added on the course playlist
   no_content: There seems to be no content at the moment. Kindly check with us again later.
   content_display_error: This is awkward but we are not able to retrieve existing content.
-  no_search_filtered_record: No content found matching <strong> {word} </strong> or <strong>{selectedTags} </strong>.
-  no_searched_record: No content found matching <strong> {word} </strong>. Kindly try a different search word
-  no_filtered_record: No content found matching <strong> {selectedTag} </strong>. Kindly try a different filter tag
-  no_filtered_records:  No content found matching <strong> {selectedTags} </strong>. Kindly try a fewer filter tags
-  wrong_record_filters:  No content found matching <strong> {selectedTags} </strong>. Kindly try again with a valid filter tag
+  no_search_filtered_record: No content found matching <strong> {word}</strong> or <strong>{selectedTags}</strong>.
+  no_searched_record: No content found matching <strong> {word}</strong>. Kindly try a different search.
+  no_filtered_record: No content found matching <strong> {selectedTag}</strong>. Kindly try a different filter tag.
+  no_filtered_records:  No content found matching <strong> {selectedTags}</strong>. Kindly try a fewer filter tags.
+  wrong_record_filters:  No content found matching <strong> {selectedTags}</strong>. Kindly try again with a valid filter tag.
   playlist_error: It seems we are facing issue with course playlist
