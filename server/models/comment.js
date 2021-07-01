@@ -77,18 +77,7 @@ class Comment extends Model {
     };
   }
 
-  async comment(params) {
-    return {
-      title: params.name,
-      body: params.description,
-      event_type: 'comment creation',
-      creator_id: params.creator_id,
-      recipient_id: params.user_id
-    };
-  }
-
   async $afterInsert(queryContext) {
-    await super.$afterInsert(queryContext);
     // get total
     const results = await Comment.query(queryContext.transaction)
       .select([
@@ -97,7 +86,7 @@ class Comment extends Model {
       ])
       .where('creator_id', this.creatorId);
 
-    const badgesIds = await knex('user_badges').pluck('badge_id');
+    const badgesIds = await knex('user_badges').where('user_id', this.creator_id).pluck('badge_id');
 
     console.log(results[0].totalreplies, results[0].totalcomments, badgesIds);
     try {
@@ -105,8 +94,10 @@ class Comment extends Model {
       const comment_create_badges = await Badges.query().where('trigger_id', comment_create[0].id);
 
       for (const badge of comment_create_badges) {
-        if (!badgesIds.includes(badge.id) & results[0].totalcomments > badge.frequency & results[0].totalcomments > 0) {
-          await UserBadges.query().insert({ 'user_id': this.creatorId, 'badge_id': badge.id }).returning(['user_id']);
+        if (!badgesIds.includes(badge.id) & results[0].totalcomments === badge.frequency & results[0].totalcomments > 0) {
+          await UserBadges.query()
+            .insert({ 'user_id': this.creatorId, 'badge_id': badge.id })
+            .returning(['user_id']);
           awardsNotification(await this.comment(badge));
         }
       }
@@ -115,9 +106,11 @@ class Comment extends Model {
       const comment_reply_badges = await Badges.query().where('trigger_id', comment_reply[0].id);
 
       for (const badge of comment_reply_badges) {
-        if (!badgesIds.includes(badge.id) & results[0].totalreplies > badge.frequency & results[0].totalreplies > 0) {
-          await UserBadges.query().insert({ 'user_id': this.creatorId, 'badge_id': badge.id }).returning(['user_id']);
-          awardsNotification(await this.comment(badge));
+        if (!badgesIds.includes(badge.id) & results[0].totalreplies === badge.frequency & results[0].totalreplies > 0) {
+          await UserBadges.query()
+            .insert({ 'user_id': this.creatorId, 'badge_id': badge.id })
+            .returning(['user_id']);
+          awardsNotification(badge, 'comment creation');
         }
       }
     } catch (error) {
