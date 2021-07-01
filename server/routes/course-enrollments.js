@@ -7,13 +7,13 @@ const log = require('../utils/logger');
 
 
 const router = new Router({
-  prefix: '/courses-enrolled'
+  prefix: '/course-enrollments'
 });
 
 /**
- * @api {get} /api/v1/courses-enrolled GET all user course enrollments
+ * @api {get} /api/v1/course-enrollments GET all course enrollments
  * @apiName Get all user course enrollments
- * @apiGroup Courses Enrolled
+ * @apiGroup Courses Enrollment
  * @apiPermission authenticated user
  * @apiVersion 0.4.0
  *
@@ -21,17 +21,17 @@ const router = new Router({
  *
  * @apiParam (Query Params) {String} [include] relationships to eager load (comma separated e.g. course,user)
  *
- * @apiSuccess {Object}  coursesEnrolled Top level object
- * @apiSuccess {String}  coursesEnrolled[id] the id of the course enrollment
- * @apiSuccess {String}  coursesEnrolled[courseId] the id of the course user has enrolled to
- * @apiSuccess {String}  coursesEnrolled[userId] the id of the user
- * @apiSuccess {String}  coursesEnrolled[createdAt] date course enrollment was created
- * @apiSuccess {String}  coursesEnrolled[updatedAt] date course enrollment was updated
+ * @apiSuccess {Object}  courseEnrollment Top level object
+ * @apiSuccess {String}  courseEnrollment[id] the id of the course enrollment
+ * @apiSuccess {String}  courseEnrollment[courseId] the id of the course user has enrolled to
+ * @apiSuccess {String}  courseEnrollment[userId] the id of the user
+ * @apiSuccess {String}  courseEnrollment[createdAt] date course enrollment was created
+ * @apiSuccess {String}  courseEnrollment[updatedAt] date course enrollment was updated
  *
  * @apiSuccessExample {json} Success-Response:
  *     HTTP/1.1 200 OK
  *          {
- *             "coursesEnrolled":[{
+ *             "courseEnrollments":[{
  *              "id": "JBp56KQAA7c",
  *              "userId": "user1",
  *              "courseId": "JB0yRrGAAd0",
@@ -43,25 +43,23 @@ const router = new Router({
 router.get('/', requireAuth, async ctx => {
 
   try {
-    let joinQuery = '';
-    if(ctx.query && ctx.query.include){ //TODO: move this stuff to Joi validator
+    let graphFetchQuery = '';
+    if (ctx.query && ctx.query.include) { //TODO: move this stuff to Joi validator
       const includes = ctx.query.include.split(',');
-      if(includes.some((v)=>v.toLowerCase().includes('course'))){
-        joinQuery += 'course';
+      if (includes.some((v) => v.toLowerCase().includes('course'))) {
+        graphFetchQuery += 'course.[tags,creator(selectBasicInfo)]';
       }
-      if(includes.some((v)=>v.toLowerCase().includes('user'))){
-        joinQuery += ',user(selectBasicInfo)';
+      if (includes.some((v) => v.toLowerCase().includes('user'))) {
+        graphFetchQuery += ',user(selectBasicInfo)';
       }
     }
-    const coursesEnrolled = await CourseEnrolledModel.query()
-      .withGraphJoined(`[${joinQuery}]`)
-      .where((query)=>{
-        if(ctx.query.userId){
-          query.where('userId',ctx.query.userId);
-        }
-      },);
+    delete ctx.query.include;
+
+    const courseEnrollments = await CourseEnrolledModel.query()
+      .withGraphFetched(`[${graphFetchQuery}]`)
+      .where(ctx.query);
     ctx.status = 200;
-    ctx.body = { coursesEnrolled };
+    ctx.body = { courseEnrollments };
   } catch (e) {
     log.error(e);
     if (e.statusCode) {
@@ -74,7 +72,7 @@ router.get('/', requireAuth, async ctx => {
 });
 
 /**
- * @api {post} /api/v1/courses-enrolled POST course enrollment
+ * @api {post} /api/v1/course-enrollments POST course enrollment
  * @apiName POST user course enrollment
  * @apiGroup Courses Enrolled
  * @apiPermission authenticated user
@@ -83,21 +81,21 @@ router.get('/', requireAuth, async ctx => {
  * @apiHeader {String} Authorization Bearer << JWT here>>
  *
  *
- * @apiParam (Request Body)  {Object}  coursesEnrolled Top level object
- * @apiParam (Request Body)  {String}  coursesEnrolled[courseId] Id of the course to enroll to
- * @apiParam (Request Body)  {String}  [coursesEnrolled[userId]=JWTToken.user.id] Id of the user enrolling.
+ * @apiParam (Request Body)  {Object}  courseEnrollment Top level object
+ * @apiParam (Request Body)  {String}  courseEnrollment[courseId] Id of the course to enroll to
+ * @apiParam (Request Body)  {String}  [courseEnrollment[userId]=JWTToken.user.id] Id of the user enrolling.
  *
- * @apiSuccess {Object}  coursesEnrolled Top level object
- * @apiSuccess {String}  coursesEnrolled[id] the id of the course enrollment
- * @apiSuccess {String}  coursesEnrolled[courseId] the id of the course user has enrolled to
- * @apiSuccess {String}  coursesEnrolled[userId] the id of the user
- * @apiSuccess {String}  coursesEnrolled[createdAt] date course enrollment was created
- * @apiSuccess {String}  coursesEnrolled[updatedAt] date course enrollment was updated
+ * @apiSuccess {Object}  courseEnrollment Top level object
+ * @apiSuccess {String}  courseEnrollment[id] the id of the course enrollment
+ * @apiSuccess {String}  courseEnrollment[courseId] the id of the course user has enrolled to
+ * @apiSuccess {String}  courseEnrollment[userId] the id of the user
+ * @apiSuccess {String}  courseEnrollment[createdAt] date course enrollment was created
+ * @apiSuccess {String}  courseEnrollment[updatedAt] date course enrollment was updated
  *
  * @apiSuccessExample {json} Success-Response:
  *     HTTP/1.1 200 OK
  *          {
- *             "coursesEnrolled":{
+ *             "courseEnrollment":{
  *              "id": "JBp56KQAA7c",
  *              "userId": "user1",
  *              "courseId": "JB0yRrGAAd0",
@@ -110,16 +108,16 @@ router.get('/', requireAuth, async ctx => {
 router.post('/', requireAuth, async ctx => {
 
   const creatorId = ctx.state.user.data.id;
-  const obj = ctx.request.body.coursesEnrolled;
+  const obj = ctx.request.body.courseEnrollment;
 
   ctx.assert(obj && obj.courseId, 400, 'Invalid course identifier provided');
 
   try {
 
-    const coursesEnrolled = await CourseEnrolledModel.query()
+    const courseEnrollment = await CourseEnrolledModel.query()
       .insertAndFetch({ userId: creatorId, courseId: obj.courseId });
     ctx.status = 201;
-    ctx.body = { coursesEnrolled };
+    ctx.body = { courseEnrollment };
   } catch (e) {
     log.error(e);
     if (e instanceof UniqueViolationError) {
@@ -141,7 +139,7 @@ router.post('/', requireAuth, async ctx => {
 });
 
 /**
- * @api {delete} /api/v1/courses-enrolled/:id Delete course enrollment
+ * @api {delete} /api/v1/course-enrollments/:id Delete course enrollment
  * @apiName DELETE course enrollment by Id
  * @apiGroup Courses Enrolled
  * @apiPermission authenticated user
