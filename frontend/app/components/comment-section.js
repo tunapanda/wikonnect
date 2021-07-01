@@ -13,7 +13,6 @@ export default class CommentSectionComponent extends Component {
   @tracked errors;
   @tracked comment;
   @tracked height;
-  @tracked disabled = 'false';
 
   get commentsTotal() {
     return this.args.chapterComments.length;
@@ -56,7 +55,6 @@ export default class CommentSectionComponent extends Component {
         result?.attributeScores?.TOXICITY?.summaryScore?.value * 100
       );
       this.errors = res;
-      this.disabled = 'true';
       return res;
     }
   }
