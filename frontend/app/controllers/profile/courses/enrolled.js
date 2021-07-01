@@ -7,7 +7,7 @@ export default class ProfileCoursesEnrolledController extends Controller {
   @service store;
   @service me;
   @service intl;
-  @service router;
+  @service notify;
   @tracked searchTerm;
 
   get courses() {
@@ -16,6 +16,7 @@ export default class ProfileCoursesEnrolledController extends Controller {
       .filter(
         (course) =>
           course.id &&
+          course.status === 'published' &&
           course.courseEnrollments &&
           course.courseEnrollments.findBy('userId', this.me.id)
       );
@@ -37,14 +38,19 @@ export default class ProfileCoursesEnrolledController extends Controller {
 
   @action
   async disenroll(course) {
-    if (
-      window.confirm(
-        this.intl.t('profile.enrolled_courses_page.disenroll_prompt')
-      )
-    ) {
-      const enrollment = course.courseEnrollments.findBy('userId', this.me.id);
-      if (enrollment) {
-        await enrollment.destroyRecord();
+    let message = this.intl.t('profile.enrolled_courses_page.disenroll_prompt');
+    if (window.confirm(message)) {
+      try {
+        const enrollment = course.courseEnrollments.findBy(
+          'userId',
+          this.me.id
+        );
+        if (enrollment) {
+          await enrollment.destroyRecord();
+        }
+      } catch (e) {
+        message = this.intl.t('profile.available_courses_page.general_error');
+        this.notify.alert(message);
       }
     }
   }

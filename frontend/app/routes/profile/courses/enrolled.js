@@ -8,6 +8,7 @@ export default class ProfileCoursesEnrolledRoute extends Route {
     return this.store.query('course', {
       include: 'enrollment',
       enrolledUserId: this.me.id,
+      status: 'published',
     });
   }
 }
