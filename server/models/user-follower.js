@@ -20,6 +20,14 @@ class UserFollower extends Model {
     };
   }
 
+  static get virtualAttributes() {
+    return ['type'];
+  }
+
+  type() {
+    return 'user-follower';
+  }
+
   static get relationMappings() {
     return {
       user: {

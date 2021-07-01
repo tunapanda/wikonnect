@@ -20,6 +20,13 @@ class CourseTag extends Model {
       required: ['courseId', 'tagId'],
     };
   }
+  static get virtualAttributes() {
+    return ['type'];
+  }
+
+  type() {
+    return 'course-tag';
+  }
 
   static get relationMappings() {
     return {

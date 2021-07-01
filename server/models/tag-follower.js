@@ -20,6 +20,14 @@ class TagFollower extends Model {
     };
   }
 
+  static get virtualAttributes() {
+    return ['type'];
+  }
+
+  type() {
+    return 'tag-follower';
+  }
+
   static get relationMappings() {
     return {
       tag: {

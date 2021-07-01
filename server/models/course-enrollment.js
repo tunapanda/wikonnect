@@ -20,6 +20,14 @@ class CourseEnrollment extends Model {
     };
   }
 
+  static get virtualAttributes() {
+    return ['type'];
+  }
+
+  type() {
+    return 'course-enrollment';
+  }
+
   static get relationMappings() {
     return {
       course: {
