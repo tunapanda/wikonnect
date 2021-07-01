@@ -18,27 +18,6 @@ const { getProfileImage } = require('../utils/routesUtils/userRouteUtils');
 const router = new Router({
   prefix: '/courses'
 });
-router.get('/courses-enrollments',requireAuth,async ctx=>{
-  try {
-    let graphFetchQuery = 'courseEnrollments,tags,creator(selectBasicInfo)';
-    if(ctx.query && ctx.query.include){
-      const includes = ctx.query.include.split(',');
-      if(includes.some((v)=>v.toLowerCase().includes('playlist'))){
-        graphFetchQuery += ',playlist.[reaction(reactionAggregate)';
-      }
-
-    }
-    const coursesEnrollments = await CourseModel.query()
-      .select(['*'])
-       .withGraphFetched(`[${graphFetchQuery}]`);
-
-
-    ctx.status = 200;
-    ctx.body = { coursesEnrollments };
-  } catch (e) {
-    log.error(e);
-  }
-});
 
 /**
  * @api {get} /api/v1/courses/:id GET course by Id
@@ -114,7 +93,7 @@ router.get('/:id', requireAuth, async (ctx) => {
         creatorIds[course.playlist[i].author.id] = true;
       }
     }
-    if(!creatorIds[course.creator.id]){
+    if (!creatorIds[course.creator.id]) {
       creators.push(course.creator); //push also the course creator profile
     }
 
@@ -135,16 +114,16 @@ router.get('/:id', requireAuth, async (ctx) => {
       }
       const profile = userProfiles.find((p) => p.id === chapter.author.id);
       if (profile) {
-        chapter.author  = profile;
+        chapter.author = profile;
       } else {
         //just in case 👽
-        chapter.author  = anonymousProfile();
+        chapter.author = anonymousProfile();
       }
       return chapter;
     });
 
     //resolve the course creator profile
-    const courseCreatorProfile = userProfiles.find((p)=>p.id === course.creator.id);
+    const courseCreatorProfile = userProfiles.find((p) => p.id === course.creator.id);
 
     course.creator = courseCreatorProfile ? courseCreatorProfile : anonymousProfile();
 
@@ -169,6 +148,8 @@ router.get('/:id', requireAuth, async (ctx) => {
  * @apiParam (Query Params) {String}   [slug]  filter with user friendly course url pathname
  * @apiParam (Query Params) {String}   [status]  filter with course status i.e. published or draft
  * @apiParam (Query Params) {String}   [creatorId]  filter tags by course author Id
+ * @apiParam (Query Params) {String}   [include=tags,creator]  relations to include in response separated with a comma (e.g. enrollment)
+ * @apiParam (Query Params) {String}   [enrolledUserId] filter enrollments by this userId. The include query param must request `enrollment` e.g. /?include=enrollment&enrolledUserId=user1
  *
  *
  * @apiSuccess {Object}  courses Top level object                                                             
@@ -210,12 +191,33 @@ router.get('/:id', requireAuth, async (ctx) => {
 router.get('/', requireAuth, async (ctx) => {
 
   try {
+    const enrolledUserId = ctx.query.enrolledUserId;
+    let queryEnrollment = false;
+    if (ctx.query.include) {
+      const includes = ctx.query.include.split(',');
+      if (includes.some((v) => v.toLowerCase().includes('enrollment'))) {
+        queryEnrollment = true;
+      }
+    }
+    delete ctx.query.include;
+    delete ctx.query.enrolledUserId;
+
     let courses = await CourseModel.query()
       .select(['*',
         CourseModel.relatedQuery('courseEnrollments').count().as('totalEnrolled'),
       ])
+      .onBuild((query) => {
+        if (queryEnrollment) {
+          query.withGraphFetched('courseEnrollments');
+        }
+      })
       .withGraphFetched('[tags,creator(selectBasicInfo)]')
-      .where(ctx.query);
+      .where(ctx.query)
+      .modifyGraph('courseEnrollments', (query) => {
+        if (enrolledUserId) {
+          query.where('user_id', enrolledUserId);
+        }
+      });
 
     /**retrieve correct user image for the courses**/
     //so not to re-fetch the profile, remove duplicates (handy if network requests to S3 are being done ),
@@ -627,8 +629,8 @@ router.delete('/:id', requireAuth, async ctx => {
 
 });
 
-function anonymousProfile(){
-  return  {
+function anonymousProfile() {
+  return {
     name: 'Private',
     username: 'Private',
     id: 'Private',
