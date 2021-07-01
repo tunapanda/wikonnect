@@ -48,3 +48,15 @@ edit_profile_page:
   location: Location
   location_prompt: Turkana, Kenya
   gender: Gender
+
+enrolled_courses_page:
+  disenroll_prompt: Are you sure you want to disenroll from this course?
+  no_content: You have not enrolled to any course. To view available courses you can enroll
+  click_here: click here
+  no_searched_record: No content found matching <strong> {word} </strong>. Kindly try a different search word
+
+  buttons:
+    disenroll: Withdraw Enrollment
+    view_course: View Course
+  errors:
+    disenroll: Unexpected error encountered while processing your request

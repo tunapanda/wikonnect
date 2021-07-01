@@ -19,7 +19,7 @@
 
 html {
   font-family: 'Inter', sans-serif;
-  height: 100%;
+  min-height: 100%;
  scroll-behavior:smooth;
 }
 
@@ -30,7 +30,7 @@ html {
 }
 
 body {
-  height: 100%;
+  min-height: 100%;
 }
 
 .h40 {
