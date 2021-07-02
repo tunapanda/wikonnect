@@ -20,12 +20,20 @@ export default class CourseSerializer extends ApplicationSerializer.extend(
     delete json.metadata;
 
     snapshot.eachRelationship((key, relationship) => {
-      if (relationship.kind === 'hasMany' && key === 'tags') {
+      if (
+        relationship.kind === 'hasMany' &&
+        key === 'tags' &&
+        snapshot.hasMany(key)
+      ) {
         json[key] = snapshot.hasMany(key).map((snapshot) => {
           return { id: snapshot.id };
         });
       }
-      if (relationship.kind === 'hasMany' && key === 'playlist') {
+      if (
+        relationship.kind === 'hasMany' &&
+        key === 'playlist' &&
+        snapshot.hasMany(key)
+      ) {
         json[key] = snapshot.hasMany(key).map((snapshot) => {
           return { id: snapshot.id, rank: snapshot.attr('rank') };
         });
