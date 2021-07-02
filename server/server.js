@@ -85,7 +85,7 @@ router.use(jwt.authenticate, require('./routes/courses'));
 
 router.use(jwt.authenticate, require('./routes/user-followees'));
 
-router.use(jwt.authenticate, require('./routes/tags-following'));
+router.use(jwt.authenticate, require('./routes/tag-followers'));
 
 router.use(jwt.authenticate, require('./routes/course-enrollments'));
 
