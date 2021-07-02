@@ -8,53 +8,7 @@ const router = new Router({
   prefix: '/user-followees'
 });
 
-/**
- * @api {get} /api/v1/user-followees GET all accounts users follows
- * @apiName GET all user followees
- * @apiGroup User Followees
- * @apiPermission authenticated user
- * @apiVersion 0.4.0
- *
- * @apiHeader {String} Authorization Bearer << JWT here>>
- *
- * @apiSuccess {Object}  UserFollowees Top level object
- * @apiSuccess {String}  UserFollowees[id] the id of the following
- * @apiSuccess {String}  UserFollowees[userId] the id of the user
- * @apiSuccess {String}  UserFollowees[followeeId] the id account user is following
- * @apiSuccess {String}  UserFollowees[createdAt] date account following was created
- * @apiSuccess {String}  UserFollowees[updatedAt] date account following was updated
- *
- * @apiSuccessExample {json} Success-Response:
- *     HTTP/1.1 200 OK
- *          {
- *             "UserFollowees":[{
- *              "id": "JBp56KQAA7c",
- *              "userId": "user1",
- *              "followeeId": "JB0yRrGAAd0",
- *              "createdAt": "2021-06-23T14:16:56.796Z",
- *              "updatedAt": "2021-06-23T14:16:56.796Z"
- *              }]
- *            }
- */
-router.get('/', requireAuth, async ctx => {
 
-  try {
-    const userId = ctx.state.user.data.id;
-
-    const UserFollowees = await UserFollowerModel.query()
-      .where('userId', userId);
-    ctx.status = 200;
-    ctx.body = { UserFollowees };
-  } catch (e) {
-    log.error(e);
-    if (e.statusCode) {
-      ctx.throw(e.statusCode, null, { errors: [e.message] });
-    } else {
-      ctx.throw(400, null, { errors: ['Bad Request'] });
-    }
-  }
-
-});
 
 /**
  * @api {post} /api/v1/User-followees POST user account following
@@ -93,7 +47,7 @@ router.get('/', requireAuth, async ctx => {
 router.post('/', requireAuth, async ctx => {
 
   const creatorId = ctx.state.user.data.id;
-  const obj = ctx.request.body.UserFollowee;
+  const obj = ctx.request.body.userFollowee;
 
   ctx.assert(obj && obj.followeeId, 400, 'Invalid account data invalid');
   ctx.assert(obj.user !== creatorId, 400, 'User cannot follow their own account');
