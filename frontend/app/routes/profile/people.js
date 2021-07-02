@@ -5,6 +5,16 @@ export default class ProfilePeopleRoute extends Route {
   @service me;
   @service infinity;
 
+  beforeModel(transition) {
+    if (!this.me.isAuthenticated) {
+      // eslint-disable-next-line ember/no-controller-access-in-routes
+      let loginController = this.controllerFor('login');
+      loginController.set('previousTransition', transition);
+      this.transitionTo('login');
+    }
+    return super.beforeModel(transition);
+  }
+
   model() {
     return this.infinity.model('user', {
       include: 'userfollowees',
