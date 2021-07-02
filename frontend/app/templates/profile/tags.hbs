@@ -1,0 +1,111 @@
+<div class="tags-container">
+  <div class="filters-menu filters-sub-section-menu row pb-3 pt-3">
+    <div class="col-lg-3 mb-sm-2">
+      <div class="search-form">
+        <Input class="form-control search-input" @value={{this.searchTerm}} @type="search"
+               placeholder="{{t "profile.tags_page.search_tag_placeholder"}}"/>
+        <span class="search-icon {{if this.searchTerm 'd-none'}}"></span>
+      </div>
+    </div>
+
+    <div class="col-lg-4">
+      <BsDropdown class="sort-dropdown custom-courses-dd" as |dd|>
+        <dd.toggle>{{t "profile.tags_page.buttons.sort_by"}} {{this.sortBy.title}}
+          <span class="caret"></span>
+        </dd.toggle>
+        <dd.menu as |menu|>
+          <div class="header">
+            {{t "profile.tags_page.sort_options_title"}}
+          </div>
+          <hr>
+          <menu.item>
+            <button type="button" class="btn w-100 menu-item btn-sort-all"
+              {{on "click" (fn this.setSortBy undefined  undefined)}}>
+              {{t "profile.tags_page.sort_by_all"}}
+            </button>
+          </menu.item>
+          <menu.item>
+            <button type="button" class="btn w-100 menu-item btn-sort-followers"
+              {{on "click" (fn this.setSortBy (t "profile.tags_page.sort_by_name") "name")}}>
+              {{t "profile.tags_page.sort_by_name"}}
+            </button>
+          </menu.item>
+          <menu.item>
+            <button type="button" class="btn w-100 menu-item btn-sort-followers"
+              {{on "click" (fn this.setSortBy (t "profile.tags_page.sort_by_followers_count") "followersCount")}}>
+              {{t "profile.tags_page.sort_by_followers_count"}}
+            </button>
+          </menu.item>
+          <menu.item>
+            <button type="button" class="btn w-100 menu-item btn-sort-courses"
+              {{on "click" (fn this.setSortBy (t "profile.tags_page.sort_by_courses_count") "coursesCount")}}>
+              {{t "profile.tags_page.sort_by_courses_count"}}
+            </button>
+          </menu.item>
+          <menu.item>
+            <button type="button" class="btn w-100 menu-item btn-sort-tags"
+              {{on "click" (fn this.setSortBy (t "profile.tags_page.sort_by_chapters_count") "chaptersCount")}}>
+              {{t "profile.tags_page.sort_by_chapters_count"}}
+            </button>
+          </menu.item>
+        </dd.menu>
+      </BsDropdown>
+    </div>
+  </div>
+
+  <div class="data-summary-section">
+    <p>{{ this.dataSummary}}</p>
+  </div>
+  <div class="row pb-5 container">
+
+    <table class="table custom-table">
+      <thead>
+      <tr>
+        <td>{{t "profile.tags_page.tables.no"}}</td>
+        <td>{{t "profile.tags_page.tables.name"}}</td>
+        <td>{{t "profile.tags_page.tables.courses"}}</td>
+        <td>{{t "profile.tags_page.tables.chapters"}}</td>
+        <td>{{t "profile.tags_page.tables.followers"}}</td>
+        <td></td>
+      </tr>
+      </thead>
+      <tbody>
+      {{#each this.tags as |tag index|}}
+        <tr class="border-top-0 border-bottom">
+          <td>{{increment index}}</td>
+          <td>
+            <span class="tag-name">{{title-case tag.name}} </span>
+          </td>
+          <td>
+            {{tag.coursesCount}}
+          </td>
+          <td>
+            {{tag.chaptersCount}}
+          </td>
+          <td>
+            {{tag.followersCount}}
+          </td>
+          <td>
+            {{#if (exec this.isFollowing tag)}}
+              <button type="button" class="btn btn-sm btn-unfollow" {{on "click" (fn this.unfollow tag)}}>
+                {{t "profile.people_page.buttons.unfollow"}}
+              </button>
+            {{else}}
+              <button type="button" class="btn-sm btn btn-primary btn-follow" {{on "click" (fn this.follow tag)}}>
+                {{t "profile.people_page.buttons.follow"}}
+              </button>
+            {{/if}}
+
+          </td>
+        </tr>
+      {{/each}}
+      </tbody>
+    </table>
+
+    {{#if (and this.searchTerm (not this.tags))}}
+      <div class="pt-3 pl-3">
+        {{html-safe (t "profile.tags_page.no_searched_record" word=this.searchTerm)}}
+      </div>
+    {{/if}}
+  </div>
+</div>

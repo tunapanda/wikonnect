@@ -6,6 +6,7 @@ $palette: (
   eucalyptus: #28A745,
   cardBoxShadow: rgba(0, 0, 0, 0.29),
   gray30: #3F484D,
+  gray95: #EBF0F2,
   aliceBlue: #F7FCFF,
   bombay: #B2B4B6,
   bonjour: #EAE7E7,
@@ -512,6 +513,11 @@ $palette: (
       .details {
         padding-left: 8px;
       }
+    }
+    .tag-name{
+      background-color: map-get($palette,gray95);
+      padding: 5px;
+      border-radius: 3px;
     }
   }
 }

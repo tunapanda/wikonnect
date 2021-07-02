@@ -100,3 +100,27 @@ people_page:
     sort_by: Panga Kwa
     follow: Fuata
     unfollow: Unamfuata
+
+tags_page:
+  search_tag_placeholder: Tafuta Lebo
+  general_error: Hitilafu isiyotarajiwa imepatikana wakati wa kuchakata ombi lako.
+  showing_all: Inaonyesha lebo zote
+  summary: Inaonyesha {current} ya {total}
+  sort_options_title: Panga Vitambulisho By
+  sort_by_all: Zote
+  sort_by_name: Jina
+  sort_by_followers_count: Wafuasi Wengi
+  sort_by_courses_count: Kozi Nyingi
+  sort_by_chapters_count: Sura Nyingi
+  no_searched_record: Hakuna lebo zimepatikana zinazolingana na <strong> {word}</strong>. Tafadhali jaribu utaftaji tofauti.
+
+  tables:
+    no: Nambari
+    name: Jina
+    courses: Kozi katika
+    chapters: Sura katika
+    followers: Wafuasi
+  buttons:
+    sort_by: Panga kwa
+    follow: Fuata
+    unfollow: Unafuata

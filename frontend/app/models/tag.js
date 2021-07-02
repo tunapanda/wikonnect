@@ -1,4 +1,4 @@
-import Model, { attr, belongsTo } from '@ember-data/model';
+import Model, { attr, belongsTo, hasMany } from '@ember-data/model';
 
 export default class TagModel extends Model {
   @attr name;
@@ -11,4 +11,6 @@ export default class TagModel extends Model {
   @attr('number') coursesCount;
   @attr('number') chaptersCount;
   @attr('number') followersCount;
+
+  @hasMany('tag-follower') tagFollowers;
 }

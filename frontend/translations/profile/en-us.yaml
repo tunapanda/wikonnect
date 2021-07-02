@@ -101,3 +101,27 @@ people_page:
     sort_by: Sort By
     follow: Follow
     unfollow: Following
+
+tags_page:
+  search_tag_placeholder: Search a Tag
+  general_error: Unexpected error encountered while processing your request.
+  showing_all: Showing all tags
+  summary: Showing {current} of {total}
+  sort_options_title: Sort Tags By
+  sort_by_all: All
+  sort_by_name: Name
+  sort_by_followers_count: Most Followers
+  sort_by_courses_count: Most Courses
+  sort_by_chapters_count: Most Chapters
+  no_searched_record: No tag found matching <strong> {word}</strong>. Kindly try a different search.
+
+  tables:
+    no: No
+    name: Name
+    courses: Courses in
+    chapters: Chapters in
+    followers: Followers
+  buttons:
+    sort_by: Sort By
+    follow: Follow
+    unfollow: Following

@@ -19,6 +19,7 @@ Router.map(function () {
       this.route('available');
     });
     this.route('people');
+    this.route('tags');
   });
 
   this.route('account', { path: '/profile' }, function () {
