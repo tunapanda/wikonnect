@@ -8,10 +8,12 @@ nav:
   badges: Badges
   courses: Course Builder
   teach: Teach
-  create_course: New
+  create_course: New Course
   draft_courses: Drafts
   published_courses: Published
   edit_course: Edit Course
+  back_to_profile: "<- Back to your profile"
+  cancel_editing_course: Cancel Course Editing
 
 form:
   labels:

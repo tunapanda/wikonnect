@@ -8,10 +8,12 @@ nav:
   badges: Beji
   courses: Kozi
   teach: Fundisha
-  create_course: Unda Kozi
+  create_course: Unda Kozi Mpya
   draft_courses: Rasimu
   published_courses: Zilizochapishwa
   edit_course: Hariri Kozi
+  back_to_profile: "<- Rudi kwenye wasifu wako"
+  cancel_editing_course: Ghairi Uhariri wa Kozi
 
 form:
   labels:

@@ -630,7 +630,8 @@ $palette: (
     .course-actions {
       .btn {
         padding: 5px 25px;
-        .tick-icon{
+
+        .tick-icon {
           path {
             stroke: map-get($palette, white);
           }
@@ -648,6 +649,7 @@ $palette: (
         .chapter-body {
           position: relative;
           padding-bottom: 1.7em;
+
           .chapter-action-section {
             position: absolute;
             bottom: 10px;

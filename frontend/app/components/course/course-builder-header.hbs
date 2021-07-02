@@ -6,56 +6,43 @@
 </div>
 <div class="course-sc-container">
   <div class="nav tabs-menu mini-user-menu pt-3">
-    <div class="nav-item">
-      <LinkTo @route="profile.home" @model={{this.model}} class="nav-link">
-        {{t "course.nav.home"}}
-      </LinkTo>
-    </div>
-    <div class="nav-item">
-      <LinkTo @route="index" class="nav-link">
-        {{t "course.nav.learn"}}
-      </LinkTo>
-    </div>
-    <div class="nav-item">
-      <LinkTo @route="teach.index" class="nav-link">
-        {{t "course.nav.teach"}}
-      </LinkTo>
-    </div>
-    <div class="nav-item">
-      <LinkTo @route="course" class="nav-link">
-        {{t "course.nav.courses"}}
-      </LinkTo>
-    </div>
-    <div class="nav-item">
-      <LinkTo @route="profile.achievements" @model={{this.model}} class="nav-link">
-        {{t "course.nav.badges"}}
-      </LinkTo>
-    </div>
-
+    <LinkTo @route="profile.courses" @model={{this.me}} class="nav-link">
+      {{t "course.nav.back_to_profile"}}
+    </LinkTo>
   </div>
 
-  <div class="nav tabs-menu course-sections-menu pt-3">
-    <div class="nav-item">
-      <LinkTo @route="course.create" class="nav-link">
-        {{t "course.nav.create_course"}}
-      </LinkTo>
-    </div>
-    {{#if @editCourse}}
-      <div class="nav-item">
-        <LinkTo @route="course.edit" @model={{@editCourse}} class="nav-link">
-          {{t "course.nav.edit_course"}}
+  <div class="d-md-flex d-block justify-content-between pt-3">
+    <div class="nav tabs-menu course-sections-menu">
+      {{#unless @editCourse}}
+        <div class="nav-item d-md-none d-sm-inline-flex">
+          <LinkTo @route="course.create" class="nav-link">
+            {{t "course.nav.create_course"}}
+          </LinkTo>
+        </div>
+      {{/unless}}
+
+      {{#if @editCourse}}
+        <LinkTo @route="course.show" @model={{@editCourse}} class="btn btn-sm btn-outline-danger">
+          {{t "course.nav.cancel_editing_course"}}
         </LinkTo>
-      </div>
-    {{/if}}
-    <div class="nav-item">
-      <LinkTo @route="course.drafts" class="nav-link">
-        {{t "course.nav.draft_courses"}}
-      </LinkTo>
+      {{/if}}
+      {{#unless @editCourse}}
+        <div class="nav-item">
+          <LinkTo @route="course.drafts" class="nav-link">
+            {{t "course.nav.draft_courses"}}
+          </LinkTo>
+        </div>
+        <div class="nav-item">
+          <LinkTo @route="course.published" class="nav-link">
+            {{t "course.nav.published_courses"}}
+          </LinkTo>
+        </div>
+      {{/unless}}
     </div>
-    <div class="nav-item">
-      <LinkTo @route="course.published" class="nav-link">
-        {{t "course.nav.published_courses"}}
-      </LinkTo>
-    </div>
+
+    <LinkTo @route="course.create" class="btn btn-primary btn-sm link-create d-flex align-items-center">
+      {{svg-jar "plus-circle" height="20" width="20" stroke="white"}}
+      <span class="pl-1">{{t "course.nav.create_course"}}</span>
+    </LinkTo>
   </div>
 </div>
