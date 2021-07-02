@@ -80,3 +80,24 @@ courses:
   sort_by_all: All
   sort_by_followers_count: Most Enrolled
   sort_by_tags_count: Most Tags
+
+people_page:
+  search_user_placeholder: Search a User
+  sort_options_title: Sort People By
+  sort_by_all: All
+  sort_by_name: Name
+  sort_by_followers_count: Most Followers
+  sort_by_courses_enrolled_count: Most Courses Enrolled
+  sort_by_tags_following_count: Most Followed Tags
+  general_error: Unexpected error encountered while processing your request.
+  showing_all: Showing all users
+  summary: Showing {current} of {total}
+  tables:
+    name: Names
+    followers: No. of Followers
+    courses: Courses Enrolled
+    tags: Tags Followed
+  buttons:
+    sort_by: Sort By
+    follow: Follow
+    unfollow: Following

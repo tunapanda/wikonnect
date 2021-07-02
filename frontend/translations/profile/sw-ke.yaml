@@ -79,3 +79,24 @@ courses:
   sort_by_all: Zote
   sort_by_followers_count: Inayofuatwa Zaidi
   sort_by_tags_count: Lebo nyingi
+
+people_page:
+  search_user_placeholder: Tafuta watu
+  sort_options_title: Panga Watu Kwa
+  sort_by_all: Wote
+  sort_by_name: Jina
+  sort_by_followers_count: Wafuasi Wengi
+  sort_by_courses_enrolled_count: Amejiandikisha Kozi nyingi
+  sort_by_tags_following_count: Anayefuata Lebo Zaidi
+  general_error: Hitilafu isiyotarajiwa imepatikana wakati wa kuchakata ombi lako.
+  showing_all: Inaonyesha watumiaji wote
+  summary: Inaonyesha {current} ya {total}
+  tables:
+    name: Majina
+    followers: Idadi ya Wafuasi
+    courses: Kozi Zilizosajiliwa
+    tags: Vitambulisho Vimefuatwa
+  buttons:
+    sort_by: Panga Kwa
+    follow: Fuata
+    unfollow: Unamfuata

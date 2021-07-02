@@ -9,7 +9,8 @@ $palette: (
   aliceBlue: #F7FCFF,
   bombay: #B2B4B6,
   bonjour: #EAE7E7,
-  black: #000000
+  black: #000000,
+  gallery: #F0F0F0,
 );
 
 .account-profile-page {
@@ -446,6 +447,70 @@ $palette: (
           background-color: map-get($palette, primary);
           color: map-get($palette, white);
         }
+      }
+    }
+  }
+}
+
+.account-profile-page {
+  .data-summary-section {
+    background-color: map-get($palette, gallery);
+    line-height: 35px;
+    padding-left: 10px;
+    font-size: 15px;
+    color: map-get($palette, gray30);
+    font-weight: 500;
+  }
+
+  .custom-table {
+    border-collapse: separate;
+    border-spacing: 0 10px;
+
+    thead td {
+      font-size: 14px;
+      font-weight: 500;
+      border: none;
+    }
+
+    tbody {
+      tr {
+        margin-bottom: 10px;
+        box-shadow: 0px 3px 30px rgba(0, 0, 0, 0.06);
+        border-radius: 5px;
+        background-color: map-get($palette, white);
+      }
+
+      td {
+        font-size: 14px;
+        color: map-get($palette, gray30);
+        vertical-align: middle;
+        border: none;
+      }
+    }
+  }
+
+  .custom-table {
+    .btn-unfollow {
+      border-color: map-get($palette, gray30);
+      padding-left: 15px;
+      padding-right: 15px;
+    }
+
+    .btn-follow {
+      padding-left: 25px;
+      padding-right: 25px;
+    }
+
+    .user-profile {
+      .image-container img {
+        height: 35px;
+        width: 35px;
+        border-radius: 50%;
+        background-color: lighten(map-get($palette, primary), 40%);
+      }
+
+      .details {
+        padding-left: 8px;
       }
     }
   }

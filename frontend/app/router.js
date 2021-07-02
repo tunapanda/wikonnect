@@ -18,6 +18,7 @@ Router.map(function () {
       this.route('enrolled', { path: '/enrolled/@me' });
       this.route('available');
     });
+    this.route('people');
   });
 
   this.route('account', { path: '/profile' }, function () {

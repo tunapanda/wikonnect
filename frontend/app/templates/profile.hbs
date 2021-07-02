@@ -192,6 +192,11 @@
             {{t "profile.nav.courses"}}
           </LinkTo>
         </div>
+        <div class="nav-item">
+          <LinkTo @route="profile.people" class="nav-link">
+            {{t "profile.nav.people"}}
+          </LinkTo>
+        </div>
       {{/if}}
       <div class="nav-item">
         <LinkTo @route="profile.achievements" @model={{this.model}} class="nav-link">
