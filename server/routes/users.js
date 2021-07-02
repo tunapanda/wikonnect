@@ -4,7 +4,7 @@ const path = require('path');
 const { nanoid } = require('nanoid/async');
 const sharp = require('sharp');
 const crypto = require('crypto');
-const koaBody = require('koa-body')({multipart: true,multiples:false,keepExtensions:true});
+const koaBody = require('koa-body')({ multipart: true, multiples: false, keepExtensions: true });
 
 
 const User = require('../models/user');
@@ -103,7 +103,7 @@ router.post('/', validateAuthRoutes.validateNewUser, createPasswordHash, async c
 
     log.info('Created a user with id %s with username %s with the invite code %s', user.id, user.username, user.inviteCode);
     sendVerificationEmail(user, ctx.request.body.user.email);
-    
+
     ctx.status = 201;
     ctx.body = { user };
   } catch (e) {
@@ -198,14 +198,14 @@ router.get('/:id', permController.requireAuth, async ctx => {
   let userId = (ctx.params.id !== 'current' || ctx.params.id !== 'me') ? ctx.params.id : stateUserId;
 
   let joinRelations = 'achievementAwards(selectBadgeNameAndId), userRoles(selectNameAndId),' +
-      'enrolledCourses(selectNameAndId)';
-  if(ctx.query && ctx.query.include){
+    'enrolledCourses(selectNameAndId)';
+  if (ctx.query && ctx.query.include) {
     const includes = ctx.query.include.split(',');
-    if(includes.some((v)=>v.toLowerCase().includes('following'))){
-      joinRelations+=',following(selectBasicInfo)';
+    if (includes.some((v) => v.toLowerCase().includes('following'))) {
+      joinRelations += ',following(selectBasicInfo)';
     }
-    if(includes.some((v)=>v.toLowerCase().includes('followers'))){
-      joinRelations+=',followers(selectBasicInfo)';
+    if (includes.some((v) => v.toLowerCase().includes('followers'))) {
+      joinRelations += ',followers(selectBasicInfo)';
     }
   }
 
@@ -237,26 +237,126 @@ router.get('/:id', permController.requireAuth, async ctx => {
  *
  * @apiVersion 0.4.0
  * @apiDescription list all user on the platform
- * @apiPermission [admin, superadmin]
+ * @apiPermission admin, moderator, or basic
  * @apiHeader (Header) {String} authorization Bearer <<YOUR_API_KEY_HERE>>
  *
- * @apiParam (Required Params) {string} user[username] username
- * @apiParam (Required Params) {string} user[email] Unique email
- * @apiParam (Required Params) {string} user[password] validated password
- * @apiParam (Optional Params) {string} user[invitedBy] auto filled on the form
- * @apiParam (Optional Params) {string} user[tags] a list of String with tags a user has subscribed to
- * @apiParam (Optional Params) {string} user[metadata] json data
+ * @apiParam (Query Params) {String}   [id]  Get a user with a specified id
+ * @apiParam (Query Params) {String}   [username] Get a user with a specified username
+ * @apiParam (Query Params) {String}   [email]  Get a user with a specified email
+ * @apiParam (Query Params) {String}   [lastIp]   <strike>filter users based on their last recorded IP address</strike>
+ * @apiParam (Query Params) {String}   [inviteCode]  Get a user with a specified inviteCode
+ * @apiParam (Query Params) {Boolean}  [private]
+ * @apiParam (Query Params) {String}   [location]  filter users based on location
+ * @apiParam (Query Params) {String}   [gender]  filter users based on their gender
+ * @apiParam (Query Params) {String}   [contactNumber]  <strike>filter users based on contact number</strike>
+ * @apiParam (Query Params) {String}   [aggregate] Aggregates to include separated with comma (userFollowers,enrolledCourses,followedTags,approvedchapters,publishedcourses)
+ * @apiParam (Query Params) {String}   [include] Relations to include seperated with comma (userfollowees)
+ * @apiParam (Query Params) {String}   [followerId] User Id which to filter user-followees for. The include query param must request `userfollowees` e.g. /?include=userfollowees&followerId=user1
+ *
+ *  {
+ *    "users":[
+ *              {
+ *                  "id": "user1",
+ *                   "name": "user1"
+ *                  "email": "user1@wikonnect.org",
+ *                  "username": "user1",
+ *                  "lastSeen": "2021-07-02T04:31:52.718Z",
+ *                  "metadata":{"profileComplete": "true", "oneInviteComplete": "false", "oneChapterCompletion": "false"},
+ *                  "createdAt": "2017-12-20T19:17:10.000Z",
+ *                  "updatedAt": "2021-07-01T16:09:58.303Z",
+ *                  "profileUri": "/uploads/images/profile-placeholder.gif",
+ *                  "inviteCode": "user1",
+ *                  "private": "true",
+ *                  "tags": "{\"highschool\",\"primary\",\"university\"}",
+ *                  "emailVerified": false,
+ *                  "phoneVerified": false,
+ *                  "flag": false,
+ *                  "location": "Huntington, Malawi",
+ *                  "contactNumber": "+549900080861",
+ *                  "gender": "N/A",
+ *                  totalUserFollowers": "2",
+ *                  "totalCoursesEnrolled": "5",
+ *                  "totalTagsFollowed": "1",
+ *                  "totalChaptersPublished": "1",
+ *                  "totalChaptersApproved": "5",
+ *                  "achievementAwards":[{"id": "JDKOZASAADo", "name": "longest streak", "achievementId": "achievements1",…],
+ *                  "userRoles":[{"id": "groupAdmin", "name": "admin", "slug": "role-admin",…],
+ *                  "enrolledCourses":[{"id": "JDKOY80AA7A", "name": "culpa nihil cumque", "type": "course"…],
+ *                  "userFollowees":[{"id": "JDKOY-uAACc", "userId": "user1", "followingId": "JDKOYwqAAZw",…] *
+ *              }
+ *    ]
+ *  }
  *
  */
 router.get('/', permController.requireAuth, permController.grantAccess('readAny', 'private'),
   async ctx => {
 
+    let recordsToSelect = ['*'];
+    if (ctx.query.aggregate) { //not best approach but fine for now
+      const possibleAggregates = [
+        {
+          expect: 'userfollowers', //expected query
+          selectQuery: User.relatedQuery('userFollowers').count().as('totalUserFollowers') //
+        },
+        {
+          expect: 'enrolledcourses',
+          selectQuery: User.relatedQuery('courseEnrollments').count().as('totalCoursesEnrolled')
+        },
+        {
+          expect: 'followedtags',
+          selectQuery: User.relatedQuery('tagsFollowing').count().as('totalTagsFollowed')
+        },
+        {
+          expect: 'approvedchapters',
+          selectQuery: User.relatedQuery('chapters')
+            .where('approved', true).count().as('totalChaptersApproved')
+        }, {
+          expect: 'publishedcourses',
+          selectQuery: User.relatedQuery('courses')
+            .where('status', 'published').count().as('totalChaptersPublished')
+        },
+
+      ];
+
+      const includes = ctx.query.aggregate.split(',');
+
+      includes.map((qr) => {
+        const obj = possibleAggregates.find((p) => qr.toLowerCase().includes(p.expect));
+        if (obj) {
+          recordsToSelect.push(obj.selectQuery);
+        }
+      });
+    }
+
+    let queryUserFollowees = false;
+    if (ctx.query.include) {
+      const includes = ctx.query.include.split(',');
+      if (includes.some((v) => v.toLowerCase().includes('userfollowees'))) {
+        queryUserFollowees = true;
+      }
+    }
+    const followerId = ctx.query.followerId; // handy with userFollowees filter
+
+    delete ctx.query.followerId;
+    delete ctx.query.aggregate;
+    delete ctx.query.include;
+
     try {
-      const users = await User.query()
+      let users = await User.query()
+        .select(recordsToSelect)
         .where(ctx.query)
         .withGraphFetched('[achievementAwards(selectBadgeNameAndId), userRoles(),' +
-            ' enrolledCourses(selectNameAndId)]');
-        //.modify('selectBasicInfo'); //this will not work for admin
+          ' enrolledCourses(selectNameAndId)]')
+        .onBuild((builder) => {
+          if (queryUserFollowees) {
+            builder.withGraphFetched('userFollowees');
+          }
+        })
+        .modifyGraph('userFollowees', (query) => {
+          if (followerId) {
+            query.where('following_id', followerId);
+          }
+        });
 
       ctx.assert(users, 404, 'No User With that username');
 
@@ -388,7 +488,7 @@ router.post('/:id/profile-image', koaBody, permController.requireAuth, async (ct
       log.info('Uploaded in:', uploaded.Location);
       const user = await User.query().patchAndFetchById(ctx.params.id, { profileUri: fileNameBase });
 
-      user.profileUri = 'data:image/(png|jpg);base64,' +  buffer.toString('base64'); //since s3 will not alter the image
+      user.profileUri = 'data:image/(png|jpg);base64,' + buffer.toString('base64'); //since s3 will not alter the image
 
       ctx.body = { user };
     } catch (e) {

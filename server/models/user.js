@@ -124,6 +124,56 @@ class User extends Model {
         }
       },
 
+      userFollowers: {
+        relation: Model.HasManyRelation,
+        modelClass: __dirname + '/user-follower',
+        join: {
+          from: 'users.id',
+          to: 'user_followers.followingId' //perspective: my followers
+        }
+      },
+      userFollowees: {
+        relation: Model.HasManyRelation,
+        modelClass: __dirname + '/user-follower',
+        join: {
+          from: 'users.id',
+          to: 'user_followers.userId', //perspective: people I am following
+        }
+      },
+      tagsFollowing: {
+        relation: Model.HasManyRelation,
+        modelClass: __dirname + '/tag-follower',
+        join: {
+          from: 'users.id',
+          to: 'tag_followers.userId'
+        }
+      },
+      courseEnrollments: {
+        relation: Model.HasManyRelation,
+        modelClass: __dirname + '/course-enrollment',
+        join: {
+          from: 'users.id',
+          to: 'course_enrollment.userId'
+        }
+      },
+      chapters: {
+        relation: Model.HasManyRelation,
+        modelClass: __dirname + '/chapter',
+        join: {
+          from: 'users.id',
+          to: 'chapters.creatorId'
+        }
+      },
+      courses: {
+        relation: Model.HasManyRelation,
+        modelClass: __dirname + '/course',
+        join: {
+          from: 'users.id',
+          to: 'courses.creatorId'
+        }
+      },
+
+
     };
   }
 
