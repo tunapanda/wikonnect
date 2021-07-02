@@ -208,8 +208,46 @@ router.get('/:id', permController.requireAuth, async ctx => {
       joinRelations += ',followers(selectBasicInfo)';
     }
   }
+  let recordsToSelect = ['*'];
+  if (ctx.query.aggregate) { //not best approach but fine for now
+    const possibleAggregates = [
+      {
+        expect: 'userfollowers', //expected query
+        selectQuery: User.relatedQuery('userFollowers').count().as('totalUserFollowers') //
+      },
+      {
+        expect: 'enrolledcourses',
+        selectQuery: User.relatedQuery('courseEnrollments').count().as('totalCoursesEnrolled')
+      },
+      {
+        expect: 'followedtags',
+        selectQuery: User.relatedQuery('tagsFollowing').count().as('totalTagsFollowed')
+      },
+      {
+        expect: 'approvedchapters',
+        selectQuery: User.relatedQuery('chapters')
+          .where('approved', true).count().as('totalChaptersApproved')
+      }, {
+        expect: 'publishedcourses',
+        selectQuery: User.relatedQuery('courses')
+          .where('status', 'published').count().as('totalChaptersPublished')
+      },
+
+    ];
+
+    const includes = ctx.query.aggregate.split(',');
+
+    includes.map((qr) => {
+      const obj = possibleAggregates.find((p) => qr.toLowerCase().includes(p.expect));
+      if (obj) {
+        recordsToSelect.push(obj.selectQuery);
+      }
+    });
+  }
+
 
   let user = await User.query()
+    .select(recordsToSelect)
     .findById(userId)
     .withGraphFetched(`[${joinRelations}]`);
 
