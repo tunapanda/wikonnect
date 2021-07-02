@@ -5,29 +5,29 @@ const { requireAuth } = require('../middleware/permController');
 const log = require('../utils/logger');
 
 const router = new Router({
-  prefix: '/accounts-following'
+  prefix: '/user-followees'
 });
 
 /**
- * @api {get} /api/v1/accounts-following GET all accounts user follows
- * @apiName GET all accounts user follows
- * @apiGroup Accounts Following
+ * @api {get} /api/v1/user-followees GET all accounts users follows
+ * @apiName GET all user followees
+ * @apiGroup User Followees
  * @apiPermission authenticated user
  * @apiVersion 0.4.0
  *
  * @apiHeader {String} Authorization Bearer << JWT here>>
  *
- * @apiSuccess {Object}  accountsFollowing Top level object
- * @apiSuccess {String}  accountsFollowing[id] the id of the following
- * @apiSuccess {String}  accountsFollowing[userId] the id of the user
- * @apiSuccess {String}  accountsFollowing[followingId] the id account user is following
- * @apiSuccess {String}  accountsFollowing[createdAt] date account following was created
- * @apiSuccess {String}  accountsFollowing[updatedAt] date account following was updated
+ * @apiSuccess {Object}  UserFollowees Top level object
+ * @apiSuccess {String}  UserFollowees[id] the id of the following
+ * @apiSuccess {String}  UserFollowees[userId] the id of the user
+ * @apiSuccess {String}  UserFollowees[followingId] the id account user is following
+ * @apiSuccess {String}  UserFollowees[createdAt] date account following was created
+ * @apiSuccess {String}  UserFollowees[updatedAt] date account following was updated
  *
  * @apiSuccessExample {json} Success-Response:
  *     HTTP/1.1 200 OK
  *          {
- *             "accountsFollowing":[{
+ *             "UserFollowees":[{
  *              "id": "JBp56KQAA7c",
  *              "userId": "user1",
  *              "followingId": "JB0yRrGAAd0",
@@ -41,10 +41,10 @@ router.get('/', requireAuth, async ctx => {
   try {
     const userId = ctx.state.user.data.id;
 
-    const accountsFollowing = await UserFollowerModel.query()
+    const UserFollowees = await UserFollowerModel.query()
       .where('userId', userId);
     ctx.status = 200;
-    ctx.body = { accountsFollowing };
+    ctx.body = { UserFollowees };
   } catch (e) {
     log.error(e);
     if (e.statusCode) {
@@ -57,30 +57,30 @@ router.get('/', requireAuth, async ctx => {
 });
 
 /**
- * @api {post} /api/v1/accounts-following POST user account following
+ * @api {post} /api/v1/User-followees POST user account following
  * @apiName POST a user account following
- * @apiGroup Accounts Following
+ * @apiGroup User Followees
  * @apiPermission authenticated user
  * @apiVersion 0.4.0
  *
  * @apiHeader {String} Authorization Bearer << JWT here>>
  *
  *
- * @apiParam (Request Body)  {Object}  accountsFollowing Top level object
- * @apiParam (Request Body)  {String}  accountsFollowing[followingId] the id account user is following
- * @apiParam (Request Body)  {String}  [accountsFollowing[userId]=JWTToken.user.id] Id of the user enrolling.
+ * @apiParam (Request Body)  {Object}  UserFollowee Top level object
+ * @apiParam (Request Body)  {String}  UserFollowees[followingId] the id account user is following
+ * @apiParam (Request Body)  {String}  [UserFollowees[userId]=JWTToken.user.id] Id of the user followee.
  *
- * @apiSuccess {Object}  accountsFollowing Top level object
- * @apiSuccess {String}  accountsFollowing[id] the id of the following
- * @apiSuccess {String}  accountsFollowing[followingId] the id account user is following
- * @apiSuccess {String}  accountsFollowing[userId] the id of the user
- * @apiSuccess {String}  accountsFollowing[createdAt] date account following was created
- * @apiSuccess {String}  accountsFollowing[updatedAt] date account following was updated
+ * @apiSuccess {Object}  UserFollowee Top level object
+ * @apiSuccess {String}  UserFollowee[id] the id of the following
+ * @apiSuccess {String}  UserFollowee[followingId] the id account user is following
+ * @apiSuccess {String}  UserFollowee[userId] the id of the user
+ * @apiSuccess {String}  UserFollowee[createdAt] date account following was created
+ * @apiSuccess {String}  UserFollowee[updatedAt] date account following was updated
  *
  * @apiSuccessExample {json} Success-Response:
  *     HTTP/1.1 200 OK
  *          {
- *             "accountsFollowing":{
+ *             "UserFollowee":{
  *              "id": "JBp56KQAA7c",
  *              "userId": "user1",
  *              "followingId": "JB0yRrGAAd0",
@@ -93,17 +93,17 @@ router.get('/', requireAuth, async ctx => {
 router.post('/', requireAuth, async ctx => {
 
   const creatorId = ctx.state.user.data.id;
-  const obj = ctx.request.body.accountsFollowing;
+  const obj = ctx.request.body.UserFollowee;
 
   ctx.assert(obj && obj.followingId, 400, 'Invalid account data invalid');
   ctx.assert(obj.user !== creatorId, 400, 'User cannot follow their own account');
 
   try {
 
-    const accountsFollowing = await UserFollowerModel.query()
+    const UserFollowee = await UserFollowerModel.query()
       .insertAndFetch({ userId: creatorId, followingId: obj.followingId });
     ctx.status = 201;
-    ctx.body = { accountsFollowing };
+    ctx.body = { UserFollowee };
   } catch (e) {
     log.error(e);
     if (e instanceof UniqueViolationError) {
@@ -126,9 +126,9 @@ router.post('/', requireAuth, async ctx => {
 
 
 /**
- * @api {delete} /api/v1/accounts-following/:id Unfollow account
+ * @api {delete} /api/v1/user-followees/:id Unfollow account
  * @apiName Unfollow user account
- * @apiGroup Accounts Following
+ * @apiGroup User Followees
  * @apiPermission authenticated user
  * @apiVersion 0.4.0
  *

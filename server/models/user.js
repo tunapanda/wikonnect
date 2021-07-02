@@ -93,7 +93,7 @@ class User extends Model {
           to: 'groups.id'
         }
       },
-      following: {
+      followees: {
         relation: Model.ManyToManyRelation,
         modelClass: __dirname + '/user',
         join: {

@@ -25,7 +25,7 @@ class UserFollower extends Model {
   }
 
   type() {
-    return 'user-follower';
+    return 'user-followee';
   }
 
   static get relationMappings() {
