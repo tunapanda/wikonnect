@@ -400,6 +400,22 @@ router.get('/', permController.requireAuth, permController.grantAccess('readAny'
 
       ctx.assert(users, 404, 'No User With that username');
 
+
+      //for each user, get their profile image
+      const promises = users.map(async (user)=>{
+        user.profileUri = await getProfileImage(user);
+        return user;
+      });
+      const userProfiles = await Promise.all(promises);
+      //replace user profile images with correct ones
+      userProfiles.map((profile)=>{
+        const obj = userProfiles.find((p) => p.id === profile.id);
+        if (obj) {
+          obj.profileUri= profile.profileUri;
+        }
+      });
+
+
       ctx.body = { users };
     } catch (e) {
       if (e.statusCode) {
