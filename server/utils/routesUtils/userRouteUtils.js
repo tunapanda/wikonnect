@@ -21,6 +21,9 @@ async function getProfileImage(user) {
       const getImage = await s3.s3.getObject(params).promise();
       return 'data:image/(png|jpg);base64,' + encode(getImage.Body);
     } else {
+      if (user.profileUri && user.profileUri.match(/^[a-z0-9]+:\/\//i)){
+        return user.profileUri;
+      }
       if(user.profileUri &&  fs.existsSync(path.resolve(`public/${user.profileUri}`))){
         return user.profileUri;
       }
