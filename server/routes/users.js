@@ -201,8 +201,8 @@ router.get('/:id', permController.requireAuth, async ctx => {
     'enrolledCourses(selectNameAndId)';
   if (ctx.query && ctx.query.include) {
     const includes = ctx.query.include.split(',');
-    if (includes.some((v) => v.toLowerCase().includes('following'))) {
-      joinRelations += ',following(selectBasicInfo)';
+    if (includes.some((v) => v.toLowerCase().includes('followees'))) {
+      joinRelations += ',followees(selectBasicInfo)';
     }
     if (includes.some((v) => v.toLowerCase().includes('followers'))) {
       joinRelations += ',followers(selectBasicInfo)';
@@ -253,11 +253,13 @@ router.get('/:id', permController.requireAuth, async ctx => {
  * @apiParam (Query Params) {String}   [include] Relations to include seperated with comma (userfollowees)
  * @apiParam (Query Params) {String}   [followerId] User Id which to filter user-followees for. The include query param must request `userfollowees` e.g. /?include=userfollowees&followerId=user1
  *
- *  {
+ * @apiSuccessExample {json} Success-Response:
+ *   HTTP/1.1 200 OK
+ *    {
  *    "users":[
  *              {
  *                  "id": "user1",
- *                   "name": "user1"
+ *                  "name": "user1"
  *                  "email": "user1@wikonnect.org",
  *                  "username": "user1",
  *                  "lastSeen": "2021-07-02T04:31:52.718Z",
@@ -282,10 +284,10 @@ router.get('/:id', permController.requireAuth, async ctx => {
  *                  "achievementAwards":[{"id": "JDKOZASAADo", "name": "longest streak", "achievementId": "achievements1",…],
  *                  "userRoles":[{"id": "groupAdmin", "name": "admin", "slug": "role-admin",…],
  *                  "enrolledCourses":[{"id": "JDKOY80AA7A", "name": "culpa nihil cumque", "type": "course"…],
- *                  "userFollowees":[{"id": "JDKOY-uAACc", "userId": "user1", "followingId": "JDKOYwqAAZw",…] *
+ *                  "userFollowees":[{"id": "JDKOY-uAACc", "userId": "user1", "followeeId": "JDKOYwqAAZw",…] *
  *              }
- *    ]
- *  }
+ *      ]
+ *    }
  *
  */
 router.get('/', permController.requireAuth, permController.grantAccess('readAny', 'private'),
@@ -354,7 +356,7 @@ router.get('/', permController.requireAuth, permController.grantAccess('readAny'
         })
         .modifyGraph('userFollowees', (query) => {
           if (followerId) {
-            query.where('following_id', followerId);
+            query.where('followeeId', followerId);
           }
         });
 

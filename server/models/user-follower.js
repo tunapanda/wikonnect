@@ -12,11 +12,11 @@ class UserFollower extends Model {
       properties: {
         id: { type: 'string' },
         userId: { type: 'string' },
-        followingId: { type: 'string' },
+        followeeId: { type: 'string' },
         createdAt: { type: 'string' },
         updatedAt: { type: 'string' },
       },
-      required: ['followingId', 'userId'],
+      required: ['followeeId', 'userId'],
     };
   }
 
@@ -34,7 +34,7 @@ class UserFollower extends Model {
         relation: Model.BelongsToOneRelation,
         modelClass: __dirname + '/user',
         join: {
-          from: 'user_followers.user_id',
+          from: 'user_followers.userId',
           to: 'users.id'
         }
       },
@@ -42,7 +42,7 @@ class UserFollower extends Model {
         relation: Model.BelongsToOneRelation,
         modelClass: __dirname + '/user',
         join: {
-          from: 'user_followers.following_id',
+          from: 'user_followers.followeeId',
           to: 'users.id'
         }
       }

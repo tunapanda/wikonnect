@@ -6,9 +6,9 @@ exports.up = (knex) => {
     .createTable('user_followers', table => {
       table.text('id').primary().notNullable().defaultTo(knex.raw('next_id()'));
       table.text('user_id').references('users.id').onDelete('CASCADE');
-      table.text('following_id').references('users.id').onDelete('CASCADE');
+      table.text('followee_id').references('users.id').onDelete('CASCADE');
       table.timestamps();
-      table.unique(['user_id', 'following_id']);
+      table.unique(['user_id', 'followee_id']);
 
     });
 };

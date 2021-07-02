@@ -20,7 +20,7 @@ const router = new Router({
  * @apiSuccess {Object}  UserFollowees Top level object
  * @apiSuccess {String}  UserFollowees[id] the id of the following
  * @apiSuccess {String}  UserFollowees[userId] the id of the user
- * @apiSuccess {String}  UserFollowees[followingId] the id account user is following
+ * @apiSuccess {String}  UserFollowees[followeeId] the id account user is following
  * @apiSuccess {String}  UserFollowees[createdAt] date account following was created
  * @apiSuccess {String}  UserFollowees[updatedAt] date account following was updated
  *
@@ -30,7 +30,7 @@ const router = new Router({
  *             "UserFollowees":[{
  *              "id": "JBp56KQAA7c",
  *              "userId": "user1",
- *              "followingId": "JB0yRrGAAd0",
+ *              "followeeId": "JB0yRrGAAd0",
  *              "createdAt": "2021-06-23T14:16:56.796Z",
  *              "updatedAt": "2021-06-23T14:16:56.796Z"
  *              }]
@@ -67,12 +67,12 @@ router.get('/', requireAuth, async ctx => {
  *
  *
  * @apiParam (Request Body)  {Object}  UserFollowee Top level object
- * @apiParam (Request Body)  {String}  UserFollowees[followingId] the id account user is following
+ * @apiParam (Request Body)  {String}  UserFollowees[followeeId] the id account user is following
  * @apiParam (Request Body)  {String}  [UserFollowees[userId]=JWTToken.user.id] Id of the user followee.
  *
  * @apiSuccess {Object}  UserFollowee Top level object
  * @apiSuccess {String}  UserFollowee[id] the id of the following
- * @apiSuccess {String}  UserFollowee[followingId] the id account user is following
+ * @apiSuccess {String}  UserFollowee[followeeId] the id account user is following
  * @apiSuccess {String}  UserFollowee[userId] the id of the user
  * @apiSuccess {String}  UserFollowee[createdAt] date account following was created
  * @apiSuccess {String}  UserFollowee[updatedAt] date account following was updated
@@ -83,7 +83,7 @@ router.get('/', requireAuth, async ctx => {
  *             "UserFollowee":{
  *              "id": "JBp56KQAA7c",
  *              "userId": "user1",
- *              "followingId": "JB0yRrGAAd0",
+ *              "followeeId": "JB0yRrGAAd0",
  *              "createdAt": "2021-06-23T14:16:56.796Z",
  *              "updatedAt": "2021-06-23T14:16:56.796Z"
  *              }
@@ -95,13 +95,13 @@ router.post('/', requireAuth, async ctx => {
   const creatorId = ctx.state.user.data.id;
   const obj = ctx.request.body.UserFollowee;
 
-  ctx.assert(obj && obj.followingId, 400, 'Invalid account data invalid');
+  ctx.assert(obj && obj.followeeId, 400, 'Invalid account data invalid');
   ctx.assert(obj.user !== creatorId, 400, 'User cannot follow their own account');
 
   try {
 
     const UserFollowee = await UserFollowerModel.query()
-      .insertAndFetch({ userId: creatorId, followingId: obj.followingId });
+      .insertAndFetch({ userId: creatorId, followeeId: obj.followeeId });
     ctx.status = 201;
     ctx.body = { UserFollowee };
   } catch (e) {

@@ -9,9 +9,9 @@ exports.seed = async (knex) => {
   let subscribers = [];
 
   for (let i = 0; i < seed_number; i++) {
-    const { user_id, following_id } = generateUnique();
+    const { user_id, followee_id } = generateUnique();
     subscribers.push({
-      following_id,
+      followee_id,
       user_id,
       created_at: faker.date.past(),
       updated_at: faker.date.recent(),
@@ -20,13 +20,13 @@ exports.seed = async (knex) => {
 
   function generateUnique() {
     const userId = faker.random.arrayElement(userIds);
-    const followingId = faker.random.arrayElement(userIds);
-    const index = subscribers.findIndex((c) => c.user_id === userId && c.following_id === followingId);
+    const followeeId = faker.random.arrayElement(userIds);
+    const index = subscribers.findIndex((c) => c.user_id === userId && c.followee_id === followeeId);
 
-    if (index > -1 || followingId === userId) {
+    if (index > -1 || followeeId === userId) {
       return generateUnique();
     }
-    return { user_id: userId, following_id: followingId };
+    return { user_id: userId, followee_id: followeeId };
   }
   // Inserts seed entries
   return knex('user_followers').insert(subscribers);

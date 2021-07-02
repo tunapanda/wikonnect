@@ -99,7 +99,7 @@ class User extends Model {
         join: {
           from: 'users.id',
           through: {
-            to: 'user_followers.followingId',
+            to: 'user_followers.followeeId',
             from: 'user_followers.userId',
             extra: {
               subscriptionId: 'id'
@@ -115,7 +115,7 @@ class User extends Model {
           from: 'users.id',
           through: {
             to: 'user_followers.userId',
-            from: 'user_followers.followingId',
+            from: 'user_followers.followeeId',
             extra: {
               subscriptionId: 'id'
             },
@@ -129,7 +129,7 @@ class User extends Model {
         modelClass: __dirname + '/user-follower',
         join: {
           from: 'users.id',
-          to: 'user_followers.followingId' //perspective: my followers
+          to: 'user_followers.followeeId' //perspective: my followers
         }
       },
       userFollowees: {
