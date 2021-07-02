@@ -11,6 +11,8 @@ const getQuerySchema = Joi.object({
   includeAggregates: Joi.boolean(),
   page: Joi.number(),
   per_page: Joi.number(),
+  include: Joi.string(),
+  followerId: Joi.string(),
 }).nand('chapterTagsOnly', 'courseTagsOnly')
   .messages({
     'object.nand': 'chapterTagsOnly query must not exist simultaneously with courseTagsOnly param'

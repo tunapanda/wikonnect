@@ -71,8 +71,9 @@ router.get('/:id', requireAuth, async (ctx) => {
  * @apiParam (Query Params) {Boolean}  [includeAggregates=false] if to add courses, chapters, & followers counts on response
  * @apiParam (Query Params) {Boolean}  [chapterTagsOnly=false] Only include tags tied to a chapter
  * @apiParam (Query Params) {Boolean}  [courseTagsOnly=false] Only include tags tied to a course
- *
- *
+ * @apiParam (Query Params) {String}   [include] Relations to include seperated with comma (tagsfollowers,)
+ * @apiParam (Query Params) {String}   [followerId] Filter tag followers by this user id. The include query param must request `tagsfollowers` i.e. /?include=tagsfollowers&followerId=user1
+ * *
  * @apiSuccess {Object}  tags Top level object
  * @apiSuccess {String}  tag[id] tag id
  * @apiSuccess {String}  tag[name] the name of the tag
@@ -104,15 +105,26 @@ router.get('/:id', requireAuth, async (ctx) => {
  *          }
  *
  */
-router.get('/', requireAuth,TagsQueryValidation, async (ctx) => {
+router.get('/', requireAuth, TagsQueryValidation, async (ctx) => {
   let tags;
   const includeAggregates = ctx.query.includeAggregates;
   const courseTagsOnly = ctx.query.courseTagsOnly;
   const chapterTagsOnly = ctx.query.chapterTagsOnly;
 
+  let queryTagsFollowers = false;
+  if (ctx.query.include) {
+    const includes = ctx.query.include.split(',');
+    if (includes.some((v) => v.toLowerCase().includes('tagsfollowers'))) {
+      queryTagsFollowers = true;
+    }
+  }
+  const followerId = ctx.query.followerId;
+
   delete ctx.query.includeAggregates;
   delete ctx.query.courseTagsOnly;
   delete ctx.query.chapterTagsOnly;
+  delete ctx.query.followerId;
+  delete ctx.query.include;
 
   if (includeAggregates === true || includeAggregates === 1 || includeAggregates === 'true' || includeAggregates === '1') {
     tags = await TagModel.query()
@@ -121,22 +133,40 @@ router.get('/', requireAuth,TagsQueryValidation, async (ctx) => {
         TagModel.relatedQuery('chapterTags').count().as('chaptersCount'),
         TagModel.relatedQuery('followers').count().as('followersCount'),
       ])
-      .onBuild((builder)=>{
-        if(courseTagsOnly && !chapterTagsOnly){
+      .onBuild((builder) => {
+        if (courseTagsOnly && !chapterTagsOnly) {
           builder.whereExists(
             TagModel.relatedQuery('courseTags')
           );
         }
-        if(!courseTagsOnly && chapterTagsOnly){
+        if (!courseTagsOnly && chapterTagsOnly) {
           builder.whereExists(
             TagModel.relatedQuery('chapterTags')
           );
         }
+        if (queryTagsFollowers) {
+          builder.withGraphFetched('tagFollowers');
+        }
       })
-      .where(ctx.query);
+      .where(ctx.query)
+      .modifyGraph('tagFollowers', (query) => {
+        if (followerId) {
+          query.where('userId', followerId);
+        }
+      });
   } else {
     tags = await TagModel.query()
-      .where(ctx.query);
+      .where(ctx.query)
+      .onBuild((builder) => {
+        if (queryTagsFollowers) {
+          builder.withGraphFetched('tagFollowers');
+        }
+      })
+      .modifyGraph('tagFollowers', (query) => {
+        if (followerId) {
+          query.where('userId', followerId);
+        }
+      });
   }
 
   ctx.status = 200;
@@ -178,7 +208,7 @@ router.get('/', requireAuth,TagsQueryValidation, async (ctx) => {
  *                }
  *          }
  */
-router.post('/', requireAuth,TagPostValidation, async ctx => {
+router.post('/', requireAuth, TagPostValidation, async ctx => {
 
   try {
     const obj = ctx.request.body.tag;
