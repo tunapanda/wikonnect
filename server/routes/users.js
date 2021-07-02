@@ -375,8 +375,10 @@ router.get('/', permController.requireAuth, permController.grantAccess('readAny'
         queryUserFollowees = true;
       }
     }
-    const followerId = ctx.query.followerId; // handy with userFollowees filter
+    let { page, per_page, followerId } = ctx.query;
 
+    delete ctx.query.page;
+    delete ctx.query.per_page;
     delete ctx.query.followerId;
     delete ctx.query.aggregate;
     delete ctx.query.include;
@@ -389,34 +391,39 @@ router.get('/', permController.requireAuth, permController.grantAccess('readAny'
           ' enrolledCourses(selectNameAndId)]')
         .onBuild((builder) => {
           if (queryUserFollowees) {
-            builder.withGraphFetched('userFollowees');
+            builder.withGraphFetched('userFollowers');
           }
         })
         .modifyGraph('userFollowees', (query) => {
           if (followerId) {
-            query.where('followeeId', followerId);
+            query.where('userId', followerId);
           }
-        });
+        }).page(page, per_page);
 
       ctx.assert(users, 404, 'No User With that username');
 
 
       //for each user, get their profile image
-      const promises = users.map(async (user)=>{
+      const promises = users.results.map(async (user)=>{
         user.profileUri = await getProfileImage(user);
         return user;
       });
       const userProfiles = await Promise.all(promises);
       //replace user profile images with correct ones
       userProfiles.map((profile)=>{
-        const obj = userProfiles.find((p) => p.id === profile.id);
+        const obj = users.results.find((p) => p.id === profile.id);
         if (obj) {
           obj.profileUri= profile.profileUri;
         }
       });
 
 
-      ctx.body = { users };
+      ctx.body = {
+        meta: {
+          total_pages: users.total / per_page
+        },
+        users: users.results
+      };
     } catch (e) {
       if (e.statusCode) {
         ctx.throw(e.statusCode, { message: 'The query key does not exist' });
