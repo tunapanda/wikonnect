@@ -7,7 +7,7 @@
   "scripts": {
     "start": "node index.js",
     "start:cy": "node index.js --cypress",
-    "start:dev": "nodemon --ignore node_modules/ --ignore public/",
+    "start:dev": "nodemon --ignore node_modules/ --ignore public/ --ignore h5p-dummy/",
     "db:init": "knex migrate:latest",
     "db:reset": "knex migrate:rollback && knex migrate:latest",
     "db:seed": "knex seed:run",
