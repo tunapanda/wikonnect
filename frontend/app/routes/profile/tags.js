@@ -16,10 +16,14 @@ export default class ProfileTagsRoute extends Route {
   }
 
   model() {
-    return this.store.query('tag', {
-      include: 'tagsfollowers',
-      includeAggregates: true,
-      followerId: this.me.id,
-    });
+    return Promise.all([
+      this.store.query('tag', {
+        include: 'tagsfollowers',
+        includeAggregates: true,
+        followerId: this.me.id,
+      }),
+      this.store.query('course', { limit: 5, type: 'popular' }),
+      this.store.query('tag', { limit: 5, type: 'popular' }),
+    ]);
   }
 }

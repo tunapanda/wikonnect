@@ -2,121 +2,128 @@
 <span {{did-update this.updateSummary this.users}}></span>
 
 <div class="followees-container">
-  <div class="filters-menu filters-sub-section-menu row pb-3 pt-3">
-    <div class="col-lg-3 mb-sm-2">
-      <div class="search-form">
-        <Input class="form-control search-input" @value={{this.searchTerm}} @type="search"
-               placeholder="{{t "profile.people_page.search_user_placeholder"}}"/>
-        <span class="search-icon {{if this.searchTerm 'd-none'}}"></span>
-      </div>
+  <div class="row pb-5">
+    <div class="side-bar col-xl-3 d-none d-xl-block row pt-3 ">
+      <Profile::Nav::PopularTags @tags={{this.popularTags}} class="mb-2 border">
+      </Profile::Nav::PopularTags>
+      <Profile::Nav::PopularCourses @courses={{this.popularCourses}} @maxTagsDisplayed={{2}} class="border">
+      </Profile::Nav::PopularCourses>
     </div>
-
-    <div class="col-lg-4">
-      <BsDropdown class="sort-dropdown custom-courses-dd" as |dd|>
-        <dd.toggle>{{t "profile.people_page.buttons.sort_by"}} {{this.sortBy.title}}
-          <span class="caret"></span>
-        </dd.toggle>
-        <dd.menu as |menu|>
-          <div class="header">
-            {{t "profile.people_page.sort_options_title"}}
+    <div class="content col-xl-9 col-lg-12 pr-0 mr-0 mx-auto container-lg ">
+      <div class="filters-menu filters-sub-section-menu row pb-3 col-md-10 col-lg-12">
+        <div class="col-lg-4 pt-3 ">
+          <div class="search-form">
+            <Input class="form-control search-input" @value={{this.searchTerm}} @type="search"
+                   placeholder="{{t "profile.people_page.search_user_placeholder"}}"/>
+            <span class="search-icon {{if this.searchTerm 'd-none'}}"></span>
           </div>
-          <hr>
-          <menu.item>
-            <button type="button" class="btn w-100 menu-item btn-sort-all"
-              {{on "click" (fn this.setSortBy undefined  undefined)}}>
-              {{t "profile.people_page.sort_by_all"}}
-            </button>
-          </menu.item>
-          <menu.item>
-            <button type="button" class="btn w-100 menu-item btn-sort-followers"
-              {{on "click" (fn this.setSortBy (t "profile.people_page.sort_by_name") "name")}}>
-              {{t "profile.people_page.sort_by_name"}}
-            </button>
-          </menu.item>
-          <menu.item>
-            <button type="button" class="btn w-100 menu-item btn-sort-followers"
-              {{on "click" (fn this.setSortBy (t "profile.people_page.sort_by_followers_count") "followersCount")}}>
-              {{t "profile.people_page.sort_by_followers_count"}}
-            </button>
-          </menu.item>
-          <menu.item>
-            <button type="button" class="btn w-100 menu-item btn-sort-enrolled"
-              {{on "click" (fn this.setSortBy (t "profile.people_page.sort_by_courses_enrolled_count") "enrolledCount")}}>
-              {{t "profile.people_page.sort_by_courses_enrolled_count"}}
-            </button>
-          </menu.item>
-          <menu.item>
-            <button type="button" class="btn w-100 menu-item btn-sort-tags"
-              {{on "click" (fn this.setSortBy (t "profile.people_page.sort_by_tags_following_count") "tagsCount")}}>
-              {{t "profile.people_page.sort_by_tags_following_count"}}
-            </button>
-          </menu.item>
-        </dd.menu>
-      </BsDropdown>
-    </div>
-  </div>
-
-  <div class="data-summary-section">
-    <p>{{ this.dataSummary}}</p>
-  </div>
-  <div class="row pb-5 container">
-
-    <table class="table custom-table">
-      <thead>
-      <tr>
-        <td>{{t "profile.people_page.tables.name"}}</td>
-        <td>{{t "profile.people_page.tables.followers"}}</td>
-        <td>{{t "profile.people_page.tables.courses"}}</td>
-        <td>{{t "profile.people_page.tables.tags"}}</td>
-        <td></td>
-      </tr>
-      </thead>
-      <tbody>
-      {{#each this.filteredUsers as |user|}}
-        <tr class="border-top-0 border-bottom">
-          <td class="user-profile">
-            <div class="d-flex justify-content-start align-items-center">
-              <div class="image-container">
-                <img src="{{user.profileUri}}" class="user-profile-image" alt="" role="presentation">
-              </div>
-              <div class="details">
-                <span class="name"> {{user.name}}</span>
-              </div>
-            </div>
-          </td>
-          <td>
-            {{user.totalUserFollowers}}
-          </td>
-          <td>
-            {{user.totalCoursesEnrolled}}
-          </td>
-          <td>
-            {{user.totalCoursesEnrolled}}
-          </td>
-          <td>
-            {{#if (exec this.isFollowee user)}}
-
-              <button type="button" class="btn btn-sm btn-unfollow" {{on "click" (fn this.unfollow user)}}>
-                {{t "profile.people_page.buttons.unfollow"}}
-              </button>
-
-            {{else}}
-              <button type="button" class="btn-sm btn btn-primary btn-follow" {{on "click" (fn this.follow user)}}>
-                {{t "profile.people_page.buttons.follow"}}
-              </button>
-            {{/if}}
-          </td>
-        </tr>
-      {{/each}}
-      </tbody>
-    </table>
-    <InfinityLoader @infinityModel={{this.model}}  @eventDebounce={{1000}}>
-      {{#if this.model.loadingMore}}
-        <div class="loading-indicator">
-          {{ svg-jar "loader" height="100px" width="100px"}}
-          <p> {{t "home.loading.loading_more_records"}}</p>
         </div>
-      {{/if}}
-    </InfinityLoader>
+
+        <div class="col-lg-4 pt-3 ">
+          <BsDropdown class="sort-dropdown custom-courses-dd" as |dd|>
+            <dd.toggle>{{t "profile.people_page.buttons.sort_by"}} {{this.sortBy.title}}
+              <span class="caret"></span>
+            </dd.toggle>
+            <dd.menu as |menu|>
+              <div class="header">
+                {{t "profile.people_page.sort_options_title"}}
+              </div>
+              <hr>
+              <menu.item>
+                <button type="button" class="btn w-100 menu-item btn-sort-all"
+                  {{on "click" (fn this.setSortBy undefined  undefined)}}>
+                  {{t "profile.people_page.sort_by_all"}}
+                </button>
+              </menu.item>
+              <menu.item>
+                <button type="button" class="btn w-100 menu-item btn-sort-followers"
+                  {{on "click" (fn this.setSortBy (t "profile.people_page.sort_by_name") "name")}}>
+                  {{t "profile.people_page.sort_by_name"}}
+                </button>
+              </menu.item>
+              <menu.item>
+                <button type="button" class="btn w-100 menu-item btn-sort-followers"
+                  {{on "click" (fn this.setSortBy (t "profile.people_page.sort_by_followers_count") "followersCount")}}>
+                  {{t "profile.people_page.sort_by_followers_count"}}
+                </button>
+              </menu.item>
+              <menu.item>
+                <button type="button" class="btn w-100 menu-item btn-sort-enrolled"
+                  {{on "click"
+                       (fn this.setSortBy (t "profile.people_page.sort_by_courses_enrolled_count") "enrolledCount")}}>
+                  {{t "profile.people_page.sort_by_courses_enrolled_count"}}
+                </button>
+              </menu.item>
+              <menu.item>
+                <button type="button" class="btn w-100 menu-item btn-sort-tags"
+                  {{on "click" (fn this.setSortBy (t "profile.people_page.sort_by_tags_following_count") "tagsCount")}}>
+                  {{t "profile.people_page.sort_by_tags_following_count"}}
+                </button>
+              </menu.item>
+            </dd.menu>
+          </BsDropdown>
+        </div>
+      </div>
+      <div class="data-summary-section">
+        <p>{{ this.dataSummary}}</p>
+      </div>
+      <table class="table custom-table">
+        <thead>
+        <tr>
+          <td>{{t "profile.people_page.tables.name"}}</td>
+          <td>{{t "profile.people_page.tables.followers"}}</td>
+          <td>{{t "profile.people_page.tables.courses"}}</td>
+          <td>{{t "profile.people_page.tables.tags"}}</td>
+          <td></td>
+        </tr>
+        </thead>
+        <tbody>
+        {{#each this.filteredUsers as |user|}}
+          <tr class="border-top-0 border-bottom">
+            <td class="user-profile">
+              <div class="d-flex justify-content-start align-items-center">
+                <div class="image-container">
+                  <img src="{{user.profileUri}}" class="user-profile-image" alt="" role="presentation">
+                </div>
+                <div class="details">
+                  <span class="name"> {{user.name}}</span>
+                </div>
+              </div>
+            </td>
+            <td>
+              {{user.totalUserFollowers}}
+            </td>
+            <td>
+              {{user.totalCoursesEnrolled}}
+            </td>
+            <td>
+              {{user.totalCoursesEnrolled}}
+            </td>
+            <td>
+              {{#if (exec this.isFollowee user)}}
+
+                <button type="button" class="btn btn-sm btn-unfollow" {{on "click" (fn this.unfollow user)}}>
+                  {{t "profile.people_page.buttons.unfollow"}}
+                </button>
+
+              {{else}}
+                <button type="button" class="btn-sm btn btn-primary btn-follow" {{on "click" (fn this.follow user)}}>
+                  {{t "profile.people_page.buttons.follow"}}
+                </button>
+              {{/if}}
+            </td>
+          </tr>
+        {{/each}}
+        </tbody>
+      </table>
+      <InfinityLoader @infinityModel={{this.usersModel}}  @eventDebounce={{1000}}>
+        {{#if this.usersModel.loadingMore}}
+          <div class="loading-indicator pt-1 pb-5">
+            {{ svg-jar "loader" height="100px" width="100px"}}
+            <p> {{t "home.loading.loading_more_records"}}</p>
+          </div>
+        {{/if}}
+      </InfinityLoader>
+    </div>
   </div>
 </div>

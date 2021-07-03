@@ -1,5 +1,6 @@
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
+import fetch from 'fetch';
 
 export default class ProfilePeopleRoute extends Route {
   @service me;
@@ -16,12 +17,16 @@ export default class ProfilePeopleRoute extends Route {
   }
 
   model() {
-    return this.infinity.model('user', {
-      include: 'userfollowees',
-      followerId: this.me.id,
-      aggregate: 'userFollowers,enrolledCourses,followedTags',
-      perPage: 10,
-      startingPage: 0,
-    });
+    return Promise.all([
+      this.infinity.model('user', {
+        include: 'userfollowees',
+        followerId: this.me.id,
+        aggregate: 'userFollowers,enrolledCourses,followedTags',
+        perPage: 10,
+        startingPage: 0,
+      }),
+      this.store.query('course', { limit: 5, type: 'popular' }),
+      this.store.query('tag', { limit: 5, type: 'popular' }),
+    ]);
   }
 }

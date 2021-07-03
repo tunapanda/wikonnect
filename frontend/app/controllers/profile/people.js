@@ -14,6 +14,20 @@ export default class ProfilePeopleController extends Controller {
   @tracked currentPage;
   @tracked totalPages;
 
+  get usersModel() {
+    return this.model[0];
+  }
+
+  get popularCourses() {
+    return this.model[1];
+  }
+  get popularTags() {
+    //sort to ensure long tags are displayed last
+    return this.model[2].toArray().sort((a, b) => {
+      return a.name.length > b.name.length ? 1 : -1;
+    });
+  }
+
   @action
   setSortBy(title, value) {
     this.sortBy = { title, value };
@@ -63,9 +77,9 @@ export default class ProfilePeopleController extends Controller {
 
   @action
   updateSummary() {
-    this.perPage = this.model.perPage;
-    this.currentPage = this.model.currentPage + 1;
-    this.totalPages = this.model.meta.total_pages;
+    this.perPage = this.usersModel.perPage;
+    this.currentPage = this.usersModel.currentPage + 1;
+    this.totalPages = this.usersModel.meta.total_pages;
   }
   get dataSummary() {
     if (this.currentPage >= this.totalPages) {

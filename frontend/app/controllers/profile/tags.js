@@ -11,6 +11,16 @@ export default class ProfileTagsController extends Controller {
   @tracked searchTerm;
   @tracked sortBy = {};
 
+  get popularCourses() {
+    return this.model[1];
+  }
+  get popularTags() {
+    //sort to ensure long tags are displayed last
+    return this.model[2].toArray().sort((a, b) => {
+      return a.name.length > b.name.length ? 1 : -1;
+    });
+  }
+
   @action
   setSortBy(title, value) {
     this.sortBy = { title, value };
