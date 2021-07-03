@@ -12,6 +12,7 @@ gray85: #FAFDFF
     width: 100%;
     background-color: map-get($palette,gray85);
     overflow: auto;
+    min-height: 100vh;
   }
 
 }

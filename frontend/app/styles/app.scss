@@ -19,8 +19,8 @@
 
 html {
   font-family: 'Inter', sans-serif;
-  min-height: 100%;
- scroll-behavior:smooth;
+  height: 100%;
+  scroll-behavior:smooth;
 }
 
 @supports (font-variation-settings: normal) {
@@ -58,7 +58,7 @@ body {
   color: white;
   width: 100%;
   -webkit-mask-image: -webkit-gradient(linear, left top, left bottom,
-      from(rgba(252, 113, 0, 0)), to(rgba(0, 0, 0, 1)));
+    from(rgba(252, 113, 0, 0)), to(rgba(0, 0, 0, 1)));
 }
 
 body {
