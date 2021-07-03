@@ -1,0 +1,31 @@
+<div class="popular-courses bg-white" ...attributes>
+  <div class="title">{{t "course.show_page.popular_courses"}}</div>
+  <div class="courses-preview-list d-flex flex-column">
+    {{#each @courses as |course|}}
+      <div class="course-preview d-flex col-12">
+        <LinkTo  @route="course.show" @model={{course.id}} class="container-image d-flex">
+          {{#if course.thumbnailUrl}}
+            <img class="course-thumbnail" alt="" src={{course.thumbnailUrl}} role="presentation">
+          {{else}}
+            <img class="course-thumbnail" alt="" role="presentation"
+                 src="https://placehold.jp/20/5b9398/ffffff/328x200.png?text={{course.name}}">
+          {{/if}}
+        </LinkTo>
+
+        <div class="details-container w-100">
+          <LinkTo  @route="course.show" @model={{course.id}} class="name">{{title-case course.name}}</LinkTo>
+          <div class="tags-list d-flex flex-wrap w-100">
+            {{#each course.tags as |tag index|}}
+              {{#if (lt index @maxTagsDisplayed)}}
+                <div class="tag">{{title-case tag.name}} </div>
+              {{/if}}
+            {{/each}}
+          </div>
+          <div class="people-enrolled pl-2">
+            {{course.totalEnrolled}} People Enrolled
+          </div>
+        </div>
+      </div>
+    {{/each}}
+  </div>
+</div>
