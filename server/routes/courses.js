@@ -6,6 +6,7 @@ const { UniqueViolationError, ConstraintViolationError, ForeignKeyViolationError
 const { nanoid } = require('nanoid/async');
 const sharp = require('sharp');
 const koaBody = require('koa-body')({ multipart: true, multiples: false, keepExtensions: true });
+const { raw } = require('objection');
 
 const CourseModel = require('../models/course');
 const { requireAuth } = require('../middleware/permController');
@@ -17,6 +18,75 @@ const { getProfileImage } = require('../utils/routesUtils/userRouteUtils');
 
 const router = new Router({
   prefix: '/courses'
+});
+
+/**
+ * @api {get} /api/v1/courses/popular GET popular courses
+ * @apiName Get popular courses
+ * @apiGroup Courses
+ * @apiPermission none
+ * @apiVersion 0.4.0
+ *
+ * @apiHeader {String} [Authorization] Bearer << JWT here>>
+ *
+ *
+ * @apiParam (Query Params) {String}   [limit=10] maximum populars courses to return
+ *
+ *
+ * @apiSuccess {Object}  courses Top level object
+ * @apiSuccess {String}  course[id] the id of the course
+ * @apiSuccess {String}  course[name] the name of the course
+ * @apiSuccess {String}  course[slug] user friendly course url pathname
+ * @apiSuccess {String}  course[description] A short course description
+ * @apiSuccess {String}  course[status] <strong>published</strong> or <strong> draft</strong>
+ * @apiSuccess {String}  course[thumbnailUrl] course image url
+ * @apiSuccess {String}  course[totalEnrolled] total users enrolled to the course
+ * @apiSuccess {Object}  course[tags]=null Tags tied to the course. Refer to the tag object properties
+ * @apiSuccess {String}  course[type]=course
+ * @apiSuccess {String}  course[metadata]=null
+ * @apiSuccess {String}  course[creatorId] Id of the user who created the tag
+ * @apiSuccess {String}  course[createdAt] date course was created
+ * @apiSuccess {String}  course[updatedAt] date course was updated
+ *
+ * @apiSuccessExample {json} Success-Response:
+ *     HTTP/1.1 200 OK
+ *          {
+ *             "courses":[{
+ *              "id": "JBp56KQAA7c",
+ *              "name": "A sample course",
+ *              "slug": "a-sample-course",
+ *              "description": "This is a demo description d",
+ *              "status": "publish",
+ *              "creatorId": "user1",
+ *              "metadata": null,
+ *              "createdAt": "2021-06-22T07:14:21.079Z",
+ *              "updatedAt": "2021-06-22T07:55:24.615Z",
+ *              "thumbnailUrl": "/uploads/images/courses/HaKKzfAN03D.jpg",
+ *              "totalEnrolled": "0",
+ *              "type": "course"
+ *              "tags":[{"id": "JBpWJMOAAnE", "name": "Internet Basics", "slug": "internet-basics".....}],
+ *              }]
+ *            }
+ *
+ */
+router.get('/popular', async (ctx) => {
+  try {
+    let { limit } = ctx.query;
+    limit = limit ? limit : 10;
+
+    let courses = await CourseModel.query()
+      .select(['*',
+        CourseModel.relatedQuery('courseEnrollments').count().as('totalEnrolled'),
+      ])
+      .orderBy('totalEnrolled', 'DESC')
+      .withGraphFetched('[tags,creator(selectBasicInfo)]')
+      .limit(limit);
+
+    ctx.status = 200;
+    ctx.body = { courses };
+  } catch (e) {
+    log.error(e);
+  }
 });
 
 /**
@@ -88,17 +158,17 @@ router.get('/:id', requireAuth, async (ctx) => {
       .select(['*',
         CourseModel.relatedQuery('courseEnrollments').count().as('totalEnrolled'),
       ])
-      .onBuild((builder)=>{
-        if(queryEnrollment) {
+      .onBuild((builder) => {
+        if (queryEnrollment) {
           builder.withGraphFetched('courseEnrollments');
         }
-    
+
       })
       .withGraphFetched('[tags,playlist,playlist.[reaction(reactionAggregate),author(selectBasicInfo)]]')
       .withGraphFetched('[creator(selectBasicInfo),]')
       .findById(ctx.params.id)
-      .modifyGraph('courseEnrollments',(query)=>{
-        if(enrolledUserId) {
+      .modifyGraph('courseEnrollments', (query) => {
+        if (enrolledUserId) {
           query.where('user_id', enrolledUserId);
         }
       });
