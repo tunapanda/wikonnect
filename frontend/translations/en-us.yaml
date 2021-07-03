@@ -119,3 +119,7 @@ close_x: x
 course_preview_card:
   tag_list_title: Tags
   enrolled: "{count, plural,=1 {1 Person Enrolled} other {# People Enrolled}}"
+
+popular_courses_card:
+  people_enrolled: "{count, plural,=1 {1 Person Enrolled} other {# People Enrolled}}"
+
