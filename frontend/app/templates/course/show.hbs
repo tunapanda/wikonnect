@@ -3,41 +3,41 @@
   <div class="background-banner"></div>
   <div class="course-main-details-card container d-flex flex-wrap">
     <div class="course-image-container">
-      {{#if this.model.thumbnailUrl}}
-        <img src="{{this.model.thumbnailUrl}}" class="course-image" alt="" role="presentation">
+      {{#if this.course.thumbnailUrl}}
+        <img src="{{this.course.thumbnailUrl}}" class="course-image" alt="" role="presentation">
       {{else}}
-        <img src="https://placehold.jp/20/black/ffffff/328x200.png?text={{this.model.name}}"
+        <img src="https://placehold.jp/20/black/585758/328x200.png?text={{this.course.name}}"
         class="course-image"
         alt="" role="presentation">
       {{/if}}
     </div>
     <div class="details-l-section ">
-      {{#if this.model.tags}}
+      {{#if this.course.tags}}
         <div class="tags-section">
         <span class="section-header pb-2 d-inline-block ">
           {{t "course.show_page.tag_list_title"}}
         </span>
           <div class="tag-list">
-            {{#each this.model.tags as |tag|}}
+            {{#each this.course.tags as |tag|}}
               <span class="course-tag"> {{title-case tag.name}}</span>
             {{/each}}
           </div>
         </div>
       {{/if}}
       <div class="name">
-        {{title-case this.model.name}}
+        {{title-case this.course.name}}
       </div>
       <div class="description pb-2 pt-1">
-        {{this.model.description}}
+        {{this.course.description}}
       </div>
       <div class="metadata row align-items-center pl-2 pt-2 pb-2">
         <div class="author">
-          <LinkTo @route="profile.home" @model={{this.model.creator.id}} class="author-link">
-            <img src="{{ this.model.creator.profileUri}}" class="author-avatar rounded-circle" alt=""
+          <LinkTo @route="profile.home" @model={{this.course.creator.id}} class="author-link">
+            <img src="{{ this.course.creator.profileUri}}" class="author-avatar rounded-circle" alt=""
                  role="presentation">
 
             <span class="author-name">
-              {{this.model.creator.name}}
+              {{this.course.creator.name}}
             </span>
 
           </LinkTo>
@@ -47,12 +47,12 @@
         </div>
         <div class="enrollment-count">
           {{svg-jar "group-solid" width="17" }}
-          <span>{{t "course.show_page.enrolled" count=this.model.totalEnrolled}}</span>
+          <span>{{t "course.show_page.enrolled" count=this.course.totalEnrolled}}</span>
         </div>
       </div>
       <div class="course-actions pt-3">
         {{#if this.isMyCourse}}
-          <LinkTo @route="course.edit" @model={{this.model.id}} class="btn btn-primary btn-sm">
+          <LinkTo @route="course.edit" @model={{this.course.id}} class="btn btn-primary btn-sm">
             {{t "course.show_page.buttons.update_course"}}
           </LinkTo>
         {{/if}}
@@ -74,17 +74,10 @@
 
   <div class="row ft-section course-sc-container pt-4 pl-0 pr-0">
     <div class="side-bar col-xl-3 d-none d-xl-block row">
-      <div class="popular-tags mb-2">
-        <div class="title"> {{t "course.show_page.popular_tags"}}</div>
-        <div class="tags-list">
-          <div class="tag">
-
-          </div>
-        </div>
-      </div>
-      <div class="popular-courses mt-2">
-        <div class="title">{{t "course.show_page.popular_courses"}}</div>
-      </div>
+      <Profile::Nav::PopularTags @tags={{this.popularTags}} class="mb-2 border">
+      </Profile::Nav::PopularTags>
+      <Profile::Nav::PopularCourses @courses={{this.popularCourses}} @maxTagsDisplayed={{2}} class="border">
+      </Profile::Nav::PopularCourses>
     </div>
     <div class="content col-xl-9 col-lg-12 pr-0 mr-0">
       <div class="subtitle">
