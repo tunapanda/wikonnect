@@ -111,3 +111,4 @@ errors:
   no_filtered_record: Hakuna maudhui yaliyopatikana yanayolingana <strong> {selectedTag}</strong>. Tafadhali jaribu kichujio tofauti.
   no_filtered_records:  Hakuna maudhui yaliyopatikana yanayolingana <strong> {selectedTags}</strong>. Tafadhali jaribu vitambulisho vichache.
   wrong_record_filters: Hakuna maudhui yaliyopatikana yanayolingana <strong> {selectedTags}</strong>. Tafadhali jaribu tena na lebo ya kichujio halali.
+  playlist_error: Inaonekana tunakabiliwa na shida na orodha ya sura za kozi

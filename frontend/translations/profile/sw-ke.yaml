@@ -54,6 +54,7 @@ enrolled_courses_page:
   disenroll_prompt: Je! Una uhakika unataka kujiondoa kwenye kozi hii?
   no_content: Hujajiandikisha kwa kozi yoyote. Kuangalia kozi zinazopatikana unaweza kujiandikisha,
   click_here: bonyeza hapa
+  no_searched_record: Hakuna maudhui yaliyopatikana yanayolingana na <strong> {word}</strong>. Tafadhali jaribu utaftaji tofauti.
   buttons:
     disenroll: Ondoa Uandikishaji
     view_course: Angalia Kozi
