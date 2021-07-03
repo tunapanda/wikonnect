@@ -11,6 +11,64 @@ const router = new Router({
 });
 
 /**
+ * @api {get} /api/v1/tags/popular GET popular tags
+ * @apiName Get popular tags
+ * @apiGroup Tags
+ * @apiPermission none
+ * @apiVersion 0.4.0
+ *
+ * @apiHeader {String} [Authorization] Bearer << JWT here>>
+ *
+ * @apiParam (Query Params) {String}   [limit=10] maximum populars tags to return
+ *
+ * @apiSuccess {Object}  tags Top level object
+ * @apiSuccess {String}  tag[name] the name of the tag
+ * @apiSuccess {String}  tag[slug] user friendly tag url pathname
+ * @apiSuccess {String}  tag[creatorId] Id of the user who created the tag
+ * @apiSuccess {Boolean} tag[canDelete] If any user has permissions to delete the tag
+ * @apiSuccess {String}  tag[createdAt] date tag was created
+ * @apiSuccess {String}  tag[updatedAt] date tag was updated
+ * @apiSuccess {String}  [tag[coursesCount]] total courses tied to the tag
+ * @apiSuccess {String}  [tag[chaptersCount]] total chapters tied to the tag
+ * @apiSuccess {String}  [tag[followersCount]] total users following the tag
+ *
+ * @apiSuccessExample {json} Success-Response:
+ *     HTTP/1.1 200 OK
+ *          {
+ *             "tags":[{
+ *                "id": "JBaHWpeAAGQ",
+ *                "name": "Internet Basics",
+ *                "slug": "internet-basics",
+ *                "creatorId": "user2",
+ *                "canDelete": false,
+ *                "createdAt": "2020-08-29T10:29:31.047Z",
+ *                "updatedAt": "2021-06-19T20:49:06.797Z",
+ *                "coursesCount": "4",
+ *                "chaptersCount": "1",
+ *                "followersCount": "2"
+ *                }]
+ *          }
+ *
+ */
+router.get('/popular', requireAuth, async (ctx) => {
+  let { limit } = ctx.query;
+  limit = limit ? limit : 10;
+
+  const tags = await TagModel.query()
+    .select(['*',
+      TagModel.relatedQuery('courseTags').count().as('coursesCount'),
+      TagModel.relatedQuery('chapterTags').count().as('chaptersCount'),
+      TagModel.relatedQuery('followers').count().as('followersCount'),
+    ])
+    .orderBy([{ column: 'followersCount', order: 'desc' }, { column: 'chaptersCount', order: 'desc' }, { column: 'coursesCount', order: 'desc' },])
+    .limit(limit);
+
+  ctx.status = 200;
+  ctx.body = { tags };
+});
+
+
+/**
  * @api {get} /api/v1/tags/:id GET tag by Id
  * @apiName Get a tag by Id
  * @apiGroup Tags
