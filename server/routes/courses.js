@@ -6,7 +6,6 @@ const { UniqueViolationError, ConstraintViolationError, ForeignKeyViolationError
 const { nanoid } = require('nanoid/async');
 const sharp = require('sharp');
 const koaBody = require('koa-body')({ multipart: true, multiples: false, keepExtensions: true });
-const { raw } = require('objection');
 
 const CourseModel = require('../models/course');
 const { requireAuth } = require('../middleware/permController');
