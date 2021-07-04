@@ -5,6 +5,7 @@ import { tracked } from '@glimmer/tracking';
 export default class MeService extends Service {
   @service session;
   @service store;
+  @service socket;
   @tracked user;
 
   get isAuthenticated() {
@@ -24,6 +25,9 @@ export default class MeService extends Service {
         return this.session.invalidate();
       }
     }
+
+    this.socket.roleChanged(); // this is the `best` centralized way to trigger this at the moment
+
     return Promise.resolve();
   }
 
