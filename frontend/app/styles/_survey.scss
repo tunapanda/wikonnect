@@ -1,7 +1,10 @@
 $palette: (
   studio: #5A47AD,
   windsor: #4E0B80,
-  white: #FFFF
+  white: #FFFF,
+  primary: #F57010,
+  gray30:#3F484D,
+
 );
 
 .surveys-page {
@@ -19,10 +22,6 @@ $palette: (
     transform: translate(0, -70px) !important;
   }
 
-  .modal-content {
-    background-color: map-get($palette, studio);
-    color: map-get($palette, white);
-  }
 
   .modal-header {
     border: none;
@@ -30,7 +29,7 @@ $palette: (
 
     .close {
       opacity: 1;
-      color: map-get($palette, white);
+      color: map-get($palette, gray30);
     }
   }
 
@@ -55,16 +54,20 @@ $palette: (
       color: map-get($palette, white);
       padding-top: 12px;
       padding-bottom: 12px;
-      background-color: map-get($palette, windsor);
+      background-color: map-get($palette, primary);
       text-decoration: none;
     }
 
     button.btn-later {
       font-size: 19px;
-      color: map-get($palette, white);
       padding-top: 12px;
       padding-bottom: 12px;
       margin-top: 8px;
+      &:hover{
+        display: block;
+        width: 100%;
+        border: solid 1px;
+      }
     }
   }
 }
