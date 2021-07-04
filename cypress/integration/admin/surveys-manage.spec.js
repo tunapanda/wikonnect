@@ -254,7 +254,6 @@ describe("Surveys management page", () => {
                     cy.get(`.surveys-list .survey-card#survey-card-${pendingSurvey.id}`)
                         .contains('.status .status-badge', surveyStatus.published)
                         .get(`.surveys-list .survey-card#survey-card-${pendingSurvey.id}`)
-                        .focus()
                         .find('.dropdown-toggle')
                         .click()
                         .siblings()
