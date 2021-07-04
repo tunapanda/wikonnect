@@ -23,7 +23,7 @@ export default class AdminSurveysController extends Controller {
 
   sortSurveys(surveys) {
     if (!this.sortBy.value) {
-      return surveys.sortBy('updatedAt');
+      return surveys.sortBy('updatedAt').reverse();
     }
     if (this.sortBy.value === 'status') {
       // sort order : Pending, Active, Archived
