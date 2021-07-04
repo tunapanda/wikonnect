@@ -2189,6 +2189,66 @@ define({ "api": [
     "groupTitle": "ChapterComments"
   },
   {
+    "type": "get",
+    "url": "/api/v1/chapter-tags",
+    "title": "GET all chapter tags",
+    "name": "Get_chapter_tags",
+    "group": "Chapter_Tags",
+    "permission": [
+      {
+        "name": "none"
+      }
+    ],
+    "version": "0.4.0",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": true,
+            "field": "Authorization",
+            "description": "<p>Bearer &lt;&lt; JWT here&gt;&gt;</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Object[]",
+            "optional": false,
+            "field": "chapterTags",
+            "description": "<p>Top level object</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "chapterTags[name]",
+            "description": "<p>A label for the tag</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"chapterTags\":[{\"name\": \"Digital Literacy\" }]\n }",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "server/routes/chapter-tags.js",
+    "groupTitle": "Chapter_Tags",
+    "sampleRequest": [
+      {
+        "url": "https://app.wikonnect.org/api/v1/chapter-tags"
+      }
+    ]
+  },
+  {
     "type": "delete",
     "url": "/api/v1/review/:id",
     "title": "Delete a chapter",
@@ -2748,6 +2808,85 @@ define({ "api": [
     },
     "filename": "server/routes/chapters.js",
     "groupTitle": "Chapters"
+  },
+  {
+    "type": "get",
+    "url": "/api/v1/groups/:id",
+    "title": "GET group by id",
+    "name": "Get_group_by_id",
+    "group": "Group",
+    "permission": [
+      {
+        "name": "authenticated user[moderator/admin/superadmin]"
+      }
+    ],
+    "version": "0.4.0",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Bearer &lt;&lt; JWT here&gt;&gt;</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "URI Param": [
+          {
+            "group": "URI Param",
+            "type": "String",
+            "optional": false,
+            "field": "id",
+            "description": "<p>group id</p>"
+          }
+        ]
+      }
+    },
+    "filename": "server/routes/groups.js",
+    "groupTitle": "Group",
+    "sampleRequest": [
+      {
+        "url": "https://app.wikonnect.org/api/v1/groups/:id"
+      }
+    ]
+  },
+  {
+    "type": "get",
+    "url": "/api/v1/groups",
+    "title": "GET all user groups",
+    "name": "Get_user_groups",
+    "group": "Group",
+    "permission": [
+      {
+        "name": "authenticated user[moderator/admin/superadmin]"
+      }
+    ],
+    "version": "0.4.0",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Bearer &lt;&lt; JWT here&gt;&gt;</p>"
+          }
+        ]
+      }
+    },
+    "filename": "server/routes/groups.js",
+    "groupTitle": "Group",
+    "sampleRequest": [
+      {
+        "url": "https://app.wikonnect.org/api/v1/groups"
+      }
+    ]
   },
   {
     "type": "get",
