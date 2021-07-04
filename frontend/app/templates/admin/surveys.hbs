@@ -60,7 +60,7 @@
           </span>
         </div>
         <div class="col-12 name">
-          {{survey.name}}
+          {{title-case survey.name}}
         </div>
         <div class="col-12 validity">
           {{format-date survey.createdAt day="numeric" month="numeric" year="numeric" locale="en-GB"}}
@@ -121,7 +121,7 @@
             </BsDropdown>
           </div>
           <div class="right">
-            <LinkTo @route="surveys" @model={{survey}}>
+            <LinkTo @route="surveys" @model={{survey}} target="_blank">
               {{t 'admin.surveys.buttons.view_survey'}}
               <span class="link-icon"> {{svg-jar "chevron-circle-right" height="16" width="16" fill="grey" }}</span>
             </LinkTo>
