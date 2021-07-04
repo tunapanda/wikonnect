@@ -118,6 +118,9 @@ surveys:
     what_trigger: Kitendo ambacho mtumiaji anapaswa kufanya ili kuhitimu kujaza utafiti
     what_frequency: Idadi ya nyakati ambazo mtumiaji anapaswa kutekeleza kitendo hicho
     what_expiry: Utafiti huu hautapatikana baada ya tarehe ya kumalizika muda
-    what_embed: Fomu ya uchunguzi wa Google fomu ya kupachika HTML <>
+    what_embed: >-
+            Fomu ya utafiti  ya kupachika (Google Form iframe).<br>
+            Kwa usaidizi wa jinsi ya kupata msimbo wa kupachika wa fomu ya Google,
+            bonyeza <a target="_blank" rel="noreferrer" href="https://support.google.com/a/users/answer/9308623?hl=en"> hapa </a>
     what_message: Sababu ama umuhimu wa kujaza utafiti
 

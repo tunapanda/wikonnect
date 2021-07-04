@@ -118,6 +118,9 @@ surveys:
     what_trigger: An action a user has to perform to qualify for the survey
     what_frequency: Number of times the user has to perform the action
     what_expiry: This survey will not be available after expiry date
-    what_embed: A Google survey form HTML embed code <>
+    what_embed: >-
+                A Google survey form HTML embed code (iframe).<br>
+                For assistance on how to get the Google form embed code,
+                click <a target="_blank" rel="noreferrer" href="https://support.google.com/a/users/answer/9308623?hl=en">here</a>
     what_message: A prompt on importance of filling the survey
 

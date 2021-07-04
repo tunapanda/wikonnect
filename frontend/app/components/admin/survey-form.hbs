@@ -69,8 +69,8 @@
         {{t "admin.surveys.labels.embed"}}
         <span class="help-button">
           {{svg-jar "question-circle" height="13" width="13" stroke="#b1b6c0"}}
-          <BsPopover @autoPlacement={{true}} @placement="top" @triggerEvents="hover">
-            {{t "admin.surveys.help.what_embed"}}
+          <BsPopover @autoPlacement={{true}} @placement="top" @triggerEvents={{array "click" "hover"}}>
+            {{html-safe (t "admin.surveys.help.what_embed")}}
           </BsPopover>
         </span>
       </label>
