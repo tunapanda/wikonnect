@@ -7462,12 +7462,12 @@
             "description": "<p>user id</p>"
           }
         ],
-        "Params": [
+        "PUT Params": [
           {
-            "group": "Params",
-            "type": "String",
+            "group": "PUT Params",
+            "type": "string",
             "optional": false,
-            "field": "groupId",
+            "field": "userRole[groupId]",
             "description": "<p>New group id to be updated</p>"
           }
         ]

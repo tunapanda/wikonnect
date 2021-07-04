@@ -1,10 +1,12 @@
 greeting: Karibu {name}
+role: "Wajibu: {role}"
 bio: Wasifu
 edit_button: Hariri maelezo yangu mafupi
 chapters_created: Sura zimeundwa
 chapters_watched: Sura zimekamilika
 points_earned: Jumla ya alama zilizopatikana
 top_achievements: Mafanikio ya juu
+no_bio: Inavyoonekana, mtumiaji huyu anapendelea kuweka siri juu yao
 
 nav:
   home: Kujifunza

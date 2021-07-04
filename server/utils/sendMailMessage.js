@@ -13,7 +13,7 @@ try {
 
 let transporter = nodemailer.createTransport({
   host: emailAuth.provider,
-  port: 2525,
+  port: 587,
   auth: emailAuth.auth
 });
 

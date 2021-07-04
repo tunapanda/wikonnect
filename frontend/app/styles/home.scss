@@ -95,3 +95,23 @@
     }
   }
 }
+
+.chapters-infinity-loader{
+  .infinity-loader {
+    padding-bottom: 50px;
+    .loading-indicator {
+      text-align: center;
+    }
+    .records-loaded-indicator{
+      display: none;
+    }
+    &.reached-infinity{
+      .loading-indicator{
+        display: none;
+      }
+      .records-loaded-indicator{
+        display: block;
+      }
+    }
+  }
+}

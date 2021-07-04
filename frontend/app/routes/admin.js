@@ -10,7 +10,12 @@ export default class AdminRoute extends Route {
       let loginController = this.controllerFor('login');
       loginController.set('previousTransition', transition);
       this.transitionTo('login');
+    } else {
+      if (!this.me.isAdmin && !this.me.isModerator) {
+        this.transitionTo('access-denied');
+      }
     }
+
     return super.beforeModel(transition);
   }
 }

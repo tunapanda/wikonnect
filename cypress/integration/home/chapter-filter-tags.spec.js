@@ -72,18 +72,34 @@ describe("Chapters filter tags ", () => {
         getFilterButton()
             .click();
 
-        getFilterDropdownMenu()
-            .find('.tag-select-item label')
-            .find('input[type="checkbox"]')
-            .each((el, index) => {
-                cy.wrap(el)
-                    .check();
-                if(index===5){
-                    return false;
-                }
-            });
+        fetchFirstPageChapters()
+            .then((chapters) => {
+                const chapter = chapters.find((c) => c.tags && c.tags.length < 3); //relying on seed data on backend
 
-        cy.get('.tags-section-container button.clear-tags-btn:visible')
+                if (chapter) {
+                    getFilterDropdownMenu()
+                        .within(() => {
+                            chapter.tags.map((tag) => {
+                                cy.get('.tag-select-item label')
+                                    .contains(tag, {matchCase: false})
+                                    .find('input[type="checkbox"]')
+                                    .check()
+                            })
+                        })
+
+                } else { //just in case
+                    getFilterDropdownMenu()
+                        .find('.tag-select-item label')
+                        .find('input[type="checkbox"]')
+                        .eq(1) //it is
+                        .check();
+                }
+            })
+
+
+        cy.get('.tags-section-container')
+            .click() //this will hide dropdown if visible
+            .find(' button.clear-tags-btn:visible')
             .click()
             .get('.tags-section-container .selected-tags.tag-list button.tag-button')
             .should('not.exist')

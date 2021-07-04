@@ -48,20 +48,56 @@
       </li>
 
     </ul>
-    <form class="form-inline ml-lg-5 search-form" {{on "submit" this.search}}>
-      <Input @id="search" @class="form-control mr-sm-2 search-input" @type="text" @value={{this.search_term}} />
-      {{#if this.searchLoading}}
-      <button class="btn form-control search-button search-loading" type="button">
-        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-        {{t "messages.searching"}}
-      </button>
-      {{else}}
-      <button class="btn  my-2 my-sm-0 search-button" type="submit">
-        {{svg-jar "magnify" width="20" height="21"}}
+    <div id="myDropdown" class="dropdown">
+      <div class="dropdown-content">
+        <Input placeholder='Search' id="dropdownMenuButton" class="form-control search-input dropdown-toggle"
+          @autocomplete="on" @click="searchLoading=false" @key-up="change" @insert-newline="enter" @bubbles="false"
+          type="text" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" />
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
 
-      </button>
-      {{/if}}
-    </form>
+          {{#if this.filterFunction.isLoading}}
+          <li>
+            <hr class="dropdown-divider" />
+          </li>
+          <li class="dropdown-item">
+            <span class="spinner-border spinner-border-sm mt-1 mr-2" role="status" aria-hidden="true"></span>
+            {{t "messages.searching"}}
+          </li>
+          {{else if (eq this.filterFunction.value.search.length 0)}}
+          <li>
+            <hr class="dropdown-divider" />
+          </li>
+          <li class="dropdown-item">
+            <p>{{t "main_navbar.search.result"}} <b>{{this.searchQuery}}</b> </p>
+          </li>
+          {{else if this.filterFunction.isLoaded }}
+          {{#each this.filterFunction.value.search as |obj|}}
+          <li>
+            <hr class="dropdown-divider" />
+          </li>
+          <div class="dropdown-item">
+
+            <LinkTo @route="chapter" @model={{obj.id}} class="chapter-title">
+              <div class="search chapter-title">
+                {{title-case obj.name}}
+              </div>
+              <div class="chapter-metadata">
+                <div class="d-inline mr-3">
+                  {{#if obj.verified }}
+                  {{svg-jar "verified-orange" class="verified-icon"}}
+                  {{/if}}
+                  {{svg-jar "watch" class="watch-icon"}} {{relative-time obj.createdAt}}
+                </div>
+                {{svg-jar "visibility" class="eye-icon"}} {{obj.views}}
+              </div>
+            </LinkTo>
+          </div>
+
+          {{/each}}
+          {{/if}}
+        </div>
+      </div>
+    </div>
 
     <ul class="navbar-nav ml-auto">
       <li class="nav-item">

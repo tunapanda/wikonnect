@@ -12,7 +12,7 @@ exports.seed = function (knex) {
         for (let index = 0; index < seed_number; index++) {
           const name = faker.lorem.words();
           const slug = faker.helpers.slugify(name);
-          const status = ['published', 'drafts', 'archived'];
+          const status = ['published', 'draft', 'archived'];
           const tags = ['internet basics', 'content creation', 'digital wellness', 'data protection and privacy',
             'online safety', 'relationships & communications', 'news & media literacy', 'online working',
             'online learning', 'life skills', 'health', 'digital financial literacy'];

@@ -6,6 +6,8 @@ const {
 const additionalCharsToIgnore = [
   '#',
   'Creative Commons CC-BY 2019-2021 Wikonnect',
+  '×',
+  '·',
   '&middot;',
   '&times;',
 ];

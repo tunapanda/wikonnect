@@ -63,6 +63,29 @@ badges:
     users_earned: Watumiaji Walipata
     action: Hatua
 
+users:
+  verified_email: Barua pepe iliyothibitishwa
+  unverfied_email: Barua pepe isiyothibitishwa
+
+  table:
+    name: Jina
+    email: Barua Pepe
+    last_login: Wakati Aliingia Mwisho
+    role: Jukumu
+    status: Hali ya Uthibitishaji
+    action: Hatua
+
+  details:
+    profile_image_alt: Picha ya Profaili
+    chapters_created: Sura Zimeundwa
+    chapters_created_alt: chapters created icon
+    completed_chapters: Sura zilizokamilika
+    completed_chapters_alt: completed chapters icon
+    points_accumulated: Pointi zilizokusanywa
+    points_accumulated_alt: points accumulated icon
+    badges_earned: Beji Zilizopatikana
+    badges_earned_alt: badges earned icon
+    details_button: Maelezo
 surveys:
   titles:
     manage: Usimamizi wa Utafiti

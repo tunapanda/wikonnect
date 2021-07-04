@@ -79,6 +79,10 @@ router.use(jwt.authenticate, require('./routes/notifications'));
 
 router.use(jwt.authenticate, require('./routes/surveys'));
 
+router.use(jwt.authenticate, require('./routes/groups'));
+
+router.use(require('./routes/chapter-tags'));
+
 router.use(require('./routes/search'));
 
 

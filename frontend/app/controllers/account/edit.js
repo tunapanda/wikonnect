@@ -43,13 +43,16 @@ export default class AccountEditController extends Controller {
 
   @action
   async updateProfile(userModel) {
+    if (!userModel.isDirty && !this.selectedProfilePic) {
+      return;
+    }
     if (this.selectedProfilePic) {
       this.fileUploader = Uploader.create({
         file: this.selectedProfilePic,
         filename: this.selectedProfilePic.name,
       });
       try {
-        const res = await this.fileUploader.startUpload(
+        await this.fileUploader.startUpload(
           [
             this.store.adapterFor('application').host,
             this.store.adapterFor('application').urlPrefix(),
@@ -59,14 +62,6 @@ export default class AccountEditController extends Controller {
           ].join('/')
         );
         this.selectedProfilePic = null;
-        if (res.user && res.user.profileUri) {
-          userModel.profileUri = res.user.profileUri;
-        }
-        if (!userModel.hasDirtyAttributes) {
-          this.notify.success('Profile image updated successfully', {
-            closeAfter: 10000,
-          });
-        }
       } catch (e) {
         this.notify.alert(
           'Issue encountered while uploading your profile image',
@@ -76,6 +71,13 @@ export default class AccountEditController extends Controller {
       }
     }
 
+    if (userModel.isPristine) {
+      this.notify.success('Profile image updated successfully', {
+        closeAfter: 10000,
+      });
+      userModel.reload(); //no option because model will still have dirty attributes on store.push
+      return;
+    }
     try {
       await userModel.save();
       this.notify.success('Profile details updated successfully', {

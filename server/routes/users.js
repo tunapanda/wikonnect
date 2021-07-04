@@ -91,7 +91,9 @@ router.post('/', validateAuthRoutes.validateNewUser, createPasswordHash, async c
   newUser.lastIp = ctx.request.ip;
 
   const userCheck = await User.query();
-  let role = !userCheck.length ? 'groupSuperAdmin' : 'groupBasic';
+  let role = !userCheck.length ? 'groupAdmin' : 'groupBasic';
+
+  delete newUser.profileUri; //avoids external profile links at the moment
 
   try {
     const user = await User.query().insertAndFetch(newUser);
@@ -205,7 +207,9 @@ router.get('/:id', permController.requireAuth, async ctx => {
   profileCompleteBoolean(user, ctx.params.id);
   log.info('Got a request from %s for %s', ctx.request.ip, ctx.path);
 
-  if(stateUserId !== userId){
+
+  user = user.toJSON();
+  if (stateUserId !== userId) {
     delete user.email;
     delete user.username;
     delete user.updatedAt;
@@ -233,14 +237,16 @@ router.get('/:id', permController.requireAuth, async ctx => {
  * @apiParam (Optional Params) {string} user[metadata] json data
  *
  */
-router.get('/', permController.requireAuth, permController.grantAccess('readAny', 'profile'),
+router.get('/', permController.requireAuth, permController.grantAccess('readAny', 'private'),
   async ctx => {
 
     try {
       const users = await User.query()
         .where(ctx.query)
-        .withGraphFetched('[achievementAwards(selectBadgeNameAndId), userRoles(selectName),' +
-          ' enrolledCourses(selectNameAndId)]');
+        .withGraphFetched(
+          '[achievementAwards(selectBadgeNameAndId), userRoles(),' +
+            ' enrolledCourses(selectNameAndId)]'
+        );
 
       ctx.assert(users, 404, 'No User With that username');
 
@@ -290,6 +296,8 @@ router.put('/:id', jwt.authenticate, permController.requireAuth, async ctx => {
       data[`metadata:${key}`] = metadata[key];
     }
   }
+
+  delete data.profileUri; //avoids external profile links at the moment
 
   const user = await User.query().patchAndFetchById(ctx.params.id, data);
   ctx.assert(user, 404, 'That user does not exist.');
@@ -369,6 +377,8 @@ router.post('/:id/profile-image', koaBody, permController.requireAuth, async (ct
       const uploaded = await s3.s3.upload(params).promise();
       log.info('Uploaded in:', uploaded.Location);
       const user = await User.query().patchAndFetchById(ctx.params.id, { profileUri: fileNameBase });
+
+      user.profileUri = 'data:image/(png|jpg);base64,' +  buffer.toString('base64'); //since s3 will not alter the image
 
       ctx.body = { user };
     } catch (e) {
@@ -467,7 +477,7 @@ router.get('/:id/verify', permController.requireAuth, async ctx => {
     } else {
       throw new Error('Email verification has expired');
     }
-    
+
   } catch (e) {
     log.info('Email verification has expired');
     if (e.statusCode) {

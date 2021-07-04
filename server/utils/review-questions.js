@@ -20,13 +20,13 @@ module.exports = [
   },
   {
     category: 'grammar',
-    title: 'Grammar & Spelling',
+    title: 'Grammar and Spelling',
     default: true,
     priority: 4
   },
   {
     category: 'creativity',
-    title: 'Creativity & Originality',
+    title: 'Creativity and Originality',
     default: true,
     priority: 5
   },

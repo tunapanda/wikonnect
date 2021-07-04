@@ -13,17 +13,20 @@ chai.should();
 const route = '/api/v1/reviews';
 
 async function getSample(valid = true) {
-
   if (valid) {
-    const chapter = (await knex('chapters')
-      .select(['chapters.id'])
-      .where({approved: true})
-      .limit(1))[0];
+    const chapter = (
+      await knex('chapters')
+        .select(['chapters.id'])
+        .where({ approved: true })
+        .limit(1)
+    )[0];
 
-    const rating = (await knex('ratings')
-      .select(['ratings.id', 'ratings.reaction'])
-      .where({isDeleted: false})
-      .limit(1))[0];
+    const rating = (
+      await knex('ratings')
+        .select(['ratings.id', 'ratings.reaction'])
+        .where({ isDeleted: false })
+        .limit(1)
+    )[0];
 
     return {
       chapterId: chapter.id,
@@ -32,20 +35,18 @@ async function getSample(valid = true) {
       metadata: {
         audioQuality: 'It was good',
         contentAccuracy: ['Zero accuracy'],
-        language: 'No profanity or cursing works'
-      }
+        language: 'No profanity or cursing works',
+      },
     };
-
   }
 }
 
 describe('CHAPTER REVIEWS ROUTE', () => {
-
-  it('Should fetch existing chapter reviews', done => {
+  it('Should fetch existing chapter reviews', (done) => {
     chai
       .request(server)
       .get(route)
-      .set(tokens.headersSuperAdmin1)
+      .set(tokens.headerAdminUser)
       .end((err, res) => {
         res.should.have.status(200);
         res.should.be.json;
@@ -54,11 +55,11 @@ describe('CHAPTER REVIEWS ROUTE', () => {
       });
   });
 
-  it('Should query existing chapter reviews to include respective rating', done => {
+  it('Should query existing chapter reviews to include respective rating', (done) => {
     chai
       .request(server)
       .get(`${route}?include=rating`)
-      .set(tokens.headersSuperAdmin1)
+      .set(tokens.headerAdminUser)
       .end((err, res) => {
         res.should.have.status(200);
         res.should.be.json;
@@ -75,9 +76,9 @@ describe('CHAPTER REVIEWS ROUTE', () => {
     return chai
       .request(server)
       .post(route)
-      .set(tokens.headersSuperAdmin1)
+      .set(tokens.headerAdminUser)
       .set('Content-Type', 'application/json')
-      .send({review: data})
+      .send({ review: data })
       .then((res) => {
         res.status.should.eql(201);
         res.should.be.json;
@@ -92,9 +93,9 @@ describe('CHAPTER REVIEWS ROUTE', () => {
     return chai
       .request(server)
       .put(`${route}/${review.id}`)
-      .set(tokens.headersSuperAdmin1)
+      .set(tokens.headerAdminUser)
       .set('Content-Type', 'application/json')
-      .send({review: data})
+      .send({ review: data })
       .then((res) => {
         res.should.have.status(200);
         res.should.be.json;
@@ -110,7 +111,7 @@ describe('CHAPTER REVIEWS ROUTE', () => {
     return chai
       .request(server)
       .delete(`${route}/${review.id}`)
-      .set(tokens.headersSuperAdmin1)
+      .set(tokens.headerAdminUser)
       .then((res) => {
         res.status.should.eql(200);
       });
