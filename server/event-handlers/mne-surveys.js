@@ -34,7 +34,7 @@ module.exports = () => {
       //add a notification
       await NotificationModel.query()
         .insert({
-          title: 'Wed love to hear your thoughts',
+          title: 'We\'d love to hear your thoughts',
           body: surveys[i].name,
           itemId: surveys[i].id,
           eventType: notificationTypes.chapter.approved,
