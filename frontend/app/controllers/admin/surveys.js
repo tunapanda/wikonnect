@@ -164,6 +164,9 @@ export default class AdminSurveysController extends Controller {
       window.confirm(this.intl.t('admin.surveys.labels.delete_confirmation'))
     ) {
       try {
+        if (this.editItem && survey.id === this.editItem) {
+          this.editItem = null;
+        }
         await survey.destroyRecord();
         this.notify.success(this.intl.t('admin.surveys.labels.survey_deleted'));
       } catch (e) {
