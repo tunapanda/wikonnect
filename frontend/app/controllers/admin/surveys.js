@@ -12,7 +12,7 @@ export default class AdminSurveysController extends Controller {
   @tracked editItem;
   @tracked createFormVisible = false;
   @tracked surveySearchTerm;
-  @tracked sortBy;
+  @tracked sortBy = {};
   @tracked surveyForm;
 
   surveyStatus = {
@@ -21,26 +21,49 @@ export default class AdminSurveysController extends Controller {
     archived: 'Archived',
   };
 
+  sortSurveys(surveys) {
+    if (!this.sortBy.value) {
+      return surveys.sortBy('updatedAt');
+    }
+    if (this.sortBy.value === 'status') {
+      // sort order : Pending, Active, Archived
+      return surveys.sort((a, b) => {
+        if (a.status === b.status) {
+          return 0;
+        }
+        if (a.status === 'Pending' && b.status === 'Active') {
+          return -1;
+        }
+        if (a.status === 'Pending' && b.status === 'Archived') {
+          return -1;
+        }
+        if (a.status === 'Active' && b.status === 'Archived') {
+          return -1;
+        }
+        return 1;
+      });
+    }
+    return surveys.sortBy(this.sortBy.value);
+  }
   get surveys() {
     const all = this.model.filter((survey) => survey.id);
     if (!this.surveySearchTerm) {
-      return all.sortBy(this.sortBy || 'updatedAt');
+      return this.sortSurveys(all);
     }
-    return all
-      .filter((survey) => {
-        return (
-          survey.name
-            .toLowerCase()
-            .includes(this.surveySearchTerm.toLowerCase()) ||
-          survey.description
-            .toLowerCase()
-            .includes(this.surveySearchTerm.toLowerCase()) ||
-          survey.status
-            .toLowerCase()
-            .includes(this.surveySearchTerm.toLowerCase())
-        );
-      })
-      .sortBy(this.sortBy || 'updatedAt');
+    const filtered = all.filter((survey) => {
+      return (
+        survey.name
+          .toLowerCase()
+          .includes(this.surveySearchTerm.toLowerCase()) ||
+        survey.description
+          .toLowerCase()
+          .includes(this.surveySearchTerm.toLowerCase()) ||
+        survey.status
+          .toLowerCase()
+          .includes(this.surveySearchTerm.toLowerCase())
+      );
+    });
+    return this.sortSurveys(filtered);
   }
 
   get surveyModel() {
@@ -90,8 +113,8 @@ export default class AdminSurveysController extends Controller {
   }
 
   @action
-  setSortBy(field) {
-    this.sortBy = field;
+  setSortBy(title, value) {
+    this.sortBy = { title, value };
   }
 
   @action

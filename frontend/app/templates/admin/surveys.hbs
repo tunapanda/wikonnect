@@ -13,7 +13,7 @@
     </div>
     <div class="sort-form sort-surveys">
       <BsDropdown class="sort-dd custom-dd" as |dd|>
-        <dd.toggle>{{t "admin.surveys.buttons.sort"}} {{this.sortBy}} <span class="caret"></span></dd.toggle>
+        <dd.toggle>{{t "admin.surveys.buttons.sort"}} {{this.sortBy.title}} <span class="caret"></span></dd.toggle>
         <dd.menu class="dropdown-menu-right" as |menu|>
           <div class="header">
             {{t "admin.surveys.labels.sort_options"}}
@@ -21,19 +21,19 @@
           <hr>
           <menu.item>
             <button type="button" class="btn w-100 menu-item btn-sort-status"
-              {{on "click" (fn this.setSortBy "status")}}>
+              {{on "click" (fn this.setSortBy (t "admin.surveys.labels.sort_by_status") "status")}}>
               {{t "admin.surveys.labels.sort_by_status"}}
             </button>
           </menu.item>
           <menu.item>
             <button type="button" class="btn w-100 menu-item btn-sort-expiry"
-              {{on "click" (fn this.setSortBy "expiry")}}>
+              {{on "click" (fn this.setSortBy (t "admin.surveys.labels.sort_by_expiry") "expiry")}}>
               {{t "admin.surveys.labels.sort_by_expiry"}}
             </button>
           </menu.item>
           <menu.item>
             <button type="button" class="btn w-100 menu-item btn-sort-name"
-              {{on "click" (fn this.setSortBy "name")}}>
+              {{on "click" (fn this.setSortBy (t "admin.surveys.labels.sort_by_name") "name")}}>
               {{t "admin.surveys.labels.sort_by_name"}}
             </button>
           </menu.item>
