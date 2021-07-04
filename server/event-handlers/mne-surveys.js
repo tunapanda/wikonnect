@@ -34,7 +34,7 @@ module.exports = () => {
       //add a notification
       await NotificationModel.query()
         .insert({
-          title: 'We`d love to hear your thoughts',
+          title: 'Wed love to hear your thoughts',
           body: surveys[i].name,
           itemId: surveys[i].id,
           eventType: notificationTypes.chapter.approved,
@@ -66,7 +66,7 @@ module.exports = () => {
       //add a notification
       await NotificationModel.query()
         .insert({
-          title: 'We`d love to hear your thoughts',
+          title: 'We\'d love to hear your thoughts',
           body: approvedChapterSurveys[i].name,
           itemId: approvedChapterSurveys[i].id,
           eventType: notificationTypes.chapter.published,
@@ -105,7 +105,7 @@ module.exports = () => {
       //add a notification
       await NotificationModel.query()
         .insert({
-          title: 'We`d love to hear your thoughts',
+          title: 'We\'d love to hear your thoughts',
           body:  commentSurveys[i].name,
           itemId: commentSurveys[i].id,
           model: 'survey',
@@ -139,7 +139,7 @@ module.exports = () => {
       //add a notification
       await NotificationModel.query()
         .insert({
-          title: 'We`d love to hear your thoughts',
+          title: 'We\'d love to hear your thoughts',
           body:  repliesSurveys[i].name,
           itemId: repliesSurveys[i].id,
           model: 'survey',
@@ -179,7 +179,7 @@ module.exports = () => {
       //add a notification
       await NotificationModel.query()
         .insert({
-          title: 'We`d love to hear your thoughts',
+          title: 'We\'d love to hear your thoughts',
           body: surveys[i].name,
           itemId: surveys[i].id,
           model: 'survey',
@@ -219,7 +219,7 @@ module.exports = () => {
       //add a notification
       await NotificationModel.query()
         .insert({
-          title: 'We`d love to hear your thoughts',
+          title: 'We\'d love to hear your thoughts',
           body: surveys[i].name,
           itemId: surveys[i].id,
           eventType:notificationTypes.rating.created,
