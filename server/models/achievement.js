@@ -40,13 +40,13 @@ class Achievement extends Model {
       ])
       .where('user_id', this.creatorId);
 
-    const badgesIds = await knex('user_badges').where('user_id', this.creator_id).pluck('badge_id');
+    const badgesIds = await knex('user_badges').where('user_id', this.creatorId).pluck('badge_id');
 
     const chapter_completed = await Trigger.query().where({ name: 'chapter_completed' }).returning('id');
     const chapter_completed_badge = await Badges.query().where('trigger_id', chapter_completed[0].id);
 
     for (const badge of chapter_completed_badge) {
-      if (!badgesIds.includes(badge.id) & results[0].totalcompleted === badge.frequency & results[0].totalcompleted > 0) {
+      if (!badgesIds.includes(badge.id) || results[0].totalcompleted === badge.frequency & results[0].totalcompleted > 0) {
         await UserBadges.query()
           .insert({ 'user_id': this.creatorId, 'badge_id': badge.id })
           .returning(['user_id']);
@@ -58,7 +58,7 @@ class Achievement extends Model {
     const chapter_attempted_badge = await Badges.query().where('trigger_id', chapter_attempted[0].id);
 
     for (const badge of chapter_attempted_badge) {
-      if (!badgesIds.includes(badge.id) & results[0].totalattempted === badge.frequency & results[0].totalattempted > 0) {
+      if (!badgesIds.includes(badge.id) || results[0].totalattempted === badge.frequency & results[0].totalattempted > 0) {
         await UserBadges.query()
           .insert({ 'user_id': this.creatorId, 'badge_id': badge.id })
           .returning(['user_id']);

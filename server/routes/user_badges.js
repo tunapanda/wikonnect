@@ -1,13 +1,13 @@
 const Router = require('koa-router');
 const User = require('../models/user');
-
+const { requireAuth, grantAccess} = require('../middleware/permController');
 
 const router = new Router({
   prefix: '/user_badges'
 });
+router.get('/', requireAuth, grantAccess('readAny', 'private'), async ctx => {
 
-router.get('/', async ctx => {
-  const leaders = await User.query()
+  let leaders = await User.query()
     .where(ctx.query)
     .withGraphFetched(
       '[leaderboard()]'

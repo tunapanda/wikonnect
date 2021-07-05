@@ -38,7 +38,7 @@ router.use(require('./routes/users'));
 
 router.use(require('./routes/oauth2s'));
 
-router.use(require('./routes/user_badges'));
+router.use(jwt.authenticate, require('./routes/user_badges'));
 
 router.use(jwt.authenticate, require('./routes/chapters'));
 

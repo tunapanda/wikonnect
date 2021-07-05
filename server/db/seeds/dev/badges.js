@@ -36,8 +36,8 @@ exports.seed = async (knex) => {
         is_deleted: faker.datatype.boolean(),
         trigger_id: triggerIds[index],
         published: faker.datatype.boolean(),
-        frequency: faker.datatype.number(1,9),
-        reminder: faker.datatype.number(1, 9),
+        frequency: faker.datatype.number(2,9),
+        reminder: faker.datatype.number(2, 9),
         reminder_message:  faker.lorem.sentence(),
       });
     }

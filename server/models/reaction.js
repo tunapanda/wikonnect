@@ -41,18 +41,18 @@ class Reaction extends Model {
       ])
       .where('user_id', this.creatorId, 'is_deleted', false);
 
-    const badgesIds = await knex('user_badges').where('user_id', this.creator_id).pluck('badge_id');
+    const badgesIds = await knex('user_badges').where('user_id', this.creatorId).pluck('badge_id');
 
     const reaction_created = await Trigger.query().where({ name: 'reaction_create' }).returning('id');
     const reaction_created_badge = await Badges.query().where('trigger_id', reaction_created[0].id);
 
     for (const badge of reaction_created_badge) {
-      if (!badgesIds.includes(badge.id) & results[0].totallikes === badge.frequency & results[0].totallikes > 0) {
+      if (!badgesIds.includes(badge.id) || results[0].totallikes === badge.frequency & results[0].totallikes > 0) {
         await UserBadges.query()
           .insert({ 'user_id': this.creatorId, 'badge_id': badge.id })
           .returning(['user_id']);
         awardsNotification(badge, 'reaction_create');
-      } else if (!badgesIds.includes(badge.id) & results[0].totaldislikes === badge.frequency & results[0].totaldislikes > 0) {
+      } else if (!badgesIds.includes(badge.id) || results[0].totaldislikes === badge.frequency & results[0].totaldislikes > 0) {
         await UserBadges.query()
           .insert({ 'user_id': this.creatorId, 'badge_id': badge.id })
           .returning(['user_id']);
