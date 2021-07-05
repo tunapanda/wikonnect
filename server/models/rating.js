@@ -24,7 +24,7 @@ class Rating extends Model {
     };
   }
 
-  async $afterUpdate(queryContext) {
+  async $afterInsert(queryContext) {
     // get total
     const results = await Rating.query(queryContext.transaction)
       .select([

@@ -32,7 +32,7 @@ class Reaction extends Model {
     };
   }
 
-  async $afterUpdate(queryContext) {
+  async $afterInsert(queryContext) {
     // get total
     const results = await Reaction.query(queryContext.transaction)
       .select([
