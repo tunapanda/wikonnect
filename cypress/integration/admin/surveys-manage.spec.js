@@ -84,11 +84,10 @@ describe("Surveys management page", () => {
 
             });
 
-        cy.wait(4000)
         cy.get('.surveys-list .survey-card')
-            .contains('.name', survey.name)
+            .contains('.name', survey.name, { matchCase: false, timeout: 4000 })
             .siblings()
-            .contains('.description', survey.description)
+            .contains('.description', survey.description, { matchCase: false })
 
     });
 
@@ -142,7 +141,7 @@ describe("Surveys management page", () => {
                 const selectedSurvey = surveys[Math.floor(Math.random() * surveys.length)];
 
                 cy.get(`.surveys-list .survey-card#survey-card-${selectedSurvey.id}`)
-                    .contains('.name', selectedSurvey.name.substr(0, 25))
+                    .contains(selectedSurvey.name.substr(0, 25), { matchCase: false })
             })
     });
 
@@ -199,7 +198,7 @@ describe("Surveys management page", () => {
 
                 // evaluate the changes
                 cy.get(`.surveys-list .survey-card#survey-card-${selectedSurvey.id}`)
-                    .contains('.name', updatedSurvey.name)
+                    .contains('.name', updatedSurvey.name, { matchCase: false })
             })
     })
 
