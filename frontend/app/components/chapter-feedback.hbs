@@ -1,0 +1,30 @@
+<BsButton @type="link">
+  {{svg-jar 'message_black_24dp'}}
+  <BsPopover @title="Feedback" @placement="bottom" class="w-25 h-25">
+    {{#each this.feedback as |message|}}
+      {{#if (eq message.creator.id this.me.user.id)}}
+        <div class="media mt-4">
+          <div>
+            <p class="mt-2">
+              <strong>
+                {{message.creator.name}}
+              </strong>
+            </p>
+            {{nl2br message.comment}}
+          </div>
+        </div>
+      {{else}}
+        <div class="media mt-4 text-right">
+          <div class="replies">
+            <p class="mt-2">
+              <strong>
+                {{message.creator.name}}
+              </strong>
+            </p>
+            {{nl2br message.comment}}
+          </div>
+        </div>
+      {{/if}}
+    {{/each}}
+  </BsPopover>
+</BsButton>

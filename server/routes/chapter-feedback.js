@@ -9,11 +9,11 @@ const router = new Router({
 
 router.get('/', async (ctx) => {
   try {
-    const feedback = await ChapterFeedback.query().where(ctx.query);
+    const chapterFeedback = await ChapterFeedback.query().where(ctx.query);
 
-    ctx.assert(feedback, 401, 'Something went wrong');
+    ctx.assert(chapterFeedback, 401, "Something went wrong");
     ctx.status = 200;
-    ctx.body = { feedback };
+    ctx.body = { chapterFeedback };
   } catch (e) {
     if (e.statusCode) {
       ctx.throw(e.statusCode, null, { errors: [e] });

@@ -69,18 +69,14 @@
                 {{t 'admin.content_approval.approve'}}
               </button>
             {{/if}}
-            <button
-              class="btn btn-light"
-              type="button"
-            >
+            <button class="btn btn-light" type="button">
               {{t 'admin.content_approval.request_revisions'}}
               <BsPopover @title="Feedback" @placement="bottom">
-                <BsForm @onSubmit={{fn this.requestRevision chapter.id}} as |form|>
+                <BsForm
+                  @onSubmit={{fn this.requestRevision chapter.id}} as |form|
+                >
                   <form.group>
-                    <Textarea
-                      @value={{this.feedback}}
-                      class="form-control"
-                    ></Textarea>
+                    <Textarea @value={{this.feedback}} class="form-control" />
                   </form.group>
                   <form.submitButton>
                     {{t 'buttons.submit'}}
@@ -88,6 +84,7 @@
                 </BsForm>
               </BsPopover>
             </button>
+            <ChapterFeedback @chapter={{chapter}} />
           </td>
         </tr>
       {{/each}}
