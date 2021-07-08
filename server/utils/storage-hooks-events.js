@@ -8,6 +8,8 @@ exports.events = {
       countOnPublished: 'user.chapter.countOnPublished',
       countOnApproved: 'user.chapter.countOnApproved',
       countOnShare: 'user.chapter.countOnShare',
+      countOnInteractionAttempt: 'user.chapter.countOnAttempt',
+      countOnInteractionComplete: 'user.chapter.countOnComplete',
     },
     comment: {
       countOnCreate: 'user.comment.countOnCreate',

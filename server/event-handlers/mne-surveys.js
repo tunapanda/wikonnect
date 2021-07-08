@@ -14,9 +14,9 @@ module.exports = () => {
     unpublished: 'Pending',
     archived: 'Archived',
   };
-  
+
   const triggers = {
-    learner:{
+    learner: {
       chapter: {
         approved: 'chapter_approved',
         published: 'chapter_publish',
@@ -30,12 +30,12 @@ module.exports = () => {
       reaction: {
         create: 'reaction_create',
       },
-      rating:{
+      rating: {
         create: 'rating_create'
       }
     }
   };
-  
+
   /**
      * On Chapter Approved
      */
@@ -86,7 +86,7 @@ module.exports = () => {
       .where('surveyType', 'mne') //is default now.Future: there can be dedicated table of survey types.
       .where('expiry', '>=', raw('now()')) // can do for now..(_region difference challenge_)
       .withGraphJoined('trigger')
-      .where('trigger.name',  triggers.learner.chapter.published)
+      .where('trigger.name', triggers.learner.chapter.published)
       .withGraphJoined('respondents')
       .where((builder) => {
         builder.where('respondents.userId', '<>', payload.creatorId)
@@ -126,7 +126,7 @@ module.exports = () => {
       .where('surveyType', 'mne')
       .where('expiry', '>=', raw('now()'))
       .withGraphJoined('trigger')
-      .where('trigger.name',  triggers.learner.comment.create)
+      .where('trigger.name', triggers.learner.comment.create)
       .withGraphJoined('respondents')
       .where((builder) => {
         builder.where('respondents.userId', '<>', payload.creatorId)
@@ -168,7 +168,7 @@ module.exports = () => {
       .where('surveyType', 'mne')
       .where('expiry', '>=', raw('now()'))
       .withGraphJoined('trigger')
-      .where('trigger.name',  triggers.learner.comment.reply)
+      .where('trigger.name', triggers.learner.comment.reply)
       .withGraphJoined('respondents')
       .where((builder) => {
         builder.where('respondents.userId', '<>', payload.creatorId)
@@ -208,7 +208,7 @@ module.exports = () => {
       .where('status', surveyStatus.published)
       .where('expiry', '>=', raw('now()'))
       .withGraphJoined('trigger')
-      .where('trigger.name',  triggers.learner.reaction.create)
+      .where('trigger.name', triggers.learner.reaction.create)
       .withGraphJoined('respondents')
       .where((builder) => {
         builder.where('respondents.userId', '<>', payload.creatorId)
@@ -277,6 +277,90 @@ module.exports = () => {
     }
 
   });
+
+
+  /**
+     * On chapter attempted
+     */
+  SHooksEventEmitter.on(events.user.chapter.countOnInteractionAttempt, async (payload) => {
+
+    const surveys = await SurveyModel.query()
+      .where('frequency', payload.total)
+      .where('surveyType', 'mne')
+      .where('status', surveyStatus.published)
+      .where('expiry', '>=', raw('now()'))
+      .withGraphJoined('trigger')
+      .where('trigger.name', triggers.learner.chapter.attempted)
+      .withGraphJoined('respondents')
+      .where((builder) => {
+        builder.where('respondents.userId', '<>', payload.creatorId)
+          .orWhereNull('respondents.userId');
+      });
+
+    for (let i = 0; i < surveys.length; i++) {
+      //add a notification
+      await NotificationModel.query()
+        .insert({
+          title: 'We\'d love to hear your thoughts',
+          body: surveys[i].name,
+          itemId: surveys[i].id,
+          eventType: notificationTypes.contentEngagement.started,
+          model: 'survey',
+          recipientId: payload.creatorId,
+          read: false,
+          metadata: { sendEmail: false },
+        });
+
+      await UserSurveyModel.query()
+        .insert({
+          surveyId: surveys[i].id,
+          userId: payload.creatorId
+        });
+    }
+
+  });
+
+  /**
+     * On chapter completed
+     */
+  SHooksEventEmitter.on(events.user.chapter.countOnInteractionComplete, async (payload) => {
+
+    const surveys = await SurveyModel.query()
+      .where('frequency', payload.total)
+      .where('surveyType', 'mne')
+      .where('status', surveyStatus.published)
+      .where('expiry', '>=', raw('now()'))
+      .withGraphJoined('trigger')
+      .where('trigger.name', triggers.learner.chapter.completed)
+      .withGraphJoined('respondents')
+      .where((builder) => {
+        builder.where('respondents.userId', '<>', payload.creatorId)
+          .orWhereNull('respondents.userId');
+      });
+
+    for (let i = 0; i < surveys.length; i++) {
+      //add a notification
+      await NotificationModel.query()
+        .insert({
+          title: 'We\'d love to hear your thoughts',
+          body: surveys[i].name,
+          itemId: surveys[i].id,
+          eventType: notificationTypes.contentEngagement.completed,
+          model: 'survey',
+          recipientId: payload.creatorId,
+          read: false,
+          metadata: { sendEmail: false },
+        });
+
+      await UserSurveyModel.query()
+        .insert({
+          surveyId: surveys[i].id,
+          userId: payload.creatorId
+        });
+    }
+
+  });
+
 
 
 };
