@@ -50,24 +50,24 @@ edit_profile_page:
   gender: Gender
 
 enrolled_courses_page:
-  disenroll_prompt: Are you sure you want to disenroll from this course?
+  disenroll_prompt: Are you sure you want to unenroll from this course?
   no_content: You have not enrolled in any course. To view available courses you can enroll in
   click_here: click here
   no_searched_record: No content found matching <strong> {word}</strong>. Kindly try a different search.
 
   buttons:
-    disenroll: Disenroll
+    disenroll: Unenroll
     view_course: View Course
   errors:
     disenroll: Unexpected error encountered while processing your request.
 
 available_courses_page:
-  disenroll_prompt: Do you want to disenroll from this course?
+  disenroll_prompt: Do you want to unenroll from this course?
   no_content: There are no published courses at the moment. To create your own course
   click_here: click here
   no_searched_record: No course found matching <strong> {word}</strong>. Kindly try a different search.
   enroll_successful: You have successfully enrolled in the course.
-  disenroll_successful: You have successfully disenrolled from the course.
+  disenroll_successful: You have successfully unenrolled from the course.
   general_error: Unexpected error encountered while processing your request.
   buttons:
     enroll: Enroll in Course
