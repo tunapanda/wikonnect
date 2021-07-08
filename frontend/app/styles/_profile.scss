@@ -346,38 +346,6 @@ $palette: (
     margin-top: 28px;
     margin-bottom: 15px;
   }
-
-  .sections-menu, .sub-section-menu.tabs-menu {
-    .nav-item {
-      margin-bottom: -2px;
-
-      .nav-link {
-        color: map-get($palette, gray30);
-        font-size: 16px;
-        font-weight: 600;
-        position: relative;
-
-        &.active:after {
-          content: "";
-          position: absolute;
-          bottom: 0;
-          right: 0;
-          height: 1px;
-          border: solid 2px map-get($palette, primary);
-          width: 80%;
-          left: 50%;
-          transform: translate(-50%, 0);
-        }
-      }
-    }
-
-  }
-
-  //sub-nav
-  .sub-section-menu.tabs-menu {
-    margin-bottom: -2px;
-    border-bottom: solid 1px map-get($palette, bombay);
-  }
 }
 
 .account-profile-page {
@@ -386,26 +354,6 @@ $palette: (
       input {
         &:focus {
           background-color: map-get($palette, white);
-        }
-      }
-    }
-
-    .cpc-container .course-preview-card {
-      background-color: map-get($palette, white);
-
-      .btn-disenroll {
-        svg {
-          path {
-            stroke: map-get($palette, primary);
-          }
-        }
-
-        &:hover {
-          svg {
-            path {
-              stroke: map-get($palette, white);
-            }
-          }
         }
       }
     }
@@ -514,8 +462,9 @@ $palette: (
         padding-left: 8px;
       }
     }
-    .tag-name{
-      background-color: map-get($palette,gray95);
+
+    .tag-name {
+      background-color: map-get($palette, gray95);
       padding: 5px;
       border-radius: 3px;
     }

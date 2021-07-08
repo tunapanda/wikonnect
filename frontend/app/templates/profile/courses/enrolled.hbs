@@ -11,26 +11,9 @@
     </div>
   {{/if}}
 
+  <Courses::EnrolledList @enrolledCourses={{this.enrolledCourses}} @col="col-sm-12 col-md-4">
+  </Courses::EnrolledList>
   <div class="row pb-5">
-    {{#each this.enrolledCourses as |course|}}
-      <Course::PreviewCard @course={{course}} class="col-sm-12 col-md-4 col-xl-3 mb-4  course-preview">
-
-        <div class="w-100 text-right course-actions pt-3">
-
-          <button type="button"  {{on "click" (fn this.disenroll course)}}
-                  class="btn btn-outline-primary btn-sm">
-            {{t "profile.enrolled_courses_page.buttons.disenroll"}}
-          </button>
-
-          <LinkTo @route="course.show" @model={{course.id}}
-                  class="btn btn-primary btn-sm border-0 btn-view-course">
-            {{t "profile.enrolled_courses_page.buttons.view_course"}}
-          </LinkTo>
-        </div>
-
-      </Course::PreviewCard>
-    {{/each}}
-
     {{#unless this.courses}}
       <div class="error-message pt-3 pl-3 pb-5">
         {{t "profile.enrolled_courses_page.no_content"}},

@@ -91,6 +91,26 @@ $palette: (
       }
     }
   }
+
+  .course-preview-card {
+    background-color: map-get($palette, white);
+
+    .btn-disenroll {
+      svg {
+        path {
+          stroke: map-get($palette, primary);
+        }
+      }
+
+      &:hover {
+        svg {
+          path {
+            stroke: map-get($palette, white);
+          }
+        }
+      }
+    }
+  }
 }
 
 .course-form {
@@ -734,14 +754,16 @@ $palette: (
       .course-image-container {
         position: absolute;
         z-index: 15;
-        left: 70%;
+        left: 68%;
         transform: translate(-45%, 0);
         top: 10%;
         width: auto;
+        bottom: 0;
 
         .course-image {
           height: 100%;
           width: auto;
+          max-height: 95%;
         }
       }
     }

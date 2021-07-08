@@ -1,6 +1,8 @@
 main_title: Jenga Kozi
 search_placeholder: Tafuta Sura
 search_course_placeholder: Tafuta Kozi
+enroll_successful: Umefanikiwa kujiandikisha kwenye kozi hiyo.
+disenroll_successful: Umefanikiwa kujiondoa kwenye kozi.
 
 nav:
   home: Nyumbani
@@ -71,7 +73,7 @@ published_page:
 show_page:
   tag_list_title: Vitambulisho
   enrolled: "{count, plural,=1 {Mtu 1 aliyejiandikisha} other {Watu waliojiandikisha ni #}}"
-  popular_tags: Lebo maarufu
+  popular_tags: Lebo Maarufu
   popular_courses: Kozi Maarufu
   course_chapters: Sura zote katika Kozi hii
   disenroll_prompt: Je! Unataka kujiondoa kwenye kozi hii?
@@ -80,7 +82,7 @@ show_page:
   general_error: Hitilafu isiyotarajiwa imepatikana wakati wa kuchakata ombi lako.
   buttons:
     update_course: Sasisha Kozi hii
-    enroll: Enroll to this Course
+    enroll: Jisajili kwenye Kozi
     disenroll: Tayari Umejiandikisha
     start_learning: Anza Kujifunza ->
 
@@ -112,3 +114,13 @@ errors:
   no_filtered_records:  Hakuna maudhui yaliyopatikana yanayolingana <strong> {selectedTags}</strong>. Tafadhali jaribu vitambulisho vichache.
   wrong_record_filters: Hakuna maudhui yaliyopatikana yanayolingana <strong> {selectedTags}</strong>. Tafadhali jaribu tena na lebo ya kichujio halali.
   playlist_error: Inaonekana tunakabiliwa na shida na orodha ya sura za kozi
+  login_to_enroll: Lazima kwanza uingie ama ujiandikishe ili kujiandikisha kwa kozi hii.
+  general_error: Hitilafu isiyotarajiwa imepatikana wakati wa kuchakata ombi lako.
+
+prompts:
+  disenroll: Je! Una uhakika unataka kujiondoa kwenye kozi hii?
+
+buttons:
+  disenroll: Ondoa Uandikishaji
+  view_course: Angalia Kozi
+  enroll: Jisajili kwenye Kozi

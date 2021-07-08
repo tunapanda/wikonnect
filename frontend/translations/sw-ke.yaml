@@ -102,6 +102,12 @@ main_navbar:
   search:
     result: Hakuna matokeo ya
 
+learner_menu:
+  chapters: Sura
+  courses: Kozi
+  available_courses: Kozi Zinazopatikana
+  enrolled_courses: Kozi Ulizojisajili
+
 table:
   empty: Hakuna rekodi za kuonyesha
   pagination:

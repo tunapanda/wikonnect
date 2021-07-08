@@ -13,6 +13,8 @@
       <div class="author">
         <LinkTo @route="profile.home" @model={{@course.creator.id}} class="author-link">
           <img src="{{ @course.creator.profileUri}}" class="author-avatar rounded-circle" alt="" role="presentation">
+          <BsTooltip @placement="bottom">{{ @course.creator.name}}</BsTooltip>
+
         </LinkTo>
 
       </div>

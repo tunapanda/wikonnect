@@ -11,6 +11,14 @@ Router.map(function () {
   this.route('login');
   this.route('about');
 
+  this.route('learn', function () {
+    this.route('chapters');
+    this.route('courses', function () {
+      this.route('available');
+      this.route('enrolled');
+    });
+  });
+
   this.route('profile', { path: '/profile/:id' }, function () {
     this.route('home');
     this.route('achievements');

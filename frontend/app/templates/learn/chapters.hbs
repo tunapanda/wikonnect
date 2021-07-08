@@ -1,0 +1,26 @@
+<div class="container">
+  <div class="pb-3 pt-1" {{did-insert this.preselectSelectedFilterTags}}>
+    <ChapterTags::TagsList @tagsList={{this.tagsList}} @toggleTagSelection={{this.toggleTagSelection}}
+                           @selectedFilterTags={{this.selectedFilterTags}}
+                           @clearAllTagFilters={{this.clearAllTagFilters}} />
+  </div>
+
+  <div class="row " id="chapters-container">
+    <Home::Chapters @chapters={{this.model}}>
+    </Home::Chapters>
+  </div>
+  <div class="row">
+    <div class="col chapters-infinity-loader">
+      <InfinityLoader @infinityModel={{this.model}} @triggerOffset={{500}} @eventDebounce={{1000}}>
+        <div class="loading-indicator">
+          {{ svg-jar "loader" height="100px" width="100px"}}
+          <p> {{t "home.loading.loading_more_records"}}</p>
+        </div>
+        <div class="records-loaded-indicator">
+          {{html-safe this.recordsLoadedText}}
+        </div>
+      </InfinityLoader>
+    </div>
+  </div>
+
+</div>

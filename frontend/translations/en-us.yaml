@@ -102,6 +102,12 @@ main_navbar:
   search:
     result: No results for
 
+learner_menu:
+  chapters: Chapters
+  courses: Courses
+  available_courses: Available Courses
+  enrolled_courses: Enrolled Courses
+
 table:
   empty: No records to show
   pagination:
