@@ -84,7 +84,7 @@ describe("Surveys management page", () => {
 
             });
 
-        cy.get('.surveys-list .survey-card')
+        cy.get('.surveys-list')
             .contains('.name', survey.name, { matchCase: false, timeout: 4000 })
             .siblings()
             .contains('.description', survey.description, { matchCase: false })
