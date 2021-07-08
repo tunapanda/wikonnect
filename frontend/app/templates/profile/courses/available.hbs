@@ -51,13 +51,13 @@
 
           {{#if (exec this.isEnrolled course)}}
             <button type="button"  {{on "click" (fn this.disenroll course)}}
-                    class="btn btn-outline-primary btn-sm border-0 btn-disenroll">
+                    class="btn btn-outline-primary btn-sm btn-disenroll">
               {{svg-jar "tick" height="15" width="15"}}
               {{t "profile.available_courses_page.buttons.disenroll"}}
             </button>
           {{else}}
             <button type="button"  {{on "click" (fn this.enroll course)}}
-                    class="btn btn-outline-primary btn-sm border-0 btn-enroll">
+                    class="btn btn-outline-primary btn-sm  btn-enroll">
               {{t "profile.available_courses_page.buttons.enroll"}}
             </button>
           {{/if}}
