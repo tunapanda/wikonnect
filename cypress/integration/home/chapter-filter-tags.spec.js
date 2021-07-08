@@ -106,17 +106,23 @@ it('Selected tags should filter chapters', () => {
             cy.get('a')
                 .as('pageLinks');
 
+            cy.get('.infinity-loader .records-loaded-indicator')
+                .then((ind)=>{
+                    if(ind.children('strong').length === 0){
+                        fetchFirstPageChapters()
+                            .then((chapters) => {
+                                const filteredChapters = chapters.filter((chapter) => chapter.tags.some((tag)=>tag.id===tag.id));
 
-            fetchFirstPageChapters()
-                .then((chapters) => {
-                    const filteredChapters = chapters.filter((chapter) => chapter.tags.some((tag)=>tag.id===tag.id));
-
-                    for (const chapter of filteredChapters) {
-                        cy.get('@pageLinks')
-                            .filter(`[href="/chapter/${chapter.id}"]`)
-                            .should('be.visible')
+                                for (const chapter of filteredChapters) {
+                                    cy.get('@pageLinks')
+                                        .filter(`[href="/chapter/${chapter.id}"]`)
+                                        .should('be.visible')
+                                }
+                            })
                     }
+
                 })
+
         })
 
 });
