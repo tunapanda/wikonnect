@@ -2,7 +2,7 @@ breadcrumb:
   home: Ukurasa wa nyumbani
   surveys: Utafiti
 popup:
-  google_prompt: Chukua dakika mbili kujaza fomu hii ya Google
+  google_prompt: Tafadhali chukua dakika mbili kujaza fomu hii ya Google
   buttons:
-    ok: Hakika !
+    ok: Hakika!
     no: Baadae
