@@ -4,8 +4,8 @@ const Model = require('./_model');
 const knex = require('../db/db');
 const chapterSchema = require('../db/json_schema/chapterSchema');
 const search = require('../utils/search');
-const {SHooksEventEmitter} = require('../utils/event-emitter');
-const {events} = require('../utils/storage-hooks-events');
+const { SHooksEventEmitter } = require('../utils/event-emitter');
+const { events } = require('../utils/storage-hooks-events');
 
 class Chapter extends Model {
   static get tableName() {
@@ -102,29 +102,37 @@ class Chapter extends Model {
     };
   }
 
-  static async afterUpdate(args) {
-    await super.afterUpdate(args);
+  async $afterUpdate(queryContext) {
+    await super.$afterUpdate(...arguments);
 
-    const {  context ,asFindQuery} =args;
+    if (this.status === 'published' && this.approved !== true && // a chapter can only be published before approval?
+      SHooksEventEmitter.listenerCount(events.user.chapter.countOnPublished) > 0) {
 
-    if(SHooksEventEmitter.listenerCount(events.user.chapter.countOnUpdate)>0) {
-      const rows = await asFindQuery().select('creatorId');
-      for (let i = 0; i < rows.length; i++) {
+      const results = await Chapter.query(queryContext.transaction)
+        .count('id')
+        .where('status', 'published')
+        .where('creator_id', this.creatorId);
 
-        // get totals
-        const results = await this.query(context.transaction)
-          .select([
-            raw('COUNT(CASE WHEN "approved" = true THEN 1 ELSE NULL END) AS totalApproved'),
-            raw('COUNT(CASE WHEN "status" = \'published\' THEN 1 ELSE NULL END) AS totalPublished')
-          ])
-          .where('creator_id', rows[i].creatorId);
+      SHooksEventEmitter.emit(events.user.chapter.countOnPublished, {
+        total: results[0].count,
+        creatorId: this.creatorId
+      });
 
-        SHooksEventEmitter.emit(events.user.chapter.countOnUpdate, {
-          totalApproved: results[0].totalapproved,
-          totalPublished: results[0].totalpublished,
-          creatorId: rows[i].creatorId
-        });
-      }
+    }
+
+    if (this.status === 'published' && this.approved === true && // a chapter can only be approved if already published?
+      SHooksEventEmitter.listenerCount(events.user.chapter.countOnApproved) > 0) {
+
+      const results = await Chapter.query(queryContext.transaction)
+        .count('id')
+        .where('approved', true)
+        .where('creator_id', this.creatorId);
+
+      SHooksEventEmitter.emit(events.user.chapter.countOnApproved, {
+        total: results[0].count,
+        creatorId: this.creatorId
+      });
+
     }
   }
 }

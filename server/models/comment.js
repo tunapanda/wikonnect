@@ -1,9 +1,7 @@
-const { raw } = require('objection');
-
 const Model = require('./_model');
 const knex = require('../db/db');
-const {SHooksEventEmitter} = require('../utils/event-emitter');
-const {events} = require('../utils/storage-hooks-events');
+const { SHooksEventEmitter } = require('../utils/event-emitter');
+const { events } = require('../utils/storage-hooks-events');
 
 class Comment extends Model {
   static get tableName() {
@@ -78,20 +76,26 @@ class Comment extends Model {
 
   async $afterInsert(queryContext) {
     await super.$afterInsert(queryContext);
-    
-    if(SHooksEventEmitter.listenerCount(events.user.comment.countOnCreate)>0) {
-      // get total
-      const results =   await Comment.query(queryContext.transaction)
-        .select([
-          raw('COUNT(CASE WHEN parent_id =\'false\' THEN 1 ELSE NULL END) as "totalcomments"'),
-          raw('COUNT(CASE WHEN parent_id <> \'false\' THEN 1 ELSE NULL END) as "totalreplies"')
-        ])
-        .where('creator_id',this.creatorId);
 
+    if ((this.parentId === 'false' || !this.parentId) && SHooksEventEmitter.listenerCount(events.user.comment.countOnCreate) > 0) {
+      const results = await Comment.query(queryContext.transaction)
+        .count('id')
+        .where('parent_id', 'false')
+        .where('creator_id', this.creatorId);
 
-      SHooksEventEmitter.emit(events.user.comment.countOnCreate,{
-        totalComments:results[0].totalcomments,
-        totalReplies:results[0].totalreplies,
+      SHooksEventEmitter.emit(events.user.comment.countOnCreate, {
+        total: results[0].count,
+        creatorId: this.creatorId
+      });
+    }
+    if (this.parentId && this.parentId !== 'false' && SHooksEventEmitter.listenerCount(events.user.reply.countOnCreate) > 0) {
+      const results = await Comment.query(queryContext.transaction)
+        .count('id')
+        .whereNot('parent_id', 'false')
+        .where('creator_id', this.creatorId);
+
+      SHooksEventEmitter.emit(events.user.reply.countOnCreate, {
+        total: results[0].count,
         creatorId: this.creatorId
       });
     }

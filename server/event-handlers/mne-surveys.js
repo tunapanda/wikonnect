@@ -1,9 +1,11 @@
+const { raw } = require('objection');
+
 const SurveyModel = require('../models/survey');
 const NotificationModel = require('../models/notification');
 const UserSurveyModel = require('../models/user-survey');
-const {notificationTypes} = require('../utils/notification-constants');
-const {events} = require('../utils/storage-hooks-events');
-const {SHooksEventEmitter} = require('../utils/event-emitter');
+const { notificationTypes } = require('../utils/notification-constants');
+const { events } = require('../utils/storage-hooks-events');
+const { SHooksEventEmitter } = require('../utils/event-emitter');
 
 module.exports = () => {
 
@@ -13,19 +15,19 @@ module.exports = () => {
     archived: 'Archived',
   };
   /**
-     * On Chapter Update
+     * On Chapter Approved
      */
-  SHooksEventEmitter.on(events.user.chapter.countOnUpdate, async (payload) => {
+  SHooksEventEmitter.on(events.user.chapter.countOnApproved, async (payload) => {
     const surveys = await SurveyModel.query()
-      .where('frequency', payload.totalApproved)
-      .where('status',  surveyStatus.published)
-      .where('surveyType','mne') //is default now.Future: there can be dedicated table of survey types.
-      .where('expiry', '>=', new Date().toISOString()) // can do for now..(_region difference challenge_)
+      .where('frequency', payload.total)
+      .where('status', surveyStatus.published)
+      .where('surveyType', 'mne') //is default now.Future: there can be dedicated table of survey types.
+      .where('expiry', '>=', raw('now()')) // can do for now..(_region difference challenge_)
       .withGraphJoined('trigger')
       .where('trigger.name', 'chapter_approved')
       .withGraphJoined('respondents')
-      .where(  (builder)=>{
-        builder.where('respondents.userId','<>',  payload.creatorId)
+      .where((builder) => {
+        builder.where('respondents.userId', '<>', payload.creatorId)
           .orWhereNull('respondents.userId');
       });
 
@@ -41,7 +43,7 @@ module.exports = () => {
           model: 'survey',
           recipientId: payload.creatorId,
           read: false,
-          metadata: {sendEmail: false},
+          metadata: { sendEmail: false },
         });
       await UserSurveyModel.query()
         .insert({
@@ -50,128 +52,62 @@ module.exports = () => {
         });
     }
 
-    const approvedChapterSurveys = await SurveyModel.query()
-      .where('frequency', payload.totalPublished)
-      .where('status',  surveyStatus.published)
-      .where('expiry', '>=', new Date().toISOString())
+  });
+
+  /**
+     * On chapter published
+     */
+  SHooksEventEmitter.on(events.user.chapter.countOnPublished, async (payload) => {
+    const surveys = await SurveyModel.query()
+      .where('frequency', payload.total)
+      .where('status', surveyStatus.published)
+      .where('surveyType', 'mne') //is default now.Future: there can be dedicated table of survey types.
+      .where('expiry', '>=', raw('now()')) // can do for now..(_region difference challenge_)
       .withGraphJoined('trigger')
       .where('trigger.name', 'chapter_publish')
       .withGraphJoined('respondents')
-      .where(  (builder)=>{
-        builder.where('respondents.userId','<>',  payload.creatorId)
+      .where((builder) => {
+        builder.where('respondents.userId', '<>', payload.creatorId)
           .orWhereNull('respondents.userId');
       });
-    
-    for (let i = 0; i < approvedChapterSurveys.length; i++) {
+
+
+    for (let i = 0; i < surveys.length; i++) {
       //add a notification
       await NotificationModel.query()
         .insert({
           title: 'We\'d love to hear your thoughts',
-          body: approvedChapterSurveys[i].name,
-          itemId: approvedChapterSurveys[i].id,
+          body: surveys[i].name,
+          itemId: surveys[i].id,
           eventType: notificationTypes.chapter.published,
           model: 'survey',
           recipientId: payload.creatorId,
           read: false,
-          metadata: {sendEmail: false},
+          metadata: { sendEmail: false },
         });
       await UserSurveyModel.query()
         .insert({
-          surveyId: approvedChapterSurveys[i].id,
+          surveyId: surveys[i].id,
           userId: payload.creatorId
         });
     }
 
   });
   /**
-     * On Comment/Reply create
+     * On Comment create
      */
 
-  SHooksEventEmitter.on(events.user.comment.countOnCreate, async(payload) => {
-    const commentSurveys = await SurveyModel.query()
-      .where('frequency', payload.totalComments)
-      .where('status',  surveyStatus.published)
-      .where('surveyType','mne')
-      .where('expiry', '>=', new Date().toISOString())
+  SHooksEventEmitter.on(events.user.comment.countOnCreate, async (payload) => {
+    const surveys = await SurveyModel.query()
+      .where('frequency', payload.total)
+      .where('status', surveyStatus.published)
+      .where('surveyType', 'mne')
+      .where('expiry', '>=', raw('now()'))
       .withGraphJoined('trigger')
       .where('trigger.name', 'comment_create')
       .withGraphJoined('respondents')
-      .where(  (builder)=>{
-        builder.where('respondents.userId','<>',  payload.creatorId)
-          .orWhereNull('respondents.userId');
-      });  
-    
-    for (let i = 0; i < commentSurveys.length; i++) {
-      //add a notification
-      await NotificationModel.query()
-        .insert({
-          title: 'We\'d love to hear your thoughts',
-          body:  commentSurveys[i].name,
-          itemId: commentSurveys[i].id,
-          model: 'survey',
-          eventType:notificationTypes.comment.created,
-          recipientId: payload.creatorId,
-          read: false,
-          metadata: {sendEmail: false},
-        });
-
-      await UserSurveyModel.query()
-        .insert({
-          surveyId: commentSurveys[i].id,
-          userId: payload.creatorId
-        });
-    }
-
-    const repliesSurveys = await SurveyModel.query()
-      .where('frequency', payload.totalReplies)
-      .where('status',  surveyStatus.published)
-      .where('surveyType','mne')
-      .where('expiry', '>=', new Date().toISOString()) 
-      .withGraphJoined('trigger')
-      .where('trigger.name', 'comment_reply')
-      .withGraphJoined('respondents')
-      .where(  (builder)=>{
-        builder.where('respondents.userId','<>',  payload.creatorId)
-          .orWhereNull('respondents.userId');
-      });
-    
-    for (let i = 0; i < repliesSurveys.length; i++) {
-      //add a notification
-      await NotificationModel.query()
-        .insert({
-          title: 'We\'d love to hear your thoughts',
-          body:  repliesSurveys[i].name,
-          itemId: repliesSurveys[i].id,
-          model: 'survey',
-          eventType:notificationTypes.comment.replied,
-          recipientId: payload.creatorId,
-          read: false,
-          metadata: {sendEmail: false},
-        });
-
-      await UserSurveyModel.query()
-        .insert({
-          surveyId: repliesSurveys[i].id,
-          userId: payload.creatorId
-        });
-    }
-    
-  });
-
-  /**
-     * On reaction created
-     */
-  SHooksEventEmitter.on(events.user.reaction.countOnCreate, async(payload) =>{
-    const surveys = await SurveyModel.query()
-      .where('frequency', payload.totalReactions)
-      .where('surveyType','mne')
-      .where('status',  surveyStatus.published)
-      .where('expiry', '>=', new Date().toISOString())
-      .withGraphJoined('trigger')
-      .where('trigger.name', 'reaction_create')
-      .withGraphJoined('respondents')
-      .where(  (builder)=>{
-        builder.where('respondents.userId','<>',  payload.creatorId)
+      .where((builder) => {
+        builder.where('respondents.userId', '<>', payload.creatorId)
           .orWhereNull('respondents.userId');
       });
 
@@ -183,10 +119,92 @@ module.exports = () => {
           body: surveys[i].name,
           itemId: surveys[i].id,
           model: 'survey',
-          eventType:notificationTypes.reaction.created,
+          eventType: notificationTypes.comment.created,
           recipientId: payload.creatorId,
           read: false,
-          metadata: {sendEmail: false},
+          metadata: { sendEmail: false },
+        });
+
+      await UserSurveyModel.query()
+        .insert({
+          surveyId: surveys[i].id,
+          userId: payload.creatorId
+        });
+    }
+
+
+  });
+
+  /**
+   * On Reply create
+   */
+  SHooksEventEmitter.on(events.user.reply.countOnCreate, async (payload) => {
+
+    const surveys = await SurveyModel.query()
+      .where('frequency', payload.total)
+      .where('status', surveyStatus.published)
+      .where('surveyType', 'mne')
+      .where('expiry', '>=', raw('now()'))
+      .withGraphJoined('trigger')
+      .where('trigger.name', 'comment_reply')
+      .withGraphJoined('respondents')
+      .where((builder) => {
+        builder.where('respondents.userId', '<>', payload.creatorId)
+          .orWhereNull('respondents.userId');
+      });
+
+    for (let i = 0; i < surveys.length; i++) {
+      //add a notification
+      await NotificationModel.query()
+        .insert({
+          title: 'We\'d love to hear your thoughts',
+          body: surveys[i].name,
+          itemId: surveys[i].id,
+          model: 'survey',
+          eventType: notificationTypes.comment.replied,
+          recipientId: payload.creatorId,
+          read: false,
+          metadata: { sendEmail: false },
+        });
+
+      await UserSurveyModel.query()
+        .insert({
+          surveyId: surveys[i].id,
+          userId: payload.creatorId
+        });
+    }
+
+  });
+
+  /**
+     * On reaction created
+     */
+  SHooksEventEmitter.on(events.user.reaction.countOnCreate, async (payload) => {
+    const surveys = await SurveyModel.query()
+      .where('frequency', payload.totalReactions)
+      .where('surveyType', 'mne')
+      .where('status', surveyStatus.published)
+      .where('expiry', '>=', raw('now()'))
+      .withGraphJoined('trigger')
+      .where('trigger.name', 'reaction_create')
+      .withGraphJoined('respondents')
+      .where((builder) => {
+        builder.where('respondents.userId', '<>', payload.creatorId)
+          .orWhereNull('respondents.userId');
+      });
+
+    for (let i = 0; i < surveys.length; i++) {
+      //add a notification
+      await NotificationModel.query()
+        .insert({
+          title: 'We\'d love to hear your thoughts',
+          body: surveys[i].name,
+          itemId: surveys[i].id,
+          model: 'survey',
+          eventType: notificationTypes.reaction.created,
+          recipientId: payload.creatorId,
+          read: false,
+          metadata: { sendEmail: false },
         });
 
       await UserSurveyModel.query()
@@ -204,14 +222,14 @@ module.exports = () => {
 
     const surveys = await SurveyModel.query()
       .where('frequency', payload.totalRatings)
-      .where('surveyType','mne')
-      .where('status',  surveyStatus.published)
-      .where('expiry', '>=', new Date().toISOString())
+      .where('surveyType', 'mne')
+      .where('status', surveyStatus.published)
+      .where('expiry', '>=', raw('now()'))
       .withGraphJoined('trigger')
       .where('trigger.name', 'rating_create')
       .withGraphJoined('respondents')
-      .where(  (builder)=>{
-        builder.where('respondents.userId','<>',  payload.creatorId)
+      .where((builder) => {
+        builder.where('respondents.userId', '<>', payload.creatorId)
           .orWhereNull('respondents.userId');
       });
 
@@ -222,11 +240,11 @@ module.exports = () => {
           title: 'We\'d love to hear your thoughts',
           body: surveys[i].name,
           itemId: surveys[i].id,
-          eventType:notificationTypes.rating.created,
+          eventType: notificationTypes.rating.created,
           model: 'survey',
           recipientId: payload.creatorId,
           read: false,
-          metadata: {sendEmail: false},
+          metadata: { sendEmail: false },
         });
 
       await UserSurveyModel.query()

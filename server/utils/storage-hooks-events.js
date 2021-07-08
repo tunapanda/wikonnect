@@ -5,12 +5,16 @@ exports.events = {
   user: {
     chapter: {
       countOnCreate: 'user.chapter.countOnCreate',
-      countOnUpdate: 'user.chapter.countOnUpdate',
+      countOnPublished: 'user.chapter.countOnPublished',
+      countOnApproved: 'user.chapter.countOnApproved',
       countOnShare: 'user.chapter.countOnShare',
     },
     comment: {
       countOnCreate: 'user.comment.countOnCreate',
       countOnUpdate: 'user.comment.countOnUpdate',
+    },
+    reply: {
+      countOnCreate: 'user.reply.countOnCreate',
     },
     session: {
       countOnLogin: 'user.account.countOnLogin',
