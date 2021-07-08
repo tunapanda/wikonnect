@@ -81,14 +81,15 @@
         {{#each this.filteredUsers as |user|}}
           <tr class="border-top-0 border-bottom">
             <td class="user-profile">
-              <div class="d-flex justify-content-start align-items-center">
+              <LinkTo @route="profile.home" @model={{user.id}} target="_blank"
+                      class="d-flex justify-content-start align-items-center text-dark">
                 <div class="image-container">
                   <img src="{{user.profileUri}}" class="user-profile-image" alt="" role="presentation">
                 </div>
                 <div class="details">
                   <span class="name"> {{user.name}}</span>
                 </div>
-              </div>
+              </LinkTo>
             </td>
             <td>
               {{user.totalUserFollowers}}
