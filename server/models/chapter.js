@@ -1,5 +1,3 @@
-const { raw } = require('objection');
-
 const Model = require('./_model');
 const knex = require('../db/db');
 const chapterSchema = require('../db/json_schema/chapterSchema');
