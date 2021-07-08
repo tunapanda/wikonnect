@@ -14,6 +14,28 @@ module.exports = () => {
     unpublished: 'Pending',
     archived: 'Archived',
   };
+  
+  const triggers = {
+    learner:{
+      chapter: {
+        approved: 'chapter_approved',
+        published: 'chapter_publish',
+        completed: 'chapter_completed',
+        attempted: 'chapter_attempted',
+      },
+      comment: {
+        create: 'comment_create',
+        reply: 'comment_reply',
+      },
+      reaction: {
+        create: 'reaction_create',
+      },
+      rating:{
+        create: 'rating_create'
+      }
+    }
+  };
+  
   /**
      * On Chapter Approved
      */
@@ -24,7 +46,7 @@ module.exports = () => {
       .where('surveyType', 'mne') //is default now.Future: there can be dedicated table of survey types.
       .where('expiry', '>=', raw('now()')) // can do for now..(_region difference challenge_)
       .withGraphJoined('trigger')
-      .where('trigger.name', 'chapter_approved')
+      .where('trigger.name', triggers.learner.chapter.approved)
       .withGraphJoined('respondents')
       .where((builder) => {
         builder.where('respondents.userId', '<>', payload.creatorId)
@@ -64,7 +86,7 @@ module.exports = () => {
       .where('surveyType', 'mne') //is default now.Future: there can be dedicated table of survey types.
       .where('expiry', '>=', raw('now()')) // can do for now..(_region difference challenge_)
       .withGraphJoined('trigger')
-      .where('trigger.name', 'chapter_publish')
+      .where('trigger.name',  triggers.learner.chapter.published)
       .withGraphJoined('respondents')
       .where((builder) => {
         builder.where('respondents.userId', '<>', payload.creatorId)
@@ -104,7 +126,7 @@ module.exports = () => {
       .where('surveyType', 'mne')
       .where('expiry', '>=', raw('now()'))
       .withGraphJoined('trigger')
-      .where('trigger.name', 'comment_create')
+      .where('trigger.name',  triggers.learner.comment.create)
       .withGraphJoined('respondents')
       .where((builder) => {
         builder.where('respondents.userId', '<>', payload.creatorId)
@@ -146,7 +168,7 @@ module.exports = () => {
       .where('surveyType', 'mne')
       .where('expiry', '>=', raw('now()'))
       .withGraphJoined('trigger')
-      .where('trigger.name', 'comment_reply')
+      .where('trigger.name',  triggers.learner.comment.reply)
       .withGraphJoined('respondents')
       .where((builder) => {
         builder.where('respondents.userId', '<>', payload.creatorId)
@@ -186,7 +208,7 @@ module.exports = () => {
       .where('status', surveyStatus.published)
       .where('expiry', '>=', raw('now()'))
       .withGraphJoined('trigger')
-      .where('trigger.name', 'reaction_create')
+      .where('trigger.name',  triggers.learner.reaction.create)
       .withGraphJoined('respondents')
       .where((builder) => {
         builder.where('respondents.userId', '<>', payload.creatorId)
@@ -226,7 +248,7 @@ module.exports = () => {
       .where('status', surveyStatus.published)
       .where('expiry', '>=', raw('now()'))
       .withGraphJoined('trigger')
-      .where('trigger.name', 'rating_create')
+      .where('trigger.name', triggers.learner.rating.create)
       .withGraphJoined('respondents')
       .where((builder) => {
         builder.where('respondents.userId', '<>', payload.creatorId)
