@@ -1485,10 +1485,10 @@
   resolved "https://registry.yarnpkg.com/@handlebars/parser/-/parser-1.1.0.tgz#d6dbc7574774b238114582410e8fee0dc3532bdf"
   integrity sha512-rR7tJoSwJ2eooOpYGxGGW95sLq6GXUaS1UtWvN7pei6n2/okYvCGld9vsUTvkl2migxbkszsycwtMf/GEc1k1A==
 
-"@lumieducation/h5p-webcomponents@^7.5.2":
-  version "7.5.2"
-  resolved "https://registry.yarnpkg.com/@lumieducation/h5p-webcomponents/-/h5p-webcomponents-7.5.2.tgz#27bf9d1caa13ba129fede57e79100a12daea1f96"
-  integrity sha512-W2OYZdSuG2M1QTNuwXe2Aap1p+YOA7q79ronibI/B/0h/mBywiM5spCjLmpmbsz4nCeU9+8Hsyin8P2wkLxmKw==
+"@lumieducation/h5p-webcomponents@^8.1.1":
+  version "8.1.1"
+  resolved "https://registry.yarnpkg.com/@lumieducation/h5p-webcomponents/-/h5p-webcomponents-8.1.1.tgz#0e69f397b6895cd225532bd7121ebd38b14ebd28"
+  integrity sha512-Rz32glM9BdqSypMs7CccaBsurfBeSMnbfPAyqJqMz214M1HoXNyVpoqyMAqSGpuNMY9pu7kchM4QGaXsRYS84Q==
   dependencies:
     await-lock "^2.1.0"
     deepmerge "^4.2.2"
