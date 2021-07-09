@@ -104,5 +104,8 @@
   },
   "resolutions": {
     "whatwg-fetch": "3.3.1"
+  },
+  "dependencies": {
+    "torii": "^0.10.1"
   }
 }
