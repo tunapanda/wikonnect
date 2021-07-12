@@ -106,6 +106,7 @@
     "whatwg-fetch": "3.3.1"
   },
   "dependencies": {
+    "perspective-api-client": "^3.1.0",
     "torii": "^0.10.1"
   }
 }
