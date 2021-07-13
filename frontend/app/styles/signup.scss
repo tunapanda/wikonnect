@@ -24,4 +24,30 @@
     display: flex;
     align-items: center;
   }
+
+  .line-text {
+    width: 100%;
+    text-align: center;
+    border-bottom: 1px solid #B0BABF;
+    line-height: 0.1em;
+    margin: 47px 0 40px;
+  }
+
+  .line-text span {
+    background: #fff;
+    color: #3F484D;
+    padding: 0 10px;
+  }
+
+  button {
+    border-color: #f8f8ff;
+  }
+
+  .btn-facebook {
+    background-color: #1877F2;
+  }
+
+  .btn-linkedIn {
+    background-color: #0077B5;
+  }
 }

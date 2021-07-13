@@ -44,3 +44,4 @@ review_ratings:
   feedback:
     title: Feedback sent!
     message: Thanks for your feedback <br> We really appreciate it
+profane_warning: likely to be toxic

@@ -129,3 +129,5 @@ course_preview_card:
 popular_courses_card:
   people_enrolled: "{count, plural,=1 {1 Person Enrolled} other {# People Enrolled}}"
 
+callback:
+  custom: Sit back as we create your account

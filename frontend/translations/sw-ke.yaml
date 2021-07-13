@@ -128,3 +128,5 @@ course_preview_card:
 
 popular_courses_card:
   people_enrolled: "{count, plural,=1 {Mtu 1 aliyejiandikisha} other {Watu waliojiandikisha #}}"
+callback:
+  custom: Kaa chini tunapounda akaunti yako

@@ -25,9 +25,21 @@
 {{#if this.me.isAuthenticated}}
   {{#if this.shouldFormShow}}
     <form class="reply-form" {{on "submit" this.saveReply}}>
-      <Textarea @value={{this.reply}} @class="form-control" @placeholder={{t "single_chapter.comments.reply_here"}}/>
+    <div id="comment-container">
+      <Textarea @id="comment-area" @value={{this.reply}} style={{this.height}}
+      {{on "keyup" this.checkComment }}
+      @class="form-control" @placeholder={{t "single_chapter.comments.reply_here"}}/>
+      {{#if this.errors}}
+      <p class="ml-3">{{this.errors}}% {{t "single_chapter.profane_warning"}}</p>
+      {{/if}}
+    </div>
+    {{#if this.errors}}
+      <button type="submit" disabled class="btn btn-primary my-1">{{t "single_chapter.comments.reply"}}</button>
+      <button type="button" class="btn btn-light my-1" {{on "click" this.toggleForm}}>{{t "buttons.cancel"}}</button>
+    {{ else }}
       <button type="submit" class="btn btn-primary my-1">{{t "single_chapter.comments.reply"}}</button>
       <button type="button" class="btn btn-light my-1" {{on "click" this.toggleForm}}>{{t "buttons.cancel"}}</button>
+    {{/if}}
     </form>
   {{/if}}
 {{/if}}
