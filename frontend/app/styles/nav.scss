@@ -1,17 +1,36 @@
+$palette: (
+  primary: #F57010,
+  white: #FFFF,
+  darkCharcoal: rgba(87, 92, 88, 1),
+  teach: #32A583,
+  eucalyptus: #28A745,
+  cardBoxShadow: rgba(0, 0, 0, 0.29),
+  gray30: #3F484D,
+  gray95: #EBF0F2,
+  aliceBlue: #F7FCFF,
+  bombay: #B2B4B6,
+  bonjour: #EAE7E7,
+  black: #000000,
+  gallery: #F0F0F0,
+);
+
 .main-header {
 
   .navbar-nav {
     .nav-link {
       color: #FFFFFF;
-      &.active{
+
+      &.active {
         color: #FFFFFF;
         font-weight: bold;
       }
-      &:hover,{
+
+      &:hover, {
         color: #FFFFFF;
       }
     }
-    .show>.nav-link{
+
+    .show > .nav-link {
       color: #FFFFFF;
     }
   }
@@ -45,6 +64,36 @@
     -webkit-transform: scaleX(-1);
   }
 }
+
+.wk-tabs-menu.tabs-menu {
+  .nav-item {
+    margin-bottom: -2px;
+
+    .nav-link {
+      color: map-get($palette, gray30);
+      font-size: 16px;
+      font-weight: 600;
+      position: relative;
+
+      &.active:after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        height: 1px;
+        border: solid 2px map-get($palette, primary);
+        width: 80%;
+        left: 50%;
+        transform: translate(-50%, 0);
+      }
+    }
+  }
+
+  &.border-bottom {
+    border-bottom: solid 1px map-get($palette, bombay);
+  }
+}
+
 
 /**
 On large screen

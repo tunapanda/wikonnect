@@ -22,9 +22,14 @@ export default class UserModel extends Model {
   @attr() gender;
   @attr() userRoles;
 
+  @attr('number', { defaultValue: 0 }) totalCoursesEnrolled;
+  @attr('number', { defaultValue: 0 }) totalTagsFollowed;
+  @attr('number', { defaultValue: 0 }) totalUserFollowers;
+
   @hasMany('activity') activities;
   @hasMany('achievement-award') achievementAwards;
   @hasMany('course') enrolledCourses;
+  @hasMany('user-followee') userFollowers;
 
   get badgesEarned() {
     return 0;

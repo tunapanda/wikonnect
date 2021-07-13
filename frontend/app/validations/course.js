@@ -4,6 +4,12 @@ import {
 } from 'ember-changeset-validations/validators';
 
 export default {
-  username: [validatePresence(true), validateLength({ min: 4 })],
-  description: [validatePresence(true), validateLength({ min: 8 })],
+  name: [
+    validatePresence({ presence: true, ignoreBlank: true }),
+    validateLength({ min: 2, max: 50 }),
+  ],
+  description: [
+    validatePresence({ presence: true, ignoreBlank: true }),
+    validateLength({ min: 2, max: 100 }),
+  ],
 };

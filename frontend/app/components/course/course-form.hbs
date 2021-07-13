@@ -1,0 +1,182 @@
+<div class="course-form col-12 " ...attributes>
+  <BsForm @model={{changeset this.model this.courseValidations}}
+          @onSubmit={{this.submitForm}} class="main-form row" as |form|>
+
+    <div class="col-lg-3 image-upload-section">
+      <div class="image-upload-card mb-2">
+        <div class="section-title">{{t "course.form.labels.upload_image"}}</div>
+
+        <File-drop-zone @onDrop={{this.onFilesSelect}} class="file-drop-zone">
+          {{#if this.selectedCourseImageSrc}}
+            <div class="preview-image pt-3 d-flex justify-content-center">
+              <img src="{{this.selectedCourseImageSrc}}" role="presentation" alt="">
+            </div>
+          {{else}}
+            <div class="pt-4 text-center">
+              {{svg-jar "cloud-upload" height="32" width="32" fill="blue"}}
+            </div>
+            <p class="text-center drag-drop-prompt">
+              {{html-safe (t "course.form.labels.drag_drop_prompt")}}
+            </p>
+          {{/if}}
+        </File-drop-zone>
+
+        <Forms::Upload @multiple="false" @accept="image/*" @filesSelected={{this.onFilesSelect}}
+                       @disabled={{@uploader.uploading}} class="w-100">
+          {{#if @uploader.uploading}}
+            <BsProgress as |pg|>
+              <pg.bar @value={{@uploader.progress}} />
+            </BsProgress>
+            {{t "course.form.thumbnail.uploading"}}
+            <span class="loading-spinner"></span>
+            {{@uploader.progress}}%
+          {{else}}
+            {{svg-jar "upload" height="18" width="18" stroke="white"}}
+            {{t "course.form.buttons.file_select"}}
+          {{/if}}
+
+        </Forms::Upload>
+
+      </div>
+
+    </div>
+    <div class="col-lg-4 main-form-section">
+      <form.element @property="name" @label={{t "course.form.labels.title"}}  as |el|>
+        <el.control class="name-input"/>
+      </form.element>
+
+      <form.element @controlType="textarea" @property="description" @label={{t "course.form.labels.description"}}  as
+                    |el|>
+        <el.control class="description-input"/>
+      </form.element>
+
+      {{#if this.predefinedSelectableTags}}
+        <div class="form-group">
+          <label>{{t "course.form.labels.select_tags"}}</label>
+          <div class="predefined-tags">
+            {{#each this.predefinedSelectableTags as |tag|}}
+              <button type="button" class="btn btn-sm tag-action-button m-1"
+                {{on "click"  (fn this.selectPredefinedTag tag )}}>
+                {{tag.name}}
+              </button>
+            {{/each}}
+          </div>
+        </div>
+      {{/if}}
+
+      <div class="form-group">
+        <label>{{t "course.form.labels.add_custom_tag"}}</label>
+        <BsForm @model={{changeset this.tagModel this.tagValidations}} @onSubmit={{this.addCustomTag}}
+                class="mini-form" as |TF|>
+          <TF.element @property="name" as |el|>
+            <el.control class="title-input"/>
+          </TF.element>
+          <TF.submitButton class="btn btn-sm btn-primary">
+            {{t  "course.form.buttons.save_tag"}}
+          </TF.submitButton>
+        </BsForm>
+      </div>
+
+      {{#if this.courseHasTags}}
+        <div class="form-group">
+          <label>{{t "course.form.labels.selected_tags" max=this.maxTagsTotal}}</label>
+          <div class="selected-tags-section">
+            {{#each this.courseTags as |tag|}}
+              <button type="button" class="btn btn-sm tag-action-button m-1 selected"
+                {{on "click"  (fn this.unselectCourseTag tag )}}>
+                {{tag.name}}
+                <span class="close-icon">{{t "close_x"}}</span>
+              </button>
+            {{/each}}
+          </div>
+        </div>
+      {{/if}}
+    </div>
+    <div class="col-lg-5 ">
+      <div class="playlist-manager-section d-flex flex-column">
+        <div class="section-title ">
+          {{t "course.form.labels.playlist"}}
+          <hr class="section-divider w-100 m-0 mt-2">
+        </div>
+        {{#if this.hasPlaylist}}
+          {{#each this.sortedCoursePlaylist as |item index|}}
+            <div class="playlist-item d-flex">
+              <div class="rank-actions d-flex flex-column justify-content-between">
+                <button type="button" class="btn btn-up" {{on "click" (fn this.reorderChapterToPlaylist index -1)}}>
+                  {{svg-jar "chevron-up" height="15" width="17"}}
+                </button>
+                <button type="button" class="btn btn-down"  {{on "click" (fn this.reorderChapterToPlaylist index 1)}}>
+                  {{svg-jar "chevron-down" height="15" width="17"}}
+                </button>
+              </div>
+              <div class="item-thumbnail w-100 d-none d-md-flex">
+                {{#if (eq item.imageUrl null)}}
+                  <img class="card-img-top" alt="" role="presentation"
+                       src="https://placehold.jp/20/{{this.color}}/ffffff/328x200.png?text={{item.name}}">
+                {{else}}
+                  <img src="{{item.imageUrl}}" alt="" role="presentation">
+                {{/if}}
+              </div>
+              <div class="item-details d-flex flex-column w-100">
+                <div class="title">{{title-case (ellipsize item.name 55)}}</div>
+                <div class="description">{{ellipsize item.description 65}}</div>
+                <div class="extra d-flex ">
+                  <div class="author">{{t "course.form.labels.author" name=item.author.name}}</div>
+                  <div class="views"> {{svg-jar "visibility" class="eye-icon" width="15"
+                                                height="15"}} {{item.views}}</div>
+                </div>
+              </div>
+              <div class="remove-action">
+                <button type="button" class="btn-remove" {{on "click" (fn this.removePlaylistItem item)}}>
+                  {{svg-jar "close-circle" width="15"}}
+                </button>
+              </div>
+            </div>
+          {{/each}}
+        {{else}}
+          <div class="playlist-empty-state">
+            {{html-safe (t "course.form.empty_playlist_state")}}
+          </div>
+        {{/if}}
+      </div>
+    </div>
+    <div class="col-12 text-center d-flex d-lg-block p-3 p-lg-0">
+      {{#if form.isSubmitting}}
+        <button type="button" class="btn btn-primary rounded">
+          <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+          {{t "course.form.labels.submitting"}}
+        </button>
+      {{else}}
+        {{#unless this.courseAlreadyPublished}}
+          <button type="button" class="btn btn-outline-primary btn-save-draft"
+            {{on "click" (fn this.beforeSubmit form this.model false)}}>
+            {{t  "course.form.buttons.save_draft"}}
+          </button>
+        {{/unless}}
+
+
+        {{#if this.canPublish }}
+          <button type="button" class="btn btn-primary btn-publish ml-3"
+            {{on "click" (fn this.beforeSubmit form this.model true)}}>
+            {{#if this.courseAlreadyPublished}}
+              {{t  "course.form.buttons.edit_published"}}
+            {{else}}
+              {{t  "course.form.buttons.publish"}}
+            {{/if}}
+          </button>
+        {{else}}
+          <button type="button" class="btn btn-primary btn-publish ml-3" disabled>
+            {{t  "course.form.buttons.publish"}}
+          </button>
+        {{/if}}
+
+
+      {{/if}}
+    </div>
+  </BsForm>
+</div>
+
+{{yield (hash addChapter=this.addChapterToPlaylist
+                playlist=this.playlist
+                removeChapter=this.removePlaylistItem
+        )}}

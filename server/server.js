@@ -79,7 +79,15 @@ router.use(jwt.authenticate, require('./routes/notifications'));
 
 router.use(jwt.authenticate, require('./routes/groups'));
 
-router.use(require('./routes/chapter-tags'));
+router.use(jwt.authenticate, require('./routes/tags'));
+
+router.use(jwt.authenticate, require('./routes/courses'));
+
+router.use(jwt.authenticate, require('./routes/user-followees'));
+
+router.use(jwt.authenticate, require('./routes/tag-followers'));
+
+router.use(jwt.authenticate, require('./routes/course-enrollments'));
 
 router.use(require('./routes/search'));
 
