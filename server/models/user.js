@@ -16,17 +16,17 @@ class User extends Model {
     return ['name'];
   }
 
-  get name(){
-    if(!this.metadata ){
+  get name() {
+    if (!this.metadata) {
       return this.username;
     }
-    if(this.metadata.firstName && this.metadata.lastName){
+    if (this.metadata.firstName && this.metadata.lastName) {
       return `${this.metadata.firstName} ${this.metadata.lastName}`;
     }
-    if(this.metadata.firstName){
+    if (this.metadata.firstName) {
       return `${this.metadata.firstName}`;
     }
-    if(this.metadata.lastName){
+    if (this.metadata.lastName) {
       return `${this.metadata.lastName}`;
     }
     return this.username;
@@ -59,9 +59,8 @@ class User extends Model {
         join: {
           from: 'users.id',
           through: {
-            modelClass: __dirname + '/enrollment',
-            from: 'enrollments.user_id',
-            to: 'enrollments.course_id'
+            from: 'course_enrollment.userId',
+            to: 'course_enrollment.courseId'
           },
           to: 'courses.id'
         }
@@ -88,12 +87,93 @@ class User extends Model {
         join: {
           from: 'users.id',
           through: {
-            from: 'group_members.user_id',
-            to: 'group_members.group_id'
+            from: 'group_members.userId',
+            to: 'group_members.groupId'
           },
           to: 'groups.id'
         }
-      }
+      },
+      followees: {
+        relation: Model.ManyToManyRelation,
+        modelClass: __dirname + '/user',
+        join: {
+          from: 'users.id',
+          through: {
+            to: 'user_followers.followeeId',
+            from: 'user_followers.userId',
+            extra: {
+              subscriptionId: 'id'
+            },
+          },
+          to: 'users.id'
+        }
+      },
+      followers: {
+        relation: Model.ManyToManyRelation,
+        modelClass: __dirname + '/user',
+        join: {
+          from: 'users.id',
+          through: {
+            to: 'user_followers.userId',
+            from: 'user_followers.followeeId',
+            extra: {
+              subscriptionId: 'id'
+            },
+          },
+          to: 'users.id'
+        }
+      },
+
+      userFollowers: {
+        relation: Model.HasManyRelation,
+        modelClass: __dirname + '/user-follower',
+        join: {
+          from: 'users.id',
+          to: 'user_followers.followeeId' //perspective: my followers
+        }
+      },
+      userFollowees: {
+        relation: Model.HasManyRelation,
+        modelClass: __dirname + '/user-follower',
+        join: {
+          from: 'users.id',
+          to: 'user_followers.userId', //perspective: people I am following
+        }
+      },
+      tagsFollowing: {
+        relation: Model.HasManyRelation,
+        modelClass: __dirname + '/tag-follower',
+        join: {
+          from: 'users.id',
+          to: 'tag_followers.userId'
+        }
+      },
+      courseEnrollments: {
+        relation: Model.HasManyRelation,
+        modelClass: __dirname + '/course-enrollment',
+        join: {
+          from: 'users.id',
+          to: 'course_enrollment.userId'
+        }
+      },
+      chapters: {
+        relation: Model.HasManyRelation,
+        modelClass: __dirname + '/chapter',
+        join: {
+          from: 'users.id',
+          to: 'chapters.creatorId'
+        }
+      },
+      courses: {
+        relation: Model.HasManyRelation,
+        modelClass: __dirname + '/course',
+        join: {
+          from: 'users.id',
+          to: 'courses.creatorId'
+        }
+      },
+
+
     };
   }
 
@@ -104,7 +184,10 @@ class User extends Model {
       },
       selectNameAndProfile: (builder) => {
         builder.select('username', 'profileUri');
-      }
+      },
+      selectBasicInfo: (query) => {
+        query.select('users.id', 'username', 'metadata', 'profileUri','email');
+      },
     };
   }
 }

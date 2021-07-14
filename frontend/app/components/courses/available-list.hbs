@@ -1,0 +1,31 @@
+<div class="row" ...attributes>
+  {{#each this.courses as |course|}}
+    <Course::PreviewCard @course={{course}} class="course-preview mb-4 {{if @col @col "col-sm-12 col-md-4 col-xl-3"}}">
+
+      <div class="w-100 text-right course-actions pt-3">
+
+        {{#if (exec this.isEnrolled course)}}
+          <button type="button"  {{on "click" (fn this.disenroll course)}}
+                  class="btn btn-outline-primary btn-sm btn-disenroll">
+            {{svg-jar "tick" height="15" width="15"}}
+            {{t "course.buttons.disenroll"}}
+          </button>
+        {{else}}
+          <button type="button"  {{on "click" (fn this.enroll course)}}
+                  class="btn btn-outline-primary btn-sm  btn-enroll">
+            {{t "course.buttons.enroll"}}
+            {{#unless this.me.id}}
+              <BsTooltip>{{t "course.errors.login_to_enroll"}}</BsTooltip>
+            {{/unless}}
+          </button>
+        {{/if}}
+        <LinkTo @route="course.show" @model={{course.id}}
+                class="btn btn-primary btn-sm border-0 btn-view-course">
+          {{t "course.buttons.view_course"}}
+        </LinkTo>
+
+      </div>
+
+    </Course::PreviewCard>
+  {{/each}}
+</div>

@@ -1,0 +1,17 @@
+<div class="container pb-2 pl-0">
+  <div class="nav tabs-menu wk-tabs-menu border-bottom ">
+    <div class="nav-item">
+      <LinkTo @route="learn.courses.available" class="nav-link">
+        {{t "learner_menu.available_courses"}}
+      </LinkTo>
+    </div>
+    <div class="nav-item">
+      <LinkTo @route="learn.courses.enrolled" class="nav-link text-dark">
+        {{t "learner_menu.enrolled_courses"}}
+      </LinkTo>
+    </div>
+  </div>
+</div>
+<div class="container pb-5">
+  {{outlet}}
+</div>

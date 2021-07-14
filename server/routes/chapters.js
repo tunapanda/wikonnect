@@ -14,7 +14,7 @@ const Chapter = require('../models/chapter');
 const Rating = require('../models/rating');
 const Counter = require('../models/counter');
 const permController = require('../middleware/permController');
-const validateGetChapter = require('../middleware/validateRequests/chapterGetValidation');
+const { ChapterGetValidation } = require('../middleware/request-validations/chapter');
 const Reaction = require('../models/reaction');
 const { getProfileImage } = require('../utils/routesUtils/userRouteUtils');
 const { eventEmitter } = require('./../utils/event-emitter');
@@ -31,11 +31,14 @@ const router = new Router({
  * @apiPermission none
  * @apiDescription Get all chapters. Filter enabled through query params using available chapter properties
  *
- * @apiParam  (Query Params) {String} [chapter[name]] Query by chapter
- * @apiParam  (Query Params) {String} [chapter[status]] Query by chapter status - published | draft
- * @apiParam  (Query Params) {String} [chapter[creatorId]] Query by author of a chapter
- * @apiParam  (Query Params) {Boolean} [chapter[approved]] Query by approval status
- * @apiParam  (Query Params) {String} [chapter[tags]] Query by tags-separated by comma
+ * @apiParam  (Query Params) {String} [name] Query by chapter name
+ * @apiParam  (Query Params) {String} [slug] Query by chapter slug
+ * @apiParam  (Query Params) {String} [status] Query by chapter status - published | draft
+ * @apiParam  (Query Params) {String} [creatorId] Query by author of a chapter
+ * @apiParam  (Query Params) {Boolean} [approved] Query by approval status
+ * @apiParam  (Query Params) {String} [tags] Query by tag identifier-(separated by comma)
+ * @apiParam  (Query Params) {Number} [page] Seek chapters by page number
+ * @apiParam  (Query Params) {Number} [per_page] Number of items to return per page
  *
  * @apiHeader {String} [Authorization] Bearer << JWT here>>
  *
@@ -57,10 +60,9 @@ const router = new Router({
  *            "createdAt": "2017-12-20T16:17:10.000Z",
  *            "updatedAt": "2017-12-20T16:17:10.000Z",
  *            "contentType": "h5p",
- *            "contentUri": "/uploads/h5p/chapter1",
+ *            "contentUri": "",
  *            "imageUrl": null,
- *            "tags": [ "highschool", "university" ],
- *            "contentId": null,
+ *            "contentId": "3532080528",
  *            "approved": true,
  *            "verified": true,
  *            "topics": null,
@@ -79,7 +81,8 @@ const router = new Router({
  *                "username": "user1",
  *                "profileUri": null,
  *                "lastSeen": "2021-02-25T09:19:08.239Z"
- *            }
+ *            },
+ *         "tags": [{ "id": "JCjap-qAAu0",  "name": "Test On", "slug": "test-one",  "type": "tag" }]
  *        }]
  *    }
  *
@@ -87,7 +90,7 @@ const router = new Router({
  *
  */
 
-router.get('/', permController.requireAuth, validateGetChapter, async ctx => {
+router.get('/', permController.requireAuth, ChapterGetValidation, async ctx => {
   let stateUserId = ctx.state.user.id == undefined ? ctx.state.user.data.id : ctx.state.user.id;
 
   let { page, per_page } = ctx.query;
@@ -98,8 +101,8 @@ router.get('/', permController.requireAuth, validateGetChapter, async ctx => {
   try {
     if (ctx.query.tags) {
       queryTags = ctx.query.tags.split(',');
-      delete ctx.query.tags;
     }
+    delete ctx.query.tags;
     // View counter for each chapter
     chapter = await Chapter.query()
       .select([
@@ -125,14 +128,15 @@ router.get('/', permController.requireAuth, validateGetChapter, async ctx => {
           .as('authenticated_user_reaction_id')
       ])
       .where(ctx.query)
-      .where((builder)=>{
+      .onBuild((builder) => {
         if (queryTags.length > 0) {
-          builder.where('tags', '@>', queryTags);
+          builder.whereExists(
+            Chapter.relatedQuery('tags').whereIn('tags.id', queryTags));
         }
       })
       .page(page, per_page)
       .withGraphFetched(
-        '[reaction(reactionAggregate), flag(selectFlag),author()]'
+        '[reaction(reactionAggregate), flag(selectFlag),author(), tags(selectBasicInfo)]'
       )
       .orderBy('createdAt', 'desc');
 
@@ -198,7 +202,7 @@ router.get('/', permController.requireAuth, validateGetChapter, async ctx => {
 
 /**
  * @api {get} /api/v1/chapters/:id GET single chapter.
- * @apiName GetAChapter
+ * @apiName Get a chapter by id
  * @apiGroup Chapters
  * @apiPermission none
  * @apiVersion 0.4.0
@@ -223,10 +227,9 @@ router.get('/', permController.requireAuth, validateGetChapter, async ctx => {
  *            "createdAt": "2017-12-20T16:17:10.000Z",
  *            "updatedAt": "2017-12-20T16:17:10.000Z",
  *            "contentType": "h5p",
- *            "contentUri": "/uploads/h5p/chapter1",
+ *            "contentUri": "",
  *            "imageUrl": "/uploads/images/content/chapters/chapter1.jpeg",
- *            "contentId": null,
- *            "tags": [],
+ *            "contentId": "3532080528",
  *            "likes": "0",
  *            "dislikes": "0",
  *            "rating": null,
@@ -242,7 +245,8 @@ router.get('/', permController.requireAuth, validateGetChapter, async ctx => {
  *              "authenticated_user": "like",
  *              "reaction.id": "",
  *              "dislikes": 1
- *            }]
+ *            }],
+ *         "tags": [{ "id": "JCjap-qAAu0",  "name": "Test On", "slug": "test-one",  "type": "tag" }]
  *         }
  *      }
  *
@@ -274,7 +278,7 @@ router.get('/:id', permController.requireAuth, async ctx => {
       ])
       .where({ 'chapters.id': ctx.params.id })
       .withGraphFetched(
-        '[reaction(reactionAggregate), flag(selectFlag),author()]'
+        '[reaction(reactionAggregate), flag(selectFlag),author(),tags(selectBasicInfo)]'
       );
     ctx.assert(results[0], 404, 'Chapter not found');
     const chapter = results[0];
@@ -315,7 +319,7 @@ router.get('/:id', permController.requireAuth, async ctx => {
  * @apiParam (Request Body) {String} chapter[description] Description of the chapter.
  * @apiParam (Request Body) {String} chapter[status] Chapter status - published | draft
  * @apiParam (Request Body) {Boolean} [chapter[approved]] If chapter has been approved: Default is false
- * @apiParam (Request Body) {Object[]} [chapter[tags]] Tags list.
+ * @apiParam (Request Body) {Object[]} [chapter[tags]] Array of chapter tags Ids in JSON format
  * @apiParam (Request Body) {Object[]} [chapter[reviewQuestions]] An array of review question categories.
  *
  * @apiSampleRequest off
@@ -334,12 +338,12 @@ router.get('/:id', permController.requireAuth, async ctx => {
  *        "createdAt": "2017-12-20T16:17:10.000Z",
  *        "updatedAt": "2017-12-20T16:17:10.000Z",
  *        "contentType": "h5p",
- *        "contentUri": "/uploads/h5p/chapter4",
+ *        "contentUri": "",
  *        "imageUrl": null,
- *        "contentId": null,
+ *        "contentId": "3532080528",
  *        "reviewQuestions":["audioVideoQuality", "soundQuality", "videoQuality", "creativity"],
- *        "tags": [],
- *        "approved": false
+ *        "approved": false,
+ *         "tags": [{ "id": "JCjap-qAAu0",  "name": "Test On", "slug": "test-one",  "type": "tag" }]
  *      }
  *
  * @apiErrorExample {json} List error
@@ -358,7 +362,11 @@ router.post('/', permController.requireAuth, async ctx => {
 
   let chapter;
   try {
-    chapter = await Chapter.query().insertAndFetch(newChapter);
+    chapter =
+        await Chapter.transaction( tsx => {
+          return Chapter.query(tsx)
+            .insertGraphAndFetch(newChapter, { relate: ['tags'] });
+        });
   } catch (e) {
     if (e.statusCode) {
       ctx.throw(e.statusCode, null, { errors: [e.message] });
@@ -390,18 +398,17 @@ router.post('/', permController.requireAuth, async ctx => {
  * @apiParam (Request Body) {String} [chapter[description]] Description of the chapter.
  * @apiParam (Request Body) {String} [chapter[status]] Chapter status - published | draft
  * @apiParam (Request Body) {Boolean} [chapter[approved]] If chapter has been approved: Default is false
- * @apiParam (Request Body) {Object[]} [chapter[tags]] Tags list.
+ * @apiParam (Request Body) {Object[]} [chapter[tags]] Array of chapter tags Ids in JSON format
  * @apiParam (Request Body) {Object[]} [chapter[reviewQuestions]] An array of review question categories.
  *
  * @apiSampleRequest /api/v1/chapters/:id
  *
- * @apiSuccess {Object[]} chapter[object] Object data
+ * @apiSuccess {Object} chapter[object] Object data
  * @apiErrorExample {json} List error
  *    HTTP/1.1 500 Internal Server Error
  */
 router.put('/:id', permController.requireAuth, async ctx => {
   let chapterData = ctx.request.body.chapter;
-  if (chapterData.id) delete chapterData.id;
   //TODO: enable permissions checking so only allowed users can approve and verify
 
   const chapterCheck = await Chapter.query().findById(ctx.params.id);
@@ -410,7 +417,10 @@ router.put('/:id', permController.requireAuth, async ctx => {
   const justPublished = chapterCheck.status !== 'published' && chapterData.status === 'published';
   const justApproved = (!chapterCheck.approved || chapterCheck.approved !== true) && chapterData.approved === true;
   try {
-    const chapter = await chapterCheck.$query().patchAndFetchById(ctx.params.id, chapterData);
+    const chapter = await Chapter.transaction( tsx => {
+      return Chapter.query(tsx)
+        .upsertGraphAndFetch({...chapterData, id: ctx.params.id}, {relate: ['tags'], unrelate: ['tags']});
+    });
 
     // emit a Node event if it has just been published
     if (justPublished) {
@@ -445,7 +455,7 @@ router.put('/:id', permController.requireAuth, async ctx => {
  * @apiParam (URI Param) {String} id Id of the chapter to delete
  *
  * @apiSuccessExample {json} Success-Response:
- *     HTTP/1.1 201 OK
+ *     HTTP/1.1 200 OK
  *     { }
  *
  */
@@ -453,15 +463,14 @@ router.delete('/:id', permController.requireAuth, async ctx => {
   const chapter = await Chapter.query().findById(ctx.params.id);
   ctx.assert(chapter, 404, 'No chapter with that identifier was found');
 
-  await Chapter.query()
-    .delete()
-    .where({ id: ctx.params.id });
+  await chapter.$query()
+    .delete();
 
   if (chapter.approved && chapter.approved === true) {
     eventEmitter.emit(eventCodes.approvedChapter.deleted, chapter);
   }
   ctx.status = 200;
-  ctx.body = { chapter };
+  ctx.body = { };
 });
 
 

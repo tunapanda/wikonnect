@@ -1,0 +1,9 @@
+<label class=" d-flex justify-content-between align-items-center">
+  {{title-case  @tag.name}}
+  {{#if this.isSelected}}
+    <Input @type="checkbox" class="checkbox wik-checkbox" {{on "change" (fn @toggleSelection @tag) }}
+           @checked={{true}}/>
+  {{else}}
+    <Input @type="checkbox" class="checkbox wik-checkbox" {{on "change" (fn @toggleSelection @tag) }} />
+  {{/if}}
+</label>

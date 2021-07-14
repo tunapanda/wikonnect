@@ -1,6 +1,265 @@
 [
   {
     "type": "get",
+    "url": "/api/v1/accounts-following",
+    "title": "GET all accounts user follows",
+    "name": "GET_all_accounts_user_follows",
+    "group": "Accounts_Following",
+    "permission": [
+      {
+        "name": "authenticated user"
+      }
+    ],
+    "version": "0.4.0",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Bearer &lt;&lt; JWT here&gt;&gt;</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "accountsFollowing",
+            "description": "<p>Top level object</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "accountsFollowing[id]",
+            "description": "<p>the id of the following</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "accountsFollowing[userId]",
+            "description": "<p>the id of the user</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "accountsFollowing[followingId]",
+            "description": "<p>the id account user is following</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "accountsFollowing[createdAt]",
+            "description": "<p>date account following was created</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "accountsFollowing[updatedAt]",
+            "description": "<p>date account following was updated</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n     {\n        \"accountsFollowing\":[{\n         \"id\": \"JBp56KQAA7c\",\n         \"userId\": \"user1\",\n         \"followingId\": \"JB0yRrGAAd0\",\n         \"createdAt\": \"2021-06-23T14:16:56.796Z\",\n         \"updatedAt\": \"2021-06-23T14:16:56.796Z\"\n         }]\n       }",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "server/routes/accounts-following.js",
+    "groupTitle": "Accounts_Following",
+    "sampleRequest": [
+      {
+        "url": "https://app.wikonnect.org/api/v1/accounts-following"
+      }
+    ]
+  },
+  {
+    "type": "post",
+    "url": "/api/v1/accounts-following",
+    "title": "POST user account following",
+    "name": "POST_a_user_account_following",
+    "group": "Accounts_Following",
+    "permission": [
+      {
+        "name": "authenticated user"
+      }
+    ],
+    "version": "0.4.0",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Bearer &lt;&lt; JWT here&gt;&gt;</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Request Body": [
+          {
+            "group": "Request Body",
+            "type": "Object",
+            "optional": false,
+            "field": "accountsFollowing",
+            "description": "<p>Top level object</p>"
+          },
+          {
+            "group": "Request Body",
+            "type": "String",
+            "optional": false,
+            "field": "accountsFollowing[followingId]",
+            "description": "<p>the id account user is following</p>"
+          },
+          {
+            "group": "Request Body",
+            "type": "String",
+            "optional": true,
+            "field": "accountsFollowing[userId]",
+            "defaultValue": "JWTToken.user.id",
+            "description": "<p>Id of the user enrolling.</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "accountsFollowing",
+            "description": "<p>Top level object</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "accountsFollowing[id]",
+            "description": "<p>the id of the following</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "accountsFollowing[followingId]",
+            "description": "<p>the id account user is following</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "accountsFollowing[userId]",
+            "description": "<p>the id of the user</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "accountsFollowing[createdAt]",
+            "description": "<p>date account following was created</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "accountsFollowing[updatedAt]",
+            "description": "<p>date account following was updated</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n     {\n        \"accountsFollowing\":{\n         \"id\": \"JBp56KQAA7c\",\n         \"userId\": \"user1\",\n         \"followingId\": \"JB0yRrGAAd0\",\n         \"createdAt\": \"2021-06-23T14:16:56.796Z\",\n         \"updatedAt\": \"2021-06-23T14:16:56.796Z\"\n         }\n       }",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "server/routes/accounts-following.js",
+    "groupTitle": "Accounts_Following",
+    "sampleRequest": [
+      {
+        "url": "https://app.wikonnect.org/api/v1/accounts-following"
+      }
+    ]
+  },
+  {
+    "type": "delete",
+    "url": "/api/v1/accounts-following/:id",
+    "title": "Unfollow account",
+    "name": "Unfollow_user_account",
+    "group": "Accounts_Following",
+    "permission": [
+      {
+        "name": "authenticated user"
+      }
+    ],
+    "version": "0.4.0",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Bearer &lt;&lt; JWT here&gt;&gt;</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "URI Param": [
+          {
+            "group": "URI Param",
+            "type": "String",
+            "optional": false,
+            "field": "id",
+            "description": "<p>Account following Id</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 201 OK\n{ }",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "server/routes/accounts-following.js",
+    "groupTitle": "Accounts_Following",
+    "sampleRequest": [
+      {
+        "url": "https://app.wikonnect.org/api/v1/accounts-following/:id"
+      }
+    ]
+  },
+  {
+    "type": "get",
     "url": "/api/v1/achievementAwards",
     "title": "POST create a achievements.",
     "name": "GetAchievementAwards",
@@ -2189,6 +2448,66 @@
     "groupTitle": "ChapterComments"
   },
   {
+    "type": "get",
+    "url": "/api/v1/chapter-tags",
+    "title": "GET all chapter tags",
+    "name": "Get_chapter_tags",
+    "group": "Chapter_Tags",
+    "permission": [
+      {
+        "name": "none"
+      }
+    ],
+    "version": "0.4.0",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": true,
+            "field": "Authorization",
+            "description": "<p>Bearer &lt;&lt; JWT here&gt;&gt;</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Object[]",
+            "optional": false,
+            "field": "chapterTags",
+            "description": "<p>Top level object</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "chapterTags[name]",
+            "description": "<p>A label for the tag</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"chapterTags\":[{\"name\": \"Digital Literacy\" }]\n }",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "server/routes/chapter-tags.js",
+    "groupTitle": "Chapter_Tags",
+    "sampleRequest": [
+      {
+        "url": "https://app.wikonnect.org/api/v1/chapter-tags"
+      }
+    ]
+  },
+  {
     "type": "delete",
     "url": "/api/v1/review/:id",
     "title": "Delete a chapter",
@@ -2748,6 +3067,1338 @@
     },
     "filename": "server/routes/chapters.js",
     "groupTitle": "Chapters"
+  },
+  {
+    "type": "delete",
+    "url": "/api/v1/courses/:id",
+    "title": "Delete a course",
+    "name": "DELETE_a_course_by_Id",
+    "group": "Courses",
+    "permission": [
+      {
+        "name": "authenticated user"
+      }
+    ],
+    "version": "0.4.0",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Bearer &lt;&lt; JWT here&gt;&gt;</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "URI Param": [
+          {
+            "group": "URI Param",
+            "type": "String",
+            "optional": false,
+            "field": "id",
+            "description": "<p>Id of the course to delete</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 201 OK\n{ }",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "server/routes/courses.js",
+    "groupTitle": "Courses",
+    "sampleRequest": [
+      {
+        "url": "https://app.wikonnect.org/api/v1/courses/:id"
+      }
+    ]
+  },
+  {
+    "type": "get",
+    "url": "/api/v1/courses/:id",
+    "title": "GET course by Id",
+    "name": "Get_a_course_by_Id",
+    "group": "Courses",
+    "permission": [
+      {
+        "name": "[authenticated user]"
+      }
+    ],
+    "version": "0.4.0",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": true,
+            "field": "Authorization",
+            "description": "<p>Bearer &lt;&lt; JWT here&gt;&gt;</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "URI Param": [
+          {
+            "group": "URI Param",
+            "type": "String",
+            "optional": false,
+            "field": "id",
+            "description": "<p>tag id</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "course",
+            "description": "<p>Top level object</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "course[id]",
+            "description": "<p>the id of the course</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "course[name]",
+            "description": "<p>the name of the course</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "course[slug]",
+            "description": "<p>user friendly course url pathname</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "course[description]",
+            "description": "<p>A short course description</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "course[status]",
+            "description": "<p><strong>published</strong> or <strong> draft</strong></p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "course[thumbnailUrl]",
+            "description": "<p>course image url</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "course[totalEnrolled]",
+            "description": "<p>total users enrolled to the course</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "course[tags]",
+            "defaultValue": "null",
+            "description": "<p>Tags tied to the course. Refer to the tag object properties</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "course[playlist]",
+            "defaultValue": "null",
+            "description": "<p>Chapters in the course playlist + rank.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "course[type]",
+            "defaultValue": "course",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "course[metadata]",
+            "defaultValue": "null",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "course[creatorId]",
+            "description": "<p>Id of the user who created the tag</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "course[createdAt]",
+            "description": "<p>date course was created</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "course[updatedAt]",
+            "description": "<p>date course was updated</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n     {\n        \"course\":{\n         \"id\": \"JBp56KQAA7c\",\n         \"name\": \"A sample course\",\n         \"slug\": \"a-sample-course\",\n         \"description\": \"This is a demo description d\",\n         \"status\": \"publish\",\n         \"creatorId\": \"user1\",\n         \"metadata\": null,\n         \"createdAt\": \"2021-06-22T07:14:21.079Z\",\n         \"updatedAt\": \"2021-06-22T07:55:24.615Z\",\n         \"thumbnailUrl\": \"/uploads/images/courses/HaKKzfAN03D.jpg\",\n         \"totalEnrolled\": \"0\",\n         \"type\": \"course\"\n         \"tags\":[{\"id\": \"JBpWJMOAAnE\", \"name\": \"Internet Basics\", \"slug\": \"internet-basics\".....}],\n         \"playlist\":[{\"id\": \"JBpWJJeAAbg\", \"status\": \"published\",\"name\": \"dolorem eaque sint\",…]\n         }\n       }",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "server/routes/courses.js",
+    "groupTitle": "Courses",
+    "sampleRequest": [
+      {
+        "url": "https://app.wikonnect.org/api/v1/courses/:id"
+      }
+    ]
+  },
+  {
+    "type": "get",
+    "url": "/api/v1/courses",
+    "title": "GET all courses",
+    "name": "Get_all_courses",
+    "group": "Courses",
+    "permission": [
+      {
+        "name": "[authenticated user]"
+      }
+    ],
+    "version": "0.4.0",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": true,
+            "field": "Authorization",
+            "description": "<p>Bearer &lt;&lt; JWT here&gt;&gt;</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Query Params": [
+          {
+            "group": "Query Params",
+            "type": "String",
+            "optional": true,
+            "field": "id",
+            "description": "<p>specified course id to filter with</p>"
+          },
+          {
+            "group": "Query Params",
+            "type": "String",
+            "optional": true,
+            "field": "name",
+            "description": "<p>specified course name to filter with</p>"
+          },
+          {
+            "group": "Query Params",
+            "type": "String",
+            "optional": true,
+            "field": "slug",
+            "description": "<p>filter with user friendly course url pathname</p>"
+          },
+          {
+            "group": "Query Params",
+            "type": "String",
+            "optional": true,
+            "field": "status",
+            "description": "<p>filter with course status i.e. published or draft</p>"
+          },
+          {
+            "group": "Query Params",
+            "type": "String",
+            "optional": true,
+            "field": "creatorId",
+            "description": "<p>filter tags by course author Id</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "courses",
+            "description": "<p>Top level object</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "course[id]",
+            "description": "<p>the id of the course</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "course[name]",
+            "description": "<p>the name of the course</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "course[slug]",
+            "description": "<p>user friendly course url pathname</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "course[description]",
+            "description": "<p>A short course description</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "course[status]",
+            "description": "<p><strong>published</strong> or <strong> draft</strong></p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "course[thumbnailUrl]",
+            "description": "<p>course image url</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "course[totalEnrolled]",
+            "description": "<p>total users enrolled to the course</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "course[tags]",
+            "defaultValue": "null",
+            "description": "<p>Tags tied to the course. Refer to the tag object for properties</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "course[type]",
+            "defaultValue": "course",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "course[metadata]",
+            "defaultValue": "null",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "course[creatorId]",
+            "description": "<p>Id of the user who created the tag</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "course[createdAt]",
+            "description": "<p>date course was created</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "course[updatedAt]",
+            "description": "<p>date course was updated</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n     {\n        \"courses\":[{\n         \"id\": \"JBp56KQAA7c\",\n         \"name\": \"A sample course\",\n         \"slug\": \"a-sample-course\",\n         \"description\": \"This is a demo description d\",\n         \"status\": \"publish\",\n         \"creatorId\": \"user1\",\n         \"metadata\": null,\n         \"createdAt\": \"2021-06-22T07:14:21.079Z\",\n         \"updatedAt\": \"2021-06-22T07:55:24.615Z\",\n         \"thumbnailUrl\": \"/uploads/images/courses/HaKKzfAN03D.jpg\",\n         \"totalEnrolled\": \"0\",\n         \"type\": \"course\"\n         \"tags\":[{\"id\": \"JBpWJMOAAnE\", \"name\": \"Internet Basics\", \"slug\": \"internet-basics\".....}]\n         }]\n     }",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "server/routes/courses.js",
+    "groupTitle": "Courses",
+    "sampleRequest": [
+      {
+        "url": "https://app.wikonnect.org/api/v1/courses"
+      }
+    ]
+  },
+  {
+    "type": "put",
+    "url": "/api/v1/courses/:id",
+    "title": "PUT a course",
+    "name": "PUT_a_course_by_Id",
+    "group": "Courses",
+    "permission": [
+      {
+        "name": "authenticated user"
+      }
+    ],
+    "version": "0.4.0",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Bearer &lt;&lt; JWT here&gt;&gt;</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "URI Param": [
+          {
+            "group": "URI Param",
+            "type": "String",
+            "optional": false,
+            "field": "id",
+            "description": "<p>Id of the course to update</p>"
+          }
+        ],
+        "Request Body": [
+          {
+            "group": "Request Body",
+            "type": "Object",
+            "optional": false,
+            "field": "courses",
+            "description": "<p>Top level object</p>"
+          },
+          {
+            "group": "Request Body",
+            "type": "String",
+            "optional": false,
+            "field": "course[name]",
+            "description": "<p>the name of the course</p>"
+          },
+          {
+            "group": "Request Body",
+            "type": "String",
+            "optional": false,
+            "field": "course[slug]",
+            "description": "<p>user friendly course url pathname</p>"
+          },
+          {
+            "group": "Request Body",
+            "type": "String",
+            "optional": false,
+            "field": "course[description]",
+            "description": "<p>A short course description</p>"
+          },
+          {
+            "group": "Request Body",
+            "type": "String",
+            "optional": false,
+            "field": "course[status]",
+            "description": "<p><strong>published</strong> or <strong> draft</strong></p>"
+          },
+          {
+            "group": "Request Body",
+            "type": "Object",
+            "optional": false,
+            "field": "course[tags]",
+            "description": "<p>Array/object with course tags Ids</p>"
+          },
+          {
+            "group": "Request Body",
+            "type": "Object",
+            "optional": false,
+            "field": "course[playlist]",
+            "description": "<p>Array/object with course chapter Ids</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "course",
+            "description": "<p>Top level object</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "course[id]",
+            "description": "<p>the id of the course</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "course[name]",
+            "description": "<p>the name of the course</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "course[slug]",
+            "description": "<p>user friendly course url pathname</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "course[description]",
+            "description": "<p>A short course description</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "course[status]",
+            "description": "<p><strong>published</strong> or <strong> draft</strong></p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "course[thumbnailUrl]",
+            "description": "<p>course image url</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "course[tags]",
+            "defaultValue": "null",
+            "description": "<p>Tags tied to the course. Refer to the tag object for properties</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "course[playlist]",
+            "defaultValue": "null",
+            "description": "<p>Chapters in the course playlist and their rank on the playlist.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "course[type]",
+            "defaultValue": "course",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "course[metadata]",
+            "defaultValue": "null",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "course[creatorId]",
+            "description": "<p>Id of the user who created the tag</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "course[createdAt]",
+            "description": "<p>date course was created</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "course[updatedAt]",
+            "description": "<p>date course was updated</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n     {\n       \"course\":{\n          \"id\": \"JBrs6hiAA7s\",\n          \"name\": \"Test course\",\n          \"slug\": \"test-course\",\n          \"description\": \"This is a sample description\",\n          \"status\": \"draft\",\n          \"creatorId\": \"user1\",\n          \"metadata\": null,\n          \"createdAt\": \"2021-06-22T11:25:35.109Z\",\n          \"updatedAt\": \"2021-06-22T11:25:35.109Z\",\n          \"thumbnailUrl\": \"/uploads/images/courses/HaKKzfAN03D.jpg\",\n          \"type\": \"course\"\n          \"tags\":[{\"id\": \"JBpWJMOAAnE\", \"name\": \"Internet Basics\", \"slug\": \"internet-basics\",…],\n          \"playlist\":[{\"id\": \"JBpWJJeAAbg\", \"status\": \"published\",\"name\": \"dolorem eaque sint\",…],\n        }\n     }",
+          "type": "json"
+        }
+      ]
+    },
+    "examples": [
+      {
+        "title": "Sample Request Body:",
+        "content": "{\n  \"course\":{\n    \"name\": \"Test course\",\n    \"description\": \"This is a sample description\",\n    \"status\": \"draft\",\n    \"tags\":[{  \"id\": \"JBpWJMOAAnE\"},{  \"id\":\"JBpWJMOAAnI\" }],\n    \"playlist\":[{\"id\":\"JBpWJJeAAbg\",\"rank\":\"02\"}, {\"id\":\"JBpWJJgAAbo\",\"rank\":\"01\"}]\n }",
+        "type": "json"
+      }
+    ],
+    "filename": "server/routes/courses.js",
+    "groupTitle": "Courses",
+    "sampleRequest": [
+      {
+        "url": "https://app.wikonnect.org/api/v1/courses/:id"
+      }
+    ]
+  },
+  {
+    "type": "post",
+    "url": "/api/v1/courses",
+    "title": "POST a course",
+    "name": "Post_a_course",
+    "group": "Courses",
+    "permission": [
+      {
+        "name": "authenticated user"
+      }
+    ],
+    "version": "0.4.0",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Bearer &lt;&lt; JWT here&gt;&gt;</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Request Body": [
+          {
+            "group": "Request Body",
+            "type": "Object",
+            "optional": false,
+            "field": "courses",
+            "description": "<p>Top level object</p>"
+          },
+          {
+            "group": "Request Body",
+            "type": "String",
+            "optional": false,
+            "field": "course[name]",
+            "description": "<p>the name of the course</p>"
+          },
+          {
+            "group": "Request Body",
+            "type": "String",
+            "optional": false,
+            "field": "course[slug]",
+            "description": "<p>user friendly course url pathname</p>"
+          },
+          {
+            "group": "Request Body",
+            "type": "String",
+            "optional": false,
+            "field": "course[description]",
+            "description": "<p>A short course description</p>"
+          },
+          {
+            "group": "Request Body",
+            "type": "String",
+            "optional": false,
+            "field": "course[status]",
+            "description": "<p><strong>published</strong> or <strong> draft</strong></p>"
+          },
+          {
+            "group": "Request Body",
+            "type": "Object",
+            "optional": false,
+            "field": "course[tags]",
+            "description": "<p>Array/object with course tags Ids</p>"
+          },
+          {
+            "group": "Request Body",
+            "type": "Object",
+            "optional": false,
+            "field": "course[playlist]",
+            "description": "<p>Array/object with course chapter Ids + respective rank</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "course",
+            "description": "<p>Top level object</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "course[id]",
+            "description": "<p>the id of the course</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "course[name]",
+            "description": "<p>the name of the course</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "course[slug]",
+            "description": "<p>user friendly course url pathname</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "course[description]",
+            "description": "<p>A short course description</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "course[status]",
+            "description": "<p><strong>published</strong> or <strong> draft</strong></p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "course[thumbnailUrl]",
+            "description": "<p>course image url</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "course[tags]",
+            "defaultValue": "null",
+            "description": "<p>Tags tied to the course. Refer to the tag object for properties</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "course[playlist]",
+            "defaultValue": "null",
+            "description": "<p>Chapters in the course playlist and their rank on the playlist.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "course[type]",
+            "defaultValue": "course",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "course[metadata]",
+            "defaultValue": "null",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "course[creatorId]",
+            "description": "<p>Id of the user who created the tag</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "course[createdAt]",
+            "description": "<p>date course was created</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "course[updatedAt]",
+            "description": "<p>date course was updated</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n     {\n       \"course\":{\n          \"id\": \"JBrs6hiAA7s\",\n          \"name\": \"Test course\",\n          \"slug\": \"test-course\",\n          \"description\": \"This is a sample description\",\n          \"status\": \"draft\",\n          \"creatorId\": \"user1\",\n          \"metadata\": null,\n          \"createdAt\": \"2021-06-22T11:25:35.109Z\",\n          \"updatedAt\": \"2021-06-22T11:25:35.109Z\",\n          \"thumbnailUrl\": \"/uploads/images/courses/HaKKzfAN03D.jpg\",\n          \"type\": \"course\"\n          \"tags\":[{\"id\": \"JBpWJMOAAnE\", \"name\": \"Internet Basics\", \"slug\": \"internet-basics\",…],\n          \"playlist\":[{\"id\": \"JBpWJJeAAbg\", \"status\": \"published\",\"name\": \"dolorem eaque sint\",…],\n        }\n     }",
+          "type": "json"
+        }
+      ]
+    },
+    "examples": [
+      {
+        "title": "Sample Request Body:",
+        "content": "{\n  \"course\":{\n    \"name\": \"Test course\",\n    \"description\": \"This is a sample description\",\n    \"status\": \"draft\",\n    \"tags\":[{  \"id\": \"JBpWJMOAAnE\"},{  \"id\":\"JBpWJMOAAnI\" }],\n    \"playlist\":[{\"id\":\"JBpWJJeAAbg\",\"rank\":\"02\"}, {\"id\":\"JBpWJJgAAbo\",\"rank\":\"01\"}]\n }",
+        "type": "json"
+      }
+    ],
+    "filename": "server/routes/courses.js",
+    "groupTitle": "Courses",
+    "sampleRequest": [
+      {
+        "url": "https://app.wikonnect.org/api/v1/courses"
+      }
+    ]
+  },
+  {
+    "type": "post",
+    "url": "/api/v1/courses/:id/thumbnail",
+    "title": "POST a course thumbnail",
+    "name": "Upload_a_course_thumbnail",
+    "group": "Courses",
+    "permission": [
+      {
+        "name": "authenticated user"
+      }
+    ],
+    "version": "0.4.0",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Bearer &lt;&lt; JWT here&gt;&gt;</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "URI Param": [
+          {
+            "group": "URI Param",
+            "type": "String",
+            "optional": false,
+            "field": "id",
+            "description": "<p>Id of the course to update</p>"
+          }
+        ],
+        "Request Body": [
+          {
+            "group": "Request Body",
+            "type": "File",
+            "optional": false,
+            "field": "file",
+            "description": "<p>File image to update as course thumbnail</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "course",
+            "description": "<p>Top level object</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "course[id]",
+            "description": "<p>the id of the course</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "course[name]",
+            "description": "<p>the name of the course</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "course[slug]",
+            "description": "<p>user friendly course url pathname</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "course[description]",
+            "description": "<p>A short course description</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "course[status]",
+            "description": "<p><strong>published</strong> or <strong> draft</strong></p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "course[thumbnailUrl]",
+            "description": "<p>course image url</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "course[type]",
+            "defaultValue": "course",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "course[metadata]",
+            "defaultValue": "null",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "course[creatorId]",
+            "description": "<p>Id of the user who created the tag</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "course[createdAt]",
+            "description": "<p>date course was created</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "course[updatedAt]",
+            "description": "<p>date course was updated</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n     {\n       \"course\":{\n          \"id\": \"JBrs6hiAA7s\",\n          \"name\": \"Test course\",\n          \"slug\": \"test-course\",\n          \"description\": \"This is a sample description\",\n          \"status\": \"draft\",\n          \"creatorId\": \"user1\",\n          \"metadata\": null,\n          \"thumbnailUrl\": \"/uploads/images/courses/HaKKzfAN03D.jpg\",\n          \"createdAt\": \"2021-06-22T11:25:35.109Z\",\n          \"updatedAt\": \"2021-06-22T11:25:35.109Z\",\n          \"type\": \"course\"\n        }\n     }",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "server/routes/courses.js",
+    "groupTitle": "Courses",
+    "sampleRequest": [
+      {
+        "url": "https://app.wikonnect.org/api/v1/courses/:id/thumbnail"
+      }
+    ]
+  },
+  {
+    "type": "delete",
+    "url": "/api/v1/courses-enrolled/:id",
+    "title": "Delete course enrollment",
+    "name": "DELETE_course_enrollment_by_Id",
+    "group": "Courses_Enrolled",
+    "permission": [
+      {
+        "name": "authenticated user"
+      }
+    ],
+    "version": "0.4.0",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Bearer &lt;&lt; JWT here&gt;&gt;</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "URI Param": [
+          {
+            "group": "URI Param",
+            "type": "String",
+            "optional": false,
+            "field": "id",
+            "description": "<p>Course enrollment Id</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 201 OK\n{ }",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "server/routes/courses-enrolled.js",
+    "groupTitle": "Courses_Enrolled",
+    "sampleRequest": [
+      {
+        "url": "https://app.wikonnect.org/api/v1/courses-enrolled/:id"
+      }
+    ]
+  },
+  {
+    "type": "get",
+    "url": "/api/v1/courses-enrolled",
+    "title": "GET all user course enrollments",
+    "name": "Get_all_user_course_enrollments",
+    "group": "Courses_Enrolled",
+    "permission": [
+      {
+        "name": "authenticated user"
+      }
+    ],
+    "version": "0.4.0",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Bearer &lt;&lt; JWT here&gt;&gt;</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "coursesEnrolled",
+            "description": "<p>Top level object</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "coursesEnrolled[id]",
+            "description": "<p>the id of the course enrollment</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "coursesEnrolled[courseId]",
+            "description": "<p>the id of the course user has enrolled to</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "coursesEnrolled[userId]",
+            "description": "<p>the id of the user</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "coursesEnrolled[createdAt]",
+            "description": "<p>date course enrollment was created</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "coursesEnrolled[updatedAt]",
+            "description": "<p>date course enrollment was updated</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n     {\n        \"coursesEnrolled\":[{\n         \"id\": \"JBp56KQAA7c\",\n         \"userId\": \"user1\",\n         \"courseId\": \"JB0yRrGAAd0\",\n         \"createdAt\": \"2021-06-23T14:16:56.796Z\",\n         \"updatedAt\": \"2021-06-23T14:16:56.796Z\"\n         }]\n       }",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "server/routes/courses-enrolled.js",
+    "groupTitle": "Courses_Enrolled",
+    "sampleRequest": [
+      {
+        "url": "https://app.wikonnect.org/api/v1/courses-enrolled"
+      }
+    ]
+  },
+  {
+    "type": "post",
+    "url": "/api/v1/courses-enrolled",
+    "title": "POST course enrollment",
+    "name": "POST_user_course_enrollment",
+    "group": "Courses_Enrolled",
+    "permission": [
+      {
+        "name": "authenticated user"
+      }
+    ],
+    "version": "0.4.0",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Bearer &lt;&lt; JWT here&gt;&gt;</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Request Body": [
+          {
+            "group": "Request Body",
+            "type": "Object",
+            "optional": false,
+            "field": "coursesEnrolled",
+            "description": "<p>Top level object</p>"
+          },
+          {
+            "group": "Request Body",
+            "type": "String",
+            "optional": false,
+            "field": "coursesEnrolled[courseId]",
+            "description": "<p>Id of the course to enroll to</p>"
+          },
+          {
+            "group": "Request Body",
+            "type": "String",
+            "optional": true,
+            "field": "coursesEnrolled[userId]",
+            "defaultValue": "JWTToken.user.id",
+            "description": "<p>Id of the user enrolling.</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "coursesEnrolled",
+            "description": "<p>Top level object</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "coursesEnrolled[id]",
+            "description": "<p>the id of the course enrollment</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "coursesEnrolled[courseId]",
+            "description": "<p>the id of the course user has enrolled to</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "coursesEnrolled[userId]",
+            "description": "<p>the id of the user</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "coursesEnrolled[createdAt]",
+            "description": "<p>date course enrollment was created</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "coursesEnrolled[updatedAt]",
+            "description": "<p>date course enrollment was updated</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n     {\n        \"coursesEnrolled\":{\n         \"id\": \"JBp56KQAA7c\",\n         \"userId\": \"user1\",\n         \"courseId\": \"JB0yRrGAAd0\",\n         \"createdAt\": \"2021-06-23T14:16:56.796Z\",\n         \"updatedAt\": \"2021-06-23T14:16:56.796Z\"\n         }\n       }",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "server/routes/courses-enrolled.js",
+    "groupTitle": "Courses_Enrolled",
+    "sampleRequest": [
+      {
+        "url": "https://app.wikonnect.org/api/v1/courses-enrolled"
+      }
+    ]
+  },
+  {
+    "type": "get",
+    "url": "/api/v1/groups/:id",
+    "title": "GET group by id",
+    "name": "Get_group_by_id",
+    "group": "Group",
+    "permission": [
+      {
+        "name": "authenticated user[moderator/admin/superadmin]"
+      }
+    ],
+    "version": "0.4.0",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Bearer &lt;&lt; JWT here&gt;&gt;</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "URI Param": [
+          {
+            "group": "URI Param",
+            "type": "String",
+            "optional": false,
+            "field": "id",
+            "description": "<p>group id</p>"
+          }
+        ]
+      }
+    },
+    "filename": "server/routes/groups.js",
+    "groupTitle": "Group",
+    "sampleRequest": [
+      {
+        "url": "https://app.wikonnect.org/api/v1/groups/:id"
+      }
+    ]
+  },
+  {
+    "type": "get",
+    "url": "/api/v1/groups",
+    "title": "GET all user groups",
+    "name": "Get_user_groups",
+    "group": "Group",
+    "permission": [
+      {
+        "name": "authenticated user[moderator/admin/superadmin]"
+      }
+    ],
+    "version": "0.4.0",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Bearer &lt;&lt; JWT here&gt;&gt;</p>"
+          }
+        ]
+      }
+    },
+    "filename": "server/routes/groups.js",
+    "groupTitle": "Group",
+    "sampleRequest": [
+      {
+        "url": "https://app.wikonnect.org/api/v1/groups"
+      }
+    ]
   },
   {
     "type": "get",
@@ -6060,6 +7711,853 @@
   },
   {
     "type": "delete",
+    "url": "/api/v1/tags/:id",
+    "title": "Delete a tag",
+    "name": "DELETE_a_tag_by_Id",
+    "group": "Tags",
+    "permission": [
+      {
+        "name": "authenticated user"
+      }
+    ],
+    "version": "0.4.0",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Bearer &lt;&lt; JWT here&gt;&gt;</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "URI Param": [
+          {
+            "group": "URI Param",
+            "type": "String",
+            "optional": false,
+            "field": "id",
+            "description": "<p>Id of the tag to delete</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 201 OK\n{ }",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "server/routes/tags.js",
+    "groupTitle": "Tags",
+    "sampleRequest": [
+      {
+        "url": "https://app.wikonnect.org/api/v1/tags/:id"
+      }
+    ]
+  },
+  {
+    "type": "get",
+    "url": "/api/v1/tags/:id",
+    "title": "GET tag by Id",
+    "name": "Get_a_tag_by_Id",
+    "group": "Tags",
+    "permission": [
+      {
+        "name": "[authenticated user]"
+      }
+    ],
+    "version": "0.4.0",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": true,
+            "field": "Authorization",
+            "description": "<p>Bearer &lt;&lt; JWT here&gt;&gt;</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "URI Param": [
+          {
+            "group": "URI Param",
+            "type": "String",
+            "optional": false,
+            "field": "id",
+            "description": "<p>tag id</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "tag",
+            "description": "<p>Top level object</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "tag[name]",
+            "description": "<p>the name of the tag</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "tag[slug]",
+            "description": "<p>user friendly tag url pathname</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "tag[creatorId]",
+            "description": "<p>Id of the user who created the tag</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Boolean",
+            "optional": false,
+            "field": "tag[canDelete]",
+            "description": "<p>If any user has permissions to delete the tag</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "tag[createdAt]",
+            "description": "<p>date tag was created</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "tag[updatedAt]",
+            "description": "<p>date tag was updated</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n     {\n        \"tag\":{\n           \"id\": \"JBaHWpeAAGQ\",\n           \"name\": \"Internet Basics\",\n           \"slug\": \"internet-basics\",\n           \"creatorId\": \"user2\",\n           \"canDelete\": false,\n           \"createdAt\": \"2020-08-29T10:29:31.047Z\",\n           \"updatedAt\": \"2021-06-19T20:49:06.797Z\"\n           }\n     }",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "server/routes/tags.js",
+    "groupTitle": "Tags",
+    "sampleRequest": [
+      {
+        "url": "https://app.wikonnect.org/api/v1/tags/:id"
+      }
+    ]
+  },
+  {
+    "type": "get",
+    "url": "/api/v1/tags",
+    "title": "GET all tags",
+    "name": "Get_all_tags",
+    "group": "Tags",
+    "permission": [
+      {
+        "name": "[authenticated user]"
+      }
+    ],
+    "version": "0.4.0",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": true,
+            "field": "Authorization",
+            "description": "<p>Bearer &lt;&lt; JWT here&gt;&gt;</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Query Params": [
+          {
+            "group": "Query Params",
+            "type": "String",
+            "optional": true,
+            "field": "id",
+            "description": "<p>specified tag id to filter with</p>"
+          },
+          {
+            "group": "Query Params",
+            "type": "String",
+            "optional": true,
+            "field": "name",
+            "description": "<p>specified tag name to filter with</p>"
+          },
+          {
+            "group": "Query Params",
+            "type": "String",
+            "optional": true,
+            "field": "slug",
+            "description": "<p>filter with user friendly tag url pathname</p>"
+          },
+          {
+            "group": "Query Params",
+            "type": "Boolean",
+            "optional": true,
+            "field": "canDelete",
+            "description": "<p>filter with tags that can/not be deleted</p>"
+          },
+          {
+            "group": "Query Params",
+            "type": "String",
+            "optional": true,
+            "field": "creatorId",
+            "description": "<p>filter tags by tag author Id</p>"
+          },
+          {
+            "group": "Query Params",
+            "type": "Boolean",
+            "optional": true,
+            "field": "includeAggregates",
+            "defaultValue": "false",
+            "description": "<p>if to add courses, chapters, &amp; followers counts on response</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "tags",
+            "description": "<p>Top level object</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "tag[id]",
+            "description": "<p>tag id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "tag[name]",
+            "description": "<p>the name of the tag</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "tag[slug]",
+            "description": "<p>user friendly tag url pathname</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "tag[creatorId]",
+            "description": "<p>Id of the user who created the tag</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Boolean",
+            "optional": false,
+            "field": "tag[canDelete]",
+            "description": "<p>If any user has permissions to delete the tag</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "tag[createdAt]",
+            "description": "<p>date tag was created</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "tag[updatedAt]",
+            "description": "<p>date tag was updated</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": true,
+            "field": "tag[coursesCount]",
+            "description": "<p>total courses tied to the tag</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": true,
+            "field": "tag[chaptersCount]",
+            "description": "<p>total chapters tied to the tag</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": true,
+            "field": "tag[followersCount]",
+            "description": "<p>total users following the tag</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n     {\n        \"tags\":[\n           {\n              \"id\": \"JBaHWpeAAGQ\",\n              \"name\": \"Internet Basics\",\n              \"slug\": \"internet-basics\",\n              \"creatorId\": \"user2\",\n              \"canDelete\": false,\n              \"createdAt\": \"2020-08-29T10:29:31.047Z\",\n              \"updatedAt\": \"2021-06-19T20:49:06.797Z\",\n              \"coursesCount\": \"4\",\n              \"chaptersCount\": \"1\",\n              \"followersCount\": \"2\"\n           }]\n     }",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "server/routes/tags.js",
+    "groupTitle": "Tags",
+    "sampleRequest": [
+      {
+        "url": "https://app.wikonnect.org/api/v1/tags"
+      }
+    ]
+  },
+  {
+    "type": "put",
+    "url": "/api/v1/tags",
+    "title": "PUT a tag",
+    "name": "PUT_a_tag_by_Id",
+    "group": "Tags",
+    "permission": [
+      {
+        "name": "authenticated user"
+      }
+    ],
+    "version": "0.4.0",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Bearer &lt;&lt; JWT here&gt;&gt;</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "URI Param": [
+          {
+            "group": "URI Param",
+            "type": "String",
+            "optional": false,
+            "field": "id",
+            "description": "<p>Id of the tag to update</p>"
+          }
+        ],
+        "Request Body": [
+          {
+            "group": "Request Body",
+            "type": "Object",
+            "optional": false,
+            "field": "tag",
+            "description": "<p>Top level object</p>"
+          },
+          {
+            "group": "Request Body",
+            "type": "String",
+            "optional": false,
+            "field": "tag[name]",
+            "description": "<p>the name of the tag</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "tag",
+            "description": "<p>Top level object</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "tag[id]",
+            "description": "<p>tag id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "tag[name]",
+            "description": "<p>the name of the tag</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "tag[slug]",
+            "description": "<p>user friendly tag url pathname</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "tag[creatorId]",
+            "description": "<p>Id of the user who created the tag</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Boolean",
+            "optional": false,
+            "field": "tag[canDelete]",
+            "description": "<p>If any user has permissions to delete the tag</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "tag[createdAt]",
+            "description": "<p>date tag was created</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "tag[updatedAt]",
+            "description": "<p>date tag was updated</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n     {\n        \"tag\":{\n           \"id\": \"JBaHWpeAAGQ\",\n           \"name\": \"Internet Basics\",\n           \"slug\": \"internet-basics\",\n           \"creatorId\": \"user2\",\n           \"canDelete\": false,\n           \"createdAt\": \"2020-08-29T10:29:31.047Z\",\n           \"updatedAt\": \"2021-06-19T20:49:06.797Z\"\n           }\n     }",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "server/routes/tags.js",
+    "groupTitle": "Tags",
+    "sampleRequest": [
+      {
+        "url": "https://app.wikonnect.org/api/v1/tags"
+      }
+    ]
+  },
+  {
+    "type": "post",
+    "url": "/api/v1/tags",
+    "title": "POST a tag",
+    "name": "Post_a_tag",
+    "group": "Tags",
+    "permission": [
+      {
+        "name": "authenticated user"
+      }
+    ],
+    "version": "0.4.0",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Bearer &lt;&lt; JWT here&gt;&gt;</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Request Body": [
+          {
+            "group": "Request Body",
+            "type": "Object",
+            "optional": false,
+            "field": "tag",
+            "description": "<p>Top level object</p>"
+          },
+          {
+            "group": "Request Body",
+            "type": "String",
+            "optional": false,
+            "field": "tag[name]",
+            "description": "<p>the name of the tag</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "tag",
+            "description": "<p>Top level object</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "tag[id]",
+            "description": "<p>tag id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "tag[name]",
+            "description": "<p>the name of the tag</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "tag[slug]",
+            "description": "<p>user friendly tag url pathname</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "tag[creatorId]",
+            "description": "<p>Id of the user who created the tag</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Boolean",
+            "optional": false,
+            "field": "tag[canDelete]",
+            "description": "<p>If any user has permissions to delete the tag</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "tag[createdAt]",
+            "description": "<p>date tag was created</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "tag[updatedAt]",
+            "description": "<p>date tag was updated</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n     {\n        \"tag\":{\n           \"id\": \"JBaHWpeAAGQ\",\n           \"name\": \"Internet Basics\",\n           \"slug\": \"internet-basics\",\n           \"creatorId\": \"user2\",\n           \"canDelete\": false,\n           \"createdAt\": \"2020-08-29T10:29:31.047Z\",\n           \"updatedAt\": \"2021-06-19T20:49:06.797Z\"\n           }\n     }",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "server/routes/tags.js",
+    "groupTitle": "Tags",
+    "sampleRequest": [
+      {
+        "url": "https://app.wikonnect.org/api/v1/tags"
+      }
+    ]
+  },
+  {
+    "type": "delete",
+    "url": "/api/v1/tags-following/:id",
+    "title": "Delete tag following",
+    "name": "DELETE_user_tag_following",
+    "group": "Tags_Following",
+    "permission": [
+      {
+        "name": "authenticated user"
+      }
+    ],
+    "version": "0.4.0",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Bearer &lt;&lt; JWT here&gt;&gt;</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "URI Param": [
+          {
+            "group": "URI Param",
+            "type": "String",
+            "optional": false,
+            "field": "id",
+            "description": "<p>Tag following Id</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 201 OK\n{ }",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "server/routes/tags-following.js",
+    "groupTitle": "Tags_Following",
+    "sampleRequest": [
+      {
+        "url": "https://app.wikonnect.org/api/v1/tags-following/:id"
+      }
+    ]
+  },
+  {
+    "type": "get",
+    "url": "/api/v1/tags-following",
+    "title": "GET all tags user follows",
+    "name": "GET_all_tags_user_follows",
+    "group": "Tags_Following",
+    "permission": [
+      {
+        "name": "authenticated user"
+      }
+    ],
+    "version": "0.4.0",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Bearer &lt;&lt; JWT here&gt;&gt;</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "tagsFollowing",
+            "description": "<p>Top level object</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "tagsFollowing[id]",
+            "description": "<p>the id of the following</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "tagsFollowing[tagId]",
+            "description": "<p>the id of the tag user is following</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "tagsFollowing[userId]",
+            "description": "<p>the id of the user</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "tagsFollowing[createdAt]",
+            "description": "<p>date tag following was created</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "tagsFollowing[updatedAt]",
+            "description": "<p>date tag following was updated</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n     {\n        \"tagsFollowing\":[{\n         \"id\": \"JBp56KQAA7c\",\n         \"userId\": \"user1\",\n         \"tagId\": \"JB0yRrGAAd0\",\n         \"createdAt\": \"2021-06-23T14:16:56.796Z\",\n         \"updatedAt\": \"2021-06-23T14:16:56.796Z\"\n         }]\n       }",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "server/routes/tags-following.js",
+    "groupTitle": "Tags_Following",
+    "sampleRequest": [
+      {
+        "url": "https://app.wikonnect.org/api/v1/tags-following"
+      }
+    ]
+  },
+  {
+    "type": "post",
+    "url": "/api/v1/tags-following",
+    "title": "POST a tag user follows",
+    "name": "POST_a_tag_user_follows",
+    "group": "Tags_Following",
+    "permission": [
+      {
+        "name": "authenticated user"
+      }
+    ],
+    "version": "0.4.0",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>Bearer &lt;&lt; JWT here&gt;&gt;</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Request Body": [
+          {
+            "group": "Request Body",
+            "type": "Object",
+            "optional": false,
+            "field": "tagsFollowing",
+            "description": "<p>Top level object</p>"
+          },
+          {
+            "group": "Request Body",
+            "type": "String",
+            "optional": false,
+            "field": "tagsFollowing[tagId]",
+            "description": "<p>Id of the tag user wishes to follow</p>"
+          },
+          {
+            "group": "Request Body",
+            "type": "String",
+            "optional": true,
+            "field": "tagsFollowing[userId]",
+            "defaultValue": "JWTToken.user.id",
+            "description": "<p>Id of the user enrolling.</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "tagsFollowing",
+            "description": "<p>Top level object</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "tagsFollowing[id]",
+            "description": "<p>the id of the tag following enrollment</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "tagsFollowing[tagId]",
+            "description": "<p>the id of the tag user is following</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "tagsFollowing[userId]",
+            "description": "<p>the id of the user</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "tagsFollowing[createdAt]",
+            "description": "<p>date tag following was created</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "tagsFollowing[updatedAt]",
+            "description": "<p>date tag following was updated</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n     {\n        \"tagsFollowing\":{\n         \"id\": \"JBp56KQAA7c\",\n         \"userId\": \"user1\",\n         \"tagId\": \"JB0yRrGAAd0\",\n         \"createdAt\": \"2021-06-23T14:16:56.796Z\",\n         \"updatedAt\": \"2021-06-23T14:16:56.796Z\"\n         }\n       }",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "server/routes/tags-following.js",
+    "groupTitle": "Tags_Following",
+    "sampleRequest": [
+      {
+        "url": "https://app.wikonnect.org/api/v1/tags-following"
+      }
+    ]
+  },
+  {
+    "type": "delete",
     "url": "/api/v1/triggers/:id",
     "title": "Delete a trigger.",
     "name": "DELETE_a_trigger",
@@ -6757,7 +9255,7 @@
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "HTTP/1.1 200 OK\n{\n   \"user_role\": [{\n       \"userId\": \"user1\",\n       \"groupId\": \"groupBasic\",\n       \"createdAt\": \"2019-12-20T16:17:10.000Z\",\n       \"updatedAt\": \"2021-04-26T20:11:24.764Z\"\n   }]\n }",
+          "content": "HTTP/1.1 200 OK\n{\n   \"user_role\": [{\n       \"userId\": \"user1\",\n       \"groupId\": \"groupVerified\",\n       \"createdAt\": \"2019-12-20T16:17:10.000Z\",\n       \"updatedAt\": \"2021-04-26T20:11:24.764Z\"\n   }]\n }",
           "type": "json"
         }
       ]
