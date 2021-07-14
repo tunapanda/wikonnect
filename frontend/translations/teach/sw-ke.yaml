@@ -9,8 +9,9 @@ login:
 
 index:
   my_content: Rekodi Zangu
-  drafts: Sura ambazo hazijachapishwa
-  published: Sura zilizochapishwa
+  dashboard: Dashboardi
+  drafts: Sura ambazo hazijachapishwa ({num})
+  published: Sura zilizochapishwa ({num})
   no_drafts: Hakuna sura zilizoundwa bado
   no_published: Hakuna kilichochapishwa bado
   get_started: Anza hapa

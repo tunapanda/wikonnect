@@ -28,6 +28,7 @@ Router.map(function () {
   this.route('manage');
 
   this.route('teach', function () {
+    this.route('chapters', { path: '/:status' });
     this.route('preview', { path: '/preview/:id' });
     this.route('tag', { path: '/tag/:id' });
 

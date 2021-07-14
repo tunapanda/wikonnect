@@ -1,5 +1,6 @@
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
+import RSVP from 'rsvp';
 
 export default class TeachRoute extends Route {
   @service me;
@@ -13,6 +14,19 @@ export default class TeachRoute extends Route {
       this.transitionTo('teach.login');
     }
     return super.beforeModel(transition);
+  }
+
+  model() {
+    return RSVP.hash({
+      drafts: this.store.query('chapter', {
+        creatorId: this.me.user.id,
+        status: 'draft',
+      }),
+      published: this.store.query('chapter', {
+        creatorId: this.me.user.id,
+        status: 'published',
+      }),
+    });
   }
 
   afterModel() {

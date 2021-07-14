@@ -1,13 +1,13 @@
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
 
-export default class TeachPublishedRoute extends Route {
+export default class TeachChaptersRoute extends Route {
   @service me;
 
-  async model() {
+  model(params) {
     return this.store.query('chapter', {
       creatorId: this.me.user.id,
-      status: 'published',
+      status: params.status,
     });
   }
 }

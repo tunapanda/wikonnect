@@ -1,3 +1,29 @@
-<div class="teach-layout">
-{{outlet}}
+<div class="container teach-layout">
+  <div class="d-flex justify-content-between pt-3 mt-0">
+    <h3>
+      {{t 'teach.index.my_content'}}
+    </h3>
+    <LinkTo @route="teach.create" class="btn bg-primary" role="button">
+      {{t 'teach.index.get_started'}}
+    </LinkTo>
+  </div>
+  <div class="row ml-1">
+    <LinkTo @route="teach.index">
+      <div class="sub-link">
+        {{t 'teach.index.dashboard'}}
+      </div>
+    </LinkTo>
+    <LinkTo @route="teach.chapters" @model="draft">
+      <div class="sub-link">
+        {{t 'teach.index.drafts' num=this.numOfDrafts}}
+      </div>
+    </LinkTo>
+    <LinkTo @route="teach.chapters" @model="published">
+      <div class="sub-link">
+        {{t 'teach.index.published' num=this.numOfPublished}}
+      </div>
+    </LinkTo>
+  </div>
+  <hr class="bg-green" />
+  {{outlet}}
 </div>

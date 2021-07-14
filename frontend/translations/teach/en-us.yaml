@@ -9,8 +9,9 @@ login:
 
 index:
   my_content: My Content
-  drafts: Drafts
-  published: Published
+  dashboard: Dashboard
+  drafts: Drafts ({num})
+  published: Published ({num})
   no_drafts: No drafts yet
   no_published: Nothing published yet
   get_started: Get Started
