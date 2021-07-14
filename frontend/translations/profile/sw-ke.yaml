@@ -9,8 +9,16 @@ no_bio: Inavyoonekana, mtumiaji huyu anapendelea kuweka siri juu yao
 
 nav:
   home: Kujifunza
-  achievements: Mafanikio
   courses: Kozi
+  achievements: Beji
+  teach: Fundisha
+  learn: Jifunze
+  enrolled_courses: Kozi Ulizojisajiri
+  available_courses: Kozi Unaweza Jisajiri
+  course_builder: Jenga Kozi
+  people: Watu
+  tags: Vitambulisho
+
 
 badges:
   share_btn: Shiriki
@@ -40,3 +48,79 @@ edit_profile_page:
   location: Eneo lako
   location_prompt: Turkana, Kenya
   gender: Jinsia
+
+enrolled_courses_page:
+  disenroll_prompt: Je! Una uhakika unataka kujiondoa kwenye kozi hii?
+  no_content: Hujajiandikisha kwa kozi yoyote. Kuangalia kozi zinazopatikana unaweza kujiandikisha,
+  click_here: bonyeza hapa
+  no_searched_record: Hakuna maudhui yaliyopatikana yanayolingana na <strong> {word}</strong>. Tafadhali jaribu utaftaji tofauti.
+  buttons:
+    disenroll: Ondoa Uandikishaji
+    view_course: Angalia Kozi
+  errors:
+    disenroll: Hitilafu isiyotarajiwa imepatikana wakati wa kuchakata ombi lako
+
+available_courses_page:
+  disenroll_prompt: Je! Unataka kujiondoa kwenye kozi hii?
+  no_content: Hakuna kozi zilizochapishwa kwa sasa. Kuunda kozi yako mwenyewe
+  click_here: endelea hapa
+  no_searched_record: Hakuna maudhui yaliyopatikana yanayolingana na <strong> {word}</strong>. Tafadhali jaribu utaftaji tofauti.
+  enroll_successful: Umefanikiwa kujiandikisha kwenye kozi hiyo.
+  disenroll_successful:  Umefanikiwa kujiondoa kwenye kozi.
+  general_error: Hitilafu isiyotarajiwa imepatikana wakati wa kuchakata ombi lako.
+  buttons:
+    enroll: Jisajili kwenye Kozi
+    view_course: Angalia Kozi
+    disenroll: Tayari umejiandikisha
+    sort: Panga kwa
+
+courses:
+  sort_options_title: Panga Kozi Na
+  sort_by_all: Zote
+  sort_by_followers_count: Inayofuatwa Zaidi
+  sort_by_tags_count: Lebo nyingi
+
+people_page:
+  search_user_placeholder: Tafuta watu
+  sort_options_title: Panga Watu Kwa
+  sort_by_all: Wote
+  sort_by_name: Jina
+  sort_by_followers_count: Wafuasi Wengi
+  sort_by_courses_enrolled_count: Amejiandikisha Kozi nyingi
+  sort_by_tags_following_count: Anayefuata Lebo Zaidi
+  general_error: Hitilafu isiyotarajiwa imepatikana wakati wa kuchakata ombi lako.
+  showing_all: Inaonyesha watumiaji wote
+  summary: Inaonyesha {current} ya {total}
+  tables:
+    name: Majina
+    followers: Idadi ya Wafuasi
+    courses: Kozi Zilizosajiliwa
+    tags: Vitambulisho Vimefuatwa
+  buttons:
+    sort_by: Panga Kwa
+    follow: Fuata
+    unfollow: Unamfuata
+
+tags_page:
+  search_tag_placeholder: Tafuta Lebo
+  general_error: Hitilafu isiyotarajiwa imepatikana wakati wa kuchakata ombi lako.
+  showing_all: Inaonyesha lebo zote
+  summary: Inaonyesha {current} ya {total}
+  sort_options_title: Panga Vitambulisho By
+  sort_by_all: Zote
+  sort_by_name: Jina
+  sort_by_followers_count: Wafuasi Wengi
+  sort_by_courses_count: Kozi Nyingi
+  sort_by_chapters_count: Sura Nyingi
+  no_searched_record: Hakuna lebo zimepatikana zinazolingana na <strong> {word}</strong>. Tafadhali jaribu utaftaji tofauti.
+
+  tables:
+    no: Nambari
+    name: Jina
+    courses: Kozi katika
+    chapters: Sura katika
+    followers: Wafuasi
+  buttons:
+    sort_by: Panga kwa
+    follow: Fuata
+    unfollow: Unafuata

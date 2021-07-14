@@ -11,9 +11,23 @@ Router.map(function () {
   this.route('login');
   this.route('about');
 
+  this.route('learn', function () {
+    this.route('chapters');
+    this.route('courses', function () {
+      this.route('available');
+      this.route('enrolled');
+    });
+  });
+
   this.route('profile', { path: '/profile/:id' }, function () {
     this.route('home');
     this.route('achievements');
+    this.route('courses', function () {
+      this.route('enrolled', { path: '/enrolled/@me' });
+      this.route('available');
+    });
+    this.route('people');
+    this.route('tags');
   });
 
   this.route('account', { path: '/profile' }, function () {
@@ -58,6 +72,15 @@ Router.map(function () {
       this.route('manage');
     });
     this.route('surveys');
+  });
+
+  this.route('course', function () {
+    this.route('index');
+    this.route('show', { path: '/:id/show' });
+    this.route('edit', { path: '/:id/edit' });
+    this.route('create');
+    this.route('published');
+    this.route('drafts');
   });
 
   // 404 page should always be the last

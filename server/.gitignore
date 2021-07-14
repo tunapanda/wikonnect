@@ -114,3 +114,5 @@ public/uploads/h5p/*
 !public/uploads/h5p/.gitinclude
 !public/uploads/images/profile-placeholder.gif
 .envrc
+public/h5p/content/*
+public/h5p/libraries/*

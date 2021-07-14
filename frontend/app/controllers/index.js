@@ -2,6 +2,7 @@ import Controller from '@ember/controller';
 import { inject as service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
+import { A } from '@ember/array';
 
 export default class IndexController extends Controller {
   queryParams = ['tags'];
@@ -11,48 +12,59 @@ export default class IndexController extends Controller {
   @service store;
   @service intl;
   @tracked tags = null;
-  @tracked tagsList = this.store.peekAll('chapter-tag');
+  @tracked selectedFilterTags = A([]);
 
-  get selectedFilterTags() {
+  get tagsList() {
+    return this.store
+      .peekAll('tag')
+      .filter((tag) => tag.id) // ensure it has an id
+      .sortBy('name');
+  }
+
+  @action
+  preselectSelectedFilterTags() {
     if (!this.tags) {
-      return [];
+      return;
     }
     const queryTags = this.tags.split(this.queryTagJoinXcter);
-    return this.tagsList.filter((tag) => {
-      const index = queryTags.findIndex((t) => t.toLowerCase() === tag.name);
+
+    this.tagsList.map((tag) => {
+      const index = queryTags.findIndex(
+        (t) => t.toLowerCase() === tag.id.toLowerCase()
+      );
       if (index > -1) {
-        tag.isSelected = true;
-        return true;
+        this.selectedFilterTags.addObject(tag);
       }
-      tag.isSelected = false;
-      return false;
     });
   }
 
   @action
   clearAllTagFilters() {
-    this.tagsList = this.tagsList.map((tag) => {
-      tag.isSelected = false;
-      return tag;
-    });
+    this.selectedFilterTags.clear();
     this.tags = null;
+    console.log(this.selectedFilterTags.length);
   }
 
   @action
   toggleTagSelection(tag) {
     const queryTags = this.tags ? this.tags.split(this.queryTagJoinXcter) : [];
-    if (tag.isSelected) {
-      const index = queryTags.findIndex((t) => t.toLowerCase() === tag.name);
-      if (index > -1) {
-        queryTags.splice(index, 1);
-      }
+    const obj = this.selectedFilterTags.findBy('id', tag.id);
+    if (obj) {
+      const index = queryTags.findIndex(
+        (t) => t.toLowerCase() === tag.id.toLowerCase()
+      );
+      queryTags.splice(index, 1);
+
+      this.selectedFilterTags.removeObject(obj);
     } else {
-      const index = queryTags.findIndex((t) => t.toLowerCase() === tag.name);
+      const index = queryTags.findIndex(
+        (t) => t.toLowerCase() === tag.id.toLowerCase()
+      );
       if (index === -1) {
-        queryTags.push(tag.name);
+        queryTags.push(tag.id);
       }
+      this.selectedFilterTags.addObject(tag);
     }
-    tag.isSelected = !tag.isSelected;
 
     this.tags = queryTags.join(this.queryTagJoinXcter);
   }
@@ -65,10 +77,23 @@ export default class IndexController extends Controller {
     if (!this.tags || (this.model.length > 0 && this.tags)) {
       return this.intl.t('home.loading.loaded_all_the_records');
     }
-    const allTags = this.tags.split(this.queryTagJoinXcter);
-    const lastTag = allTags.pop();
-    const selectedTags = allTags.join(',') + ', and ' + lastTag;
+    if (this.selectedFilterTags.length === 0) {
+      return this.intl.t('home.loading.wrong_record_filters', {
+        selectedTags: this.tags,
+      });
+    }
+    const allTags = this.selectedFilterTags.compact();
 
-    return this.intl.t('home.loading.no_filtered_record', { selectedTags });
+    const lastTag = allTags.pop();
+
+    if (allTags.length === 0) {
+      return this.intl.t('home.loading.no_filtered_record', {
+        selectedTag: lastTag.name,
+      });
+    }
+
+    const selectedTags =
+      allTags.mapBy('name').join(',') + ', and ' + lastTag.name;
+    return this.intl.t('home.loading.no_filtered_records', { selectedTags });
   }
 }

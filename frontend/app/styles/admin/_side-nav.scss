@@ -6,10 +6,10 @@ $palette: (
 );
 
 .sidenav {
-  height: 100%;
   background-color: map-get($palette, gray75);
   width: 234px;
   overflow: auto;
+  min-height: 100vh;
 
   .header {
     .header-link {

@@ -8,9 +8,16 @@ top_achievements: Top achievements
 no_bio: Apparently, this user prefers to keep an air of mystery about them
 
 nav:
-  home: Learning
-  achievements: Achievements
+  home: Home
+  achievements: Badges
+  teach: Teach
+  learn: Learn
   courses: Courses
+  enrolled_courses: Enrolled Courses
+  available_courses: Available Courses
+  course_builder: Course Builder
+  people: People
+  tags: Tags
 
 badges:
   share_btn: Share
@@ -40,3 +47,80 @@ edit_profile_page:
   location: Location
   location_prompt: Turkana, Kenya
   gender: Gender
+
+enrolled_courses_page:
+  disenroll_prompt: Are you sure you want to unenroll from this course?
+  no_content: You have not enrolled in any course. To view available courses you can enroll in
+  click_here: click here
+  no_searched_record: No content found matching <strong> {word}</strong>. Kindly try a different search.
+
+  buttons:
+    disenroll: Unenroll
+    view_course: View Course
+  errors:
+    disenroll: Unexpected error encountered while processing your request.
+
+available_courses_page:
+  disenroll_prompt: Do you want to unenroll from this course?
+  no_content: There are no published courses at the moment. To create your own course
+  click_here: click here
+  no_searched_record: No course found matching <strong> {word}</strong>. Kindly try a different search.
+  enroll_successful: You have successfully enrolled in the course.
+  disenroll_successful: You have successfully unenrolled from the course.
+  general_error: Unexpected error encountered while processing your request.
+  buttons:
+    enroll: Enroll in Course
+    view_course: View Course
+    disenroll: Enrolled
+    sort: Sort By
+
+courses:
+  sort_options_title: Sort Courses By
+  sort_by_all: All
+  sort_by_followers_count: Most Enrolled
+  sort_by_tags_count: Most Tags
+
+people_page:
+  search_user_placeholder: Search a User
+  sort_options_title: Sort People By
+  sort_by_all: All
+  sort_by_name: Name
+  sort_by_followers_count: Most Followers
+  sort_by_courses_enrolled_count: Most Courses Enrolled
+  sort_by_tags_following_count: Most Followed Tags
+  general_error: Unexpected error encountered while processing your request.
+  showing_all: Showing all users
+  summary: Showing {current} of {total}
+  tables:
+    name: Names
+    followers: No. of Followers
+    courses: Courses Enrolled
+    tags: Tags Followed
+  buttons:
+    sort_by: Sort By
+    follow: Follow
+    unfollow: Following
+
+tags_page:
+  search_tag_placeholder: Search a Tag
+  general_error: Unexpected error encountered while processing your request.
+  showing_all: Showing all tags
+  summary: Showing {current} of {total}
+  sort_options_title: Sort Tags By
+  sort_by_all: All
+  sort_by_name: Name
+  sort_by_followers_count: Most Followers
+  sort_by_courses_count: Most Courses
+  sort_by_chapters_count: Most Chapters
+  no_searched_record: No tag found matching <strong> {word}</strong>. Kindly try a different search.
+
+  tables:
+    no: No
+    name: Name
+    courses: Courses in
+    chapters: Chapters in
+    followers: Followers
+  buttons:
+    sort_by: Sort By
+    follow: Follow
+    unfollow: Following

@@ -1,7 +1,7 @@
 import Model, { attr } from '@ember-data/model';
 
 export default class UserModel extends Model {
-  @attr() googleToken;
+  @attr() code;
   @attr() provider;
   @attr() username;
   @attr() email;

@@ -1,0 +1,16 @@
+<div class="container pb-3 pt-3 pl-0">
+  <div class="nav tabs-menu wk-tabs-menu {{if this.isChaptersRoute "border-bottom"}}">
+    <div class="nav-item">
+      <LinkTo @route="learn.chapters" class="nav-link">
+        {{t "learner_menu.chapters"}}
+      </LinkTo>
+    </div>
+    <div class="nav-item">
+      <LinkTo @route="learn.courses" class="nav-link">
+        {{t "learner_menu.courses"}}
+      </LinkTo>
+    </div>
+  </div>
+</div>
+
+{{outlet}}
