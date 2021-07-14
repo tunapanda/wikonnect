@@ -65,6 +65,8 @@ tag:
   platform: Jukwaa
   kicd_status: Hali ya KICD
   tag_name: Jina la Lebo
+  error_creating_tag: Hitilafu wakati wa kuunda lebo
+  error_updating_chapter_tags: Hitilafu wakati wa kusasisha lebo za sura
 
 review_questions:
   title: Wanafunzi watapima na kukagua yaliyomo kulingana na kategoria tofauti. Maoni haya kutoka kwa wanafunzi yatakusaidia kuwa mwalimu bora zaidi na mtunzi wa yaliyomo.

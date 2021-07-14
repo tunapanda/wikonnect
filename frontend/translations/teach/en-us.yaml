@@ -64,6 +64,8 @@ tag:
   platform: Platform
   kicd_status: KICD Status
   tag_name: Tag Name
+  error_creating_tag: Error creating tag
+  error_updating_chapter_tags: Error updating the chapter tags
 
 review_questions:
   title: Learners will rate and review your content based on different categories. This feedback from learners will help you become an even better teacher and content creator.

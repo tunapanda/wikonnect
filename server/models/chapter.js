@@ -69,7 +69,19 @@ class Chapter extends Model {
           from: 'chapters.creatorId',
           to: 'users.id'
         }
-      }
+      },
+      tags: {
+        relation: Model.ManyToManyRelation,
+        modelClass: __dirname + '/tag',
+        join: {
+          from: 'chapters.id',
+          through: {
+            to: 'chapter_tags.tag_id',
+            from: 'chapter_tags.chapter_id'
+          },
+          to: 'tags.id'
+        }
+      },
     };
   }
 

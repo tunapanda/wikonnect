@@ -133,3 +133,29 @@ Cypress.Commands.add('triggers', (queryParams = {}) => {
         .its('body.trigger')
         .then((triggers) => triggers);
 });
+
+Cypress.Commands.add('tags', (queryParams = {}) => {
+    const qs = Object.keys(queryParams).reduce((acc, key) => {
+        acc += `${key}=${queryParams[key]}&`;
+        return acc;
+    }, '')
+
+    let headers = {'Accept': `application/json`}
+
+    // check if user is authenticated
+    const session = window.localStorage.getItem('ember_simple_auth-session');
+    if (session) {
+        const parsed = JSON.parse(session);
+        if (parsed.authenticated && parsed.authenticated.token) {
+            headers = {...headers, 'Authorization': `Bearer ${parsed.authenticated.token}`}
+        }
+    }
+
+    return cy.request({
+        method: 'GET',
+        url: `/api/v1/tags?${qs}`,
+        headers: headers
+    })
+        .its('body.tags')
+        .then((tags) => tags);
+});

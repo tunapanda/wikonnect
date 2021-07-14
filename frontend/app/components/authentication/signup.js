@@ -34,6 +34,16 @@ export default class AuthenticationSignupComponent extends Component {
   }
 
   @action
+  authenticateWithLinkedIn() {
+    this.session.authenticate('authenticator:torii', 'linkedin');
+  }
+
+  @action
+  authenticateWithFacebook() {
+    this.session.authenticate('authenticator:torii', 'facebook');
+  }
+
+  @action
   createUser(model) {
     let fields = {
       username: model.username,

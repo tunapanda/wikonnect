@@ -74,7 +74,7 @@
         <div class="row ">
           {{#each this.model.tags as |tag|}}
             <span class="badge badge-pill badge-success btn-lg m-1">
-              {{tag}}
+              {{title-case tag.name}}
             </span>
           {{/each}}
           <br>
