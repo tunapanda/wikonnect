@@ -17,8 +17,7 @@ const permController = require('../middleware/permController');
 const { ChapterGetValidation } = require('../middleware/request-validations/chapter');
 const Reaction = require('../models/reaction');
 const { getProfileImage } = require('../utils/routesUtils/userRouteUtils');
-const { eventEmitter } = require('./../utils/event-emitter');
-const { eventCodes } = require('./../utils/events-classification');
+
 
 const router = new Router({
   prefix: '/chapters'
@@ -414,23 +413,11 @@ router.put('/:id', permController.requireAuth, async ctx => {
   const chapterCheck = await Chapter.query().findById(ctx.params.id);
   ctx.assert(chapterCheck, 404, 'Invalid data provided');
 
-  const justPublished = chapterCheck.status !== 'published' && chapterData.status === 'published';
-  const justApproved = (!chapterCheck.approved || chapterCheck.approved !== true) && chapterData.approved === true;
   try {
     const chapter = await Chapter.transaction( tsx => {
       return Chapter.query(tsx)
         .upsertGraphAndFetch({...chapterData, id: ctx.params.id}, {relate: ['tags'], unrelate: ['tags']});
     });
-
-    // emit a Node event if it has just been published
-    if (justPublished) {
-      eventEmitter.emit(eventCodes.chapter.published, chapter);
-    }
-
-    // emit a Node event if it has just been approved
-    if (justApproved) {
-      eventEmitter.emit(eventCodes.chapter.approved, chapter);
-    }
 
     ctx.status = 201;
     ctx.body = { chapter };
@@ -466,9 +453,6 @@ router.delete('/:id', permController.requireAuth, async ctx => {
   await chapter.$query()
     .delete();
 
-  if (chapter.approved && chapter.approved === true) {
-    eventEmitter.emit(eventCodes.approvedChapter.deleted, chapter);
-  }
   ctx.status = 200;
   ctx.body = { };
 });

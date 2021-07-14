@@ -62,6 +62,8 @@ Router.map(function () {
   this.route('reset_password');
   this.route('verify');
 
+  this.route('surveys', { path: '/surveys/:id' });
+
   this.route('admin', function () {
     this.route('dashboard', { path: '/' });
     this.route('users');
@@ -69,6 +71,7 @@ Router.map(function () {
       this.route('home', { path: '/' });
       this.route('manage');
     });
+    this.route('surveys');
   });
 
   this.route('course', function () {
