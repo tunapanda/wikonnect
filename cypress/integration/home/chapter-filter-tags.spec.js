@@ -111,7 +111,7 @@ it('Selected tags should filter chapters', () => {
                     if(ind.children('strong').length === 0){
                         fetchFirstPageChapters()
                             .then((chapters) => {
-                                const filteredChapters = chapters.filter((chapter) => chapter.tags.some((tag)=>tag.id===tag.id));
+                                const filteredChapters = chapters.filter((chapter) => chapter.tags.some((t)=>t.id===tag.id));
 
                                 for (const chapter of filteredChapters) {
                                     cy.get('@pageLinks')
