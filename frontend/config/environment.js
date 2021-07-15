@@ -59,7 +59,9 @@ module.exports = function (environment) {
       enableEnterLeave: true,
       holdToDrag: false,
     },
-
+    PERSPECTIVE_API_KEY: {
+      apiKey: process.env.PERSPECTIVE_API_KEY,
+    },
     google: {
       apiKey: process.env.GOOGLE_KEY,
     },
