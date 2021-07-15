@@ -15,10 +15,44 @@ export default class LearnChaptersController extends Controller {
   @tracked selectedFilterTags = A([]);
 
   get tagsList() {
-    return this.store
+    const tags = this.store
       .peekAll('tag')
       .filter((tag) => tag.id) // ensure it has an id
       .sortBy('name');
+
+    // Ensuring the default tags come first on the list
+
+    const defaultTagsNames = [
+      'internet basics',
+      'content creation',
+      'digital wellness',
+      'data protection and privacy',
+      'online safety',
+      'relationships and communications',
+      'news and media literacy',
+      'online working',
+      'online learning',
+      'life skills',
+      'health',
+      'digital financial literacy',
+    ];
+
+    const defaultTagObjects = [];
+
+    const t = tags.filter((tag) =>
+      defaultTagsNames.includes(tag.name.toLowerCase())
+    );
+
+    t.forEach((tag) => {
+      const index = defaultTagsNames.indexOf(tag.name.toLowerCase());
+      defaultTagObjects[index] = tag;
+    });
+
+    const otherTagObjects = tags.filter(
+      (tag) => !defaultTagsNames.includes(tag.name.toLowerCase())
+    );
+
+    return [...defaultTagObjects, ...otherTagObjects];
   }
 
   @action
