@@ -27,7 +27,12 @@
               {{t "home.tags.clear"}}
             </button>
           </div>
-          {{#each this.filterTags as |tag|}}
+          {{#each this.filterTags as |tag index|}}
+          {{#if (eq index (increment this.totalDefaultTags -1))}}
+            <ddm.item>
+              <hr>
+            </ddm.item>
+          {{/if}}
             <ddm.item>
               <div class="tag-select-item">
                 <ChapterTags::TagCheckbox @tag={{tag}} @selectedTags={{@selectedFilterTags}}

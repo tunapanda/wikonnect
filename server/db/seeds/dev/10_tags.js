@@ -31,7 +31,7 @@ exports.seed = async (knex) => {
     tags.push({
       name,
       slug: faker.helpers.slugify(name.toLowerCase()),
-      can_delete: faker.datatype.boolean(),
+      can_delete: true,
       creator_id: faker.random.arrayElement(userIds),
       created_at: faker.date.past(),
       updated_at: faker.date.recent(),
