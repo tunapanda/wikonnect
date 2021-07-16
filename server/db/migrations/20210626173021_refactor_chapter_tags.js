@@ -7,6 +7,11 @@ exports.up = async (knex)=> {
   return knex.transaction(async (trx)=>{
     await Promise.all(chapters.map(async (chapter)=>{
       const filteredChapterTags = chapter.tags.filter((tag) => tag); // filter for null tag names i.e. [null]
+
+      if (filteredChapterTags.length === 0) {
+        return 1;
+      }
+      
       //prepare queries data
       const parsedInsertTags = filteredChapterTags.map((tag) => {
         return {
