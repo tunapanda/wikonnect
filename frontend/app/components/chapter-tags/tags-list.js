@@ -20,4 +20,8 @@ export default class TagsListComponent extends Component {
       return tag.name.search(search) > -1;
     });
   }
+
+  get totalDefaultTags() {
+    return this.filterTags.filter((tag) => tag.canDelete === false).length;
+  }
 }
