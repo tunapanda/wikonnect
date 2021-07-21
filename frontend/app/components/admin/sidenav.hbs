@@ -56,6 +56,14 @@
       </BsCollapse>
     </li>
     <li class="nav-item">
+      <LinkTo @route="admin.surveys" class="nav-link">
+        <span class="link-icon">
+          {{svg-jar 'bar-chart' height='20' width='20'}}
+        </span>
+        {{t 'admin.sidenav.surveys'}}
+      </LinkTo>
+    </li>
+    <li class="nav-item">
       <LinkTo @route="admin.content-approval" class="nav-link">
         <span class="link-icon">
           {{svg-jar 'dashboard' height='20' width='20'}}

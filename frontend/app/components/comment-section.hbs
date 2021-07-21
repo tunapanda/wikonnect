@@ -2,37 +2,50 @@
   <p><strong>{{t "single_chapter.comments.num_comments" numComments=this.commentsTotal}}</strong></p>
 
   {{#if this.me.isAuthenticated}}
-    <div class="d-flex align-items-center">
-      {{#if this.me.user.profileUri}}
-        <img alt={{t "profile.profile_picture"}} class="mr-3 rounded-circle" width="30px" src={{this.me.user.profileUri}}>
-      {{else}}
-        <img alt={{t "profile.profile_picture"}} class="mr-3 rounded-circle" width="30px" src="/uploads/images/profile-placeholder.gif">
+  <div class="d-flex align-items-center">
+    {{#if this.me.user.profileUri}}
+    <img alt={{t "profile.profile_picture" }} class="mr-3 rounded-circle" width="30px" src={{this.me.user.profileUri}}>
+    {{else}}
+    <img alt={{t "profile.profile_picture" }} class="mr-3 rounded-circle" width="30px"
+      src="/uploads/images/profile-placeholder.gif">
+    {{/if}}
+    <small>{{t "single_chapter.comments.commenting_publicly" commenter=this.me.name}}</small>
+  </div>
+  <form {{on "submit" this.saveComment}} class="my-3">
+    <label for="comment-area">{{t "labels.comment"}}</label>
+    <div id="comment-container">
+      <Textarea @id="reply-area" style={{this.height}}
+        @value={{this.comment}} {{on "keyup" this.checkComment }}
+        @class="form-control" @placeholder={{t "single_chapter.comments.add_comment" }} />
+      {{#if this.errors}}
+      <p class="ml-3">{{this.errors}}% {{t "single_chapter.profane_warning"}}</p>
       {{/if}}
-      <small>{{t "single_chapter.comments.commenting_publicly" commenter=this.me.name}}</small>
     </div>
-    <form {{on "submit" this.saveComment}} class="my-3">
-      <label for="comment-area">{{t "labels.comment"}}</label>
-      <Textarea @id="comment-area" @value={{this.comment}} @class="form-control" @placeholder={{t "single_chapter.comments.add_comment"}}/>
-      <button type="submit" class="btn btn-primary my-1">{{t "buttons.comment"}}</button>
-    </form>
+    {{#if this.errors}}
+    <button type="submit" disabled class="btn btn-primary my-1">{{t "buttons.comment"}}</button>
+    {{ else }}
+    <button type="submit" class="btn btn-primary my-1">{{t "buttons.comment"}}</button>
+    {{/if}}
+  </form>
   {{/if}}
 </div>
 
 <div id="comments-section" class="comment-section">
   {{#each @chapterComments as |item|}}
-    <div class="media mt-4">
-      {{#if item.creator.profileUri}}
-        <img alt={{t "profile.profile_picture"}} class="mr-3 rounded-circle" width="40px" src={{item.creator.profileUri}}>
-      {{else}}
-        <img alt={{t "profile.profile_picture"}} class="mr-3 rounded-circle" width="40px" src="/uploads/images/profile-placeholder.gif">
-      {{/if}}
-      <div class="media-body">
-        <p class="mt-2"><strong>{{item.creator.name}}</strong></p>
-        {{nl2br item.comment}}
+  <div class="media mt-4">
+    {{#if item.creator.profileUri}}
+    <img alt={{t "profile.profile_picture" }} class="mr-3 rounded-circle" width="40px" src={{item.creator.profileUri}}>
+    {{else}}
+    <img alt={{t "profile.profile_picture" }} class="mr-3 rounded-circle" width="40px"
+      src="/uploads/images/profile-placeholder.gif">
+    {{/if}}
+    <div class="media-body">
+      <p class="mt-2"><strong>{{item.creator.name}}</strong></p>
+      {{nl2br item.comment}}
 
-        <Reply-Section @comment={{item}} @selectedChapter={{@selectedChapter}} @chapterReplies={{@chapterReplies}}/>
-      </div>
-      <hr>
+      <Reply-Section @comment={{item}} @selectedChapter={{@selectedChapter}} @chapterReplies={{@chapterReplies}} />
     </div>
+    <hr>
+  </div>
   {{/each}}
 </div>

@@ -1,7 +1,6 @@
-const badWordsArray = require('badwords/array');
+const Filter = require('bad-words');
 
 module.exports = async function profaneCheck(comment) {
-  const reEscape = s => s.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&');
-  const badWordsRE = new RegExp(badWordsArray.map(reEscape).join('|'));
-  return comment.match(badWordsRE);
+  const filter = new Filter();
+  return filter.isProfane(comment);
 };

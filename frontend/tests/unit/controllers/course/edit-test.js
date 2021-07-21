@@ -4,7 +4,7 @@ import { setupTest } from 'ember-qunit';
 module('Unit | Controller | course/edit', function (hooks) {
   setupTest(hooks);
 
-  // Replace this with your real tests.
+  // TODO: Replace this with your real tests.
   test('it exists', function (assert) {
     let controller = this.owner.lookup('controller:course/edit');
     assert.ok(controller);
