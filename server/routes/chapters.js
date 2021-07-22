@@ -21,8 +21,6 @@ const permController = require('../middleware/permController');
 const { ChapterGetValidation } = require('../middleware/request-validations/chapter');
 const Reaction = require('../models/reaction');
 const { getProfileImage } = require('../utils/routesUtils/userRouteUtils');
-const { eventEmitter } = require('./../utils/event-emitter');
-const { eventCodes } = require('./../utils/events-classification');
 const ChapterFeedback = require('../models/chapter_feedback');
 const profaneCheck = require('../utils/profaneCheck');
 
@@ -96,125 +94,133 @@ const router = new Router({
  *
  */
 
-router.get('/', permController.requireAuth, validateGetChapter, async (ctx) => {
-  let stateUserId =
-    ctx.state.user.id == undefined ? ctx.state.user.data.id : ctx.state.user.id;
+router.get(
+  "/",
+  permController.requireAuth,
+  ChapterGetValidation,
+  async (ctx) => {
+    let stateUserId =
+      ctx.state.user.id == undefined
+        ? ctx.state.user.data.id
+        : ctx.state.user.id;
 
-  let { page, per_page } = ctx.query;
-  delete ctx.query.page;
-  delete ctx.query.per_page;
-  let chapter;
-  let queryTags = [];
-  try {
-    if (ctx.query.tags) {
-      queryTags = ctx.query.tags.split(',');
-    }
-    delete ctx.query.tags;
-    // View counter for each chapter
-    chapter = await Chapter.query()
-      .select([
-        'chapters.*',
-        Counter.query()
-          .where({ chapterId: ref('chapters.id'), trigger: 'timerDelay' })
-          .count()
-          .as('views'),
-        Rating.query()
-          .where('chapterId', ref('chapters.id'))
-          .where('isDeleted', false)
-          .avg('ratings.average_rating')
-          .as('ratings'),
-        Reaction.query()
-          .select('reaction')
-          .where('userId', stateUserId)
-          .andWhere('chapterId', ref('chapters.id'))
-          .as('authenticated_user'),
-        Reaction.query()
-          .select('id')
-          .where('userId', stateUserId)
-          .andWhere('chapterId', ref('chapters.id'))
-          .as('authenticated_user_reaction_id'),
-      ])
-      .where(ctx.query)
-      .onBuild((builder) => {
-        if (queryTags.length > 0) {
-          builder.whereExists(
-            Chapter.relatedQuery('tags').whereIn('tags.id', queryTags));
+    let { page, per_page } = ctx.query;
+    delete ctx.query.page;
+    delete ctx.query.per_page;
+    let chapter;
+    let queryTags = [];
+    try {
+      if (ctx.query.tags) {
+        queryTags = ctx.query.tags.split(",");
+      }
+      delete ctx.query.tags;
+      // View counter for each chapter
+      chapter = await Chapter.query()
+        .select([
+          "chapters.*",
+          Counter.query()
+            .where({ chapterId: ref("chapters.id"), trigger: "timerDelay" })
+            .count()
+            .as("views"),
+          Rating.query()
+            .where("chapterId", ref("chapters.id"))
+            .where("isDeleted", false)
+            .avg("ratings.average_rating")
+            .as("ratings"),
+          Reaction.query()
+            .select("reaction")
+            .where("userId", stateUserId)
+            .andWhere("chapterId", ref("chapters.id"))
+            .as("authenticated_user"),
+          Reaction.query()
+            .select("id")
+            .where("userId", stateUserId)
+            .andWhere("chapterId", ref("chapters.id"))
+            .as("authenticated_user_reaction_id"),
+        ])
+        .where(ctx.query)
+        .onBuild((builder) => {
+          if (queryTags.length > 0) {
+            builder.whereExists(
+              Chapter.relatedQuery("tags").whereIn("tags.id", queryTags)
+            );
+          }
+        })
+        .page(page, per_page)
+        .withGraphFetched(
+          "[reaction(reactionAggregate), flag(selectFlag),author(), tags(selectBasicInfo)]"
+        )
+        .orderBy("createdAt", "desc");
+
+      /**retrieve correct user image**/
+      //so not to re-fetch the profile, remove duplicates (handy if network requests to S3 are being done ),
+      const authors = [];
+      let authorIds = {};
+      for (let i = 0; i < chapter.results.length; i++) {
+        if (!chapter.results[i].author) {
+          continue;
         }
-      })
-      .page(page, per_page)
-      .withGraphFetched(
-        '[reaction(reactionAggregate), flag(selectFlag),author(), tags(selectBasicInfo)]'
-      )
-      .orderBy('createdAt', 'desc');
-
-    /**retrieve correct user image**/
-    //so not to re-fetch the profile, remove duplicates (handy if network requests to S3 are being done ),
-    const authors = [];
-    let authorIds = {};
-    for (let i = 0; i < chapter.results.length; i++) {
-      if (!chapter.results[i].author) {
-        continue;
+        if (!authorIds[chapter.results[i].author.id]) {
+          authors.push(chapter.results[i].author);
+          authorIds[chapter.results[i].author.id] = true;
+        }
       }
-      if (!authorIds[chapter.results[i].author.id]) {
-        authors.push(chapter.results[i].author);
-        authorIds[chapter.results[i].author.id] = true;
-      }
-    }
-    const promises = authors.map(async (author) => {
-      return {
-        id: author.id,
-        name: author.name,
-        username: author.username,
-        profileUri: await getProfileImage(author),
-      };
-    });
-    const authorProfiles = await Promise.all(promises);
-    //now map above profiles
-    chapter.results = chapter.results.map((chap) => {
-      if (!chap.author) {
-        //just in case 😁
-        chap.author = {
-          name: 'Private',
-          username: 'Private',
-          id: 'Private',
-          profileUri: 'anonymous',
+      const promises = authors.map(async (author) => {
+        return {
+          id: author.id,
+          name: author.name,
+          username: author.username,
+          profileUri: await getProfileImage(author),
         };
+      });
+      const authorProfiles = await Promise.all(promises);
+      //now map above profiles
+      chapter.results = chapter.results.map((chap) => {
+        if (!chap.author) {
+          //just in case 😁
+          chap.author = {
+            name: "Private",
+            username: "Private",
+            id: "Private",
+            profileUri: "anonymous",
+          };
+          return chap;
+        }
+        const profile = authorProfiles.find((p) => p.id === chap.author.id);
+        if (profile) {
+          chap.author = profile;
+        } else {
+          //just in case 👽
+          chap.author = {
+            name: "Private",
+            username: "Private",
+            id: "Private",
+            profileUri: "anonymous",
+          };
+        }
         return chap;
-      }
-      const profile = authorProfiles.find((p) => p.id === chap.author.id);
-      if (profile) {
-        chap.author = profile;
+      });
+    } catch (e) {
+      if (e.statusCode) {
+        ctx.throw(e.statusCode, null, { errors: [e.message] });
       } else {
-        //just in case 👽
-        chap.author = {
-          name: 'Private',
-          username: 'Private',
-          id: 'Private',
-          profileUri: 'anonymous',
-        };
+        ctx.throw(400, null, { errors: [e.message] });
       }
-      return chap;
-    });
-  } catch (e) {
-    if (e.statusCode) {
-      ctx.throw(e.statusCode, null, { errors: [e.message] });
-    } else {
-      ctx.throw(400, null, { errors: [e.message] });
+      throw e;
     }
-    throw e;
+
+    chapter = {
+      meta: {
+        total_pages: chapter.total / per_page,
+      },
+      chapters: chapter.results,
+    };
+
+    ctx.assert(chapter, 404, "No chapter by that ID");
+    ctx.status = 200;
+    ctx.body = chapter;
   }
-
-  chapter = {
-    meta: {
-      total_pages: chapter.total / per_page,
-    },
-    chapters: chapter.results,
-  };
-
-  ctx.assert(chapter, 404, 'No chapter by that ID');
-  ctx.status = 200;
-  ctx.body = chapter;
-});
+);
 
 /**
  * @api {get} /api/v1/chapters/:id GET single chapter.
