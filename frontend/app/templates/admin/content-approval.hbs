@@ -1,4 +1,4 @@
-<div class="container">
+<div class="m3">
   <table class="table content">
     <thead>
       <th>
@@ -36,9 +36,11 @@
           </td>
           <td>
             {{#if chapter.revisionRequested}}
-              {{t 'admin.content_approval.revision_requested'}}
+              {{svg-jar 'circle_black_24dp' class="revision-icon"}} {{t 'admin.content_approval.revision_requested'}}
+            {{else if chapter.approved}}
+              {{svg-jar 'circle_black_24dp' class="approved-icon"}} {{t 'admin.content_approval.approved'}}
             {{else}}
-              {{if chapter.approved 'Approved' 'Pending'}}
+              {{svg-jar 'circle_black_24dp' class="pending-icon"}} {{t 'admin.content_approval.pending'}}
             {{/if}}
           </td>
           <td>

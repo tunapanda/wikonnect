@@ -92,9 +92,11 @@ content_approval:
   revision_requested: Revision Requested
   unapprove: Unapprove
   approve: Approve
+  approved: Approved
+  pending: Pending
   request_revisions: Request Revisions
   feedback: Feedback
-  
+    
   table:
     thumbnail: Thumbnail
     name: Chapter Name
@@ -102,6 +104,7 @@ content_approval:
     status: Status
     teacher: Teacher
     action: Action
+
 surveys:
   titles:
     manage: Survey Management

@@ -92,6 +92,8 @@ content_approval:
   revision_requested: Marekebisho yameombwa
   unapprove: Batilisha idhini
   approve: Idhinisha
+  approved: Imeidhinishwa
+  pending: Inasubiri
   request_revisions: Omba Marekebisho
   feedback: Maoni
 
@@ -102,6 +104,7 @@ content_approval:
     status: Hali
     teacher: Mwandishi
     action: Hatua
+
 surveys:
   titles:
     manage: Usimamizi wa Utafiti
