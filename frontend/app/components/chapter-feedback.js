@@ -12,8 +12,17 @@ export default class ChapterFeedbackComponent extends Component {
   constructor(owner, args) {
     super(owner, args);
 
+    // load messages when component is created
     this.feedback = this.store.query('chapterFeedback', {
       chapterId: this.args.chapter.id,
     });
+  }
+
+  @action
+  loadFeedback() {
+    // load messages after component is created
+    this.feedback = this.store
+      .peekAll('chapterFeedback')
+      .filter((feedback) => feedback.chapterId === this.args.chapter.id);
   }
 }
