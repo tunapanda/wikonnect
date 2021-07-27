@@ -1,4 +1,59 @@
-<div class="m3">
+<div class="m-3">
+  <div class="sort">
+    <BsDropdown class="sort-dd custom-dd mb-3" as |dd|>
+      <dd.toggle>
+        Sort by
+        <span class="caret"></span>
+      </dd.toggle>
+      <dd.menu as |menu|>
+        <menu.item>
+          <button
+            type="button"
+            class="btn w-100 menu-item"
+            {{on 'click' (fn this.setSortBy 'name')}}
+          >
+            Name
+          </button>
+        </menu.item>
+        <menu.item>
+          <button
+            type="button"
+            class="btn w-100 menu-item"
+            {{on 'click' (fn this.setSortBy 'approvalStatus')}}
+          >
+            Status
+          </button>
+        </menu.item>
+        <menu.item>
+          <button
+            type="button"
+            class="btn w-100 menu-item"
+            {{on 'click' (fn this.setSortBy 'lastUpdateTime')}}
+          >
+            Recent
+          </button>
+        </menu.item>
+      </dd.menu>
+    </BsDropdown>
+  </div>
+  <BsDropdown @closeOnMenuClick={{false}} as |dd|>
+    <dd.toggle>Filter</dd.toggle>
+    <dd.menu as |menu|>
+      {{#each this.statuses as |status index|}}
+        <menu.item>
+          <label>
+            {{title-case status.name}}
+          <Input
+            @type="checkbox"
+            @checked={{status.checked}}
+            {{on 'change' (fn this.toggleSelection index)}}
+          />
+          </label>
+        </menu.item>
+      {{/each}}
+     
+    </dd.menu>
+  </BsDropdown>
   <table class="table content">
     <thead>
       <th>
@@ -21,14 +76,14 @@
       </th>
     </thead>
     <tbody>
-      {{#each this.model as |chapter|}}
+      {{#each this.chapters as |chapter|}}
         <tr>
           <td>
             <img src={{chapter.imageUrl}} alt={{chapter.name}} />
           </td>
           <td>
             <LinkTo @route="chapter" @model={{chapter.id}}>
-              {{chapter.name}}
+              {{title-case chapter.name}}
             </LinkTo>
           </td>
           <td>
@@ -36,12 +91,21 @@
           </td>
           <td>
             {{#if chapter.revisionRequested}}
-              {{svg-jar 'circle_black_24dp' class="revision-icon"}} {{t 'admin.content_approval.revision_requested'}}
+              {{svg-jar 'circle_black_24dp' class='revision-icon'}}
+              {{t 'admin.content_approval.revision_requested'}}
             {{else if chapter.approved}}
-              {{svg-jar 'circle_black_24dp' class="approved-icon"}} {{t 'admin.content_approval.approved'}}
+              {{svg-jar 'circle_black_24dp' class='approved-icon'}}
+              {{t 'admin.content_approval.approved'}}
             {{else}}
-              {{svg-jar 'circle_black_24dp' class="pending-icon"}} {{t 'admin.content_approval.pending'}}
+              {{svg-jar 'circle_black_24dp' class='pending-icon'}}
+              {{t 'admin.content_approval.pending'}}
             {{/if}}
+            <p class="text-muted">
+              <em>
+                Updated at
+                {{chapter.lastUpdateTime}}
+              </em>
+            </p>
           </td>
           <td>
             <LinkTo @route="profile" @model={{chapter.author}}>
@@ -56,7 +120,7 @@
           <td>
             {{#if chapter.approved}}
               <button
-                class="btn btn-danger"
+                class="btn btn-danger btn-block"
                 type="button"
                 {{on 'click' (fn this.toggleApproval chapter.id false)}}
               >
@@ -64,14 +128,14 @@
               </button>
             {{else}}
               <button
-                class="btn btn-success"
+                class="btn btn-success btn-block"
                 type="button"
                 {{on 'click' (fn this.toggleApproval chapter.id true)}}
               >
                 {{t 'admin.content_approval.approve'}}
               </button>
             {{/if}}
-            <button class="btn btn-light" type="button">
+            <button class="btn btn-light btn-block" type="button">
               {{t 'admin.content_approval.request_revisions'}}
               <BsPopover @title="Feedback" @placement="bottom">
                 <BsForm

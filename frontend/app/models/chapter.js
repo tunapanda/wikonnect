@@ -15,6 +15,7 @@ export default class ChapterModel extends Model {
   @attr targetStatus;
   @attr imageUrl;
   @attr createdAt;
+  @attr updatedAt;
   @attr reaction;
   @attr authenticatedUser;
   @attr views;
@@ -26,4 +27,20 @@ export default class ChapterModel extends Model {
 
   @belongsTo('user') creator;
   @hasMany('tag') tags;
+
+  get approvalStatus() {
+    if (this.revisionRequested) {
+      return 'revisions requested';
+    } else {
+      return this.approved ? 'approved' : 'pending';
+    }
+  }
+
+  get lastUpdateTime() {
+    if (!this.createdAt) {
+      return new Date();
+    }
+
+    return new Date(this.updatedAt).toLocaleString();
+  }
 }

@@ -30,3 +30,30 @@ table.content {
     fill: #f64225;
   }
 }
+
+.sort {
+  width: 120px;
+
+  .sort-dd {
+    border: 1px solid map-get($palette, gainsboro);
+    border-radius: 18px;
+    padding: 0.2275rem 1.45rem;
+    background-color: map-get($palette, white);
+
+    .dropdown-toggle {
+      color: map-get($palette, black);
+    }
+  }
+}
+
+.custom-dd {
+  .menu-item {
+    text-align: left;
+    border-radius: 0;
+
+    &:hover {
+      background-color: map-get($palette, primary);
+      color: map-get($palette, white);
+    }
+  }
+}

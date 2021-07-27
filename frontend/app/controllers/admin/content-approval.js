@@ -8,6 +8,61 @@ export default class AdminContentApprovalController extends Controller {
   @service me;
 
   @tracked feedback;
+  @tracked sortBy = "name";
+  @tracked searchTerm;
+
+  @tracked statuses = [
+    { name: 'approved', checked: true },
+    { name: 'pending', checked: true },
+    { name: 'revisions requested', checked: true },
+  ];
+
+  @action
+  setSortBy(value) {
+    this.sortBy = value;
+    console.log(this.sortBy);
+  }
+
+  @action
+  toggleSelection(index) {
+    this.statuses[index].checked = !this.statuses[index].checked;
+    this.statuses = [...this.statuses];
+  }
+
+  sortChapters(chapters) {
+    if (!this.sortBy) {
+      return chapters.sortBy('name');
+    }
+
+    if(this.sortBy === 'lastUpdateTime') {
+      return chapters.sortBy(this.sortBy).reverse();
+    }
+    
+    return chapters.sortBy(this.sortBy);
+  }
+
+  filterChapters(chapters) {
+    return chapters.filter((chapter) => {
+      const index = this.statuses.findIndex(
+        (status) => status.name === chapter.approvalStatus
+      );
+      return this.statuses[index].checked;
+    });
+  }
+
+  get chapters() {
+    if (!this.searchTerm) {
+      return this.sortChapters(this.filterChapters(this.model));
+    }
+
+    const filteredChapters = this.filterChapters(this.model);
+
+    const searchResults = filteredChapters.filter((chapter) => {
+      return chapter.name.toLowerCase().includes(this.searchTerm.toLowerCase());
+    });
+
+    return this.sortChapters(searchResults);
+  }
 
   @action
   async toggleApproval(chapterId, choice) {
