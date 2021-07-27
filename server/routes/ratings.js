@@ -9,6 +9,21 @@ const router = new Router({
   prefix: '/ratings'
 });
 
+function calculateChapterAverageRating(ratings) {
+  let count = 0;
+  const total = ratings.reduce((acc, val) => {
+    if (val > 5 || val < 0) {
+      throw new RangeError('Rating cannot be less than zero or greater than 5 ');
+    }
+    if (val > 0) { // only a rating value greater than zero will be considered
+      count += 1;
+    }
+    acc += +val;
+    return acc;
+  }, 0);
+
+  return count === 0 ? 0 : total / count;
+}
 
 /**
  * @api {get} /api/v1/ratings/:id GET chapter rating by Id
@@ -209,16 +224,7 @@ router.post('/', requireAuth, validateRating, async ctx => {
   }
 
 
-  const ratings = Object.values(obj.metadata);
-  const totalRating = ratings.reduce((acc, val) => {
-    if (val > 5) {
-      ctx.throw(400, 'Rating cannot be greater than 5');
-    }
-    acc += +val;
-    return acc;
-  }, 0);
-
-  const averageRating = totalRating / ratings.length;
+  const averageRating = calculateChapterAverageRating(Object.values(obj.metadata));
 
   try {
     const review = obj.review;
@@ -310,16 +316,8 @@ router.put('/:id', requireAuth, async ctx => {
   let obj = ctx.request.body.rating;
 
   if (obj.metadata) {
-    const ratings = Object.values(obj.metadata);
-    const totalRating = ratings.reduce((acc, val) => {
-      if (val > 5) {
-        ctx.throw(400, 'Rating cannot be greater than 5');
-      }
-      acc += +val;
-      return acc;
-    }, 0);
 
-    const averageRating = totalRating / ratings.length;
+    const averageRating = calculateChapterAverageRating(Object.values(obj.metadata));
 
     obj = { ...obj, averageRating };
   }
