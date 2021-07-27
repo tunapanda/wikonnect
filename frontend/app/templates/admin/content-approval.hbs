@@ -37,21 +37,22 @@
     </BsDropdown>
   </div>
   <BsDropdown @closeOnMenuClick={{false}} as |dd|>
-    <dd.toggle>Filter</dd.toggle>
+    <dd.toggle>
+      Filter
+    </dd.toggle>
     <dd.menu as |menu|>
       {{#each this.statuses as |status index|}}
         <menu.item>
           <label>
             {{title-case status.name}}
-          <Input
-            @type="checkbox"
-            @checked={{status.checked}}
-            {{on 'change' (fn this.toggleSelection index)}}
-          />
+            <Input
+              @type="checkbox"
+              @checked={{status.checked}}
+              {{on 'change' (fn this.toggleSelection index)}}
+            />
           </label>
         </menu.item>
       {{/each}}
-     
     </dd.menu>
   </BsDropdown>
   <table class="table content">
@@ -71,7 +72,7 @@
       <th>
         {{t 'admin.content_approval.table.teacher'}}
       </th>
-      <th>
+      <th class="text-center">
         {{t 'admin.content_approval.table.action'}}
       </th>
     </thead>
@@ -83,7 +84,7 @@
               <img
                 alt=""
                 role="presentation"
-                src="https://generative-placeholders.glitch.me/image?width=150&height=100&style=triangles&gap=100"
+                src="https://generative-placeholders.glitch.me/image?width=150&height=100&style=triangles&gap=100&colors=0"
               />
             {{else}}
               <img src={{chapter.imageUrl}} alt={{chapter.name}} />
@@ -95,7 +96,9 @@
             </LinkTo>
           </td>
           <td>
-            {{chapter.description}}
+            <p class="description">
+              {{chapter.description}}
+            </p>
           </td>
           <td>
             {{#if chapter.revisionRequested}}
@@ -108,12 +111,6 @@
               {{svg-jar 'circle_black_24dp' class='pending-icon'}}
               {{t 'admin.content_approval.pending'}}
             {{/if}}
-            <p class="text-muted">
-              <em>
-                Updated at
-                {{chapter.lastUpdateTime}}
-              </em>
-            </p>
           </td>
           <td>
             <LinkTo @route="profile" @model={{chapter.author}}>
@@ -124,6 +121,12 @@
               />
               {{chapter.author.name}}
             </LinkTo>
+            <p class="text-muted">
+              <em>
+                Updated at
+                {{chapter.lastUpdateTime}}
+              </em>
+            </p>
           </td>
           <td>
             {{#if chapter.approved}}
@@ -143,7 +146,7 @@
                 {{t 'admin.content_approval.approve'}}
               </button>
             {{/if}}
-            <button class="btn btn-light btn-block" type="button">
+            <button class="btn btn-grey btn-block" type="button">
               {{t 'admin.content_approval.request_revisions'}}
               <BsPopover @title="Feedback" @placement="bottom">
                 <BsForm
