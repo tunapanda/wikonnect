@@ -79,7 +79,15 @@
       {{#each this.chapters as |chapter|}}
         <tr>
           <td>
-            <img src={{chapter.imageUrl}} alt={{chapter.name}} />
+            {{#if (eq chapter.imageUrl null)}}
+              <img
+                alt=""
+                role="presentation"
+                src="https://generative-placeholders.glitch.me/image?width=150&height=100&style=triangles&gap=100"
+              />
+            {{else}}
+              <img src={{chapter.imageUrl}} alt={{chapter.name}} />
+            {{/if}}
           </td>
           <td>
             <LinkTo @route="chapter" @model={{chapter.id}}>

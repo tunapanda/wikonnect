@@ -8,7 +8,7 @@ export default class AdminContentApprovalController extends Controller {
   @service me;
 
   @tracked feedback;
-  @tracked sortBy = "name";
+  @tracked sortBy = 'name';
   @tracked searchTerm;
 
   @tracked statuses = [
@@ -16,6 +16,8 @@ export default class AdminContentApprovalController extends Controller {
     { name: 'pending', checked: true },
     { name: 'revisions requested', checked: true },
   ];
+
+  color = Math.floor(Math.random() * 16777215).toString(16);
 
   @action
   setSortBy(value) {
@@ -34,10 +36,10 @@ export default class AdminContentApprovalController extends Controller {
       return chapters.sortBy('name');
     }
 
-    if(this.sortBy === 'lastUpdateTime') {
+    if (this.sortBy === 'lastUpdateTime') {
       return chapters.sortBy(this.sortBy).reverse();
     }
-    
+
     return chapters.sortBy(this.sortBy);
   }
 
