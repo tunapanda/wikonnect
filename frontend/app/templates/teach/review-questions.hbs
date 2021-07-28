@@ -1,4 +1,5 @@
-<div class=" d-flex row text-center p-4 m-0 shadow-sm justify-content-center">
+<div class=" d-flex row text-center p-4 m-0 shadow-sm justify-content-center"
+  {{did-insert this.preloadExistingQuestions}}>
   {{#if this.chapter.reviewQuestions}}
     <h3><b>{{t "messages.edit_h5p_chapter"}}</b></h3>
   {{else}}

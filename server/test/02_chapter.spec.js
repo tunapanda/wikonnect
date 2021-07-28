@@ -3,6 +3,7 @@ const chaiHttp = require('chai-http');
 const chaiJSON = require('chai-json-schema');
 const server = require('../index');
 const tokens = require('./_tokens');
+const knex = require('../db/db');
 
 chai.use(chaiHttp);
 chai.use(chaiJSON);
@@ -16,7 +17,6 @@ const data = {
     name: 'Testing chapter Path',
     description: 'Testing chapter route',
     status: 'published',
-    tags: ['primary'],
     createdAt: '2017-12-20T16:17:10.000Z',
     updatedAt: '2017-12-20T16:17:10.000Z',
     contentType: 'h5p',
@@ -55,7 +55,12 @@ const userComment = {
 };
 
 describe('CHAPTER ROUTE', () => {
-  // Passing tests
+  before(async ()=>{
+    //Assign chapter a tag
+    const tag= await knex('tags').select('id').first();
+    data.chapter.tags = [tag];
+  });
+
   it('Should CREATE a chapter record on POST with valid data and return a JSON object', (done) => {
     chai
       .request(server)
@@ -133,7 +138,7 @@ describe('CHAPTER ROUTE', () => {
         res.should.have.status(200);
         res.should.be.json;
         res.body.chapter.should.have.property('tags');
-        res.body.chapter.tags.should.eql(['primary']);
+        res.body.chapter.tags[0].id.should.eql(data.chapter.tags[0].id);
         done();
       });
   });
