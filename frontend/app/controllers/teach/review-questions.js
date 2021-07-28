@@ -4,7 +4,7 @@ import { tracked } from '@glimmer/tracking';
 import { A } from '@ember/array';
 
 export default class ReviewQuestionsController extends Controller {
-  @tracked selectedCategories = A(this.chapter.reviewQuestions);
+  @tracked selectedCategories = A([]);
 
   get chapter() {
     return this.model[0];
@@ -12,6 +12,12 @@ export default class ReviewQuestionsController extends Controller {
 
   get reviewQuestions() {
     return this.model[1];
+  }
+  @action
+  preloadExistingQuestions() {
+    if (this.chapter.reviewQuestions) {
+      this.selectedCategories = A(this.chapter.reviewQuestions);
+    }
   }
 
   get defaultReviewQuestions() {
@@ -68,12 +74,11 @@ export default class ReviewQuestionsController extends Controller {
         (question) => question.category
       );
 
-      this.chapter.reviewQuestions = this.selectedCategories.addObjects(
-        defaultCategories
-      );
+      this.chapter.reviewQuestions =
+        this.selectedCategories.addObjects(defaultCategories);
       await this.chapter.save();
       //reset the selected questions
-      this.selectedCategories = null;
+      this.selectedCategories = A([]);
 
       this.transitionToRoute('teach.preview', this.chapter.id);
     } catch (e) {

@@ -1,0 +1,83 @@
+$palette: (
+  primary: #F57010,
+  gray30: #3F484D,
+  gray45: #5E6C73,
+  gray95: #EBF0F2,
+);
+
+.popular-courses,
+.popular-tags {
+  padding: 8px;
+
+  .title {
+    font-size: 16px;
+    font-weight: 500;
+    color: map-get($palette, gray30);
+    padding-bottom: 8px;
+    padding-left: 8px;
+  }
+
+  .tags-list {
+    .tag {
+      color: map-get($palette, gray45);
+      background-color: map-get($palette, gray95);
+      border-radius: 3px;
+      margin: 0 4px 4px;
+      font-size: 14px;
+      padding-left: 5px;
+      padding-right: 5px;
+
+    }
+  }
+}
+
+.popular-courses {
+  .courses-preview-list {
+    .course-preview {
+      margin-bottom: 13px;
+
+      .container-image {
+        max-width: 100px;
+
+        .course-thumbnail {
+          width: 100%;
+          height: auto;
+        }
+      }
+
+      .details-container {
+        padding-left: 6px;
+        padding-right: 4px;
+
+        .name {
+          font-weight: 500;
+          font-size: 14px;
+          color: map-get($palette, gray30);
+          line-height: 1;
+          letter-spacing: 0px;
+          padding-bottom: 6px;
+          display: inline-block;
+          width: 100%;
+        }
+
+        .people-enrolled, .tags-list .tag {
+          font-size: 12px;
+          color: map-get($palette, gray30);
+
+          &:hover {
+            text-decoration: none;
+          }
+        }
+
+      }
+
+      &:hover {
+        box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.1);
+
+        .name {
+          color: map-get($palette, primary);
+        }
+      }
+    }
+  }
+}

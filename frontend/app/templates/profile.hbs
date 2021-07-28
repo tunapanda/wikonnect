@@ -4,7 +4,7 @@
   <div class="dashboard-content-wrapper container-lg pb-3">
     <div class="header-section ">
       {{#if this.isProfileOwner}}
-      <div class="main-title">{{t "profile.greeting" name=this.model.name}}</div>
+        <div class="main-title">{{t "profile.greeting" name=this.model.name}}</div>
       {{/if}}
 
       <div class="account-details-list row">
@@ -21,57 +21,61 @@
                 {{ellipsize this.model.role 21 ' '}}
               </div>
               {{#unless this.isProfileOwner}}
-              <div class="location">
-                {{ellipsize this.model.location 40 ' '}}
-              </div>
+                <div class="location">
+                  {{ellipsize this.model.location 40 ' '}}
+                </div>
               {{/unless}}
 
             </div>
             <div class="card-divider"></div>
             <div class="right-container d-flex flex-column">
               {{#if this.isProfileOwner}}
-              {{#if this.model.contactNumber}}
-              <div class="phone">
+                {{#if this.model.contactNumber}}
+                  <div class="phone">
                 <span class="v-icon">
                   {{svg-jar "phone-with-internet" width="20" height="20"}}
                 </span>
-                {{this.model.contactNumber}}
-              </div>
-              {{/if}}
-              {{#if this.model.email}}
+                    {{this.model.contactNumber}}
+                  </div>
+                {{/if}}
+                {{#if this.model.email}}
 
-              <div class="email"><span class="v-icon">
-                  {{svg-jar "email" width="20" height="20"}}
-                </span>
-                {{this.model.email}}
-              </div>
-              {{/if}}
+                  <div class="email"><span class="v-icon">
+                    {{svg-jar "email" width="20" height="20"}}
+                  </span>
+                    {{this.model.email}}
+                  </div>
+                {{/if}}
 
-              {{#if this.model.location}}
+                {{#if this.model.location}}
 
-              <div class="location">
+                  <div class="location">
                 <span class="v-icon">
                   {{svg-jar "location" width="20" height="20"}}
                 </span>
-                {{this.model.location}}
-              </div>
-              {{/if}}
+                    {{this.model.location}}
+                  </div>
+                {{/if}}
 
               {{else}}
-              <div class="section-title"> {{t "profile.bio"}}</div>
-              <div class="account-bio">
-                {{ellipsize this.model.metadata.aboutMe 218}}
-              </div>
+                <div class="section-title"> {{t "profile.bio"}}</div>
+                <div class="account-bio">
+                  {{#if this.model.metadata.aboutMe}}
+                    {{ellipsize this.model.metadata.aboutMe 218}}
+                  {{else}}
+                    <i>{{t "profile.no_bio"}}</i>
+                  {{/if}}
+                </div>
               {{/if}}
             </div>
           </div>
           <div class="footer">
             {{#if this.isProfileOwner}}
-            <div class="text-center">
-              <LinkTo @route="account.edit" class="btn btn-primary edit-profile-btn">
-                {{t "profile.edit_button"}}
-              </LinkTo>
-            </div>
+              <div class="text-center">
+                <LinkTo @route="account.edit" class="btn btn-primary edit-profile-btn">
+                  {{t "profile.edit_button"}}
+                </LinkTo>
+              </div>
             {{/if}}
           </div>
 
@@ -165,19 +169,45 @@
   </div>
 
   <div class="main-content-wrapper container-lg">
-    <div class="nav tabs-menu sections-menu">
+    <div class="nav tabs-menu sections-menu wk-tabs-menu">
       <div class="nav-item">
         <LinkTo @route="profile.home" @model={{this.model}} class="nav-link">
           {{t "profile.nav.home"}}
         </LinkTo>
       </div>
+      <div class="nav-item">
+        <LinkTo @route="index" class="nav-link">
+          {{t "profile.nav.learn"}}
+        </LinkTo>
+      </div>
+      <div class="nav-item">
+        <LinkTo @route="teach.index" class="nav-link">
+          {{t "profile.nav.teach"}}
+        </LinkTo>
+      </div>
 
+      {{#if this.isProfileOwner}}
+        <div class="nav-item">
+          <LinkTo @route="profile.courses" class="nav-link">
+            {{t "profile.nav.courses"}}
+          </LinkTo>
+        </div>
+        <div class="nav-item">
+          <LinkTo @route="profile.people" class="nav-link">
+            {{t "profile.nav.people"}}
+          </LinkTo>
+        </div>
+        <div class="nav-item">
+          <LinkTo @route="profile.tags" class="nav-link">
+            {{t "profile.nav.tags"}}
+          </LinkTo>
+        </div>
+      {{/if}}
       <div class="nav-item">
         <LinkTo @route="profile.achievements" @model={{this.model}} class="nav-link">
           {{t "profile.nav.achievements"}}
         </LinkTo>
       </div>
-
     </div>
 
     {{outlet}}

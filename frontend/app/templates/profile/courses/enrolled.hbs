@@ -1,0 +1,33 @@
+<div class="enrolled-courses-container">
+  {{#if this.courses}}
+    <div class="filters-menu filters-sub-section-menu row pb-3 pt-3">
+      <div class="col-lg-3">
+        <div class="search-form">
+          <Input class="form-control search-input" @value={{this.searchTerm}} @type="search"
+                 placeholder="{{t "course.search_course_placeholder"}}"/>
+          <span class="search-icon {{if this.searchTerm 'd-none'}}"></span>
+        </div>
+      </div>
+    </div>
+  {{/if}}
+
+  <Courses::EnrolledList @enrolledCourses={{this.enrolledCourses}} @col="col-sm-12 col-md-4">
+  </Courses::EnrolledList>
+  <div class="row pb-5">
+    {{#unless this.courses}}
+      <div class="error-message pt-3 pl-3 pb-5">
+        {{t "profile.enrolled_courses_page.no_content"}},
+        <LinkTo @route="profile.courses.available">
+          {{t "profile.enrolled_courses_page.click_here"}}
+        </LinkTo>
+      </div>
+    {{/unless}}
+    {{#if (and this.searchTerm (not this.enrolledCourses))}}
+      <div class="error-message pt-3 pl-3 pb-5">
+        {{html-safe (t "profile.enrolled_courses_page.no_searched_record" word=this.searchTerm)}}
+      </div>
+    {{/if}}
+
+
+  </div>
+</div>
