@@ -6,8 +6,14 @@ exports.up = async (knex)=> {
   const chapters = await knex('chapters').whereNotNull('tags');
   return knex.transaction(async (trx)=>{
     await Promise.all(chapters.map(async (chapter)=>{
+      const filteredChapterTags = chapter.tags.filter((tag) => tag); // filter for null tag names i.e. [null]
+
+      if (filteredChapterTags.length === 0) {
+        return 1;
+      }
+      
       //prepare queries data
-      const parsedInsertTags = chapter.tags.map((tag)=>{
+      const parsedInsertTags = filteredChapterTags.map((tag) => {
         return {
           name: tag.trim(),
           slug: slugify(tag.trim()),
@@ -18,10 +24,10 @@ exports.up = async (knex)=> {
         };
       });
 
-      const parsedTagSlugs = chapter.tags.reduce((acc,tag)=>{
-        acc.push( slugify(tag.trim()));
+      const parsedTagSlugs = filteredChapterTags.reduce((acc, tag) => {
+        acc.push(slugify(tag.trim()));
         return acc;
-      },[]);
+      }, []);
       
       const results= await trx.with('queryX', (qb)=>{
         //2) create tag if it does not exist

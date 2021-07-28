@@ -1,6 +1,6 @@
 const { ref } = require('objection');
 
-const {faker, seed_number} = require('../_seeds');
+const { faker, seed_number } = require('../_seeds');
 const questions = require('../../../utils/review-questions');
 const Chapter = require('../../../models/chapter');
 const Reaction = require('../../../models/reaction');
@@ -11,7 +11,7 @@ exports.seed = async function (knex) {
 
   // we only need the reacted chapters
   const reactions = await Reaction.query()
-    .select(['reaction','chapterId','userId'])
+    .select(['reaction', 'chapterId', 'userId'])
     .whereIn('chapter_id',
       Chapter.query()
         .select(['id'])
@@ -20,31 +20,35 @@ exports.seed = async function (knex) {
 
   const ratings = [];
   const categories = questions.map((d) => d.category);
-  const selectedReactions=[];
+  const selectedReactions = [];
 
   for (let index = 0; index < seed_number; index++) {
     let totalRating = 0;
+    let count = 0;
 
     const metadata = faker.random.arrayElements(categories, 3).reduce((acc, category) => {
       acc[category] = Math.floor(Math.random() * Math.floor(5));
       totalRating += acc[category];
+      if (acc[category] > 0) { // only a rating value greater than zero will be considered
+        count += 1;
+      }
       return acc;
     }, {});
-    const averageRating = totalRating / categories.length;
+    const averageRating = count === 0 ? 0 : totalRating / count;
 
     const reaction = faker.random.arrayElement(reactions);
 
     //we will use the below trick to ensure only one active rating exist
-    const ratingExist = selectedReactions.findIndex((pred)=>{
-      return  pred.chapterId ===reaction.chapterId && pred.userId ===reaction.userId;
-    } ) >-1;
+    const ratingExist = selectedReactions.findIndex((pred) => {
+      return pred.chapterId === reaction.chapterId && pred.userId === reaction.userId;
+    }) > -1;
 
     selectedReactions.push(reaction);
     ratings.push({
       chapter_id: reaction.chapterId,
       user_id: reaction.userId,
       average_rating: averageRating,
-      reaction:reaction.reaction,
+      reaction: reaction.reaction,
       metadata,
       is_deleted: ratingExist,
       created_at: faker.date.past(),
