@@ -1,0 +1,8 @@
+<div class="popular-tags bg-white" ...attributes>
+  <div class="title"> {{t "course.show_page.popular_tags"}}</div>
+  <div class="tags-list row col-12">
+    {{#each @tags as |tag|}}
+      <div class="tag">{{title-case tag.name}} </div>
+    {{/each}}
+  </div>
+</div>

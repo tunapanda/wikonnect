@@ -22,9 +22,14 @@ export default class UserModel extends Model {
   @attr() gender;
   @attr() userRoles;
 
+  @attr('number', { defaultValue: 0 }) totalCoursesEnrolled;
+  @attr('number', { defaultValue: 0 }) totalTagsFollowed;
+  @attr('number', { defaultValue: 0 }) totalUserFollowers;
+
   @hasMany('activity') activities;
   @hasMany('achievement-award') achievementAwards;
   @hasMany('course') enrolledCourses;
+  @hasMany('user-followee') userFollowers;
 
   get badgesEarned() {
     return 0;
@@ -43,7 +48,7 @@ export default class UserModel extends Model {
   }
 
   get role() {
-    if (!this.userRoles) {
+    if (!this.userRoles || !this.userRoles[0] || !this.userRoles[0].name) {
       return '';
     }
 
