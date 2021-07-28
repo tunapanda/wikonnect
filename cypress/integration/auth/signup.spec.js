@@ -53,7 +53,7 @@ describe('Sign up', () => {
         cy.get('.signup-form button[type="submit"]')
             .click()
             .url()
-            .should('include', '/upload')
+            .should('include', '/profile/edit')
     })
 
     it('should not register existing user', () => {

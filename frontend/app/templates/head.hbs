@@ -4,10 +4,5 @@
   setting values on the 'head-data' service.
 --}}
 <HeadTags @headTags={{this.model.headTags}} />
-<link rel="icon" sizes="192x192" href="/assets/favicon.png">
+<link rel="icon" sizes="192x192" href="/images/logo.png">
 <link rel="shortcut icon" type="image/x-icon" href="/assets/favicon.ico">
-
-{{#if (eq this.model.environment 'production')}}
-  <script async defer data-website-id="70152a2f-258e-4120-bd2e-9453d38f5f96"
-    src="https://www.analytics.wikonnect.org/umami.js"></script>
-{{/if}}

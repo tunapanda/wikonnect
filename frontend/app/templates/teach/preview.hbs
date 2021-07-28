@@ -12,7 +12,7 @@
   <div class="row p-5">
     <div class="col-12 row">
       <div class="chapter-title-section col-lg-6">
-        <h4><b>{{t "teach.create.chapter_name"}}: </b>{{this.model.name}}({{this.model.status}}) </h4>
+        <h4><b>{{t "teach.create.chapter_name"}}: </b>{{title-case  this.model.name}}({{this.model.status}}) </h4>
 
         {{#if (eq this.model.status "published")}}
           {{#if this.model.approved}}
@@ -74,7 +74,7 @@
         <div class="row ">
           {{#each this.model.tags as |tag|}}
             <span class="badge badge-pill badge-success btn-lg m-1">
-              {{tag}}
+              {{title-case tag.name}}
             </span>
           {{/each}}
           <br>
@@ -107,7 +107,7 @@
       <div class="border mb-1 p-4">
         <div class="form-group ">
           <label for="t">{{t "teach.create.chapter_name"}}</label>
-          <input value={{this.model.name}} type="text" class="form-control bg-light" id="t" disabled>
+          <input value={{title-case  this.model.name}} type="text" class="form-control bg-light" id="t" disabled>
         </div>
         <div class="form-group">
           <label for="">{{t "teach.create.chapter_desc"}}</label>
@@ -159,5 +159,5 @@
         "buttons.cancel"}}
                @submitTitle={{t "teach.preview.delete"}} @title={{t "teach.preview.delete"}} @size="sm"
                @onHidden={{fn (mut this.deleteModal) false}}>
-  {{t "teach.preview.delete_prompt"}}: <b>{{this.model.name}}</b> ?
+  {{t "teach.preview.delete_prompt"}}: <b>{{title-case this.model.name}}</b> ?
 </BsModalSimple>

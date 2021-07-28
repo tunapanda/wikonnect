@@ -1,5 +1,216 @@
-{{#if this.myProfile}}
-  <Profile::PrivateProfile @profileView={{this.view}} @save={{this.saveUser}} @model={{this.model}} />
-{{else}}
-  <Profile::PublicProfile @model={{this.model}} />
-{{/if}}
+<div class="account-profile-page">
+
+  <div class="bg-panel"></div>
+  <div class="dashboard-content-wrapper container-lg pb-3">
+    <div class="header-section ">
+      {{#if this.isProfileOwner}}
+        <div class="main-title">{{t "profile.greeting" name=this.model.name}}</div>
+      {{/if}}
+
+      <div class="account-details-list row">
+        <div class="profile-card  d-flex flex-column">
+          <div class="body-content d-flex flex-row">
+            <div class="left-container d-flex justify-content-center align-items-center flex-column">
+              <div class="account-image-container">
+                <img src="{{this.model.profileUri}}" alt="" role="presentation">
+              </div>
+              <div class="name">
+                {{ellipsize this.model.name 15 ' '}}
+              </div>
+              <div class="role">
+                {{ellipsize this.model.role 21 ' '}}
+              </div>
+              {{#unless this.isProfileOwner}}
+                <div class="location">
+                  {{ellipsize this.model.location 40 ' '}}
+                </div>
+              {{/unless}}
+
+            </div>
+            <div class="card-divider"></div>
+            <div class="right-container d-flex flex-column">
+              {{#if this.isProfileOwner}}
+                {{#if this.model.contactNumber}}
+                  <div class="phone">
+                <span class="v-icon">
+                  {{svg-jar "phone-with-internet" width="20" height="20"}}
+                </span>
+                    {{this.model.contactNumber}}
+                  </div>
+                {{/if}}
+                {{#if this.model.email}}
+
+                  <div class="email"><span class="v-icon">
+                    {{svg-jar "email" width="20" height="20"}}
+                  </span>
+                    {{this.model.email}}
+                  </div>
+                {{/if}}
+
+                {{#if this.model.location}}
+
+                  <div class="location">
+                <span class="v-icon">
+                  {{svg-jar "location" width="20" height="20"}}
+                </span>
+                    {{this.model.location}}
+                  </div>
+                {{/if}}
+
+              {{else}}
+                <div class="section-title"> {{t "profile.bio"}}</div>
+                <div class="account-bio">
+                  {{#if this.model.metadata.aboutMe}}
+                    {{ellipsize this.model.metadata.aboutMe 218}}
+                  {{else}}
+                    <i>{{t "profile.no_bio"}}</i>
+                  {{/if}}
+                </div>
+              {{/if}}
+            </div>
+          </div>
+          <div class="footer">
+            {{#if this.isProfileOwner}}
+              <div class="text-center">
+                <LinkTo @route="account.edit" class="btn btn-primary edit-profile-btn">
+                  {{t "profile.edit_button"}}
+                </LinkTo>
+              </div>
+            {{/if}}
+          </div>
+
+        </div>
+
+        <div class="achievements-list  d-flex flex-md-column flex-wrap">
+          <div class="achievement-card created-chapters d-flex flex-row">
+            <div class="section-icon">
+
+            </div>
+            <div class="body-content">
+              <div class="section-title">{{t "profile.chapters_created"}}</div>
+              <div class="count">{{this.totalChaptersCreatedByUser}}</div>
+            </div>
+          </div>
+          <div class="achievement-card completed-chapters d-flex flex-row">
+            <div class="section-icon">
+
+            </div>
+            <div class="body-content">
+              <div class="section-title">{{t "profile.chapters_watched"}}</div>
+              <div class="count">{{this.totalChaptersEarnedByUser}}</div>
+            </div>
+          </div>
+          <div class="achievement-card earned-points  d-flex flex-row">
+            <div class="section-icon">
+
+            </div>
+            <div class="body-content">
+              <div class="section-title">{{t "profile.points_earned"}}</div>
+              <div class="count">{{this.totalPointsEarnedByUser}}</div>
+            </div>
+          </div>
+        </div>
+
+        {{!--
+        <div class="badges-unlocked-card d-flex flex-column">
+          <div class="section-title">
+            <span class="section-icon"></span> {{t "profile.top_achievements"}}
+          </div>
+          <div class="badges-list d-flex flex-wrap">
+            <div class="mini-badge-card col-md-4">
+              <div class="card-image-container">
+                <img src="https://pg.labskenya.com/medba.svg" alt="" role="presentation">
+              </div>
+              <div class="detailed-content d-flex flex-column justify-content-center align-items-center">
+                <div class="title" role="link" {{on "click" this.viewAllUnlockedBadges}}>
+                  Super Commenter
+                </div>
+                <div class="points">1000</div>
+              </div>
+              <button type="button" class="btn btn-primary btn-sm btn-share">
+                {{t "profile.badges.share_btn"}}
+              </button>
+            </div>
+            <div class="mini-badge-card col-md-4">
+              <div class="card-image-container">
+                <img src="https://pg.labskenya.com/medal.svg" alt="" role="presentation">
+              </div>
+              <div class="detailed-content d-flex flex-column justify-content-center align-items-center">
+                <div class="title" role="link" {{on "click" this.viewAllUnlockedBadges}}>
+                  Super Commenter
+                </div>
+                <div class="points">1000</div>
+              </div>
+              <button type="button" class="btn btn-primary btn-sm btn-share">
+                {{t "profile.badges.share_btn"}}
+              </button>
+            </div>
+
+            <div class="mini-badge-card extra-badges col-md-4">
+              <div class="badge-icon-container" role="link" {{on "click" this.viewAllUnlockedBadges}}>
+                <img src="https://pg.labskenya.com/medba.svg" class="badge-icon" alt="" role="presentation">
+              </div>
+              <div class="badge-icon-container" role="link" {{on "click" this.viewAllUnlockedBadges}}>
+                <img src="https://pg.labskenya.com/badge.svg" class="badge-icon" alt="" role="presentation">
+              </div>
+              <div class="badge-icon-container" role="link" {{on "click" this.viewAllUnlockedBadges}}>
+                <img src="https://pg.labskenya.com/medal.svg" class="badge-icon" alt="" role="presentation">
+              </div>
+              <div class="badge-icon-container" role="link" {{on "click" this.viewAllUnlockedBadges}}>
+                +5
+              </div>
+            </div>
+          </div>
+        </div>
+        --}}
+      </div>
+
+    </div>
+  </div>
+
+  <div class="main-content-wrapper container-lg">
+    <div class="nav tabs-menu sections-menu wk-tabs-menu">
+      <div class="nav-item">
+        <LinkTo @route="profile.home" @model={{this.model}} class="nav-link">
+          {{t "profile.nav.home"}}
+        </LinkTo>
+      </div>
+      <div class="nav-item">
+        <LinkTo @route="index" class="nav-link">
+          {{t "profile.nav.learn"}}
+        </LinkTo>
+      </div>
+      <div class="nav-item">
+        <LinkTo @route="teach.index" class="nav-link">
+          {{t "profile.nav.teach"}}
+        </LinkTo>
+      </div>
+
+      {{#if this.isProfileOwner}}
+        <div class="nav-item">
+          <LinkTo @route="profile.courses" class="nav-link">
+            {{t "profile.nav.courses"}}
+          </LinkTo>
+        </div>
+        <div class="nav-item">
+          <LinkTo @route="profile.people" class="nav-link">
+            {{t "profile.nav.people"}}
+          </LinkTo>
+        </div>
+        <div class="nav-item">
+          <LinkTo @route="profile.tags" class="nav-link">
+            {{t "profile.nav.tags"}}
+          </LinkTo>
+        </div>
+      {{/if}}
+      <div class="nav-item">
+        <LinkTo @route="profile.achievements" @model={{this.model}} class="nav-link">
+          {{t "profile.nav.achievements"}}
+        </LinkTo>
+      </div>
+    </div>
+
+    {{outlet}}
+  </div>
+
+</div>

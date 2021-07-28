@@ -33,6 +33,5 @@
 <BsModalSimple @open={{this.showRegistrationModal}} @title={{t "buttons.login"}} @size="sm"
                @onHidden={{fn this.openSignUpModal false}}>
 
-  <Authentication::Signup @newUser={{changeset @model this.UserValidation}} @inviteCode={{this.invite_code}}
-                          @success={{this.signup }} />
+  <Authentication::Signup @inviteCode={{this.invite_code}} @success={{this.signup }} />
 </BsModalSimple>

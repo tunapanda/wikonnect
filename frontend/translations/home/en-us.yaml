@@ -6,5 +6,9 @@ tags:
   clear_all_filters: Clear all filters
 
 loading:
-  loading_more_records: Loading more records...
-  loaded_all_the_records: Loaded all the records
+  loading_more_records: Loading more content...
+  loaded_all_the_records: All content loaded
+  no_filtered_record: No content found matching <strong> {selectedTag} </strong>. Kindly try a different filter tag
+  no_filtered_records:  No content found matching <strong> {selectedTags} </strong>. Kindly try a fewer filter tags
+  no_content: There seems to be no content at the moment. Kindly check with us again later.
+  wrong_record_filters:  No content found matching <strong> {selectedTags} </strong>. Kindly try again with a valid filter tag

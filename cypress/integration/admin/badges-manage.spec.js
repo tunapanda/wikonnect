@@ -145,7 +145,7 @@ describe("Badges management page", () => {
 
     it('should not create a badge with invalid data', () => {
         const badge = {
-            name: 'Super learner',
+            name: 'A very random name? '+Math.random() * 100000,
             description: 'Test super learner badge description',
             expiry: `${new Date().getFullYear() - 1}-10-21`, //invalid date
             frequency: -10,
@@ -238,14 +238,14 @@ describe("Badges management page", () => {
                     .find('button.btn-edit')
                     .click();
 
-                /* TODO: there is an issue with form behavior where it is not picking new typed values
                 // modify the values
                 cy.get('.creation-form .badge-form')
+                    .scrollIntoView()
                     .within(() => {
 
                         cy.get('input.name-input')
                             .clear()
-                            .type(updatedBadgeDetails.name, {force: true});
+                            .type(updatedBadgeDetails.name);
 
                         cy.get('input.expiry-input')
                             .clear()
@@ -256,9 +256,11 @@ describe("Badges management page", () => {
                             .type(updatedBadgeDetails.frequency);
 
                         cy.get('input.points-input')
+                            .clear()
                             .type(updatedBadgeDetails.points);
 
                         cy.get('input.reminder-input')
+                            .clear()
                             .type(updatedBadgeDetails.reminder);
 
                         cy.get('button.btn-submit')
@@ -268,8 +270,6 @@ describe("Badges management page", () => {
                 // evaluate the changes
                 cy.get(`.badges-list .badge-card#badge-card-${selectedBadge.id}`)
                     .contains('.name', updatedBadgeDetails.name.substr(0, 25))
-                    .contains('.description', selectedBadge.description.substr(0, 25))
-                */
             })
     })
 

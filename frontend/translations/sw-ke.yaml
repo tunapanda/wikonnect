@@ -99,6 +99,14 @@ main_navbar:
   notifications:
     title: Arifa
     empty: Huna arifa mpya
+  search:
+    result: Hakuna matokeo ya
+
+learner_menu:
+  chapters: Sura
+  courses: Kozi
+  available_courses: Kozi Zinazopatikana
+  enrolled_courses: Kozi Ulizojisajili
 
 table:
   empty: Hakuna rekodi za kuonyesha
@@ -111,3 +119,14 @@ badge_popup:
   title: Jinsi ya kupata hii beji
   ok: SAWA NIMEPATA!
   points: Pointi
+
+close_x: x
+
+course_preview_card:
+  tag_list_title: Vitambulisho
+  enrolled: "{count, plural,=1 {Mtu 1 aliyejiandikisha} other {Watu waliojiandikisha #}}"
+
+popular_courses_card:
+  people_enrolled: "{count, plural,=1 {Mtu 1 aliyejiandikisha} other {Watu waliojiandikisha #}}"
+callback:
+  custom: Kaa chini tunapounda akaunti yako

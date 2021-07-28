@@ -1,6 +1,7 @@
 import Component from '@glimmer/component';
 import { inject as service } from '@ember/service';
 import { action } from '@ember/object';
+import { tracked } from '@glimmer/tracking';
 import UserValidation from '../../validations/user';
 
 export default class AuthenticationSignupComponent extends Component {
@@ -11,7 +12,12 @@ export default class AuthenticationSignupComponent extends Component {
   @service session;
   @service store;
   @service config;
+  userLoginForm;
 
+  constructor() {
+    super(...arguments);
+    this.userLoginForm = new UserForm();
+  }
   @action
   authenticateWithGoogleImplicitGrant() {
     let clientId = this.config.get('google').apiKey;
@@ -28,19 +34,29 @@ export default class AuthenticationSignupComponent extends Component {
   }
 
   @action
+  authenticateWithLinkedIn() {
+    this.session.authenticate('authenticator:torii', 'linkedin');
+  }
+
+  @action
+  authenticateWithFacebook() {
+    this.session.authenticate('authenticator:torii', 'facebook');
+  }
+
+  @action
   createUser(model) {
-    let fields = model.getProperties(
-      'username',
-      'email',
-      'password',
-      'inviteCode'
-    );
+    let fields = {
+      username: model.username,
+      email: model.email,
+      password: model.password,
+      inviteCode: model.inviteCode,
+    };
 
     this.me
       .register(fields)
       .then(() =>
         this.me
-          .authenticate(model.get('username'), model.get('password'))
+          .authenticate(model.username, model.password)
           .then(() => this.args.success())
       )
       .catch((err) => {
@@ -64,4 +80,13 @@ export default class AuthenticationSignupComponent extends Component {
         }
       });
   }
+}
+
+class UserForm {
+  @tracked username;
+  @tracked email;
+  @tracked firstname;
+  @tracked lastname;
+  @tracked password;
+  @tracked passwordConfirmation;
 }

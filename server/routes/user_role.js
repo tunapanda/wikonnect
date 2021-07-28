@@ -122,7 +122,7 @@ router.get('/:id', requireAuth, grantAccess('readAny', 'private'), async ctx => 
  * @apiHeader {String} Authorization Bearer << JWT here>>
  *
  * @apiParam (URI Param) {String} id user id
- * @apiParam (Params) {String} groupId New group id to be updated
+ * @apiParam (PUT Params) {string} userRole[groupId] New group id to be updated
  *
  * @apiSuccessExample {json} Success-Response:
  *     HTTP/1.1 200 OK
@@ -139,7 +139,7 @@ router.get('/:id', requireAuth, grantAccess('readAny', 'private'), async ctx => 
 
 router.put('/:id', requireAuth, grantAccess('updateAny', 'private'), async ctx => {
   const userId = ctx.params.id;
-  const data = ctx.request.body.user_role;
+  const data = ctx.request.body.userRole;
   const user_role = await groupMembers.query()
     .patch(data)
     .where({ 'user_id': userId })
