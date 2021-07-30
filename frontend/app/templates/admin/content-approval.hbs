@@ -3,63 +3,116 @@
     Content Approval
   </h1>
   <hr />
-
-  <div class="sort">
-    <BsDropdown class="sort-dd custom-dd mb-3" as |dd|>
+  <div class="row info mb-3">
+    <div class="col-lg-3">
+      <div class="card h-100">
+        <div class="card-body d-flex flex-column justify-content-center align-items-start">
+          <p>
+            <strong>
+              {{this.greeting}}
+              , you have
+              {{this.numOfPending}}
+              content approvals to make.
+            </strong>
+          </p>
+          <button class="btn btn-primary">
+            Start approval
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-2">
+      <div class="card h-100">
+        <div class="card-body d-flex flex-column align-items-center">
+          <img src="/images/chapters-created.png" alt="" role="presentation" />
+          <p class="m-0">
+            Pending Approval
+          </p>
+          <p class="status-count m-0">
+            {{this.numOfPending}}
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-2">
+      <div class="card h-100">
+        <div class="card-body d-flex flex-column align-items-center">
+          <img src="/images/completed-55.png" alt="" role="presentation" />
+          <p class="m-0">
+            Approved Chapters
+          </p>
+          <p class="status-count m-0">
+            {{this.numOfApproved}}
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="actions d-flex">
+    <div class="search">
+      <Input
+        class="form-control search-input mr-3"
+        @value={{this.searchTerm}}
+        @type="search"
+      />
+    </div>
+    <div class="sort mr-3">
+      <BsDropdown class="sort-dd custom-dd mb-3" as |dd|>
+        <dd.toggle>
+          Sort by
+          <span class="caret"></span>
+        </dd.toggle>
+        <dd.menu as |menu|>
+          <menu.item>
+            <button
+              type="button"
+              class="btn w-100 menu-item"
+              {{on 'click' (fn this.setSortBy 'name')}}
+            >
+              Name
+            </button>
+          </menu.item>
+          <menu.item>
+            <button
+              type="button"
+              class="btn w-100 menu-item"
+              {{on 'click' (fn this.setSortBy 'approvalStatus')}}
+            >
+              Status
+            </button>
+          </menu.item>
+          <menu.item>
+            <button
+              type="button"
+              class="btn w-100 menu-item"
+              {{on 'click' (fn this.setSortBy 'lastUpdateTime')}}
+            >
+              Recent
+            </button>
+          </menu.item>
+        </dd.menu>
+      </BsDropdown>
+    </div>
+    <BsDropdown @closeOnMenuClick={{false}} as |dd|>
       <dd.toggle>
-        Sort by
-        <span class="caret"></span>
+        Filter
       </dd.toggle>
       <dd.menu as |menu|>
-        <menu.item>
-          <button
-            type="button"
-            class="btn w-100 menu-item"
-            {{on 'click' (fn this.setSortBy 'name')}}
-          >
-            Name
-          </button>
-        </menu.item>
-        <menu.item>
-          <button
-            type="button"
-            class="btn w-100 menu-item"
-            {{on 'click' (fn this.setSortBy 'approvalStatus')}}
-          >
-            Status
-          </button>
-        </menu.item>
-        <menu.item>
-          <button
-            type="button"
-            class="btn w-100 menu-item"
-            {{on 'click' (fn this.setSortBy 'lastUpdateTime')}}
-          >
-            Recent
-          </button>
-        </menu.item>
+        {{#each this.statuses as |status index|}}
+          <menu.item>
+            <label>
+              {{title-case status.name}}
+              <Input
+                @type="checkbox"
+                @checked={{status.checked}}
+                {{on 'change' (fn this.toggleSelection index)}}
+              />
+            </label>
+          </menu.item>
+        {{/each}}
       </dd.menu>
     </BsDropdown>
   </div>
-  <BsDropdown @closeOnMenuClick={{false}} as |dd|>
-    <dd.toggle>
-      Filter
-    </dd.toggle>
-    <dd.menu as |menu|>
-      {{#each this.statuses as |status index|}}
-        <menu.item>
-          <label>
-            {{title-case status.name}}
-            <Input
-              @type="checkbox"
-              @checked={{status.checked}}
-              {{on 'change' (fn this.toggleSelection index)}}
-            />
-          </label>
-        </menu.item>
-      {{/each}}
-    </dd.menu>
-  </BsDropdown>
   <table class="table content">
     <thead>
       <th>

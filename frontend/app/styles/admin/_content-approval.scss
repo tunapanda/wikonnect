@@ -4,6 +4,17 @@
   font-weight: 600;
 }
 
+.info {
+  img {
+    height: 50px;
+  }
+
+  .status-count {
+    font-size: 2em;
+    color: #d95800;
+  }
+}
+
 table.content {
   table-layout: fixed;
   width: 100%;
@@ -65,7 +76,7 @@ table.content {
   width: 120px;
 
   .sort-dd {
-    border: 1px solid map-get($palette, gainsboro);
+    border: 1px solid #ced4da;
     border-radius: 18px;
     padding: 0.2275rem 1.45rem;
     background-color: map-get($palette, white);

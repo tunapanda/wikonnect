@@ -19,6 +19,29 @@ export default class AdminContentApprovalController extends Controller {
 
   color = Math.floor(Math.random() * 16777215).toString(16);
 
+  get greeting() {
+    const hour = new Date().getHours();
+    let greet;
+
+    if (hour < 12) {
+      greet = 'Good Morning';
+    } else if (hour >= 12 && hour <= 17) {
+      greet = 'Good Afternoon';
+    } else if (hour > 17 && hour < 24) {
+      greet = 'Good Evening';
+    }
+
+    return `${greet} ${this.me.name}`;
+  }
+
+  get numOfPending() {
+    return this.model.filter((chapter) => chapter.approvalStatus === 'pending').length;
+  }
+
+  get numOfApproved() {
+    return this.model.filter((chapter) => chapter.approvalStatus === 'approved').length;
+  }
+
   @action
   setSortBy(value) {
     this.sortBy = value;
