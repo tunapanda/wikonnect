@@ -1,9 +1,5 @@
-const path = require('path');
-const hbs = require('nodemailer-express-handlebars');
-const nodemailer = require('nodemailer');
+
 const environment = process.env.NODE_ENV || 'development';
-
-
 let emailAuth;
 try {
   emailAuth = require('../config/email')[environment];
@@ -11,22 +7,7 @@ try {
   emailAuth = require('../config/email.example')[environment];
 }
 
-let transporter = nodemailer.createTransport({
-  host: emailAuth.provider,
-  port: 587,
-  auth: emailAuth.auth
-});
-
-transporter.use('compile', hbs({
-  // viewEngine: 'handlebars',
-  viewEngine: {
-    extName: '.html',
-    partialsDir: path.resolve('./email/templates/'),
-    defaultLayout: false,
-  },
-  viewPath: path.resolve('./email/templates/'),
-  extName: '.html'
-}));
+let mailgun = require('mailgun-js')({ apiKey: emailAuth.auth.apiKey, domain: emailAuth.auth.domain });
 
 /**
  *
@@ -41,13 +22,11 @@ class GenerateEmail {
   constructor(email, fullName, link, templateName, subject) {
     this.mailOptions = {
       from: emailAuth.defaultFrom,
-      to: Buffer.from(email, 'base64').toString('ascii'),
-      template: templateName,
+      to: email,
       subject: subject,
-      context: {
-        url: link,
-        name: fullName
-      }
+      template: templateName,
+      'v:url': link,
+      'v:name': fullName
     };
   }
   // Getter
@@ -56,16 +35,12 @@ class GenerateEmail {
   }
 }
 
-module.exports = async (email, fullName, link, templateName, subject) => {
+module.exports = async (email=Buffer.from(email, 'base64').toString('ascii'), fullName, link, templateName, subject) => {
   const mailType = new GenerateEmail(email, fullName, link, templateName, subject);
-
-  transporter.sendMail(mailType.options, (err) => {
-    if (!err) {
-      return { message: 'Kindly check your email for further instructions' };
-    } else {
-      console.log(err);
-      return err;
-    }
+  // const mailType = new GenerateEmail('okemwa@tunapanda.org', 'asciifolding', 'python.org', 'email_verification', 'I ma doing great work');
+  mailgun.messages().send(mailType.mailOptions, (error, body) => {
+    console.log(body);
+    console.log(error);
   });
 };
 
