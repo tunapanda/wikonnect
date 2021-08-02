@@ -89,14 +89,31 @@ users:
     details_button: Details
 
 content_approval:
-  revision_requested: Revision Requested
-  unapprove: Unapprove
-  approve: Approve
-  approved: Approved
-  pending: Pending
-  request_revisions: Request Revisions
-  feedback: Feedback
+  titles:
+    content_approval: Content Approval
+    feedback: Feedback
+
+  buttons:
+    approve: Approve
+    unapprove: Unapprove
+    request_revisions: Request Revisions
+    start_approval: Start Approval
+
+  labels:
+    revision_requested: Revision Requested
+    approved: Approved
+    pending: Pending
+    content_approval_prompt: "{greeting}, you have {numOfPending, plural, =1 {# content approval} other {# content approvals}} to make."    
+    pending_approval: Pending Approval
+    approved_chapters: Approved Chapters
+    sort_options: Sort By
+    sort_by_status: Status
+    sort_by_name: Name
+    sort_by_time: Recent
+    filter: Filter
+    updated_at: Updated at
     
+
   table:
     thumbnail: Thumbnail
     name: Chapter Name

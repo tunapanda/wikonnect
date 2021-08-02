@@ -89,13 +89,29 @@ users:
     details_button: Maelezo
 
 content_approval:
-  revision_requested: Marekebisho yameombwa
-  unapprove: Batilisha idhini
-  approve: Idhinisha
-  approved: Imeidhinishwa
-  pending: Inasubiri
-  request_revisions: Omba Marekebisho
-  feedback: Maoni
+  titles:
+    content_approval: Idhini ya Maudhui
+    feedback: Maoni
+
+  buttons:
+    approve: Idhinisha
+    unapprove: Batilisha idhini
+    request_revisions: Omba Marekebisho
+    start_approval: Anza Idhini
+
+  labels:
+    revision_requested: Marekebisho yameombwa
+    approved: Imeidhinishwa
+    pending: Inasubiri
+    content_approval_prompt: "{greeting}, you have {numOfPending, plural, =1 {# content approval} other {# content approvals}} to make."    
+    pending_approval: Wanasubiri Idhini
+    approved_chapters: Sura zilizoidhinishwa
+    sort_options: Panga kwa
+    sort_by_status: Hali
+    sort_by_name: Jina
+    sort_by_time: Imesasishwa Hivi Karibuni
+    filter: Chujio
+    updated_at: Imesasishwa saa
 
   table:
     thumbnail: Kijipicha

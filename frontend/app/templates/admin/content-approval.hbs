@@ -1,32 +1,33 @@
 <div class="m-3">
   <h1 class="title">
-    Content Approval
+    {{t "admin.content_approval.titles.content_approval"}}
   </h1>
   <hr />
   <div class="row info mb-3">
     <div class="col-lg-3">
       <div class="card h-100">
-        <div class="card-body d-flex flex-column justify-content-center align-items-start">
+        <div
+          class="card-body d-flex flex-column justify-content-center align-items-start"
+        >
           <p>
             <strong>
-              {{this.greeting}}
-              , you have
-              {{this.numOfPending}}
-              content approvals to make.
+              {{t 'admin.content_approval.labels.content_approval_prompt' greeting=this.greeting numOfPending=this.numOfPending}}
             </strong>
           </p>
-          <button class="btn btn-primary">
-            Start approval
+          <button class="btn btn-primary" type="button">
+            {{t 'admin.content_approval.buttons.start_approval'}}
           </button>
         </div>
       </div>
     </div>
     <div class="col-lg-2">
       <div class="card h-100">
-        <div class="card-body d-flex flex-column align-items-center">
+        <div
+          class="card-body d-flex flex-column align-items-center text-center"
+        >
           <img src="/images/chapters-created.png" alt="" role="presentation" />
           <p class="m-0">
-            Pending Approval
+            {{t 'admin.content_approval.labels.pending_approval'}}
           </p>
           <p class="status-count m-0">
             {{this.numOfPending}}
@@ -36,10 +37,12 @@
     </div>
     <div class="col-lg-2">
       <div class="card h-100">
-        <div class="card-body d-flex flex-column align-items-center">
+        <div
+          class="card-body d-flex flex-column align-items-center text-center"
+        >
           <img src="/images/completed-55.png" alt="" role="presentation" />
           <p class="m-0">
-            Approved Chapters
+            {{t 'admin.content_approval.labels.approved_chapters'}}
           </p>
           <p class="status-count m-0">
             {{this.numOfApproved}}
@@ -59,7 +62,7 @@
     <div class="sort mr-3">
       <BsDropdown class="sort-dd custom-dd mb-3" as |dd|>
         <dd.toggle>
-          Sort by
+          {{t 'admin.content_approval.labels.sort_options'}}
           <span class="caret"></span>
         </dd.toggle>
         <dd.menu as |menu|>
@@ -69,7 +72,7 @@
               class="btn w-100 menu-item"
               {{on 'click' (fn this.setSortBy 'name')}}
             >
-              Name
+              {{t 'admin.content_approval.labels.sort_by_name'}}
             </button>
           </menu.item>
           <menu.item>
@@ -78,7 +81,7 @@
               class="btn w-100 menu-item"
               {{on 'click' (fn this.setSortBy 'approvalStatus')}}
             >
-              Status
+              {{t 'admin.content_approval.labels.sort_by_status'}}
             </button>
           </menu.item>
           <menu.item>
@@ -87,7 +90,7 @@
               class="btn w-100 menu-item"
               {{on 'click' (fn this.setSortBy 'lastUpdateTime')}}
             >
-              Recent
+              {{t 'admin.content_approval.labels.sort_by_time'}}
             </button>
           </menu.item>
         </dd.menu>
@@ -95,7 +98,7 @@
     </div>
     <BsDropdown @closeOnMenuClick={{false}} as |dd|>
       <dd.toggle>
-        Filter
+        {{t 'admin.content_approval.labels.filter'}}
       </dd.toggle>
       <dd.menu as |menu|>
         {{#each this.statuses as |status index|}}
@@ -161,13 +164,13 @@
           <td>
             {{#if chapter.revisionRequested}}
               {{svg-jar 'circle_black_24dp' class='revision-icon'}}
-              {{t 'admin.content_approval.revision_requested'}}
+              {{t 'admin.content_approval.labels.revision_requested'}}
             {{else if chapter.approved}}
               {{svg-jar 'circle_black_24dp' class='approved-icon'}}
-              {{t 'admin.content_approval.approved'}}
+              {{t 'admin.content_approval.labels.approved'}}
             {{else}}
               {{svg-jar 'circle_black_24dp' class='pending-icon'}}
-              {{t 'admin.content_approval.pending'}}
+              {{t 'admin.content_approval.labels.pending'}}
             {{/if}}
           </td>
           <td>
@@ -181,7 +184,7 @@
             </LinkTo>
             <p class="text-muted">
               <em>
-                Updated at
+                {{t 'admin.content_approval.labels.updated_at'}}
                 {{chapter.lastUpdateTime}}
               </em>
             </p>
@@ -193,7 +196,7 @@
                 type="button"
                 {{on 'click' (fn this.toggleApproval chapter.id false)}}
               >
-                {{t 'admin.content_approval.unapprove'}}
+                {{t 'admin.content_approval.buttons.unapprove'}}
               </button>
             {{else}}
               <button
@@ -201,11 +204,11 @@
                 type="button"
                 {{on 'click' (fn this.toggleApproval chapter.id true)}}
               >
-                {{t 'admin.content_approval.approve'}}
+                {{t 'admin.content_approval.buttons.approve'}}
               </button>
             {{/if}}
             <button class="btn btn-grey btn-block" type="button">
-              {{t 'admin.content_approval.request_revisions'}}
+              {{t 'admin.content_approval.buttons.request_revisions'}}
               <BsPopover @title="Feedback" @placement="bottom">
                 <BsForm
                   @onSubmit={{fn this.requestRevision chapter.id}} as |form|
