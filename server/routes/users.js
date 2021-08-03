@@ -44,7 +44,7 @@ const sendVerificationEmail = async (user, email) => {
   });
   // sending email
   const link = `${DOMAIN_NAME}/verify?email=${buf}&token=${token}`;
-  await sendMailMessage(buf, userData.username, link, 'confirm-email', 'Welcome to Wikonnect! Please confirm your email');
+  await sendMailMessage(buf, userData.username, link, 'email_verification', 'Welcome to Wikonnect! Please confirm your email');
   log.info('Email verification sent to %s', email);
 
   return userData;

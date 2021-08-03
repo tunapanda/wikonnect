@@ -5,7 +5,8 @@
     "cSpell.words": [
         "enduser",
         "favicon",
-        "glyphicon"
+        "glyphicon",
+        "mailgun"
     ],
     "jshint.options": {
         "esversion": 6
