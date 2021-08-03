@@ -95,7 +95,7 @@ const router = new Router({
  */
 
 router.get(
-  "/",
+  '/',
   permController.requireAuth,
   ChapterGetValidation,
   async (ctx) => {
@@ -111,46 +111,46 @@ router.get(
     let queryTags = [];
     try {
       if (ctx.query.tags) {
-        queryTags = ctx.query.tags.split(",");
+        queryTags = ctx.query.tags.split(',');
       }
       delete ctx.query.tags;
       // View counter for each chapter
       chapter = await Chapter.query()
         .select([
-          "chapters.*",
+          'chapters.*',
           Counter.query()
-            .where({ chapterId: ref("chapters.id"), trigger: "timerDelay" })
+            .where({ chapterId: ref('chapters.id'), trigger: 'timerDelay' })
             .count()
-            .as("views"),
+            .as('views'),
           Rating.query()
-            .where("chapterId", ref("chapters.id"))
-            .where("isDeleted", false)
-            .avg("ratings.average_rating")
-            .as("ratings"),
+            .where('chapterId', ref('chapters.id'))
+            .where('isDeleted', false)
+            .avg('ratings.average_rating')
+            .as('ratings'),
           Reaction.query()
-            .select("reaction")
-            .where("userId", stateUserId)
-            .andWhere("chapterId", ref("chapters.id"))
-            .as("authenticated_user"),
+            .select('reaction')
+            .where('userId', stateUserId)
+            .andWhere('chapterId', ref('chapters.id'))
+            .as('authenticated_user'),
           Reaction.query()
-            .select("id")
-            .where("userId", stateUserId)
-            .andWhere("chapterId", ref("chapters.id"))
-            .as("authenticated_user_reaction_id"),
+            .select('id')
+            .where('userId', stateUserId)
+            .andWhere('chapterId', ref('chapters.id'))
+            .as('authenticated_user_reaction_id'),
         ])
         .where(ctx.query)
         .onBuild((builder) => {
           if (queryTags.length > 0) {
             builder.whereExists(
-              Chapter.relatedQuery("tags").whereIn("tags.id", queryTags)
+              Chapter.relatedQuery('tags').whereIn('tags.id', queryTags)
             );
           }
         })
         .page(page, per_page)
         .withGraphFetched(
-          "[reaction(reactionAggregate), flag(selectFlag),author(), tags(selectBasicInfo)]"
+          '[reaction(reactionAggregate), flag(selectFlag),author(), tags(selectBasicInfo)]'
         )
-        .orderBy("createdAt", "desc");
+        .orderBy('createdAt', 'desc');
 
       /**retrieve correct user image**/
       //so not to re-fetch the profile, remove duplicates (handy if network requests to S3 are being done ),
@@ -179,10 +179,10 @@ router.get(
         if (!chap.author) {
           //just in case 😁
           chap.author = {
-            name: "Private",
-            username: "Private",
-            id: "Private",
-            profileUri: "anonymous",
+            name: 'Private',
+            username: 'Private',
+            id: 'Private',
+            profileUri: 'anonymous',
           };
           return chap;
         }
@@ -192,10 +192,10 @@ router.get(
         } else {
           //just in case 👽
           chap.author = {
-            name: "Private",
-            username: "Private",
-            id: "Private",
-            profileUri: "anonymous",
+            name: 'Private',
+            username: 'Private',
+            id: 'Private',
+            profileUri: 'anonymous',
           };
         }
         return chap;
@@ -216,7 +216,7 @@ router.get(
       chapters: chapter.results,
     };
 
-    ctx.assert(chapter, 404, "No chapter by that ID");
+    ctx.assert(chapter, 404, 'No chapter by that ID');
     ctx.status = 200;
     ctx.body = chapter;
   }

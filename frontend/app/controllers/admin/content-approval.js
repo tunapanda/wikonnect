@@ -35,11 +35,13 @@ export default class AdminContentApprovalController extends Controller {
   }
 
   get numOfPending() {
-    return this.model.filter((chapter) => chapter.approvalStatus === 'pending').length;
+    return this.model.filter((chapter) => chapter.approvalStatus === 'pending')
+      .length;
   }
 
   get numOfApproved() {
-    return this.model.filter((chapter) => chapter.approvalStatus === 'approved').length;
+    return this.model.filter((chapter) => chapter.approvalStatus === 'approved')
+      .length;
   }
 
   @action

@@ -6,7 +6,7 @@ import { tracked } from '@glimmer/tracking';
 export default class ChapterFeedbackComponent extends Component {
   @service store;
   @service me;
-  
+
   @tracked feedback;
 
   constructor(owner, args) {

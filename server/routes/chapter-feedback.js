@@ -11,7 +11,7 @@ router.get('/', async (ctx) => {
   try {
     const chapterFeedback = await ChapterFeedback.query().where(ctx.query);
 
-    ctx.assert(chapterFeedback, 401, "Something went wrong");
+    ctx.assert(chapterFeedback, 401, 'Something went wrong');
     ctx.status = 200;
     ctx.body = { chapterFeedback };
   } catch (e) {
