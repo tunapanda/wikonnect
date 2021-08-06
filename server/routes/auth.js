@@ -115,8 +115,8 @@ router.post('/forgot_password', async ctx => {
           buf,
           userData.username,
           link,
-          "forgot_password",
-          "Password help has arrived!"
+          'forgot_password',
+          'Password help has arrived!'
         )
       );
     // await sendMailMessage(buf, userData.username, link, 'forgot_password', 'Password help has arrived!');
@@ -176,8 +176,8 @@ router.post('/reset_password', checkIfPasswordAreSame, async ctx => {
         mailer.passwordResetSuccessEmailData(
           decodedMail,
           userData.username,
-          "password_reset_success",
-          "Your Wikonnect Password Has Been Reset Successfully"
+          'password_reset_success',
+          'Your Wikonnect Password Has Been Reset Successfully'
         )
       );
     // await sendMailMessage(userData.username, 'password_reset_success', 'Password Reset Successfully');

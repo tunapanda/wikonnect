@@ -52,8 +52,8 @@ const sendVerificationEmail = async (user, email) => {
         buf,
         userData.username,
         link,
-        "email_verification",
-        "Welcome to Wikonnect! Please confirm your email"
+        'email_verification',
+        'Welcome to Wikonnect! Please confirm your email'
       )
     );
 
