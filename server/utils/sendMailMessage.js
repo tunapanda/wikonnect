@@ -8,10 +8,14 @@ try {
   emailAuth = require('../config/email.example')[environment];
 }
 
-let mg = Mailgun({
-  apiKey: emailAuth.auth.apiKey,
-  domain: emailAuth.auth.domain,
-});
+let mg;
+
+if (emailAuth.auth.apiKey) {
+  mg = Mailgun({
+    apiKey: emailAuth.auth.apiKey,
+    domain: emailAuth.auth.domain,
+  });
+}
 
 const registrationEmailData = (
   encryptedEmail,
@@ -47,7 +51,12 @@ const passwordResetEmailData = (
   };
 };
 
-const passwordResetSuccessEmailData = (email, username, templateName, subject) => {
+const passwordResetSuccessEmailData = (
+  email,
+  username,
+  templateName,
+  subject
+) => {
   return {
     from: emailAuth.defaultFrom,
     to: email,
