@@ -53,7 +53,21 @@
       </div>
 
       <LinkTo @route="profile.home" @model={{@chapter.author.id}} class="chapter-creator text-dark">
-        <img src={{@chapter.author.profileUri}} alt="" role="presentation" class="rounded-circle">
+        {{#if @chapter.author.profileUri}}
+          <img
+            src={{@chapter.author.profileUri}}
+            alt=""
+            role="presentation"
+            class="rounded-circle"
+          />
+        {{else}}
+          <img
+            src="/uploads/images/profile-placeholder.gif"
+            alt=""
+            role="presentation"
+            class="rounded-circle mr-2"
+          />
+        {{/if}}
         {{@chapter.author.name}}
       </LinkTo>
       {{yield}}
