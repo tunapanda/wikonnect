@@ -10,12 +10,12 @@ try {
 
 let mg;
 
-if (process.env.MAILGUN_API_KEY) {
+// if (process.env.MAILGUN_API_KEY) {
   mg = Mailgun({
     apiKey: emailAuth.auth.apiKey,
     domain: emailAuth.auth.domain,
   });
-}
+// }
 
 const registrationEmailData = (
   encryptedEmail,
