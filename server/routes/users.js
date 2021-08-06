@@ -14,7 +14,7 @@ const jwt = require('../middleware/jwt');
 const permController = require('../middleware/permController');
 const validateAuthRoutes = require('../middleware/validateRoutePostSchema/validateAuthRoutes');
 
-const sendMailMessage = require('../utils/sendMailMessage');
+const mailer = require('../utils/sendMailMessage');
 const profaneCheck = require('../utils/profaneCheck');
 const knex = require('../utils/knexUtil');
 const log = require('../utils/logger');
@@ -44,7 +44,20 @@ const sendVerificationEmail = async (user, email) => {
   });
   // sending email
   const link = `${DOMAIN_NAME}/verify?email=${buf}&token=${token}`;
-  await sendMailMessage(buf, userData.username, link, 'email_verification', 'Welcome to Wikonnect! Please confirm your email');
+
+  await mailer.mg
+    .messages()
+    .send(
+      mailer.registrationEmailData(
+        buf,
+        userData.username,
+        link,
+        'email_verification',
+        'Welcome to Wikonnect! Please confirm your email'
+      )
+    );
+
+  // await sendMailMessage(buf, userData.username, link, 'email_verification', 'Welcome to Wikonnect! Please confirm your email');
   log.info('Email verification sent to %s', email);
 
   return userData;
