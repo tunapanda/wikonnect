@@ -10,7 +10,7 @@ try {
 
 let mg;
 
-if (emailAuth.auth.apiKey) {
+if (process.env.MAILGUN_API_KEY) {
   mg = Mailgun({
     apiKey: emailAuth.auth.apiKey,
     domain: emailAuth.auth.domain,
