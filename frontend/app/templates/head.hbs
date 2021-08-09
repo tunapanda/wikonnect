@@ -6,3 +6,7 @@
 <HeadTags @headTags={{this.model.headTags}} />
 <link rel="icon" sizes="192x192" href="/images/logo.png">
 <link rel="shortcut icon" type="image/x-icon" href="/assets/favicon.ico">
+
+{{#if (eq this.model.environment 'production')}}
+  <script async defer data-website-id="9c036fc1-1c4f-42b1-846e-dcc354690fb8" src="https://wikonnect-umami.herokuapp.com/umami.js"></script>
+{{/if}}
