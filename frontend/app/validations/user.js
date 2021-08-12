@@ -22,5 +22,8 @@ export default {
     // validatePasswordStrength({ minScore: 80 })
   ],
   passwordConfirmation: validateConfirmation({ on: 'password' }),
-  dataConfirmation: validatePresence({ presence: true, message: 'Please confirm that we can use your data'}),
+  dataConfirmation: validatePresence({
+    presence: true,
+    message: 'Please confirm that we can use your data',
+  }),
 };
