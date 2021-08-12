@@ -43,10 +43,12 @@
             <el.control placeholder={{t "auth.signup.repeat_password" }} autocomplete="new-password"></el.control>
           </form.element>
 
-          <form.element id="invite-code" class="" @controlType="text" @label={{t "auth.signup.invite_code" }}
+          <form.element class="" @controlType="checkbox" @label={{t "auth.signup.data_confirmation"}} @property="dataConfirmation"/>
+
+          {{!-- <form.element id="invite-code" class="" @controlType="text" @label={{t "auth.signup.invite_code" }}
                         @property="inviteCode" as |el|>
             <el.control placeholder={{t "auth.signup.invite_code" }}></el.control>
-          </form.element>
+          </form.element> --}}
         </div>
 
         <BsButton class="btn btn-primary form-control mb-2" @type="submit" @defaultText={{t "auth.signup.signup" }}
