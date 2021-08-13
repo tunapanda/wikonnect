@@ -40,10 +40,7 @@ class User extends Model {
   }
 
   $beforeInsert() {
-    this.lastSeen = new Date(+new Date());
-  }
-
-  $afterFind() {
+    super.$beforeInsert();
     this.lastSeen = new Date(+new Date());
   }
 

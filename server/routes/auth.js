@@ -54,6 +54,11 @@ router.post('/', validateAuthRoutes.validateUserLogin, async ctx => {
   userInfoWithoutPassword['role'] = role;
 
   if (user.oauth2[0] != undefined && user.oauth2[0].userId == user.id) {
+    await user
+      .$query()
+      .findById(user.id)
+      .patch({ lastSeen: new Date(+new Date()) });
+
     ctx.body = {
       token: jsonwebtoken.sign({
         data: userInfoWithoutPassword,
@@ -61,6 +66,11 @@ router.post('/', validateAuthRoutes.validateUserLogin, async ctx => {
       }, secret)
     };
   } else if (await bcrypt.compare(ctx.request.body.password, hashPassword)) {
+    await user
+      .$query()
+      .findById(user.id)
+      .patch({ lastSeen: new Date(+new Date()) });
+      
     // eslint-disable-next-line require-atomic-updates
     ctx.body = {
       token: jsonwebtoken.sign({
