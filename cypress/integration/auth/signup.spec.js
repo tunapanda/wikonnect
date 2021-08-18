@@ -49,6 +49,9 @@ describe('Sign up', () => {
             .type(password)
             .should('have.value', password);
 
+        cy.get('.signup-form .signup-form-fields #data-confirmation input[type="checkbox"]')
+            .click();
+
 
         cy.get('.signup-form button[type="submit"]')
             .click()
@@ -75,6 +78,9 @@ describe('Sign up', () => {
                 cy.get('.signup-form .signup-form-fields #confirm-password input[type="password"]')
                     .type(password)
                     .should('have.value', password);
+
+                cy.get('.signup-form .signup-form-fields #data-confirmation input[type="checkbox"]')
+                    .click();
 
 
                 cy.get('.signup-form button[type="submit"]')
