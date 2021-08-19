@@ -34,6 +34,7 @@ form:
     file_select: Chagua Faili
     save_draft: Hifadhi kama Rasimu
     publish: Chapisha Kozi
+    unpublish: Ondoa Kozi
     save_tag: Wasilisha Lebo
     edit_published: Hifadhi mabadiliko
   thumbnail:
