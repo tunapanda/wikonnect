@@ -1,4 +1,4 @@
-<div class="col-lg-4 col-md-6 mb-4 chapter-card">
+<div class="col-lg-4 col-md-6 mb-4 chapter-card" ...attributes>
   <div class="card h-100 shadow-sm">
     <LinkTo @route="chapter" @model={{@chapter.id}} class="chapter-thumbnail">
       {{#if (eq @chapter.imageUrl null)}}
@@ -48,7 +48,7 @@
 
       <div class="chapter-tags-list pb-3">
         {{#each @chapter.tags as |tag|}}
-          <LinkTo @route="index" @query={{hash tags=tag}}  class="tag">{{title-case tag}}</LinkTo>
+          <LinkTo @route="index" @query={{hash tags=tag.id}}  class="tag">{{title-case tag.name}}</LinkTo>
         {{/each}}
       </div>
 
@@ -56,6 +56,7 @@
         <img src={{@chapter.author.profileUri}} alt="" role="presentation" class="rounded-circle">
         {{@chapter.author.name}}
       </LinkTo>
+      {{yield}}
     </div>
 
   </div>
