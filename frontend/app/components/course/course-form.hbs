@@ -177,7 +177,7 @@
       </div>
       <div class="mt-2">
         {{#unless this.courseAlreadyPublished}}
-        <button type="button" class="btn btn-danger">
+        <button type="button" class="btn btn-danger" {{on 'click' this.showDeleteModal}}>
           {{t 'course.form.buttons.delete'}}
         </button>
         {{/unless}}
@@ -266,6 +266,17 @@
       </div>
     </div>
   </BsForm>
+  <BsModalSimple
+    @open={{this.deleteModal}}
+    @onSubmit={{fn this.delete this.model.id}}
+    @closeTitle={{t 'buttons.cancel'}}
+    @submitTitle={{t 'teach.preview.delete'}}
+    @title={{t 'teach.preview.delete'}}
+    @size="sm"
+    @onHidden={{fn (mut this.deleteModal) false}}
+  >
+    {{t 'teach.preview.delete_prompt'}} : <b> {{title-case this.model.name}} </b> ?
+</BsModalSimple>
 </div>
 {{yield
   (hash
