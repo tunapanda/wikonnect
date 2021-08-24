@@ -37,6 +37,7 @@ form:
     unpublish: Ondoa Kozi
     save_tag: Wasilisha Lebo
     edit_published: Hifadhi mabadiliko
+    delete: Delete Course
   thumbnail:
     uploading: "Inapakia picha..."
   empty_playlist_state: Anza kuongeza sura kwenye kozi </br> kutoka kwa <a href="#select-chapters-section"> orodha hapa chini </a>

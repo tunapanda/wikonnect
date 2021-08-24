@@ -37,6 +37,7 @@ form:
     unpublish: Unpublish Course
     edit_published: Save Changes
     save_tag: Submit Tag
+    delete: Delete Course
   thumbnail:
     uploading: "Uploading image..."
   empty_playlist_state: Start adding chapters to the course </br> from the  <a href="#select-chapters-section">  list below </a>

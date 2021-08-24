@@ -175,6 +175,13 @@
           {{/if}}
         {{/if}}
       </div>
+      <div class="mt-2">
+        {{#unless this.courseAlreadyPublished}}
+        <button type="button" class="btn btn-danger">
+          {{t 'course.form.buttons.delete'}}
+        </button>
+        {{/unless}}
+      </div>
     </div>
     <div class="col-lg-5">
       <div class="playlist-manager-section d-flex flex-column">
@@ -211,7 +218,7 @@
                     role="presentation"
                     src="https://placehold.jp/20/
                       {{this.color}}
-                      /ffffff/328x200.png?text=
+                       /ffffff/328x200.png?text=
                       {{item.name}}"
                   />
                 {{else}}
