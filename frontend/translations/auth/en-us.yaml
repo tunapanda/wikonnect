@@ -17,6 +17,7 @@ signup:
   signup: Sign Up
   signup_third_party: Sign Up With {authProvider}
   link_to_login: Already have an account? '<'a href="/login"'>'Log in'</a>'
+  data_confirmation: By signing up, you agree to the storage and usage of your data by Wikonnect. Your data will be used to improve Wikonnect. We may use your details to reach out to you to hear about your experience. We will never sell your data to anyone.
 
 password_reset:
   header: Create your new password

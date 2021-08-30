@@ -24,12 +24,9 @@ describe('Monitoring & Evaluation Survey Assignment', () => {
 
     await knex.migrate.rollback(); //reset tables
     await knex.migrate.latest(); // rerun the migrations
-    //seed users & triggers only
+    //seed users only
     await knex.seed.run({
       specific: '01_users.js'
-    });
-    await knex.seed.run({
-      specific: '10_triggers.js'
     });
     //seed survey with predictable data
     const triggers = await knex(triggerModel.tableName).select('id');

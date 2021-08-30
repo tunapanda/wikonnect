@@ -18,13 +18,13 @@
     "start:all": "concurrently yarn:start:server yarn:start:frontend"
   },
   "devDependencies": {
-    "cypress": "6.7.1",
+    "cypress": "^8.3.1",
     "cypress-file-upload": "^5.0.6",
     "knex": "^0.95.1",
     "pg": "^8.3.3"
   },
   "dependencies": {
-    "concurrently": "^5.3.0",
+    "concurrently": "^6.2.0",
     "eslint-plugin-ember": "^8.10.1",
     "eslint-plugin-node": "^11.1.0"
   }

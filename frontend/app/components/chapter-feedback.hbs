@@ -1,0 +1,19 @@
+<BsButton @type="link">
+  {{svg-jar 'message_black_24dp'}}
+  <BsPopover @title="Feedback" @placement="bottom" class="w-25 h-25" @onShow={{this.loadFeedback}}>
+    {{#each this.feedback as |message|}}
+        <div class="media border rounded mt-2 {{if (not-eq message.creator.id this.me.user.id) "text-right replies"}}">
+          <div class="media-body p-2">
+            <p>
+              <LinkTo @route="profile" @model={{message.creator.id}}>
+                <strong>
+                  {{message.creator.name}}
+                </strong>
+              </LinkTo>
+            </p>
+            {{nl2br message.comment}}
+          </div>
+        </div>
+    {{/each}}
+  </BsPopover>
+</BsButton>
