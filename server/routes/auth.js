@@ -6,7 +6,7 @@ const jsonwebtoken = require('jsonwebtoken');
 const User = require('../models/user');
 const log = require('../utils/logger');
 const checkIfPasswordAreSame = require('../utils/routesUtils/authRouteUtils');
-const sendMailMessage = require('../utils/sendMailMessage');
+const mailer = require('../utils/sendMailMessage');
 // const { requireAuth } = require('../middleware/permController');
 const { secret } = require('../middleware/jwt');
 const validateAuthRoutes = require('../middleware/validateRoutePostSchema/validateAuthRoutes');
@@ -54,6 +54,11 @@ router.post('/', validateAuthRoutes.validateUserLogin, async ctx => {
   userInfoWithoutPassword['role'] = role;
 
   if (user.oauth2[0] != undefined && user.oauth2[0].userId == user.id) {
+    await user
+      .$query()
+      .findById(user.id)
+      .patch({ lastSeen: new Date(+new Date()) });
+
     ctx.body = {
       token: jsonwebtoken.sign({
         data: userInfoWithoutPassword,
@@ -61,6 +66,11 @@ router.post('/', validateAuthRoutes.validateUserLogin, async ctx => {
       }, secret)
     };
   } else if (await bcrypt.compare(ctx.request.body.password, hashPassword)) {
+    await user
+      .$query()
+      .findById(user.id)
+      .patch({ lastSeen: new Date(+new Date()) });
+      
     // eslint-disable-next-line require-atomic-updates
     ctx.body = {
       token: jsonwebtoken.sign({
@@ -107,8 +117,20 @@ router.post('/forgot_password', async ctx => {
     });
     // sending email
     const link = `${DOMAIN_NAME}/reset_password?email=${buf}&token=${token}`;
-    await sendMailMessage(buf, userData.username, link, 'forgot-password-email', 'Password help has arrived!');
-    log.info('Email verification sent to %s', email);
+
+    await mailer.mg
+      .messages()
+      .send(
+        mailer.passwordResetEmailData(
+          buf,
+          userData.username,
+          link,
+          'forgot_password',
+          'Password help has arrived!'
+        )
+      );
+    // await sendMailMessage(buf, userData.username, link, 'forgot_password', 'Password help has arrived!');
+    log.info('Password reset email sent to %s', email);
 
     ctx.status = 201;
     // ctx.body = userData;
@@ -157,8 +179,18 @@ router.post('/reset_password', checkIfPasswordAreSame, async ctx => {
 
   try {
     const userData = await user.$query().patchAndFetch({ 'resetPasswordExpires': new Date(), 'hash': auth.hash });
-    // generate link and send email
-    await sendMailMessage(userData.username, 'reset-password-email', 'Password Reset Successfully');
+    
+    await mailer.mg
+      .messages()
+      .send(
+        mailer.passwordResetSuccessEmailData(
+          decodedMail,
+          userData.username,
+          'password_reset_success',
+          'Your Wikonnect Password Has Been Reset Successfully'
+        )
+      );
+    // await sendMailMessage(userData.username, 'password_reset_success', 'Password Reset Successfully');
     log.info('Password changed for user with email: %s', decodedMail);
 
     ctx.status = 201;

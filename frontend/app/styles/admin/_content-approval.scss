@@ -1,0 +1,100 @@
+.title {
+  font-size: 16px;
+  line-height: 20px;
+  font-weight: 600;
+}
+
+.info {
+  img {
+    height: 50px;
+  }
+
+  .status-count {
+    font-size: 2em;
+    color: #d95800;
+  }
+}
+
+table.content {
+  table-layout: fixed;
+  width: 100%;
+  font-size: 14px;
+
+  img {
+    width: 150px;
+  }
+
+  th:nth-child(3) {
+    width: 20%;
+  }
+
+  th:nth-child(4) {
+    width: 19%;
+  }
+
+  th:nth-child(5) {
+    width: 19%;
+  }
+
+  img.user-profile-image {
+    width: 30px;
+  }
+
+  .pending-icon {
+    fill: #f5c929;
+  }
+
+  .approved-icon {
+    fill: #3ca583;
+  }
+
+  .revision-icon {
+    fill: #f64225;
+  }
+
+  .description {
+    display: block;
+    display: -webkit-box;
+    height: 54px;
+    line-height: 1.3;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
+.btn-grey {
+  background-color: gainsboro;
+
+  &:hover {
+    background-color: silver;
+  }
+}
+
+.sort {
+  width: 120px;
+
+  .sort-dd {
+    border: 1px solid #ced4da;
+    border-radius: 18px;
+    padding: 0.2275rem 1.45rem;
+    background-color: map-get($palette, white);
+
+    .dropdown-toggle {
+      color: map-get($palette, black);
+    }
+  }
+}
+
+.custom-dd {
+  .menu-item {
+    text-align: left;
+    border-radius: 0;
+
+    &:hover {
+      background-color: map-get($palette, primary);
+      color: map-get($palette, white);
+    }
+  }
+}

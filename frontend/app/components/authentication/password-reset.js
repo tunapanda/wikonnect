@@ -12,14 +12,17 @@ export default class PasswordResetComponent extends Component {
   @tracked error = { message: '' };
   @tracked password = '';
   @tracked passwordConfirm = '';
+  @tracked loading = false;
 
   @action
   async resetPassword(e) {
     e.preventDefault();
 
+    this.loading = true;
     if (this.password !== this.passwordConfirm) {
       this.isInvalid = true;
       this.error = { ...this.error, message: "Password's don't match" };
+      this.loading = false;
     } else {
       const data = {
         auth: {
