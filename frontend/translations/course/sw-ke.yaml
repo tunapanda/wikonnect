@@ -118,6 +118,7 @@ errors:
   playlist_error: Inaonekana tunakabiliwa na shida na orodha ya sura za kozi
   login_to_enroll: Lazima kwanza uingie ama ujiandikishe ili kujiandikisha kwa kozi hii.
   general_error: Hitilafu isiyotarajiwa imepatikana wakati wa kuchakata ombi lako.
+  edit_access_error: Huna ruhusa za kurekebisha kozi iliyochaguliwa.
 
 prompts:
   disenroll: Je! Una uhakika unataka kujiondoa kwenye kozi hii?

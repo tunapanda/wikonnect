@@ -118,6 +118,7 @@ errors:
   playlist_error: It seems we are facing issue with course playlist
   login_to_enroll: You must first login/register to enroll to this course.
   general_error: Unexpected error encountered while processing your request.
+  edit_access_error: You don't have permissions to modify the selected course.
 
 prompts:
   disenroll: Are you sure you want to unenroll from this course?
