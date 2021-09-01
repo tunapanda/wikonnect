@@ -34,10 +34,10 @@ form:
     file_select: Chagua Faili
     save_draft: Hifadhi kama Rasimu
     publish: Chapisha Kozi
-    unpublish: Ondoa Kozi
+    unpublish: Ondoa Uchapishaji
     save_tag: Wasilisha Lebo
     edit_published: Hifadhi mabadiliko
-    delete: Delete Course
+    delete: Futa Kozi
   thumbnail:
     uploading: "Inapakia picha..."
   empty_playlist_state: Anza kuongeza sura kwenye kozi </br> kutoka kwa <a href="#select-chapters-section"> orodha hapa chini </a>
