@@ -13,10 +13,12 @@ export default class CourseCourseFormComponent extends Component {
   @service store;
   @service notify;
   @service intl;
+  @service router;
 
   @tracked uploader;
   @tracked thumbnail;
   @tracked selectedTags = A([]);
+  @tracked deleteModal = false;
   maxTagsTotal = 8;
 
   get model() {
@@ -199,5 +201,24 @@ export default class CourseCourseFormComponent extends Component {
 
   get courseAlreadyPublished() {
     return this.model.id && this.model.status === 'published';
+  }
+
+  @action
+  showDeleteModal() {
+    this.deleteModal = true;
+  }
+
+  @action
+  async delete(course_id) {
+    try {
+      let course = await this.store.find('course', course_id);
+      await course.deleteRecord();
+      await course.save();
+      this.deleteModal = false;
+      this.notify.info('Course successfully deleted');
+      this.router.transitionTo('course.drafts');
+    } catch (e) {
+      this.notify.alert('Course not deleted. Unexpected error encountered');
+    }
   }
 }
