@@ -176,11 +176,11 @@
         {{/if}}
       </div>
       <div class="mt-2">
-        {{#unless this.courseAlreadyPublished}}
+        {{#if (and (not this.courseAlreadyPublished) this.model.id)}}
         <button type="button" class="btn btn-danger" {{on 'click' this.showDeleteModal}}>
           {{t 'course.form.buttons.delete'}}
         </button>
-        {{/unless}}
+        {{/if}}
       </div>
     </div>
     <div class="col-lg-5">
