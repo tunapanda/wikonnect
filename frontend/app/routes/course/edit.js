@@ -1,8 +1,7 @@
 import Route from '@ember/routing/route';
-import {inject as service} from "@ember/service";
+import { inject as service } from '@ember/service';
 
 export default class CourseEditRoute extends Route {
-
   @service me;
   @service router;
   @service notify;
@@ -12,8 +11,8 @@ export default class CourseEditRoute extends Route {
     return this.store.find('course', id);
   }
 
- afterModel(resolvedModel) {
-    if(this.me.id !== resolvedModel.creator.get('id')){
+  afterModel(resolvedModel) {
+    if (this.me.id !== resolvedModel.creator.get('id')) {
       this.notify.error(this.intl.t('course.errors.edit_access_error'));
       return this.router.transitionTo('course.create');
     }
