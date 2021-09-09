@@ -16,7 +16,9 @@ export default class TeachReviewQuestionsRoute extends Route {
 
   afterModel(resolvedModel) {
     if (this.me.id !== resolvedModel[0].creator.get('id')) {
-      this.notify.error(this.intl.t('teach.index.no_permission'), { closeAfter: 3000 });
+      this.notify.error(this.intl.t('teach.index.no_permission'), {
+        closeAfter: 3000,
+      });
       return this.router.transitionTo('teach');
     }
   }
