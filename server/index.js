@@ -36,6 +36,7 @@ const io = socketIO(server);
 
 require('./event-handlers/socket-events')(io);
 require('./event-handlers/mne-surveys')();
+require('./event-handlers/badge-awarding')();
 
 
 
