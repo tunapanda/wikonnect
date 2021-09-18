@@ -1,17 +1,18 @@
 const Model = require('./_model');
 const knex = require('../db/db');
 
-class UserSurvey extends Model {
+class UserBadge extends Model {
   static get tableName() {
-    return 'user_surveys';
+    return 'user_badges';
   }
+
 
   static get jsonSchema() {
     return {
       type: 'object',
-      required: ['surveyId', 'userId'],
+      required: ['badgeId', 'userId'],
       properties: {
-        surveyId: {type: 'string'},
+        badgeId: {type: 'string'},
         userId: {type: 'string'},
       },
     };
@@ -19,19 +20,19 @@ class UserSurvey extends Model {
 
   static get relationMappings() {
     return {
-      survey: {
+      badge: {
         relation: Model.BelongsToOneRelation,
-        modelClass: `${__dirname}/survey`,
+        modelClass: `${__dirname}/badges`,
         join: {
-          from: 'user_surveys.survey_id',
-          to: 'surveys.id'
+          from: 'user_badges.badge_id',
+          to: 'badges.id'
         }
       },
       user: {
         relation: Model.BelongsToOneRelation,
         modelClass: `${__dirname}/users`,
         join: {
-          from: 'user_surveys.user_id',
+          from: 'user_badges.user_id',
           to: 'users.id'
         }
       },
@@ -39,5 +40,5 @@ class UserSurvey extends Model {
   }
 }
 
-UserSurvey.knex(knex);
-module.exports = UserSurvey;
+UserBadge.knex(knex);
+module.exports = UserBadge;
