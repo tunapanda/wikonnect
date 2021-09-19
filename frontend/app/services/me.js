@@ -133,5 +133,7 @@ export default class MeService extends Service {
         user.metadata = {"theme": theme};
         user.save();
       })
+
+    console.log(this.user.metadata)
   }
 }

@@ -34,26 +34,32 @@ export default class SwitchModeComponent extends Component {
       this.me.updateTheme('light');
     }
 
+    if(checked){
+      document.querySelector('.card__header > p').textContent ='Dark theme';
+    }else{
+      document.querySelector('.card__header > p').textContent = 'Light theme';
+    }
+
     // const switchButton = document.querySelector('#switch');
     
-    let trans = () => {
-      document.documentElement.classList.add('transition');
-      window.setTimeout(() => {
-        document.documentElement.classList.remove('transition');
-      }, 200);
+    // let trans = () => {
+    //   document.documentElement.classList.add('transition');
+    //   window.setTimeout(() => {
+    //     document.documentElement.classList.remove('transition');
+    //   }, 200);
 
-      if (this.checked) {
-        document.documentElement.setAttribute('data-theme', 'dark');
-        document.querySelector('.card__header > h1').textContent =
-          'Dark theme';
-        trans();
-      } else {
-        document.documentElement.setAttribute('data-theme', 'light');
-        document.querySelector('.card__header > h1').textContent =
-          'Light theme';
-        trans();
-      }
-    };
+    //   if (this.checked) {
+    //     document.documentElement.setAttribute('data-theme', 'dark');
+    //     document.querySelector('.card__header > h1').textContent =
+    //       'Dark theme';
+    //     trans();
+    //   } else {
+    //     document.documentElement.setAttribute('data-theme', 'light');
+    //     document.querySelector('.card__header > h1').textContent =
+    //       'Light theme';
+    //     trans();
+    //   }
+    // };
 
   }
 
