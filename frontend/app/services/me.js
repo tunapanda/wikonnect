@@ -128,7 +128,7 @@ export default class MeService extends Service {
   }
   updateTheme(theme) {
     this.store
-      .findRecord('user', this.me.user.id)
+      .findRecord('user', this.user.id)
       .then((user) => {
         user.metadata = {"theme": theme};
         user.save();

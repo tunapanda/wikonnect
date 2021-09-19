@@ -157,6 +157,18 @@ body.dark-mode {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  position: relative;
+  left: 143px;
+  top: 10px;
+}
+.card__header p {
+  font-size: 1rem;
+  position: relative;
+  top: 6px;
+  text-transform: capitalize;
+  font-family: 'Inter var', sans-serif;
+  margin-right: 10px;
+  letter-spacing: 0;
 }
 .card__header__switch {
   display: flex;
