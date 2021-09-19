@@ -126,4 +126,12 @@ export default class MeService extends Service {
 
     return false;
   }
+  updateTheme(theme) {
+    this.store
+      .findRecord('user', this.me.user.id)
+      .then((user) => {
+        user.metadata = {"theme": theme};
+        user.save();
+      })
+  }
 }
