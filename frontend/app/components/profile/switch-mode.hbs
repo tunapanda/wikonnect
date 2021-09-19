@@ -1,0 +1,7 @@
+<header class="card__header">
+  <div class="card__header__switch" {{did-insert (action this.loadMode)}}>
+    {{input type="checkbox" id="switch" class="tgl tgl-skewed"
+    change=(action this.toggleMode)}}
+    <label for="switch">Toggle</label>
+  </div>
+</header>
