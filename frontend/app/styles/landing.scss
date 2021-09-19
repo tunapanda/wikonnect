@@ -138,3 +138,56 @@ body.dark-mode {
   background-color: $primary-purple;
   color: white;
 }
+#white-header {
+  position: fixed;
+  width: 100%;
+  top: 0;
+  display: flex;
+  background-color: $primary-purple;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 1em;
+  z-index: 999;
+}
+
+.card__header {
+  margin-bottom: 1rem;
+  letter-spacing: 3px;
+  font-size: 1.4rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.card__header__switch {
+  display: flex;
+}
+.card__header__switch input[type='checkbox'] {
+  height: 0;
+  width: 0;
+  visibility: hidden;
+}
+.card__header__switch label {
+  cursor: pointer;
+  text-indent: -9999px;
+  width: 40px;
+  height: 20px;
+  background: grey;
+  display: block;
+  border-radius: 100px;
+  position: relative;
+}
+.card__header__switch label:after {
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 1px;
+  width: 17px;
+  height: 17px;
+  background: #fff;
+  border-radius: 90px;
+  transition: 0.3s;
+}
+.card__header__switch input:checked + label:after {
+  left: calc(100% - 3px);
+  transform: translateX(-100%);
+}
