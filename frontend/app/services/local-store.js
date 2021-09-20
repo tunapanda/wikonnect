@@ -5,18 +5,17 @@ export default class LocalStoreService extends Service {
   constructor() {
     super(...arguments);
     this.store = window.localStorage;
-    console.log("LocalStore service - loaded");
   }
 
-  save(data, key='gists'){
+  save(data, key='theme'){
     this.store.setItem(key, JSON.stringify(data));
   }
 
-  getData(key='gists'){
+  getData(key='theme'){
     return JSON.parse(this.store.getItem(key));
   }
 
-  remove(key='gists') {
+  remove(key='theme') {
     this.store.removeItem(key);
   }
 

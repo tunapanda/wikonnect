@@ -27,7 +27,6 @@ export default class SwitchModeComponent extends Component {
   }
 
   @action loadMode() {
-    // hack to trigger toggle event on load to change styles.!
     this.isDarkModeOn && document.getElementById("switch").dispatchEvent(new MouseEvent('click'));
   }
 
@@ -36,11 +35,12 @@ export default class SwitchModeComponent extends Component {
     let cl = e.currentTarget.classList;
     checked ? cl.add("dark-mode") : cl.remove("dark-mode");
 
-    if(this.isDarkModeOn){
+    if(this.localStore.getData('isDarkModeOn')){
       this.me.updateTheme('dark');
     }else{
       this.me.updateTheme('light');
     }
+
 
     if(checked){
       document.querySelector('.card__header > p').textContent ='Dark theme';
@@ -70,7 +70,6 @@ export default class SwitchModeComponent extends Component {
     // };
 
     this.localStore.save(checked, 'isDarkModeOn');
-
   }
 
 }

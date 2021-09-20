@@ -1,7 +1,14 @@
 body.dark-mode {
-  background: #222;
+  background: #131417;
   color: #fff;
 }
+body.dark-mode .card {
+  background: #1f2229;
+}
+body.dark-mode .text-dark {
+  color: #979797 !important;
+}
+
 #landing {
   background-color: $primary-purple;
   // @include pages-main;

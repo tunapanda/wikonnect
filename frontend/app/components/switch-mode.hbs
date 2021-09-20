@@ -1,6 +1,6 @@
-<header class="card__header">
+<header class="card__header" {{did-insert (action this.loadMode)}}>
   <p>light theme</p>
-  <div class="card__header__switch" {{did-insert (action this.loadMode)}}>
+  <div class="card__header__switch">
     {{input type="checkbox" id="switch" class="tgl tgl-skewed"
     change=(action this.toggleMode)}}
     <label for="switch">Toggle</label>
