@@ -7,16 +7,24 @@ import { inject } from '@ember/service';
 export default class SwitchModeComponent extends Component {
   @tracked 
   isDarkModeOn;
+
+  @inject 
+  localStore;
   
   @inject
   me;
 
-  // constructor() {
-  //   super(...arguments);
-  //   if(!this.isDarkModeOn) {
-  //     this.isDarkModeOn = window.matchMedia('(prefers-color-scheme: dark)').matches;
-  //   }
-  // }
+  constructor() {
+    super(...arguments);
+    
+    this.isDarkModeOn = this.localStore.getData('isDarkModeOn');
+
+    if(!this.isDarkModeOn) {
+      this.isDarkModeOn = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    }
+
+    // console.log(`Header component - loaded`);
+  }
 
   @action loadMode() {
     // hack to trigger toggle event on load to change styles.!
@@ -60,6 +68,8 @@ export default class SwitchModeComponent extends Component {
     //     trans();
     //   }
     // };
+
+    this.localStore.save(checked, 'isDarkModeOn');
 
   }
 
