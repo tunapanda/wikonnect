@@ -31,7 +31,7 @@
               </BsAlert>
             {{/if}}
           {{/each}}
-          <form.element id="phone" class="" @controlType="phone" @label={{t "auth.signup.phone" }} @property="contactNumber" as
+          <form.element id="phone" class="" @controlType="tel" @label={{t "auth.signup.phone" }} @property="contactNumber" as
                         |el|>
             <el.control placeholder={{t 'auth.login.enter_phone'}}></el.control>
           </form.element>
