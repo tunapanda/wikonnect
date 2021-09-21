@@ -14,8 +14,7 @@
   <form {{on "submit" this.saveComment}} class="my-3">
     <label for="comment-area">{{t "labels.comment"}}</label>
     <div id="comment-container">
-      <Textarea @id="reply-area" style={{this.height}}
-        @value={{this.comment}} {{on "keyup" this.checkComment }}
+      <Textarea @id="reply-area" style={{this.height}} @value={{this.comment}} {{on "keyup" this.checkComment }}
         @class="form-control" @placeholder={{t "single_chapter.comments.add_comment" }} />
       {{#if this.errors}}
       <p class="ml-3">{{this.errors}}% {{t "single_chapter.profane_warning"}}</p>
@@ -42,6 +41,21 @@
     <div class="media-body">
       <p class="mt-2"><strong>{{item.creator.name}}</strong></p>
       {{nl2br item.comment}}
+      
+      <BsDropdown as |dd|>
+        <dd.button> {{svg-jar "horizontal-menu-dots" width="24px"}} </dd.button>
+        <dd.menu as |ddm|>
+          <ddm.item>
+            {{!-- <ddm.linkTo @route="index">Something different</ddm.linkTo> --}}
+            {{!-- <ddm @route="index" {{action "deleteComment" this}}>delete</ddm>
+            <span {{on "click" this.toggleDelete}}>Delete</span> --}}
+            <button type="submit" {{action 'addNewComment' newCommentryreply newComment}}>
+             New comment
+            </button>
+            <button {{action 'deleteComment' item }}>Delete</button>
+          </ddm.item>
+        </dd.menu>
+      </BsDropdown>
 
       <Reply-Section @comment={{item}} @selectedChapter={{@selectedChapter}} @chapterReplies={{@chapterReplies}} />
     </div>

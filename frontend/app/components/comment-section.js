@@ -3,6 +3,7 @@ import { inject as service } from '@ember/service';
 import { action } from '@ember/object';
 import { tracked } from '@glimmer/tracking';
 import Perspective from 'perspective-api-client';
+import { log } from 'qunit';
 export default class CommentSectionComponent extends Component {
   @service me;
   @service session;
@@ -57,6 +58,14 @@ export default class CommentSectionComponent extends Component {
       this.errors = res;
       return res;
     }
+
+  }
+
+  @action
+  deleteComment(item) {
+    let comment = this.store.peekRecord('comment', item.id);
+    comment.deleteRecord();
+    comment.save();
   }
 
   @action
@@ -84,4 +93,15 @@ export default class CommentSectionComponent extends Component {
         this.notify.alert('Be mindful of your comments', { closeAfter: 6000 });
       });
   }
+  @action
+  // ddNewCategory(comment) {
+  //   this.controller.get('comment').pushObject({ comment });
+  // }
+  deleteCategory(category) {
+    this.controller.get('comment').removeObject(category);
+  }
 }
+
+
+
+

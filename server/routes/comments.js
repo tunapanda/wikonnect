@@ -212,4 +212,13 @@ router.put('/:id', requireAuth, grantAccess('updateOwn', 'path'), async ctx => {
 
 });
 
+router.delete('/:id', requireAuth, async (ctx) => {
+  const comment = await Comment.query().findById(ctx.params.id);
+  ctx.assert(comment, 404, 'No comment with that id was found');
+
+  await comment.$query().delete();
+
+  ctx.status = 200;
+  ctx.body = {};
+})
 module.exports = router.routes();
