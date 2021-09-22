@@ -14,6 +14,8 @@ export default class CommentSectionComponent extends Component {
   @tracked errors;
   @tracked comment;
   @tracked height;
+  @tracked deleteModal = false;
+
 
   get commentsTotal() {
     return this.args.chapterComments.length;
@@ -62,10 +64,21 @@ export default class CommentSectionComponent extends Component {
   }
 
   @action
+  confirm() {
+    return this.render('editmodal', { into: 'user', outlet: 'md' });
+  }
+
+  @action
+  cancel() {
+    return this.render('nothing', { into: 'user', outlet: 'md' });
+  }
+
+  @action
   deleteComment(item) {
     let comment = this.store.peekRecord('comment', item.id);
     comment.deleteRecord();
     comment.save();
+
   }
 
   @action

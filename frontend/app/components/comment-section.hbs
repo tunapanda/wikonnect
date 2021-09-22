@@ -41,9 +41,9 @@
     <div class="media-body">
       <p class="mt-2"><strong>{{item.creator.name}}</strong></p>
       {{nl2br item.comment}}
-      
+      {{#if (eq this.me.id item.creator.id)}}
       <BsDropdown as |dd|>
-        <dd.button> {{svg-jar "horizontal-menu-dots" width="24px"}} </dd.button>
+        <dd.toggle >{{svg-jar "horizontal-menu-dots" width="10px"}} </dd.toggle>
         <dd.menu as |ddm|>
           <ddm.item>
             {{!-- <ddm.linkTo @route="index">Something different</ddm.linkTo> --}}
@@ -52,11 +52,16 @@
             <button type="submit" {{action 'addNewComment' newCommentryreply newComment}}>
              New comment
             </button>
-            <button {{action 'deleteComment' item }}>Delete</button>
+            <button {{on 'click'(fn (mut this.deleteModal) true)}}>Delete</button>
           </ddm.item>
         </dd.menu>
       </BsDropdown>
-
+  <BsModalSimple @open={{this.deleteModal}} @onSubmit={{fn this.deleteComment item }} @closeTitle={{t
+          "buttons.cancel"}} @submitTitle={{t "teach.preview.delete"}} @title={{t "teach.preview.delete"}} @size="sm"
+    @onHidden={{fn (mut this.deleteModal) false}}>
+    {{t "teach.preview.delete_prompt"}}: <b></b> ?
+  </BsModalSimple>
+  {{/if}}
       <Reply-Section @comment={{item}} @selectedChapter={{@selectedChapter}} @chapterReplies={{@chapterReplies}} />
     </div>
     <hr>
