@@ -1,37 +1,36 @@
 $palette: (
-  primary: #F57010,
-  white: #FFFF,
+  primary: #f57010,
+  white: #ffff,
   darkCharcoal: rgba(87, 92, 88, 1),
-  teach: #32A583,
-  eucalyptus: #28A745,
+  teach: #32a583,
+  eucalyptus: #28a745,
   cardBoxShadow: rgba(0, 0, 0, 0.29),
-  gray30: #3F484D,
-  gray95: #EBF0F2,
-  aliceBlue: #F7FCFF,
-  bombay: #B2B4B6,
-  bonjour: #EAE7E7,
+  gray30: #3f484d,
+  gray95: #ebf0f2,
+  aliceBlue: #f7fcff,
+  bombay: #b2b4b6,
+  bonjour: #eae7e7,
   black: #000000,
-  gallery: #F0F0F0,
+  gallery: #f0f0f0,
 );
 
 .main-header {
-
   .navbar-nav {
     .nav-link {
-      color: #FFFFFF;
+      color: #ffffff;
 
       &.active {
-        color: #FFFFFF;
+        color: #ffffff;
         font-weight: bold;
       }
 
-      &:hover, {
-        color: #FFFFFF;
+      &:hover {
+        color: #ffffff;
       }
     }
 
     .show > .nav-link {
-      color: #FFFFFF;
+      color: #ffffff;
     }
   }
 }
@@ -43,22 +42,21 @@ $palette: (
       margin-right: -1px !important;
       padding-right: 0;
       border: 0;
-
     }
 
     .search-button {
-      background: #FAF1DB;
+      background: #faf1db;
       color: white;
       border-radius: 0;
 
       .search-icon {
-        color: white
+        color: white;
       }
     }
   }
 
   .navbar-toggler {
-    color: #FFFFFF;
+    color: #ffffff;
     border-color: transparent;
     transform: scaleX(-1);
     -webkit-transform: scaleX(-1);
@@ -76,7 +74,7 @@ $palette: (
       position: relative;
 
       &.active:after {
-        content: "";
+        content: '';
         position: absolute;
         bottom: 0;
         right: 0;
@@ -94,12 +92,10 @@ $palette: (
   }
 }
 
-
 /**
 On large screen
  */
 @media (min-width: 992px) {
-
   .main-header {
     height: 60px;
   }

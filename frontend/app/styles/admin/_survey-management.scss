@@ -1,13 +1,13 @@
 $palette: (
-  primary: #F57010,
+  primary: #f57010,
   black: #000000,
-  boxShadow: #0A4B6D2E,
-  gray30: #3F484D,
-  gainsboro: #EAE7E7,
-  white: #FFFF,
-  jungleGreen: #32A583,
+  boxShadow: #0a4b6d2e,
+  gray30: #3f484d,
+  gainsboro: #eae7e7,
+  white: #ffff,
+  jungleGreen: #32a583,
   carrotOrange: rgba(245, 112, 16, 0.39),
-  grayChateau: #A6ADB4
+  grayChateau: #a6adb4,
 );
 
 .survey-manage-page {
@@ -54,7 +54,7 @@ $palette: (
   }
 
   .horizontal-divider {
-    margin-top: .5rem;
+    margin-top: 0.5rem;
   }
 
   .surveys-list {
@@ -64,7 +64,8 @@ $palette: (
     grid-template-columns: 255px 255px 255px 255px;
     padding-bottom: 20px;
 
-    .create-card, .survey-card {
+    .create-card,
+    .survey-card {
       border: 1px solid rgba(201, 202, 203, 1);
       box-shadow: 0px 3px 16px rgba(10, 75, 109, 0.18);
       min-height: 165px;
@@ -121,7 +122,6 @@ $palette: (
 
           &.pending {
             background-color: map-get($palette, carrotOrange);
-
           }
         }
       }
@@ -173,7 +173,6 @@ $palette: (
         }
       }
     }
-
   }
 
   .surveys-list {
@@ -199,7 +198,7 @@ $palette: (
 
           input::placeholder,
           textarea::placeholder,
-          select:invalid, {
+          select:invalid {
             font-size: 13px;
             color: map-get($palette, grayChateau);
           }
@@ -239,7 +238,6 @@ $palette: (
     }
   }
 }
-
 
 @media (min-width: 768px) {
   .survey-manage-page {

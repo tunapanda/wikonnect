@@ -1,6 +1,6 @@
 $palette: (
-  white: #FFFF,
-  primary: #F57010
+  white: #ffff,
+  primary: #f57010,
 );
 
 .user-profile-dropdown {
@@ -14,11 +14,11 @@ $palette: (
     -ms-transform: rotate(45deg);
     transform: rotate(45deg);
     top: 0;
-    content: "";
-    border: 0.13em solid map-get($palette,white);
-    -webkit-transition: all .3s ease;
-    -o-transition: all .3s ease;
-    transition: all .3s ease;
+    content: '';
+    border: 0.13em solid map-get($palette, white);
+    -webkit-transition: all 0.3s ease;
+    -o-transition: all 0.3s ease;
+    transition: all 0.3s ease;
     overflow: hidden;
     border-left: 1px solid transparent;
     border-top: 1px solid transparent;
@@ -28,16 +28,13 @@ $palette: (
     margin-left: 9px;
     opacity: 1;
   }
-
 }
-
-
 
 .signup-menu-link {
   color: map-get($palette, white) !important;
 }
 
-.signin-menu-link{
+.signin-menu-link {
   color: map-get($palette, white);
 }
 
@@ -45,12 +42,11 @@ $palette: (
 On large screen
  */
 @media (min-width: 992px) {
-
   .signin-menu-link,
   .signup-menu-link {
     font-size: 15px;
     letter-spacing: 0;
-    border: 1px solid map-get($palette,white);
+    border: 1px solid map-get($palette, white);
     border-radius: 2px;
     padding-top: 8px;
     padding-bottom: 8px;
@@ -63,12 +59,12 @@ On large screen
     border-color: map-get($palette, white);
   }
   .user-profile-dropdown .dropdown-menu.show::after {
-    border-color: transparent transparent map-get($palette,white);
+    border-color: transparent transparent map-get($palette, white);
     border-image: none;
     border-style: solid;
     border-width: 8px;
     bottom: 100%;
-    content: " ";
+    content: ' ';
     height: 0;
     pointer-events: none;
     position: absolute;
@@ -76,5 +72,4 @@ On large screen
     left: 55%;
     margin-left: 0;
   }
-
 }

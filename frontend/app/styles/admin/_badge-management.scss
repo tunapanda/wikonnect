@@ -1,8 +1,8 @@
 $palette: (
-  primary: #F57010,
+  primary: #f57010,
   black: #000000,
-  boxShadow: #0A4B6D2E,
-  gray30: #3F484D,
+  boxShadow: #0a4b6d2e,
+  gray30: #3f484d,
 );
 
 .badges .badges-homepage {
@@ -33,7 +33,7 @@ $palette: (
         font-size: 14px;
 
         circle {
-          fill: #F5D4BD;
+          fill: #f5d4bd;
         }
 
         path {
@@ -46,7 +46,8 @@ $palette: (
       padding-top: 10px;
     }
 
-    .badges-earned-total-card, .badges-total-card {
+    .badges-earned-total-card,
+    .badges-total-card {
       .badges-total-count {
         font-size: 26px;
       }
@@ -68,7 +69,6 @@ $palette: (
 
 .badges .badges-homepage {
   .badges-section .submenu-section {
-
     .dropdown-toggle {
       color: map-get($palette, black);
     }
@@ -106,10 +106,8 @@ $palette: (
         }
       }
     }
-
   }
 }
-
 
 .badges .badges-manage-page {
   .title {
@@ -133,7 +131,8 @@ $palette: (
     padding-bottom: 20px;
   }
 
-  .badge-card, .create-badge-card {
+  .badge-card,
+  .create-badge-card {
     border: 1px solid rgba(201, 202, 203, 1);
     box-shadow: 0px 3px 16px rgba(10, 75, 109, 0.18);
     min-height: 165px;
@@ -279,10 +278,8 @@ $palette: (
 
 .badges .badges-manage-page {
   .creation-form {
-
-
     .badge-icon-card {
-      box-shadow: 0 3px 16px rgba(10, 75, 109, 0.18);;
+      box-shadow: 0 3px 16px rgba(10, 75, 109, 0.18);
       min-width: 400px;
       min-height: 194px;
 
@@ -327,9 +324,9 @@ $palette: (
         }
 
         input::placeholder,
-        select:invalid, {
+        select:invalid {
           font-size: 13px;
-          color: #A6ADB4;
+          color: #a6adb4;
         }
       }
     }

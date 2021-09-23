@@ -1,25 +1,25 @@
 $palette: (
-  primary: #F57010,
+  primary: #f57010,
   black: #0000,
-  white: #FFFF,
-  gray30: #3F484D,
-  gray75: #B0BABF,
-  gray95: #EBF0F2,
-  alto: #DCDCDC,
-  osloGray: #8A9296,
+  white: #ffff,
+  gray30: #3f484d,
+  gray75: #b0babf,
+  gray95: #ebf0f2,
+  alto: #dcdcdc,
+  osloGray: #8a9296,
   silver: #bebebe,
   cinderella: #fcdfca,
   doveGray: #707070,
-  gallery: #F0F0F0,
-  nevada: #696C6E,
+  gallery: #f0f0f0,
+  nevada: #696c6e,
   mercury: #e3e3e3,
-  electricViolet: #651CF0,
-  dustyGray: #A08C8C
+  electricViolet: #651cf0,
+  dustyGray: #a08c8c,
 );
 
 .cpc-container {
   .course-preview-card {
-    box-shadow: 0 3px 6px rgba(0, 0, 0, .075);
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.075);
     border: 1px solid map-get($palette, mercury);
     height: 100%;
     display: flex;
@@ -49,7 +49,7 @@ $palette: (
         color: map-get($palette, nevada);
 
         svg {
-          fill: map-get($palette, gray30)
+          fill: map-get($palette, gray30);
         }
       }
     }
@@ -65,8 +65,7 @@ $palette: (
       padding-left: 8px;
       padding-right: 8px;
       font-size: 12px;
-      color: map-get($palette, gray30)
-
+      color: map-get($palette, gray30);
     }
 
     .tags-section {
@@ -80,7 +79,7 @@ $palette: (
 
       .tag-list {
         .course-tag {
-          padding: .3em .6em;
+          padding: 0.3em 0.6em;
           font-size: 12px;
           color: map-get($palette, gray45);
           background-color: map-get($palette, gray95);
@@ -114,7 +113,6 @@ $palette: (
 }
 
 .course-form {
-
   .image-upload-section {
     .image-upload-card {
       padding: 12px;
@@ -177,7 +175,9 @@ $palette: (
       border-color: map-get($palette, gray95);
       font-size: 12px;
 
-      &:active, &.active, &:focus {
+      &:active,
+      &.active,
+      &:focus {
         outline: none;
         background-color: map-get($palette, primary);
         color: map-get($palette, white);
@@ -185,7 +185,7 @@ $palette: (
 
       &.selected {
         .close-icon {
-          opacity: .5;
+          opacity: 0.5;
           font-weight: 700;
         }
 
@@ -240,10 +240,10 @@ $palette: (
       background: transparent;
     }
 
-    &::-webkit-scrollbar-thumb, ::-webkit-scrollbar-thumb:hover {
+    &::-webkit-scrollbar-thumb,
+    ::-webkit-scrollbar-thumb:hover {
       background: #71797c;
     }
-
   }
 
   .playlist-manager-section {
@@ -256,14 +256,15 @@ $palette: (
       padding-right: 10px;
 
       .rank-actions {
-        .btn-down, .btn-up {
+        .btn-down,
+        .btn-up {
           padding: 0;
           border-radius: 0;
           width: 28px;
           border-width: 0;
 
           svg {
-            fill: #CCD9E0;
+            fill: #ccd9e0;
           }
         }
       }
@@ -323,14 +324,15 @@ $palette: (
 
     .playlist-item:hover {
       .rank-actions {
-        .btn-down, .btn-up {
+        .btn-down,
+        .btn-up {
           padding: 0;
           border-radius: 0;
           width: 28px;
           border-width: 0;
 
           svg {
-            fill: #174A84;
+            fill: #174a84;
           }
         }
       }
@@ -368,7 +370,6 @@ $palette: (
     color: map-get($palette, gray30);
     font-size: 20px;
   }
-
 }
 
 .mini-user-menu {
@@ -380,7 +381,7 @@ $palette: (
       color: map-get($palette, gray30);
 
       &.active:after {
-        content: "";
+        content: '';
         position: absolute;
         width: 68%;
         bottom: -1px;
@@ -392,7 +393,6 @@ $palette: (
       }
     }
   }
-
 }
 
 .course-sections-menu {
@@ -409,7 +409,7 @@ $palette: (
       line-height: initial;
 
       &.active {
-        background-color: #ECF0F2;
+        background-color: #ecf0f2;
       }
     }
   }
@@ -449,14 +449,15 @@ $palette: (
 
     .search-input {
       border-radius: 18px;
-      padding: .275rem .45rem;
+      padding: 0.275rem 0.45rem;
       height: initial;
 
       &::placeholder {
         font-size: 14px;
       }
 
-      &:focus, &:hover {
+      &:focus,
+      &:hover {
         background-image: none;
       }
     }
@@ -488,7 +489,8 @@ $palette: (
         .search-input {
           background: none;
 
-          &:focus, &:hover {
+          &:focus,
+          &:hover {
             background: none;
           }
         }
@@ -517,7 +519,8 @@ $palette: (
       bottom: 10px;
       right: 0;
 
-      .btn-add-to-course, .btn-remove-from-course {
+      .btn-add-to-course,
+      .btn-remove-from-course {
         background-color: transparent;
         border: none;
         color: map-get($palette, primary);
@@ -549,9 +552,7 @@ $palette: (
     right: 10px;
     bottom: 10px;
   }
-
 }
-
 
 .view-course-page {
   position: relative;
@@ -592,12 +593,12 @@ $palette: (
   .course-main-details-card {
     .tags-section {
       .section-header {
-        color: map-get($palette, dustyGray)
+        color: map-get($palette, dustyGray);
       }
 
       .tag-list {
         .course-tag {
-          padding: .3em .6em;
+          padding: 0.3em 0.6em;
           font-size: 12px;
           color: map-get($palette, gray45);
           background-color: map-get($palette, gray95);
@@ -680,16 +681,15 @@ $palette: (
       }
     }
   }
-
-
 }
 
 .view-course-page {
   .ft-section {
     .side-bar {
-      .popular-tags, .popular-courses {
+      .popular-tags,
+      .popular-courses {
         box-shadow: 0 3px 6px #00000019;
-        border: 1px solid #DCDCDC;
+        border: 1px solid #dcdcdc;
         border-radius: 5px;
         min-height: 150px;
         padding: 8px 5px 5px;
@@ -698,7 +698,6 @@ $palette: (
           color: map-get($palette, gray30);
           font-weight: 500;
           padding-left: 3px;
-
         }
       }
     }
@@ -748,7 +747,6 @@ $palette: (
         width: 70%;
         padding: 20px 15% 20px 20px;
         background-color: map-get($palette, white);
-
       }
 
       .course-image-container {
@@ -775,4 +773,3 @@ $palette: (
     max-width: 1230px;
   }
 }
-

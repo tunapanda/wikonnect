@@ -1,10 +1,10 @@
 $palette: (
-  white: #FFFF,
-  warning: #FFD300,
+  white: #ffff,
+  warning: #ffd300,
   dark: #343a40,
   grey: grey,
-  gray95: #EBF0F2,
-  primary: #F57010,
+  gray95: #ebf0f2,
+  primary: #f57010,
 );
 
 .content-creation-section {
@@ -36,12 +36,10 @@ $palette: (
       }
     }
   }
-
 }
 
 //ratings and review section
 .review-question-section {
-
   .review-question-option {
     .btn {
       min-height: 34px;
@@ -49,7 +47,8 @@ $palette: (
       box-shadow: none;
       display: flex;
 
-      &:hover, &:active {
+      &:hover,
+      &:active {
         outline: none;
         box-shadow: none;
         color: map-get($palette, dark);
@@ -57,7 +56,6 @@ $palette: (
       }
 
       &.btn-warning {
-
         &:hover,
         &:focus {
           color: map-get($palette, dark);
@@ -66,10 +64,9 @@ $palette: (
       }
     }
   }
-
 }
 
-.tags-selection-section{
+.tags-selection-section {
   .tag-action-button {
     padding: 2px 4px;
     background-color: map-get($palette, gray95);
@@ -77,7 +74,9 @@ $palette: (
     color: map-get($palette, gray45);
     font-size: 12px;
 
-    &:active, &.active, &:focus {
+    &:active,
+    &.active,
+    &:focus {
       outline: none;
       background-color: map-get($palette, primary);
       color: map-get($palette, white);

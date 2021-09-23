@@ -18,7 +18,7 @@
   header {
     padding: 0.5rem;
     height: 150px;
-    background-color: lighten(#F57010, 10%);
+    background-color: lighten(#f57010, 10%);
     background-image: url('/images/logo-background.png');
     color: white;
     display: flex;
@@ -28,14 +28,14 @@
   .line-text {
     width: 100%;
     text-align: center;
-    border-bottom: 1px solid #B0BABF;
+    border-bottom: 1px solid #b0babf;
     line-height: 0.1em;
     margin: 47px 0 40px;
   }
 
   .line-text span {
     background: #fff;
-    color: #3F484D;
+    color: #3f484d;
     padding: 0 10px;
   }
 
@@ -44,10 +44,10 @@
   }
 
   .btn-facebook {
-    background-color: #1877F2;
+    background-color: #1877f2;
   }
 
   .btn-linkedIn {
-    background-color: #0077B5;
+    background-color: #0077b5;
   }
 }

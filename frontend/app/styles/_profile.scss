@@ -1,17 +1,17 @@
 $palette: (
-  primary: #F57010,
-  white: #FFFF,
+  primary: #f57010,
+  white: #ffff,
   darkCharcoal: rgba(87, 92, 88, 1),
-  teach: #32A583,
-  eucalyptus: #28A745,
+  teach: #32a583,
+  eucalyptus: #28a745,
   cardBoxShadow: rgba(0, 0, 0, 0.29),
-  gray30: #3F484D,
-  gray95: #EBF0F2,
-  aliceBlue: #F7FCFF,
-  bombay: #B2B4B6,
-  bonjour: #EAE7E7,
+  gray30: #3f484d,
+  gray95: #ebf0f2,
+  aliceBlue: #f7fcff,
+  bombay: #b2b4b6,
+  bonjour: #eae7e7,
   black: #000000,
-  gallery: #F0F0F0,
+  gallery: #f0f0f0,
 );
 
 .account-profile-page {
@@ -79,12 +79,11 @@ $palette: (
 
       .badges-unlocked-card {
         background-color: map-get($palette, white);
-        box-shadow: 0px 0px 4px 0px map-get($palette, cardBoxShadow);;
+        box-shadow: 0px 0px 4px 0px map-get($palette, cardBoxShadow);
         border-radius: 5px;
       }
     }
   }
-
 
   // profile card
   .account-details-list {
@@ -95,7 +94,6 @@ $palette: (
       padding-bottom: 15px;
 
       .body-content {
-
         .left-container {
           min-width: 120px;
           padding-right: 1px;
@@ -147,7 +145,9 @@ $palette: (
             color: map-get($palette, gray30);
           }
 
-          .phone, .email, .location {
+          .phone,
+          .email,
+          .location {
             font-size: 12px;
             padding-bottom: 12px;
 
@@ -171,7 +171,6 @@ $palette: (
 
   // counters
   .account-details-list {
-
     .achievements-list {
       .achievement-card {
         padding: 7px;
@@ -206,24 +205,22 @@ $palette: (
       .achievement-card {
         &.created-chapters {
           .section-icon {
-            background-image: url("/images/notes-42.png");
+            background-image: url('/images/notes-42.png');
           }
         }
 
         &.completed-chapters {
           .section-icon {
-            background-image: url("/images/completed-55.png");
+            background-image: url('/images/completed-55.png');
           }
         }
 
         &.earned-points {
           .section-icon {
-            background-image: url("/images/earned-47.png");
+            background-image: url('/images/earned-47.png');
           }
         }
-
       }
-
     }
   }
 
@@ -242,7 +239,7 @@ $palette: (
         padding-bottom: 5px;
 
         .section-icon {
-          background-image: url("/images/achievement-38.png");
+          background-image: url('/images/achievement-38.png');
           display: inline-block;
           height: 40px;
           width: 45px;
@@ -365,7 +362,7 @@ $palette: (
     width: fit-content;
     border: 1px solid map-get($palette, bonjour);
     border-radius: 18px;
-    padding: .385rem 1.45rem;
+    padding: 0.385rem 1.45rem;
     background-color: map-get($palette, white);
     font-size: 14px;
 
@@ -472,7 +469,6 @@ $palette: (
 }
 
 @media (max-width: 992px) {
-
   .account-profile-page {
     .account-details-list .profile-card {
       margin-bottom: 8px;
@@ -502,11 +498,9 @@ $palette: (
 }
 
 @media (min-width: 768px) {
-
   .account-profile-page {
     .account-details-list .profile-card {
       flex: 0 0 31%;
-
     }
 
     .badges-unlocked-card {
@@ -520,7 +514,8 @@ $palette: (
 
 @media (min-width: 1200px) {
   .account-profile-page {
-    .dashboard-content-wrapper, .main-content-wrapper {
+    .dashboard-content-wrapper,
+    .main-content-wrapper {
       max-width: 1240px;
     }
   }
