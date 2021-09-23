@@ -18,6 +18,7 @@
     "lint:hbs:fix": "ember-template-lint . --fix",
     "lint:js": "eslint . --cache",
     "lint:js:fix": "eslint . --fix",
+    "lint:styles": "stylelint **/*.scss --quiet",
     "start": "ember serve  --proxy http://localhost:3000",
     "docker:start": "ember serve  --proxy http://backend:3000",
     "ci:start": "ember serve --path dist --proxy http://localhost:3000",
@@ -51,6 +52,7 @@
     "ember-cli-inject-live-reload": "^2.0.2",
     "ember-cli-meta-tags": "^6.1.2",
     "ember-cli-sass": "^10.0.1",
+    "ember-cli-stylelint": "^4.0.0",
     "ember-cli-terser": "^4.0.1",
     "ember-config-service": "^1.0.0",
     "ember-data": "~3.24.0",
@@ -91,6 +93,9 @@
     "rsvp": "^4.8.5",
     "sass": "^1.23.0",
     "socket.io-client": "^4.0.1",
+    "stylelint": "^13.13.1",
+    "stylelint-config-prettier": "^8.0.2",
+    "stylelint-prettier": "^1.2.0",
     "title-case": "^3.0.3"
   },
   "engines": {
