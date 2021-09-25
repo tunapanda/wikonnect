@@ -55,6 +55,8 @@
     "ember-cli-stylelint": "^4.0.0",
     "ember-cli-terser": "^4.0.1",
     "ember-config-service": "^1.0.0",
+    "ember-css-modules": "^1.5.0",
+    "ember-css-modules-sass": "^1.1.0",
     "ember-data": "~3.24.0",
     "ember-drag-drop": "^0.7.0",
     "ember-drag-drop-polyfill": "^1.0.0",

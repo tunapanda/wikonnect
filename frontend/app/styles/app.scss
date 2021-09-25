@@ -1,3 +1,4 @@
+@import 'common/variables';
 @import 'common/forms';
 @import 'common/colors';
 //@import "bs4";
@@ -16,6 +17,7 @@
 @import 'ember-modal-dialog/ember-modal-structure';
 @import 'ember-modal-dialog/ember-modal-appearance';
 @import url('https://rsms.me/inter/inter.css');
+// other Sass code and imports
 
 html {
   font-family: 'Inter', sans-serif;
@@ -165,7 +167,7 @@ footer .row {
 @import 'login';
 @import 'signup';
 @import 'rating-and-review';
-@import 'teacher/teacher';
+@import 'teacher';
 @import 'h5p-player';
 @import 'notifications-dropdown';
 @import 'user-acc-dropdown';
@@ -177,4 +179,4 @@ footer .row {
 @import 'course';
 @import 'popular-cards';
 
-@import 'admin/admin';
+@import 'admin';

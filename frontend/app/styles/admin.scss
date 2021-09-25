@@ -1,3 +1,12 @@
+.admin-base {
+  @import 'side-nav';
+  @import 'main-header';
+  @import 'badge-management';
+  @import 'user-management';
+  @import 'content-approval';
+  @import 'survey-management';
+}
+
 $palette: (
   gray85: #fafdff,
 );
@@ -53,13 +62,4 @@ $palette: (
       cursor: pointer;
     }
   }
-}
-
-.admin-base {
-  @import 'side-nav';
-  @import 'main-header';
-  @import 'badge-management';
-  @import 'user-management';
-  @import 'content-approval';
-  @import '_survey-management';
 }
