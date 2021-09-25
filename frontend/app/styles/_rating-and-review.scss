@@ -1,14 +1,14 @@
 $palette: (
-  primary: #F57010,
-  white: #FFFF,
+  primary: #f57010,
+  white: #ffff,
   blue: #007bff,
-  gray45:#5E6C73,
-  dark: #1E2326,
-  terrible: #F05F56,
-  bad: #EA7900BC,
-  okay: #F1DF5B,
-  good: #9ACD32,
-  great: #03A543
+  gray45: #5e6c73,
+  dark: #1e2326,
+  terrible: #f05f56,
+  bad: #ea7900bc,
+  okay: #f1df5b,
+  good: #9acd32,
+  great: #03a543,
 );
 
 .rating-review-section {
@@ -61,13 +61,13 @@ $palette: (
 
     &.selected {
       background-color: map-get($palette, blue);
-
     }
   }
 }
 
 .rating-group {
-  .rating-star, .rating-emoji {
+  .rating-star,
+  .rating-emoji {
     display: inline-block;
     cursor: pointer;
   }
@@ -110,10 +110,8 @@ $palette: (
     &.great.active svg g g {
       fill: map-get($palette, great);
       stroke: map-get($palette, great);
-
     }
   }
-
 }
 
 .rating-review-feedback-modal {
@@ -137,13 +135,13 @@ $palette: (
         display: inline-block;
 
         &:after {
-          content: " ";
+          content: ' ';
           display: block;
           border-color: map-get($palette, white);
           border-style: solid;
           width: 1.2em;
           height: 2.7em;
-          border-width: 0 .4em 0.4em 0;
+          border-width: 0 0.4em 0.4em 0;
           position: absolute;
           left: 48%;
           top: 12%;
@@ -170,5 +168,4 @@ $palette: (
       color: map-get($palette, gray45);
     }
   }
-
 }

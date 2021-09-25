@@ -5,14 +5,9 @@ body {
 #teach-login {
   .hero {
     background: rgb(2, 252, 178);
-    background: linear-gradient(
-      90deg,
-      rgba(2, 252, 178, 1) 0%,
-      rgba(194, 199, 217, 1) 46%,
-      rgba(255, 255, 255, 1) 97%
-    );
+    background: linear-gradient(90deg, rgba(2, 252, 178, 1) 0%, rgba(194, 199, 217, 1) 46%, rgba(255, 255, 255, 1) 97%);
     padding: 5% 15%;
-    fill: #F57010;
+    fill: #f57010;
 
     h1 {
       color: white;

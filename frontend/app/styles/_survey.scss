@@ -1,14 +1,12 @@
 $palette: (
-  studio: #5A47AD,
-  windsor: #4E0B80,
-  white: #FFFF,
-  primary: #F57010,
-  gray30:#3F484D,
-
+  studio: #5a47ad,
+  windsor: #4e0b80,
+  white: #ffff,
+  primary: #f57010,
+  gray30: #3f484d,
 );
 
 .surveys-page {
-
   .breadcrumbs {
     span.divider {
       padding-left: 3px;
@@ -21,7 +19,6 @@ $palette: (
   .modal-dialog {
     transform: translate(0, -70px) !important;
   }
-
 
   .modal-header {
     border: none;
@@ -63,7 +60,7 @@ $palette: (
       padding-top: 12px;
       padding-bottom: 12px;
       margin-top: 8px;
-      &:hover{
+      &:hover {
         display: block;
         width: 100%;
         border: solid 1px;

@@ -1,10 +1,10 @@
 $palette: (
-  gray30: #3F484D,
-  gray40: #B3BAC566,
-  primary:#F57010,
-  red: #EA0606,
-  white: #FFFF,
-  jungleGreen: #32A583
+  gray30: #3f484d,
+  gray40: #b3bac566,
+  primary: #f57010,
+  red: #ea0606,
+  white: #ffff,
+  jungleGreen: #32a583,
 );
 
 .notifications-dropdown {
@@ -71,7 +71,6 @@ $palette: (
     .empty-state {
       font-weight: 300;
     }
-
   }
 
   .notification-item {
@@ -176,7 +175,6 @@ $palette: (
 On large screen
  */
 @media (min-width: 992px) {
-
   .notifications-dropdown {
     .dropdown-menu.show {
       width: 320px;
@@ -193,7 +191,7 @@ On large screen
     border-width: 8px;
     bottom: 100%;
     left: 88%;
-    content: " ";
+    content: ' ';
     height: 0;
     pointer-events: none;
     position: absolute;

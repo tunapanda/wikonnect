@@ -1,5 +1,7 @@
-$palette: (primary: $primary,
-  gray75: #B0BABF);
+$palette: (
+  primary: $primary,
+  gray75: #b0babf,
+);
 
 .reaction-btn {
   background: none;
@@ -14,8 +16,6 @@ $palette: (primary: $primary,
   margin: 0 14px 0 0;
   display: inline-flex;
   align-items: center;
-
-
 
   span.count {
     padding-left: 5px;

@@ -1,8 +1,7 @@
-$palette: (
-);
+$palette: ();
 
-.dropdown-toggle{
-  &:hover{
+.dropdown-toggle {
+  &:hover {
     text-decoration: none;
   }
 }
@@ -12,11 +11,11 @@ $palette: (
   -ms-transform: rotate(45deg);
   transform: rotate(45deg);
   top: 0;
-  content: "";
+  content: '';
   border: 0.13em solid map-get($palette, white);
-  -webkit-transition: all .3s ease;
-  -o-transition: all .3s ease;
-  transition: all .3s ease;
+  -webkit-transition: all 0.3s ease;
+  -o-transition: all 0.3s ease;
+  transition: all 0.3s ease;
   overflow: hidden;
   border-left: 1px solid transparent;
   border-top: 1px solid transparent;
