@@ -18,8 +18,8 @@
   <EmberNotify  @messageStyle="bootstrap" @closeAfter={{30000}} />
   <AuthPrompt />
   {{!-- <VerifyEmailPrompt /> --}}
-  <Survey::PromptPopup>
-  </Survey::PromptPopup>
+  <Survey::PromptPopup />
+  <Badge::BadgeUnlocked />
 {{else }}
 
   {{outlet}}

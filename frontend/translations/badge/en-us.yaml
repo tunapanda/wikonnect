@@ -1,0 +1,5 @@
+unlocked: 
+  title: Yeey! you unlocked a badge!
+  points: "{numOfPoints} points earned"
+  publish: Publish
+  share: Share
