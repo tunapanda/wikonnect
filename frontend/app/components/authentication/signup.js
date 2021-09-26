@@ -48,6 +48,7 @@ export default class AuthenticationSignupComponent extends Component {
     let fields = {
       username: model.username,
       email: model.email,
+      contactNumber: model.contactNumber,
       password: model.password,
       inviteCode: model.inviteCode,
     };
@@ -85,6 +86,7 @@ export default class AuthenticationSignupComponent extends Component {
 class UserForm {
   @tracked username;
   @tracked email;
+  @tracked phone;
   @tracked firstname;
   @tracked lastname;
   @tracked password;
