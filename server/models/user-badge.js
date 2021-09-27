@@ -1,5 +1,7 @@
 const Model = require('./_model');
 const knex = require('../db/db');
+const {socketEventEmitter} = require('../utils/event-emitter');
+const {events} = require('../utils/socket-events');
 
 class UserBadge extends Model {
   static get tableName() {
@@ -37,6 +39,11 @@ class UserBadge extends Model {
         }
       },
     };
+  }
+
+   async $afterInsert(){
+    await super.$afterInsert();
+    socketEventEmitter.emit(events.user.badge.unlocked, this);
   }
 }
 
