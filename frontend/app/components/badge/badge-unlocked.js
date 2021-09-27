@@ -19,10 +19,10 @@ export default class BadgeUnlockedComponent extends Component {
 
   @action
   notificationEventIntercept() {
-    this.socket.socket.on(events.user.notification.created, (notification) => {
+    this.socket.socket.on(events.user.badge.unlocked, (notification) => {
       setTimeout(async () => {
         if (!this.showBadgeUnlockedModal) {
-          this.badge = await this.store.find('badge', notification.itemId);
+          this.badge = await this.store.find('badge', notification.badgeId);
           this.showBadgeUnlockedModal = true;
         }
       }, 3000);
