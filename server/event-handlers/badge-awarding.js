@@ -54,7 +54,7 @@ module.exports = () => {
       /** 3) Create a notification for the chapter author **/
       await NotificationModel.query()
         .insert({
-          title: 'You have unlocked a new badge',
+          title: 'You have earned a new badge',
           body: badges[i].name,
           itemId: badges[i].id,
           eventType: notificationTypes.badge.unlocked,
@@ -96,7 +96,7 @@ module.exports = () => {
       //add a notification
       await NotificationModel.query()
         .insert({
-          title: 'You have unlocked a new badge',
+          title: 'You have earned a new badge',
           body: badges[i].name,
           itemId: badges[i].id,
           eventType: notificationTypes.badge.unlocked,
@@ -135,7 +135,7 @@ module.exports = () => {
       //add a notification
       await NotificationModel.query()
         .insert({
-          title: 'You have unlocked a new badge',
+          title: 'You have earned a new badge',
           body: badges[i].name,
           itemId: badges[i].id,
           eventType: notificationTypes.badge.unlocked,
@@ -176,7 +176,7 @@ module.exports = () => {
       //add a notification
       await NotificationModel.query()
         .insert({
-          title: 'You have unlocked a new badge',
+          title: 'You have earned a new badge',
           body: badges[i].name,
           itemId: badges[i].id,
           eventType: notificationTypes.badge.unlocked,
@@ -216,7 +216,7 @@ module.exports = () => {
       //add a notification
       await NotificationModel.query()
         .insert({
-          title: 'You have unlocked a new badge',
+          title: 'You have earned a new badge',
           body: badges[i].name,
           itemId: badges[i].id,
           eventType: notificationTypes.badge.unlocked,
@@ -253,7 +253,7 @@ module.exports = () => {
     for (let i = 0; i < badges.length; i++) {
       await NotificationModel.query()
         .insert({
-          title: 'You have unlocked a new badge',
+          title: 'You have earned a new badge',
           body: badges[i].name,
           itemId: badges[i].id,
           eventType: notificationTypes.badge.unlocked,
@@ -294,7 +294,7 @@ module.exports = () => {
       //add a notification
       await NotificationModel.query()
         .insert({
-          title: 'You have unlocked a new badge',
+          title: 'You have earned a new badge',
           body: badges[i].name,
           itemId: badges[i].id,
           eventType: notificationTypes.badge.unlocked,
@@ -335,7 +335,7 @@ module.exports = () => {
       //add a notification
       await NotificationModel.query()
         .insert({
-          title: 'You have unlocked a new badge',
+          title: 'You have earned a new badge',
           body: badges[i].name,
           itemId: badges[i].id,
           eventType: notificationTypes.badge.unlocked,
