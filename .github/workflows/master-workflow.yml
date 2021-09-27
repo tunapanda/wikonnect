@@ -6,51 +6,10 @@ on:
       - master
 
 jobs:
-  Build:
-    name: Build Wikonnect
-    runs-on: ubuntu-18.04
-
-    steps:
-      - uses: actions/checkout@v2
-
-      # Initialize Node.js
-      - name: Install Node.js 14.x
-        uses: actions/setup-node@v1
-        with:
-          node-version: '14.x'
-
-      # Yarn cache dir
-      - name: Get yarn cache directory path
-        id: yarn-cache-dir-path
-        run: echo "::set-output name=dir::$(yarn cache dir)"
-
-      - uses: actions/cache@v2
-        id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
-        with:
-          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
-          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-yarn-
-
-      # Install project dependencies, test and build
-      - name: Install Wikonnect dependencies
-        run: yarn  --frozen-lockfile
-
-      # Install project dependencies, test and build
-      - name: Install frontend dependencies
-        run: yarn  --frozen-lockfile --cwd ./frontend
-
-      - name: Run build
-        run: yarn  --frozen-lockfile --cwd ./frontend build --prod
-
-      # Install project dependencies, test and build
-      - name: Install backend dependencies
-        run: yarn  --frozen-lockfile --cwd ./server
 
   FrontendTest:
     name: Test Wikonnect Frontend
     runs-on: ubuntu-18.04
-    needs: Build
     steps:
       - uses: actions/checkout@v2
 
@@ -96,7 +55,6 @@ jobs:
   BackendTest:
     name: Test Wikonnect Backend
     runs-on: ubuntu-18.04
-    needs: Build
     services:
       # Label used to access the service container
       postgres:
@@ -241,6 +199,7 @@ jobs:
         with:
           start: yarn --cwd ./server start, yarn --cwd ./frontend start
           wait-on: "http://localhost:4200"
+          wait-on-timeout: 120
 
       - uses: actions/upload-artifact@v1
         if: failure()
@@ -259,7 +218,7 @@ jobs:
         s3-bucket: ['wikonnect-codedeploy-deployments']
         s3-filename: ['master-wikonnect-codedeploy-${{ github.sha }}']
 
-    needs: ['IntegrationTest', 'BackendTest']
+    needs: ['IntegrationTest', 'BackendTest', 'FrontendTest']
     steps:
       - uses: actions/checkout@v2
 

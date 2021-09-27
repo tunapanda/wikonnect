@@ -1,21 +1,25 @@
 login:
+  or: or
   login: Login
   logout: Logout
   authenticating: Authenticating ...
   username: Username
   enter_username: Enter Username
   enter_email: Enter Email
+  enter_phone: Enter Phone Number
   password: Password
   enter_password: Enter Password
   login_third_party: Log In With {authProvider}
 
 signup:
   email: Email
+  phone: Phone
   repeat_password: Repeat Password
   invite_code: Invite Code
   signup: Sign Up
   signup_third_party: Sign Up With {authProvider}
   link_to_login: Already have an account? '<'a href="/login"'>'Log in'</a>'
+  data_confirmation: I have read and agree with the '<'a href="/privacy"'>'Privacy Policy'</a>'.
 
 password_reset:
   header: Create your new password

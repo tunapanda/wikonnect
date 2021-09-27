@@ -3,18 +3,6 @@ const { faker, seed_number } = require('../_seeds');
 exports.seed = async (knex) => {
   // Deletes ALL existing entries
   await knex('badges').del();
-  await knex('badge_triggers').del();
-
-  const fakeBadgeTriggers = [];
-  const triggers = ['chapter_create', 'chapter_publish', 'comment_create','comment_reply'];
-
-  for (let index = 0; index < triggers.length; index++) {
-    fakeBadgeTriggers.push({
-      description: faker.lorem.words(),
-      trigger: triggers[index]
-    });
-  }
-  await knex('badge_triggers').insert(fakeBadgeTriggers);
 
   const triggerIds = await knex('badge_triggers').pluck('id');
 
@@ -34,7 +22,11 @@ exports.seed = async (knex) => {
         updated_at: faker.date.recent(),
         expiry: faker.date.between(faker.date.past(), faker.date.soon()),
         is_deleted: faker.datatype.boolean(),
-        trigger: faker.random.arrayElement(triggerIds)
+        trigger_id: faker.random.arrayElement(triggerIds),
+        published: faker.datatype.boolean(),
+        frequency: faker.datatype.number(),
+        reminder: faker.datatype.number(),
+        reminder_message:  faker.lorem.sentence(),
       });
     }
     return knex('badges').insert(fakeBadges);

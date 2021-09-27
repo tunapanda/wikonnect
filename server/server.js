@@ -41,6 +41,8 @@ router.use(require('./routes/oauth2s'));
 
 router.use(jwt.authenticate, require('./routes/chapters'));
 
+router.use(jwt.authenticate, require('./routes/chapter-feedback'));
+
 router.use(jwt.authenticate, require('./routes/comments'));
 
 router.use(jwt.authenticate, require('./routes/counter'));
@@ -76,6 +78,20 @@ router.use(jwt.authenticate, require('./routes/reviews'));
 router.use(jwt.authenticate, require('./routes/review-questions'));
 
 router.use(jwt.authenticate, require('./routes/notifications'));
+
+router.use(jwt.authenticate, require('./routes/surveys'));
+
+router.use(jwt.authenticate, require('./routes/groups'));
+
+router.use(jwt.authenticate, require('./routes/tags'));
+
+router.use(jwt.authenticate, require('./routes/courses'));
+
+router.use(jwt.authenticate, require('./routes/user-followees'));
+
+router.use(jwt.authenticate, require('./routes/tag-followers'));
+
+router.use(jwt.authenticate, require('./routes/course-enrollments'));
 
 router.use(require('./routes/search'));
 

@@ -1,0 +1,129 @@
+main_title: Jenga Kozi
+search_placeholder: Tafuta Sura
+search_course_placeholder: Tafuta Kozi
+enroll_successful: Umefanikiwa kujiandikisha kwenye kozi hiyo.
+disenroll_successful: Umefanikiwa kujiondoa kwenye kozi.
+
+nav:
+  home: Nyumbani
+  learn: Jifunze
+  badges: Beji
+  courses: Kozi
+  teach: Fundisha
+  create_course: Unda Kozi Mpya
+  draft_courses: Rasimu
+  published_courses: Zilizochapishwa
+  edit_course: Hariri Kozi
+  back_to_profile: "<- Rudi kwenye wasifu wako"
+  cancel_editing_course: Ghairi Uhariri wa Kozi
+
+form:
+  labels:
+    upload_image: Pakia Picha ya Kozi
+    drag_drop_prompt: "Buruta na uangushe hapa <br> au <br> vinjari"
+    title: Jina la Kozi
+    description: Maelezo ya Kozi yako
+    tags: Ongeza Vitambulisho kwenye Kozi yako
+    select_tags: Chagua Vitambulisho
+    add_custom_tag: Ongeza lebo maalum
+    selected_tags: "Lebo zilizochaguliwa (Upeo: {max})"
+    playlist: Orodha ya kucheza ya kozi
+    author: "Imeundwa na {name}"
+    submitting: Subiri tafadhali...
+  buttons:
+    file_select: Chagua Faili
+    save_draft: Hifadhi kama Rasimu
+    publish: Chapisha Kozi
+    unpublish: Ondoa Uchapishaji
+    save_tag: Wasilisha Lebo
+    edit_published: Hifadhi mabadiliko
+    delete: Futa Kozi
+  thumbnail:
+    uploading: "Inapakia picha..."
+  empty_playlist_state: Anza kuongeza sura kwenye kozi </br> kutoka kwa <a href="#select-chapters-section"> orodha hapa chini </a>
+
+create_page:
+  title:
+    create_course: Unda Kozi Mpya
+    subtitle: Ongeza sura ili kuunda orodha ya kucheza ya kozi hii
+    all_chapters: Sura Zote
+  buttons:
+    add_to_course: Ongeza kwenye Kozi
+    remove_from_course: Imeongezwa kwenye kozi
+  labels:
+    chapters_subtitle: Ongeza sura hizi kwenye orodha yako ya kucheza
+    published_no_image: Kozi imechapishwa kwa mafanikio bila picha
+    published_with_image: Kozi imechapishwa kwa mafanikio
+    draft_saved: Rasimu ya kozi imehifadhiwa kwa mafanikio
+
+drafts_page:
+  title: Rasimu yako ya Vitu vya Kozi
+  buttons:
+    view_course: Angalia Kozi
+    edit_course: Hariri Kozi hii
+  labels:
+    no_content: Kwa sasa huna kozi za rasimu
+
+published_page:
+  title: Vitu vyako vya Kozi vilivyochapishwa
+  buttons:
+    view_course: Angalia Kozi
+    edit_course: Hariri Kozi hii
+  labels:
+    no_content: Kwa sasa huna kozi zilizochapishwa.
+
+show_page:
+  tag_list_title: Vitambulisho
+  enrolled: "{count, plural,=1 {Mtu 1 aliyejiandikisha} other {Watu waliojiandikisha ni #}}"
+  popular_tags: Lebo Maarufu
+  popular_courses: Kozi Maarufu
+  course_chapters: Sura zote katika Kozi hii
+  disenroll_prompt: Je! Unataka kujiondoa kwenye kozi hii?
+  enrolled_successfully: Umefanikiwa kujiandikisha kwenye kozi hiyo.
+  disenroll_successful: Umefanikiwa kujiondoa kwenye kozi.
+  general_error: Hitilafu isiyotarajiwa imepatikana wakati wa kuchakata ombi lako.
+  buttons:
+    update_course: Sasisha Kozi hii
+    enroll: Jisajili kwenye Kozi
+    disenroll: Tayari Umejiandikisha
+    start_learning: Anza Kujifunza ->
+
+edit_page:
+  title:
+    edit_course: Hariri Maelezo ya Kozi
+    subtitle: Ongeza sura ili kuunda orodha ya kucheza ya kozi hii
+    all_chapters: Sura Zote
+  buttons:
+    add_to_course: Ongeza kwenye Kozi
+    remove_from_course: Imeongezwa kwenye kozi
+  labels:
+    chapters_subtitle: Ongeza sura hizi kwenye orodha yako ya kucheza
+    published_no_image: Kozi imechapishwa kwa mafanikio bila picha
+    published_with_image: Kozi imechapishwa kwa mafanikio
+    draft_saved: Rasimu ya kozi imehifadhiwa kwa mafanikio
+
+errors:
+  submit_tag: Hitilafu imefungwa wakati wa kuchakata lebo. Tafadhali jaribu tena.
+  course_image_upload: Hitilafu imetokea wakati wa kupakia picha ya kozi
+  course_submission: Hitilafu iliyotokea wakati wa kuwasilisha maelezo ya kozi
+  course_image_size: "Ukubwa wa picha ya kozi inapaswa kuwa chini ya {max} "
+  chapter_on_playlist: Sura tayari imeongezwa kwenye orodha ya kozi
+  no_content: Inaonekana hakuna yaliyomo kwa sasa. Tafadhali angalia nasi tena baadaye.
+  content_display_error: Hatuwezi kupata yaliyomo.
+  no_search_filtered_record: Hakuna maudhui yaliyopatikana yanayolingana na <strong> {word} </strong> au <strong> {selectedTags}</strong>.
+  no_searched_record: Hakuna maudhui yaliyopatikana yanayolingana na <strong> {word}</strong>. Tafadhali jaribu utaftaji tofauti.
+  no_filtered_record: Hakuna maudhui yaliyopatikana yanayolingana <strong> {selectedTag}</strong>. Tafadhali jaribu kichujio tofauti.
+  no_filtered_records:  Hakuna maudhui yaliyopatikana yanayolingana <strong> {selectedTags}</strong>. Tafadhali jaribu vitambulisho vichache.
+  wrong_record_filters: Hakuna maudhui yaliyopatikana yanayolingana <strong> {selectedTags}</strong>. Tafadhali jaribu tena na lebo ya kichujio halali.
+  playlist_error: Inaonekana tunakabiliwa na shida na orodha ya sura za kozi
+  login_to_enroll: Lazima kwanza uingie ama ujiandikishe ili kujiandikisha kwa kozi hii.
+  general_error: Hitilafu isiyotarajiwa imepatikana wakati wa kuchakata ombi lako.
+  edit_access_error: Huna ruhusa za kurekebisha kozi iliyochaguliwa.
+
+prompts:
+  disenroll: Je! Una uhakika unataka kujiondoa kwenye kozi hii?
+
+buttons:
+  disenroll: Ondoa Uandikishaji
+  view_course: Angalia Kozi
+  enroll: Jisajili kwenye Kozi

@@ -11,9 +11,11 @@ export default class ForgotPasswordComponent extends Component {
   @tracked isInvalid = false;
   @tracked showEmailForm = true;
   @tracked error = { message: '' };
+  @tracked loading = false;
 
   @action
   tryAgain() {
+    this.loading = false;
     this.showEmailForm = true;
   }
 
@@ -21,6 +23,7 @@ export default class ForgotPasswordComponent extends Component {
   async resetPassword(e) {
     e.preventDefault();
 
+    this.loading = true;
     const data = { auth: { email: this.email } };
     try {
       const res = await fetch('/api/v1/auth/forgot_password', {

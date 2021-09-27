@@ -29,22 +29,22 @@ export default class CallbackRoute extends Route {
     if (this.config.content.APP.use_preset_tags) {
       this.transitionTo('tags');
     } else {
-      this.transitionTo('upload');
+      this.transitionTo('account.edit');
     }
   }
 
   activate() {
     let hash = this.parseResponse(window.location.hash);
-    let googleToken = hash.access_token;
+    let code = hash.access_token;
 
     this.me
-      .registerWithGoogle({ googleToken: googleToken, provider: 'google' })
+      .registerWithGoogle({ code: code, provider: 'google' })
       .then((user) => {
         if (user.get('isNew')) {
           this.signupSuccess();
         } else {
           this.me
-            .authenticate(user.get('username'), googleToken)
+            .authenticate(user.get('username'), code)
             .then(() => this.transitionTo('index'));
         }
       });

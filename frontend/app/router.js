@@ -11,15 +11,34 @@ Router.map(function () {
   this.route('login');
   this.route('about');
 
-  this.route('profile');
-  this.route('search', { path: '/search/:id' });
+  this.route('learn', function () {
+    this.route('chapters');
+    this.route('courses', function () {
+      this.route('available');
+      this.route('enrolled');
+    });
+  });
+
+  this.route('profile', { path: '/profile/:id' }, function () {
+    this.route('home');
+    this.route('achievements');
+    this.route('courses', function () {
+      this.route('enrolled', { path: '/enrolled/@me' });
+      this.route('available');
+    });
+    this.route('people');
+    this.route('tags');
+  });
+
+  this.route('account', { path: '/profile' }, function () {
+    this.route('edit');
+  });
 
   this.route('chapter', function () {
     this.route('index', {
       path: '/:chapter_slug',
     });
   });
-  this.route('upload');
   this.route('manage');
 
   this.route('teach', function () {
@@ -44,15 +63,30 @@ Router.map(function () {
   this.route('verify');
 
   this.route('leaderboard');
+  this.route('surveys', { path: '/surveys/:id' });
 
   this.route('admin', function () {
     this.route('dashboard', { path: '/' });
     this.route('users');
     this.route('badges', function () {
-      this.route('users');
+      this.route('home', { path: '/' });
+      this.route('manage');
     });
+    this.route('content-approval');
+    this.route('surveys');
+  });
+
+  this.route('course', function () {
+    this.route('index');
+    this.route('show', { path: '/:id/show' });
+    this.route('edit', { path: '/:id/edit' });
+    this.route('create');
+    this.route('published');
+    this.route('drafts');
   });
 
   // 404 page should always be the last
   this.route('not-found', { path: '*path' });
+  this.route('access-denied');
+  this.route('privacy');
 });

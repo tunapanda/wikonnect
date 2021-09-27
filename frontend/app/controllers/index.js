@@ -1,53 +1,99 @@
 import Controller from '@ember/controller';
 import { inject as service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
-import { A } from '@ember/array';
-import { ChapterFilterTag } from '../utils/chapter-filter-tag';
 import { action } from '@ember/object';
+import { A } from '@ember/array';
 
 export default class IndexController extends Controller {
-  @service
-  me;
+  queryParams = ['tags'];
+  queryTagJoinXcter = ',';
 
-  @tracked
-  selectedFilterTags = A([]);
-
-  get chapters() {
-    if (this.selectedFilterTags.length > 0) {
-      return this.model.filter((chapter) =>
-        this.selectedFilterTags.some((tag) => chapter.tags.includes(tag.name))
-      );
-    }
-    return this.model;
-  }
+  @service me;
+  @service store;
+  @service intl;
+  @tracked tags = null;
+  @tracked selectedFilterTags = A([]);
 
   get tagsList() {
-    let allFilterTags = A([]);
+    return this.store
+      .peekAll('tag')
+      .filter((tag) => tag.id) // ensure it has an id
+      .sortBy('name');
+  }
 
-    this.model.map((chapter) => {
-      chapter.tags.map((tag) => {
-        let obj = new ChapterFilterTag(tag);
-        allFilterTags.addObject(obj);
-      });
+  @action
+  preselectSelectedFilterTags() {
+    if (!this.tags) {
+      return;
+    }
+    const queryTags = this.tags.split(this.queryTagJoinXcter);
+
+    this.tagsList.map((tag) => {
+      const index = queryTags.findIndex(
+        (t) => t.toLowerCase() === tag.id.toLowerCase()
+      );
+      if (index > -1) {
+        this.selectedFilterTags.addObject(tag);
+      }
     });
-    return allFilterTags.uniqBy('name');
   }
 
   @action
   clearAllTagFilters() {
-    this.selectedFilterTags.map((tag) => {
-      tag.selected = false;
-    });
     this.selectedFilterTags.clear();
+    this.tags = null;
+    console.log(this.selectedFilterTags.length);
   }
 
   @action
   toggleTagSelection(tag) {
-    if (tag.selected) {
-      this.selectedFilterTags.removeObject(tag);
+    const queryTags = this.tags ? this.tags.split(this.queryTagJoinXcter) : [];
+    const obj = this.selectedFilterTags.findBy('id', tag.id);
+    if (obj) {
+      const index = queryTags.findIndex(
+        (t) => t.toLowerCase() === tag.id.toLowerCase()
+      );
+      queryTags.splice(index, 1);
+
+      this.selectedFilterTags.removeObject(obj);
     } else {
+      const index = queryTags.findIndex(
+        (t) => t.toLowerCase() === tag.id.toLowerCase()
+      );
+      if (index === -1) {
+        queryTags.push(tag.id);
+      }
       this.selectedFilterTags.addObject(tag);
     }
-    tag.selected = !tag.selected;
+
+    this.tags = queryTags.join(this.queryTagJoinXcter);
+  }
+
+  get recordsLoadedText() {
+    if (!this.tags && this.model.length === 0) {
+      return this.intl.t('home.loading.no_content');
+    }
+
+    if (!this.tags || (this.model.length > 0 && this.tags)) {
+      return this.intl.t('home.loading.loaded_all_the_records');
+    }
+    if (this.selectedFilterTags.length === 0) {
+      return this.intl.t('home.loading.wrong_record_filters', {
+        selectedTags: this.tags,
+      });
+    }
+    const allTags = this.selectedFilterTags.compact();
+
+    const lastTag = allTags.pop();
+
+    if (allTags.length === 0) {
+      return this.intl.t('home.loading.no_filtered_record', {
+        selectedTag: lastTag.name,
+      });
+    }
+
+    const selectedTags =
+      allTags.mapBy('name').join(',') + ', and ' + lastTag.name;
+    return this.intl.t('home.loading.no_filtered_records', { selectedTags });
   }
 }

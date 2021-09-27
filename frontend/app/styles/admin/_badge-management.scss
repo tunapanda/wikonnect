@@ -3,16 +3,12 @@ $palette: (
   black: #000000,
   boxShadow: #0A4B6D2E,
   gray30: #3F484D,
-  darkCharchoal: #333333,
-  luckyGrey: #777777,
-  white: #FFFF
 );
 
-.badges .users-badges-homepage {
-
+.badges .badges-homepage {
   .header-section {
     .title {
-      font-size: 22px;
+      font-size: 21px;
       color: map-get($palette, black);
       font-weight: bold;
     }
@@ -70,166 +66,272 @@ $palette: (
   }
 }
 
-.badges .users-badges-homepage {
-  .user-badges-section .submenu-section {
-    .search-form {
-      position: relative;
-      margin-top: -5px;
+.badges .badges-homepage {
+  .badges-section .submenu-section {
 
-      .search-input {
-        border-radius: 18px;
-        padding: .275rem .45rem;
-        height: initial;
-
-        &::placeholder {
-          font-size: 14px;
-        }
-      }
-
-      .search-icon {
-        position: absolute;
-        top: 7px;
-        right: 16px;
-        width: 18px;
-        height: 18px;
-        border-width: 1px;
-
-        &:after {
-          left: 18px;
-          top: 10px;
-          width: 1px;
-          height: 10px;
-        }
-      }
+    .dropdown-toggle {
+      color: map-get($palette, black);
     }
   }
 
-  .badges-users-table {
-    border-collapse: separate;
-    border-spacing: 0 10px;
-
+  .badges-table {
     thead td {
-      font-size: 16px;
-      font-weight: 500;
-      border: none;
+      font-size: 14px;
     }
 
     tbody {
-      tr {
-        margin-bottom: 10px;
-        box-shadow: 0px 3px 30px rgba(0, 0, 0, 0.06);
-        border-radius: 5px;
-        background-color: map-get($palette, white);
-      }
-
       td {
         font-size: 14px;
         color: map-get($palette, gray30);
         vertical-align: middle;
-        border: none;
       }
 
-      td.user-profile {
-
-        .image-container {
-          max-width: 40px;
-          max-height: 40px;
-
-          .user-profile-image {
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-          }
-        }
-
-        .details {
-          padding-left: 15px;
-
-          .name {
-            font-size: 16px;
-            color: map-get($palette, darkCharchoal);
-            font-weight: 600;
-          }
-
-          .location {
-            color: map-get($palette, luckyGrey);
-            font-size: 16px;
-          }
+      td .badge-icon {
+        img {
+          max-width: 50px;
         }
       }
 
-      td.points {
-        font-size: 16px;
-        font-weight: 500;
+      td.description {
+        max-width: 320px;
       }
 
-      td.badges-container {
-        .badges {
-          display: flex;
-          flex-direction: row;
-          align-content: center;
-          justify-content: flex-start;
-          align-items: center;
-
-          .extra-badges-total {
-            font-size: 16px;
-            background-color: #3F484D5C;
-            width: 34px;
-            height: 34px;
-            color: #FFFFFF;
-
-            display: flex;
-            border-radius: 100%;
-            justify-content: center;
-            align-content: center;
-            flex-direction: column;
-            align-items: center;
-          }
-
-          .mini-badge-container {
-            width: 50px;
-            height: 65px;
-            display: flex;
-            flex-direction: row;
-            flex-wrap: nowrap;
-            align-content: center;
-            justify-content: center;
-            box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.08);
-            border: 0.5px solid rgba(86, 16, 245, 0.11);
-            margin-right: 9px;
-            padding: 4px;
-
-            .badge-icon {
-              width: 100%;
-              height: 100%;
-            }
-          }
-        }
+      td .details-btn {
+        background-color: lighten(map-get($palette, primary), 40%);
       }
 
-      td {
-        .view-profile-btn {
-          font-size: 13px;
-          padding-bottom: 4px;
-          padding-top: 4px;
+      .extra-actions {
+        .dropdown-toggle::after {
+          display: none;
         }
       }
     }
 
   }
+}
 
-  .footer-pagination {
-    margin-top: 40px;
 
-    select {
-      padding-right: 11px;
-      padding-bottom: 4px;
-      padding-top: 4px;
+.badges .badges-manage-page {
+  .title {
+    font-size: 16px;
+    line-height: 20px;
+    font-weight: 600;
+  }
+
+  .subtitle {
+    font-size: 16px;
+    font-weight: normal;
+    padding-bottom: 9px;
+    padding-top: 6px;
+  }
+
+  .card-list {
+    display: grid;
+    grid-row-gap: 20px;
+    grid-column-gap: 20px;
+    grid-template-columns: 255px 255px 255px 255px;
+    padding-bottom: 20px;
+  }
+
+  .badge-card, .create-badge-card {
+    border: 1px solid rgba(201, 202, 203, 1);
+    box-shadow: 0px 3px 16px rgba(10, 75, 109, 0.18);
+    min-height: 165px;
+    border-radius: 6px;
+  }
+
+  .create-badge-card {
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    flex-direction: column;
+    height: 100%;
+
+    .content {
+      font-size: 18px;
+      font-weight: 500;
     }
 
-    .pagination .page-link {
-      padding-top: 6px;
-      padding-bottom: 6px;
+    svg {
+      circle {
+        fill: map-get($palette, primary);
+      }
+
+      path {
+        stroke-width: 10;
+      }
+    }
+
+    &.active {
+      border: 1px solid map-get($palette, primary);
+    }
+  }
+
+  .badges-list .badge-card {
+    padding: 9px;
+
+    .left {
+      .badge-icon-container {
+        height: 93px;
+        width: 72px;
+        box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.08);
+        border: 0.5px solid rgba(86, 16, 245, 0.11);
+        margin-top: 19px;
+
+        img {
+          padding: 2px;
+          height: auto;
+          width: 100%;
+          max-height: 99%;
+        }
+      }
+    }
+
+    .right {
+      padding-left: 10px;
+
+      .points {
+        border-radius: 4px;
+        color: white;
+        background-color: map-get($palette, primary);
+        font-size: 12px;
+        align-self: flex-end;
+        padding: 1px 12px;
+      }
+
+      .name {
+        font-size: 14px;
+        font-weight: 500;
+        letter-spacing: 0;
+      }
+
+      .description {
+        font-weight: 300;
+        color: map-get($palette, gray30);
+        font-size: 11px;
+      }
+    }
+
+    .footer {
+      align-items: baseline;
+      padding-top: 10px;
+
+      .left {
+        .dropdown-toggle::after {
+          display: none;
+        }
+      }
+
+      .right {
+        font-size: 14px;
+        color: map-get($palette, primary);
+
+        .link-icon svg {
+          circle {
+            fill: rgba(197, 197, 198, 1);
+          }
+
+          path {
+            stroke: white;
+            stroke-width: 40;
+          }
+        }
+      }
+    }
+
+    .dd-actions-menu {
+      .dropdown-menu {
+        padding-left: 20px;
+        padding-right: 20px;
+        min-width: 203px;
+
+        .header {
+          font-weight: 600;
+          padding-bottom: 10px;
+          padding-top: 4px;
+        }
+
+        hr {
+          margin-top: 0;
+        }
+
+        button {
+          text-align: left;
+        }
+      }
+    }
+  }
+
+  .badges-list {
+    .creation-form {
+      grid-column: 1 / 5;
+      grid-row: 2 / 3;
+    }
+  }
+
+  .badges-list .badge-card:nth-child(3n) {
+    .points {
+      background-color: rgb(90, 71, 173);
+    }
+  }
+}
+
+.badges .badges-manage-page {
+  .creation-form {
+
+
+    .badge-icon-card {
+      box-shadow: 0 3px 16px rgba(10, 75, 109, 0.18);;
+      min-width: 400px;
+      min-height: 194px;
+
+      .left {
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        align-content: center;
+        padding-left: 18px;
+      }
+
+      .icon-container {
+        min-height: 153px;
+        width: 125px;
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        align-content: center;
+        padding-left: 10px;
+        padding-right: 10px;
+        background-color: rgba(240, 240, 240, 1);
+        border: 1px solid rgba(51, 30, 104, 1);
+        box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
+      }
+
+      .btn {
+        padding-left: 20px;
+        padding-right: 20px;
+
+        svg {
+          margin-right: 10px;
+        }
+      }
+    }
+
+    .badge-form .main-form {
+      .form-group {
+        label {
+          text-align: right;
+          color: map-get($palette, black);
+          font-size: 16px;
+        }
+
+        input::placeholder,
+        select:invalid, {
+          font-size: 13px;
+          color: #A6ADB4;
+        }
+      }
     }
   }
 }

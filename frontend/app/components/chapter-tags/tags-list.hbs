@@ -27,14 +27,17 @@
               {{t "home.tags.clear"}}
             </button>
           </div>
-          {{#each this.filterTags as |tag|}}
+          {{#each this.filterTags as |tag index|}}
+          {{#if (eq index (increment this.totalDefaultTags -1))}}
+            <ddm.item>
+              <hr>
+            </ddm.item>
+          {{/if}}
             <ddm.item>
               <div class="tag-select-item">
-                <label class=" d-flex justify-content-between align-items-center">
-                  {{tag.name}}
-                  <Input @type="checkbox" class="checkbox wik-checkbox"
-                    {{on "change" (fn @toggleTagSelection tag) }} @checked={{tag.selected}} />
-                </label>
+                <ChapterTags::TagCheckbox @tag={{tag}} @selectedTags={{@selectedFilterTags}}
+                                          @toggleSelection={{@toggleTagSelection}}>
+                </ChapterTags::TagCheckbox>
               </div>
 
             </ddm.item>
@@ -48,7 +51,7 @@
 
         <button type="button" class="btn tag-button btn-outline-primary"
           {{on "click" (fn @toggleTagSelection tag)}}>
-          <span class="mr-1"> {{tag.name}}</span>
+          <span class="mr-1"> {{title-case tag.name}}</span>
           {{svg-jar "close-circle" width="16" height="16"}}
         </button>
 

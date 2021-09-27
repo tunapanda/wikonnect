@@ -19,15 +19,7 @@ describe("Chapters filter tags ", () => {
     }
 
     function getSeedChaptersTags() {
-        let tags = {};
-        return fetchFirstPageChapters().then((chapters) => {
-            chapters.map(chapter => {
-                chapter.tags.map(tag => {
-                    tags[tag] = tag;
-                });
-            });
-            return Object.values(tags)
-        })
+        return cy.tags({chapterTagsOnly: true});
     }
 
     it('Should search existing tags', () => {
@@ -40,12 +32,12 @@ describe("Chapters filter tags ", () => {
 
                 getFilterDropdownMenu()
                     .find('input.search-input')
-                    .type(tags[0]);
+                    .type(tags[0].name);
 
                 getFilterDropdownMenu()
                     .find('.tag-select-item')
                     .find('label')
-                    .contains(tags[0], {ignoreCase: true});
+                    .contains(tags[0].name, {matchCase: false});
             });
     });
 
@@ -58,64 +50,82 @@ describe("Chapters filter tags ", () => {
 
                 getFilterDropdownMenu()
                     .find('.tag-select-item label')
-                    .contains(tags[0], {ignoreCase: true})
+                    .contains(tags[0].name, {matchCase: false})
                     .find('input[type="checkbox"]')
+                    .scrollIntoView()
                     .check();
 
                 cy.get('.chapter-filters-section .selected-tags')
                     .find('button.tag-button')
-                    .contains(tags[0], {ignoreCase: true});
+                    .contains(tags[0].name, {matchCase: false});
             });
     });
 
-    it('Clear all filters buttons should unselect all tags', () => {
+    it('Clear all filters buttons should unselect all selected tags', () => {
         getFilterButton()
             .click();
 
-        getFilterDropdownMenu()
-            .find('.tag-select-item label')
-            .find('input[type="checkbox"]')
-            .check();
-
-        cy.get('.tags-section-container button.clear-tags-btn:visible')
-            .click()
-            .get('.tags-section-container .selected-tags.tag-list button.tag-button')
-            .should('not.exist')
-    });
-
-    it('Selected tags should filter chapters', () => {
-
         getSeedChaptersTags()
             .then((tags) => {
-                const tag = tags[0];
 
-                getFilterButton()
-                    .click();
-
-                getFilterDropdownMenu()
-                    .find('.tag-select-item label')
-                    .contains(tag, {ignoreCase: true})
-                    .find('input[type="checkbox"]')
-                    .check()
-
-
-                cy.get('a')
-                    .as('pageLinks');
-
-
-                fetchFirstPageChapters()
-                    .then((chapters) => {
-                        const filteredChapters = chapters.filter((chapter) => chapter.tags.includes(tag));
-
-                        for (const chapter of filteredChapters) {
-                            cy.get('@pageLinks')
-                                .filter(`[href="/chapter/${chapter.id}"]`)
-                                .should('be.visible')
-                        }
-                    })
+                tags.slice(0,3).map((tag) => {
+                    cy.get('.tag-select-item label')
+                        .contains(tag.name, {matchCase: false})
+                        .find('input[type="checkbox"]')
+                        .scrollIntoView()
+                        .check()
+                })
             })
 
-    });
+
+    cy.get('.tags-section-container')
+        .click() //this will hide dropdown if visible
+        .find(' button.clear-tags-btn:visible')
+        .click()
+        .get('.tags-section-container .selected-tags.tag-list button.tag-button')
+        .should('not.exist')
+});
+
+it('Selected tags should filter chapters', () => {
+
+    getSeedChaptersTags()
+        .then((tags) => {
+            const tag = tags[0];
+
+            getFilterButton()
+                .click();
+
+            getFilterDropdownMenu()
+                .find('.tag-select-item label')
+                .contains(tag.name, {matchCase: false})
+                .find('input[type="checkbox"]')
+                .scrollIntoView()
+                .check()
+
+
+            cy.get('a')
+                .as('pageLinks');
+
+            cy.get('.infinity-loader .records-loaded-indicator')
+                .then((ind)=>{
+                    if(ind.children('strong').length === 0){
+                        fetchFirstPageChapters()
+                            .then((chapters) => {
+                                const filteredChapters = chapters.filter((chapter) => chapter.tags.some((t)=>t.id===tag.id));
+
+                                for (const chapter of filteredChapters) {
+                                    cy.get('@pageLinks')
+                                        .filter(`[href="/chapter/${chapter.id}"]`)
+                                        .should('be.visible')
+                                }
+                            })
+                    }
+
+                })
+
+        })
+
+});
 
 
 })

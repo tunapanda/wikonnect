@@ -1,0 +1,527 @@
+$palette: (
+  primary: #F57010,
+  white: #FFFF,
+  darkCharcoal: rgba(87, 92, 88, 1),
+  teach: #32A583,
+  eucalyptus: #28A745,
+  cardBoxShadow: rgba(0, 0, 0, 0.29),
+  gray30: #3F484D,
+  gray95: #EBF0F2,
+  aliceBlue: #F7FCFF,
+  bombay: #B2B4B6,
+  bonjour: #EAE7E7,
+  black: #000000,
+  gallery: #F0F0F0,
+);
+
+.account-profile-page {
+  position: relative;
+  background-color: map-get($palette, aliceBlue);
+  height: 100%;
+
+  .bg-panel {
+    width: 100%;
+    height: 135px;
+    background-color: map-get($palette, primary);
+    opacity: 0.22;
+    position: absolute;
+    z-index: 1;
+    top: 0;
+  }
+
+  .dashboard-content-wrapper {
+    position: relative;
+    background-color: map-get($palette, white);
+    z-index: 5;
+    top: 20px;
+    padding-right: 0;
+    padding-left: 0;
+  }
+
+  .dashboard-content-wrapper {
+    .header-section {
+      padding-top: 18px;
+      padding-left: 32px;
+      padding-right: 32px;
+
+      .main-title {
+        font-size: 16px;
+        font-weight: 500;
+        padding-bottom: 10px;
+        color: map-get($palette, gray30);
+      }
+    }
+
+    .account-details-list {
+      .profile-card {
+        box-shadow: 0px 0px 4px 0px map-get($palette, cardBoxShadow);
+        border-radius: 5px;
+        min-width: 280px;
+        margin-right: 8px;
+        background-color: map-get($palette, white);
+      }
+
+      .achievements-list {
+        margin-right: 8px;
+        background-color: map-get($palette, white);
+
+        .achievement-card {
+          box-shadow: 0px 0px 4px 0px map-get($palette, cardBoxShadow);
+          border-radius: 5px;
+          min-width: 225px;
+          width: 100%;
+
+          &:not(:last-child) {
+            margin-bottom: 8px;
+          }
+        }
+      }
+
+      .badges-unlocked-card {
+        background-color: map-get($palette, white);
+        box-shadow: 0px 0px 4px 0px map-get($palette, cardBoxShadow);;
+        border-radius: 5px;
+      }
+    }
+  }
+
+
+  // profile card
+  .account-details-list {
+    .profile-card {
+      padding-top: 15px;
+      padding-right: 3px;
+      padding-left: 15px;
+      padding-bottom: 15px;
+
+      .body-content {
+
+        .left-container {
+          min-width: 120px;
+          padding-right: 1px;
+
+          .account-image-container {
+            max-height: 60px;
+            max-width: 60px;
+
+            img {
+              border-radius: 50%;
+              height: 100%;
+              width: 100%;
+            }
+          }
+
+          .name {
+            padding-top: 10px;
+            font-weight: 500;
+            font-size: 16px;
+            text-align: center;
+          }
+
+          .role {
+            font-size: 12px;
+            color: map-get($palette, gray30);
+          }
+
+          .location {
+            font-size: 12px;
+            color: map-get($palette, gray30);
+          }
+        }
+
+        .card-divider {
+          border-right: solid 1px map_get($palette, primary);
+        }
+
+        .right-container {
+          padding-left: 8px;
+
+          .section-title {
+            font-size: 16px;
+            font-weight: 500;
+            padding-bottom: 5px;
+          }
+
+          .account-bio {
+            font-size: 12px;
+            color: map-get($palette, gray30);
+          }
+
+          .phone, .email, .location {
+            font-size: 12px;
+            padding-bottom: 12px;
+
+            &:first-of-type {
+              padding-top: 4px;
+            }
+          }
+        }
+      }
+
+      .footer {
+        padding-top: 20px;
+
+        .edit-profile-btn {
+          padding-bottom: 2px;
+          padding-top: 2px;
+        }
+      }
+    }
+  }
+
+  // counters
+  .account-details-list {
+
+    .achievements-list {
+      .achievement-card {
+        padding: 7px;
+
+        .section-icon {
+          min-width: 28%;
+          min-height: 50px;
+          background-repeat: no-repeat;
+          background-position-x: left;
+          background-position-y: center;
+        }
+
+        .section-title {
+          font-size: 15px;
+        }
+
+        .count {
+          font-weight: 700;
+          color: map-get($palette, primary);
+          font-size: 16px;
+        }
+
+        &.earned-points {
+          .count {
+            color: map-get($palette, eucalyptus);
+          }
+        }
+      }
+    }
+
+    .achievements-list {
+      .achievement-card {
+        &.created-chapters {
+          .section-icon {
+            background-image: url("/images/notes-42.png");
+          }
+        }
+
+        &.completed-chapters {
+          .section-icon {
+            background-image: url("/images/completed-55.png");
+          }
+        }
+
+        &.earned-points {
+          .section-icon {
+            background-image: url("/images/earned-47.png");
+          }
+        }
+
+      }
+
+    }
+  }
+
+  //top badges
+  .account-details-list {
+    .badges-unlocked-card {
+      padding: 10px;
+      flex-grow: 1;
+
+      .section-title {
+        font-size: 16px;
+        font-weight: 600;
+        display: flex;
+        align-content: center;
+        align-items: center;
+        padding-bottom: 5px;
+
+        .section-icon {
+          background-image: url("/images/achievement-38.png");
+          display: inline-block;
+          height: 40px;
+          width: 45px;
+          background-repeat: no-repeat;
+          background-position: center;
+        }
+      }
+
+      .mini-badge-card {
+        padding: 0;
+        border: 0.5px solid #b7b9ba;
+        border-radius: 5px;
+        margin: 0 8px;
+        position: relative;
+        min-height: 128px;
+
+        .card-image-container {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 10px;
+          height: 55px;
+
+          img {
+            width: 100%;
+            max-height: 42px;
+          }
+        }
+
+        .detailed-content {
+          .title {
+            font-size: 15px;
+            color: map-get($palette, darkCharcoal);
+
+            &:hover {
+              text-decoration: underline;
+              cursor: pointer;
+            }
+          }
+
+          .points {
+            font-size: 19px;
+            font-weight: 500;
+            padding-top: 6px;
+            padding-bottom: 15px;
+          }
+        }
+
+        .btn-share {
+          padding: 0px 20px;
+          position: absolute;
+          bottom: -12px;
+          left: 50%;
+          margin-left: -35px;
+        }
+
+        &:not(.extra-badges) {
+          min-width: 190px;
+        }
+      }
+    }
+
+    .badges-unlocked-card {
+      .mini-badge-card.extra-badges {
+        flex: 1;
+        display: flex;
+        position: relative;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        flex-wrap: nowrap;
+
+        .badge-icon-container {
+          width: 35px;
+          height: 35px;
+          display: flex;
+          flex-direction: column;
+          flex-wrap: nowrap;
+          align-items: center;
+          justify-content: center;
+          border-radius: 50%;
+          background-color: white;
+          box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.05);
+          border: 3px solid rgba(255, 255, 255, 1);
+          font-size: 11px;
+          font-weight: 700;
+          cursor: pointer;
+          margin-right: -14px;
+
+          .badge-icon {
+            width: 100%;
+            height: 100%;
+          }
+        }
+      }
+    }
+  }
+
+  //nav
+  .sections-menu {
+    margin-top: 28px;
+    margin-bottom: 15px;
+  }
+}
+
+.account-profile-page {
+  .enrolled-courses-container {
+    .search-form {
+      input {
+        &:focus {
+          background-color: map-get($palette, white);
+        }
+      }
+    }
+  }
+}
+
+.account-profile-page {
+  .sort-dropdown {
+    width: fit-content;
+    border: 1px solid map-get($palette, bonjour);
+    border-radius: 18px;
+    padding: .385rem 1.45rem;
+    background-color: map-get($palette, white);
+    font-size: 14px;
+
+    .dropdown-toggle {
+      white-space: normal;
+      color: map-get($palette, black);
+    }
+
+    .dropdown-menu {
+      min-width: 230px;
+
+      .header {
+        font-size: 16px;
+        font-weight: 600;
+        padding-left: 13px;
+      }
+
+      hr {
+        margin-top: 4px;
+        margin-bottom: 3px;
+      }
+
+      .menu-item {
+        text-align: left;
+        border-radius: 0;
+
+        &:hover {
+          background-color: map-get($palette, primary);
+          color: map-get($palette, white);
+        }
+      }
+    }
+  }
+}
+
+.account-profile-page {
+  .data-summary-section {
+    background-color: map-get($palette, gallery);
+    line-height: 35px;
+    padding-left: 10px;
+    font-size: 15px;
+    color: map-get($palette, gray30);
+    font-weight: 500;
+  }
+
+  .custom-table {
+    border-collapse: separate;
+    border-spacing: 0 10px;
+
+    thead td {
+      font-size: 14px;
+      font-weight: 500;
+      border: none;
+    }
+
+    tbody {
+      tr {
+        margin-bottom: 10px;
+        box-shadow: 0px 3px 30px rgba(0, 0, 0, 0.06);
+        border-radius: 5px;
+        background-color: map-get($palette, white);
+      }
+
+      td {
+        font-size: 14px;
+        color: map-get($palette, gray30);
+        vertical-align: middle;
+        border: none;
+      }
+    }
+  }
+
+  .custom-table {
+    .btn-unfollow {
+      border-color: map-get($palette, gray30);
+      padding-left: 15px;
+      padding-right: 15px;
+    }
+
+    .btn-follow {
+      padding-left: 25px;
+      padding-right: 25px;
+    }
+
+    .user-profile {
+      .image-container img {
+        height: 35px;
+        width: 35px;
+        border-radius: 50%;
+        background-color: lighten(map-get($palette, primary), 40%);
+      }
+
+      .details {
+        padding-left: 8px;
+      }
+    }
+
+    .tag-name {
+      background-color: map-get($palette, gray95);
+      padding: 5px;
+      border-radius: 3px;
+    }
+  }
+}
+
+@media (max-width: 992px) {
+
+  .account-profile-page {
+    .account-details-list .profile-card {
+      margin-bottom: 8px;
+      width: 100%;
+    }
+
+    .achievements-list {
+      margin-right: 0px !important;
+
+      .achievement-card {
+        margin-bottom: 8px;
+        margin-right: 8px;
+      }
+    }
+
+    .badges-unlocked-card {
+      margin-top: 8px;
+      padding-bottom: 20px;
+
+      .badges-list {
+        .mini-badge-card {
+          margin-bottom: 16px;
+        }
+      }
+    }
+  }
+}
+
+@media (min-width: 768px) {
+
+  .account-profile-page {
+    .account-details-list .profile-card {
+      flex: 0 0 31%;
+
+    }
+
+    .badges-unlocked-card {
+      .mini-badge-card.extra-badges {
+        border: none;
+        box-shadow: none;
+      }
+    }
+  }
+}
+
+@media (min-width: 1200px) {
+  .account-profile-page {
+    .dashboard-content-wrapper, .main-content-wrapper {
+      max-width: 1240px;
+    }
+  }
+}

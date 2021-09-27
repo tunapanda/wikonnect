@@ -22,6 +22,9 @@ $palette: (
   .tags-filter-dropdown-menu {
     min-width: 316px;
     border-radius: 3px;
+    max-height: 400px;
+    overflow-y: scroll;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, .075);
 
     .tag-select-item {
       padding: 8px 15px;
@@ -117,7 +120,7 @@ $palette: (
     box-shadow: none;
     border-color: map-get($palette, grey75);
     color: map-get($palette, grey75);
-
+    white-space: nowrap;
     display: flex;
     align-items: center;
     flex-flow: nowrap;
@@ -143,6 +146,7 @@ $palette: (
     padding: 0;
     font-size: 12px;
     border-radius: 0;
+    white-space: nowrap;
 
     &:hover, &:focus, &:active {
       background-color: transparent;

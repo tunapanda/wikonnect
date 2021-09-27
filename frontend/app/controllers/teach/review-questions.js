@@ -4,8 +4,7 @@ import { tracked } from '@glimmer/tracking';
 import { A } from '@ember/array';
 
 export default class ReviewQuestionsController extends Controller {
-  @tracked
-  selectedCategories;
+  @tracked selectedCategories = A([]);
 
   get chapter() {
     return this.model[0];
@@ -13,6 +12,21 @@ export default class ReviewQuestionsController extends Controller {
 
   get reviewQuestions() {
     return this.model[1];
+  }
+  @action
+  preloadExistingQuestions() {
+    if (this.chapter.reviewQuestions) {
+      this.selectedCategories = A(this.chapter.reviewQuestions);
+    }
+  }
+
+  get defaultReviewQuestions() {
+    return this.reviewQuestions
+      .filter((q) => q.default === true)
+      .sortBy('priority');
+  }
+  get selectableReviewQuestions() {
+    return this.reviewQuestions.filter((q) => !q.default).sortBy('priority');
   }
 
   get reviewQuestionsCategories() {
@@ -28,10 +42,7 @@ export default class ReviewQuestionsController extends Controller {
 
   @action
   categoryPreselected(category) {
-    if (!this.selectedCategories && !this.chapter.reviewQuestions) {
-      //initialize the selected categories with all review questions
-      this.selectedCategories = A(this.reviewQuestionsCategories);
-    } else if (!this.selectedCategories && this.chapter.reviewQuestions) {
+    if (!this.selectedCategories && this.chapter.reviewQuestions) {
       // initialize the selected categories with existing chapter review questions
       this.selectedCategories = A(this.chapter.reviewQuestions);
     }
@@ -59,10 +70,15 @@ export default class ReviewQuestionsController extends Controller {
   @action
   async updateChapterReviewQuestions() {
     try {
-      this.chapter.reviewQuestions = this.selectedCategories;
+      const defaultCategories = this.defaultReviewQuestions.map(
+        (question) => question.category
+      );
+
+      this.chapter.reviewQuestions =
+        this.selectedCategories.addObjects(defaultCategories);
       await this.chapter.save();
       //reset the selected questions
-      this.selectedCategories = null;
+      this.selectedCategories = A([]);
 
       this.transitionToRoute('teach.preview', this.chapter.id);
     } catch (e) {

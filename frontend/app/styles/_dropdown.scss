@@ -1,0 +1,35 @@
+$palette: (
+);
+
+.dropdown-toggle{
+  &:hover{
+    text-decoration: none;
+  }
+}
+.dropdown-toggle::after {
+  position: relative;
+  -webkit-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg);
+  top: 0;
+  content: "";
+  border: 0.13em solid map-get($palette, white);
+  -webkit-transition: all .3s ease;
+  -o-transition: all .3s ease;
+  transition: all .3s ease;
+  overflow: hidden;
+  border-left: 1px solid transparent;
+  border-top: 1px solid transparent;
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  margin-left: 9px;
+  opacity: 1;
+}
+
+.dropdown-menu.dropdown-menu-right.show {
+  right: 0;
+  left: auto !important;
+  transform: none !important;
+  top: 100% !important;
+}

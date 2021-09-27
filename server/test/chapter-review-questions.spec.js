@@ -11,12 +11,11 @@ chai.should();
 
 const route = '/api/v1/review-questions';
 describe('CHAPTER REVIEW QUESTIONS ROUTE', () => {
-
-  it('Should fetch chapter reviews questions', done => {
+  it('Should fetch chapter reviews questions', (done) => {
     chai
       .request(server)
       .get(`${route}`)
-      .set(tokens.headersSuperAdmin1)
+      .set(tokens.headerAdminUser)
       .end((err, res) => {
         res.should.have.status(200);
         res.should.be.json;
@@ -26,11 +25,11 @@ describe('CHAPTER REVIEW QUESTIONS ROUTE', () => {
       });
   });
 
-  it('Should query chapter reviews questions by category', done => {
+  it('Should query chapter reviews questions by category', (done) => {
     chai
       .request(server)
-      .get(`${route}?categories=language`)
-      .set(tokens.headersSuperAdmin1)
+      .get(`${route}?categories=soundQuality`)
+      .set(tokens.headerAdminUser)
       .end((err, res) => {
         res.should.have.status(200);
         res.should.be.json;

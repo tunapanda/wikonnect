@@ -1,9 +1,6 @@
-const path = require('path');
-const hbs = require('nodemailer-express-handlebars');
-const nodemailer = require('nodemailer');
+const Mailgun = require('mailgun-js');
+
 const environment = process.env.NODE_ENV || 'development';
-
-
 let emailAuth;
 try {
   emailAuth = require('../config/email')[environment];
@@ -11,61 +8,67 @@ try {
   emailAuth = require('../config/email.example')[environment];
 }
 
-let transporter = nodemailer.createTransport({
-  host: emailAuth.provider,
-  port: 2525,
-  auth: emailAuth.auth
-});
+let mg;
 
-transporter.use('compile', hbs({
-  // viewEngine: 'handlebars',
-  viewEngine: {
-    extName: '.html',
-    partialsDir: path.resolve('./email/templates/'),
-    defaultLayout: false,
-  },
-  viewPath: path.resolve('./email/templates/'),
-  extName: '.html'
-}));
-
-/**
- *
- * @param {*} email
- * @param {*} fullName
- * @param {*} link
- * @param {*} templateName ...email template name
- * @returns mailOptions
- */
-
-class GenerateEmail {
-  constructor(email, fullName, link, templateName, subject) {
-    this.mailOptions = {
-      from: emailAuth.defaultFrom,
-      to: Buffer.from(email, 'base64').toString('ascii'),
-      template: templateName,
-      subject: subject,
-      context: {
-        url: link,
-        name: fullName
-      }
-    };
-  }
-  // Getter
-  get options() {
-    return this.mailOptions;
-  }
+if (emailAuth.auth.apiKey) {
+  mg = Mailgun({
+    apiKey: emailAuth.auth.apiKey,
+    domain: emailAuth.auth.domain,
+  });
 }
 
-module.exports = async (email, fullName, link, templateName, subject) => {
-  const mailType = new GenerateEmail(email, fullName, link, templateName, subject);
-
-  transporter.sendMail(mailType.options, (err) => {
-    if (!err) {
-      return { message: 'Kindly check your email for further instructions' };
-    } else {
-      console.log(err);
-      return err;
-    }
-  });
+const registrationEmailData = (
+  encryptedEmail,
+  fullName,
+  link,
+  templateName,
+  subject
+) => {
+  return {
+    from: emailAuth.defaultFrom,
+    to: Buffer.from(encryptedEmail, 'base64').toString('ascii'),
+    subject: subject,
+    template: templateName,
+    'v:url': link,
+    'v:name': fullName,
+  };
 };
 
+const passwordResetEmailData = (
+  encryptedEmail,
+  fullName,
+  link,
+  templateName,
+  subject
+) => {
+  return {
+    from: emailAuth.defaultFrom,
+    to: Buffer.from(encryptedEmail, 'base64').toString('ascii'),
+    subject: subject,
+    template: templateName,
+    'v:url': link,
+    'v:name': fullName,
+  };
+};
+
+const passwordResetSuccessEmailData = (
+  email,
+  username,
+  templateName,
+  subject
+) => {
+  return {
+    from: emailAuth.defaultFrom,
+    to: email,
+    subject: subject,
+    template: templateName,
+    'v:name': username,
+  };
+};
+
+module.exports = {
+  mg,
+  registrationEmailData,
+  passwordResetEmailData,
+  passwordResetSuccessEmailData,
+};

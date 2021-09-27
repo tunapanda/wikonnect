@@ -4,7 +4,6 @@
 //@import 'header';
 @import 'landing';
 @import 'home';
-@import 'courses';
 @import 'nav';
 @import 'search';
 @import "warning-component";
@@ -21,6 +20,7 @@
 html {
   font-family: 'Inter', sans-serif;
   height: 100%;
+  scroll-behavior:smooth;
 }
 
 @supports (font-variation-settings: normal) {
@@ -29,8 +29,8 @@ html {
   }
 }
 
-body{
-  height: 100%;
+body {
+  min-height: 100%;
 }
 
 .h40 {
@@ -142,6 +142,15 @@ pre {
   height: 300px;
 }
 
+.text-sentence {
+  &::first-letter {
+    text-transform: uppercase;
+  }
+}
+
+footer .row {
+  width: 560px;
+}
 
 //@import "ember-bootstrap/bootstrap";
 //@import "ember-power-select";
@@ -165,5 +174,12 @@ pre {
 @import "notifications-dropdown";
 @import "user-acc-dropdown";
 @import "leaderboard";
+@import "custom-search-icon";
+@import "dropdown";
+@import "badge-modal";
+@import "edit-profile";
+@import "survey";
+@import "course";
+@import "popular-cards";
 
 @import "admin/admin";

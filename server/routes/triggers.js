@@ -20,7 +20,7 @@ const router = new Router({
  *
  * @apiSuccess {Object} trigger Top level object
  * @apiSuccess {String} trigger[id] trigger id
- * @apiSuccess {String} trigger[trigger] name given to trigger
+ * @apiSuccess {String} trigger[name] name given to trigger
  * @apiSuccess {String} trigger[description] trigger explanation
  *
  */
@@ -46,7 +46,7 @@ router.get('/:id', requireAuth, grantAccess('readAny', 'private'), async ctx => 
  *
  * @apiSuccess {Object[]} trigger Top level object
  * @apiSuccess {String} trigger[id] trigger id
- * @apiSuccess {String} trigger[trigger] name given to trigger
+ * @apiSuccess {String} trigger[name] name given to trigger
  * @apiSuccess {String} trigger[description] trigger explanation
  *
  */
@@ -69,14 +69,13 @@ router.get('/', requireAuth, async ctx => {
  *
  * @apiHeader {String} Authorization Bearer << JWT here>>
  *
- * @apiParam (Request Body) {Object} trigger Top level object
  * @apiParam (Request Body) {Object} trigger[id] trigger id
- * @apiParam (Request Body) {Object} trigger[trigger] name given to trigger
+ * @apiParam (Request Body) {Object} trigger[name] name given to trigger
  * @apiParam (Request Body) {Object} trigger[description] trigger explanation
  *
  * @apiSuccess {Object} trigger Top level object
  * @apiSuccess {String} trigger[id] trigger id
- * @apiSuccess {String} trigger[trigger] name given to trigger
+ * @apiSuccess {String} trigger[name] name given to trigger
  * @apiSuccess {String} trigger[description] trigger explanation
  *
  */
@@ -105,14 +104,13 @@ router.post('/', requireAuth, async ctx => {
  * @apiParam (URI Param) {String} id Id of the trigger to update
   * @apiHeader {String} Authorization Bearer << JWT here>>
  *
- * @apiParam (Request Body) {Object} trigger Top level object
  * @apiParam (Request Body) {Object} trigger[id] trigger id
- * @apiParam (Request Body) {Object} trigger[trigger] name given to trigger
+ * @apiParam (Request Body) {Object} trigger[name] name given to trigger
  * @apiParam (Request Body) {Object} trigger[description] trigger explanation
  *
  * @apiSuccess {Object} trigger Top level object
  * @apiSuccess {String} trigger[id] trigger id
- * @apiSuccess {String} trigger[trigger] name given to trigger
+ * @apiSuccess {String} trigger[name] name given to trigger
  * @apiSuccess {String} trigger[description] trigger explanation
  *
  */

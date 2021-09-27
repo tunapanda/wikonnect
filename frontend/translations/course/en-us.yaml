@@ -1,0 +1,128 @@
+main_title: Course Builder
+search_placeholder: Search Chapters
+search_course_placeholder: Search course
+enroll_successful: You have successfully enrolled in the course.
+disenroll_successful: You have successfully unenrolled from the course.
+
+nav:
+  home: Home
+  learn: Learn
+  badges: Badges
+  courses: Course Builder
+  teach: Teach
+  create_course: New Course
+  draft_courses: Drafts
+  published_courses: Published
+  edit_course: Edit Course
+  back_to_profile: "<- Back to your profile"
+  cancel_editing_course: Cancel Course Editing
+
+form:
+  labels:
+    upload_image: Upload Course Image
+    drag_drop_prompt: "Drag and drop here <br> or <br> browse"
+    title: Your Course Title
+    description: Your Course Description
+    tags: Add Tags to Your Course
+    select_tags: Select Tags
+    add_custom_tag: Add Custom Tag
+    selected_tags: "Selected Tags (Maximum: {max})"
+    playlist: Course Playlist
+    author: "by {name}"
+    submitting: Kindly wait...
+  buttons:
+    file_select: Select File
+    save_draft: Save as Draft
+    publish: Publish Course
+    unpublish: Unpublish Course
+    edit_published: Save Changes
+    save_tag: Submit Tag
+    delete: Delete Course
+  thumbnail:
+    uploading: "Uploading image..."
+  empty_playlist_state: Start adding chapters to the course </br> from the  <a href="#select-chapters-section">  list below </a>
+
+create_page:
+  title:
+    create_course: Create A New Course
+    subtitle: Add chapters to create a playlist for this course
+    all_chapters: All Chapters
+  buttons:
+    add_to_course: Add to Course
+    remove_from_course: Added to the course
+  labels:
+    chapters_subtitle: Add these chapters to your playlist
+    published_no_image: Course published successfully without an image
+    published_with_image: Course published successfully
+    draft_saved: Course draft saved successfully
+
+drafts_page:
+  title: Your Draft Course Items
+  buttons:
+    view_course: View Course
+    edit_course: Edit this Course
+  labels:
+    no_content: You currently have no draft courses
+
+published_page:
+  title: Your Published Course Items
+  buttons:
+    view_course: View Course
+    edit_course: Edit this Course
+  labels:
+    no_content: You currently have no published courses.
+
+show_page:
+  tag_list_title: Tags
+  enrolled: "{count, plural,=1 {1 Person Enrolled} other {# People Enrolled}}"
+  popular_tags: Popular Tags
+  popular_courses: Popular Courses
+  course_chapters: All Chapters in this Course
+  disenroll_prompt: Do you want to disenroll from this course?
+  enrolled_successfully: You have successfully enrolled in the course.
+  disenroll_successful: You have successfully disenrolled from the course.
+  general_error: Unexpected error encountered while processing your request.
+  buttons:
+    update_course: Edit this Course
+    enroll: Enroll in Course
+    disenroll: Enrolled
+    start_learning: Start Learning ->
+
+edit_page:
+  title:
+    edit_course: Edit Course Details
+    subtitle: Add chapters to create a playlist for this course
+    all_chapters: All Chapters
+  buttons:
+    add_to_course: Add to Course
+    remove_from_course: Added to the course
+  labels:
+    chapters_subtitle: Add these chapters to your playlist
+    published_no_image: Course published successfully without an image
+    published_with_image: Course published successfully
+    draft_saved: Course draft saved successfully
+
+errors:
+  submit_tag: Error encoutered while processing the tag. Kindly try again.
+  course_image_upload: Error encountered while uploading course image
+  course_submission: Error encountered during course details submission
+  course_image_size: "Course image size should be less than {max} "
+  chapter_on_playlist: Chapter already added on the course playlist
+  no_content: There seems to be no content at the moment. Kindly check with us again later.
+  content_display_error: This is awkward but we are not able to retrieve existing content.
+  no_search_filtered_record: No content found matching <strong> {word}</strong> or <strong>{selectedTags}</strong>.
+  no_searched_record: No content found matching <strong> {word}</strong>. Kindly try a different search.
+  no_filtered_record: No content found matching <strong> {selectedTag}</strong>. Kindly try a different filter tag.
+  no_filtered_records:  No content found matching <strong> {selectedTags}</strong>. Kindly try a fewer filter tags.
+  wrong_record_filters:  No content found matching <strong> {selectedTags}</strong>. Kindly try again with a valid filter tag.
+  playlist_error: It seems we are facing issue with course playlist
+  login_to_enroll: You must first login/register to enroll to this course.
+  general_error: Unexpected error encountered while processing your request.
+  edit_access_error: You don't have permissions to modify the selected course.
+
+prompts:
+  disenroll: Are you sure you want to unenroll from this course?
+buttons:
+  disenroll: Unenroll
+  view_course: View Course
+  enroll: Enroll in Course

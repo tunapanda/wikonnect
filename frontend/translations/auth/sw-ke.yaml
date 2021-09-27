@@ -1,4 +1,5 @@
 login:
+  or: ama
   login: Ingia
   logout: Toka
   authenticating: Inathibitisha ...
@@ -11,11 +12,14 @@ login:
 
 signup:
   email: Barua Pepe
+  phone: Simu
   repeat_password: Rudia neno siri
   invite_code: Nambari ya Kukaribisha
   signup: Jisajili
   signup_third_party: Jisajili Ukitumia {authProvider}
   link_to_login: Je, tayari unayo akaunti?'<'a href="/login"'>' Ingia'</a>'
+  data_confirmation: Nimesoma na kukubaliana na '<'a href="/privacy"'>'Sera ya Faragha'</a>'
+
 
 password_reset:
   header: Unda nenosiri lako mpya
