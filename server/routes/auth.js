@@ -168,7 +168,7 @@ router.post('/reset_password', checkIfPasswordAreSame, async ctx => {
   const auth = ctx.request.body.auth;
   const decodedMail = Buffer.from(auth.email, 'base64').toString('ascii');
 
-  const user = await User.query().findOne(
+  const user = await User.query().where(
     {
       reset_password_token: auth.token,
       email: decodedMail,
