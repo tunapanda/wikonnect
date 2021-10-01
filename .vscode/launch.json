@@ -27,7 +27,8 @@
       "request": "launch",
       "name": "API",
       "program": "${workspaceFolder}/server/index.js",
-      "runtimeVersion": "8.15.0"
+      "runtimeVersion": "8.15.0",
+      "envFile": "${workspaceFolder}/.env"
     },
     {
       "type": "node",

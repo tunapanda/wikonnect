@@ -168,14 +168,14 @@ router.post('/reset_password', checkIfPasswordAreSame, async ctx => {
   const auth = ctx.request.body.auth;
   const decodedMail = Buffer.from(auth.email, 'base64').toString('ascii');
 
-  const user = await User.query().findOne(
-    'resetPasswordExpires', '>', new Date(+new Date() + 0),
+  const user = await User.query().where(
     {
       reset_password_token: auth.token,
       email: decodedMail,
     }
   );
   ctx.assert(user, 404, 'Account not found');
+  ctx.assert(user.resetPasswordExpires > new Date(+new Date() + 0), 400, 'Reset password token has expired');
 
   try {
     const userData = await user.$query().patchAndFetch({ 'resetPasswordExpires': new Date(), 'hash': auth.hash });
