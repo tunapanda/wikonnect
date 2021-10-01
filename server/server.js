@@ -93,6 +93,8 @@ router.use(jwt.authenticate, require('./routes/tag-followers'));
 
 router.use(jwt.authenticate, require('./routes/course-enrollments'));
 
+router.use(jwt.authenticate, require('./routes/leaderboard'));
+
 router.use(require('./routes/search'));
 
 

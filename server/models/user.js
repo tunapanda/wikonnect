@@ -169,9 +169,22 @@ class User extends Model {
           to: 'courses.creatorId'
         }
       },
-
-
-    };
+      badgesAwarded: {
+        relation: Model.ManyToManyRelation,
+        modelClass: __dirname + '/badges',
+        join:  {
+          from: 'users.id',
+          through: {
+            from: 'user_badges.user_id',
+            to: 'user_badges.badge_id',
+            extra: {
+              user_badge_id: 'id'
+            }
+          },
+          to: 'badges.id'
+        }
+      }
+    }
   }
 
   static get modifiers() {
