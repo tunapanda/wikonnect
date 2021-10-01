@@ -20,7 +20,9 @@ const router = new Router({
 
 router.get('/', requireAuth, async ctx => {
   const users = await User.query()
-    .withGraphJoined('badgesAwarded', {joinOperation: 'rightJoin'});
+    .withGraphJoined('badgesAwarded', {joinOperation: 'rightJoin'})
+    .modify('selectBasicInfo'); //select only user basic info
+
 
   ctx.status = 200;
   ctx.body = {users};
