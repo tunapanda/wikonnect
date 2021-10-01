@@ -1,5 +1,5 @@
 const Router = require('koa-router');
-const { requireAuth, grantAccess } = require('../middleware/permController');
+const {requireAuth, grantAccess} = require('../middleware/permController');
 const User = require('../models/user');
 
 const router = new Router({
@@ -20,11 +20,10 @@ const router = new Router({
 
 router.get('/', requireAuth, async ctx => {
   const users = await User.query()
-                        .withGraphJoined('badgesAwarded')
-                        // .whereNotNull();
+    .withGraphJoined('badgesAwarded', {joinOperation: 'rightJoin'});
 
   ctx.status = 200;
-  ctx.body = { users };
+  ctx.body = {users};
 });
 
 
