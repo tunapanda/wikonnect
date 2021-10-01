@@ -32,6 +32,9 @@ jobs:
     steps:
       - checkout
       - run:
+          name: Update CA certs
+          command: sudo apt-get update && sudo apt-get install -y ca-certificates
+      - run:
           name: Update yarn
           command: curl -o- -L https://yarnpkg.com/install.sh | bash
       - restore_cache:
