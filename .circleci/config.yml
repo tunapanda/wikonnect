@@ -36,7 +36,7 @@ jobs:
           command: sudo apt-get update && sudo apt-get install -y ca-certificates
       - run:
           name: Update yarn
-          command: curl -o- -L https://yarnpkg.com/install.sh | bash
+          command: curl -o- -L -k https://yarnpkg.com/install.sh | bash
       - restore_cache:
           name: Restore Yarn Package Cache
           keys:
