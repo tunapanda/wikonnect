@@ -62,6 +62,7 @@ Router.map(function () {
   this.route('reset_password');
   this.route('verify');
 
+  this.route('leaderboard');
   this.route('surveys', { path: '/surveys/:id' });
 
   this.route('admin', function () {
@@ -87,4 +88,5 @@ Router.map(function () {
   // 404 page should always be the last
   this.route('not-found', { path: '*path' });
   this.route('access-denied');
+  this.route('privacy');
 });
