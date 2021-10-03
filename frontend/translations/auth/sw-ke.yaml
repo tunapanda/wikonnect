@@ -32,3 +32,4 @@ password_reset:
   email_sent_p1: Tumetuma barua pepe kwa <strong>{email}</strong>. Bonyeza kiungo cha kuweka upya nenosiri ili kuweka nenosiri lako mpya.
   email_sent_p2: Ikiwa haujapokea barua pepe tafadhali angalia folda yako ya barua taka au
   try_again: jaribu tena
+  password_reset_token_expired: This password reset link is expired. Click <a href="/forgot_password">here</a> to request a new link

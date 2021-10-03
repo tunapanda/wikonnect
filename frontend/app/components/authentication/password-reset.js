@@ -1,11 +1,15 @@
 import Component from '@glimmer/component';
 import { action } from '@ember/object';
 import { tracked } from '@glimmer/tracking';
+import { inject as service } from '@ember/service';
 import fetch from 'fetch';
 
 export default class PasswordResetComponent extends Component {
   token = this.args.token;
   email = this.args.email;
+
+  @service notify;
+  @service intl;
 
   @tracked isInvalid = false;
   @tracked showPasswordForm = true;
@@ -46,6 +50,15 @@ export default class PasswordResetComponent extends Component {
           ...this.error,
           message: 'Something went wrong. Please try again.',
         };
+        if (response.status === 400) {
+        // intl service not rendering html so we pass the string to html property of notify service
+          this.notify.info({
+            html: this.intl.t('auth.password_reset.password_reset_token_expired', { htmlSafe: true }), 
+            closeAfter: null 
+          });
+        }
+
+        this.loading = false;
       } else {
         this.showPasswordForm = false;
       }
