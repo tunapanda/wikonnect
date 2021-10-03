@@ -37,6 +37,11 @@
         </LinkTo>
       </li>
       <li class="nav-item text-{{this.config.content.APP.header_text}}">
+        <LinkTo @route="leaderboard" class="nav-link" data-toggle="collapse" data-target="#mainTopNav.show">
+          {{t "buttons.leaderboard"}}
+        </LinkTo>
+      </li>
+      <li class="nav-item text-{{this.config.content.APP.header_text}}">
         <a href="https://discord.gg/tT9Ug6D" class="nav-link forum-link-item" rel="noopener">
           {{t "buttons.community"}}
         </a>

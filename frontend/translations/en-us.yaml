@@ -1,6 +1,7 @@
 buttons:
   teach: Teach
   learn: Learn
+  leaderboard: Leaderboard
   login: Login
   logout: Logout
   signup: Sign Up
