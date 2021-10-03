@@ -51,10 +51,13 @@ export default class PasswordResetComponent extends Component {
           message: 'Something went wrong. Please try again.',
         };
         if (response.status === 400) {
-        // intl service not rendering html so we pass the string to html property of notify service
+          // intl service not rendering html so we pass the string to html property of notify service
           this.notify.info({
-            html: this.intl.t('auth.password_reset.password_reset_token_expired', { htmlSafe: true }), 
-            closeAfter: null 
+            html: this.intl.t(
+              'auth.password_reset.password_reset_token_expired',
+              { htmlSafe: true }
+            ),
+            closeAfter: null,
           });
         }
 
