@@ -32,4 +32,12 @@ export default class MainHeaderComponent extends Component {
   translate(lang) {
     this.intl.setLocale([lang]);
   }
+
+  get backgroundColor() {
+    if (this.router.currentRouteName.startsWith('teach')) {
+      return 'green';
+    }
+
+    return 'orange';
+  }
 }
