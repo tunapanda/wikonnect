@@ -24,7 +24,7 @@ module.exports = function (defaults) {
     },
     minifyCSS: {
       enabled: true,
-      options: { processImport: true }
+      options: { processImport: true },
     },
     svgJar: {
       sourceDirs: ['public/images/icons'],
@@ -32,9 +32,6 @@ module.exports = function (defaults) {
     cssModules: {
       intermediateOutputPath: 'app/styles/app.scss',
       extension: 'scss',
-      postcssOptions: {
-        syntax: require('postcss-scss')
-      },
       headerModules: ['wikonnect/styles/app'],
     },
   });
