@@ -17,16 +17,18 @@ export default class TeachRoute extends Route {
   }
 
   model() {
-    return RSVP.hash({
-      drafts: this.store.query('chapter', {
-        creatorId: this.me.user.id,
-        status: 'draft',
-      }),
-      published: this.store.query('chapter', {
-        creatorId: this.me.user.id,
-        status: 'published',
-      }),
-    });
+    if (this.me.isAuthenticated) {
+      return RSVP.hash({
+        drafts: this.store.query('chapter', {
+          creatorId: this.me.user.id,
+          status: 'draft',
+        }),
+        published: this.store.query('chapter', {
+          creatorId: this.me.user.id,
+          status: 'published',
+        }),
+      });
+    }
   }
 
   afterModel() {

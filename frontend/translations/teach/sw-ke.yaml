@@ -16,6 +16,11 @@ index:
   no_published: Hakuna kilichochapishwa bado
   create_h5p: Unda H5P
   no_permission: Huna ruhusa ya kutazama ukurasa huu
+  cta: Karibu {user}! Je! Ungependa kufanya nini leo?
+  liked_chapters: Total Likes
+  reviewed_chapters: Total Reviews
+  total_views: Total Views
+  total_comments: Total Comments 
 
 toc:
   name_desc: Jina na Maelezo

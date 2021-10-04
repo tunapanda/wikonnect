@@ -1,29 +1,58 @@
-<div class="container teach-layout">
-  <div class="d-flex justify-content-between pt-3 mt-0">
-    <h3>
-      {{t 'teach.index.my_content'}}
-    </h3>
-    <LinkTo @route="teach.create" class="btn bg-primary" role="button">
-      {{svg-jar 'add_circle_white_24dp'}} {{t 'teach.index.create_h5p'}}
-    </LinkTo>
-  </div>
-  <div class="row ml-1">
-    <LinkTo @route="teach.index">
-      <div class="sub-link">
+{{#if this.model}}
+  <header local-class="teach-header" class="d-flex align-items-center">
+    <div class="container d-flex justify-content-between">
+      <h1>
+        {{t 'teach.index.my_content'}}
+      </h1>
+      <LinkTo @route="teach.create" role="button">
+        {{svg-jar 'add_circle_white_24dp'}}
+        {{t 'teach.index.create_h5p'}}
+      </LinkTo>
+    </div>
+  </header>
+  <div class="container">
+    <div class="d-flex mb-5">
+      <div local-class="cta">
+        <p>{{t 'teach.index.cta' user=this.me.name}}</p>
+        <LinkTo @route="teach.create">
+          {{svg-jar 'add_circle_white_24dp'}}
+          {{t 'teach.index.create_h5p'}}
+        </LinkTo>
+        <LinkTo @route="course.create">
+          {{svg-jar 'add_circle_white_24dp'}}
+          {{t 'course.nav.create_course'}}
+        </LinkTo>
+      </div>
+      <div class="d-flex statistics">
+        <div local-class="stat">
+          <p>{{t 'teach.index.liked_chapters'}}</p>
+        </div>
+        <div local-class="stat">
+          <p>{{t 'teach.index.reviewed_chapters'}}</p>
+        </div>
+        <div local-class="stat">
+          <p>{{t 'teach.index.total_views'}}</p>
+        </div>
+        <div local-class="stat">
+          <p>{{t 'teach.index.total_comments'}}</p>
+        </div>
+      </div>
+    </div>
+    
+    <div local-class="dashboard-tabs" class="row ml-1">
+      <LinkTo @route="teach.index">
         {{t 'teach.index.dashboard'}}
-      </div>
-    </LinkTo>
-    <LinkTo @route="teach.chapters" @model="draft">
-      <div class="sub-link">
+      </LinkTo>
+      <LinkTo @route="teach.chapters" @model="draft">
         {{t 'teach.index.drafts' num=this.numOfDrafts}}
-      </div>
-    </LinkTo>
-    <LinkTo @route="teach.chapters" @model="published">
-      <div class="sub-link">
+      </LinkTo>
+      <LinkTo @route="teach.chapters" @model="published">
         {{t 'teach.index.published' num=this.numOfPublished}}
-      </div>
-    </LinkTo>
+      </LinkTo>
+    </div>
+    <hr class="bg-green" />
+    {{outlet}}
   </div>
-  <hr class="bg-green" />
+{{else}}
   {{outlet}}
-</div>
+{{/if}}

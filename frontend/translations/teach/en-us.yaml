@@ -16,6 +16,11 @@ index:
   no_published: Nothing published yet
   create_h5p: Create H5P
   no_permission: You do not have permission to view this page
+  cta: Welcome {user}! What would you like to do today?
+  liked_chapters: Total Likes
+  reviewed_chapters: Total Reviews
+  total_views: Total Views
+  total_comments: Total Comments 
 
 toc:
   name_desc: Name & Description
