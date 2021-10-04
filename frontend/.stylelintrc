@@ -1,0 +1,30 @@
+{
+  "extends": [
+    "stylelint-prettier/recommended"
+  ],
+  "plugins": [
+    "stylelint-prettier"
+  ],
+  "rules": {
+    "prettier/prettier": [
+      true,
+      {
+        "printWidth": 120
+      }
+    ],
+    "declaration-no-important": [
+      true,
+      {
+        "severity": "warning"
+      }
+    ],
+    "property-disallowed-list": [
+      [
+        "font"
+      ],
+      {
+        "message": "Use seperate font-* attributes"
+      }
+    ]
+  }
+}

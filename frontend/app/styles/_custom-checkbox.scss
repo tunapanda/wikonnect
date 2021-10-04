@@ -10,11 +10,10 @@
   cursor: pointer;
 
   &:before {
-
   }
 
   &:after {
-    content: "\2714";
+    content: '\2714';
     position: absolute;
     top: -4px;
     width: 14px;
@@ -29,7 +28,7 @@
     box-shadow: inset 20px 0 0 0 $primary;
 
     &:after {
-      left: 2px
+      left: 2px;
     }
   }
 }

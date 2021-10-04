@@ -1,8 +1,8 @@
 $palette: (
-  primary: #F57010,
-  gray30: #3F484D,
-  gray45: #5E6C73,
-  gray95: #EBF0F2,
+  primary: #f57010,
+  gray30: #3f484d,
+  gray45: #5e6c73,
+  gray95: #ebf0f2,
 );
 
 .popular-courses,
@@ -26,7 +26,6 @@ $palette: (
       font-size: 14px;
       padding-left: 5px;
       padding-right: 5px;
-
     }
   }
 }
@@ -60,7 +59,8 @@ $palette: (
           width: 100%;
         }
 
-        .people-enrolled, .tags-list .tag {
+        .people-enrolled,
+        .tags-list .tag {
           font-size: 12px;
           color: map-get($palette, gray30);
 
@@ -68,7 +68,6 @@ $palette: (
             text-decoration: none;
           }
         }
-
       }
 
       &:hover {
