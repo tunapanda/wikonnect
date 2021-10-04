@@ -1,14 +1,14 @@
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
 
-export default class TeachPreviewRoute extends Route {
+export default class TeachEditRoute extends Route {
   @service me;
   @service router;
   @service intl;
   @service notify;
 
   model(params) {
-    return this.store.findRecord('chapter', params.id);
+    return this.store.findRecord('chapter', params.chapter_id);
   }
 
   afterModel(resolvedModel) {

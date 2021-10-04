@@ -16,6 +16,12 @@ export default {
     }),
   ],
   email: validateFormat({ type: 'email' }),
+  contactNumber: [
+    validatePresence(true),
+    validateFormat({
+      regex: /^(254|0)([7][0-9]|[1][0-1]){1}[0-9]{1}[0-9]{6}$/,
+    }),
+  ],
   password: [
     validatePresence(true),
     validateLength({ min: 8 }),

@@ -9,7 +9,7 @@
   white-space: normal;
   overflow-wrap: break-word;
   display: flex;
-  padding: .25rem 1rem;
+  padding: 0.25rem 1rem;
 }
 
 #myDropdown .dropdown-item:hover,
@@ -46,9 +46,9 @@
 .search-input:focus {
   flex: 1;
   background-image: url(/images/icons/search.svg);
-  padding-right: calc(1.5em + .75rem);
+  padding-right: calc(1.5em + 0.75rem);
   background-repeat: no-repeat;
-  background-position: right calc(.375em + .1875rem) center;
+  background-position: right calc(0.375em + 0.1875rem) center;
 }
 
 .search-thumbnail {

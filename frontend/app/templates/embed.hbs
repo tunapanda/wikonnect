@@ -1,4 +1,4 @@
-{{this.model.name}}
+<h3>{{this.model.name}}</h3>
 <br>
 {{#if this.callbackUrl}}
   <span class="badge badge-primary">{{t "embed.updates" url=this.callbackUrl}}</span>
@@ -24,13 +24,13 @@
 {{/if}}
 
 
-<BsModalSimple @open={{this.showLoginModal}} @title={{t "buttons.login"}} @size="sm" @onHidden={{fn this.openLoginModal false}}>
+<BsModalSimple @open={{this.showLoginModal}} @title={{t "buttons.login"}} @onHidden={{fn this.openLoginModal false}}>
   <Authentication::Login @registeredUser={{changeset @model this.LoginValidations}}
                          @authenticationSuccessful={{this.login}} />
 </BsModalSimple>
 
 
-<BsModalSimple @open={{this.showRegistrationModal}} @title={{t "buttons.login"}} @size="sm"
+<BsModalSimple @open={{this.showRegistrationModal}} @title={{t "buttons.signup"}}
                @onHidden={{fn this.openSignUpModal false}}>
 
   <Authentication::Signup @inviteCode={{this.invite_code}} @success={{this.signup }} />

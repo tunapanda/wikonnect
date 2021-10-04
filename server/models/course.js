@@ -18,7 +18,7 @@ class Course extends Model {
         status: { type: 'string' },
         metadata: { type: 'object' },
         creatorId: { type: 'string' },
-        thumbnailUrl: { type: 'string' },
+        thumbnailUrl: { type: ['string', 'null'] },
         createdAt: { type: 'string' },
         updatedAt: { type: 'string' },
       },

@@ -1,5 +1,14 @@
-$palette:(
-gray85: #FAFDFF
+.admin-base {
+  @import 'side-nav';
+  @import 'main-header';
+  @import 'badge-management';
+  @import 'user-management';
+  @import 'content-approval';
+  @import 'survey-management';
+}
+
+$palette: (
+  gray85: #fafdff,
 );
 .admin-base {
   padding: 0;
@@ -7,10 +16,10 @@ gray85: #FAFDFF
   height: 100%;
   min-height: 100vh;
 
-  .main-content-wrapper{
+  .main-content-wrapper {
     height: 100%;
     width: 100%;
-    background-color: map-get($palette,gray85);
+    background-color: map-get($palette, gray85);
     overflow: auto;
     min-height: 100vh;
   }
@@ -21,7 +30,7 @@ gray85: #FAFDFF
 
     .search-input {
       border-radius: 18px;
-      padding: .275rem .45rem;
+      padding: 0.275rem 0.45rem;
       height: initial;
 
       &::placeholder {
@@ -46,21 +55,11 @@ gray85: #FAFDFF
     }
   }
 
-  .custom-form{
-    .help-button{
+  .custom-form {
+    .help-button {
       position: relative;
       top: 0;
       cursor: pointer;
     }
   }
-}
-
-
-.admin-base{
-  @import "side-nav";
-  @import "main-header";
-  @import "badge-management";
-  @import "user-management";
-  @import "content-approval";
-  @import "_survey-management";
 }

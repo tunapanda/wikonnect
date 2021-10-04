@@ -1,8 +1,8 @@
 $palette: (
-  gray30: #3F484D,
-  primary:#F57010,
-  red: #EA0606,
-  white: #FFFF
+  gray30: #3f484d,
+  primary: #f57010,
+  red: #ea0606,
+  white: #ffff,
 );
 .admin-main-header {
   .notifications-dropdown {
@@ -20,9 +20,8 @@ $palette: (
 
     .nav-link .count {
       position: absolute;
-      background-color: map-get($palette,red);
-      color: map-get($palette,white);
+      background-color: map-get($palette, red);
+      color: map-get($palette, white);
     }
   }
 }
-

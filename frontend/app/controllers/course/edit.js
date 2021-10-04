@@ -75,7 +75,9 @@ export default class CourseEditController extends Controller {
   @action
   addChapterToCourse(chapter) {
     if (!this.courseForm || !this.courseForm.addChapter) {
-      this.notify.alert(this.intl.t('course.errors.playlist_error'));
+      this.notify.alert(this.intl.t('course.errors.playlist_error'), {
+        closeAfter: 5000,
+      });
       return 1;
     }
     this.courseForm.addChapter(chapter);
@@ -84,7 +86,9 @@ export default class CourseEditController extends Controller {
   @action
   removeChapterFromCourse(chapter) {
     if (!this.courseForm || !this.courseForm.addChapter) {
-      this.notify.alert(this.intl.t('course.errors.playlist_error'));
+      this.notify.alert(this.intl.t('course.errors.playlist_error'), {
+        closeAfter: 5000,
+      });
       return 1;
     }
     this.courseForm.removeChapter(chapter);
@@ -110,12 +114,12 @@ export default class CourseEditController extends Controller {
         if (result.status === 'draft') {
           message = this.intl.t('course.edit_page.labels.draft_saved');
         }
-        this.notify.success(message);
+        this.notify.success(message, { closeAfter: 5000 });
         this.router.transitionTo('course.show', result.id);
       }
     } catch (e) {
       this.notify.alert(this.intl.t('course.errors.course_submission'), {
-        closeAfter: 100000,
+        closeAfter: 5000,
       });
     }
     //upload course image
@@ -138,11 +142,11 @@ export default class CourseEditController extends Controller {
         if (result.status === 'draft') {
           message = this.intl.t('course.edit_page.labels.draft_saved');
         }
-        this.notify.success(message);
+        this.notify.success(message, { closeAfter: 5000 });
         this.router.transitionTo('course.show', result.id);
       } catch (e) {
         this.notify.alert(this.intl.t('course.errors.course_image_upload'), {
-          closeAfter: 100000,
+          closeAfter: 5000,
         });
       }
     }

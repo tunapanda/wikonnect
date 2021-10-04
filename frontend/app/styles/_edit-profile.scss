@@ -1,15 +1,14 @@
 $palette: (
-  blizzardBlue: #ABD5F0,
-  white: #FFFF,
-  gray30:#3F484D,
-  mako: #3F484D,
+  blizzardBlue: #abd5f0,
+  white: #ffff,
+  gray30: #3f484d,
+  mako: #3f484d,
   corvette: #fac7a1,
-  portage: #AF7EF4,
-  black: #000
+  portage: #af7ef4,
+  black: #000,
 );
 
 .edit-profile-page {
-
   background-color: map-get($palette, blizzardBlue);
 
   .container-wrap {
@@ -17,7 +16,6 @@ $palette: (
     top: 15px;
     background-color: map-get($palette, white);
     padding: 25px;
-
   }
 
   .header-section {
@@ -32,7 +30,7 @@ $palette: (
       padding-top: 2px;
     }
   }
-  
+
   .edit-profile-form {
     .section-title {
       font-size: 19px;
@@ -61,7 +59,6 @@ $palette: (
           font-size: 12px;
         }
       }
-
     }
 
     .btn-submit {
@@ -105,14 +102,11 @@ $palette: (
       }
     }
   }
-
 }
 
 @media (min-width: 768px) {
-
   .edit-profile-page {
     .edit-profile-form {
-
       .form-group {
         .col-form-label {
           text-align: right;

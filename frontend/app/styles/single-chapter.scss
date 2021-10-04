@@ -1,8 +1,8 @@
 $palette: (
-  primary: #F57010,
-  white: #FFF,
+  primary: #f57010,
+  white: #fff,
   gray60: #829199,
-  lighterPrimary: #FDE9DA
+  lighterPrimary: #fde9da,
 );
 .breadcrumbs {
   color: #829199;
@@ -72,12 +72,11 @@ $palette: (
 }
 
 #facebook-share-icon {
-  background-color: #4267B2;
+  background-color: #4267b2;
 }
 
-
 #twitter-share-icon {
-  background-color: #1DA1F2;
+  background-color: #1da1f2;
 }
 
 #email-share-icon {
@@ -85,7 +84,7 @@ $palette: (
 }
 
 #reddit-share-icon {
-  background-color: #FF4500;
+  background-color: #ff4500;
 }
 
 #facebook-share-icon svg path,
@@ -95,24 +94,25 @@ $palette: (
 }
 
 .share-modal-container {
-    background: #222;
-    color: white;
-    margin-left: -25px;
-    margin-top: 10px;
-    width: 300px;
-    border-radius: 0;
+  background: #222;
+  color: white;
+  margin-left: -25px;
+  margin-top: 10px;
+  width: 300px;
+  border-radius: 0;
 }
 
 .reaction-feedback-popover {
-  background-color: map-get($palette,lighterPrimary);
+  background-color: map-get($palette, lighterPrimary);
 
-  .arrow:before,.arrow:after {
-    border-bottom-color: map-get($palette,lighterPrimary);
+  .arrow:before,
+  .arrow:after {
+    border-bottom-color: map-get($palette, lighterPrimary);
   }
 
   .btn-close {
     padding: 0;
-    background-color: map-get($palette,white);
+    background-color: map-get($palette, white);
     border-radius: 50%;
     outline: 0;
     border-color: transparent;
@@ -122,16 +122,16 @@ $palette: (
     display: flex;
     justify-content: center;
     align-items: center;
-    color: map-get($palette,gray60);
+    color: map-get($palette, gray60);
   }
 
-  .title{
+  .title {
     font-weight: 600;
     font-size: 16px;
-    color: map-get($palette,primary);
+    color: map-get($palette, primary);
   }
 }
 
-.comment-section{
+.comment-section {
   padding-bottom: 8em;
 }

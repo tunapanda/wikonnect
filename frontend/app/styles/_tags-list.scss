@@ -1,7 +1,7 @@
 $palette: (
-  primary: #F57010,
-  grey45: #9DA3A2,
-  grey75: #B0BABF
+  primary: #f57010,
+  grey45: #9da3a2,
+  grey75: #b0babf,
 );
 
 .tags-filter-dropdown {
@@ -24,7 +24,7 @@ $palette: (
     border-radius: 3px;
     max-height: 400px;
     overflow-y: scroll;
-    box-shadow: 0 3px 6px rgba(0, 0, 0, .075);
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.075);
 
     .tag-select-item {
       padding: 8px 15px;
@@ -33,13 +33,13 @@ $palette: (
       label {
         text-align: left;
         font-size: 15px;
-        color: #5C6267;
+        color: #5c6267;
         font-weight: normal;
         margin: 0;
       }
 
       &:hover {
-        background-color: #F7F9FA;
+        background-color: #f7f9fa;
       }
     }
   }
@@ -94,10 +94,9 @@ $palette: (
     outline: none;
 
     &.active {
-      color: map_get($palette, primary);;
+      color: map_get($palette, primary);
     }
   }
-
 }
 
 .tag-list {
@@ -148,12 +147,13 @@ $palette: (
     border-radius: 0;
     white-space: nowrap;
 
-    &:hover, &:focus, &:active {
+    &:hover,
+    &:focus,
+    &:active {
       background-color: transparent;
       color: $primary;
       box-shadow: none;
       border-width: 0 0 2px 0;
-
     }
 
     &.hidden-sm {
@@ -162,13 +162,14 @@ $palette: (
       line-height: 1.5;
       border: none;
 
-      &:hover, &:focus, &:active {
+      &:hover,
+      &:focus,
+      &:active {
         border-width: 0;
         background-color: transparent;
         color: $primary;
         box-shadow: none !important;
       }
     }
-
   }
 }
