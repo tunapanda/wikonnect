@@ -9,6 +9,7 @@ login:
 
 index:
   my_content: Rekodi Zangu
+  all_content: Rekodi Zote
   dashboard: Dashboardi
   drafts: Sura ambazo hazijachapishwa ({num})
   published: Sura zilizochapishwa ({num})

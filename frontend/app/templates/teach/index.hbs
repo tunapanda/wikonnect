@@ -1,10 +1,12 @@
 <p>
   <strong>
-    {{t 'teach.index.dashboard'}}
+    {{t 'teach.index.all_content'}}
   </strong>
 </p>
-{{#each this.model as |chapter|}}
-  <p>
-    {{chapter.name}}
-  </p>
-{{/each}}
+<ModelsTable 
+  @data={{this.model}} 
+  @columns={{this.columns}} 
+  @showGlobalFilter={{false}}
+  @useFilteringByColumns={{false}} 
+  @showColumnsDropdown={{false}}
+  @useNumericPagination={{true}}/>

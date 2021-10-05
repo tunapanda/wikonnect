@@ -9,6 +9,7 @@ login:
 
 index:
   my_content: My Content
+  all_content: All Content
   dashboard: Dashboard
   drafts: Drafts ({num})
   published: Published ({num})
