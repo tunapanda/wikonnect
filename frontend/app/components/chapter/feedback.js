@@ -14,7 +14,7 @@ export default class ChapterFeedbackComponent extends Component {
 
     // load messages when component is created
     this.feedback = this.store.query('chapterFeedback', {
-      chapterId: this.args.chapter.id,
+      chapterId: this.args.record.id,
     });
   }
 
@@ -23,6 +23,6 @@ export default class ChapterFeedbackComponent extends Component {
     // load messages after component is created
     this.feedback = this.store
       .peekAll('chapterFeedback')
-      .filter((feedback) => feedback.chapterId === this.args.chapter.id);
+      .filter((feedback) => feedback.chapterId === this.args.record.id);
   }
 }
