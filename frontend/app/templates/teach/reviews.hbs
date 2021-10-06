@@ -1,0 +1,10 @@
+
+{{#if (gt this.model.length 0)}}
+  <ModelsTable
+    @data={{this.model}}
+    @columns={{this.columns}}
+    @showGlobalFilter={{false}}
+    @useFilteringByColumns={{false}} 
+    @showColumnsDropdown={{false}}
+    @useNumericPagination={{true}}/>
+{{/if}}

@@ -84,10 +84,10 @@ router.get('/:id', requireAuth, async ctx => {
       await Rating.query()
         .findById(ctx.params.id);
 
-    if (rating.userId !== stateUserId || stateUserId === 'anonymous') {
-      log.info('Error logging  %s for %s', ctx.request.ip, ctx.path);
-      ctx.throw(403, 'You do not have permissions to view that user');
-    }
+    // if (rating.userId !== stateUserId || stateUserId === 'anonymous') {
+    //   log.info('Error logging  %s for %s', ctx.request.ip, ctx.path);
+    //   ctx.throw(403, 'You do not have permissions to view that user');
+    // }
 
     ctx.status = 200;
     ctx.body = { rating };

@@ -1,0 +1,30 @@
+<button type="button" {{on 'click' this.toggleModal}}>
+  View {{@record.user.name}}'s remarks
+</button>
+<BsModal
+  @open={{this.isShowingModal}}
+  @position="center"
+  @closeButton={{true}} as |modal|>
+  <modal.header>
+    <Teach::Reviews::UserAvatar @record={{@record}} />
+    <Teach::Reviews::Rating @record={{@record}} />
+  </modal.header>
+  <modal.body>
+    <p>Feedback</p>
+    <div class="d-flex justify-content-between">
+      {{#each this.remarks as |remark|}}
+        <div class="d-flex flex-column">
+          {{titleize remark.criteria}}
+          {{#if remark.icon}}
+            {{svg-jar remark.icon}}
+          {{/if}}
+          {{#if (not (is-empty remark.details))}}
+            <div>
+              {{remark.details}}
+            </div>
+          {{/if}}
+        </div>
+      {{/each}}
+    </div>
+  </modal.body>
+</BsModal>

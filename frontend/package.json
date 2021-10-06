@@ -52,6 +52,7 @@
     "ember-cli-inject-live-reload": "^2.0.2",
     "ember-cli-meta-tags": "^6.1.2",
     "ember-cli-sass": "^10.0.1",
+    "ember-cli-string-helpers": "^6.1.0",
     "ember-cli-stylelint": "^4.0.0",
     "ember-cli-terser": "^4.0.1",
     "ember-config-service": "^1.0.0",
