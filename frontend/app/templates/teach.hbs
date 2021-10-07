@@ -25,32 +25,48 @@
       </div>
       <div class="d-flex statistics">
         <div local-class="stat">
+          <p>{{t 'teach.index.total_views'}}</p>
+          <div class="d-flex justify-content-around align-items-center">
+            <span local-class="number">143</span>
+            {{svg-jar 'views-eye'}}
+          </div>
+        </div>
+        <div local-class="stat">
           <p>{{t 'teach.index.liked_chapters'}}</p>
+          <div class="d-flex justify-content-around align-items-center">
+            <span local-class="number">15</span>
+            {{svg-jar 'gestures'}}
+          </div>
         </div>
         <div local-class="stat">
           <p>{{t 'teach.index.reviewed_chapters'}}</p>
-        </div>
-        <div local-class="stat">
-          <p>{{t 'teach.index.total_views'}}</p>
+          <div class="d-flex justify-content-around align-items-center">
+            <span local-class="number">11</span>
+            {{svg-jar 'gestures'}}
+          </div>
         </div>
         <div local-class="stat">
           <p>{{t 'teach.index.total_comments'}}</p>
+          <div class="d-flex justify-content-around align-items-center">
+            <span local-class="number">9</span>
+            {{svg-jar 'comments'}}
+          </div>
         </div>
       </div>
     </div>
     
     <div local-class="dashboard-tabs" class="row ml-1">
-      <LinkTo @route="teach.index">
+      <LinkTo @route="teach.index" local-class= "nav-item">
         {{t 'teach.index.dashboard'}}
       </LinkTo>
-      <LinkTo @route="teach.chapters" @model="draft">
+      <LinkTo @route="teach.chapters" @model="draft" local-class= "nav-item">
         {{t 'teach.index.drafts' num=this.numOfDrafts}}
       </LinkTo>
-      <LinkTo @route="teach.chapters" @model="published">
+      <LinkTo @route="teach.chapters" @model="published" local-class= "nav-item">
         {{t 'teach.index.published' num=this.numOfPublished}}
       </LinkTo>
     </div>
-    <hr class="bg-green" />
+    <hr class="m-0 bg-green" />
     {{outlet}}
   </div>
 {{else}}
