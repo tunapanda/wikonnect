@@ -44,16 +44,28 @@
 .stat {
   @include teach-index-box;
   width: 185px;
+
+  .number {
+    font-weight: bold;
+    font-size: 35px;
+    color: $teach-primary;
+  }
 }
 
 .dashboard-tabs {
-  a {
+  .nav-item {
     margin-right: 50px;
     color: #9da3a2;
-    
-    &.active {
+
+    &:global(.active) {
       color: $black;
-      border-bottom: 2px solid $black;
+      font-weight: bold;
+      padding: 0 15px 5px 15px;
+      border-bottom: 3px solid $teach-primary;
+    }
+
+    &:hover {
+      text-decoration: none;
     }
   }
 }
