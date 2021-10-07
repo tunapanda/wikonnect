@@ -1,25 +1,29 @@
-<button type="button" {{on 'click' this.toggleModal}}>
+<button type="button" local-class="show-modal-button" {{on 'click' this.toggleModal}}>
   View {{@record.user.name}}'s remarks
 </button>
 <BsModal
   @open={{this.isShowingModal}}
   @position="center"
+  @size="lg"
   @closeButton={{true}} as |modal|>
   <modal.header>
     <Teach::Reviews::UserAvatar @record={{@record}} />
     <Teach::Reviews::Rating @record={{@record}} />
   </modal.header>
   <modal.body>
-    <p>Feedback</p>
+    <h4>Feedback</h4>
     <div class="d-flex justify-content-between">
       {{#each this.remarks as |remark|}}
-        <div class="d-flex flex-column">
-          {{titleize remark.criteria}}
-          {{#if remark.icon}}
-            {{svg-jar remark.icon}}
-          {{/if}}
+        <div local-class="comment" class="d-flex flex-column">
+          <strong>{{titleize remark.criteria}}</strong>
+          <div local-class="icon">
+            {{#if remark.icon}}
+              {{svg-jar remark.icon}}
+            {{/if}}
+          </div>
           {{#if (not (is-empty remark.details))}}
-            <div>
+            <small class="mb-2"><u>Remark Details</u></small>
+            <div local-class="details">
               {{remark.details}}
             </div>
           {{/if}}
