@@ -56,6 +56,14 @@ class Chapter extends Model {
           to: 'ratings.chapterId'
         }
       },
+      reviews: {
+        relation: Model.HasManyRelation,
+        modelClass: __dirname + '/review',
+        join: {
+          from: 'chapters.id',
+          to: 'reviews.chapterId'
+        }
+      },
       reaction: {
         relation: Model.HasManyRelation,
         modelClass: __dirname + '/reaction',
@@ -82,6 +90,14 @@ class Chapter extends Model {
             from: 'chapter_tags.chapter_id'
           },
           to: 'tags.id'
+        }
+      },
+      views: {
+        relation: Model.HasManyRelation,
+        modelClass: __dirname + '/counter',
+        join: {
+          from: 'chapters.id',
+          to: 'counter.chapter_id'
         }
       },
     };

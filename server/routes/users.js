@@ -9,6 +9,10 @@ const koaBody = require('koa-body')({ multipart: true, multiples: false, keepExt
 
 const User = require('../models/user');
 const Oauth2 = require('../models/oauth2');
+const ChapterModel = require('../models/chapter');
+const ReviewModel = require('../models/review');
+const ReactionModel = require('../models/reaction');
+const CommentModel = require('../models/comment');
 
 const jwt = require('../middleware/jwt');
 const permController = require('../middleware/permController');
@@ -281,6 +285,7 @@ router.get('/:id', permController.requireAuth, async ctx => {
   ctx.status = 200;
   ctx.body = { user };
 });
+
 /**
  * @api {get} /users GET all users.
  * @apiName GetUsers
@@ -674,6 +679,109 @@ router.get('/:id/verify', permController.requireAuth, async ctx => {
     throw new Error('Email verification has expired');
   }
 
+});
+
+/**
+ * @api {get} /api/v1/users/:id GET a single user using id.
+ * @apiName GetAUser
+ * @apiGroup Authentication
+ *
+ * @apiVersion 0.4.0
+ * @apiDescription list a single user on the platform
+ * @apiPermission [admin, superadmin]
+ * @apiHeader {String} authorization Users unique JWT
+ *
+ * @apiParam {string} id The users id
+ *
+ * @apiSampleRequest https://localhost:3000/api/v1/users
+ *
+ * @apiSuccess {String} id Unique user id
+ *
+ * @apiSuccessExample {json} Success-Response:
+ *     HTTP/1.1 201 OK
+ *     {
+ *       "user": {
+ *       "id": "user2",
+ *       "username": "user2",
+ *       "createdAt": "2017-12-20T16:17:10.000Z",
+ *       "updatedAt": "2017-12-20T16:17:10.000Z",
+ *       "profileUri": "image_url",
+ *       "flag": false,
+ *       "private": boolean,
+ *       "inviteCode": "invited_by",
+ *       "achievementAwards": [
+ *         {
+ *           "id": "achievementaward1",
+ *           "name": "completed 10 courses",
+ *           "type": "achievementAwards"
+ *         },
+ *         {
+ *           "id": "achievementaward2",
+ *           "name": "fully filled profile",
+ *           "type": "achievementAwards"
+ *         }
+ *       ],
+ *       "userRoles": [
+ *         {
+ *           "id": "4hsuh4"
+ *           "type": "userRole"
+ *         }
+ *       ],
+ *       "enrolledCourses": [
+ *          {
+ *            "id": "course1",
+ *            "name": "A Course 1",
+ *            "type": "course"
+ *          }
+ *       ],
+ *       "userVerification": []
+ *    }
+ * }
+ *
+ * @apiErrorExample
+ *    HTTP/1.1 401 Unauthorized
+ *    {
+ *      "status": 401,
+ *      "message": "You do not have permissions to view that user"
+ *    }
+ *
+ * @apiErrorExample
+ *    HTTP/1.1 404 Not Found
+ *    {
+ *      "status": 404,
+ *      "message": "No User With that Id"
+ *    }
+ */
+
+router.get('/:id/statistics', async ctx => {
+  // TODO: Optimize queries
+  const chapters = await ChapterModel.query()
+    .select(['id'])
+    .where('status', 'published')
+    .where('creator_id', ctx.params.id);
+
+  // TODO: Get number of chapter views
+  const totalChapterReviews = await ReviewModel.query()
+    .count()
+    .whereIn('chapter_id', chapters.map((chapter) => chapter.id));
+
+  const totalChapterComments = await CommentModel.query()
+    .count()
+    .whereIn('chapter_id', chapters.map((chapter) => chapter.id));
+
+  const totalChapterLikes = await ReactionModel.query()
+    .count()
+    .where('reaction', 'like')
+    .whereIn('chapter_id', chapters.map((chapter) => chapter.id));
+                        
+  const statistics = {
+    totalReviewsCount: totalChapterReviews[0].count,
+    totalChapterCommentsCount: totalChapterComments[0].count,
+    totalChapterLikesCount: totalChapterLikes[0].count
+  }
+
+  ctx.status = 200;
+  ctx.body = { statistics };
 });
 
 module.exports = router.routes();

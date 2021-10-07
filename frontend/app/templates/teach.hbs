@@ -34,21 +34,21 @@
         <div local-class="stat">
           <p>{{t 'teach.index.liked_chapters'}}</p>
           <div class="d-flex justify-content-around align-items-center">
-            <span local-class="number">15</span>
+            <span local-class="number">{{this.statistics.totalChapterLikesCount}}</span>
             {{svg-jar 'gestures'}}
           </div>
         </div>
         <div local-class="stat">
           <p>{{t 'teach.index.reviewed_chapters'}}</p>
           <div class="d-flex justify-content-around align-items-center">
-            <span local-class="number">11</span>
+            <span local-class="number">{{this.statistics.totalReviewsCount}}</span>
             {{svg-jar 'gestures'}}
           </div>
         </div>
         <div local-class="stat">
           <p>{{t 'teach.index.total_comments'}}</p>
           <div class="d-flex justify-content-around align-items-center">
-            <span local-class="number">9</span>
+            <span local-class="number">{{this.statistics.totalChapterCommentsCount}}</span>
             {{svg-jar 'comments'}}
           </div>
         </div>

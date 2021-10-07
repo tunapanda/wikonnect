@@ -40,4 +40,22 @@ export default class TeachRoute extends Route {
       false
     );
   }
+
+  async setupController(controller, model) {
+    super.setupController(controller, model);
+    const statistics = await this.getStatistics();
+    console.log(statistics.statistics);
+    this.controllerFor('teach').set('statistics', statistics.statistics);
+  }
+
+  async getStatistics() {
+    let results;
+    const response = await fetch(`/api/v1/users/${this.me.user.id}/statistics`);
+
+    if (response.ok) {
+      results = await response.json();
+    }
+    
+    return results;
+  }
 }
