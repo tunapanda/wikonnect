@@ -123,6 +123,10 @@ jobs:
   IntegrationTest:
     name: Integration Test
     runs-on: ubuntu-18.04
+    strategy:
+      fail-fast: false
+      matrix:
+        containers: [1, 2, 3, 4, 5]
     services:
       # Label used to access the service container
       postgres:
@@ -140,7 +144,7 @@ jobs:
         ports:
           # Maps tcp port 5432 on service container to the host
           - 5432:5432
-    needs: FrontendTest
+    needs: [FrontendTest, BackendTest]
     steps:
       - uses: actions/checkout@v2
 
@@ -189,10 +193,13 @@ jobs:
         uses: cypress-io/github-action@v2
         env:
           NODE_ENV: action
+          CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
         with:
           start: yarn --cwd ./server start, yarn --cwd ./frontend start
           wait-on: "http://localhost:4200"
           wait-on-timeout: 120
+          parallel: true
+          record: true
 
       - uses: actions/upload-artifact@v1
         if: failure()
