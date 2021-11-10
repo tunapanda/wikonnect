@@ -127,6 +127,10 @@ jobs:
   IntegrationTest:
     name: Integration Test
     runs-on: ubuntu-18.04
+    strategy:
+      fail-fast: false
+      matrix:
+        containers: [1, 2, 3, 4, 5]
     services:
       # Label used to access the service container
       postgres:
@@ -145,7 +149,7 @@ jobs:
           # Maps tcp port 5432 on service container to the host
           - 5432:5432
 
-    needs: FrontendTest
+    needs: [FrontendTest, BackendTest]
     steps:
       - uses: actions/checkout@v2
 
