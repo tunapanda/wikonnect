@@ -246,6 +246,7 @@ jobs:
           wait-on: "http://localhost:4200"
           wait-on-timeout: 120
           parallel: true
+          record: true
 
       - uses: actions/upload-artifact@v1
         if: failure()
