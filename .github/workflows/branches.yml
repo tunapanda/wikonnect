@@ -1,10 +1,6 @@
-name: Testing Branches
+name: Testing Branch
 
 on: 
-  push:
-    branches-ignore:
-      - 'master'
-      - 'staging'
   pull_request:
     branches:
       - 'master'    
