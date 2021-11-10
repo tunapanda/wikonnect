@@ -197,6 +197,7 @@ jobs:
           start: yarn --cwd ./server start, yarn --cwd ./frontend start
           wait-on: "http://localhost:4200"
           wait-on-timeout: 120
+          parallel: true
 
       - uses: actions/upload-artifact@v1
         if: failure()
