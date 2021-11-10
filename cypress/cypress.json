@@ -1,3 +1,24 @@
 {
-  "projectId": "qa3kbf"
+  "projectId": "qa3kbf",
+  "baseUrl": "http://localhost:4200/",
+  "testFiles": "**/**.spec**",
+  "watchForFileChanges": true,
+  "waitForAnimations": true,
+  "numTestsKeptInMemory": 50,
+  "defaultCommandTimeout": 8000,
+  "requestTimeout": 8000,
+  "failOnStatusCode": false,
+  "video": false,
+  "screenshot": false,
+  "chromeWebSecurity": false,
+  "viewportHeight": 900,
+  "viewportWidth": 1440,
+  "reporter": "cypress-multi-reporters",
+  "reporterOptions": {
+    "configFile": "reporters/reporter-config.json"
+  },
+  "retries": {
+    "runMode": 3,
+    "openMode": 0
+  }
 }
