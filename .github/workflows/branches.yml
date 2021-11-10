@@ -193,6 +193,7 @@ jobs:
         uses: cypress-io/github-action@v2
         env:
           NODE_ENV: action
+          CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
         with:
           start: yarn --cwd ./server start, yarn --cwd ./frontend start
           wait-on: "http://localhost:4200"
