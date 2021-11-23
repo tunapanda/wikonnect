@@ -1,4 +1,4 @@
-FROM node:fermium-alpine3.12
+FROM node:fermium-alpine3.14
 
 ARG NODE_ENV='production'
 ARG SERVER_PORT=3000
