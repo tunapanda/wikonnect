@@ -43,7 +43,7 @@ class Group extends Model {
   static get modifiers() {
     return {
       selectNameAndId: (builder) => {
-        builder.select('id', 'name');
+        builder.select('groups.id', 'groups.name');
       },
       selectId: (builder) => {
         builder.select('id');
