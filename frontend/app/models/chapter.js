@@ -24,7 +24,7 @@ export default class ChapterModel extends Model {
   @attr author;
   @attr reviewQuestions;
   @attr rank; // used by course
-  @attr('number') ratings;
+  @attr ratings;
 
   @belongsTo('user') creator;
   @hasMany('tag') tags;
