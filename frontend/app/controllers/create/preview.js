@@ -22,7 +22,7 @@ export default class TeachPreviewController extends Controller {
 
       this.publishModal = false;
       this.notify.info('Chapter successfully published');
-      this.transitionToRoute('teach.published');
+      this.transitionToRoute('teach');
     } catch (e) {
       this.notify.alert('Chapter not published. Unexpected error encountered');
     }

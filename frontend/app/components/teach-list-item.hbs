@@ -1,6 +1,6 @@
 <div class="col-lg-4 col-md-6 mb-4">
   <div class="card h-100 rounded-lg">
-    <LinkTo @route="teach.preview" @model={{@chapter.id}}>
+    <LinkTo @route="create.preview" @model={{@chapter.id}}>
 
       {{#if (eq @chapter.imageUrl null)}}
         <img class="card-img-top" src="https://placehold.jp/20/{{this.color}}/ffffff/328x200.png?text={{@chapter.name}}"
@@ -13,7 +13,7 @@
     <div class="card-body">
       <h5 class="text-dark">
 
-        <LinkTo @route="teach.preview" class="text-dark" @model={{@chapter.id }}>
+        <LinkTo @route="create.preview" class="text-dark" @model={{@chapter.id }}>
           {{title-case  @chapter.name}}
         </LinkTo>
       </h5>
@@ -24,7 +24,7 @@
       <div class="d-flex text-muted ">
         <span class="text-center ">
           <div>
-            <LinkTo @route="teach.preview" @model={{@chapter.id}}>
+            <LinkTo @route="create.preview" @model={{@chapter.id}}>
               {{svg-jar "pencil" width="20" height="20"}}
               <br>
               <small>{{t "buttons.edit"}}</small>

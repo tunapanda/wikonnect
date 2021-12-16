@@ -108,7 +108,7 @@ export default class TeachTagController extends Controller {
       await chapter.save();
       //reset the local tags holder
       this.selectedTags = A([]);
-      this.transitionToRoute('teach.review-questions', this.model.id);
+      this.transitionToRoute('create.review-questions', this.model.id);
     } catch (e) {
       this.notify.error(this.intl.t('teach.tag.error_updating_chapter_tags'));
     }

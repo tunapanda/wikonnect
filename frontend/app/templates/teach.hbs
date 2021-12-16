@@ -4,7 +4,7 @@
       <h1>
         {{t 'teach.index.my_content'}}
       </h1>
-      <LinkTo @route="teach.create" role="button">
+      <LinkTo @route="create" role="button">
         {{svg-jar 'add_circle_white_24dp'}}
         {{t 'teach.index.create_h5p'}}
       </LinkTo>
@@ -14,7 +14,7 @@
     <div class="d-flex mb-5">
       <div local-class="cta">
         <p>{{t 'teach.index.cta' user=this.me.name}}</p>
-        <LinkTo @route="teach.create">
+        <LinkTo @route="create">
           {{svg-jar 'add_circle_white_24dp'}}
           {{t 'teach.index.create_h5p'}}
         </LinkTo>

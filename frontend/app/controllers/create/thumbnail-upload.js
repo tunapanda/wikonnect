@@ -34,7 +34,7 @@ export default class TeachH5pUploadController extends Controller {
   @action
   async saveThumbnail() {
     if (!this.thumbnail && this.model.imageUrl) {
-      this.transitionToRoute('teach.tag', this.model.id);
+      this.transitionToRoute('create.tag', this.model.id);
       return;
     }
     if (!this.thumbnail || !this.thumbnail?.name) {
@@ -56,7 +56,7 @@ export default class TeachH5pUploadController extends Controller {
       );
       //reset the thumbnail local property
       this.thumbnail = null;
-      this.transitionToRoute('teach.tag', id);
+      this.transitionToRoute('create.tag', id);
     } catch (e) {
       this.notify.alert('Unexpected err encountered during thumbnail upload');
     }

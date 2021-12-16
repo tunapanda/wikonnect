@@ -25,10 +25,11 @@ export default class TeachH5pEditorController extends Controller {
       this.model.contentId = res.id;
       await this.model.save();
       if (previewImmediately) {
-        return this.transitionToRoute('teach.preview', this.model.id);
+        this.transitionToRoute('create.preview', this.model.id);
       }
-      this.transitionToRoute('teach.thumbnail-upload', this.model.id);
+      this.transitionToRoute('create.thumbnail-upload', this.model.id);
     } catch (e) {
+      console.log(e);
       if (e.message && e.message.startsWith('validation-error')) {
         this.notify.alert(
           e.message.replace('validation-error', '').replace(':', '')
