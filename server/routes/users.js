@@ -13,6 +13,7 @@ const ChapterModel = require('../models/chapter');
 const ReviewModel = require('../models/review');
 const ReactionModel = require('../models/reaction');
 const CommentModel = require('../models/comment');
+const CounterModel = require('../models/counter');
 
 const jwt = require('../middleware/jwt');
 const permController = require('../middleware/permController');
@@ -761,6 +762,11 @@ router.get('/:id/statistics', async ctx => {
     .where('creator_id', ctx.params.id);
 
   // TODO: Get number of chapter views
+  const totalChapterViews = await CounterModel.query()
+    .count()
+    .where('trigger', 'timerDelay')
+    .whereIn('chapter_id', chapters.map((chapter) => chapter.id));
+
   const totalChapterReviews = await ReviewModel.query()
     .count()
     .whereIn('chapter_id', chapters.map((chapter) => chapter.id));
@@ -775,6 +781,7 @@ router.get('/:id/statistics', async ctx => {
     .whereIn('chapter_id', chapters.map((chapter) => chapter.id));
                         
   const statistics = {
+    totalChapterViews: totalChapterViews[0].count,
     totalReviewsCount: totalChapterReviews[0].count,
     totalChapterCommentsCount: totalChapterComments[0].count,
     totalChapterLikesCount: totalChapterLikes[0].count
