@@ -72,7 +72,7 @@ services:
     restart: "always"
     env_file: .env
     ports:
-      - "${FRONTED_PORT}:${FRONTED_PORT}"
+      - "${FRONTEND_PORT}:${FRONTEND_PORT}"
     volumes:
       - frontenddeps:/usr/src/app/node_modules
       - ./frontend:/usr/src/app/

@@ -145,7 +145,7 @@ jobs:
           # Maps tcp port 5432 on service container to the host
           - 5432:5432
 
-    needs: FrontendTest
+    needs: [FrontendTest, BackendTest]
     steps:
       - uses: actions/checkout@v2
 
@@ -218,7 +218,7 @@ jobs:
         s3-bucket: ['wikonnect-codedeploy-deployments']
         s3-filename: ['master-wikonnect-codedeploy-${{ github.sha }}']
 
-    needs: ['IntegrationTest', 'BackendTest', 'FrontendTest']
+    needs: ['IntegrationTest']
     steps:
       - uses: actions/checkout@v2
 

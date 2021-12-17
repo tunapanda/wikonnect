@@ -1,10 +1,9 @@
-name: Testing Branches
+name: Testing Branch
 
-on:
-  push:
-    branches-ignore:
-      - 'master'
-      - 'staging'
+on: 
+  pull_request:
+    branches:
+      - 'master'    
 
 jobs:
   FrontendTest:
@@ -123,6 +122,7 @@ jobs:
   IntegrationTest:
     name: Integration Test
     runs-on: ubuntu-18.04
+    
     services:
       # Label used to access the service container
       postgres:
@@ -140,7 +140,7 @@ jobs:
         ports:
           # Maps tcp port 5432 on service container to the host
           - 5432:5432
-    needs: FrontendTest
+    needs: [FrontendTest, BackendTest]
     steps:
       - uses: actions/checkout@v2
 

@@ -1,4 +1,4 @@
-FROM node:fermium-alpine3.12
+FROM node:fermium-alpine3.14
 
 ARG NODE_ENV='production'
 ARG SERVER_PORT=3000
@@ -20,8 +20,8 @@ RUN yarn --frozen-lockfile
 
 COPY . .
 
-HEALTHCHECK --interval=3s --timeout=13s\
-    CMD "if [ $(exec 3<>/dev/tcp/localhost/$SERVER_PORT && echo -e 'PING\r\n' >&3 && head -c 5 <&3) = '+PONG' ]; then exit 1; else exit 0; fi "
+HEALTHCHECK --interval=10s --timeout=13s --start-period=30s\
+    CMD node scripts/healthcheck.js
 
 
 CMD if [ "$NODE_ENV" = "production" ]; then yarn db:init && yarn start;\
