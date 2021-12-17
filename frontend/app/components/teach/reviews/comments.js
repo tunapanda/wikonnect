@@ -13,7 +13,7 @@ export default class TeachReviewsCommentsComponent extends Component {
   }
 
   get remarks() {
-    const obj =[];
+    const obj = [];
     const record = this.args.record;
 
     const icon = {
@@ -22,17 +22,17 @@ export default class TeachReviewsCommentsComponent extends Component {
       2: 'bad-face-emoji',
       3: 'okay-face-emoji',
       4: 'good-face-emoji',
-      5: 'greate-face-emoji'
-    }
+      5: 'greate-face-emoji',
+    };
 
     Object.keys(record.metadata).forEach((key) => {
       obj.push({
         criteria: decamelize(key).replace('_', ' '),
         rating: record.rating.get('metadata')[key],
         icon: icon[record.rating.get('metadata')[key]],
-        details: record.metadata[key]
+        details: record.metadata[key],
       });
-    })
+    });
 
     return obj;
   }

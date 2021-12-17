@@ -7,7 +7,7 @@ export default class TeachIndexRoute extends Route {
 
   async model() {
     return this.store.query('chapter', {
-      creatorId: this.me.user.id
+      creatorId: this.me.user.id,
     });
   }
 }

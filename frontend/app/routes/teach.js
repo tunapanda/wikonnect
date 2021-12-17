@@ -44,7 +44,7 @@ export default class TeachRoute extends Route {
   async setupController(controller, model) {
     super.setupController(controller, model);
     const statistics = await this.getStatistics();
-    console.log(statistics.statistics);
+    // eslint-disable-next-line ember/no-controller-access-in-routes
     this.controllerFor('teach').set('statistics', statistics.statistics);
   }
 
@@ -55,7 +55,7 @@ export default class TeachRoute extends Route {
     if (response.ok) {
       results = await response.json();
     }
-    
+
     return results;
   }
 }

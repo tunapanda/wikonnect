@@ -22,6 +22,12 @@ index:
   reviewed_chapters: Total Reviews
   total_views: Total Views
   total_comments: Total Comments 
+  no_ratings: No ratings
+  view_reviews: View reviews
+  reviews:
+    view_remarks: View {name}'s remarks
+    feedback: Feedback
+    details: Remark details
 
 toc:
   name_desc: Name & Description

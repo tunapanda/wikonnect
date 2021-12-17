@@ -1,5 +1,5 @@
 <button type="button" local-class="show-modal-button" {{on 'click' this.toggleModal}}>
-  View {{@record.user.name}}'s remarks
+  {{t "teach.index.reviews.view_remarks" name=@record.user.name}}
 </button>
 <BsModal
   @open={{this.isShowingModal}}
@@ -11,7 +11,7 @@
     <Teach::Reviews::Rating @record={{@record}} />
   </modal.header>
   <modal.body>
-    <h4>Feedback</h4>
+    <h4>{{t "teach.index.reviews.feedback"}}</h4>
     <div class="d-flex justify-content-between">
       {{#each this.remarks as |remark|}}
         <div local-class="comment" class="d-flex flex-column">
@@ -22,7 +22,7 @@
             {{/if}}
           </div>
           {{#if (not (is-empty remark.details))}}
-            <small class="mb-2"><u>Remark Details</u></small>
+            <small class="mb-2"><u>{{t "teach.index.reviews.details"}}</u></small>
             <div local-class="details">
               {{remark.details}}
             </div>

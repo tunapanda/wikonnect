@@ -34,8 +34,9 @@ export default class MainHeaderComponent extends Component {
   }
 
   get backgroundColor() {
-    if ( this.router.currentRouteName.startsWith('teach') || 
-          this.router.currentRouteName.startsWith('create')
+    if (
+      this.router.currentRouteName.startsWith('teach') ||
+      this.router.currentRouteName.startsWith('create')
     ) {
       return 'green';
     }
