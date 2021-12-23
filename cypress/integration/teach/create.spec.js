@@ -1,7 +1,7 @@
 describe('User can create chapter', () => {
   beforeEach(() => {
     cy.login();
-    cy.visit('/teach')
+    cy.visit('/create')
   });
   
   it('should display chapter details in preview after submitting details', () => {
