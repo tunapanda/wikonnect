@@ -5,7 +5,7 @@ login:
   login_below: Ingia hapa chini
   login_subtitle: Anza kuunda masomo kwa dakika chache tu
   sign_up: Ikiwa huna akaunti ya wikonnect, '<'a href="/signup"'>'jiandikishe hapa'</a>'
-  pic_alt: laptop with h5p
+  pic_alt: laptop yenye h5p
 
 index:
   my_content: Rekodi Zangu
@@ -18,12 +18,16 @@ index:
   create_h5p: Unda H5P
   no_permission: Huna ruhusa ya kutazama ukurasa huu
   cta: Karibu {user}! Je! Ungependa kufanya nini leo?
-  liked_chapters: Total Likes
-  reviewed_chapters: Total Reviews
-  total_views: Total Views
-  total_comments: Total Comments 
-  no_ratings: No ratings
-
+  liked_chapters: Jumla ya Sura Zilizopenda
+  reviewed_chapters: Jumla ya Mapitio ya Sura
+  total_views:  Jumla ya Waliotazama
+  total_comments: Jumla ya Maoni
+  no_ratings: Hakuna uhakiki
+  view_reviews: Angalia hakiki za Sura
+  reviews:
+    view_remarks: Angalia uhakiki wa {name}'s
+    feedback: Maoni
+    details: Maelezo ya maoni
 toc:
   name_desc: Jina na Maelezo
   h5p_content: Rekodi ya H5P
