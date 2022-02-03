@@ -24,7 +24,7 @@
     "pg": "^8.7.1"
   },
   "dependencies": {
-    "concurrently": "^6.3.0",
+    "concurrently": "^7.0.0",
     "eslint-plugin-ember": "^8.10.1",
     "eslint-plugin-node": "^11.1.0"
   }
