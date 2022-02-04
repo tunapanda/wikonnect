@@ -267,7 +267,7 @@ yarn install -g ember-cli
 
 ## License
 
-This project is licensed under MIT. See the [license](license) file for details
+This project is licensed under MIT. See the [license](https://github.com/tunapanda/wikonnect/blob/master/LICENCE.md) file for details
 
 ## Authors 🧙
 
