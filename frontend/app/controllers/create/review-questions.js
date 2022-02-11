@@ -80,7 +80,7 @@ export default class ReviewQuestionsController extends Controller {
       //reset the selected questions
       this.selectedCategories = A([]);
 
-      this.transitionToRoute('teach.preview', this.chapter.id);
+      this.transitionToRoute('create.preview', this.chapter.id);
     } catch (e) {
       this.notify.alert('Request not successful. Unexpected error encountered');
     }

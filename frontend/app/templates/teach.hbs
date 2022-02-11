@@ -1,3 +1,74 @@
-<div class="teach-layout">
-{{outlet}}
-</div>
+{{#if this.model}}
+  <header local-class="teach-header" class="d-flex align-items-center">
+    <div class="container d-flex justify-content-between">
+      <h1>
+        {{t 'teach.index.my_content'}}
+      </h1>
+      <LinkTo @route="create" role="button">
+        {{svg-jar 'add_circle_white_24dp'}}
+        {{t 'teach.index.create_h5p'}}
+      </LinkTo>
+    </div>
+  </header>
+  <div class="container">
+    <div class="d-flex mb-5">
+      <div local-class="cta">
+        <p>{{t 'teach.index.cta' user=this.me.name}}</p>
+        <LinkTo @route="create">
+          {{svg-jar 'add_circle_white_24dp'}}
+          {{t 'teach.index.create_h5p'}}
+        </LinkTo>
+        <LinkTo @route="course.create">
+          {{svg-jar 'add_circle_white_24dp'}}
+          {{t 'course.nav.create_course'}}
+        </LinkTo>
+      </div>
+      <div class="d-flex statistics">
+        <div local-class="stat">
+          <p>{{t 'teach.index.total_views'}}</p>
+          <div class="d-flex justify-content-around align-items-center">
+            <span local-class="number">{{this.statistics.totalChapterViews}}</span>
+            {{svg-jar 'views-eye'}}
+          </div>
+        </div>
+        <div local-class="stat">
+          <p>{{t 'teach.index.liked_chapters'}}</p>
+          <div class="d-flex justify-content-around align-items-center">
+            <span local-class="number">{{this.statistics.totalChapterLikesCount}}</span>
+            {{svg-jar 'gestures'}}
+          </div>
+        </div>
+        <div local-class="stat">
+          <p>{{t 'teach.index.reviewed_chapters'}}</p>
+          <div class="d-flex justify-content-around align-items-center">
+            <span local-class="number">{{this.statistics.totalReviewsCount}}</span>
+            {{svg-jar 'gestures'}}
+          </div>
+        </div>
+        <div local-class="stat">
+          <p>{{t 'teach.index.total_comments'}}</p>
+          <div class="d-flex justify-content-around align-items-center">
+            <span local-class="number">{{this.statistics.totalChapterCommentsCount}}</span>
+            {{svg-jar 'comments'}}
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div local-class="dashboard-tabs" class="row ml-1">
+      <LinkTo @route="teach.index" local-class= "nav-item">
+        {{t 'teach.index.dashboard'}}
+      </LinkTo>
+      <LinkTo @route="teach.chapters" @model="draft" local-class= "nav-item">
+        {{t 'teach.index.drafts' num=this.numOfDrafts}}
+      </LinkTo>
+      <LinkTo @route="teach.chapters" @model="published" local-class= "nav-item">
+        {{t 'teach.index.published' num=this.numOfPublished}}
+      </LinkTo>
+    </div>
+    <hr class="m-0 bg-green" />
+    {{outlet}}
+  </div>
+{{else}}
+  {{outlet}}
+{{/if}}

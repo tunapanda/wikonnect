@@ -5,17 +5,29 @@ login:
   login_below: Ingia hapa chini
   login_subtitle: Anza kuunda masomo kwa dakika chache tu
   sign_up: Ikiwa huna akaunti ya wikonnect, '<'a href="/signup"'>'jiandikishe hapa'</a>'
-  pic_alt: laptop with h5p
+  pic_alt: laptop yenye h5p
 
 index:
   my_content: Rekodi Zangu
-  drafts: Sura ambazo Hazijachapishwa
-  published: Sura Zilizochapishwa
+  all_content: Rekodi Zote
+  dashboard: Dashboardi
+  drafts: Sura ambazo hazijachapishwa ({num})
+  published: Sura zilizochapishwa ({num})
   no_drafts: Hakuna sura zilizoundwa bado
   no_published: Hakuna kilichochapishwa bado
-  get_started: Anza Hapa
+  create_h5p: Unda H5P
   no_permission: Huna ruhusa ya kutazama ukurasa huu
-
+  cta: Karibu {user}! Je! Ungependa kufanya nini leo?
+  liked_chapters: Jumla ya Sura Zilizopenda
+  reviewed_chapters: Jumla ya Mapitio ya Sura
+  total_views:  Jumla ya Waliotazama
+  total_comments: Jumla ya Maoni
+  no_ratings: Hakuna uhakiki
+  view_reviews: Angalia hakiki za Sura
+  reviews:
+    view_remarks: Angalia uhakiki wa {name}'s
+    feedback: Maoni
+    details: Maelezo ya maoni
 toc:
   name_desc: Jina na Maelezo
   h5p_content: Rekodi ya H5P

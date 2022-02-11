@@ -1,7 +1,7 @@
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
 
-export default class TeachCreateRoute extends Route {
+export default class CreateIndexRoute extends Route {
   @service me;
 
   model() {

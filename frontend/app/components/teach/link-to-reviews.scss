@@ -1,0 +1,12 @@
+.link {
+  color: $white;
+  background-color: $teach-primary;
+  border-radius: 3px;
+  width: 150px;
+  margin: 0 auto;
+  padding: 3px 10px;
+
+  &:hover {
+    color: $white;
+  }
+}

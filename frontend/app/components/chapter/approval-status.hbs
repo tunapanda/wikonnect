@@ -1,0 +1,10 @@
+{{#if @record.revisionRequested}}
+  {{svg-jar 'circle_black_24dp' local-class='revision-icon'}}
+  {{t 'admin.content_approval.labels.revision_requested'}}
+{{else if @record.approved}}
+  {{svg-jar 'circle_black_24dp' local-class='approved-icon'}}
+  {{t 'admin.content_approval.labels.approved'}}
+{{else}}
+  {{svg-jar 'circle_black_24dp' local-class='pending-icon'}}
+  {{t 'admin.content_approval.labels.pending'}}
+{{/if}}

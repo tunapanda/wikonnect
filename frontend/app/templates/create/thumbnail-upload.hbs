@@ -71,12 +71,12 @@
 
   <div class="col-md-6 col-11 pb-5 d-flex justify-content-between ml-2 mr-3 m-lg-0 action-buttons">
     {{#if (or this.model.contentId (not this.model.contentUri))}}
-      <LinkTo @route="teach.h5p-editor" @model={{this.model.id}}
+      <LinkTo @route="create.h5p-editor" @model={{this.model.id}}
               class="btn btn-outline-primary btn-block mr-2 previous">
         {{t "teach.buttons.previous"}}
       </LinkTo>
     {{else}}
-      <LinkTo @route="teach.h5p-upload" @model={{this.model.id}}
+      <LinkTo @route="create.h5p-upload" @model={{this.model.id}}
               class="btn btn-outline-primary btn-block mr-2 previous">
         {{t "teach.buttons.previous"}}
       </LinkTo>
