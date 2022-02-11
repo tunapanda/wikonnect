@@ -1,17 +1,16 @@
 @import 'common/variables';
-@import 'common/forms';
 @import 'common/colors';
-//@import "bs4";
-//@import 'header';
+@import 'common/forms';
+@import 'common/typography';
+@import 'common/utils';
+
 @import 'landing';
 @import 'home';
 @import 'nav';
 @import 'search';
 @import 'warning-component';
-@import 'common/typography';
 @import 'profile';
 @import 'cms-desktop';
-@import 'common/utils';
 @import 'toc-component';
 
 @import 'ember-modal-dialog/ember-modal-structure';

@@ -1,6 +1,5 @@
 <nav class="main-header navbar navbar-expand-lg navbar-light text-{{this.config.content.APP.header_text}}
-         secondary-color bg-{{if @isTeach this.config.content.APP.teach_header_background
-                                 this.config.content.APP.header_background}}">
+         secondary-color bg-{{this.backgroundColor}}">
   <LinkTo @route="index" class="pr-4">
 
     {{svg-jar "wikonnect-logo-white" height="40"}}

@@ -162,16 +162,7 @@
             </p>
           </td>
           <td>
-            {{#if chapter.revisionRequested}}
-              {{svg-jar 'circle_black_24dp' class='revision-icon'}}
-              {{t 'admin.content_approval.labels.revision_requested'}}
-            {{else if chapter.approved}}
-              {{svg-jar 'circle_black_24dp' class='approved-icon'}}
-              {{t 'admin.content_approval.labels.approved'}}
-            {{else}}
-              {{svg-jar 'circle_black_24dp' class='pending-icon'}}
-              {{t 'admin.content_approval.labels.pending'}}
-            {{/if}}
+            <Chapter::ApprovalStatus @record={{chapter}} />
           </td>
           <td>
             <LinkTo @route="profile" @model={{chapter.author}}>
@@ -222,7 +213,7 @@
                 </BsForm>
               </BsPopover>
             </button>
-            <ChapterFeedback @chapter={{chapter}} />
+            <Chapter::Feedback @record={{chapter}} />
           </td>
         </tr>
       {{/each}}

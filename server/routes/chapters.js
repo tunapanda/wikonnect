@@ -369,7 +369,7 @@ router.get('/:id', permController.requireAuth, async (ctx) => {
  * @apiErrorExample {json} List error
  *    HTTP/1.1 500 Internal Server Error
  */
-router.post('/', permController.requireAuth, async (ctx) => {
+router.post("/", permController.requireAuth, async (ctx) => {
   let stateUserId =
     ctx.state.user.id == undefined ? ctx.state.user.data.id : ctx.state.user.id;
   let newChapter = ctx.request.body.chapter;
@@ -383,20 +383,20 @@ router.post('/', permController.requireAuth, async (ctx) => {
 
   let chapter;
   try {
-    chapter =
-        await Chapter.transaction( tsx => {
-          return Chapter.query(tsx)
-            .insertGraphAndFetch(newChapter, { relate: ['tags'] });
-        });
+    chapter = await Chapter.transaction((tsx) => {
+      return Chapter.query(tsx).insertGraphAndFetch(newChapter, {
+        relate: ["tags"],
+      });
+    });
   } catch (e) {
     if (e.statusCode) {
       ctx.throw(e.statusCode, null, { errors: [e.message] });
     } else {
-      ctx.throw(400, null, { errors: ['Bad Request'] });
+      ctx.throw(400, null, { errors: ["Bad Request"] });
     }
     throw e;
   }
-  ctx.assert(chapter, 401, 'Something went wrong');
+  ctx.assert(chapter, 401, "Something went wrong");
 
   ctx.status = 201;
   ctx.body = { chapter };
@@ -431,7 +431,7 @@ router.post('/', permController.requireAuth, async (ctx) => {
 router.put('/:id', permController.requireAuth, async (ctx) => {
   let chapterData = ctx.request.body.chapter;
   //TODO: enable permissions checking so only allowed users can approve and verify
-
+  delete chapterData.ratings; //FIXME: prevent client from sending this
   const chapterCheck = await Chapter.query().findById(ctx.params.id);
   ctx.assert(chapterCheck, 404, 'Invalid data provided');
 
@@ -444,6 +444,7 @@ router.put('/:id', permController.requireAuth, async (ctx) => {
     ctx.status = 201;
     ctx.body = { chapter };
   } catch (e) {
+    console.log(e);
     if (e.statusCode) {
       ctx.throw(e.statusCode, null, { errors: [e.message] });
     } else {

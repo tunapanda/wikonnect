@@ -52,17 +52,17 @@
         <br>
         {{#if (or this.model.contentUri this.model.contentId)}}
           {{#if this.model.contentId}}
-            <LinkTo class="btn  btn-primary mt-3 btn-sm" @route="teach.h5p-editor" @model={{this.model.id}}>
+            <LinkTo class="btn  btn-primary mt-3 btn-sm" @route="create.h5p-editor" @model={{this.model.id}}>
               {{t "teach.preview.change_h5p"}}
             </LinkTo>
           {{else}}
-            <LinkTo class="btn  btn-primary mt-3 btn-sm" @route="teach.h5p-upload" @model={{this.model.id}}>
+            <LinkTo class="btn  btn-primary mt-3 btn-sm" @route="create.h5p-upload" @model={{this.model.id}}>
               {{t "teach.preview.change_h5p"}}
             </LinkTo>
           {{/if}}
 
         {{else}}
-          <LinkTo class="btn btn-primary mt-3 btn-sm" @route="teach.h5p-editor" @model={{this.model.id}}>
+          <LinkTo class="btn btn-primary mt-3 btn-sm" @route="create.h5p-editor" @model={{this.model.id}}>
             {{t "teach.preview.upload_h5p"}}
           </LinkTo>
         {{/if}}
@@ -79,7 +79,7 @@
           {{/each}}
           <br>
         </div>
-        <LinkTo @route="teach.tag" @model={{this.model.id}} class="btn btn-sm btn-primary mt-4">
+        <LinkTo @route="create.tag" @model={{this.model.id}} class="btn btn-sm btn-primary mt-4">
           {{t "teach.preview.modify_tags"}}
         </LinkTo>
 
@@ -96,7 +96,7 @@
           {{/each}}
           <br>
         </div>
-        <LinkTo @route="teach.review-questions" @model={{this.model.id}} class="btn btn-sm btn-primary mt-4">
+        <LinkTo @route="create.review-questions" @model={{this.model.id}} class="btn btn-sm btn-primary mt-4">
           {{t "teach.preview.buttons.modifyReviewQuestions"}}
         </LinkTo>
 
@@ -114,7 +114,7 @@
           <textarea class="form-control bg-light" name="" id="" rows="3" disabled>{{this.model.description}}</textarea>
         </div>
 
-        <LinkTo @route="teach.edit" @model={{this.model.id}} class="btn btn-sm btn-primary">
+        <LinkTo @route="create.edit" @model={{this.model.id}} class="btn btn-sm btn-primary">
           {{t "teach.preview.change_chapter_details"}}
         </LinkTo>
       </div>
@@ -124,12 +124,12 @@
           <img src="{{this.model.imageUrl}}" class="img-thumbnail img-fluid rounded h-50 d-inline-block mb-3" alt={{t
                   "teach.preview.chapter"}}>
           <br>
-          <LinkTo @route="teach.thumbnail-upload" @model={{this.model.id}}>
+          <LinkTo @route="create.thumbnail-upload" @model={{this.model.id}}>
             <button type="button" class="btn btn-primary btn-sm">{{t "teach.preview.edit_thumbnail"}}</button>
           </LinkTo>
 
         {{else}}
-          <LinkTo @route="teach.thumbnail-upload" @model={{this.model.id}}>
+          <LinkTo @route="create.thumbnail-upload" @model={{this.model.id}}>
             <button type="button" class="btn btn-primary btn-sm">{{t "teach.preview.upload_thumbnail"}}</button>
           </LinkTo>
 

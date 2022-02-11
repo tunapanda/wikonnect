@@ -1,0 +1,30 @@
+.show-modal-button {
+  color: $white;
+  background-color: $teach-primary;
+  border: none;
+  border-radius: 3px;
+  margin: 0 auto;
+  padding: 3px 10px;
+
+  &:focus {
+    outline: none;
+  }
+}
+
+.comment {
+  margin: 5px;
+  width: 250px;
+
+  .icon {
+    height: 50px;
+    margin: 15px 0;
+  }
+
+  .details {
+    border-left: 1px solid $teach-primary;
+    background-color: lighten($teach-primary, 50%);
+    padding: 10px;
+    min-height: 50px;
+    flex: 1;
+  }
+}
