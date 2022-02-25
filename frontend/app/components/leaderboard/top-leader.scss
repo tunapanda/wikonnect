@@ -1,0 +1,335 @@
+$palette: (
+  primary: #f57010,
+  white: #ffff,
+  darkCharcoal: rgba(87, 92, 88, 1),
+  teach: #32a583,
+  eucalyptus: #28a745,
+);
+.leaderboard-wrapper {
+  position: relative;
+
+  .bg-panel {
+    width: 100%;
+    height: 135px;
+    background-color: map-get($palette, primary);
+    opacity: 0.22;
+    position: absolute;
+    z-index: 1;
+    top: 0;
+    margin-top: -30px;
+  }
+
+  .leaderboard-main-container {
+    position: relative;
+    z-index: 10;
+    background-color: map-get($palette, white);
+    margin-top: 30px;
+    padding: 20px;
+  }
+
+  .leaderboard-main-container {
+    .title {
+      font-size: 19px;
+      font-weight: 700;
+      color: map-get($palette, darkCharcoal);
+      padding-left: 10px;
+      padding-bottom: 12px;
+    }
+
+    .sub-title {
+      font-size: 19px;
+      font-weight: 500;
+      color: map-get($palette, darkCharcoal);
+      padding-left: 50px;
+    }
+  }
+
+  .top-leaders {
+    padding-bottom: 25px;
+
+    .leader-card {
+      width: 422px;
+      height: 155px;
+      box-shadow: 0px 3px 30px rgba(0, 0, 0, 0.29);
+      border-radius: 5px;
+      margin-left: 8px;
+      padding: 15px;
+
+      .image-container {
+        max-height: 52px;
+        max-width: 52px;
+
+        img {
+          box-shadow: 0px 3px 6px rgb(0 0 0 / 7%);
+          border: 3px solid rgba(255, 255, 255, 1);
+        }
+      }
+
+      .details {
+        padding-left: 8px;
+
+        .name {
+          font-size: 19px;
+          color: map-get($palette, darkCharcoal);
+          font-weight: 500;
+        }
+
+        .location {
+          font-size: 15px;
+          color: map-get($palette, darkCharcoal);
+        }
+      }
+
+      .points {
+        color: map-get($palette, eucalyptus);
+        font-weight: 700;
+        font-size: 19px;
+      }
+
+      .points-title {
+        font-size: 15px;
+        color: map-get($palette, darkCharcoal);
+      }
+    }
+
+    .leader-card {
+      .badges-list {
+        display: flex;
+        position: relative;
+
+        .badge-icon-container {
+          width: 30px;
+          height: 30px;
+          position: absolute;
+          display: flex;
+          flex-direction: column;
+          flex-wrap: nowrap;
+          align-items: center;
+          justify-content: center;
+          border-radius: 50%;
+          background-color: white;
+          box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.05);
+          border: 3px solid rgba(255, 255, 255, 1);
+          font-size: 11px;
+          font-weight: 700;
+
+          .badge-icon {
+            width: 100%;
+            height: 100%;
+          }
+
+          &:nth-child(2) {
+            margin-left: 20px;
+          }
+
+          &:nth-child(3) {
+            margin-left: 40px;
+          }
+
+          &:nth-child(4) {
+            margin-left: 60px;
+          }
+        }
+      }
+    }
+
+    .leader-card.first-winner {
+      height: 180px;
+      background-repeat: no-repeat;
+      background-position: 0% 0%;
+      background-origin: padding-box;
+      background-image: linear-gradient(
+        119deg,
+        rgba(126, 87, 194, 1) 0%,
+        rgba(171, 71, 188, 1) 100%
+      );
+      background-color: transparent;
+      background-clip: padding-box;
+
+      .image-container {
+        max-height: 62px;
+        max-width: 62px;
+      }
+
+      .name,
+      .location,
+      .points,
+      .points-title {
+        color: map-get($palette, white);
+      }
+
+      .bottom {
+        padding-bottom: 10px;
+        padding-top: 10px;
+      }
+
+      .view-profile-btn {
+        background-color: map-get($palette, white);
+        border-color: map-get($palette, white);
+        color: map-get($palette, darkCharcoal);
+      }
+    }
+  }
+
+  .top-leaders {
+    .first-winner {
+      position: relative;
+
+      .confetti-one {
+        position: absolute;
+        background-image: url('/images/confetti.svg');
+        width: 70%;
+        height: 55px;
+        background-size: cover;
+        top: -40px;
+        left: -30px;
+        background-repeat: no-repeat;
+        z-index: -1;
+      }
+
+      .confetti-two {
+        position: absolute;
+        background-image: url('/images/confetti-1.svg');
+        width: 70%;
+        height: 55px;
+        background-size: cover;
+        top: -40px;
+        right: -60px;
+        background-repeat: no-repeat;
+        z-index: -1;
+      }
+    }
+  }
+
+  .leaderboard-table {
+    border-collapse: separate;
+    border-spacing: 0 10px;
+
+    thead td {
+      font-size: 16px;
+      font-weight: 500;
+      border: none;
+      color: map-get($palette, darkCharcoal);
+
+      &:first-of-type {
+        padding-right: 0;
+      }
+
+      &:nth-of-type(2) {
+        padding-left: 25px;
+      }
+    }
+
+    tbody {
+      tr {
+        margin-bottom: 10px;
+        box-shadow: 0px 3px 30px rgba(0, 0, 0, 0.06);
+        border-radius: 5px;
+        background-color: map-get($palette, white);
+      }
+
+      td {
+        font-size: 14px;
+        color: map-get($palette, gray30);
+        vertical-align: middle;
+        border: none;
+
+        &:first-of-type {
+          padding-right: 0;
+          width: 10px;
+        }
+      }
+
+      td.position span {
+        height: 23px;
+        width: 23px;
+        background-color: lighten(map-get($palette, teach), 25%);
+        display: flex;
+        border-radius: 50%;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .details {
+        padding-left: 15px;
+
+        .name {
+          font-size: 16px;
+          color: map-get($palette, darkCharcoal);
+          font-weight: 600;
+        }
+
+        .location {
+          color: map-get($palette, luckyGrey);
+          font-size: 16px;
+        }
+      }
+    }
+
+    td.points {
+      font-size: 16px;
+      font-weight: 500;
+    }
+
+    td.badges-container {
+      .badges {
+        display: flex;
+        flex-direction: row;
+        align-content: center;
+        justify-content: flex-start;
+        align-items: center;
+
+        .extra-badges-total {
+          font-size: 16px;
+          background-color: #3f484d5c;
+          width: 34px;
+          height: 34px;
+          color: #ffffff;
+
+          display: flex;
+          border-radius: 100%;
+          justify-content: center;
+          align-content: center;
+          flex-direction: column;
+          align-items: center;
+        }
+
+        .mini-badge-container {
+          width: 50px;
+          height: 65px;
+          display: flex;
+          flex-direction: row;
+          flex-wrap: nowrap;
+          align-content: center;
+          justify-content: center;
+          box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.08);
+          border: 0.5px solid rgba(86, 16, 245, 0.11);
+          margin-right: 9px;
+          padding: 4px;
+
+          .badge-icon {
+            width: 100%;
+            height: 100%;
+          }
+        }
+      }
+    }
+  }
+
+  .image-container {
+    max-width: 40px;
+    max-height: 40px;
+
+    .user-profile-image {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+    }
+  }
+
+  .view-profile-btn {
+    font-size: 13px;
+    padding-bottom: 4px;
+    padding-top: 4px;
+  }
+}
