@@ -186,7 +186,7 @@ jobs:
           # Maps tcp port 5432 on service container to the host
           - 5432:5432
 
-    needs: FrontendTest
+    needs: [FrontendTest, BackendTest]
     steps:
       - uses: actions/checkout@v2
 
@@ -241,7 +241,7 @@ jobs:
           start: yarn --cwd ./server start, yarn --cwd ./frontend start
           wait-on: "http://localhost:4200"
           wait-on-timeout: 120
-
+          
       - uses: actions/upload-artifact@v1
         if: failure()
         with:
@@ -258,7 +258,7 @@ jobs:
         s3-bucket: ['wikonnect-codedeploy-deployments']
         s3-filename: ['staging-wikonnect-codedeploy-${{ github.sha }}']
 
-    needs: ['IntegrationTest', 'BackendTest']
+    needs: ['IntegrationTest']
     steps:
       - uses: actions/checkout@v2
 

@@ -103,6 +103,17 @@ router.get('/hello', async ctx => {
   ctx.body = { user: 'You have access to view this route' };
 });
 
+router.get('/health', async ctx => {
+  const data = {
+    uptime: process.uptime(),
+    message: 'Ok',
+    date: new Date()
+  }
+
+  ctx.status = 200;
+  ctx.body = { data };
+});
+
 app.use(router.routes());
 
 module.exports = app;

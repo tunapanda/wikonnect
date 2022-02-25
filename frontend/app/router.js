@@ -41,19 +41,23 @@ Router.map(function () {
   });
   this.route('manage');
 
-  this.route('teach', function () {
-    this.route('preview', { path: '/preview/:id' });
-    this.route('tag', { path: '/tag/:id' });
-
-    this.route('create');
-    this.route('h5p-upload', { path: '/h5p-upload/:id' });
-    this.route('thumbnail-upload', { path: '/thumbnail-upload/:id' });
+  this.route('create', function () {
     this.route('index', { path: '/' });
-    this.route('published');
     this.route('edit', { path: '/edit/:chapter_id' });
     this.route('h5p-editor', { path: '/h5p-editor/:id' });
-    this.route('login');
+    this.route('h5p-upload', { path: '/h5p-upload/:id' });
+    this.route('thumbnail-upload', { path: '/thumbnail-upload/:id' });
+    this.route('tag', { path: '/tag/:id' });
     this.route('review-questions', { path: 'review-questions/:id' });
+    this.route('preview', { path: '/preview/:id' });
+  });
+
+  this.route('teach', function () {
+    this.route('login');
+    this.route('dashboard');
+    this.route('index', { path: '/' });
+    this.route('chapters', { path: '/:status' });
+    this.route('reviews', { path: 'reviews/:chapter_id' });
   });
   this.route('embed', { path: '/embed/:chapter_id' });
   this.route('callback');

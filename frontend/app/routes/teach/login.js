@@ -6,7 +6,7 @@ export default class TeachLoginRoute extends Route {
   @service SeoTags;
 
   beforeModel() {
-    if (this.me.user) {
+    if (this.me.isAuthenticated) {
       this.transitionTo('teach.index');
     }
   }

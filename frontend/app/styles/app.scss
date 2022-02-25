@@ -1,21 +1,22 @@
-@import 'common/forms';
+@import 'common/variables';
 @import 'common/colors';
-//@import "bs4";
-//@import 'header';
+@import 'common/forms';
+@import 'common/typography';
+@import 'common/utils';
+
 @import 'landing';
 @import 'home';
 @import 'nav';
 @import 'search';
 @import 'warning-component';
-@import 'common/typography';
 @import 'profile';
 @import 'cms-desktop';
-@import 'common/utils';
 @import 'toc-component';
 
 @import 'ember-modal-dialog/ember-modal-structure';
 @import 'ember-modal-dialog/ember-modal-appearance';
 @import url('https://rsms.me/inter/inter.css');
+// other Sass code and imports
 
 html {
   font-family: 'Inter', sans-serif;
@@ -165,17 +166,16 @@ footer .row {
 @import 'login';
 @import 'signup';
 @import 'rating-and-review';
-@import 'teacher/teacher';
+@import 'teacher';
 @import 'h5p-player';
 @import 'notifications-dropdown';
 @import 'user-acc-dropdown';
 @import 'custom-search-icon';
 @import 'dropdown';
 @import 'badge-modal';
-@import 'badge-unlocked';
 @import 'edit-profile';
 @import 'survey';
 @import 'course';
 @import 'popular-cards';
 
-@import 'admin/admin';
+@import 'admin';

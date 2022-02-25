@@ -1,4 +1,6 @@
-let environment;
+require("dotenv").config();
+
+let environment = process.env.NODE_ENV;
 if (!process.env.NODE_ENV) {
   environment = process.argv.indexOf('--cypress') > -1 ? 'test' : 'development';
   process.env.NODE_ENV = environment;

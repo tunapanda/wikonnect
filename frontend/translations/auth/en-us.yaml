@@ -32,3 +32,4 @@ password_reset:
   email_sent_p1: We have sent an email to <strong>{email}</strong>. Click on the password reset link to set your new password.
   email_sent_p2: If you haven’t received an email please check your spam folder or
   try_again: try again
+  password_reset_token_expired: This password reset link is expired. Click '<'a href="/forgot_password"'>'here'</a>' to request a new link
