@@ -5,143 +5,9 @@
       {{t 'leaderboard.title'}}
     </div>
     <div class="top-leaders d-flex align-items-center">
-      <Leaderboard::TopLeader />
-      <div class="leader-card first-winner d-flex flex-column">
-        <div class="d-flex justify-content-between">
-          <div class="d-flex">
-            <div class="image-container">
-              <img
-                src="/uploads/images/profile-placeholder.gif"
-                class="user-profile-image"
-                alt=""
-              />
-            </div>
-            <div class="details d-flex flex-column">
-              <span class="name">
-                Jane Doe
-              </span>
-              <span class="location">
-                Nairobi
-              </span>
-            </div>
-          </div>
-          <div class="d-flex flex-column">
-            <span class="points">
-              9,000
-            </span>
-            <span class="points-title">
-              {{t 'leaderboard.earnedPoints'}}
-            </span>
-          </div>
-        </div>
-        <hr class="w-100" />
-        <div class="d-flex justify-content-between">
-          <div class="badges-list">
-            <div class="badge-icon-container">
-              <img
-                src="/images/badges/badge1.png"
-                class="badge-icon"
-                alt=""
-                role="presentation"
-              />
-            </div>
-            <div class="badge-icon-container">
-              <img
-                src="/images/badges/badge1.png"
-                class="badge-icon"
-                alt=""
-                role="presentation"
-              />
-            </div>
-            <div class="badge-icon-container">
-              <img
-                src="/images/badges/badge1.png"
-                class="badge-icon"
-                alt=""
-                role="presentation"
-              />
-            </div>
-            <div class="badge-icon-container">
-              +5
-            </div>
-          </div>
-          <LinkTo
-            @route="profile"
-            class="btn-sm btn btn-primary view-profile-btn"
-          >
-            {{t 'admin.users_and_badges.buttons.view_user'}}
-          </LinkTo>
-        </div>
-        <div class="confetti-one"></div>
-        <div class="confetti-two"></div>
-      </div>
-      <div class="leader-card third-winner d-flex flex-column">
-        <div class="top d-flex justify-content-between">
-          <div class="left d-flex">
-            <div class="image-container">
-              <img
-                src="/uploads/images/profile-placeholder.gif"
-                class="user-profile-image"
-                alt=""
-              />
-            </div>
-            <div class="details d-flex flex-column">
-              <span class="name">
-                Charles Kiprop
-              </span>
-              <span class="location">
-                Mombasa
-              </span>
-            </div>
-          </div>
-          <div class="right d-flex flex-column">
-            <span class="points">
-              2,000
-            </span>
-            <span class="points-title">
-              {{t 'leaderboard.earnedPoints'}}
-            </span>
-          </div>
-        </div>
-        <hr class="w-100" />
-        <div class="bottom d-flex justify-content-between">
-          <div class="badges-list">
-            <div class="badge-icon-container">
-              <img
-                src="/images/badges/badge1.png"
-                class="badge-icon"
-                alt=""
-                role="presentation"
-              />
-            </div>
-            <div class="badge-icon-container">
-              <img
-                src="/images/badges/badge1.png"
-                class="badge-icon"
-                alt=""
-                role="presentation"
-              />
-            </div>
-            <div class="badge-icon-container">
-              <img
-                src="/images/badges/badge1.png"
-                class="badge-icon"
-                alt=""
-                role="presentation"
-              />
-            </div>
-            <div class="badge-icon-container">
-              +4
-            </div>
-          </div>
-          <LinkTo
-            @route="profile"
-            class="btn-sm btn btn-primary view-profile-btn"
-          >
-            {{t 'admin.users_and_badges.buttons.view_user'}}
-          </LinkTo>
-        </div>
-      </div>
+      <Leaderboard::TopLeader @position="second" />
+      <Leaderboard::TopLeader @position="first" />
+      <Leaderboard::TopLeader @position="third" />
     </div>
     <div class="sub-title">
       {{t 'leaderboard.subtitle'}}
@@ -210,12 +76,12 @@
             </div>
           </td>
           <td>
-            <LinkTo
+            {{!-- <LinkTo
               @route="profile"
               class="btn-sm btn btn-primary view-profile-btn"
             >
               {{t 'admin.users_and_badges.buttons.view_user'}}
-            </LinkTo>
+            </LinkTo> --}}
           </td>
         </tr>
         <tr>
@@ -262,12 +128,12 @@
             </div>
           </td>
           <td>
-            <LinkTo
+            {{!-- <LinkTo
               @route="profile"
               class="btn-sm btn btn-primary view-profile-btn"
             >
               {{t 'admin.users_and_badges.buttons.view_user'}}
-            </LinkTo>
+            </LinkTo> --}}
           </td>
         </tr>
       </tbody>
