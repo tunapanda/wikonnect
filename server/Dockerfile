@@ -1,4 +1,5 @@
 FROM node:fermium-alpine3.14
+RUN apk add g++ make py3-pip
 
 ARG NODE_ENV='production'
 ARG SERVER_PORT=3000
