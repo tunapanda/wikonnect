@@ -57,7 +57,13 @@ body {
 .kkl-jumbo-text {
   color: white;
   width: 100%;
-  -webkit-mask-image: -webkit-gradient(linear, left top, left bottom, from(rgba(252, 113, 0, 0)), to(rgba(0, 0, 0, 1)));
+  -webkit-mask-image: -webkit-gradient(
+    linear,
+    left top,
+    left bottom,
+    from(rgba(252, 113, 0, 0)),
+    to(rgba(0, 0, 0, 1))
+  );
 }
 
 body {
@@ -89,11 +95,13 @@ body {
 }
 
 button.like {
-  filter: invert(27%) sepia(51%) saturate(2878%) hue-rotate(346deg) brightness(104%) contrast(97%);
+  filter: invert(27%) sepia(51%) saturate(2878%) hue-rotate(346deg)
+    brightness(104%) contrast(97%);
 }
 
 button.dislike {
-  filter: invert(27%) sepia(51%) saturate(2878%) hue-rotate(346deg) brightness(104%) contrast(97%);
+  filter: invert(27%) sepia(51%) saturate(2878%) hue-rotate(346deg)
+    brightness(104%) contrast(97%);
 }
 
 .icon {
@@ -101,7 +109,8 @@ button.dislike {
   width: 70px;
   height: 40px;
   background-size: cover;
-  filter: invert(27%) sepia(51%) saturate(2878%) hue-rotate(346deg) brightness(104%) contrast(97%);
+  filter: invert(27%) sepia(51%) saturate(2878%) hue-rotate(346deg)
+    brightness(104%) contrast(97%);
 }
 
 pre {
@@ -177,5 +186,6 @@ footer .row {
 @import 'survey';
 @import 'course';
 @import 'popular-cards';
+@import 'leaderboard';
 
 @import 'admin';

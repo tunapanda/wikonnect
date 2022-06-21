@@ -32,16 +32,30 @@ export default class NotificationModel extends Model {
    * Resolve dynamic properties based on the model or/and event type
    */
   get resolveDynamicProps() {
+    // survey unlocked notification
     if (this.model === 'survey') {
       return {
         url: this.router.urlFor('surveys', this.itemId),
         svgIcon: 'form',
       };
     }
+
+    // comment created notification
     if (this.model === 'comment' && notificationTypes.comment.created) {
       return {
         url: this.router.urlFor('chapter.index', this.itemId),
         iconUrl: '/images/chat.png',
+      };
+    }
+
+    // badge unlocked notification
+    if (this.model === 'badge' && notificationTypes.badge.unlocked) {
+      return {
+        url: this.router.urlFor(
+          'profile.achievements',
+          this.recipient.get('id')
+        ),
+        iconUrl: '/images/badges-earned.png',
       };
     }
 

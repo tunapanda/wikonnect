@@ -169,21 +169,34 @@ class User extends Model {
           to: 'courses.creatorId'
         }
       },
-
-
+      badgesAwarded: {
+        relation: Model.ManyToManyRelation,
+        modelClass: __dirname + '/badges',
+        join:  {
+          from: 'users.id',
+          through: {
+            from: 'user_badges.user_id',
+            to: 'user_badges.badge_id',
+            extra: {
+              user_badge_id: 'id'
+            }
+          },
+          to: 'badges.id'
+        }
+      }
     };
   }
 
   static get modifiers() {
     return {
       selectNameAndId: (builder) => {
-        builder.select('users.id', 'name');
+        builder.select('users.id', 'users.name');
       },
       selectNameAndProfile: (builder) => {
-        builder.select('username', 'profileUri');
+        builder.select('users.username', 'users.profileUri');
       },
-      selectBasicInfo: (query) => {
-        query.select('users.id', 'username', 'metadata', 'profileUri','email');
+      selectBasicInfo: (query) => { // metadata is required to build correct user's name
+        query.select('users.id', 'users.username', 'users.metadata', 'users.profileUri','users.email');
       },
     };
   }

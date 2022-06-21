@@ -123,5 +123,9 @@ module.exports = (io) => {
   socketEventEmitter.on(events.user.comment.created, (payload) => {
     io.to(socketChannel.learners).emit(events.user.comment.created, payload);
   });
+
+  socketEventEmitter.on(events.user.badge.unlocked, (payload) => {
+    io.to(socketChannel.learners).emit(events.user.badge.unlocked, payload);
+  });
   return io;
 };

@@ -6,6 +6,17 @@ class UserSurvey extends Model {
     return 'user_surveys';
   }
 
+  static get jsonSchema() {
+    return {
+      type: 'object',
+      required: ['surveyId', 'userId'],
+      properties: {
+        surveyId: {type: 'string'},
+        userId: {type: 'string'},
+      },
+    };
+  }
+
   static get relationMappings() {
     return {
       survey: {
@@ -20,7 +31,7 @@ class UserSurvey extends Model {
         relation: Model.BelongsToOneRelation,
         modelClass: `${__dirname}/users`,
         join: {
-          from: 'user_surveys.creator_id',
+          from: 'user_surveys.user_id',
           to: 'users.id'
         }
       },

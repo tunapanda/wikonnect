@@ -1,0 +1,67 @@
+<div class="d-flex flex-column" local-class="leader-card {{@position}}">
+  <div class="d-flex justify-content-between">
+    <div class="d-flex">
+      <div local-class="image-container">
+        <img
+          src="/images/profile-placeholder.gif"
+          local-class="user-profile-image"
+          alt=""
+        />
+      </div>
+      <div class="d-flex flex-column" local-class="details">
+        <span local-class="name">
+          Jane Doe
+        </span>
+        <span local-class="location">
+          Nairobi
+        </span>
+      </div>
+    </div>
+    <div class="d-flex flex-column">
+      <span local-class="points">
+        3,000
+      </span>
+      <span local-class="points-title">
+        {{t 'leaderboard.earnedPoints'}}
+      </span>
+    </div>
+  </div>
+  <hr class="w-100" />
+  <div class="d-flex justify-content-between">
+    <div local-class="badges-list">
+      <div local-class="badge-icon-container">
+        <img
+          src="/images/badges/badge1.png"
+          local-class="badge-icon"
+          alt=""
+          role="presentation"
+        />
+      </div>
+      <div local-class="badge-icon-container">
+        <img
+          src="/images/badges/badge1.png"
+          local-class="badge-icon"
+          alt=""
+          role="presentation"
+        />
+      </div>
+      <div local-class="badge-icon-container">
+        <img
+          src="/images/badges/badge1.png"
+          local-class="badge-icon"
+          alt=""
+          role="presentation"
+        />
+      </div>
+      <div local-class="badge-icon-container">
+        +5
+      </div>
+    </div>
+    {{!-- <LinkTo @route="profile" class="btn-sm btn btn-primary view-profile-btn">
+      {{t 'admin.users_and_badges.buttons.view_user'}}
+    </LinkTo> --}}
+  </div>
+  {{#if (eq @position 'first')}}
+    <div local-class="confetti-one"></div><div local-class="confetti-two"></div>
+  {{/if}}
+</div>

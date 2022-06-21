@@ -1,0 +1,48 @@
+<BsModal
+  @open={{this.showBadgeUnlockedModal}}
+  @closeButton={{true}}
+  class="badge-unlocked"
+  @position="center"
+  @onHide={{this.hideSurveyFillPrompt}} as |Modal|
+>
+  <Modal.body class="text-center">
+    <div class="title mb-5">
+      {{t 'badge.unlocked.title'}}
+    </div>
+    <div class="points">
+      {{t 'badge.unlocked.points' numOfPoints=this.badge.points}}
+    </div>
+    <div class="badge-icon-container">
+      {{#if this.badge.iconUrl}}
+      <img
+        src="{{this.badge.iconUrl}}"
+        class="badge-icon"
+        role="presentation"
+        alt=""
+      />
+      {{else}}
+        {{svg-jar 'badge' width='100' height='100'}}
+      {{/if}}
+    </div>
+    <div class="name">
+      {{this.badge.name}}
+    </div>
+    <div class="description">
+      {{this.badge.description}}
+    </div>
+    <div class="actions d-flex justify-content-around">
+      <BsButton @type="default" class="btn">
+        {{t 'badge.unlocked.publish'}}
+      </BsButton>
+      <BsButton @type="default" class="btn">
+        {{t 'badge.unlocked.share'}}
+      </BsButton>
+    </div>
+  </Modal.body>
+<Modal.footer>
+  <BsButton @onClick={{Modal.close}} @type="default" class="btn">
+    {{t 'badge_popup.ok'}}
+  </BsButton>
+</Modal.footer>
+</BsModal>
+<span {{did-insert this.notificationEventIntercept}}></span>

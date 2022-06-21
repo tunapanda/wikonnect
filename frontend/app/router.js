@@ -66,6 +66,7 @@ Router.map(function () {
   this.route('reset_password');
   this.route('verify');
 
+  this.route('leaderboard');
   this.route('surveys', { path: '/surveys/:id' });
 
   this.route('admin', function () {

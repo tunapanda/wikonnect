@@ -32,10 +32,18 @@ class Badge extends softDelete({ columnName: 'is_deleted' })(Model) {
         relation: Model.BelongsToOneRelation,
         modelClass: `${__dirname}/badge_triggers`,
         join: {
-          from: 'badges.trigger',
-          to: 'badge_triggers.id'
+          from: 'badge_triggers.id',
+          to: 'badges.trigger_id'
         }
-      }
+      },
+      badge_awardees: {
+        relation: Model.HasManyRelation,
+        modelClass: `${__dirname}/user-badge`,
+        join: {
+          from: 'badges.id',
+          to: 'user_badges.badge_id'
+        }
+      },
     };
   }
 }
