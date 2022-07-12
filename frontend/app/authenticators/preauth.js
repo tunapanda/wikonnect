@@ -1,6 +1,5 @@
 import TokenAuthenticator from 'ember-simple-auth-token/authenticators/jwt';
 import { inject as service } from '@ember/service';
-import { resolve } from 'rsvp';
 
 export default class PreAuthAuthenticator extends TokenAuthenticator {
   @service store;

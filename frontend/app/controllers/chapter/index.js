@@ -155,7 +155,10 @@ export default class ChapterIndexController extends Controller {
 
     let chapterId = this.model.id;
 
-    if (event.getScore() === event.getMaxScore() && event.getVerb() === 'completed') {
+    if (
+      event.getScore() === event.getMaxScore() &&
+      event.getVerb() === 'completed'
+    ) {
       if (this.me.isAuthenticated) {
         let achievement = await this.store.createRecord('achievement', {
           description: 'completed' + chapterId,
@@ -172,8 +175,6 @@ export default class ChapterIndexController extends Controller {
         trigger: 'chapterCompletion',
       });
       await counter.save();
-
-
     }
   }
 

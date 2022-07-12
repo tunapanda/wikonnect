@@ -8,7 +8,7 @@ export default class LoginRoute extends Route {
   queryParams = {
     preauthtoken: {
       replace: true,
-    }
+    },
   };
 
   beforeModel() {
