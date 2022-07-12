@@ -39,7 +39,6 @@ module.exports = () => {
         .where('id', userId)
         .whereNotNull(raw(`("metadata" ->> 'authorizationToken')`))
         .first();
-      console.log("+++++++++++++", user);
       if (!user) {
         return;
       }
