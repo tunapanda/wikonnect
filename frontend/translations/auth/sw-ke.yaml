@@ -6,18 +6,20 @@ login:
   username: Jina La Mtumiaji
   enter_username: Andika jina la mtumiaji hapa
   enter_email: Andika anwani ya barua pepe hapa
+  enter_phone: Andika nambari ya simu
   password: Neno La Siri
   enter_password: Andika neno la siri hapa
   login_third_party: Ingia Ukitumia {authProvider}
 
 signup:
   email: Barua Pepe
+  phone: Simu
   repeat_password: Rudia neno siri
   invite_code: Nambari ya Kukaribisha
   signup: Jisajili
   signup_third_party: Jisajili Ukitumia {authProvider}
   link_to_login: Je, tayari unayo akaunti?'<'a href="/login"'>' Ingia'</a>'
-  data_confirmation: By signing up, you agree to the storage and usage of your data by Wikonnect. Your data will be used to improve Wikonnect. We may use your details to reach out to you to hear about your experience. We will never sell your data to anyone.
+  data_confirmation: Nimesoma na kukubaliana na '<'a href="/privacy"'>'Sera ya Faragha'</a>'
 
 
 password_reset:
@@ -31,3 +33,4 @@ password_reset:
   email_sent_p1: Tumetuma barua pepe kwa <strong>{email}</strong>. Bonyeza kiungo cha kuweka upya nenosiri ili kuweka nenosiri lako mpya.
   email_sent_p2: Ikiwa haujapokea barua pepe tafadhali angalia folda yako ya barua taka au
   try_again: jaribu tena
+  password_reset_token_expired: This password reset link is expired. Click <a href="/forgot_password">here</a> to request a new link

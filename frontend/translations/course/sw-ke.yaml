@@ -34,8 +34,10 @@ form:
     file_select: Chagua Faili
     save_draft: Hifadhi kama Rasimu
     publish: Chapisha Kozi
+    unpublish: Ondoa Uchapishaji
     save_tag: Wasilisha Lebo
     edit_published: Hifadhi mabadiliko
+    delete: Futa Kozi
   thumbnail:
     uploading: "Inapakia picha..."
   empty_playlist_state: Anza kuongeza sura kwenye kozi </br> kutoka kwa <a href="#select-chapters-section"> orodha hapa chini </a>
@@ -116,6 +118,7 @@ errors:
   playlist_error: Inaonekana tunakabiliwa na shida na orodha ya sura za kozi
   login_to_enroll: Lazima kwanza uingie ama ujiandikishe ili kujiandikisha kwa kozi hii.
   general_error: Hitilafu isiyotarajiwa imepatikana wakati wa kuchakata ombi lako.
+  edit_access_error: Huna ruhusa za kurekebisha kozi iliyochaguliwa.
 
 prompts:
   disenroll: Je! Una uhakika unataka kujiondoa kwenye kozi hii?

@@ -61,6 +61,13 @@ export default class MeService extends Service {
       });
   }
 
+  async authenticateWithPreauthtoken(preauthtoken) {
+    this.session.authenticate('authenticator:preauth', {token: preauthtoken})
+      .then(() => {
+        return this.load();
+      });
+  }
+
   logout() {
     return this.session.invalidate();
   }

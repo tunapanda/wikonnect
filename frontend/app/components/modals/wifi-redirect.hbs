@@ -1,0 +1,24 @@
+<BsModal
+  @open={{@showModal}}
+  @closeButton={{true}}
+  class="survey-fill-prompt-popup"
+  @position="center"
+  @onHide={{this.hideModal}} as |modal|
+>
+  <modal.header class="modal-header" />
+  <modal.body class="modal-body">
+    {{!-- template-lint-disable no-bare-strings --}}
+    <p>
+      Congratulations! You have earned 60 minutes of free internet browsing.
+    </p>
+    <p>Please click the button below to continue.</p>
+    <a
+      type="button"
+      role="button"
+      class="btn btn-block btn-link"
+      href={{@redirectUrl}}
+    >
+      Continue
+    </a>
+  </modal.body>
+</BsModal>

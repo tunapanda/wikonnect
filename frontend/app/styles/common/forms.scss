@@ -1,4 +1,4 @@
-@import "variables";
+// @import 'variables';
 
 .auth-btn {
   background-color: bisque;
@@ -7,7 +7,7 @@
 .auth-title {
   font-size: 30px;
   color: black;
-  background-color: #FAF1DB;
+  background-color: #faf1db;
   text-align: left;
   font-weight: bold;
   padding: 0 1.6rem 0.8rem 1.6rem;
@@ -23,14 +23,14 @@
   }
 
   input:focus {
-    border-color: coral
+    border-color: coral;
   }
 }
 
 .auth-title {
   font-size: 30px;
   color: white;
-  background-color: #FAF1DB;
+  background-color: #faf1db;
   text-align: left;
   font-weight: bold;
   padding: 0 1.6rem 0.8rem 1.6rem;
@@ -39,7 +39,6 @@
 .sort-list {
   display: flex;
   flex-direction: row;
-
 }
 
 .form-actions {
@@ -52,9 +51,9 @@
 }
 
 // .invalid-feedback {
-  //   font-size: 0.2rem;
-  //   color: red;
-  // }
+//   font-size: 0.2rem;
+//   color: red;
+// }
 
 label {
   color: grey;
@@ -62,15 +61,8 @@ label {
   font-weight: 600;
 }
 
-
-
-
-
-
 .form {
-
   padding: 2rem;
-
 }
 
 .form-title {
@@ -84,13 +76,11 @@ label {
   padding: 0 1.6rem 0.8rem 1.6rem;
 }
 
-
 .submit {
   color: red;
   padding-top: 1em;
   width: 100%;
 }
-
 
 .form-text {
   color: #afafaf;
@@ -112,7 +102,6 @@ slightly narrower for forms .form-container {
 
 .form-primary-fields {
   margin-bottom: 2rem;
-
 }
 
 .cms-button {
@@ -132,7 +121,6 @@ slightly narrower for forms .form-container {
   &:hover {
     color: white;
     text-decoration: none;
-    background-color: #00AA83;
+    background-color: #00aa83;
   }
-
 }

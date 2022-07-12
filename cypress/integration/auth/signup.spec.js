@@ -32,6 +32,7 @@ describe('Sign up', () => {
         const username = `dummyaccount${new Date().getTime()}`;
         const password = 'dummypassword';
         const email = `${username}@dummyemail.com`;
+        const phone = '0701234567'
 
         cy.get('.signup-form .signup-form-fields #username input[type="text"]')
             .type(username)
@@ -44,6 +45,10 @@ describe('Sign up', () => {
         cy.get('.signup-form .signup-form-fields #password input[type="password"]')
             .type(password)
             .should('have.value', password);
+
+        cy.get('.signup-form .signup-form-fields #phone input[type="tel"]')
+          .type(phone)
+          .should("have.value", phone);
 
         cy.get('.signup-form .signup-form-fields #confirm-password input[type="password"]')
             .type(password)
@@ -61,7 +66,7 @@ describe('Sign up', () => {
 
     it('should not register existing user', () => {
         cy.fixture('user')
-            .then(({username, password, email}) => {
+            .then(({username, password, email, phone}) => {
 
                 cy.get('.signup-form .signup-form-fields #username input[type="text"]')
                     .type(username)
@@ -70,6 +75,10 @@ describe('Sign up', () => {
                 cy.get('.signup-form .signup-form-fields #email input[type="text"]')
                     .type(email)
                     .should('have.value', email);
+
+                cy.get('.signup-form .signup-form-fields #phone input[type="tel"]')
+                    .type(phone)
+                    .should('have.value', phone);
 
                 cy.get('.signup-form .signup-form-fields #password input[type="password"]')
                     .type(password)

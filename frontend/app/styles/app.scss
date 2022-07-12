@@ -1,26 +1,27 @@
-@import 'common/forms';
+@import 'common/variables';
 @import 'common/colors';
-//@import "bs4";
-//@import 'header';
+@import 'common/forms';
+@import 'common/typography';
+@import 'common/utils';
+
 @import 'landing';
 @import 'home';
 @import 'nav';
 @import 'search';
-@import "warning-component";
-@import 'common/typography';
+@import 'warning-component';
 @import 'profile';
-@import "cms-desktop";
-@import "common/utils";
+@import 'cms-desktop';
 @import 'toc-component';
 
-@import "ember-modal-dialog/ember-modal-structure";
-@import "ember-modal-dialog/ember-modal-appearance";
+@import 'ember-modal-dialog/ember-modal-structure';
+@import 'ember-modal-dialog/ember-modal-appearance';
 @import url('https://rsms.me/inter/inter.css');
+// other Sass code and imports
 
 html {
   font-family: 'Inter', sans-serif;
   height: 100%;
-  scroll-behavior:smooth;
+  scroll-behavior: smooth;
 }
 
 @supports (font-variation-settings: normal) {
@@ -43,7 +44,6 @@ body {
 
 body {
   font-family: 'Inter var', sans-serif;
-
 }
 
 .kkl-cover {
@@ -57,15 +57,13 @@ body {
 .kkl-jumbo-text {
   color: white;
   width: 100%;
-  -webkit-mask-image: -webkit-gradient(linear, left top, left bottom,
-    from(rgba(252, 113, 0, 0)), to(rgba(0, 0, 0, 1)));
+  -webkit-mask-image: -webkit-gradient(linear, left top, left bottom, from(rgba(252, 113, 0, 0)), to(rgba(0, 0, 0, 1)));
 }
 
 body {
   margin-bottom: 60px;
   /* Margin bottom by footer height */
 }
-
 
 .replaced {
   visibility: hidden;
@@ -83,7 +81,7 @@ body {
   padding: 4px;
   display: block;
   left: 0;
-  content: "Check it out";
+  content: 'Check it out';
 }
 
 .add-pre {
@@ -138,7 +136,7 @@ pre {
 }
 
 .drop-area {
-  background-color: #EBF0F2;
+  background-color: #ebf0f2;
   height: 300px;
 }
 
@@ -155,30 +153,29 @@ footer .row {
 //@import "ember-bootstrap/bootstrap";
 //@import "ember-power-select";
 
+@import 'reaction-buttons';
+@import 'h5p-list-item';
+@import 'single-chapter';
+@import 'comments.scss';
+@import 'tags-list';
+@import 'custom-checkbox';
+@import 'h5p-editor';
+@import 'loader';
+@import 'teach-login';
+@import 'forgot-password';
+@import 'login';
+@import 'signup';
+@import 'rating-and-review';
+@import 'teacher';
+@import 'h5p-player';
+@import 'notifications-dropdown';
+@import 'user-acc-dropdown';
+@import 'custom-search-icon';
+@import 'dropdown';
+@import 'badge-modal';
+@import 'edit-profile';
+@import 'survey';
+@import 'course';
+@import 'popular-cards';
 
-@import "reaction-buttons";
-@import "h5p-list-item";
-@import "single-chapter";
-@import "comments.scss";
-@import "tags-list";
-@import "custom-checkbox";
-@import "h5p-editor";
-@import "loader";
-@import "teach-login";
-@import "forgot-password";
-@import "login";
-@import "signup";
-@import "rating-and-review";
-@import "teacher/teacher";
-@import "h5p-player";
-@import "notifications-dropdown";
-@import "user-acc-dropdown";
-@import "custom-search-icon";
-@import "dropdown";
-@import "badge-modal";
-@import "edit-profile";
-@import "survey";
-@import "course";
-@import "popular-cards";
-
-@import "admin/admin";
+@import 'admin';

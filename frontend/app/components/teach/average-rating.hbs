@@ -1,0 +1,9 @@
+<div class="d-flex justify-content-center">
+  {{#if @record.ratings}}
+    <div local-class="rating">
+      {{this.rating}}
+    </div>
+  {{else}}
+    <p>{{t "teach.index.no_ratings"}}</p>
+  {{/if}}
+</div>

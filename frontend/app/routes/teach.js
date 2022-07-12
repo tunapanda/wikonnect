@@ -1,5 +1,6 @@
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
+import RSVP from 'rsvp';
 
 export default class TeachRoute extends Route {
   @service me;
@@ -15,6 +16,21 @@ export default class TeachRoute extends Route {
     return super.beforeModel(transition);
   }
 
+  model() {
+    if (this.me.isAuthenticated) {
+      return RSVP.hash({
+        drafts: this.store.query('chapter', {
+          creatorId: this.me.user.id,
+          status: 'draft',
+        }),
+        published: this.store.query('chapter', {
+          creatorId: this.me.user.id,
+          status: 'published',
+        }),
+      });
+    }
+  }
+
   afterModel() {
     this.headTags = this.SeoTags.build(
       'Teach - Wikonnect',
@@ -23,5 +39,23 @@ export default class TeachRoute extends Route {
       false,
       false
     );
+  }
+
+  async setupController(controller, model) {
+    super.setupController(controller, model);
+    const statistics = await this.getStatistics();
+    // eslint-disable-next-line ember/no-controller-access-in-routes
+    this.controllerFor('teach').set('statistics', statistics.statistics);
+  }
+
+  async getStatistics() {
+    let results;
+    const response = await fetch(`/api/v1/users/${this.me.user.id}/statistics`);
+
+    if (response.ok) {
+      results = await response.json();
+    }
+
+    return results;
   }
 }

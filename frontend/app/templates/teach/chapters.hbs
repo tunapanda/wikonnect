@@ -1,0 +1,11 @@
+<div class="container bg-white">
+  <div class="row mt-3">
+    {{#if @model}}
+      {{#each @model as |chapter|}}
+        <TeachListItem @chapter={{chapter}} />
+      {{/each}}
+    {{else}}
+      {{t 'teach.index.no_published'}}
+    {{/if}}
+  </div>
+</div>

@@ -1,7 +1,6 @@
 #home {
   //@include pages-main;
 
-
   h3 {
     font-size: 24px;
     color: $dark-blue;
@@ -9,9 +8,7 @@
 
   p {
     font-size: 13px;
-
   }
-
 }
 
 .heading {
@@ -20,15 +17,15 @@
 
 .ember-notify {
   &.alert {
-    &.alert-success ,
-    &.alert-success .close{
+    &.alert-success,
+    &.alert-success .close {
       color: white;
       background-color: #4caf50;
       font-weight: 400;
       opacity: 1;
     }
-    &.alert-danger ,
-    &.alert-danger .close{
+    &.alert-danger,
+    &.alert-danger .close {
       color: white;
       background-color: #f44336;
       font-weight: 400;
@@ -37,10 +34,7 @@
   }
 }
 
-
 .course-item {
-
-
   margin-top: 1em;
   display: flex;
   justify-content: flex-start;
@@ -48,7 +42,6 @@
   hr {
     margin: 0px;
     padding: 0px;
-
   }
 
   .course-image {
@@ -93,20 +86,20 @@
   }
 }
 
-.chapters-infinity-loader{
+.chapters-infinity-loader {
   .infinity-loader {
     padding-bottom: 50px;
     .loading-indicator {
       text-align: center;
     }
-    .records-loaded-indicator{
+    .records-loaded-indicator {
       display: none;
     }
-    &.reached-infinity{
-      .loading-indicator{
+    &.reached-infinity {
+      .loading-indicator {
         display: none;
       }
-      .records-loaded-indicator{
+      .records-loaded-indicator {
         display: block;
       }
     }

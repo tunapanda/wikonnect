@@ -1,0 +1,27 @@
+$palette: (
+  gray30: #3f484d,
+  primary: #f57010,
+  red: #ea0606,
+  white: #ffff,
+);
+.admin-main-header {
+  .notifications-dropdown {
+    .nav-link {
+      position: relative;
+    }
+
+    .dropdown-toggle::after {
+      display: none;
+    }
+
+    .nav-link svg path {
+      fill: map-get($palette, gray30);
+    }
+
+    .nav-link .count {
+      position: absolute;
+      background-color: map-get($palette, red);
+      color: map-get($palette, white);
+    }
+  }
+}

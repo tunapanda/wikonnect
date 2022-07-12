@@ -1,0 +1,62 @@
+$palette: (
+  primary: #f57010,
+  gray75: #edf4f8,
+  gray45: #6e6e6e,
+  black: #000000,
+);
+
+.sidenav {
+  background-color: map-get($palette, gray75);
+  width: 234px;
+  overflow: auto;
+  min-height: 100vh;
+
+  .header {
+    .header-link {
+      width: 100%;
+      padding: 10px;
+      align-items: center;
+      flex-wrap: nowrap;
+      flex-direction: column;
+      align-content: center;
+      justify-content: center;
+      display: flex;
+      margin-left: -15px;
+    }
+
+    svg path {
+      fill: map-get($palette, primary);
+    }
+  }
+}
+
+.sidenav .sidenav-menu {
+  .nav-item .nav-link {
+    display: block;
+    margin: 0;
+    color: map-get($palette, gray45);
+    font-weight: 400;
+    white-space: nowrap;
+    padding: 0.75em 0.75em 0.75em 25px;
+
+    &.active {
+      color: map-get($palette, black);
+      font-weight: 500;
+
+      svg path {
+        fill: map-get($palette, primary);
+      }
+    }
+  }
+
+  .nav-item .sub-menu {
+    margin-left: 26px;
+    font-size: 14px;
+
+    .nav-link {
+      &.active {
+        color: map-get($palette, primary);
+      }
+    }
+  }
+}

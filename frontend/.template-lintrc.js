@@ -14,6 +14,7 @@ const additionalCharsToIgnore = [
 
 module.exports = {
   extends: 'octane',
+  ignore: ['app/templates/privacy'],
   rules: {
     'no-bare-strings': [
       ...DEFAULT_CONFIG.allowlist,

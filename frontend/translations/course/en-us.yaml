@@ -10,7 +10,7 @@ nav:
   badges: Badges
   courses: Course Builder
   teach: Teach
-  create_course: New Course
+  create_course: Create Course
   draft_courses: Drafts
   published_courses: Published
   edit_course: Edit Course
@@ -34,8 +34,10 @@ form:
     file_select: Select File
     save_draft: Save as Draft
     publish: Publish Course
+    unpublish: Unpublish Course
     edit_published: Save Changes
     save_tag: Submit Tag
+    delete: Delete Course
   thumbnail:
     uploading: "Uploading image..."
   empty_playlist_state: Start adding chapters to the course </br> from the  <a href="#select-chapters-section">  list below </a>
@@ -116,6 +118,7 @@ errors:
   playlist_error: It seems we are facing issue with course playlist
   login_to_enroll: You must first login/register to enroll to this course.
   general_error: Unexpected error encountered while processing your request.
+  edit_access_error: You don't have permissions to modify the selected course.
 
 prompts:
   disenroll: Are you sure you want to unenroll from this course?

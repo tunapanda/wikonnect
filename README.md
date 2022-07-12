@@ -234,21 +234,28 @@ recommend installing [Ember CLI](https://github.com/ember-cli/ember-cli) globall
 yarn install -g ember-cli
 ```
 
-## Designs
+## UI/UX Designs
 
 ---
 
-<table>
+### Learn
 
-  <tr>
-    <td><img src="screenshots/1.png" width=270 height=480></td>
-    <td><img src="screenshots/2.png" width=270 height=480></td>
-    <td><img src="screenshots/3.png" width=270 height=480></td>
-  </tr>
- </table>
+- [Authentication](https://xd.adobe.com/view/ce0b8ac3-0e43-4ccd-ad2f-ca86803f522f-9b58/)
+- [Password Reset](https://xd.adobe.com/view/c8cdd600-0ec7-4557-a497-7bcf80177a5e-9d9e/)
+- [Course Builder](https://xd.adobe.com/view/9b6c6240-2411-40da-bc02-39c409e62f88-ce3f/)
+- [Single Chapter Page](https://xd.adobe.com/view/87f725be-e199-4bf6-bd01-7f4ead3c9e6c-d2a4/)
 
-Head over to [Adobe XD](https://xd.adobe.com/view/4373354a-a52e-4413-4a61-8831bd731d75-3542/grid) to see the complete
-design.
+### Teach
+- [Teach landing page (unauthenticated)](https://xd.adobe.com/view/f3336f85-ec94-47a0-9ed1-1c16d09fd346-a660/)
+- [Chapter Creation](https://xd.adobe.com/view/7b76ab64-b1e6-4c55-9add-3e15624234c7-2e25/) 
+- [Dashboard for Content Creators](https://xd.adobe.com/view/0ef6c435-70eb-4508-95df-5899d2821970-5ba5/)
+
+### Admin Dashboard
+- [Content Approval](https://xd.adobe.com/view/8e585111-f208-4fd8-9c09-f0f71221b61f-db0b/)
+- [Leaderboad and Badge Management](https://xd.adobe.com/view/744fa986-7674-4c71-b77a-fdb50a4e806b-211c/)
+- [User Management](https://xd.adobe.com/view/743f7d0d-7153-4842-a024-73168a04efea-216c/)
+- [Monitoring and Evaluation Survey Managment](https://xd.adobe.com/view/cdf5137c-29dc-4154-b5d3-166a2daa699c-98a6/)
+
 
 ## Contributing
 
@@ -260,7 +267,7 @@ design.
 
 ## License
 
-This project is licensed under MIT. See the [license](license) file for details
+This project is licensed under MIT. See the [license](https://github.com/tunapanda/wikonnect/blob/master/LICENCE.md) file for details
 
 ## Authors 🧙
 

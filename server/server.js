@@ -93,12 +93,27 @@ router.use(jwt.authenticate, require('./routes/tag-followers'));
 
 router.use(jwt.authenticate, require('./routes/course-enrollments'));
 
+router.use(jwt.authenticate, require('./routes/xapi'));
+
+router.use(require('./routes/winguapps'));
+
 router.use(require('./routes/search'));
 
 
 router.get('/hello', async ctx => {
   log.info('Got a request from %s for %s', ctx.request.ip, ctx.path);
   ctx.body = { user: 'You have access to view this route' };
+});
+
+router.get('/health', async ctx => {
+  const data = {
+    uptime: process.uptime(),
+    message: 'Ok',
+    date: new Date()
+  }
+
+  ctx.status = 200;
+  ctx.body = { data };
 });
 
 app.use(router.routes());
