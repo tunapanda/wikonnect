@@ -2,6 +2,7 @@ const Router = require("koa-router");
 const { nanoid } = require('nanoid');
 const bcrypt = require("bcrypt");
 const UserModel = require("../models/user");
+const GroupMembers = require("../models/group_members");
 
 const router = new Router({
   prefix: "/winguapps"
@@ -17,12 +18,30 @@ const DOMAIN_NAME = process.env.DOMAIN_NAME || 'http://localhost:4200';
  * }
  */
 router.post("/", async (ctx) => {
+  const userQuery = UserModel.query();
+
+  const { email, phone, token, apiKey } = ctx.query;
+
+  if (apiKey !== process.env.API_KEY) {
+    ctx.status = 401;
+    return;
+  }
+
   try {
-    // check if user exists using email and phone number
-    let user = await UserModel.query()
-      .where({ contactNumber: ctx.request.body.phone })
-      .orWhere({ email: ctx.request.body.email })
-      .limit(1);
+    ctx.assert((email || phone), 400, "Email or phone is required");
+
+    if (phone) {
+      userQuery.where({ contactNumber: phone });
+    }
+
+    if (email && phone) {
+      userQuery.orWhere({ email });
+    }
+    else if (email) {
+      userQuery.where({ email });
+    }
+
+    let user = await userQuery.limit(1);
 
     const authorizationToken = nanoid();
 
@@ -30,12 +49,12 @@ router.post("/", async (ctx) => {
       const hash = await bcrypt.hash(nanoid(11), 10);
 
       user = await UserModel.query().insertAndFetch({
-        username: ctx.request.body.email,
-        email: ctx.request.body.email,
-        contactNumber: ctx.request.body.phone,
+        username: email,
+        email: email,
+        contactNumber: phone,
         hash: hash,
         authorizationToken: authorizationToken,
-        winguToken: ctx.request.body.token
+        winguToken: token
       });
 
       await GroupMembers.query().insert({
@@ -47,7 +66,7 @@ router.post("/", async (ctx) => {
         .findById(user[0].id)
         .patch({
           authorizationToken: authorizationToken,
-          winguToken: ctx.request.body.token
+          winguToken: token
         });
     }
 
