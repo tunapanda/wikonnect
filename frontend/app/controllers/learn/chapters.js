@@ -5,7 +5,8 @@ import { A } from '@ember/array';
 import { action } from '@ember/object';
 
 export default class LearnChaptersController extends Controller {
-  queryParams = ['tags'];
+  queryParams = ['tags', 'preauthtoken'];
+  preauthtoken = null;
   queryTagJoinXcter = ',';
 
   @service me;

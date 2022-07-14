@@ -142,12 +142,23 @@ export default class ChapterIndexController extends Controller {
     if (!event || !event.getScore) {
       return;
     }
-    let chapterId = this.model.id;
-    if (event.getScore() === event.getMaxScore() && event.getMaxScore() > 0) {
-      this.score = event.getMaxScore();
-    }
 
-    if (this.score !== undefined) {
+    // TODO: finish this logic
+    // if (this.me.isAuthenticated) {
+    //   let xapi = await this.store.createRecord('xapi', {
+    //     user: this.me.get('user'),
+    //     chapter: this.model,
+    //     statement: { ...event.data.statement.verb },
+    //   });
+    //   await xapi.save();
+    // }
+
+    let chapterId = this.model.id;
+
+    if (
+      event.getScore() === event.getMaxScore() &&
+      event.getVerb() === 'completed'
+    ) {
       if (this.me.isAuthenticated) {
         let achievement = await this.store.createRecord('achievement', {
           description: 'completed' + chapterId,

@@ -1,5 +1,6 @@
 import Controller from '@ember/controller';
 import { inject as service } from '@ember/service';
+import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
 
 export default class ApplicationController extends Controller {
@@ -7,6 +8,9 @@ export default class ApplicationController extends Controller {
   @service me;
   @service router;
   @service socket;
+
+  @tracked showRedirectModal = false;
+  @tracked redirectUrl = '';
 
   headerStyles = {
     default: 'white-header',
@@ -17,6 +21,15 @@ export default class ApplicationController extends Controller {
     'cms.index': 'green-header',
     profile: 'yellow-header',
   };
+
+  constructor() {
+    super(...arguments);
+
+    this.socket.socket.on('redirect', (data) => {
+      this.showRedirectModal = true;
+      this.redirectUrl = data.redirectUrl.replace(/"/g, '');
+    });
+  }
 
   get headerStyle() {
     let route = this.router.currentRouteName;
@@ -32,9 +45,8 @@ export default class ApplicationController extends Controller {
   }
 
   @action
-  logout() {
-    this.me.logout();
-    document.location.reload();
+  async logout() {
+    await this.me.logout();
     this.socket.roleChanged();
     this.router.transitionTo('index');
   }

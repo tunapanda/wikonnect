@@ -7,6 +7,7 @@ import config from 'wikonnect/config/environment';
 
 export default class H5pPlayerComponent extends Component {
   @service router;
+  @service me;
 
   @tracked contentId = this.args.contentId;
   @tracked contentUrl = this.args.location;
@@ -32,6 +33,19 @@ export default class H5pPlayerComponent extends Component {
         //including this with false value until implementation on H5P player
         embed: false,
         fullScreen: true,
+      };
+    }
+
+    if (this.me.isAuthenticated) {
+      options = {
+        ...options,
+        ajax: {
+          contentUserDataUrl: `${config.proxyUrl}/api/v1`,
+        },
+        user: {
+          mail: this.me.user?.email || 'anonymous@email.com',
+          name: this.me.user?.name || 'anonymous',
+        },
       };
     }
 

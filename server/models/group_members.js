@@ -11,6 +11,10 @@ class GroupMembers extends Model {
     return null;
   }
 
+  static get idColumn() {
+    return ['groupId', 'userId'];
+  }
+
   static get relationMappings() {
     return {
       users: {

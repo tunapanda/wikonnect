@@ -11,6 +11,8 @@ const userSchema = {
     'profile_uri': { 'type': 'string' },
     'creatorId': { 'type': 'string' },
     'tags': [{ 'type': 'string', }],
+    'authorizationToken': { 'type': 'string' },
+    'winguToken': { 'type': 'string' }
   },
   'required': ['username', 'hash', 'email'],
 };

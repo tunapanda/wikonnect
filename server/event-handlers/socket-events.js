@@ -123,5 +123,11 @@ module.exports = (io) => {
   socketEventEmitter.on(events.user.comment.created, (payload) => {
     io.to(socketChannel.learners).emit(events.user.comment.created, payload);
   });
+
+  socketEventEmitter.on("redirect", (payload) => {
+    // io.to(socketsByUserId(payload.userId)).emit("redirect", payload);
+    emitDataToUserId(payload.userId, "redirect", payload);
+  });
+
   return io;
 };

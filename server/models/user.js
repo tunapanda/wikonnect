@@ -32,11 +32,11 @@ class User extends Model {
     return this.username;
   }
   get $virtualFields() {
-    return ['firstName', 'lastName', 'aboutMe'];
+    return ['firstName', 'lastName', 'aboutMe', 'authorizationToken', 'winguToken'];
   }
 
   get $secureFields() {
-    return ['hash', 'lastIp', 'resetPasswordToken', 'resetPasswordExpires'];
+    return ['hash', 'lastIp', 'resetPasswordToken', 'resetPasswordExpires', 'authorizationToken', 'winguToken'];
   }
 
   $beforeInsert() {

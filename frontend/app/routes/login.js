@@ -5,6 +5,12 @@ export default class LoginRoute extends Route {
   @inject me;
   @service SeoTags;
 
+  queryParams = {
+    preauthtoken: {
+      replace: true,
+    },
+  };
+
   beforeModel() {
     if (this.me.user) {
       this.transitionTo('index');
@@ -15,7 +21,12 @@ export default class LoginRoute extends Route {
     return this.store.createRecord('user');
   }
 
-  afterModel() {
+  async afterModel(resolvedModel, transition) {
     this.headTags = this.SeoTags.build('Login - Wikonnect', '/login');
+    if (transition.to.queryParams?.preauthtoken && !this.me.isAuthenticated) {
+      await this.me.authenticateWithPreauthtoken(
+        transition.to.queryParams.preauthtoken
+      );
+    }
   }
 }

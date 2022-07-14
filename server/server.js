@@ -93,6 +93,10 @@ router.use(jwt.authenticate, require('./routes/tag-followers'));
 
 router.use(jwt.authenticate, require('./routes/course-enrollments'));
 
+router.use(jwt.authenticate, require('./routes/xapi'));
+
+router.use(require('./routes/winguapps'));
+
 router.use(require('./routes/search'));
 
 
