@@ -1,6 +1,7 @@
 <BsModal
   @open={{@showModal}}
   @closeButton={{true}}
+  @backdropClose={{false}}
   class="survey-fill-prompt-popup"
   @position="center"
   @onHide={{this.hideModal}} as |modal|
@@ -12,13 +13,14 @@
       Congratulations! You have earned 60 minutes of free internet browsing.
     </p>
     <p>Please click the button below to continue.</p>
-    <a
+    <button
       type="button"
-      role="button"
       class="btn btn-block btn-link"
       href={{@redirectUrl}}
+      disabled={{this.isRedirecting}}
+      {{on 'click' this.redirect}}
     >
-      Continue
-    </a>
+      Redeem Free Internet
+    </button>
   </modal.body>
 </BsModal>
