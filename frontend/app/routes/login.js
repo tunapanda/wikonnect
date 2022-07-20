@@ -11,8 +11,10 @@ export default class LoginRoute extends Route {
     },
   };
 
-  beforeModel() {
-    if (this.me.user) {
+  beforeModel(transition) {
+    if (transition.to.queryParams?.preauthtoken && this.me.isAuthenticated) {
+      this.me.logout();
+    } else if (this.me.user) {
       this.transitionTo('index');
     }
   }
